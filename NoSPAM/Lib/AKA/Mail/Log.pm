@@ -41,8 +41,8 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf;
-	$self->{verify} = $parent->{verify};
+	#$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf;
+	#$self->{verify} = $parent->{verify};
 	#XXX by zixia no need to load Verify in Log module  || new AKA::Mail::Police::Verify;
 
 # Now we can retrieve the other arguments passed to the 
@@ -66,7 +66,7 @@ sub fatal
 	$what =~ s/\n//g;
 
 	if ( $can_fatal ){
-		print FATAL &get_time_stamp . " $what\n";
+		print FATAL &get_log_time . " $what\n";
 	}
 }
 
@@ -79,7 +79,7 @@ sub debug
 	$what =~ s/\n//g;
 
 	if ( $can_debug ){
-		print DEBUG &get_time_stamp . " $what\n";
+		print DEBUG &get_log_time . " $what\n";
 	}
 }
 
@@ -94,9 +94,15 @@ sub log
 # The MYLOG filehandle is already open by virtue of the BEGIN
 # block.
 	if ( $can_log ){
-		print MYLOG &get_time_stamp . " $what\n";
+		print MYLOG &get_log_time . " $what\n";
 	}
 }
+
+sub get_log_time
+{
+	strftime "%Y-%m-%d %H:%M:%S", localtime;
+}
+
 
 sub get_time_stamp
 {

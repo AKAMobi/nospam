@@ -39,15 +39,17 @@ sub new
 
 	$self->{zlog} = $parent->{zlog};
 
+	$self->init_config();
+
 	return $self;
 }
 
 
-sub get_config
+sub init_config
 {
 	my $self = shift;
 
-	return $self->{config} if ( $self->{config} );
+#	return $self->{config} if ( $self->{config} );
 
 	use Config::Tiny;
 	my $C = Config::Tiny->read( $self->{define}->{conffile} );
@@ -57,7 +59,8 @@ sub get_config
 	$config->{ServerGateway} ||= "Gateway";
 
 	$config->{Traceable} ||= "N";
-	$config->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} );
+	my @default_trace_type = ('MX','A');
+	$config->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} ) || \@default_trace_type;
 	$config->{TraceSpamMask} ||= "16";
 	$config->{TraceMaybeSpamMask} ||= "22";
 
@@ -99,7 +102,6 @@ sub get_config
 	$config->{TagReason} ||= "Y";
 
 	$self->{config} = $config;
-	return $self->{config};
 }
 
 sub cut_comma_to_array_ref

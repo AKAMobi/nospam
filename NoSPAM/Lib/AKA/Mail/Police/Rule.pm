@@ -285,7 +285,7 @@ sub check_ip_range
 		return ( ($ip_long >= $start_long) && ($ip_long <= $end_long) );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\/(\d+)/ ){
 		#	3 用斜杠"/"分隔的一个IP值和一个数字。如："202.116.22.0/24"表示202.116.22.*
-		my $bits = $2;
+		my $bits = 32-$2;
 		my $match_long = ip2int($self, $1);
 		$ip_long = ip2int($self, $ip);
 

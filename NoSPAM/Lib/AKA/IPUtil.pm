@@ -8,6 +8,8 @@
 
 package AKA::IPUtil;
 
+use AKA::Mail::Log;
+
 
 sub new
 {
@@ -20,7 +22,7 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	$self->{zlog} = $parent->{zlog} || die "AKA::IPUtil can't get parent zlog";
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log; #die "AKA::IPUtil can't get parent zlog";
 
 	return $self;
 }
@@ -73,7 +75,7 @@ sub is_ip_in_range
 		return ( ($ip_long >= $start_long) && ($ip_long <= $end_long) );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\/(\d+)/ ){
 		#	3 用斜杠"/"分隔的一个IP值和一个数字。如："202.116.22.0/24"表示202.116.22.*
-		my $bits = $2;
+		my $bits = 32-$2;
 		my $match_long = ip2int($self, $1);
 		$ip_long = ip2int($self, $ip);
 
