@@ -5,21 +5,22 @@ die "pls provide prodno\n" unless $prodno ;
 
 $License = <<_LICENSE_;
 ForSell=No
-ExpireDate=2004-12-31
-Version=1
+ExpireDate=2004-6-1
+Version=2
 
-FactoryName=
-ProductName=iXRay
+FactoryName=测试部
+ProductName=测试版
 
 ServerGatewaySwitchable=N
-ServerGateway=Gateway
+ServerGateway=Gateway,Server,MXRelay,Tailer
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
-
-DynamicEngineEnabled=Yes
-ContentEngineEnabled=Yes
-SpamEngineEnabled=Yes
+DynamicEngine=100
+ContentEngine=100
+SpamEngine=100
+ArchiveEngine=100
+AntivirusEngine=100
 
 _LICENSE_
 
