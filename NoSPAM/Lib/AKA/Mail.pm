@@ -319,7 +319,7 @@ sub send_mail_info
 		print $socket $exit_code . "\n";
 	}else{
 		print $socket "553\n";
-		print $socket "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。";
+		print $socket "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n";
 		print $socket "150\n";
 	}
 }
@@ -711,7 +711,7 @@ sub write_queue
 				print QMQ "X-noSPAM-Version: v" . ($self->{conf}->{licconf}->{Version} || '2') .  "\n";
 
 				print QMQ "X-noSPAM-Result: \n";
-				if ( 'Y' eq uc $config->{VirusEngine}->{TagReason} ){
+				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagReason} ){
 					print QMQ "  V:" . $aka->{engine}->{antivirus}->{result} 
 						. " N:" . $aka->{engine}->{antivirus}->{desc} . "\n";
 				}
@@ -720,13 +720,14 @@ sub write_queue
 						. ' R:' . $aka->{engine}->{spam}->{desc} . "\n";
 				}
 				#if ( $aka->{engine}->{content}->{enabled} ){
-					if ( 'Y' eq uc $config->{ContentEngine}->{TagReason} ){
+					#XXX unimpl if ( 'Y' eq uc $config->{ContentEngine}->{TagReason} ){
+					if ( 'Y' eq uc $config->{SpamEngine}->{TagReason} ){
 						print QMQ "  A:$pf_action P:$pf_param I:$pf_desc\n";
 					}
 				#}
 				
 
-				if ( 'Y' eq uc $config->{VirusEngine}->{TagHead} ){
+				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagHead} ){
 					if ( $aka->{engine}->{antivirus}->{result} ){
 						print QMQ "X-Virus-Flag: YES\n";
 					}else{
