@@ -6,6 +6,7 @@ unset($_SESSION['AdminID']);
 unset($_SESSION['Privilidge']);
 */
 session_start();
+LogAction("用户登录","注销","","","成功");
 session_unset();
 session_destroy();
 

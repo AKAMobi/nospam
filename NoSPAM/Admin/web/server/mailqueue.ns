@@ -116,7 +116,7 @@ if(count($queue) > 0){
 	$i = 0;
 	foreach($queue as $mail){
 		$className = $i%2? "RuleTB2":"RuleTB1";
-		list($id, $date, $from, $to, $size) = explode("," ,$mail);
+		list($id, $date, $from, $to, $size) = explode("," ,htmlspecialchars($mail));
 		$url = "mailcontent.ns?id={$id}&page={$page}&pagenum={$pagenum}";
 		list($num1,$num2) = explode("/",$id);
 		$size = intval($size);

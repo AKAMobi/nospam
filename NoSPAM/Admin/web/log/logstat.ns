@@ -72,7 +72,7 @@ function initSelect()
 		oOption2.value = i;
 		document.all.sHour.add(oOption1);
 		document.all.eHour.add(oOption2);
-		if(i == hour){
+		if(i == (hour+1)){
 			oOption2.selected = true;
 		}
 	}

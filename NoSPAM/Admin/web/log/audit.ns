@@ -16,8 +16,13 @@ switch($_GET["action"])
 	@readfile(ACTIONLOG);
 	exit();
 	case "del":
-	fclose(fopen(ACTIONLOG,"w"));
-	echo "清空成功！";
+	if ($AdminID == SYSOPID){
+		fclose(fopen(ACTIONLOG,"w"));
+		echo "清空成功！";
+		LogAction("操作日志","清空","");
+	} else {
+		echo "无此权限";
+	}
 	exit();
 }
 
@@ -104,7 +109,7 @@ if (count($lines) > 0){
 <tr>
 	<td colspan="9">
 	<input type="button" value="下载" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=dl','_top')">
-	<input type="button" value="清空" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=del'">
+	<?if ($AdminID == SYSOPID) {?><input type="button" value="清空" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=del'"><?}?>
 <?
 echo "<a href='javascript:go(1)' title='第一页'><<-</a>&nbsp;";
 if($pages > 10000){

@@ -143,3 +143,16 @@ function recalcDate(flag)
 			oOption.selected = true;
 	}
 }
+
+function changeExpire()
+{
+	aSelects = document.getElementsByTagName("select");
+
+	for (i = 0; i <aSelects.length; i++)
+	{
+		if (aSelects[i].name.indexOf("expire") != -1)
+		{
+			aSelects[i].disabled = !event.srcElement.checked;
+		}
+	}
+}

@@ -72,6 +72,7 @@ if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 		}
 	}
 	setSessionVal('AdminID',$id);
+	LogAction("用户登录","登录","","","成功");
 	header("Refresh: 0;URL=frames.ns");
 
 	exit();

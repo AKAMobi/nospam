@@ -84,7 +84,7 @@ function formReset()
 	s2.setValue(form1.slider2.defaultValue);
 	if(bTemp)
 		bStop = true;
-	if(form1.Traceable[0].defaultChecked)
+	if(form1.TraceY.defaultChecked)
 		change(false);
 	else
 		change(true);
@@ -111,18 +111,23 @@ function formReset()
   <p>
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-  <td>严格可追查度：</td>
+  <td>疑似垃圾：</td>
+  <td align="right">垃圾</td>
   <td><div class="slider" id="slider-1" tabIndex="1">
   	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>"/>
   </div></td>
+  <td align="left">正常</td>
   </tr>
   <tr>
-  <td>可追查度：</td>
+  <td>垃圾邮件：</td>
+  <td align="right">垃圾</td>
   <td><div class="slider" id="slider-2" tabIndex="1">
     <input class="slider-input" id="slider2" name="TraceSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceSpamMask?>"/>
   </div></td>
+  <td align="left">正常</td>
   </tr>
   </table>
+  <p>注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非垃圾邮件</p>
  <script>
  var s1 = new Slider(document.getElementById("slider-1"), document.getElementById("slider1"));
  var s2 = new Slider(document.getElementById("slider-2"), document.getElementById("slider2")); 
@@ -154,7 +159,7 @@ function formReset()
   </p>
   <p>
     <input type="reset" name="reset" value="恢复">
-	<input type="button" value="推荐值" onclick="form1.TraceY.check=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
+	<input type="button" value="推荐值" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
     <input type="submit" name="submit" value="提交">
   </p>
 </form>

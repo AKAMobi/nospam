@@ -338,7 +338,7 @@ function save()
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
-	$note = str_replace("\n",",",str_replace("\r","",($_POST["note"])));
+	$note = str_replace("\n",",",str_replace("\r","",trim($_POST["note"])));
 	if(!is_numeric($id))
 		die("分类编号必须为数字！");
 	if($_POST["type"]!="modify"){
