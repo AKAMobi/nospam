@@ -13,7 +13,8 @@ use AKA::IPUtil;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 open (NSOUT, ">&=2");
-#close (STDERR);
+close (STDERR);
+open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
