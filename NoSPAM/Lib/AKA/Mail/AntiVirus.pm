@@ -112,8 +112,7 @@ sub catch_virus
 	my ($is_virus,$virus_name,$action) = (0,undef,0);
 	$action = 0; #(AKA::Mail::ACTION_PASS);
 
-	if ( length($result) ){
-		$result =~ m#^$file: (.+)#;
+	if ( length($result) && ($result=~m#^$file: (.+)#) ){
 		# get rid of filename
 		$result = $1;
 
@@ -238,6 +237,7 @@ sub check_file_socket_tcp
 	alarm $old_alarm;
 	if ($alarm_status and $alarm_status ne "" ) { 
 		$self->{zlog}->fatal ( "check_file_socket_tcp SCAN file tcp timeout(10)." );
+		$result = '';
 	}
 	
 	#print $conn "END\n";
