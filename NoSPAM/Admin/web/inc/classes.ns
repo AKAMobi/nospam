@@ -1053,7 +1053,9 @@ class EmailUser {
 		$output = explode ("\n", $output);
 
 		for ($i=0; $i < sizeof ($output); $i ++) {
-			list ($no, $ret) = explode (',', $output[$i]);
+		$output[$i]=ltrim (trim ($output[$i]);
+      	        if (!$output[$i]) continue;	
+		list ($no, $ret) = explode (',', $output[$i]);
 			$no = intval ($no);
 			if (!$no) continue;
 			if ($ret !== 0)
