@@ -25,7 +25,6 @@ use AKA::Mail::Log;
 
 use AKA::Mail::AntiVirus;
 use AKA::Mail::Spam;
-use AKA::Mail::SA;
 use AKA::Mail::Content;
 use AKA::Mail::Dynamic;
 
@@ -80,7 +79,15 @@ sub new
 
 	$self->{antivirus} 	= new AKA::Mail::AntiVirus($self);
 	$self->{spam} 		= new AKA::Mail::Spam($self);
-	$self->{sa} 		= new AKA::Mail::SA($self, 1);
+
+	if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} ){
+		eval "use AKA::Mail::SA;";
+		if ( $@ ){
+			$self->{zlog}->fatal ( "Mail::SA use AKA::Mail::SA failure: $@" );
+		}
+		$self->{sa}	= new AKA::Mail::SA($self, 1);
+	}
+
 	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
@@ -1222,7 +1229,7 @@ sub spam_engine
 						$self->{mail_info}->{aka}->{returnpath}
 						 );
 
-	my ( $is_spam, $reason, $dns_query_time ) = ();
+	my ( $is_spam, $reason, $dns_query_time ) = (0,'垃圾识别引擎',0);
 	my $sa_result = {};
 
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 1;
@@ -1244,14 +1251,23 @@ sub spam_engine
 		$auth_user .= '@' . $self->{conf}->{config}->{MailServer}->{MailHostName}
 			unless ( $auth_user =~ /\@/ );
 		
-		if ( $auth_user eq $returnpath ){
-			$is_spam = RESULT_SPAM_NOT;
-			$reason = '认证用户';
-		}else{
+		$is_spam = RESULT_SPAM_NOT;
+		$reason = '认证用户';
+
+		if ( ($auth_user ne $returnpath) &&
+				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # 内部可追查
+				  ($self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/Out/i) ) ){ 
 			$is_spam = RESULT_SPAM_MAYBE;
 			$reason = '发信人非身份认证用户';
 		}
-
+		
+		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
+				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/Out/i ){
+			my $result = $self->get_sa_result();
+			if ( defined $result ){
+				($sa_result,$is_spam,$reason) = @$result;
+			}
+		}
 	}
 	#elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
 		# A blank MAIL FROM: is typically used for error mail, 
@@ -1259,22 +1275,19 @@ sub spam_engine
 	#	$is_spam = RESULT_SPAM_MAYBE;
 	#	$reason = '邮件格式伪造';
 	#}
-	else{
-		( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	else{ #由外向内
+		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
+				$self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/In/i ){
+			( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+		}
 		
-		# SpamAssassin, default max size 150KB
-		if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||153600) ){
-			$sa_result = $self->{sa}->get_result($self->{mail_info}->{aka}->{emlfilename});
-			if ( ! $is_spam && $sa_result->{SCORE} > 10 ){
-				$reason = $sa_result->{TESTS};
-				if ( $sa_result->{SCORE} < 15 ){
-					$is_spam = RESULT_SPAM_MAYBE ;
-				}else{
-					$is_spam = RESULT_SPAM_MUST;
-				}
+		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
+				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
+			my $result = $self->get_sa_result();
+			if ( defined $result ){
+				($sa_result,$is_spam,$reason) = @$result;
 			}
 		}
-
 	}
 
 	my $action = ACTION_PASS;
@@ -1310,6 +1323,33 @@ sub spam_engine
 
 	return;
 }
+
+sub get_sa_result
+{
+	my $self = shift;
+
+	# 检查 SA 是否开启
+	return undef if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} );
+
+	# SpamAssassin, default max size 150KB
+	my ($sa_result,$is_spam,$reason);
+	if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||153600) ){
+		$sa_result = $self->{sa}->get_result($self->{mail_info}->{aka}->{emlfilename});
+		if ( ! $is_spam && $sa_result->{SCORE} > 10 ){
+			$reason = $sa_result->{TESTS};
+			if ( $sa_result->{SCORE} < 15 ){
+				$is_spam = RESULT_SPAM_MAYBE ;
+			}else{
+				$is_spam = RESULT_SPAM_MUST;
+			}
+		}
+		my @result = ($sa_result,$is_spam,$reason);
+		return \@result;
+	}
+	return undef;
+
+}
+
 
 # input: (subject, mailfrom)
 # return ( is_over_quota, reason );
