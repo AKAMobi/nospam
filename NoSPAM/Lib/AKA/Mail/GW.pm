@@ -30,24 +30,6 @@ sub new
 
 }
 
-sub post_install
-{
-	my $self = shift;
-	my $oem_factory_name = shift;
-
-	my @oems = ('siwei','shikong' );
-
-# TODO: move shell script from ks.cfg to here
-	chdir '/home/NoSPAM/admin/';
-
-	if ( $oem_factory_name ){
-		my $cmd = "mv index.$oem_factory_name.ns index.ns";
-		`$cmd`;
-	}
-
-	system("rm -f index.*.ns");
-}
-
 sub get_srvip_from_domain
 {
 }

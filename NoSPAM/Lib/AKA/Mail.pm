@@ -45,6 +45,24 @@ sub should_refuse_spam
 	return ( 'Y' eq $self->{conf}->{config}->{RefuseSpam} );
 }
 
+# return 0 if not archived, otherwise 1;
+# input: ( emlfile, is_spam, match_rule );
+sub archive_engine
+{
+	my $self = shift;
+
+	my $emlfile = shift;
+	my $is_spam = shift;
+	my $is_matchrule = shift;
+
+	return 0 unless ( $is_spam || $is_matchrule );
+	return 0 unless ( $emlfile );
+
+	my $AMA = new AKA::Mail::Archive($self);
+
+	return $AMA->archive($eml);
+}
+
 # return ( spam_level, reason );
 sub spam_engine
 {

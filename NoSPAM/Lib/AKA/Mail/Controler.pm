@@ -2,7 +2,7 @@
 # Ed Li 2004-03-28
 # Common functions for parsing qmail config files
 
-package AKA::Mail::MailControler;
+package AKA::Mail::Controler;
 
 #use strict;
 
