@@ -4,6 +4,11 @@ require_once('../inc/include.ns');
 if(wi("get_DynamicEngineDBKey",$Keys)!=0)
 	die("无法连接引擎数据库");
 
+foreach ($Keys as $sKey){
+	list($tmpKey,$tmpVal) = explode(",",$sKey);
+	$DBKey[$tmpKey]=$tmpVal;
+}
+
 switch($_GET["action"]){
 	case "del":
 	del();
@@ -15,9 +20,24 @@ switch($_GET["action"]){
 	break;
 }
 
+
+$Key = $sOption = $Option = $_GET["option"];
+if (!$Key){
+	showselect();
+	exit();
+}else{
+	$column = $DBKey[$Key];
+	if (!$column){
+		showselect();
+		exit();
+	}
+		
+}
+
+/* by zixia
 switch($_GET["option"]){
 	case "From":
-	$sKey = $Keys[0];
+	$sKey = $Keys[2];
 	$sOption = "From";
 	break;
 	case "Subject":
@@ -25,7 +45,7 @@ switch($_GET["option"]){
 	$sOption = "Subject";
 	break;
 	case "IP":
-	$sKey = $Keys[2];
+	$sKey = $Keys[0];
 	$sOption = "IP";
 	break;
 	default:
@@ -34,6 +54,7 @@ switch($_GET["option"]){
 }
 
 list($Key,$column) = explode(",",$sKey);
+*/
 
 if(($ret = wi("get_DynamicEngineDBData $Key",$sData))!=0)
 	die("错误代码：$ret");
@@ -280,6 +301,7 @@ function del()
 				$args .= " $sKey";
 			}
 		}
+echo "$args";
 		if($args!=$Option){
 			if(($ret=wi("del_DynamicEngineKeyItem $args",$result))==0)
 				header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
@@ -320,6 +342,7 @@ function showselect()
 <body>
 <div align="center">
 <h2>动态引擎数据库监管</h2>
+
 <input type="button" value="用户重复" onclick="location.href='realtime.ns?option=From'">
 <input type="button" value="邮件重复" onclick="location.href='realtime.ns?option=Subject'">
 <input type="button" value="连接频率" onclick="location.href='realtime.ns?option=IP'">
