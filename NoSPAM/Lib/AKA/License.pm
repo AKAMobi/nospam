@@ -68,6 +68,7 @@ sub check_license_file
 	
 	while ( <LFD> ){
 		chomp;
+		s/[\r\n]$//;
 		if ( /^ProductLicenseExt=(.+)$/ ){
 			$license_checksum = $1;
 			next;
@@ -94,7 +95,7 @@ sub check_license_file
 		#print "license_data $license_data ne $cmpstr\n";
 		return 0;
 	}
-	if( !$self->get_valid_checksum( $license_content, $license_checksum ) ){
+	if( !$self->is_valid_checksum( $license_content, $license_checksum ) ){
 		#print "checksum $license_checksum not valid for [$license_content]\n";
 		return 0;
 	}
@@ -117,14 +118,12 @@ sub get_checksum
 
 	my $data = shift;
 
-	$data =~ s/\n+$//si;
-	
 	my $checksum = md5_base64( 'okboy' . $data . 'zixia' . $data . '@2004-03-07' );
 #print "get sum for [$data], result: $checksum\n"; 
 	return $checksum;
 }
 
-sub get_valid_checksum
+sub is_valid_checksum
 {
 	my $self = shift;
 
