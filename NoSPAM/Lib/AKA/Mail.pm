@@ -110,7 +110,7 @@ sub server
 			) || sleep 1 && die "Could not create INET socket: $! $@\n";
 
 	my $client;
-	my $pid
+	my $pid;
 
 	$self->{zlog}->debug ( "Mail::server start to listen" );
 	#local $SIG{CHLD} = \&{$self->reaper};
