@@ -39,6 +39,9 @@ close (STDERR);
 open (STDERR, ">>/var/log/NoSPAM.stderr") or die "can't reopen STDERR";
 
 
+# 防止文件不能给别人读
+umask 022;
+
 (my $prog=$0) =~ s/^.*\///g;
 
 #
@@ -1977,7 +1980,7 @@ sub write_file
 
 	return ERR_LOCK_FILE unless $lockfd;
 
-	return 30 unless open ( LFD, ">$filename.new" );
+	return 30 unless open ( LFD, ">$filename.new", 0644 );
 
 	print LFD $content;
 
