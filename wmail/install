@@ -36,7 +36,6 @@ RETVAL=$?
 [ $RETVAL != 0 ] && echo "Compile Error!" && exit 1
 
 make check
-
 RETVAL=$?
 [ $RETVAL != 0 ] && echo "Function Check Error!" && exit 1
 
@@ -46,7 +45,6 @@ RETVAL=$?
 
 
 make install-configure
-
 RETVAL=$?
 [ $RETVAL != 0 ] && echo "Config File Copying Error!" && exit 1
 

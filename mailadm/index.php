@@ -62,13 +62,13 @@ INPUT {
 </style>
 
 <META content="MSHTML 6.00.2800.1141" name=GENERATOR></HEAD>
-<BODY text=#000000 bgColor=#ffffff >
+<BODY text=#000000 bgColor=#ffffff onload="document.logon.adminID.focus();">
 <TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%" border=0>
   <TBODY>
   <TR>
     <TD vAlign=center align=middle>
       <FORM name=logon onsubmit="return login();" action="login.php" method=post>
-      <TABLE height=218 cellSpacing=0 cellPadding=0 width=324 background="/images/login.gif">
+      <TABLE height=218 cellSpacing=0 cellPadding=0 width=324 background="images/login.gif">
         <TBODY>
         <TR>
           <TD width="100%" height=20></TD></TR>
