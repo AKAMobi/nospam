@@ -1,14 +1,9 @@
 <?
 require_once('../inc/include.ns');
 
-/*if(wi("get_DynamicEngineDBKey",$Keys)!=0)
-	die("无法连接引擎数据库");*/
+if(wi("get_DynamicEngineDBKey",$Keys)!=0)
+	die("无法连接引擎数据库");
 
-$Keys = array(
-			"IP,IP地址",
-			"Subject,邮件主题",
-			"From,发件人"
-			);
 switch($_GET["action"]){
 	case "del":
 	del();
@@ -36,13 +31,8 @@ switch($_GET["option"]){
 
 list($Key,$column) = explode(",",$sKey);
 
-/*if(($ret = wi("get_DynamicEngineDBData $Key",$Data))!=0)
-	die("错误代码：$ret");*/
-$fp = fopen('test.txt','r');
-$str = fread($fp,filesize('test.txt'));
-fclose($fp);
-
-$Data = explode("\n",$str);
+if(($ret = wi("get_DynamicEngineDBData $Key",$Data))!=0)
+	die("错误代码：$ret");
 
 $iSize = count($Data);
 $pagenum = $_GET["pagenum"];
