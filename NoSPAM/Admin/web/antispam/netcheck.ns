@@ -153,7 +153,6 @@ function Razor_change(bState)
 
   <p>
     <input type="reset" name="reset" value="恢复">
-	<input type="button" value="推荐值" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
     <input type="submit" name="isSubmit" value="提交">
   </p>
 </form>

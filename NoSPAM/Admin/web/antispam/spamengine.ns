@@ -31,7 +31,7 @@ if($_POST["Engine"]){
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
-  <p>
+  <p>可追查性检查：<br>
     <label>
     <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?>>
     开启</label>
@@ -43,6 +43,17 @@ if(adminPerm(PERM_ADMIN_WRITE)){
     <input type="submit" name="Submit" value="修改">
   </p>
 </form>
+   智能检测：<br>
+    <label>
+    <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?>>
+    开启</label>
+    <br>
+    <label>
+    <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?>>
+    关闭</label>
+    <br>
+ 
+    <input type="submit" name="Submit" value="修改">
 <?
 }else{
 ?>
