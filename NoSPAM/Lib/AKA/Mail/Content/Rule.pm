@@ -484,19 +484,18 @@ sub check_re_match
 		return 0;
 	}
 
-	#FIXME: 0 & 9 should not use RE match
 	if ( 0==$match_type ){
 		#×Ö·û´®Ä£ºıÆ¥Åä
 #print "in [$content] find [$match_keyword], result: " . "[" . index($content,$match_keyword) . "]\n\n\n";
 		#return ( -1 != rindex($content,$match_keyword) );
-		return ( $content=~/$match_keyword/ );
+		return ( $content=~/\Q$match_keyword/ );
 	}elsif( 1==$match_type ){
 		#ÕıÔòÆ¥Åä
 		return ( $content=~/$match_keyword/ );
 	}elsif( 9==$match_type ){
 		#×Ö·û´®¾«È·Æ¥Åä
 		#return ( -1 != index($content,$match_keyword) );
-		return ( $content=~/$match_keyword/ );
+		return ( $content=~/^\Q$match_keyword\E$/ );
 	}
 
 }
