@@ -13,7 +13,10 @@ my $iptables = "/sbin/iptables";
 my $ifconfig = "/sbin/ifconfig";
 my $ip_binary = "/sbin/ip";
 my $hostname_binary = "/bin/hostname";
-
+my $reboot_binary = "/sbin/reboot";
+my $shutdown_binary = "/sbin/shutdown";
+my $date_binary = "/bin/date";
+my $clock_binary = "/sbin/clock";
 
 (my $prog=$0) =~ s/^.*\///g;
 my $action = shift @ARGV;
@@ -49,7 +52,8 @@ if ( ! defined $action ){
 	exit &{$action_map->{$action}[0]};
 	$zlog->debug("NoSPAM Util:: $action @param");
 }else{
-	print "NoSPAM System Util unsuport action: $action\n";
+	$zlog->fatal( "NoSPAM System Util unsuport action: $action" );
+	exit 0;
 }
 
 
@@ -402,25 +406,31 @@ sub get_Serial
 {
 	
 	$zlog->debug("NoSPAM Util::get_Serial ");
+	print "This is Serial\n";
+	return 0;
 }
 
 sub check_License
 {
 	$zlog->debug("NoSPAM Util::check_License ");
+	return -1;
 }
 
 sub reset_DateTime
 {
 	$zlog->debug("NoSPAM Util::reset_DateTime $param[0]");
+	return system("$date_binary $param[0]") || system("clock_binary -w");
 }
 
 sub reboot
 {
 	$zlog->debug("NoSPAM Util::reboot");
+	return system ( "$reboot_binary" );
 }
 
 sub shutdown
 {
 	$zlog->debug("NoSPAM Util::reset_DateTime");
+	return system ( "$shutdown_binary now" );
 }
 

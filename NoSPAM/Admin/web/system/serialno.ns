@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if( wi("get Serial",$result)==0 ){
+if( wi("get_Serial",$result)==0 ){
 	$serial = trim($result[0]);
 }else{
 	die("获取序列号时出现错误！");
