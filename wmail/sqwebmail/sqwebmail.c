@@ -1090,6 +1090,10 @@ static void do_output_form_loop(FILE *f)
 		{
 			pref_forward();
 		}
+		//by roy support anti-spam setting
+		else if (strcmp(kw, "SPAM") == 0) {
+			pref_spam();
+		}
 		else if (strcmp(kw, "E") == 0)
 		{
 			folder_rename_list();
