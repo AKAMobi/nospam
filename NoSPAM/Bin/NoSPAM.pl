@@ -614,7 +614,7 @@ sub get_LogSimpleAnaylize
 			, $dynamic, $dynamic_reason 
 	   );
 
-	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num ) = ( 0,0,0, 0 );
+	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num $virus_spam_num) = ( 0,0,0,0,0 );
 	my ( %from_top, %ip_top, %rule_top );
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
 
@@ -631,10 +631,14 @@ sub get_LogSimpleAnaylize
 		next if ( $timestamp < $start_time || $timestamp > $end_time );
 
 		$total_num+=1;
-		$spam ||= 0;
-		$maybe_spam_num +=1 if ( 1==$spam );
-		$spam_num+=1 if ( 1<$spam );
+
 		$virus_num+=1 if ( 0<$virus );
+
+		unless ( $virus ){
+			$spam ||= 0;
+			$maybe_spam_num +=1 if ( 1==$spam );
+			$spam_num+=1 if ( 1<$spam );
+		}
 
 		$from_top{$from} += 1 if ( $from );
 		$ip_top{$ip} += 1 if ( $ip );
