@@ -9,6 +9,7 @@ use POSIX qw(strftime);
 open (NSOUT, ">&=2");
 close (STDERR);
 
+
 my $logit = $ARGV[0];
 $logit = 0 if ( ! defined $logit || $logit ne "log" );
 
