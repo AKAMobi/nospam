@@ -50,7 +50,7 @@ sub quarantine
 	$infoname = "$1.info";
 
 	if ( $q_type eq AKA::Mail::Conf::QUARANTINE_ADMIN ){
-		my $info_content = $self->get_info_content($mailfrom,$mailto,$subject,$size,$q_reason,$q_desc);
+		my $info_content = $self->make_info_content($mailfrom,$mailto,$subject,$size,$q_reason,$q_desc);
 		if ( open ( FD, ">$qdir/$sdir/$infoname" ) ){
 			print FD $info_content;
 			close FD;
@@ -62,26 +62,29 @@ sub quarantine
 		}
 	}elsif ( $q_type eq AKA::Mail::Conf::QUARANTINE_USER ){
 		my ($user,$domain);
-		($mailto) = split(/,/,$mailto); # XXX 只给一个人隔离
-		if ( $mailto=~/(\S+)\@(\S+)/ ){
-			($user,$domain) = (lc $1,lc $2);
-		}else{
-			$self->{zlog}->fatal ( "AKA::Mail::Quarantine::quarantine can't parse email address: [$mailfrom]" );
-			return undef;
-		}
+		my ($single_mailto);
+		foreach ( split(/,/,$mailto) ){ 
+			$single_mailto = $_;
+			if ( $single_mailto=~/(\S+)\@(\S+)/ ){
+				($user,$domain) = (lc $1,lc $2);
+			}else{
+				$self->{zlog}->fatal ( "AKA::Mail::Quarantine::quarantine can't parse email address: [$single_mailto]" );
+				next;
+			}
 
-		mkdir "$qdir/$domain" unless ( -d "$qdir/$domain" );
-		mkdir "$qdir/$domain/$user" unless ( -d "$qdir/$domain/$user" );
+			mkdir "$qdir/$domain" unless ( -d "$qdir/$domain" );
+			mkdir "$qdir/$domain/$user" unless ( -d "$qdir/$domain/$user" );
 
-		my $info_content = $self->get_info_content($mailfrom,$mailto,$subject,$size,$q_reason,$q_desc);
-		if ( open ( FD, ">$qdir/$domain/$user/$infoname" ) ){
-			print FD $info_content;
-			close FD;
-		}else{
-			$self->{zlog}->fatal ( "Mail::Quarantine::quarantine write info file [$qdir/$domain/$user/$infoname] error." );
-			return undef;
+			my $info_content = $self->make_info_content($mailfrom,$single_mailto,$subject,$size,$q_reason,$q_desc);
+			if ( open ( FD, ">$qdir/$domain/$user/$infoname" ) ){
+				print FD $info_content;
+				close FD;
+			}else{
+				$self->{zlog}->fatal ( "Mail::Quarantine::quarantine write info file [$qdir/$domain/$user/$infoname] error." );
+				return undef;
+			}
+			link ($mailfile, "$qdir/$domain/$user/$filename");
 		}
-		link ($mailfile, "$qdir/$domain/$user/$filename");
 		unlink ($mailfile);
 	}else{
 		$self->{zlog}->fatal ( "Mail::Quarantine::quarantine got unknown q_type: [$q_type]" );
@@ -89,7 +92,7 @@ sub quarantine
 	}
 }
 
-sub get_info_content
+sub make_info_content
 {
 	my $self = shift;
 	
