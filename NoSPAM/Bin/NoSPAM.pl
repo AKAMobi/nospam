@@ -1209,7 +1209,7 @@ sub _network_set_ip
 	$err = 1 if ( $ret );
 
 	if ( defined $gw ){
-		$ret = system ( "$ip_binary ro replace $gw dev nospam" );
+		$ret = system ( "$ip_binary ro replace $gw dev nospam src $ip" );
 		$zlog->fatal( "_network_set_ip ip ro re gw dev nospam [$gw] failed with ret: $ret !" ) if ( $ret );
 		$err = 1 if ( $ret );
 

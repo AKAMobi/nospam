@@ -17,15 +17,27 @@ FactoryName=VenusTech
 ProductName=VenusTech
 ProductSN=$prodno
 
-ServerGatewaySwitchable=N
-ServerGateway=Gateway
+
+ServerGatewaySwitchable=Y
+ServerGateway=Gateway,Server,MXRelay
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
+
 MailGateway=100
+MailServer=100
+MailRelay=100
+AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100
 ContentEngine=100
+ArchiveEngine=100
+GAInterface=100
+
+MailServerMaxUser=10000
+MailServerMaxDomain=100
+MailServerMaxQuota=300000000
+
 _LICENSE_
 
 

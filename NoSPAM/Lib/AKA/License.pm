@@ -227,11 +227,11 @@ sub check_expiredate($$)
 	$year -= 1900;
 	$month -= 1;
 	
-$self->{zlog}->debug ( "$second,$minute,$hour,$date,$month,$year" );
+#$self->{zlog}->debug ( "$second,$minute,$hour,$date,$month,$year" );
 	my $expire_time = POSIX::mktime( $second,$minute,$hour,$date,$month,$year );
 	my $now_time = time;
 
-$self->{zlog}->debug ( "License::check_expiredate now [$now_time] expire_time [$expire_time]" );
+#$self->{zlog}->debug ( "License::check_expiredate now [$now_time] expire_time [$expire_time]" );
 
 	return ( 0, '许可证已经过期！' ) if ( $expire_time < $now_time );
 

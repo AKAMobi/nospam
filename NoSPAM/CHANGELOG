@@ -1,3 +1,26 @@
+V2.0.0 (5-8) 增加邮件分析统计图，增加SSL(smtp/pop3)支持，增加SCSI驱动，基础CLI菜单，大量的BUG FIX，修复以前版本的一个导致系统失效的严重BUG
+
+BUG! BUG! 修复磁盘清理程序误删工作目录导致系统无法工作的问题， 此问题存在于所有的V2.0RCX版本中。 问题会在安装完毕系统后大约一周左右的时间时发生，之后系统无法正常转发邮件。 (By zixia) 
+
+deliver的并发数增加到最大509
+增加引擎分析图表系统
+增加简单的CLI系统，只能在主控台登陆，admin/administrator，支持restore default setting, reboot,shutdown (By zixia) 
+增加对 SCSI 设备的完整支持
+增加系统对pop3s(SSL)的支持
+增加noSPAM开机画面
+内容过滤的关键字现在可以设置是否区分大小写了 (By zixia) 
+License中增加系统硬件性能限制，如果CPU性能大于限制性能，则返回“处理器不符合要求”错误 (By zixia) 
+使用 DNS forward first，为了兼容不能出国访问的用户. (By zixia) 
+邮件服务器（独立服务器模式）可以正常工作了；
+Spam Engine 增加 30 秒的 DNS 查询超时 (By zixia) 
+优化日志统计算法，统计20万封邮件从>60s到10s左右；
+增加spam/virus处理动作: 丢弃/拒绝 (By zixia) 
+允许用户本地网络连接40022/40023端口 (By zixia) 
+增加fm365 like的menu
+支持25端口的SMTPS/SSL/TSL (By zixia) 
+增加GAISC（沈阳）的公安接口
+只保留最近7天的Audit邮件 (By zixia) 
+修改内部保留IP 10.4.3.7/32 to /24 (By zixia) 
 没有License的时候，可以正常转发邮件，但是会返回给对方退信(553 无License)的错误。
 使用rrdtools后，安装系统要先设置好时间，否则日志图会出错（拒绝更新）
 更新Kernel到2.4.26，选中APM尝试自动关机
