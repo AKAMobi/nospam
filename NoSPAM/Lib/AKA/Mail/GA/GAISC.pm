@@ -272,6 +272,13 @@ sub mail_info_to_file
 	foreach my $atta_file ( keys %{$mail_info->{body}} ){
 		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
 		$atta_num++;
+	}
+	print FD "GAISC.$type.AttachCount=". $atta_num . "\r\n";
+
+	$atta_num = 0;
+	foreach my $atta_file ( keys %{$mail_info->{body}} ){
+		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
+		$atta_num++;
 		print FD "GAISC.$type.AttachName$atta_num=" 
 			. $atta_file . "\r\n";
 		print FD "GAISC.$type.AttachType$atta_num="
@@ -286,7 +293,6 @@ sub mail_info_to_file
 				. $mail_info->{body}->{$atta_file}->{content} . "\r\n";
 		}
 	}
-	print FD "GAISC.$type.AttachCount=". $atta_num . "\r\n";
 	close FD;
 
 	return $filename;
@@ -927,6 +933,8 @@ sub _pkg2filter
 		}else{
 			$rule_info->{rule_keyword}->{keyword} = $keywords[0];
 		}
+	}else{
+		delete $rule_info->{rule_keyword};
 	}
 
 	($ruleid, $rule_info);
@@ -994,9 +1002,14 @@ sub GAISC_resp_log_update
 			next;
 		}
 
-		my $log_match = $content_rule->check_all_rule_backend('GAISC_log_filterdb', $mail_info );
-
-		next unless ( 'log_match_rule_id' eq $log_match );
+		# only check if we have rule
+$self->{zlog}->debug( Dumper($rule_info) );
+		if ( defined $rule_info->{size}->{sizevalue} 
+				|| length($rule_info->{rule_keyword}->{keyword}) 
+				|| $rule_info->{attachment} ){
+			my $log_match = $content_rule->check_all_rule_backend('GAISC_log_filterdb', $mail_info );
+			next unless ( 'log_match_rule_id' eq $log_match );
+		}
 
 		$mail_info->{aka}->{rule_info} = $rule_info;
 		$mail_info->{aka}->{emlfilename} = "/home/ssh/log/$emlfilename";
