@@ -68,23 +68,26 @@ if($_POST["act"]){
         default://modify
             switch ($_POST['CheckUserList']) {
                 case 'LDAP':
-                    $spamconf->setParam("CheckUserList","LDAP","QuarantineEngine");
+                    $spamconf->setParam("UserListDB","LDAP","QuarantineEngine");
                     $spamconf->setParam("LDAPServerIP",$_POST['LDAPServerIP'],"QuarantineEngine");
                 	$spamconf->setParam("LDAPServerPort",$_POST['LDAPServerPort'],"QuarantineEngine");
-                	$spamconf->setParam("LDAPRootDN",$_POST['LDAPRootDN'],"QuarantineEngine");
-                	$spamconf->setParam("LDAPRootPassword",$_POST['LDAPRootPassword'],"QuarantineEngine");
-                	$spamconf->setParam("LDAPSearchBaseDN",$_POST['LDAPSearchBaseDN'],"QuarantineEngine");
+                	$spamconf->setParam("LDAPLogin",$_POST['LDAPRootDN'],"QuarantineEngine");
+                	$spamconf->setParam("LDAPPassword",$_POST['LDAPRootPassword'],"QuarantineEngine");
+                	$spamconf->setParam("LDAPSearchBase",$_POST['LDAPSearchBaseDN'],"QuarantineEngine");
+                	$spamconf->setParam("LDAPTimeout",$_POST['LDAPTimeout'],"QuarantineEngine");
+                	
                     break;
                 case 'Disabled':
-                    $spamconf->setParam("CheckUserList","Disabled","QuarantineEngine");
+                    $spamconf->setParam("UserListDB","Disabled","QuarantineEngine");
                     break;
                 case 'File':
-                    $spamconf->setParam("CheckUserList","File","QuarantineEngine");
+                    $spamconf->setParam("UserListDB","File","QuarantineEngine");
                     $spamconf->setParam("UserAutoRegister",(($_POST['QuarantineAutoRegister']==1)?'Y':'N'),"QuarantineEngine");
                     break;
                 default:
                     die (_("Quarantine engin can't support this method"));    
             }
+            $spamconf->setParam("NoSuchUserAction",$_POST['NoSuchUserAction'],"QuarantineEngine");
             $spamconf->save();
             if(($ret=wi("QuarantineUpdate",$result))==0)
         		echo _("Modification Success! ");
@@ -95,13 +98,18 @@ if($_POST["act"]){
 }
 else {
 
-    $quarantineEnginCheckUserList = $spamconf->getParam("CheckUserList","QuarantineEngine");
-    $quarantineEnginUserAutoRegister = $spamconf->getParam("UserAutoRegister","QuarantineEngine");
+    $quarantineEnginCheckUserList = $spamconf->getParam("UserListDB","QuarantineEngine");
+    if (!$quarantineEnginCheckUserList)
+        $quarantineEnginCheckUserList = 'Disabled';
+    $quarantineEngineUserAutoRegister = $spamconf->getParam("UserAutoRegister","QuarantineEngine");
+	$quarantineEngineNoSuchUserAction = $spamconf->getParam("NoSuchUserAction","QuarantineEngine");
 	$LDAPServerIP = $spamconf->getParam("LDAPServerIP","QuarantineEngine");
 	$LDAPServerPort = $spamconf->getParam("LDAPServerPort","QuarantineEngine");
-	$LDAPRootDN = $spamconf->getParam("LDAPRootDN","QuarantineEngine");
-	$LDAPRootPassword = $spamconf->getParam("LDAPRootPassword","QuarantineEngine");
-	$LDAPSearchBaseDN = $spamconf->getParam("LDAPSearchBaseDN","QuarantineEngine");
+	$LDAPRootDN = $spamconf->getParam("LDAPLogin","QuarantineEngine");
+	$LDAPRootPassword = $spamconf->getParam("LDAPPassword","QuarantineEngine");
+	$LDAPSearchBaseDN = $spamconf->getParam("LDAPSearchBase","QuarantineEngine");
+	$LDAPTimeOut = $spamconf->getParam("LDAPTimeout","QuarantineEngine");
+	
 	
 	if (adminPerm(PERM_ADMIN_WRITE)) {
 ?>
@@ -123,21 +131,26 @@ var userListType='<?php echo $quarantineEnginCheckUserList; ?>';
 function displaySettings(userListType)
 {
     if (userListType=="File") {
-        html = '<p><label><?=_("Upload quarantine user file");?><input type="file" name="QuarantineUserListFile" />';
+        html = '<p><label><?=_("Upload quarantine user file");?><input type="file" name="QuarantineUserListFile" value="chinese" />';
         html += '<input type="button" name="QuarantineUserListUpload" value="<?=_("Upload");?>" onclick="dosubmit(\'up\');" /><input type="button" name="QuarantineUserListDownload" value="<?=_("Download");?>" onclick="dosubmit(\'down\');" /><br/>';
-        html += '<?=_("One mail address a line, data will merge into that before");?><br/><input type="checkbox" name="QuarantineEmptyUserList" value="1" /><?=_("Empty user list database before new data add");?><br/><br/><?=_("Auto register when user first login");?><input type="radio" name="QuarantineAutoRegister" value="1" <?php if (strcmp ($quarantineEnginUserAutoRegister,'Y')==0) echo 'checked'; ?> /><?=_("Enable")?>';
-        html += '<input type="radio" name="QuarantineAutoRegister" value="0" <?php if (strcmp ($quarantineEnginUserAutoRegister,'Y')!=0) echo 'checked'; ?>/><?=_("Disable")?>';
+        html += '<?=_("One mail address a line, data will merge into that before");?><br/><input type="checkbox" name="QuarantineEmptyUserList" value="1" /><?=_("Empty user list database before new data add");?><br/><br/><?=_("Auto register when user first login");?><input type="radio" name="QuarantineAutoRegister" value="1" <?php if (strcmp ($quarantineEngineUserAutoRegister,'Y')==0) echo 'checked'; ?> /><?=_("Enable")?>';
+        html += '<input type="radio" name="QuarantineAutoRegister" value="0" <?php if (strcmp ($quarantineEngineUserAutoRegister,'Y')!=0) echo 'checked'; ?>/><?=_("Disable")?>';
         html += '</label></p>';
+        document.form1.NoSuchUserAction.disabled=false;
     }
     else if (userListType=="LDAP") {
         html =  '<p><label><table border="0"><tr><td><?=_("LDAP server IP")?></td><td><input type="text" name="LDAPServerIP" value="<?php echo $LDAPServerIP; ?>" />';
         html += '</td></tr><tr><td><?=_("LDAP server port")?></td><td><input type="text" name="LDAPServerPort" value="<?php echo $LDAPServerPort; ?>" />';
         html += '</td></tr><tr><td><?=_("LDAP root DN")?></td><td><input type="text" name="LDAPRootDN" value="<?php echo $LDAPRootDN; ?>" />';
         html += '</td></tr><tr><td><?=_("LDAP root password")?></td><td><input type="text" name="LDAPRootPassword" value="<?php echo $LDAPRootPassword; ?>" />';
-        html += '</td></tr><tr><td><?=_("LDAP search base DN")?></td><td><input type="text" name="LDAPSearchBaseDN" value="<?php echo $LDAPSearchBaseDN; ?>" /></td></tr></table></label></p>';
+        html += '</td></tr><tr><td><?=_("LDAP search base DN")?></td><td><input type="text" name="LDAPSearchBaseDN" value="<?php echo $LDAPSearchBaseDN; ?>" /></td></tr>';
+        html += '<tr><td><?=(_("LDAP Time Out"))?></td><td><input type="text" name="LDAPTimeout" value="<?php echo $LDAPTimeOut; ?>" /></td></tr></table></label></p>';
+        document.form1.NoSuchUserAction.disabled=false;
     }
-    else
+    else {
         html = '';
+        document.form1.NoSuchUserAction.disabled=true;
+    }
     document.getElementById('hiddenSpan').innerHTML = html;
 }
 -->
@@ -155,8 +168,12 @@ function displaySettings(userListType)
     </p>
     <span id="hiddenSpan"></span>  
     
-    <p><label><?=_("When the address that incurrent mail will forword to is not exist");?>:<select name="QuarantineActionWhenAddressNotExist"><option value="F" ><?=_("Forward");?></option><option value="D" ><?=_("Drop");?></option><option value="R" ><?=_("Reject");?></option></select></label></p>
-    <input type="button" name="isSubmit"  onclick="dosubmit('modify');" value="<?=_("Modify")?>">
+    <p><label><?=_("When the address that incurrent mail will forword to is not exist");?>:<select name="NoSuchUserAction" >
+    <option value="F" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'F')) echo 'selected'; ?> ><?=_("Forward");?></option>
+    <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
+    <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
+    </select></label></p>
+    <input type="button" name="isSubmit"   onclick="dosubmit('modify')"  value="<?=_("Modify")?>">
   </p>
 </form>
 </body>
@@ -165,7 +182,67 @@ function displaySettings(userListType)
     }
     else {
 ?>
-
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title><?=_("QuarantineEnginUserList")?></title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+<!--
+function dosubmit(act) 
+{
+    document.form1.act.value=act;
+    document.form1.submit();    
+}
+var html;
+var userListType='<?php echo $quarantineEnginCheckUserList; ?>';
+function displaySettings(userListType)
+{
+    if (userListType=="File") {
+        html = '<p><label><?=_("Upload quarantine user file");?><input type="file" disabled  name="QuarantineUserListFile" value="chinese" />';
+        html += '<input disabled  type="button" name="QuarantineUserListUpload" value="<?=_("Upload");?>" /><input disabled  type="button" name="QuarantineUserListDownload" value="<?=_("Download");?>" /><br/>';
+        html += '<?=_("One mail address a line, data will merge into that before");?><br/><input type="checkbox" disabled  name="QuarantineEmptyUserList" value="1" /><?=_("Empty user list database before new data add");?><br/><br/><?=_("Auto register when user first login");?><input disabled  type="radio" name="QuarantineAutoRegister" value="1" <?php if (strcmp ($quarantineEngineUserAutoRegister,'Y')==0) echo 'checked'; ?> /><?=_("Enable")?>';
+        html += '<input type="radio" disabled  name="QuarantineAutoRegister" value="0" <?php if (strcmp ($quarantineEngineUserAutoRegister,'Y')!=0) echo 'checked'; ?>/><?=_("Disable")?>';
+        html += '</label></p>';
+    }
+    else if (userListType=="LDAP") {
+        html =  '<p><label><table border="0"><tr><td><?=_("LDAP server IP")?></td><td><input disabled  type="text" name="LDAPServerIP" value="<?php echo $LDAPServerIP; ?>" />';
+        html += '</td></tr><tr><td><?=_("LDAP server port")?></td><td><input disabled  type="text" name="LDAPServerPort" value="<?php echo $LDAPServerPort; ?>" />';
+        html += '</td></tr><tr><td><?=_("LDAP root DN")?></td><td><input disabled  type="text" name="LDAPRootDN" value="<?php echo $LDAPRootDN; ?>" />';
+        html += '</td></tr><tr><td><?=_("LDAP root password")?></td><td><input disabled  type="text" name="LDAPRootPassword" value="<?php echo $LDAPRootPassword; ?>" />';
+        html += '</td></tr><tr><td><?=_("LDAP search base DN")?></td><td><input disabled  type="text" name="LDAPSearchBaseDN" value="<?php echo $LDAPSearchBaseDN; ?>" /></td></tr>';
+        html += '<tr><td><?=(_("LDAP Time Out"))?></td><td><input type="text" disabled  name="LDAPTimeout" value="<?php echo $LDAPTimeOut; ?>" /></td></tr></table></label></p>';
+    }
+    else {
+        html = '';
+    }
+    document.getElementById('hiddenSpan').innerHTML = html;
+}
+-->
+</script>
+</head>
+<body onload="displaySettings(userListType)">
+<form name="form1" id="form1" method="post" action="" ENCTYPE="multipart/form-data">
+<input type="hidden" name="act" id="act" value="modify" />
+  <p> <?=_("QuarantineEngineUserList")?>:<br>
+    <label>
+    <input type="radio" name="CheckUserList" disabled value="Disabled" onclick="displaySettings('Disabled')" <?php if (!strcmp ($quarantineEnginCheckUserList, 'Disabled')) echo 'checked'; ?>><?=_("Disabled")?>
+    <input type="radio" name="CheckUserList" disabled  value="LDAP" onclick="displaySettings('LDAP')" <?php if (!strcmp ($quarantineEnginCheckUserList, 'LDAP')) echo 'checked'; ?>><?=_("LDAP")?>
+    <input type="radio" name="CheckUserList" disabled  value="File" onclick="displaySettings('File')" <?php if (!strcmp ($quarantineEnginCheckUserList, 'File')) echo 'checked'; ?>><?=_("QuarantineUserList")?>
+    </label>
+    </p>
+    <span id="hiddenSpan"></span>  
+    
+    <p><label><?=_("When the address that incurrent mail will forword to is not exist");?>:<select name="NoSuchUserAction" disabled>
+    <option value="F" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'F')) echo 'selected'; ?> ><?=_("Forward");?></option>
+    <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
+    <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
+    </select></label></p>
+    <input type="button" name="isSubmit"  disabled  value="<?=_("Modify")?>">
+  </p>
+</form>
+</body>
+</html>
 <?php        
     }
 }
