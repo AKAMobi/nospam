@@ -940,18 +940,20 @@ sub archive_engine
 
 	#选择性归档：全部/特定地址/垃圾/非垃圾/匹配了规则的 Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
 	if ( !grep(/^All$/,@archivetype) ){
-		$need_archive=0 if ( $need_archive && grep(/^Spam$/,@archivetype) && $run_spam && !$is_spam );
-		$need_archive=0 if ( $need_archive && grep(/^NotSpam$/,@archivetype) && $run_spam && $is_spam );
+		$need_archive=0 if ( $need_archive && grep(/^Spam$/,@archivetype) && (!$run_spam || !$is_spam) );
+		$need_archive=0 if ( $need_archive && grep(/^NotSpam$/,@archivetype) && (!$run_spam || $is_spam) );
 #$self->{zlog}->debug( "archive: NotSpam [$need_archive] [$run_spam] [$is_spam]" );
 
-		$need_archive=0 if ( $need_archive && grep(/^Virus$/,@archivetype) && $run_virus && !$is_virus );
-		$need_archive=0 if ( $need_archive && grep(/^NotVirus$/,@archivetype) && $run_virus && $is_virus );
+		$need_archive=0 if ( $need_archive && grep(/^Virus$/,@archivetype) && (!$run_virus || !$is_virus) );
+		$need_archive=0 if ( $need_archive && grep(/^NotVirus$/,@archivetype) && (!$run_virus || $is_virus) );
 
-		$need_archive=0 if ( $need_archive && grep(/^Excessive$/,@archivetype) && $run_overrun && !$is_overrun );
-		$need_archive=0 if ( $need_archive && grep(/^NotExcessive$/,@archivetype) && $run_overrun && $is_overrun );
+#$self->{zlog}->debug ( "archive before overrun: $need_archive, " . join(',',@archivetype) );
+		$need_archive=0 if ( $need_archive && grep(/^Excessive$/,@archivetype) && (!$run_overrun || !$is_overrun) );
+		$need_archive=0 if ( $need_archive && grep(/^NotExcessive$/,@archivetype) && (!$run_overrun || $is_overrun) );
+#$self->{zlog}->debug ( "archive after overrun: $need_archive" );
 
-		$need_archive=0 if ( $need_archive && grep(/^MatchRule$/,@archivetype) && $run_matchrule && !$is_matchrule );
-		$need_archive=0 if ( $need_archive && grep(/^NotMatchRule$/,@archivetype) && $run_matchrule && $is_matchrule );
+		$need_archive=0 if ( $need_archive && grep(/^MatchRule$/,@archivetype) && (!$run_matchrule || !$is_matchrule) );
+		$need_archive=0 if ( $need_archive && grep(/^NotMatchRule$/,@archivetype) && (!$run_matchrule || $is_matchrule) );
 
 		if ( $need_archive && grep(/^Address$/,@archivetype) ){
 			if ( ! @archive_address){
