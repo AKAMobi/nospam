@@ -1,0 +1,2 @@
+qmail /var/qmail directory, should has no control directory, for this directory is in *root* direcotory.
+/var/qmail/service/* also  in root/services/*
