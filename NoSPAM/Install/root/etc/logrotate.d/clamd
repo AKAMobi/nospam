@@ -1,0 +1,13 @@
+#
+# Rotate Clam AV daemon log file
+#
+
+/var/log/clamav/clamd.log {
+    missingok
+    compress
+    create 640 clamav clamav
+    postrotate
+	/sbin/service clamd reload 2> /dev/null 2> /dev/null || true
+    endscript
+}
+
