@@ -525,14 +525,16 @@ sub rebuild_default_bridge
 {
 	my $ret = 0;
 
-	# modprobe device ( rh8 can't modprobe newly intel e1000 card )
-	system ( "$rmmod_binary eepro100 > /dev/null 2>&1" );
-	system ( "$insmod_binary e1000 > /dev/null 2>&1" );
-	system ( "$insmod_binary e100 > /dev/null 2>&1" );
-
 	# delete it
 	system ( "$ifconfig_binary nospam down > /dev/null 2>&1" );
 	system ( "$brctl_binary delbr nospam > /dev/null 2>&1" );
+
+	# modprobe device ( rh8 can't modprobe newly intel e1000 card )
+	system ( "$ifconfig_binary eth0 down" );
+	system ( "$ifconfig_binary eth1 down" );
+	system ( "$rmmod_binary eepro100 > /dev/null 2>&1" );
+	system ( "$insmod_binary e1000 > /dev/null 2>&1" );
+	system ( "$insmod_binary e100 > /dev/null 2>&1" );
 
 	# build it
 	$ret ||= system ( "$ifconfig_binary eth0 0.0.0.0 up" );
@@ -789,7 +791,7 @@ sub QuarantineQueuePurge
 	my $queue_life_sec = $conf->{config}->{QuarantineEngine}->{TimeOut} || 0;
 	my $queue_life_day = $queue_life_sec / 86400; # 60*60 * 24
 	my $timeout_action = $conf->{config}->{QuarantineEngine}->{TimeOutAction} || 'D';
-	$queue_life_day ||= 1;
+	$queue_life_day ||= 7;
 
 	my @timeout_list = `find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day | grep -v "\.info$"`;
 	if ( 'D' eq uc $timeout_action ){
