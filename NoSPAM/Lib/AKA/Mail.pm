@@ -907,16 +907,16 @@ sub write_queue
 
 				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagHead} ){
 					if ( $aka->{engine}->{antivirus}->{result} ){
-						print QMQ "X-Virus-Flag: YES\n";
+						print QMQ "X-Virus-Flag: Yes\n";
 					}else{
-						print QMQ "X-Virus-Flag: NO\n";
+						print QMQ "X-Virus-Flag: No\n";
 					}
 				}
 				if ( 'Y' eq uc $config->{SpamEngine}->{TagHead} ){
 					if ( $aka->{engine}->{spam}->{result} ){
-						print QMQ "X-Spam-Flag: YES\n";
+						print QMQ "X-Spam-Flag: Yes\n";
 					}else{
-						print QMQ "X-Spam-Flag: NO\n";
+						print QMQ "X-Spam-Flag: No\n";
 					}
 				}
 			}
@@ -1231,12 +1231,12 @@ sub spam_engine
 		}
 
 	}
-	elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
+	#elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
 		# A blank MAIL FROM: is typically used for error mail, 
 		# and error mail typically would not be sent to multiple recipients.
-		$is_spam = RESULT_SPAM_MAYBE;
-		$reason = '邮件格式伪造';
-	}
+	#	$is_spam = RESULT_SPAM_MAYBE;
+	#	$reason = '邮件格式伪造';
+	#}
 	else{
 		( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 	}
@@ -1661,7 +1661,7 @@ sub get_mail_base_info
 	open ( MAIL, '<' . $self->{mail_info}->{aka}->{emlfilename} ) or return undef;
 
 	my $still_headers = 1;
-	my ($subject,$mail_from,$return_path);
+	my ($subject,$mail_from);
 	while (<MAIL>) {
 		chomp;
 		if ( $still_headers ){
@@ -1684,17 +1684,6 @@ sub get_mail_base_info
 				}else{
 					$mail_from = '';
 				}
-			}
-			elsif ( /^Return-Path: (.+)/ )
-			{
-				$return_path = $1;
-				if ( $return_path=~m#([a-z0-9\.\-_]+\S+?\@\S+\.\S+[a-z0-9])\s*#i )
-				{
-					$return_path = $1;
-				}else{
-					$return_path = '';
-				}
-
 			}
 			$still_headers = 0 if (/^(\r|\r\n|\n)$/);
 		}
@@ -1730,9 +1719,12 @@ sub get_mail_base_info
 	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
 
 	$self->{mail_info}->{aka}->{returnpath} = $returnpath; # 这个是 smtp 协议中的 MAIL FROM: (.+)
-	$self->{mail_info}->{aka}->{returnpath} ||= $mail_from || $return_path; # XXX is this no problem?
+
+	# MTA 的退信是没有Envelope from的，所以不可以这样。
+	# $self->{mail_info}->{aka}->{returnpath} ||= $mail_from || $return_path; # XXX is this no problem?
+	#$self->{mail_info}->{aka}->{return_path} = $return_path; # 这个是邮件头重的Return-Path
+
 	$self->{mail_info}->{aka}->{mail_from} = $mail_from;
-	$self->{mail_info}->{aka}->{return_path} = $return_path; # 这个是邮件头重的Return-Path
 	$self->{mail_info}->{aka}->{recips} = $recips;
 	$self->{mail_info}->{aka}->{env_returnpath} = $env_returnpath;
 	$self->{mail_info}->{aka}->{env_recips} = $env_recips;
