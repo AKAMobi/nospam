@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 
 require 5.002 ;
 
@@ -47,7 +48,7 @@ foreach $file (@ARGV)
     else
       { seek F, 0, 0 }
     
-    print O "use Filter::decrypt ;\n" ;
+    print O "use AKA::Loader ;\n" ;
     print O $Fingerprint ;
 
 
@@ -63,11 +64,17 @@ foreach $file (@ARGV)
     unlink ($file) 
 	or die "Could not remove '$file': $!\n" ;
 
-    rename ("${file}.pe", $file) 
+    my $newfile;
+    if ( $file=~/^(.+)\.pl/ ){
+	$newfile = $1;
+    }else{
+	$newfile = $file;
+    }
+    rename ("${file}.pe", $newfile) 
 	or die "Could not rename $file.pe to $file: $!\n" ;
 
-    chmod $mode, $file unless $^O eq 'MSWin32' ;
+    chmod $mode, $newfile unless $^O eq 'MSWin32' ;
 
-    print "encrypted $file\n" ;
+    print "encrypted $file to $newfile\n" ;
 }
 
