@@ -5,7 +5,6 @@ all:
 	make merge
 	make po
 	make mo
-	make install
 
 test:
 	echo ${SRC_FILES}

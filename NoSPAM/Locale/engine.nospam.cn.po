@@ -80,7 +80,7 @@ msgstr "外向内未检查"
 msgid "This mail is not in circle of check"
 msgstr "采样抽签未中"
 
-#: ../Lib/AKA/Mail.pm:1143 ../Lib/AKA/Mail/Dynamic.pm:116
+: ../Lib/AKA/Mail.pm:1143 ../Lib/AKA/Mail/Dynamic.pm:116
 #: ../Lib/AKA/Mail/Dynamic.pm:142 ../Lib/AKA/Mail/Dynamic.pm:167
 msgid "not set"
 msgstr "未设置"
@@ -197,9 +197,8 @@ msgstr "加载失败"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:329
 #, perl-brace-format
-msgid ""
-"overrun, will not be allowed to send mail untill {wait_time} minutes later."
-msgstr ""
+msgid " overrun deny {wait_time} minutes."
+msgstr "发送超限，还需{wait_time}分钟解封"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:349
 msgid "mail overrun"
