@@ -62,6 +62,8 @@ function loadPage()
 	<td><?=$head[15]?></td><!--动作参数//-->
 	<td><?=$head[16]?></td><!--动态限制//-->
 	<td><?=$head[17]?></td><!--动态描述//-->
+	<td><?=$head[18]?></td><!--审计否//-->
+	<td><?=$head[19]?></td><!--审计描述//-->
 </tr>
 </tr>
 <?
@@ -90,6 +92,8 @@ if(count($output) > 0){
 	<td nowrap><?=$values[15]?></td>
 	<td nowrap><?=$dynamic[intval($values[16])]?></td>
 	<td nowrap><?=$values[17]?></td>
+	<td nowrap><?=$values[18]?></td>
+	<td nowrap><?=$values[19]?></td>
 </tr>
 <?
 		$start++;

@@ -113,6 +113,8 @@ function enableMonitor()
 	<td><?=$head[15]?></td>
 	<td><?=$head[16]?></td>
 	<td><?=$head[17]?></td>
+	<td><?=$head[18]?></td>
+	<td><?=$head[19]?></td>
 </tr>
 </thead>
 <tbody>
@@ -143,6 +145,8 @@ if(count($lines)>0){
     <td><?=$values[15]?></td>
     <td><?=$dynamic[intval($values[16])]?></td>
     <td><?=$values[17]?></td>
+    <td><?=$values[18]?></td>
+    <td><?=$values[19]?></td>
 </tr>
 <?
 		$start++;$i++;
