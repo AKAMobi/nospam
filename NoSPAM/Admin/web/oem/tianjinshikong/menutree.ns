@@ -1,3 +1,7 @@
+<?php
+require_once('inc/include.ns');
+
+?>
 <html>
 <head>
 <title>menu</title>
@@ -65,10 +69,10 @@ function mmLoadMenus() {
    mm_menu_0629102457_0.hideOnMouseOut=true;
    mm_menu_0629102457_0.bgColor='#999999';
   window.mm_menu_0629112431_1 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
-  mm_menu_0629112431_1.addMenuItem("管理员列表","window.open('urser/showadminlist.ns', '_right');");
-  mm_menu_0629112431_1.addMenuItem("登录限制设置","window.open('urser/loginblacklist.ns', '_right');");
-  mm_menu_0629112431_1.addMenuItem("修改自己的密码","window.open('urser/changePasswd.ns', '_right');");
-  mm_menu_0629112431_1.addMenuItem("修改IP限制列表","window.open('urser/changeIPlist.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("管理员列表","window.open('user/showadminlist.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("登录限制设置","window.open('user/loginblacklist.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("修改自己的密码","window.open('user/changePasswd.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("修改IP限制列表","window.open('user/changeIPlist.ns', '_right');");
    mm_menu_0629112431_1.bgImageUp="menu/mmmenu2_100x20_up.gif";
    mm_menu_0629112431_1.bgImageOver="menu/mmmenu2_100x20_over.gif";
    mm_menu_0629112431_1.hideOnMouseOut=true;
@@ -201,7 +205,7 @@ a:active {
       <td><img src="menu/spacer.gif" width="107" height="1" border="0" alt=""></td>
     </tr>
     
-  <tr>
+    <tr>
       <td colspan="3"><img name="menu_r1_c1" src="menu/menu_r1_c1.gif" width="220" height="70" border="0" alt=""></td>
     </tr>
     <tr>
@@ -209,62 +213,132 @@ a:active {
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r2_c2','menu/menu_r2_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629102457_0,112,0,null,'menu_r2_c2');MM_nbGroup('over','menu_r2_c2','menu/menu_r2_c2_f2.gif','menu/menu_r2_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r2_c2" src="menu/menu_r2_c2.gif" width="108" height="20" border="0" alt=""></a></td>
       <td rowspan="20"><!--DWLayoutEmptyCell-->&nbsp;</td>
     </tr>
+
+<?
+if(adminPerm(PERM_ADMIN_ADMIN)){
+?>
+
     <tr>
       <td><img name="menu_r3_c2" src="menu/menu_r3_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r4_c2','menu/menu_r4_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112431_1,112,0,null,'menu_r4_c2');MM_nbGroup('over','menu_r4_c2','menu/menu_r4_c2_f2.gif','menu/menu_r4_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r4_c2" src="menu/menu_r4_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+<?}?>
+<?
+if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
+        if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
+
     <tr>
       <td><img name="menu_r5_c2" src="menu/menu_r5_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r6_c2','menu/menu_r6_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112431_2,112,0,null,'menu_r6_c2');MM_nbGroup('over','menu_r6_c2','menu/menu_r6_c2_f2.gif','menu/menu_r6_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r6_c2" src="menu/menu_r6_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?php
+        }
+}
+    
+if($MailRelay > 0 && strstr($ServerMode,"Relay")){
+        if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
+
     <tr>
       <td><img name="menu_r7_c2" src="menu/menu_r7_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r8_c2','menu/menu_r8_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112352_3,112,0,null,'menu_r8_c2');MM_nbGroup('over','menu_r8_c2','menu/menu_r8_c2_f2.gif','menu/menu_r8_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r8_c2" src="menu/menu_r8_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?php
+        }
+}
+
+if($MailServer > 0 && strstr($ServerMode,"Server")){
+        if(adminPerm(PERM_ADMIN_SERVER)){
+?>
     <tr>
       <td><img name="menu_r9_c2" src="menu/menu_r9_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r10_c2','menu/menu_r10_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112351_4,112,0,null,'menu_r10_c2');MM_nbGroup('over','menu_r10_c2','menu/menu_r10_c2_f2.gif','menu/menu_r10_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r10_c2" src="menu/menu_r10_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?php
+        }
+}
+
+if($DynamicEngine > 0){
+        if(adminPerm(PERM_ADMIN_DYNAMIC)){
+?>
     <tr>
       <td><img name="menu_r11_c2" src="menu/menu_r11_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r12_c2','menu/menu_r12_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112352_5,112,0,null,'menu_r12_c2');MM_nbGroup('over','menu_r12_c2','menu/menu_r12_c2_f2.gif','menu/menu_r12_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r12_c2" src="menu/menu_r12_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?php
+        }
+}
+
+        if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>      
+
     <tr>
       <td><img name="menu_r13_c2" src="menu/menu_r13_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r14_c2','menu/menu_r14_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112347_6,112,0,null,'menu_r14_c2');MM_nbGroup('over','menu_r14_c2','menu/menu_r14_c2_f2.gif','menu/menu_r14_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r14_c2" src="menu/menu_r14_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+<?php
+        }
+
+if($SpamEngine > 0){
+        if(adminPerm(PERM_ADMIN_SPAM)){
+?>
+
     <tr>
       <td><img name="menu_r15_c2" src="menu/menu_r15_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r16_c2','menu/menu_r16_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112346_7,112,0,null,'menu_r16_c2');MM_nbGroup('over','menu_r16_c2','menu/menu_r16_c2_f2.gif','menu/menu_r16_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r16_c2" src="menu/menu_r16_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?php
+        }
+}
+
+if($ContentEngine > 0){
+        if(adminPerm(PERM_ADMIN_CONTENT)){
+?>
     <tr>
       <td><img name="menu_r17_c2" src="menu/menu_r17_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r18_c2','menu/menu_r18_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629111630_1,112,0,null,'menu_r18_c2');MM_nbGroup('over','menu_r18_c2','menu/menu_r18_c2_f2.gif','menu/menu_r18_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r18_c2" src="menu/menu_r18_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+
+<?              
+}               
+        
+if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
+?>        
     <tr>
       <td><img name="menu_r19_c2" src="menu/menu_r19_c2.gif" width="108" height="5" border="0" alt=""></td>
     </tr>
     <tr>
       <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r20_c2','menu/menu_r20_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112347_8,112,0,null,'menu_r20_c2');MM_nbGroup('over','menu_r20_c2','menu/menu_r20_c2_f2.gif','menu/menu_r20_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r20_c2" src="menu/menu_r20_c2.gif" width="108" height="20" border="0" alt=""></a></td>
     </tr>
+<?
+        }
+}
+?>
+
     <tr>
-      <td valign="bottom"><span class="style1"><a href="logout.ns">退出系统</a></span></td>
+      <td valign="bottom"><span class="style1"><a href="logout.ns" target="_top">退出系统</a></span></td>
     </tr>
   </table>
 </div>

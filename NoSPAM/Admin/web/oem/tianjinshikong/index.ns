@@ -1,3 +1,16 @@
+<?php
+
+require_once('inc/include.ns');
+
+if (isset($AdminID)) {
+
+        header("Refresh: 0;URL=frames.ns");
+
+        exit();
+
+
+}
+?>
 <html>
 <head>
 <title>admin.jpg</title>
