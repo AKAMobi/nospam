@@ -1,3 +1,0 @@
-#!/bin/sh
-
-ntpdate time.windows.com > /dev/null 2>&1
