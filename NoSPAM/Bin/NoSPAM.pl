@@ -970,7 +970,6 @@ sub get_LogSimpleAnaylize
 	my ( $total_num, $maybe_spam_num, $spam_num ) = ( 0,0,0 );
 	my ( %from_top, %ip_top, %rule_top );
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
-	my ( $from_tops_num_ref, $ip_tops_num_ref, $rule_tops_num_ref );
 
 	open ( FD, "</var/log/NoSPAM.csv" ) or return 10;
 	while ( <FD> ){
@@ -1007,26 +1006,23 @@ sub get_LogSimpleAnaylize
 			last if ( $counter++ > $n );
 # protect our .CSV format
 			s/,/£¬/g;
-			push (@tops, $_);
-			push (@tops_num, $top_ref->{$_});
+			$top_ref->{$_}=~s/#/££/g;
+			push (@tops, $_ . '#' . $top_ref->{$_});
 		}
-		return (\@tops,\@tops_num);
+		return \@tops;
 	}
 
-	($from_tops_ref,$from_tops_num_ref) = &get_top_n ( \%from_top, 10 );
-	($ip_tops_ref,$ip_tops_num_ref) = &get_top_n ( \%ip_top, 10 );
-	($rule_tops_ref,$rule_tops_num_ref) = &get_top_n ( \%rule_top, 10 );
+	$from_tops_ref = &get_top_n ( \%from_top, 10 );
+	$ip_tops_ref = &get_top_n ( \%ip_top, 10 );
+	$rule_tops_ref = &get_top_n ( \%rule_top, 10 );
 
 	print "TOTAL: $total_num\n";
 	print "MAYBE: $maybe_spam_num\n";
 	print "SPAM: $spam_num\n";
 
 	print "FROM_TOP: " . join ( ',', @{$from_tops_ref} ) . "\n" ;
-	print "FROM_TOP_NUM: " . join ( ',', @{$from_tops_num_ref} ) . "\n" ;
 	print "IP_TOP: " . join ( ',', @{$ip_tops_ref} ) . "\n";
-	print "IP_TOP_NUM: " . join ( ',', @{$ip_tops_num_ref} ) . "\n";
 	print "RULE_TOP: " . join ( ',', @{$rule_tops_ref} ) . "\n";
-	print "RULE_TOP_NUM: " . join ( ',', @{$rule_tops_num_ref} ) . "\n";
 
 	return 0;
 }
