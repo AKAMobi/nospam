@@ -115,6 +115,7 @@ sub cut_comma_to_array_ref
 	my @ret;
 	foreach ( split(',', $conf_line) ){
 		next if ( !defined $_ || !length($_) );
+		s/#.*//;
 		push ( @ret, $_ );
 	}
 

@@ -3,9 +3,17 @@
 use strict;
 use POSIX qw(strftime);
 
+use AKA::Mail;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::IPUtil;
+
+# We close stdout, for hide all warn.
+# to disable any debug information to appear. 
+# basicaly, for License reason. ;)
+# 2004-03-12 Ed
+open (NSOUT, ">&=2");
+close (STDERR);
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -39,6 +47,7 @@ my $action_map = {
 			'get_GW_Mode' => [\&get_GW_Mode, ""], 
 			'set_GW_Mode' => [\&set_GW_Mode, ""], 
 			'get_Serial' => [\&get_Serial, ""],
+			'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"],
 			'check_License' => [\&check_License, ""],
 			'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"],
 			'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"],
@@ -84,7 +93,8 @@ sub start_System
 	$ret ||= &reset_ConnPerIP;
 	
 	# Share Memory for Dynamic Engine.
-	$ret ||= &init_IPC;
+	# now we use file system db
+	# $ret ||= &init_IPC;
 
 	$zlog->log("NoSPAM System Restarted, Util init ret $ret" );
 
@@ -106,19 +116,19 @@ sub init_IPC
 
 sub usage
 {
-	print STDERR <<_USAGE_;
+	print NSOUT <<_USAGE_;
 
 $prog <action> [action params ...]
   action could be:
 _USAGE_
 	foreach ( keys %{$action_map} ){
-		print STDERR "    $_ ";
+		print NSOUT "    $_ ";
 		if ( defined $action_map->{$_}[1] ){
-			print STDERR "$action_map->{$_}[1]";
+			print NSOUT "$action_map->{$_}[1]";
 		}
-		print STDERR "\n";
+		print NSOUT "\n";
 	}
-	print STDERR "\n";
+	print NSOUT "\n";
 }
 
 sub get_licenseconf
@@ -662,9 +672,8 @@ sub reset_Network
 	$zlog->debug("NoSPAM Util::reset_Network ");
 
 	# Check License;
-	use AKA::License;
-	my $AL = new AKA::License;
-	if ( ! $AL->check_license_file ){
+	my $AM = new AKA::Mail;
+	if ( ! $AM->check_license_file ){
 		return 250;
 	}
 
@@ -800,10 +809,19 @@ sub set_GW_Mode
 	return 0;
 }
 
+sub get_LogHead
+{
+	print "时间,邮件方向"
+		. ",发件人IP,发件人地址,收件人地址,主题"
+		. ",垃圾度,垃圾原因,是否拒绝垃圾"
+		. "动作描述,动作类型,动作参数"
+		. "动态限制,动态描述";
+	return 0;
+}
+
 sub get_Serial
 {
 	
-	$zlog->debug("NoSPAM Util::get_Serial ");
 	my $AL = new AKA::License;
 	print $AL->get_prodno, "\n";
 	return 0;
@@ -811,16 +829,15 @@ sub get_Serial
 
 sub check_License
 {
-	$zlog->debug("NoSPAM Util::check_License ");
-	use AKA::License;
+	my $AM = new AKA::Mail;
 
-	my $AL = new AKA::License;
-
-	if ( $AL->check_license_file ){
+	if ( $AM->check_license_file ){
 		# VALID license!
+		print "<h1>通过检查！</h1>";
 		return 0;
 	}
 	# INVALID license!
+	print "<h1>未通过检查！</h1>";
 	return -1;
 }
 
@@ -853,4 +870,5 @@ sub clean_Log
 {
 	return `cat /dev/null > /var/log/NoSPAM.csv`;
 }
+
 

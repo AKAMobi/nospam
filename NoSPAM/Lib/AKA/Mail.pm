@@ -14,6 +14,7 @@ use AKA::Mail::Log;
 use AKA::Mail::Spam;
 use AKA::Mail::Dynamic;
 use AKA::Mail::Police;
+use AKA::License;
 
 sub new
 {
@@ -24,6 +25,8 @@ sub new
 	bless $self, $class;
 
 	my $parent = shift;
+
+	$self->{license} = new AKA::License;
 
 	$self->{conf} = new AKA::Mail::Conf;
 	$self->{zlog} = new AKA::Mail::Log;
@@ -168,5 +171,63 @@ sub get_spam_tag_params
 
 	return ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag );
 }
+
+
+# move check license to here to prevent hacker
+sub check_license_file
+{
+	my $self = shift;
+
+	my $licensefile = $self->{conf}->{define}->{licensefile};
+
+	if ( ! open( LFD, "<$licensefile" ) ){
+		#$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
+		# No license
+		return 0;
+	}
+	
+	my $license_content;
+	my $license_data;
+	my $license_checksum;
+	
+	while ( <LFD> ){
+		chomp;
+		s/[\r\n]$//;
+		if ( /^ProductLicenseExt=(.+)$/ ){
+			$license_checksum = $1;
+			next;
+		}elsif ( /^ProductLicense=(.+)$/ ){
+			$license_data = $1;
+			$license_data =~ s/\s*//g;
+		}
+
+		$license_content .= $_ . "\n";
+	}
+	# trim tail \n
+	$license_content =~ s/\n+$//;
+
+	unless ( defined $license_content && defined $license_checksum && 
+			length($license_content) && length($license_checksum) ){
+		$self->{zlog}->fatal ( "AKA::License::check_license_file can't get enough information from [$licensefile]" );
+		return 0;
+	}
+
+	my $cmp_str;
+
+	$cmp_str=$self->{license}->get_valid_license($self->{license}->get_prodno) ;
+
+	if ( $cmp_str ne $license_data ){
+		#print "license_data $license_data ne $cmpstr\n";
+		return 0;
+	}
+	if( !$self->{license}->is_valid_checksum( $license_content, $license_checksum ) ){
+		#print "checksum $license_checksum not valid for [$license_content]\n";
+		return 0;
+	}
+	# it's valid
+	return 1;
+}
+
+
 1;
 

@@ -2,6 +2,13 @@
 use Net::SMTP_auth;
 use POSIX qw(strftime);
 
+# We close stdout, for hide all warn.
+# to disable any debug information to appear. 
+# basicaly, for License reason. ;)
+# 2004-03-12 Ed
+open (NSOUT, ">&=2");
+close (STDERR);
+
 my $logit = $ARGV[0];
 $logit = 0 if ( ! defined $logit || $logit ne "log" );
 
