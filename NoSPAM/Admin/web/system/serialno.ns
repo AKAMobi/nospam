@@ -62,7 +62,7 @@ if(!file_exists(LICENSE)){
 	}
 }
 
-if($_GET["dul"] == "Yes"){
+if($_GET["dul"] == "Yes" || 0!=$ret){
 ?>
 许可证上载：
 <form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
