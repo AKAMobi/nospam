@@ -10,19 +10,40 @@ $S = new AKA::Mail::Spam;
 #&test_dynamic_clean;
 #&test_dynamic_init;
 #&test_dynamic_dump;
+&test_ext_dat;
+#&test_archive;
 #&test_dynamic_subject;
-&test_queue;
+#&test_queue;
 #&test_black_ip;
 #&test_traceable;
 #&test_check_license_file;
 exit;
 ############################
+sub test_ext_dat
+{
+	use AKA::Mail::Archive;
+	my $AMA = new AKA::Mail::Archive;
+
+	$AMA->print_archive_zip;
+}
+
+
+sub test_archive
+{
+	use AKA::Mail::Archive;
+	my $AMA = new AKA::Mail::Archive;
+
+	print Dumper( $AMA->get_archive_files );
+	print $AMA->archive( "/home/zixia/1081582212.1704.mail.thunis.com,S=1291" );
+	print $AMA->archive( "/home/zixia/1081582217.1725.mail.thunis.com,S=1144" );
+}
+
 sub test_queue
 {
-	use AKA::Mail::MailControler;
-	my $AMMC = new AKA::Mail::MailControler;
+	use AKA::Mail::Controler;
+	my $AMC = new AKA::Mail::Controler;
 	
-	my @q = $AMMC->list_queue;
+	my @q = $AMC->list_queue;
 	my @del_list;
 	foreach ( @q ){
 		#next unless ( $_->{size} > 20000000 );

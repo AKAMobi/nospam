@@ -13,6 +13,7 @@ use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::Mail::Spam;
 use AKA::Mail::Dynamic;
+use AKA::Mail::Archive;
 use AKA::Mail::Police;
 use AKA::License;
 
@@ -55,8 +56,12 @@ sub archive_engine
 	my $is_spam = shift;
 	my $is_matchrule = shift;
 
+	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine} ){
+		return (0, "Éó¼ÆÒıÇæÎ´Æô¶¯" );
+	}
+
 	return 0 unless ( $is_spam || $is_matchrule );
-	return 0 unless ( $emlfile );
+	return 0 unless ( $emlfile && -f $emlfile );
 
 	my $AMA = new AKA::Mail::Archive($self);
 
