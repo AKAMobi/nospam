@@ -106,12 +106,13 @@ sub dynamic_engine
 	}
 
 
-	if ( ! $subject || ! $mailfrom || ! $ip ){
-		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
+	# we check what we has seen
+	#if ( ! $subject || ! $mailfrom || ! $ip ){
+	#	$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
 		# we should check what we can check.
 
-		($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
-	}
+	#	($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
+	#}
 
 	$self->{dynamic} ||= new AKA::Mail::Dynamic;
 

@@ -211,13 +211,12 @@ _POD_
 	$zlog->fatal( "start_System reset_Network failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
-	$ret = &reset_ConnPerIP;
-	$zlog->fatal( "start_System reset_ConnPerIP failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	#$ret = &reset_ConnPerIP;
+	# move to reset_Network
 
-	$ret = &ProtectDomain_reset;
-	$zlog->fatal( "start_System ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	#&ProtectDomain_reset;
+	# move to reset_Network
+
 
 	&MailBaseSetting_reset;
 
@@ -347,6 +346,14 @@ sub reset_Network
 
 	$ret = &network_reset_all;
 	$zlog->fatal( "reset_Network network_reset_all failed with ret: $ret !" ) if ( $ret );
+	$err = 1 if ( $ret );
+
+	$ret = &ProtectDomain_reset;
+	$zlog->fatal( "start_System ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
+	$err = 1 if ( $ret );
+
+	$ret = &reset_ConnPerIP;
+	$zlog->fatal( "start_System reset_ConnPerIP failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
 	return $ret;

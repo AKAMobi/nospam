@@ -44,11 +44,11 @@ sub new
 
 	# 用户过滤策略
 	$self->{define}->{user_filterdb} = "/home/NoSPAM/etc/UserFilterRule.xml";
+	$self->{define}->{user_filetype} = "/home/NoSPAM/etc/FileTypes.conf";
 
 	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 	$self->{define}->{updatedb} = $self->{define}->{home} . "/Update/Update.Xml";
 
-	$self->{define}->{user_filetype} = $self->{define}->{home} . "/etc/FileTypes.conf";
 
 	$self->{define}->{verify_binary} = $self->{define}->{home} . "/bin/GAverify";
 	$self->{define}->{sign_binary} = $self->{define}->{home} . "/bin/GAsign";
