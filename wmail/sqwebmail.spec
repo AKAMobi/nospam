@@ -36,12 +36,12 @@
 
 Summary: SqWebMail - Maildir Webmail CGI client.
 Name: wmail
-Version: 0.99b.20030507
+Version: 0.99b.20030508
 Release: 1%{courier_release}
 Copyright: GPL
 Packager: %{PACKAGER}
 Group: Applications/Mail
-Source: http://download.sourceforge.net/courier/wmail-0.99b.20030507.tar.bz2
+Source: http://download.sourceforge.net/courier/wmail-0.99b.20030508.tar.bz2
 Url: http://www.inter7.com/sqwebmail/
 BuildRoot: %{_tmppath}/sqwebmail-install
 Requires: /sbin/chkconfig gnupg >= 1.0.5 vixie-cron expect
@@ -56,7 +56,7 @@ SqWebMail is a Webmail CGI for Maildir mailboxes.
 %package ldap
 Summary: SqWebMail LDAP authentication driver.
 Group: Applications/Mail
-Requires: sqwebmail = 0.99b.20030507
+Requires: sqwebmail = 0.99b.20030508
 
 %description ldap
 This package contains the necessary files to allow SqWebMail to
@@ -66,7 +66,7 @@ the ability to use an LDAP directory for authentication.
 %package mysql
 Summary: SqWebMail MySQL authentication driver.
 Group: Applications/Mail
-Requires: sqwebmail = 0.99b.20030507
+Requires: sqwebmail = 0.99b.20030508
 
 %description mysql
 This package contains the necessary files to allow SqWebMail to
@@ -76,7 +76,7 @@ the ability to use a MySQL database table for authentication.
 %package pgsql
 Summary: SqWebMail PostgreSQL authentication driver.
 Group: Applications/Mail
-Requires: sqwebmail = 0.99b.20030507
+Requires: sqwebmail = 0.99b.20030508
 
 %description pgsql
 This package contains the necessary files to allow SqWebMail to
