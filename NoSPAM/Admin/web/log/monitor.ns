@@ -7,11 +7,21 @@ if(!adminPerm(PERM_ADMIN_LOG))
 if(!$_GET["interval"] || !$_GET["line"])
 	die("错误！");
 
-//时间,邮件方向,发件人IP,发件人地址,收件人地址,主题,垃圾度,垃圾原因,垃圾处理动作描述,动作类型,动作参数动态限制,动态描述
+$result="时间,邮件方向"
+	. ",发件人IP,发件人地址,收件人地址,主题,尺寸"
+	. ",病毒,病毒名,病毒动作"
+	. ",垃圾度,垃圾原因,垃圾动作"
+	. ",规则,动作类型,动作参数"
+	. ",动态限制,动态描述"
+	. ",审计,审计描述"
+	;
+	$head = explode(",",$result);
+/*时间,邮件方向,发件人IP,发件人地址,收件人地址,主题,垃圾度,垃圾原因,垃圾处理动作描述,动作类型,动作参数动态限制,动态描述
 if(($ret=wi("get_LogHead",$result))==0)
 	$head = explode(",",$result[0]);
 else
 	die("错误代码：$ret");
+*/
 
 $num = $_GET["line"];
 $cmd = "/usr/bin/tail -n $num ".LOGFILE;
@@ -62,8 +72,13 @@ function loadPage()
 	<td><?=$head[15]?></td><!--动作参数//-->
 	<td><?=$head[16]?></td><!--动态限制//-->
 	<td><?=$head[17]?></td><!--动态描述//-->
+
+<?
+if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
+?>
 	<td><?=$head[18]?></td><!--审计否//-->
 	<td><?=$head[19]?></td><!--审计描述//-->
+<?}?>
 </tr>
 </tr>
 <?
@@ -92,8 +107,13 @@ if(count($output) > 0){
 	<td nowrap><?=$values[15]?></td>
 	<td nowrap><?=$dynamic[intval($values[16])]?></td>
 	<td nowrap><?=$values[17]?></td>
+
+<?
+if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
+?>
 	<td nowrap><?=$values[18]?></td>
 	<td nowrap><?=$values[19]?></td>
+<?}?>
 </tr>
 <?
 		$start++;
