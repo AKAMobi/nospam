@@ -5,6 +5,7 @@ cpperl()
 {
 	echo "cpperl $1 to $2..."
 	echo '#!/usr/bin/perl -X' > $2;
+	echo 'open (NSOUT, ">&=2"); close STDERR;' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
 }
@@ -51,6 +52,7 @@ cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/home/NoSPAM/bin/NoSPAM.pl
 cpperl ${SOURCEHOME}/Bin/ns-daemon.pl aka/home/NoSPAM/bin/ns-daemon.pl
 cpperl ${SOURCEHOME}/Bin/ga-daemon.pl aka/home/NoSPAM/bin/ga-daemon.pl
 cpperl ${SOURCEHOME}/Bin/smtp_auth_proxy.pl aka/home/NoSPAM/bin/smtp_auth_proxy.pl
+cpperl ${SOURCEHOME}/Bin/rrdgraph.pl aka/home/NoSPAM/bin/rrdgraph.pl
 chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
 chmod 755 aka/root/*.pl
@@ -75,4 +77,6 @@ chown root aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod +s aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod -R o+r aka/* 
 
+echo "Cleaning cvs rubbish"
+find aka -type f -name ".#*" -exec rm -fv {} \;
 
