@@ -141,8 +141,8 @@ if(!$readonly){
 <?
 }
 ?>
-<table class="RuleTB">
-<tr class="RuleTBH" style="cursor: hand">
+<table width="100%" class="RuleTB" width="100%">
+<tr class="TableTitleLink" style="cursor: hand">
 	<? if(!$readonly) { ?><th style="cursor: default"></th><? } ?>
 	<th onclick="sortTable('rule_id')">规则号<?=$Flag["rule_id"]?></th>
 	<th onclick="sortTable('rule_comment')">规则说明<?=$Flag["rule_comment"]?></th>
@@ -157,7 +157,7 @@ if(!$readonly){
 if(count($rules) > 0){
 	$i = 0;
 	foreach($rules as $rule){
-		$className = $i%2? "RuleTB2":"RuleTB1";
+		$className = $i%2? "TableBody2":"TableBody1";
 		$i++;
 		$tmp = $rule->get_elements_by_tagname("rule_action");
 		$action = $tmp[0];
@@ -254,7 +254,7 @@ if(!$readonly){
 <?
 }
 ?>
-<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;">载入中，请稍候……</div>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #FFFFFF;">载入中，请稍候……</div>
 <iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
 <?
 if(!$bContentFilter){

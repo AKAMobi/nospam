@@ -81,7 +81,7 @@ arsort($TopRule,SORT_NUMERIC);
 <p>
 发件人地址的发邮件数Top10：
 <table width="500" border="1">
-<tr class="RuleTBH">
+<tr class="TableTitleLink">
 	<th width="50">编号</th>
 	<th width="300">发件人</th>
 	<th width="150">发送数目</th>
@@ -90,7 +90,7 @@ arsort($TopRule,SORT_NUMERIC);
 if(count($TopFrom)>0){
 	$i = 1;
 	foreach($TopFrom as $key=>$value){
-		$className = $i%2? "RuleTB1":"RuleTB2";
+		$className = $i%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 	<td><?=$i?></td>
@@ -107,7 +107,7 @@ if(count($TopFrom)>0){
 <p>
 根据发件IP的发邮件数Top10：
 <table width="500" border="1">
-<tr class="RuleTBH">
+<tr class="TableTitleLink">
 	<th width="50">编号</th>
 	<th width="300">发件IP</th>
 	<th width="150">发送数目</th>
@@ -116,7 +116,7 @@ if(count($TopFrom)>0){
 if(count($TopIP)>0){
 	$i = 1;
 	foreach($TopIP as $key=>$value){
-		$className = $i%2? "RuleTB1":"RuleTB2";
+		$className = $i%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 	<td><?=$i?></td>
@@ -133,7 +133,7 @@ if(count($TopIP)>0){
 <p>
 根据每个内容规则匹配的邮件数Top10：
 <table width="500" border="1">
-<tr class="RuleTBH">
+<tr class="TableTitleLink">
 	<th width="50">编号</th>
 	<th width="300">匹配规则</th>
 	<th width="150">发送数目</th>
@@ -142,7 +142,7 @@ if(count($TopIP)>0){
 if(count($TopRule)>0){
 	$i = 1;
 	foreach($TopRule as $key=>$value){
-		$className = $i%2? "RuleTB1":"RuleTB2";
+		$className = $i%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 	<td><?=$i?></td>

@@ -113,10 +113,10 @@ function info()
 </div>
 <DIV align="center">
 <form action="?MailDomain=<?=$currentDomain?>&action=del" name="form1" method="post">
-<table class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
+<table width="100%" class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
 <caption>邮件域用户列表</caption>
 <thead>
-<tr>
+<tr class="TableTitle2">
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -151,7 +151,7 @@ $j = 1;
 $end = min($start + $pagenum,$user_count);
 for( $i = $start ; $i < $end ; $i++,$j++)
 {
-	$className = $j%2? "RuleTB1":"RuleTB2";
+	$className = $j%2? "TableBody1":"TableBody2";
 ?>
 	<tr class="<?=$className?>">
 <?
@@ -286,8 +286,8 @@ st.onsort = function () {
 	var rows = st.tBody.rows;
 	var l = rows.length;
 	for (var i = 0; i < l; i++) {
-		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
-		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+		removeClassName(rows[i], i % 2 ? "TableBody1" : "TableBody2");
+		addClassName(rows[i], i % 2 ? "TableBody2" : "TableBody1");
 	}
 };
 </script>

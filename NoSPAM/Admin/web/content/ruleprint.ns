@@ -96,12 +96,11 @@ foreach($rules as $rule){
 ?>
 	<br>
 	<fieldset style="width: 95%">
-	<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
-	<div align="center">
+	<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条
 <?
 	if($keywordscount > 0){
 ?>
-关键字规则内部逻辑关系：<?
+，逻辑关系：<?
 	switch ($keyword_logic){
 		case "NOT":
 		echo "否";
@@ -114,7 +113,8 @@ foreach($rules as $rule){
 		echo "与";
 	}
 ?>
-	<br>
+	</legend>
+	<div align="center">
 <?
 		$i = 1;
 		foreach($keywords as $keyword){
@@ -136,12 +136,11 @@ foreach($rules as $rule){
 	</div>
 	</fieldset>
 	<fieldset style="width: 95%">
-	<legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
-	<div align="center">
+	<legend><b>数值规则</b> 共<?=$sizescount?>条
 <?
 	if($sizescount > 0){
 ?>
-数值规则内部逻辑关系：<?
+，逻辑关系：<?
 	switch ($size_logic){
 		case "NOT":
 		echo "否";
@@ -154,7 +153,8 @@ foreach($rules as $rule){
 		echo "与";
 	}
 ?>
-	<br>
+	</legend>
+	<div align="center">
 <?
 		$i = 1;
 		foreach($sizes as $size){
@@ -173,12 +173,11 @@ foreach($rules as $rule){
 	</div>
 	</fieldset>
 	<fieldset style="width: 95%"> 
-	<legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
-	<div align="center">
+	<legend><b>附件规则</b> 共<?=$attachmentscount?>条
 <?
 	if($attachmentscount > 0){
 ?>
-附件规则内部逻辑关系：<?
+，逻辑关系：<?
 	switch ($attach_logic){
 		case "NOT":
 		echo "否";
@@ -191,7 +190,8 @@ foreach($rules as $rule){
 		echo "与";
 	}
 ?>
-	<br>
+	</legend>
+	<div align="center">
 <?
 		$i = 1;
 		foreach($attachments as $attachment){

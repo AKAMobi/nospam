@@ -99,9 +99,9 @@ function jump()
 <form action="?action=del" method="post" name="form1">
 <input type="hidden" name="page" value="<?=$page?>">
 <input type="hidden" name="pagenum" value="<?=$pagenum?>">
-<table class="sort-table" id="table-1" cellspacing="0" width="100%">
+<table width="100%" class="sort-table" id="table-1" cellspacing="0" width="100%">
 <thead>
-	<tr>
+	<tr class="TableTitle2">
 <?if($bWritable){?>
 		<td>Ñ¡Ôñ</td>
 <?}?>
@@ -121,7 +121,7 @@ function jump()
 if(count($queue) > 0){
 	$i = 0;
 	foreach($queue as $mail){
-		$className = $i%2? "RuleTB2":"RuleTB1";
+		$className = $i%2? "TableBody2":"TableBody1";
 		list($id, $date, $from, $to, $size) = explode("," ,$mail);
 		$url = "mailcontent.ns?id={$id}&page={$page}&pagenum={$pagenum}";
 		list($num1,$num2) = explode("/",$id);

@@ -40,25 +40,25 @@ if($_POST["Submit"]=="修改"){
 
 <body>
 <form name="form1" method="post" action="">
-  <table width="80%" border="1" align="center">
+  <table class="TableBorder1" width="80%" align="center">
     <caption>
   <b>网络设置</b>
     </caption>
     <tr>
       <th scope="row">主机名称： </th>
-      <td><input name="Hostname" type="text" id="Hostname" value="<?=$spamconf->getParam("Hostname","Network")?>"></td>
+      <td class="TableBody1"><input name="Hostname" type="text" id="Hostname" value="<?=$spamconf->getParam("Hostname","Network")?>"></td>
     </tr>
     <tr>
       <th scope="row"> IP ： </th>
-      <td><input name="IP" type="text" id="IP" value="<?=$spamconf->getParam("IP","Network")?>"></td>
+      <td class="TableBody1"><input name="IP" type="text" id="IP" value="<?=$spamconf->getParam("IP","Network")?>"></td>
     </tr>
     <tr>
       <th scope="row"> 网络掩码： </th>
-      <td><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>">请使用掩码位数，不能使用x.x.x.x格式</td>
+      <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>">请使用掩码位数，不能使用x.x.x.x格式</td>
     </tr>
     <tr>
       <th scope="row"> 网关： </th>
-      <td><input name="Gateway" type="text" id="Gateway" value="<?=$spamconf->getParam("Gateway","Network")?>"></td>
+      <td class="TableBody1"><input name="Gateway" type="text" id="Gateway" value="<?=$spamconf->getParam("Gateway","Network")?>"></td>
     </tr>
     <tr>
       <th colspan="2" scope="row"><input type="submit" name="Submit" value="修改"><input type="reset" name="reset" value="重置"></th>
@@ -80,25 +80,25 @@ if($_POST["Submit"]=="修改"){
 </head>
 
 <body>
-  <table width="80%" border="1" align="center">
+  <table class="TableBorder1" width="80%" border="1" align="center">
     <caption>
   网络设置
     </caption>
     <tr>
       <th scope="row">主机名称： </th>
-      <td><?=$spamconf->getParam("Hostname","Network")?></td>
+      <td class="TableBody1"><?=$spamconf->getParam("Hostname","Network")?></td>
     </tr>
     <tr>
       <th scope="row">IP ： </th>
-      <td><?=$spamconf->getParam("IP","Network")?></td>
+      <td class="TableBody1"><?=$spamconf->getParam("IP","Network")?></td>
     </tr>
     <tr>
       <th scope="row"> 网络掩码： </th>
-      <td><?=$spamconf->getParam("Netmask","Network")?></td>
+      <td class="TableBody1"><?=$spamconf->getParam("Netmask","Network")?></td>
     </tr>
     <tr>
       <th scope="row"> 网关： </th>
-      <td><?=$spamconf->getParam("Gateway","Network")?></td>
+      <td class="TableBody1"><?=$spamconf->getParam("Gateway","Network")?></td>
     </tr>
   </table>
 </body>

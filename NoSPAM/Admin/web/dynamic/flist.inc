@@ -23,9 +23,9 @@ function DrawListTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 		$page = $pages;
 ?>
 <form action="<?=$_SERVER['PHP_SELF']."?action=del"?>" method="post">
-<table class="RuleTB">
+<table class="RuleTB" width="100%">
 <caption><?=$sTitle?></caption>
-<tr class="RuleTBH">
+<tr class="TableTitle2">
 <?if($bAccess){?>
 	<th>Ñ¡Ôñ</th>
 <?}?>
@@ -41,7 +41,7 @@ function DrawListTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 		$i = 1;$j=1;
 		foreach($rList as $key=>$note){
 			if($i>($page-1)*$pagenum && $i<=$page*$pagenum){
-				$className = $j%2? "RuleTB1":"RuleTB2";
+				$className = $j%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 <?if($bAccess){?>

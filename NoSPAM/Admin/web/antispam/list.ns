@@ -99,9 +99,9 @@ function show()
 ?>
 </p>
 <form action="<?="?option=".$_GET['option']."&action=del"?>" method="post">
-<table class="RuleTB">
+<table width="100%" class="RuleTB">
 <caption><?=$title?></caption>
-<tr class="RuleTBH">
+<tr class="TableTitleLink">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -125,7 +125,7 @@ function show()
 		$i = 1;$j=1;
 		foreach($List as $key=>$note){
 			if($i>($page-1)*$pagenum && $i<=$page*$pagenum){
-				$className = $j%2? "RuleTB1":"RuleTB2";
+				$className = $j%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 <?

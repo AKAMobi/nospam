@@ -146,7 +146,7 @@ function hidedetail()
 <input type="button" value="Á¬½ÓÆµÂÊ" onclick="location.href='realtime.ns?option=IP'">
 </div>
 <form action="<?="?option=$sOption&page=$page&pagenum=$pagenum&action=del"?>" method="post">
-<table class="sort-table" id="table-1" cellspacing="1">
+<table width="100%" class="sort-table" id="table-1" cellspacing="1">
 <thead>
 <tr>
 <?
@@ -175,7 +175,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 if(count($rData)>0){
 	$i = 0;
 	foreach($rData as $value){
-		$className = $i%2? "RuleTB2":"RuleTB1";
+		$className = $i%2? "TableBody2":"TableBody1";
 		$Content = $value[0];
 		$OpenTime = $value[1];
 		$SendCount = $value[2];
@@ -288,8 +288,8 @@ st.onsort = function () {
     var rows = st.tBody.rows;
     var l = rows.length;
     for (var i = 0; i < l; i++) {
-        removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
-        addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+        removeClassName(rows[i], i % 2 ? "TableBody1" : "TableBody2");
+        addClassName(rows[i], i % 2 ? "TableBody2" : "TableBody1");
     }
 };
 </script>

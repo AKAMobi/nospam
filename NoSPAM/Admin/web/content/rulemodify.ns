@@ -144,10 +144,11 @@ if(!$Category[$category_id])
 </table><br>
 规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($rule_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($rule_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($rule_logic == "NOT") echo " selected";?>>否</select><br>
 <fieldset>
-<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
+<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条<?if($keywordscount > 0){?>
+，逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($keyword_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($keyword_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($keyword_logic == "NOT") echo " selected";?>>非</select><br>
+<?}?></legend>
 <div align="center">
 <input type="hidden" name="KeywordNum" value="<?=$keywordscount?>" />
-关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($keyword_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($keyword_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($keyword_logic == "NOT") echo " selected";?>>否</select><br>
 <?
 	if($keywordscount > 0){
 		$i = 1;
@@ -209,10 +210,11 @@ if(!$Category[$category_id])
 </fieldset>
 <br>
 <fieldset>
-<legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
-<div align="center">
+<legend><b>数值规则</b> 共<?=$sizescount?>条<?if($sizescount > 0){?>
 <input type="hidden" name="SizeNum" value="<?=$sizescount?>" />
-数值规则间逻辑关系：<select name="size_logic"><option value="AND"<?if ($size_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($size_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($size_logic == "NOT") echo " selected";?>>否</select><br>
+，逻辑关系：<select name="size_logic"><option value="AND"<?if ($size_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($size_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($size_logic == "NOT") echo " selected";?>>非</select>
+<?}?></legend>
+<div align="center">
 <?
 	if($sizescount > 0){
 		$i = 1;
@@ -253,10 +255,11 @@ if($sizescount > 0){
 </fieldset>
 <br>
 <fieldset>
-<legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
-<div align="center">
+<legend><b>附件规则</b> 共<?=$attachmentscount?>条<?if($attachmentscount > 0){?>
 <input type="hidden" name="AttachmentNum" value="<?=$attachmentscount?>" />
-附件规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($attach_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($attach_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($attach_logic == "NOT") echo " selected";?>>否</select><br>
+，逻辑关系：<select name="rule_logic"><option value="AND"<?if ($attach_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($attach_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($attach_logic == "NOT") echo " selected";?>>非</select>
+<?}?></legend>
+<div align="center">
 <?
 	if($attachmentscount > 0){
 		$i = 1;
@@ -454,12 +457,13 @@ if(!$Category[$_POST["category_id"]])
 	<td></td>
 </tr>
 </table><br>
-规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($_POST['rule_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['rule_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['rule_logic'] == "NOT") echo " selected";?>>否</select><br>
+规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($_POST['rule_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['rule_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['rule_logic'] == "NOT") echo " selected";?>>非</select><br>
 <fieldset>
-<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
-<div align="center">
+<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条<?if($keywordscount > 0){?>
 <input type="hidden" name="KeywordNum" value="<?=$keywordscount?>" />
-关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($_POST['keyword_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['keyword_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['keyword_logic'] == "NOT") echo " selected";?>>否</select><br>
+，逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($_POST['keyword_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['keyword_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['keyword_logic'] == "NOT") echo " selected";?>>非</select>
+<?}?></legend>
+<div align="center">
 <?
 	if($keywordscount > 0){
 		$ii = 1;
@@ -557,10 +561,11 @@ if(!$Category[$_POST["category_id"]])
 </div><br>
 </fieldset>
 <fieldset>
-<legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
-<div align="center">
+<legend><b>数值规则</b> 共<?=$sizescount?>条<?if($sizescount > 0){?>
 <input type="hidden" name="SizeNum" value="<?=$sizescount?>" />
-数值规则间逻辑关系：<select name="size_logic"><option value="AND"<?if ($_POST['size_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['size_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['size_logic'] == "NOT") echo " selected";?>>否</select><br>
+，逻辑关系：<select name="size_logic"><option value="AND"<?if ($_POST['size_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['size_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['size_logic'] == "NOT") echo " selected";?>>非</select>
+<?}?></legend>
+<div align="center">
 <?
     if($sizescount > 0){
         $ii = 1;
@@ -617,10 +622,11 @@ if($sizescount > 0){
 </div><br>
 </fieldset>
 <fieldset>
-<legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
+<legend><b>附件规则</b> 共<?=$attachmentscount?>条<?if($attachmentscount > 0){?>
+，逻辑关系：<select name="attach_logic"><option value="AND"<?if ($_POST['attach_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['attach_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['attach_logic'] == "NOT") echo " selected";?>>非</select>
+<?}?></legend>
 <div align="center">
 <input type="hidden" name="AttachmentNum" value="<?=$attachmentscount?>" />
-附件规则间逻辑关系：<select name="attach_logic"><option value="AND"<?if ($_POST['attach_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['attach_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['attach_logic'] == "NOT") echo " selected";?>>否</select><br>
 <?
     if($attachmentscount > 0){
         $ii = 1;
@@ -993,11 +999,9 @@ if(count($Category) > 0){
 	<td></td>
 </tr>
 </table><br>
-规则间逻辑关系：<select name="rule_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共0条 </legend>
 <div align="center">
-关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <input type="hidden" name="KeywordNum" value="0" />
 <br><br>
 <input type="button" value="添加" onclick="submitForm('AddKeyword')" />
@@ -1007,8 +1011,7 @@ if(count($Category) > 0){
 <legend><b>数值规则</b> 共0条 </legend>
 <input type="hidden" name="SizeNum" value="0" />
 <div align="center">
-数值规则间逻辑关系：<select name="size_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
-<br><br>
+<br>
 <input type="button" value="添加" onclick="submitForm('AddSize')" />
 </div><br>
 </fieldset>
@@ -1016,8 +1019,7 @@ if(count($Category) > 0){
 <legend><b>附件规则</b> 共0条 </legend>
 <input type="hidden" name="AttachmentNum" value="0" />
 <div align="center">
-附件规则间逻辑关系：<select name="attach_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
-<br><br>
+<br>
 <input type="button" value="添加" onclick="submitForm('AddAttachment')" />
 </div><br>
 </fieldset>

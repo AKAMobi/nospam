@@ -1,6 +1,12 @@
 <?
 require_once("../inc/include.ns");
 
+if($MailGateway <= 0 && $MailRelay <= 0 )
+	die("对不起，本系统没有开启本功能");
+
+if (!adminPerm(PERM_ADMIN_GATEWAY))
+	die("你没有查看本页面的权限");
+
 switch($_GET["action"]){
 	case "add":
 	add();
@@ -48,7 +54,7 @@ function show()
 </head>
 <body>
 <form action="?action=del" name="form1" method="post">
-<table class="sort-table" id="table-1" cellspacing="0">
+<table width="100%" class="sort-table" id="table-1" cellspacing="0">
 <thead>
 <tr>
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
@@ -68,7 +74,7 @@ function show()
 	if(count($Domains) > 0){
 		$i = 1;
 		foreach($Domains as $Domain){
-			$className = $i%2? "RuleTB1":"RuleTB2";
+			$className = $i%2? "TableBody1":"TableBody2";
 			$IPPort = $Section["ProtectDomain_{$Domain}_IPPort"];
 			if (false === strpos($IPPort,":")){
 				$IP = $IPPort;
@@ -146,8 +152,8 @@ st.onsort = function () {
 	var rows = st.tBody.rows;
 	var l = rows.length;
 	for (var i = 0; i < l; i++) {
-		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
-		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+		removeClassName(rows[i], i % 2 ? "TableBody1" : "TableBody2");
+		addClassName(rows[i], i % 2 ? "TableBody2" : "TableBody1");
 	}
 };
 </script>

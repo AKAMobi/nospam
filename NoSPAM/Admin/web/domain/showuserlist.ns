@@ -145,7 +145,7 @@ $j = 1;
 $end = min($start + $pagenum,$user_count);
 for( $i = $start ; $i < $end ; $i++,$j++)
 {
-	$className = $j%2? "RuleTB1":"RuleTB2";
+	$className = $j%2? "TableBody1":"TableBody2";
 ?>
 	<tr class="<?=$className?>">
 <?
@@ -280,8 +280,8 @@ st.onsort = function () {
 	var rows = st.tBody.rows;
 	var l = rows.length;
 	for (var i = 0; i < l; i++) {
-		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
-		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+		removeClassName(rows[i], i % 2 ? "TableBody1" : "TableBody2");
+		addClassName(rows[i], i % 2 ? "TableBody2" : "TableBody1");
 	}
 };
 </script>

@@ -51,45 +51,45 @@ function loadPage()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="loadPage()">
-<table class="RuleTB">
-<tr style="background-color: #000000; color: #FFFFFF; font-size: 14px;">
+<table width="100%" class="RuleTB">
+<tr>
 	<th width="35">编号</th>
-	<td><?=$head[0]?></td><!--时间//-->
-	<td><?=$head[1]?></td><!--邮件方向//-->
-	<td><?=$head[2]?></td><!--发件人IP//-->
-	<td><?=$head[3]?></td><!--发件人地址//-->
-	<td><?=$head[4]?></td><!--收件人地址//-->
-	<td><?=$head[5]?></td><!--主题//-->
-	<td><?=$head[6]?></td><!--尺寸//-->
+	<th><?=$head[0]?></th><!--时间//-->
+	<th><?=$head[1]?></th><!--邮件方向//-->
+	<th><?=$head[2]?></th><!--发件人IP//-->
+	<th><?=$head[3]?></th><!--发件人地址//-->
+	<th><?=$head[4]?></th><!--收件人地址//-->
+	<th><?=$head[5]?></th><!--主题//-->
+	<th><?=$head[6]?></th><!--尺寸//-->
 
 <?
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	<td><?=$head[7]?></td><!--病毒//-->
-	<td><?=$head[8]?></td><!--病毒名//-->
-	<td><?=$head[9]?></td><!--病毒处理//-->
+	<th><?=$head[7]?></th><!--病毒//-->
+	<th><?=$head[8]?></th><!--病毒名//-->
+	<th><?=$head[9]?></th><!--病毒处理//-->
 <?}?>
-	<td><?=$head[10]?></td><!--垃圾度//-->
-	<td><?=$head[11]?></td><!--垃圾原因//-->
-	<td><?=$head[12]?></td><!--垃圾处理//-->
-	<td><?=$head[13]?></td><!--动作描述//-->
-	<td><?=$head[14]?></td><!--动作类型//-->
-	<td><?=$head[15]?></td><!--动作参数//-->
-	<td><?=$head[16]?></td><!--动态限制//-->
-	<td><?=$head[17]?></td><!--动态描述//-->
+	<th><?=$head[10]?></th><!--垃圾度//-->
+	<th><?=$head[11]?></th><!--垃圾原因//-->
+	<th><?=$head[12]?></th><!--垃圾处理//-->
+	<th><?=$head[13]?></th><!--动作描述//-->
+	<th><?=$head[14]?></th><!--动作类型//-->
+	<th><?=$head[15]?></th><!--动作参数//-->
+	<th><?=$head[16]?></th><!--动态限制//-->
+	<th><?=$head[17]?></th><!--动态描述//-->
 
 <?
 if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	<td><?=$head[18]?></td><!--审计否//-->
-	<td><?=$head[19]?></td><!--审计描述//-->
+	<th><?=$head[18]?></th><!--审计否//-->
+	<th><?=$head[19]?></th><!--审计描述//-->
 <?}?>
 </tr>
 </tr>
 <?
 if(count($output) > 0){
 	foreach($output as $line){
-		$className = $start%2? "RuleTB2":"RuleTB1";
+		$className = $start%2? "TableBody2":"TableBody1";
 		$values = explode(",",$line);
 ?>
 <tr class="<?=$className?>">

@@ -57,9 +57,9 @@ function show()
 <body>
 <form method="POST">
 <input type="hidden" name="action" value="del" />
-<table class="RuleTB">
+<table width="100%" class="RuleTB" width="100%">
 <caption>规则类别管理</caption>
-<tr class="RuleTBH">
+<tr class="TableTitleLink">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -83,7 +83,7 @@ if($iSize > 0){
 	$i = 1;$j = 1;
 	foreach($Category as $id=>$value){
 		if($i>($page-1)*$pagenum && $i<=$page*$pagenum){
-			$className = $i%2? "RuleTB1":"RuleTB2";
+			$className = $i%2? "TableBody1":"TableBody2";
 			$j++;
 ?>
 <tr class="<?=$className?>">

@@ -43,7 +43,7 @@ $adminList=getAdminList();
 <table class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
 <caption>管理员列表</caption>
 <thead>
-<tr>
+<tr class="TableTitle2">
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -71,7 +71,7 @@ $j = 1;
 $count = count($adminList);
 for( $i = 0 ; $i < $count ; $i++,$j++)
 {
-	$className = $j%2? "RuleTB1":"RuleTB2";
+	$className = $j%2? "TableBody1":"TableBody2";
 	$adminID=$adminList[$i]['id'];
 	$sadminID=$adminID;
 	$note=$adminList[$i]['note'];
@@ -219,8 +219,8 @@ st.onsort = function () {
 	var rows = st.tBody.rows;
 	var l = rows.length;
 	for (var i = 0; i < l; i++) {
-		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
-		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+		removeClassName(rows[i], i % 2 ? "TableBody1" : "TableBody2");
+		addClassName(rows[i], i % 2 ? "TableBody2" : "TableBody1");
 	}
 };
 </script>
