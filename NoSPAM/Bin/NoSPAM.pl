@@ -260,7 +260,7 @@ sub MailBaseSetting_reset
 	$AMC->set_control_file( 'concurrencylocal', $mailserver->{ConcurrencyLocal} );
 
 	#远程并发投递数
-	$AMC->set_control_file( 'concurrencyRemote', $mailserver->{ConcurrencyRemote} || '200' );
+	$AMC->set_control_file( 'concurrencyremote', $mailserver->{ConcurrencyRemote} || '200' );
 
 	return 0;
 }
@@ -373,7 +373,7 @@ sub reset_ConnPerIP
 	return if ( 0==$ParalConn );
 
 # flush, create it if not exist
-	if ( system("$iptables -F ConnPerIP") ) {
+	if ( system("$iptables -F ConnPerIP > /dev/null 2>&1") ) {
 		if ( system("$iptables -N ConnPerIP") ) {
 			return 10;
 		}

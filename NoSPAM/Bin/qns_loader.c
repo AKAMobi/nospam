@@ -32,7 +32,7 @@ void dump_stdin_to_file()
     &error_condition("$file_id exists, try again later");
   }
   */
-	printf ( "emlfile: %s\n", emlfile );
+	//printf ( "emlfile: %s\n", emlfile );
 	fp = fopen ( emlfile, "w" );
 	if ( NULL==fp ){
 		fprintf ( stderr, "443 qns_loader can't open file\r\n" );
