@@ -162,13 +162,13 @@ getopts('vhgrz');
 
 # 判断是否由内向外发的mail
 my $ins_queue = 0;
-if ('ins-queue' eq $prog){
+#if ('ins-queue' eq $prog){
+if ( defined $ENV{RELAYCLIENT} ){
 	$ins_queue = 1 ;
 }elsif (defined $ENV{TCPREMOTEINFO}){
 	# 如果经过身份认证，则 TCPREMOTEINFO 内存的是用户名
 	$ins_queue = 2 ;
 }
-
 
 if ( $opt_h ) {
   print "
