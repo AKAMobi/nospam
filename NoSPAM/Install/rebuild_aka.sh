@@ -56,8 +56,8 @@ chmod 755 aka/root/*.pl
 cpperl ${SOURCEHOME}/Bin/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
 chmod 755 aka/var/qmail/bin/ns-queue.pl
 
-rm -f aka/var/qmail/bin/ins-queue
-ln -s ns-queue aka/var/qmail/bin/ins-queue
+#rm -f aka/var/qmail/bin/ins-queue
+#ln -s ns-queue aka/var/qmail/bin/ins-queue
 
 echo "Encrypting..."
 ${SOURCEHOME}/Admin/factory/encrypt aka/home/NoSPAM/bin/*.pl
@@ -66,8 +66,8 @@ ${SOURCEHOME}/Admin/factory/encrypt aka/var/qmail/bin/*.pl
 
 echo "Compiling qns_loader & wi  source"
 gcc -o aka/home/NoSPAM/bin/qns_loader ${SOURCEHOME}/Bin/qns_loader.c
-rm -f aka/home/NoSPAM/bin/qins_loader
-ln -s qns_loader aka/home/NoSPAM/bin/qins_loader
+#rm -f aka/home/NoSPAM/bin/qins_loader
+#ln -s qns_loader aka/home/NoSPAM/bin/qins_loader
 gcc -o aka/home/NoSPAM/bin/wi ${SOURCEHOME}/Bin/wi.c
 
 echo "Changing qns_loader & wi permission"
