@@ -219,7 +219,7 @@ eval {
   #This SMTP session is incomplete until we see dem envelope headers!
   &grab_envelope_hdrs;
   &debug("from=$returnpath,to=$recips, smtp=$remote_smtp_ip");
-  $mail_info->{aka}->{returnpath} = $returnpath;
+  #$mail_info->{aka}->{returnpath} = $returnpath;
 
 
 
