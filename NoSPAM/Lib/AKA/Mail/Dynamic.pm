@@ -10,7 +10,13 @@ package AKA::Mail::Dynamic;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 
-use IPC::Shareable;
+#use IPC::Shareable;
+use MLDBM::Sync;                       # this gets the default, SDBM_File
+use MLDBM qw(DB_File Storable);        # use Storable for serializing
+use MLDBM qw(MLDBM::Sync::SDBM_File);  # use extended SDBM_File, handles values > 1024 bytes
+use Fcntl qw(:DEFAULT);                # import symbols O_CREAT & O_RDWR for use with DBMs
+
+#use Fcntl;
 use Time::HiRes qw(gettimeofday);
 
 
@@ -37,10 +43,22 @@ sub new
 	$self->{define}->{SendRatePerFrom} = $self->{conf}->{config}->{SendRatePerFrom} || '0/0';
 	$self->{define}->{ConnRatePerIP} = $self->{conf}->{config}->{ConnRatePerIP} || '0/0';
 
+	$self->{define}->{DBMFILE} = "/home/NoSPAM/var/run/Dynamic.dbm";
+
+	$self->{dynamic_info} = {};
+
 	return $self;
 }
-
 sub clean
+{
+	my $self = shift;
+
+	untie %{$self->{dynamic_info}} if ( $self->{dynamic_info} );
+
+	return unlink $self->{define}->{DBMFILE};
+}
+
+sub clean_IPC
 {
 	my $self = shift;
 
@@ -157,13 +175,19 @@ sub is_overrun_rate_per_XXX
 		return 0;
 	}
 
-	$self->lock;
+	$self->{sh}->SyncCacheSize('100K'); 
+	$self->lock_DBM;
+
+	my $namespace_obj = $self->{dynamic_info}->{$namespace};
+	$namespace_obj->{'_LAST_REFRESH_TIME_'} ||= 0;
+	$self->{dynamic_info}->{$namespace} = $namespace_obj;
 
 	# 每2分钟清理一下内存 XXX
-	$self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} ||= 0;
-	if ( time - $self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} > 120 ){
+	if ( time - $namespace_obj->{'_LAST_REFRESH_TIME_'} > 120 ){
 		$self->refresh_info( $namespace, $sec );
-		$self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} = time;
+		$namespace_obj = $self->{dynamic_info}->{$namespace};
+		$namespace_obj->{'_LAST_REFRESH_TIME_'} = time;
+		$self->{dynamic_info}->{$namespace} = $namespace_obj;
 	}
 
 	# 将数据保存起来备查
@@ -172,7 +196,7 @@ sub is_overrun_rate_per_XXX
 	# 检查是否超过限额
 	my $overrun = $self->check_quota_exceed( $namespace, $key, $num );
 
-	$self->unlock;
+	$self->unlock_DBM;
 
 	return $overrun;
 }	
@@ -192,15 +216,17 @@ sub refresh_info
 	my ( $secmic, $seconds );
 	my ( $val_count );
 
-       	foreach $key ( keys %{$self->{dynamic_info}->{$namespace}} ){
+	my $ns_obj = $self->{dynamic_info}->{$namespace};
+#print STDERR "refresh_bad_ip: check $ns_obj\n";
+       	foreach $key ( keys %{$ns_obj} ){
 #print STDERR "refresh_bad_ip: check $key\n";
-                foreach $secmic ( keys %{$self->{dynamic_info}->{$namespace}->{$key}} ){
+                foreach $secmic ( keys %{$ns_obj->{$key}} ){
 #print STDERR "refresh_bad_ip: check $key $secmic\n";
                         if ( $secmic =~ /^(\d+)\.(\d+)$/ ){
                                 $seconds = $1;
 
                                 if ( time - $seconds > $sec ){
-                                        delete $self->{dynamic_info}->{$namespace}->{$key}->{$secmic} ;
+                                        delete $ns_obj->{$key}->{$secmic} ;
 #print STDERR "refresh_bad_ip: delete badlist $key $secmic\n";
                                 }
                         }else{
@@ -208,11 +234,14 @@ sub refresh_info
 			}
                 }
 
-                $val_count = keys %{$self->{dynamic_info}->{$namespace}->{$key}};
+                $val_count = keys %{$ns_obj->{$key}};
                 if ( 0==$val_count ) {
-                        delete $self->{dynamic_info}->{$namespace}->{$key};
+                        delete $ns_obj->{$key};
                 }
         }
+	
+	$self->{dynamic_info}->{$namespace} = $ns_obj;
+
 	return 1;
 }
 
@@ -229,7 +258,9 @@ sub add_dynamic_info
 
         ($seconds, $microseconds) = gettimeofday;
 
-        $self->{dynamic_info}->{$namespace}->{$key}->{$seconds . '.' . $microseconds} = 1;
+	my $ns_obj = $self->{dynamic_info}->{$namespace};
+	$ns_obj->{$key}->{$seconds . '.' . $microseconds} = 1;
+	$self->{dynamic_info}->{$namespace} = $ns_obj;
 #print STDERR "add_bad_ip: $namespace, $key\n";
 }
 
@@ -247,7 +278,8 @@ sub check_quota_exceed
 
 	my $num_counter;
 
-        $num_counter = keys ( %{$self->{dynamic_info}->{$namespace}->{$key}} );
+	my $ns_obj = $self->{dynamic_info}->{$namespace};
+        $num_counter = keys ( %{$ns_obj->{$key}} );
 
 #print STDERR "check_bad_ip: key $key has $num_counter times actions ... \n";
 
@@ -261,6 +293,21 @@ sub check_quota_exceed
 }
 
 sub attach
+{
+	my $self = shift;
+
+	return 1 if ( $self->{sh} && $self->{dynamic_info} );
+
+	$self->{sh} = tie %{$self->{dynamic_info}}, 'MLDBM::Sync', $self->{define}->{DBMFILE}, O_CREAT|O_RDWR, 0640 ;
+
+	if ( ! $self->{sh} ){
+		return 0;
+	}
+
+	return 1;
+}
+
+sub attach_IPC
 {
 	my $self = shift;
 
@@ -311,19 +358,40 @@ sub detach
 	my $self = shift;
 
 	#XXX
-	#untie ( %{$self->{dynamic_info}} );
+	untie ( %{$self->{dynamic_info}} );
 	return 1;
 }
 
+sub lock_DBM_r
+{
+	my $self = shift;
 
-sub lock
+	return $self->{sh}->ReadLock;
+}
+
+sub lock_DBM
+{
+	my $self = shift;
+
+	return $self->{sh}->Lock;
+}
+
+sub unlock_DBM
+{
+	my $self = shift;
+
+	return $self->{sh}->UnLock
+}
+
+
+sub lock_IPC
 {
 	my $self = shift;
 
 	return $self->{ipch}->shlock;
 }
 
-sub unlock
+sub unlock_IPC
 {
 	my $self = shift;
 

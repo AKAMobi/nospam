@@ -125,7 +125,7 @@ sub test_dynamic_subject
 		print "subject: $subject is NOT overrun!\n";
 	}
 	
-#	$AMD->dump or die "can't dump";
+	$AMD->dump or die "can't dump";
 	#print Dumper($AMD->{dynamic_info}) or die "can't dump";
 }
 
