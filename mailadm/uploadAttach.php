@@ -204,7 +204,6 @@ function addsubmit() {
  	return false;
   } else {
         e2="uploadAttach.php?act=add";
-		alert(e2);
         document.forms[0].action=e2;  
         document.forms[0].submit();
   }
