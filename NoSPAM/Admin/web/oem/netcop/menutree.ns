@@ -39,7 +39,7 @@ function popmenu(ss,ii)
 <body text="#333333" link="#6666aa" alink="#aa6666" vlink="#6666aa" bgcolor="#ffffff" leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
 <table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
 <TR>
-    <TD class=mu height=20 background=images/menutop.gif>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title=管理选项 
+    <TD class=mu height=20 background=images/menutop.gif>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title=管理选项 
       href="javascript:;">管理</A> </TD>
 </TR>
 <TR>
@@ -58,7 +58,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 </TR>
 <TR>
 <TD id="Aux1" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">本设备序列号</A>
@@ -136,7 +136,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 </TR>
 <TR>
 <TD id="Aux2" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
@@ -187,7 +187,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 </TR>
 <TR>
 <TD id="Aux3" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
@@ -221,7 +221,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 </TR>
 <TR>
 <TD id="Aux4" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
@@ -255,7 +255,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 </TR>
 <TR>
 <TD id="Aux5" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">独立服务器设置</A>
@@ -266,7 +266,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
 		</TD>
 	</TR>
 	<TR>
@@ -321,7 +321,7 @@ if($DynamicEngine > 0){
 </TR>
 <TR>
 <TD id="Aux6" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">基本设置</A>
@@ -386,7 +386,7 @@ if($DynamicEngine > 0){
 </TR>
 <TR>
 <TD id="Aux7" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">基本设置</A>
@@ -427,7 +427,7 @@ if($SpamEngine > 0){
 </TR>
 <TR>
 <TD id="Aux8" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">基本设置</A>
@@ -517,7 +517,7 @@ if($ContentEngine > 0){
 </TR>
 <TR>
 <TD id="Aux9" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">基本设置</A>
@@ -573,7 +573,7 @@ if($ContentEngine > 0){
 </TR>
 <TR>
 <TD id="Aux10" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">基本设置</A>
@@ -605,7 +605,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 </TR>
 <TR>
 <TD id="Aux11" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">基本设置</A>
@@ -645,7 +645,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 </TR>
 <TR>
 <TD id="Aux12" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
@@ -728,7 +728,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 </TR>
 <TR>
 <TD id="Aux13" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">基本设置</A>

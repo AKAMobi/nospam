@@ -10,7 +10,7 @@ require_once("inc/include.ns");
 <tr><td height=160 width=800 background=images/topbar.jpg>
 
 <table>
-<tr><td width=600></td><td width=80>用户：
+<tr><td width=600></td><td nowrap>用户：
 <?=getAdminID()?>&nbsp;<?=$bForSell? "正式销售版":"非销售版"?>
 <?if($sExpire!="") echo "&nbsp;{$sExpire}过期";?></td>
 </tr>
