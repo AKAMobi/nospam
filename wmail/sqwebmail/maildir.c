@@ -776,9 +776,9 @@ int	no_link=0;
 struct maildirsize quotainfo;
  char *newname;
 
-	if (stat(file, &stat_buf) || stat_buf.st_nlink != 1)
-		return (0);	/* Already moved */
-
+/* modified by roy 2003.9.29 */
+//	if (stat(file, &stat_buf) || stat_buf.st_nlink != 1)
+//		return (0);	/* Already moved */
 
 	/* Update quota */
 

@@ -83,6 +83,7 @@ install_sh = @install_sh@
 CLEANFILES = filelist
 
 IMAGES = address.gif \
+	attachsign.gif \
         cpass.gif \
         draft.gif \
         folderclosed.gif \

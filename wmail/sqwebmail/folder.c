@@ -1904,7 +1904,7 @@ char	*content_name;
 		//printf("<BR><CENTER>");
 		//printf("<CENTER>");
 		
-
+/* remed by roy 2003.9.28
 		if (!is_preview_mode())
 		{
 			printf("<A HREF=\"");
@@ -1914,7 +1914,7 @@ char	*content_name;
 
 		printf("%s%s&nbsp;/&nbsp;", getarg("DISPATT"),
 		       is_preview_mode() ? "":"</A>");
-
+*/
 		if (!is_preview_mode())
 		{
 			printf("<A HREF=\"");
