@@ -238,7 +238,9 @@ sub log_csv {
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
 
-	if ( $engine->{spam}->{sa} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
+&debug ( "AKA_mail_engine::log out SCORE:" . $engine->{spam}->{sa}->{SCORE} );
+	if ( $engine->{spam}->{sa}->{SCORE} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
+&debug ( "AKA_mail_engine::log in SCORE:" . $engine->{spam}->{sa}->{SCORE} );
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
@@ -253,8 +255,6 @@ use Data::Dumper;
 
 		flock(LFD,LOCK_UN);
 		close(LFD);
-	}else{
-		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
 
 

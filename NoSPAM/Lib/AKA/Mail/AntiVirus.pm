@@ -191,7 +191,7 @@ sub check_file_socket_tcp
 	eval {
 		$old_alarm_sig = $SIG{ALRM};
 		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
-		$old_alarm = alarm 3;
+		$old_alarm = alarm 30;
 		print $conn "PING\n";
 		$result = <$conn>;
 		chomp $result;
@@ -223,7 +223,7 @@ sub check_file_socket_tcp
 	eval {
 		$old_alarm_sig = $SIG{ALRM};
 		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
-		$old_alarm = alarm 10;
+		$old_alarm = alarm 60;
 
 		$conn = $self->init_socket;
 		print $conn "SCAN $file\n";
