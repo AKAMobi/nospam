@@ -73,7 +73,7 @@ my $action_map = {
 			,'reboot' => [\&reboot, ""]
 			,'shutdown' => [\&shutdown, ""]
 
-			,'post_install' => [\&post_install, ""]
+			,'post_install' => [\&post_install, "<SecurityNO>"]
 		};
 
 #use Data::Dumper;
@@ -934,7 +934,7 @@ sub reboot
 sub shutdown
 {
 	$zlog->debug("NoSPAM Util::shutdown");
-	return system ( "$shutdown_binary now" );
+	return system ( "$shutdown_binary -h now" );
 }
 
 sub clean_Log
