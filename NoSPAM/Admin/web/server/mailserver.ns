@@ -234,7 +234,7 @@ function add()
 <table border="1">
 <tr> <th scope="row"><?=_("Mail Domain")?>: </th> <td><input type="text" name="Domain"></td> </tr>
 <tr> <th scope="row"><?=_("Admin")?>: </th> <td><input type="text" name="Admin"></td> </tr>
-<tr> <th scope="row"><?=_("User Quota")?>: </th> <td><input type="text" name="MaxUser"></td> </tr>
+<tr> <th scope="row"><?=_("User Quota")?>: </th> <td><input type="text" name="MaxUser"> <?=_("Number(s)")?></td> </tr>
 <tr> <th scope="row"><?=_("Disk Quota")?>: </th>
 	<td><input type="text" name="Quota">
 		<select name="QuotaUnit">
@@ -282,7 +282,7 @@ function modify()
 <table border="1">
 <tr> <th scope="row"><?=_("Mail Domain")?>: </th> <td><input type="hidden" name="Domain" value="<?=$domain?>"><?=$domain?></td> </tr>
 <tr> <th scope="row"><?=_("Admin")?>: </th> <td><input type="text" name="Admin" value="<?=$spamconf->getParam("VirtualDomain_{$domain}_Admin","MailServer")?>"></td> </tr>
-<tr> <th scope="row"><?=_("User Quota")?>: </th> <td><input type="text" name="MaxUser" value="<?=$spamconf->getParam("VirtualDomain_{$domain}_MaxUser","MailServer")?>"></td> </tr>
+<tr> <th scope="row"><?=_("User Quota")?>: </th> <td><input type="text" name="MaxUser" value="<?=$spamconf->getParam("VirtualDomain_{$domain}_MaxUser","MailServer")?>"> <?=_("Number(s)")?></td> </tr>
 <tr> <th scope="row"><?=_("Disk Quota")?>: </th>
 	<td><input type="text" name="Quota" value="<?=$spamconf->getParam("VirtualDomain_{$domain}_Quota","MailServer")?>">
 		<select name="QuotaUnit">

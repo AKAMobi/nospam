@@ -16,20 +16,20 @@ switch ($_GET['type']) {
 }
 
 if ($currentUser->initWhiteList ($type)!=0)
-    exit (_("Database query error!"));
+    exit (_("Database query error"));
     
 $msg = '';
 switch ($_GET['act']) {
     case 'add':
-        switch ($currentUser->addItemToList (trim ($_GET['addemail']), intval ($_GET['addtype']))) {
+        switch ($currentUser->addItemToList (trim ($_GET['addemail']), intval ($_GET['addtype']), $_GET['file'])) {
             case -1:
-                $msg = _("Unkown list type!");
+                $msg = _("Unkown list type");
                 break;
             case -2:
-                $msg = _("Invalid email address!");
+                $msg = _("Invalid email address");
                 break;
             case -3:
-                $msg = _("Database query error!");
+                $msg = _("Database query error");
                 break;
 case -4:
 	$msg=_("Email already in the list!");
@@ -38,10 +38,10 @@ break;
 $msg = _("You have max white/black user list: ".QUARANTINE_WHITELIST_MAX);
 break;
 case 0:
-                $msg = _("Add success!");
+                $msg = _("Add succeeded");
                 break;
             default:
-                $msg = _("error!");
+                $msg = _("Failed");
         }
         break;
     case 'del':
@@ -55,7 +55,7 @@ $pageSize = intval ($_POST['ps']?$_POST['ps']:$_GET['ps']);
 $pageTool = new PageTool ($pageNo, $currentUser->listTotal, $pageSize);
 
 if ($currentUser->getWhiteList ($pageTool->start, $pageTool->num)!=0)
-    exit (_("Can't get user's white/black list!"));
+    exit (_("Can't get user's white/black list"));
 
 html_init ();
 
@@ -159,7 +159,7 @@ function add_email_to_list_form () {
 <input type="hidden" name="type" value="<?php echo $currentUser->listType; ?>" />
 <input type="hidden" name="act" value="add" />
 <center>
-<?=_("Add email to list: ")?>
+<?=_("Add email to list")?>£º 
 <?=_("Email")?>: 
 <input type="text" name="addemail" />
 &nbsp;<?=_("Type")?>: 

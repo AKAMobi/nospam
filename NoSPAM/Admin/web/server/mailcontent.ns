@@ -72,7 +72,7 @@ function view_decode_mail ($mailId, $content) {
 <br /><center>
 <table cellspacing="0" cellpadding="5" width="90%" border="1" >
     <tr><td width="80"><?=_("Sender")?></td><td><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
-    <tr><td><?=_("Incept")?></td><td><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
+    <tr><td><?=_("To")?></td><td><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
     <tr><td><?=_("Cc")?></td><td><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
     <tr><td ><?=_("Date")?></td><td><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
     <tr><td><?=_("Subject")?></td><td><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>

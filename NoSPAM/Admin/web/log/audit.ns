@@ -65,7 +65,7 @@ if($pos < $total/2){
 <script type="text/javascript" src="../js/sortabletable.js"></script>
 </head>
 <body>
-<center><font size="+3"><?=_(""Log")?>-<?=_("Operation Log Management")?></font></center>
+<center><font size="+3"><?=_("Log")?>-<?=_("Operation Log Management")?></font></center>
 <table class="sort-table" id="table-1" cellspacing="0" border="0">
 <caption><h3><?=_("Operation Log Management")?></h3></caption>
 <thead>

@@ -14,7 +14,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-<center><font size="+3"><?=_(""Log")?>-<?=_("DNS Status")?></font></center>
+<center><font size="+3"><?=_("Log")?>-<?=_("DNS Status")?></font></center>
 <H1><?=_("DNS Status")?></H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 <?=_("1 Query: Get Result in 1 Query<br> Above 1: Get Result in multi Query<p> No Record: Can not Get DNS sub Record<br> No Domain: Can not Get DNS Domain Name Record<br> Failure: Query Fail")?>

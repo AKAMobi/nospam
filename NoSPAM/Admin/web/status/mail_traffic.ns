@@ -14,7 +14,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-<center><font size="+3"><?=_(""Log")?>-<?=_("Mail Traffic Stat.")?></font></center>
+<center><font size="+3"><?=_("Log")?>-<?=_("Mail Traffic Stat.")?></font></center>
 <H1><?=_("Mail Traffic Stat.")?></H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 <HR>

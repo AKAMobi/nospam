@@ -752,7 +752,7 @@ class EmailUser {
 
 	function initWhiteList ($type) {
 		if (!file_exists (QUARANTINESQLFILEPATH)) {
-			echo _("SQLite Database File is not exist: ");
+			echo _("SQLite Database File is not exist");
 			echo QUARANTINESQLFILEPATH;
 			exit ();
 		}
@@ -829,7 +829,7 @@ class EmailUser {
 		}
 	}
 
-	function addItemToList ($email, $type) {
+	function addItemToList ($email, $type, $file='') {
 		if ($type != QUARANTINE_WHILE_LIST && $type != QUARANTINE_BLACK_LIST)
 			return -1;
 		if (!checkmailaddr($email))
@@ -862,6 +862,12 @@ class EmailUser {
 		$this->db->query ($sql);
 		$this->whiteList[$id]=new WhiteListItem ($id, $email, $type);
 		$this->listTotal ++ ;
+		
+		if ($file) {
+		    $buf = array (array ('ACT'=>(($type==QUARANTINE_WHILE_LIST)?'F':'D'), 'FILE'=>$file));
+		    $this->process ($buf, $buf2);    
+		}
+		
 		return 0;
 	}
 
@@ -1121,7 +1127,7 @@ class PageTool {
 
 	function page_form ($formName, $actions) {
 		?>
-			跳到第 <select name="pn" <?php echo $actions; ?>>
+			<?=_("Jump to")?><select name="pn" <?php echo $actions; ?>>
 			<?php
 			for ($i=1; $i <= $this->totalPage; $i ++) {
 				if ($i == $this->pageNo)
@@ -1130,7 +1136,7 @@ class PageTool {
 					echo '<option value="'.$i.'">'.$i.'</option>';
 			}
 		?>
-			</select> 页, 每页 <select name="ps" <?php echo $actions; ?>>
+			</select>, <?=_("Item number")?><select name="ps" <?php echo $actions; ?>>
 			<?php
 			foreach ($this->allowedPageSizes as $ps) {
 				if ($ps == $this->pageSize)
@@ -1139,7 +1145,7 @@ class PageTool {
 					echo '<option value="'.$ps.'">'.$ps.'</option>';
 			}
 		?>
-			</select> 条记录
+			</select>
 			<?php    
 	}
 

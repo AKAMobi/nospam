@@ -43,7 +43,7 @@ function change(bState)
 </script>
 </head>
 <body>
-<center><font size="+3"><?=_(""Auto-Download Policy")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("Auto-Download Policy")?>-<?=_("SwitchBoard")?></font></center>
 <div align="center">
 <form method="POST" name="form1">
 <lable>

@@ -2,7 +2,7 @@
 require_once ('funcs.ns');
 
 if ($currentUser->init_maillist ()!==0)
-    exit ('System Error!');
+    exit (_("System error"));
 $process = 0;
 $jobList = array ();
 $doAction = intval ($_POST['do_action']);
@@ -10,7 +10,7 @@ if ($doAction==1) {
     $file = trim ($_POST['file']);
     if ($file) {
         if (!file_exists ($currentUser->get_file ($file)))
-            html_error (array ('参数错误!'.$currentUser->get_file($file)), 0, 1, 1);
+            html_error (array (_("Parameter error").$currentUser->get_file($file)), 0, 1, 1);
         $process = 1;
         $jobList[] = array ('ACT'=>'D', 'FILE'=>$file);
     }
@@ -20,7 +20,7 @@ elseif ($doAction==2) {
     $num = intval ($_POST['etemnum']);
     
     if (!$currentUser->maillist ($start, $num))
-        html_error (array ('参数错误!'), 0, 1, 1);
+        html_error (array (_("Parameter error")), 0, 1, 1);
     for ($i = 0 ; $i < sizeof ($currentUser->mailList) ; $i ++) {
         if (!isset ($_POST['file_'.$i]))
             continue;
@@ -52,7 +52,7 @@ if ($process) {
     $ret = $currentUser->process ($jobList, $result);
 
     if ($ret!=0) 
-        html_error (array ('程序错误，错误码 #'.$ret . '!'), 0, 1, 1);
+        html_error (array (_("System error").$ret . '!'), 0, 1, 1);
         
     if ($currentUser->init_maillist ()!==0)
         exit ('System Error!');
@@ -66,7 +66,7 @@ $currentUser->maillist ($pageTool->start, $pageTool->num);
 html_init ();
 
 if (isset ($_GET['init']))
-    html_alert ('EMail account: ' . $currentUser->email . 'quarantine function enabled.');
+    html_alert (_('EMail account: ') . $currentUser->email . _('quarantine function enabled.'));
 
 display_mailbox_info ();
 
@@ -87,6 +87,20 @@ function setDoVal() {
     document.form1.do_action.value = "2";
     document.form1.submit();
 }
+function mailAction(actionVal) {
+    form=document.forms("form1");
+    for (var i=0;i<form.elements.length;i++) {
+        var e=form.elements[i];
+        if(e.name.substring(0,5)=='file_') {
+            if (e.value==actionVal)
+                e.checked=true;
+            else
+                e.checked=false;    
+        }
+        
+    }
+    
+}
 -->
 </SCRIPT>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form1" id="form1">
@@ -102,8 +116,8 @@ function setDoVal() {
 ?>
 </p>
 <p align="center">
-<input type="button" value="处理邮件" onclick="setDoVal()" />
-<input type="button" value="管理黑白名单" onclick="window.location.href='whitelist.ns';" />
+<input type="button" value="<?=_("Process emails")?>" onclick="setDoVal()" />
+<input type="button" value="<?=_("White/Black list management")?>" onclick="window.location.href='whitelist.ns';" />
 
 </p>
 </form>
@@ -119,22 +133,22 @@ function display_mail_list ($mailList,$start) {
 <center>
 <table cellspacing="0" cellpadding="3" border="0" width="90%" class="t1">
 	<tr class="sorthead">
-		<td class="sorthead"><b><nobr>编号</nobr></b></td>
-		<td class="sorthead"><b><nobr>隔离原因</b></nobr></td>
-		<td class="sorthead"><b><nobr>隔离时间</b></nobr></td>
-		<td class="sorthead"><b><nobr>收件人</b></nobr></td>
-		<td class="sorthead"><b><nobr>发件人</b></nobr></td>
-		<td class="sorthead"><b><nobr>主题</b></nobr></td>
-		<td class="sorthead"><b><nobr>尺寸</b></nobr></td>
-		<td class="sorthead"><b><nobr>察看</b></nobr></td>
-		<td class="sorthead"><nobr><b>动作: </b>
-		<input type="radio" value="D" name="action" id="actionDrop" />删除
-		<!--input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回
+		<td class="sorthead"><b><nobr><?=_("Num")?></nobr></b></td>
+		<td class="sorthead"><b><nobr><?=_("Quarantine reason")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("Quarantine time")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("Incept")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("Sender")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("Subject")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("Size")?></b></nobr></td>
+		<td class="sorthead"><b><nobr><?=_("View")?></b></nobr></td>
+		<td class="sorthead"><nobr><b><?=_("Action")?>: </b>
+		<input type="radio" value="D" name="action" id="actionDrop" onclick="mailAction('D')" /><?=_("Delete")?>
+		<!--input type="radio" value="R" name="action" /><font color="#FFFFFF"><?=_("Reject")?>
 		</font--> 
-		<!--input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发
+		<!--input type="radio" value="T" name="action" /><font color="#FFFFFF"><?=_("Tag")?>
 		</font--> 
-		<input type="radio" value="F" name="action" />通过</nobr></td>
-	    <td class="sorthead"><nobr><b>添加到黑白名单</b></nobr></td>
+		<input type="radio" value="F" name="action" id="actionForword" onclick="mailAction('F')" /><?=_("Forward")?></nobr></td>
+	    <td class="sorthead"><nobr><b><?=_("Add to list")?></b></nobr></td>
 	</tr>
 <?php
     for ($i = 0 ; $i < sizeof ($mailList) ; $i ++) {
@@ -149,15 +163,15 @@ function display_mail_list ($mailList,$start) {
 		<td class="t2"><?php echo ConvertSize ($mailList[$i]['SIZE']); ?></td>
 		<td class="t2"><font color="#00000">
 		<a target="_blank" href="viewmail.ns?file=<?php echo $mailList[$i]['FILE']; ?>">
-		<img alt="察看" src="images/view.gif" border="0"></a></font></td>
+		<img alt="<?=_("View")?>" src="images/view.gif" border="0"></a></font></td>
 		<td class="t2"> 
-		<input type="radio" value="D" name="<?php echo 'file_'.$i; ?>" />删除
-		<!--input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" />弹回 --> 
-		<!--input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" />标记转发  -->
-		<input type="radio" value="F" name="<?php echo 'file_'.$i; ?>" />通过</td>
+		<input type="radio" value="D" id="file_<?php echo $i; ?>" name="<?php echo 'file_'.$i; ?>" /><?=_("Delete")?>
+		<!--input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" /><?=_("Reject")?> --> 
+		<!--input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" /><?=_("Tag")?>  -->
+		<input type="radio" value="F" id="file_<?php echo $i; ?>" name="<?php echo 'file_'.$i; ?>" /><?=_("Forward")?></td>
 		<td class="t2">
-		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_BLACK_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>';" value="黑名单" />
-		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_WHILE_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>';" value="白名单" />
+		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_BLACK_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>&file=<?php echo $mailList[$i]['FILE'];?>';" value="<?=_("Black list")?>" />
+		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_WHILE_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>&file=<?php echo $mailList[$i]['FILE'];?>';" value="<?=_("White list")?>" />
 		</td>
 	</tr>
 <?php
@@ -170,7 +184,7 @@ function display_mail_list ($mailList,$start) {
 
 function display_process_result ($result) {
     for ($i=0; $i < sizeof ($result); $i ++) {
-        printf ('正在处理第 %d 封邮件……%s <br />', $result[$i][0], ($result[$i][1]===0)?'成功':'失败');    
+        printf (_("Deal with").' %d:...... %s <br />', $result[$i][0], ($result[$i][1]===0)?_("Succeeded"):_("Failed"));    
     }
         
 //print_r ( $_SESSION['sCurrentUser'] );

@@ -7,9 +7,9 @@ if ($_POST['emailAddr'] && $_POST['emailPass']) {
     $pass  = trim ($_POST['emailPass']);
     
     if (!checkmailaddr($email))
-        html_error (array ('ÓÊ¼þµØÖ·´íÎó!'), 0, 1, 1);
+        html_error (array (_("Email address error")), 0, 1, 1);
     if (!$pass)
-        html_error (array ('ÇëÊäÈëÃÜÂë!'), 0, 1, 1);
+        html_error (array (_("Password needed")), 0, 1, 1);
     $ret = $currentUser->login ($email, $pass);
     switch ( $ret ) {
         case 0:
@@ -26,10 +26,10 @@ if ($_POST['emailAddr'] && $_POST['emailPass']) {
             header ('Location: main.ns' . ($currentUser->init?'init':''));
             break;
         case 255:
-            html_error (array ('ÓÃ»§Ãû/ÃÜÂë ´íÎó!'), 0, 1, 1);
+            html_error (array (_("Email or password error")), 0, 1, 1);
             break;
         default:
-            html_error (array ('ÏµÍ³´íÎó!'. $ret), 0, 1, 1);
+            html_error (array (_("System error"). $ret), 0, 1, 1);
     }
     exit ();
 }
@@ -41,13 +41,15 @@ html_quit ();
 /* funtion definations */
 function login_form () {
 ?>
-<p class="title">Login Form</p>
+<p class="title"><?=_("Login")?></p>
 <br /><br />
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" onclick="">
-<center><table border="0" class="t1" cellspacing="0" cellpadding="3"><tr align="center"><td height="50" colspan="2" class="sorthead">Login Form</td></tr><tr><td align="center"  class="t2">Email Address</td>
-<td class="t2"><input type="text" name="emailAddr" id="emailAddr" size="20" /></td></tr><tr><td align="center"  class="t2">Email Password</td>
+<center><table border="0" class="t1" cellspacing="0" cellpadding="3"><tr align="center"><td height="50" colspan="2" class="sorthead"><?=_("Login")?></td></tr>
+<tr><td align="center"  class="t2"><?=_("Email address")?></td>
+<td class="t2"><input type="text" name="emailAddr" id="emailAddr" size="20" /></td></tr>
+<tr><td align="center"  class="t2"><?=_("Email password")?></td>
 <td class="t2"><input type="password" name="emailPass" id="emailPass" size="20" /></td></tr>
-<tr><td colspan="2" class="t2" align="center"><input type="submit" value="Login" /><input type="reset" value="ReSet" /></td></tr></table>
+<tr><td colspan="2" class="t2" align="center"><input type="submit" value="<?=_("Login")?>" /><input type="reset" value="<?=_("Reset")?>" /></td></tr></table>
 </form>
 <?php    
 }

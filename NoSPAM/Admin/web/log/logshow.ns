@@ -95,7 +95,7 @@ function enableMonitor()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-<center><font size="+3"><?=_(""Log")?>-<?=_("Log Browser")?></font></center>
+<center><font size="+3"><?=_("Log")?>-<?=_("Log Browser")?></font></center>
 <div id="oStatic" name="oStatic">
 <table width="100%" class="sort-table" id="table-1" cellspacing="1">
 <thead>

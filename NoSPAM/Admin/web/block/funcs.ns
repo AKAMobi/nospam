@@ -15,19 +15,21 @@ if (!$stripInitUser)
 function login_init () {
     global $currentUser;
     if (!session_is_registered ('sCurrentUser'))
-        html_error (array ('请先登录!'), 0, 1, 1);
+        html_error (array (_("Please login")), 0, 1, 1);
     if (!$_SESSION['sCurrentUser']['USER'] || strcasecmp ($_SESSION['sCurrentUser']['HOST'], $_SERVER['REMOTE_ADDR']))
-        html_error (array ('请重新登录!'), 0, 1, 1);
+        html_error (array (_("Please re-login")), 0, 1, 1);
     if (!$currentUser->set_login_user ($_SESSION['sCurrentUser']))
-        html_error (array ('系统错误!'), 0, 1, 1);
+        html_error (array (_("System error")), 0, 1, 1);
 }
 
 function display_mailbox_info () {
     global $currentUser;
 ?>
 <p align="left" class="title">
-您的邮箱：<?php echo $currentUser->email; ?>    当前隔离邮件：总共 <?php echo $currentUser->mailCnt; ?> 封，当前 <?php echo $currentUser->start; ?>-<?php echo $currentUser->end; ?> 封，占用空间 <?php echo $currentUser->totalSize; ?>
-&nbsp;&nbsp;&nbsp;&nbsp;[<a href="logout.ns">LOGOUT</a>]
+<?=_("Login as")?> <?php echo $currentUser->email; ?>    <?=_("Current quarantine emails")?>: <?=_("Total number")?> <?php echo $currentUser->mailCnt; ?> <?=_("mails")?>，
+<?=_("Display")?> <?php echo $currentUser->start; ?>-<?php echo $currentUser->end; ?> <?=_("mails")?>, 
+<?=_("Used space")?> <?php echo $currentUser->totalSize; ?>
+&nbsp;&nbsp;&nbsp;&nbsp;[<a href="logout.ns"><?=_("Logout")?></a>]
 </p><br />
 <?php    
 }
@@ -56,7 +58,7 @@ function html_error ($errors ,$advices=false, $autoInit=false, $autoExit=true) {
     if ($autoInit) html_init ();
 ?>
 <center><br /><br /><br /><table cellspacing="0" cellpadding="5" border="0" style="border-color: #999999; border-width:1px;border-left-style: solid;border-top-style: solid"><tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
-<font style="font-size: 16px; font-weight: bold; color: #ff0000;">程序在运行过程中出现错误</font></td></tr>
+<font style="font-size: 16px; font-weight: bold; color: #ff0000;"><?=_("Error")?></font></td></tr>
 <tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
 <?php
     for ($i=0; $i<sizeof ($errors); $i++) 
@@ -66,7 +68,7 @@ function html_error ($errors ,$advices=false, $autoInit=false, $autoExit=true) {
     if ($advices) {
 ?>
 <tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
-<font style="font-size: 14px; font-weight: bold; color: #000000;">我们建议：</font>
+<font style="font-size: 14px; font-weight: bold; color: #000000;"><?=("We suggest")?>: </font>
 <?php
     for ($i=0; $i<sizeof ($advices); $i++) 
         echo '<li>'.html_format ($advices[$i]).'</li>';
@@ -74,7 +76,7 @@ function html_error ($errors ,$advices=false, $autoInit=false, $autoExit=true) {
 <?php   
     }
 ?>
-<tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">[ <a href="javascript: history.go(-1)">返回上一步</a> ]</td></tr>
+<tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">[ <a href="javascript: history.go(-1)"><?=_("Return")?></a> ]</td></tr>
 </table>
 <?php
     if ($autoExit) exit ();

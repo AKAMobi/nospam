@@ -30,7 +30,7 @@ if ($_POST["Submit"] == _("Modify")){
 <title>MSP</title>
 </head>
 <body>
-<center><font size="+3"><?=_(""Auto-Download Policy")?>-MSP</font></center>
+<center><font size="+3"><?=_("Auto-Download Policy")?>-MSP</font></center>
 <div align="center">
 <form method="POST" name="form1">
 <table border="1">

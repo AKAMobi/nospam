@@ -2,18 +2,18 @@
 require_once ('funcs.ns');
 
 $actions = array (
-                'view'=>'察看未解码邮件',
-                'viewdecode'=>'察看解码邮件',
-                'del'=>'删除'
+                'view'=>_("View mail source"),
+                'viewdecode'=>_("View decoded mail"),
+                'del'=>_("Delete")
                 );
 
 if ($currentUser->init_maillist ()!==0)
-    exit ('System Error!');
+    exit (_("System error"));
 
 $fileName = trim ($_GET['file']);
 $file = $currentUser->get_file ($fileName);
 if (!file_exists ($file))
-    html_error (array ('参数错误!'), 0, 1, 1);
+    html_error (array (_("Parameter error")), 0, 1, 1);
 
 html_init ();
 del_form ($fileName);
@@ -64,8 +64,8 @@ function view_mail ($file) {
 
 function view_decode_mail ($file, $fileName) {
     global $currentUser;
-    $content = fread(fopen($file, 'r'), filesize($file));
-    fclose($file);
+    $content = fread(($fh=fopen($file, 'r')), filesize($file));
+    fclose($fh);
 	$nl = (strpos($content,"\r\n")?"\r\n":"\n");
     $params = array(
 					'include_bodies' => true,
@@ -77,11 +77,11 @@ function view_decode_mail ($file, $fileName) {
 ?>
 <br /><center>
 <table cellspacing="0" cellpadding="5" width="90%" border="0"  class="t1">
-    <tr><td class="sorthead">发件人</td><td class="t2"><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
-    <tr><td class="sorthead">收件人</td><td class="t2"><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
-    <tr><td class="sorthead">抄送</td><td class="t2"><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
-    <tr><td  class="sorthead">日期</td><td class="t2"><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
-    <tr><td class="sorthead">主题</td><td class="t2"><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead"><?=_("Sender")?></td><td class="t2"><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead"><?=_("Incept")?></td><td class="t2"><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead"><?=_("Cc")?></td><td class="t2"><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
+    <tr><td  class="sorthead"><?=_("Date")?></td><td class="t2"><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead"><?=_("Subject")?></td><td class="t2"><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
     <tr><td colspan="2" align="left" valign="top" class="t2">
 <?php
     print_mail_body ($fileName, $structure);
@@ -113,7 +113,7 @@ function print_attachments_link ($fileName, $struct, $depth, &$idArr) {
             continue;
         }    
         else {
-            echo '<li><a target="_blank" href="'.get_file_url ($fileName, $depth, $idArr).'">'.($obj->ctype_parameters['name']?html_format ($obj->ctype_parameters['name']):'附件').'</a></li>';
+            echo '<li><a target="_blank" href="'.get_file_url ($fileName, $depth, $idArr).'">'.($obj->ctype_parameters['name']?html_format ($obj->ctype_parameters['name']):_("Attachment")).'</a></li>';
         }
     }
 }
@@ -163,7 +163,7 @@ function print_mail_body ($fileName, $structure) {
             print_mail_body ($fileName, $content);
     }
     else {
-        echo '<a target="_blank" href="'.get_file_url ($fileName, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'点击查看').'</a>';
+        echo '<a target="_blank" href="'.get_file_url ($fileName, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:_("Download")).'</a>';
         return;
     }
     

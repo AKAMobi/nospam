@@ -4,13 +4,13 @@ require_once ('funcs.ns');
 $pageNo = intval ($_POST['pn']);
 $pageSize = intval ($_POST['ps']);
 if ($currentUser->init_maillist ()!==0)
-    exit ('System Error!');
+    exit (_("System error"));
     
 $jobList = array ();
 if (!$_POST['do']) {
     $file = trim ($_POST['file']);
     if (!file_exists ($currentUser->get_file ($fileName)))
-        html_error (array ('参数错误!'), 0, 1, 1);
+        html_error (array (_("Parameter error")), 0, 1, 1);
     $jobList[] = array ('ACT'=>'D', 'FILE'=>$file);
 }
 else {
@@ -18,7 +18,7 @@ else {
     $num = intval ($_POST['etemnum']);
     
     if (!$currentUser->maillist ($start, $num))
-        html_error (array ('参数错误!'), 0, 1, 1);
+        html_error (array (_("Parameter error")), 0, 1, 1);
     for ($i = 0 ; $i < sizeof ($currentUser->mailList) ; $i ++) {
         if (!isset ($_POST['file_'.$i]))
             continue;
@@ -45,7 +45,7 @@ else {
 
 $ret = $currentUser->process ($jobList, $result);
 if ($ret!=0) 
-    html_error (array ('程序错误，错误码 #'.$ret . '!'), 0, 1, 1);
+    html_error (array (_("System error").$ret . '!'), 0, 1, 1);
 
 html_init ();
 display_mailbox_info ();
@@ -57,14 +57,14 @@ html_quit ();
 
 function display_process_result ($result) {
     for ($i=0; $i < sizeof ($result); $i ++) {
-        printf ('正在处理第 %d 封邮件……%s <br />', $result[$i][0], ($result[$i][1]===0)?'成功':'失败');    
+        printf (_("Deal with").'%d ......%s <br />', $result[$i][0], ($result[$i][1]===0)?_("Succeeded"):_("Failed"));    
     }
         
 }
 
 function display_navigation_bar () {
 ?>
-<p align="center"><input type="button" onclick="window.location.href='main.ns';" value="返回邮件查看界面" /></p>
+<p align="center"><input type="button" onclick="window.location.href='main.ns';" value="<?=_("Return to mainpage")?>" /></p>
 <?php    
 }
 

@@ -14,7 +14,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-<center><font size="+3"><?=_(""Log")?>-<?=_("Engine Running Status")?></font></center>
+<center><font size="+3"><?=_("Log")?>-<?=_("Engine Running Status")?></font></center>
 <H1><?=_("Engine Running Status")?></H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 <?=_("All & Each Engine running time:")?>

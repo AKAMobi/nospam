@@ -4,24 +4,24 @@ require_once ('funcs.ns');
 if ($_GET['file'])
     $fileName = trim ($_GET['file']);
 else
-    html_error (array ('缺少文件名!'), 0, 1, 1);
+    html_error (array (_("Lack of filename")), 0, 1, 1);
 
 if ($_GET['depth'])
     $depth = intval ($_GET['depth']);
 else
-    html_error (array ('缺少文件参数!'), 0, 1, 1);
+    html_error (array (_("Lack of file parameter")), 0, 1, 1);
 
 $idArr = array ();
 for ($i = 1 ; $i <= $depth ; $i ++) {
     if (isset ($_GET['id'.$i]))
         $idArr[$i] = intval ($_GET['id'.$i]);
     else
-        html_error (array ('缺少文件参数!'), 0, 1, 1);
+        html_error (array (_("Lack of file parameter")), 0, 1, 1);
 }
 
 $file = $currentUser->get_file ($fileName);
 if (!file_exists ($file))
-    html_error (array ('参数错误!'), 0, 1, 1);
+    html_error (array (_("Parameter error")), 0, 1, 1);
 
 $content = fread(fopen($file, 'r'), filesize($file));
 $nl = (strpos($content,"\r\n")?"\r\n":"\n");
@@ -36,7 +36,7 @@ $structure = $decode->decode($params);
 $buf = $structure;
 for ($i=1; $i <= $depth; $i ++) {
     if (!isset ($buf->parts[$idArr[$i]]))
-        html_error (array ('参数错误!'), 0, 1, 1);
+        html_error (array (_("Parameter error")), 0, 1, 1);
     $buf = $buf->parts[$idArr[$i]];
 }
 

@@ -100,7 +100,7 @@ if(count($keywords) == 0){
 }
 ?>
 </p>
-<p style="font-size: 12px"><b>数值规则</b><br>
+<p style="font-size: 12px"><b><?=("Number Rule")?></b><br>
 <?
 if(count($sizes) == 0){
     echo "无";
