@@ -42,6 +42,9 @@ sub new
 	$self->{define}->{home} = "/home/ssh/";
 	$self->{define}->{tmpdir} = "/tmp/";
 
+	# 用户过滤策略
+	$self->{define}->{user_filterdb} = "/home/NoSPAM/etc/UserFilterRule.xml";
+
 	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 	$self->{define}->{updatedb} = $self->{define}->{home} . "/Update/Update.Xml";
 
@@ -81,6 +84,28 @@ sub check_n_update
 	}
 	return $newfilenum;
 }
+
+sub get_user_filter_db
+{
+	my $self = shift;
+
+	my $filterdb_file = $self->{define}->{user_filterdb};
+
+	if ( !-f $filterdb_file ) {
+		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
+		print WDB <<_SPAMXML_ ;
+<rule-add-modify>
+	<rule rule_id="" />
+</rule-add-modify> 
+_SPAMXML_
+			close ( WDB );
+	}
+
+	my $xs = get_filterdb_xml_simple();
+
+	return $xs->XMLin( $filterdb_file );
+}
+
 
 sub get_filter_db
 {
@@ -132,10 +157,10 @@ sub merge_new_rule
 	}
 #	$ keys %{$filterdb->{'rule-add-modify'}->{'rule'}} )
 
-	use Data::Dumper;
 # 改变$转义、缩进
-	$Data::Dumper::Useperl = 1;
-	$Data::Dumper::Indent = 1;
+	#use Data::Dumper;
+	#$Data::Dumper::Useperl = 1;
+	#$Data::Dumper::Indent = 1;
 	#print Dumper($filterdb);
 
 

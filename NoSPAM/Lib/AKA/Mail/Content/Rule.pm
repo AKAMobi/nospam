@@ -44,16 +44,39 @@ sub get_match_rule
 	
 	my $mail_info = shift;
 
-	my $rule_id = check_all_rule( $self, $mail_info );
+	# check GA rule
+	my $rule_id = check_GA_rule( $self, $mail_info );
 
 	if ( $rule_id ){
-		$self->{zlog}->debug( "pf: rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
+		$self->{zlog}->debug( "pf: GA rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
 		return $self->{filterdb}->{$rule_id};
 	}
+
+	# check user rule
+	$rule_id = $self->check_user_rule( $mail_info );
+
+	if ( $rule_id ){
+		$self->{zlog}->debug( "pf: user rule id $rule_id info: \n" . Dumper($self->{user_filterdb}->{$rule_id}) ), 
+		return $self->{user_filterdb}->{$rule_id};
+	}
+
 	return undef;
 }
 
-sub load_filter_db
+sub load_user_filter_db
+{
+	my $self = shift;
+
+	if ( defined $self->{user_filterdb} ) { return; }
+	
+	$self->{user_filterdb} = $self->{conf}->get_user_filter_db();
+
+	# 得到以 rule_id 为 key 的表
+	$self->{user_filterdb} = $self->{user_filterdb}->{'rule-add-modify'}->{rule};
+}
+
+
+sub load_GA_filter_db
 {
 	my $self = shift;
 
@@ -65,32 +88,49 @@ sub load_filter_db
 	$self->{filterdb} = $self->{filterdb}->{'rule-add-modify'}->{rule};
 }
 
-sub check_all_rule
+sub check_GA_rule
 {
 	my $self = shift;
-
 	my $mail_info = shift;
 
-	$self->load_filter_db();
+	$self->load_GA_filter_db();
+
+	return $self->check_all_rule_backend('filterdb',$mail_info);
+}
+
+sub check_user_rule
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	$self->load_user_filter_db();
+
+	return $self->check_all_rule_backend('user_filterdb',$mail_info);
+}
+
+sub check_all_rule_backend
+{
+	my $self = shift;
+	my ($which_db,$mail_info) = @_;
 
 	my $has_rule;
-	foreach my $rule_id ( keys %{$self->{filterdb}} ){
+	foreach my $rule_id ( keys %{$self->{$which_db}} ){
 		next if ( ! $rule_id );
-		#$self->{zlog}->debug ( "pf: checking rule id: $rule_id..." );
+		$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 
 		$has_rule = 0;
-		if ( $self->{filterdb}->{$rule_id}->{attachment} ){
+		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
 			# 如果有相关的 rule，则必须匹配才可能符合
 			# 不匹配则 next
-			next until check_attachment_rule ( $self, $rule_id, $mail_info );
+			next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info );
 			$has_rule = 1;
 		}
-		if ( $self->{filterdb}->{$rule_id}->{size} ){
-			next until check_size_rule ( $self, $rule_id, $mail_info ) ;
+		if ( $self->{$which_db}->{$rule_id}->{size} ){
+			next until $self->check_size_rule ( $which_db, $rule_id, $mail_info ) ;
 			$has_rule = 1;
 		}
-		if ( $self->{filterdb}->{$rule_id}->{rule_keyword} ){
-			next until check_keyword_rule ( $self, $rule_id, $mail_info );
+		if ( $self->{$which_db}->{$rule_id}->{rule_keyword} ){
+			next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info );
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
@@ -104,12 +144,12 @@ sub check_all_rule
 sub check_attachment_rule
 {
 	my $self = shift;
-	my ($rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info) = @_;
 
 	# 没有附件，则不匹配任何附件规则
 	if ( ! $mail_info->{attachment} ) { return 0; }
 
-	my $attachment_rule = $self->{filterdb}->{$rule_id}->{attachment};
+	my $attachment_rule = $self->{$which_db}->{$rule_id}->{attachment};
 
 	# 如果没有规则，则认为匹配成功
 	return 1 if ( ! $attachment_rule );
@@ -130,9 +170,9 @@ sub check_attachment_rule
 sub check_size_rule
 {
 	my $self = shift;
-	my ($rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info) = @_;
 
-	my $size_rule = $self->{filterdb}->{$rule_id}->{size};
+	my $size_rule = $self->{$which_db}->{$rule_id}->{size};
 
 	return if ( ! $size_rule );
 
@@ -151,9 +191,9 @@ sub check_size_rule
 sub check_keyword_rule
 {
 	my $self = shift;
-	my ($rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info) = @_;
 
-	my $keyword_rule = $self->{filterdb}->{$rule_id}->{rule_keyword};
+	my $keyword_rule = $self->{$which_db}->{$rule_id}->{rule_keyword};
 
 	return if ( ! $keyword_rule );
 

@@ -80,7 +80,11 @@ sub get_action
 		# ȱʡΪ'/var/spool/uncmgw/Quarantines'
 		$param ||= '/var/spool/uncmgw/Quarantines';
 		if ( ! -d $param ){
-			$self->{zlog}->log ( "pf: quarantines dir not exist: [$param]" );
+			if ( `mkdir -p $param > /dev/null 2>&1` ){
+				$self->{zlog}->log ( "pf: quarantines dir not exist and FAIL to create: [$param]" );
+			}else{
+				$self->{zlog}->log ( "pf: quarantines dir not exist and created it: [$param]" );
+			}
 		}
 	}elsif ( 4==$action ){
 		# FIXME 
