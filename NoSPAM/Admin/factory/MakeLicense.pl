@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 
 $prodno = $ARGV[0];
+die "pls provide prodno\n" unless $prodno ;
 
 $License = <<_LICENSE_;
 ServerGatewaySwitchable=N
@@ -21,11 +22,11 @@ sub make_license
 
         $license_data = $AL->get_valid_license( $prodno );
 
-        $license_ret = $license_orig . "\nProductLicense=$license_data\n";
+        $license_ret = $license_orig . "\nProductLicense=$license_data";
 
         $license_checksum = $AL->get_checksum($license_ret);
 
-        $license_ret .= "ProductLicenseExt=$license_checksum";
+        $license_ret .= "\nProductLicenseExt=$license_checksum";
 
         return $license_ret;
 }
