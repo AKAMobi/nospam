@@ -119,29 +119,30 @@ function display_mail_list ($mailList,$start) {
 <center>
 <table cellspacing="0" cellpadding="3" border="1" width="95%">
 	<tr>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>编号</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>隔离原因</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>隔离时间</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>收件人</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>发件人</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>主题</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>尺寸</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>察看</b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b>动作: </b></font> 
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>编号</nobr></b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>隔离原因</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>隔离时间</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>收件人</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>发件人</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>主题</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>尺寸</b></nobr></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>察看</b></nobr></font></td>
+		<td bgcolor="#000000"><nobr><font color="#FFFFFF"><b>动作: </b></font> 
 		<input type="radio" value="D" name="action" id="actionDrop" /><font color="#FFFFFF">丢弃 
-		</font> 
+		</font>
 		<input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回 
 		</font> 
 		<input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发 
 		</font> 
-		<input type="radio" value="F" name="action" /><font color="#FFFFFF">转发</font></td>
+		<input type="radio" value="F" name="action" /><font color="#FFFFFF">转发</font></nobr></td>
+	
 	</tr>
 <?php
     for ($i = 0 ; $i < sizeof ($mailList) ; $i ++) {
 ?>
 	<tr onmouseover="change(this)"   onmouseout="restore(this)">
 		<td><?php echo $i+$start; ?></td>
-		<td><?php echo $mailList[$i]['REASON']; ?></td>
+		<td><?php echo $mailList[$i]['TYPE'].': '.$mailList[$i]['REASON']; ?></td>
 		<td><?php echo date ('Y-m-d H:i:s', $mailList[$i]['TIME']); ?></td>
 		<td><?php echo implode ('<br/>', $mailList[$i]['TO']); ?></td>
 		<td><i><?php echo $mailList[$i]['FROM']; ?></i></td>

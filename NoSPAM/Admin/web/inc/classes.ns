@@ -750,11 +750,11 @@ class EmailUser {
                 continue;
             list ($x, $x, $x, $time, $pid, $info) = explode ('.', $file);
             if (strcmp ($info, QUARANTINEINFOSUFFIX)==0) { // mail infor file
-                $this->fullMailList[$pid.$time]['INFO'] = $file;
+                $this->fullMailList[$pid.$time]['INFO'] = substr ($file, strlen(QUARANTINEFILEPREFIX));
             }
             else {
                 $this->fullMailList[$pid.$time]['TIME'] = $time;
-                $this->fullMailList[$pid.$time]['FILE'] = $file;
+                $this->fullMailList[$pid.$time]['FILE'] = substr ($file, strlen (QUARANTINEFILEPREFIX));
                 $this->fullMailList[$pid.$time]['PID'] = $pid;
             }
         }
@@ -777,7 +777,7 @@ class EmailUser {
     function get_file ($file) {
         if (strstr ($file, '..'))
             exit ('parameter error');
-        return $this->path . '/' . $file;    
+        return $this->path . '/' . QUARANTINEFILEPREFIX . $file;    
     }
     
     function get_dir_size ($dir) {
