@@ -283,7 +283,7 @@ $logstr .= "emlfilename: [$_]\n";
 s/\0/\\0/g;
 $logstr .= "fd1: $_\n";
 
-$self->{zlog}->debug ( $logstr );
+#$self->{zlog}->debug ( $logstr );
 
 	$self->{mail_info};
 }
@@ -326,8 +326,8 @@ sub send_mail_info_ex
 	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
 
 #print "after process, before send\n";
-$self->{zlog}->debug( "send_mail_info smtp_code: [$smtp_code],"
-	. "smtp_info: [$smtp_info], exit_code:[$exit_code]" );
+#$self->{zlog}->debug( "send_mail_info smtp_code: [$smtp_code],"
+#	. "smtp_info: [$smtp_info], exit_code:[$exit_code]" );
 
 
 #	if ( $self->{license_ok} ){
@@ -369,7 +369,7 @@ $logstr .= "emlfilename: [$_]\n";
 s/\0/\\0/g;
 $logstr .= "fd1: $_\n";
 
-$self->{zlog}->log ( $logstr );
+#$self->{zlog}->log ( $logstr );
 
 	$self->{mail_info};
 }
@@ -1202,52 +1202,45 @@ sub spam_engine
 						$self->{mail_info}->{aka}->{returnpath}
 						 );
 
-	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
-		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
-							desc	=>'未启用',
-							action	=>ACTION_PASS,
-                      				enabled => 0,
-                      				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
-						dns_query_time => 0
-		};
-		return;
-	}
-
+	my ( $is_spam, $reason, $dns_query_time ) = ();
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 1;
-	
-	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
-		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
-							desc	=>'可追查检查',
-							action	=>ACTION_PASS,
-                      				enabled => 1,
-                      				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
-						dns_query_time => 0
-		};
-		return;
+
+	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
+		$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 0;
+
+		$is_spam = RESULT_SPAM_NOT;
+		$reason = '未启用';
+	}
+	elsif ( $self->{mail_info}->{aka}->{RELAYCLIENT} ) { # 内部RELAY
+		$is_spam = RESULT_SPAM_NOT;
+		$reason = '可追查检查';
 
 	}
+	elsif ( $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){ # 认证用户
+		my $auth_user = $self->{mail_info}->{aka}->{TCPREMOTEINFO};
 
-	#$returnpath ||= $mailfrom;
-	unless ( length($client_smtp_ip) && length($returnpath) )
-	{
-		#$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
+		$auth_user .= '@' . $self->{conf}->{config}->{MailServer}->{MailHostName}
+			unless ( $auth_user =~ /\@/ );
+		
+		if ( $auth_user eq $returnpath ){
+			$is_spam = RESULT_SPAM_NOT;
+			$reason = '认证用户';
+		}else{
+			$is_spam = RESULT_SPAM_MAYBE;
+			$reason = '发信人非身份认证用户';
+		}
 
-		$self->{mail_info}->{aka}->{engine}->{spam} = { result	=> RESULT_SPAM_MAYBE,
-								desc 	=> '参数不足',
-								action	=> ACTION_PASS,
-                      				enabled => 1,
-                      				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
-						dns_query_time => 0
-		};
-		return;
 	}
-
-	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
+		$is_spam = RESULT_SPAM_MAYBE;
+		$reason = '邮件格式伪造';
+	}
+	else{
+		( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	}
 
 	my $action = ACTION_PASS;
+
 	if ( $is_spam ) {
 		if ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ){
 			$action = ACTION_REJECT; # 1、reject
@@ -1725,7 +1718,12 @@ sub get_mail_base_info
       		$one_recip=$trecips if ($trecips !~ /\0T/);
       		$recips =~ s/\0T/\,/g;
 	}
- 
+
+#if ( $subject eq 'ZIXIA' ){
+#	$self->{zlog}->log ( "ZIXIA SMTP MAIL FROM: [$returnpath] HEADER From: [$mail_from] ReturnPath [$return_path]" );
+#	$self->{zlog}->log ( "ZIXIA AUTH: [" . $self->{mail_info}->{aka}->{TCPREMOTEINFO} . "]");
+#}
+
 	$self->{mail_info}->{aka}->{subject} = $subject;
 	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
 
