@@ -388,22 +388,34 @@ sub check_single_size_rule
 	return 0;
 } 
 
+#
+# ¼ì²é£º1¡¢Ä£ºý£¬2¡¾«È·£¬3¡¢ÕýÔòÆ¥Åä
+#
 sub check_re_match
 {
 	my $self = shift;
-	my ( $content, $re, $is_re ) = @_;
+	my ( $content, $match_keyword, $match_type ) = @_;
 
-	if ( ! defined $re || ! defined $is_re || ! defined $content ){
+	if ( ! defined $match_keyword || ! defined $match_type || ! defined $content ){
 		#$self->{zlog}->fatal ( "error: check_regex not enough param. re: $re, is_re: $is_re, content: $content" );
 		return 0;
 	}
 
-	if ( $is_re ){
-		return ( $content=~/$re/ );
+	#FIXME: 0 & 9 should not use RE match
+	if ( 0==$match_type ){
+		#×Ö·û´®Ä£ºýÆ¥Åä
+#print "in [$content] find [$match_keyword], result: " . "[" . index($content,$match_keyword) . "]\n\n\n";
+		#return ( -1 != rindex($content,$match_keyword) );
+		return ( $content=~/$match_keyword/ );
+	}elsif( 1==$match_type ){
+		#ÕýÔòÆ¥Åä
+		return ( $content=~/$match_keyword/ );
+	}elsif( 9==$match_type ){
+		#×Ö·û´®¾«È·Æ¥Åä
+		#return ( -1 != index($content,$match_keyword) );
+		return ( $content=~/$match_keyword/ );
 	}
-	# XXX ×Ö·û´®Ä£ºýÆ¥ÅäÒ²ÓÃÕýÔò£¿
-	return ( $content=~/$re/ );
-		
+
 }
 
 sub check_single_keyword_rule
@@ -432,8 +444,9 @@ sub check_single_keyword_rule
 	}elsif ( 6==$match_key ){ #6ÐÅÌå°üº¬¹Ø¼ü×Ö
 		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
 	}elsif ( 7==$match_key ){ #7È«ÎÄ°üº¬¹Ø¼ü×Ö
-		return ( check_re_match ( $self, $mail_info->{head}->{content} . $mail_info->{body_text}, $match_keyword, $match_type ) &&
-				check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type ) );
+		return (    	    check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type )
+				||  check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type )
+			);
 	}elsif ( 8==$match_key ){ #8¸½¼þ°üº¬¹Ø¼ü×Ö
 		#FIXME µ±Ç°ÊÇÆ¥ÅäÎÄ¼þÃû¶ø²»ÊÇÄÚÈÝ
 		foreach my $filename ( keys %{$mail_info->{body}} ){

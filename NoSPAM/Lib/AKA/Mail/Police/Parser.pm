@@ -42,9 +42,9 @@ sub new
 	#$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
 
 	$self->{mime_parser}->output_dir($tmpdir);
-	$self->{mime_parser}->output_prefix("AMC-$$-");
+	$self->{mime_parser}->output_prefix("AMC");
 
-	$self->{prefix} = "AMC-$$-";
+	$self->{prefix} = "AMC";
 
 
 	# 文件类型
@@ -142,10 +142,6 @@ sub get_head_info
 		return;
 	}
 
-	my $content = $head->stringify || "";
-	$self->{mail_info}->{head}->{content} = $content;
-	$self->{mail_info}->{head_size} = length( $content );
-
 	#FIXME: here make a copy of head instead of make change of original entity;
 	#my $head_decoded = $head;
 	#$head = $head_decoded;
@@ -154,30 +150,41 @@ sub get_head_info
 	$head->decode;
 	$head->unfold;
 
+	# now we get decoded content
+	my $content = $head->stringify || "";
+	$self->{mail_info}->{head}->{content} = $content;
+	$self->{mail_info}->{head_size} = length( $content );
+
+
 	# TO/CC/BCC 总共接收的人数
+	my ($to,$from,$cc,$bcc);
 	my $num_receivers = 0;
 
-	$self->{mail_info}->{head}->{from} = $head->get('From');
+	$from = $head->get('From') || '';
+	$from =~ s/\n$//;
+	$self->{mail_info}->{head}->{from} = $from;
 
-	$self->{mail_info}->{head}->{to} = $head->get('To');
-	$num_receivers += scalar split(/,/,$head->get('To'));
+	$to = $head->get('To') || '';
+	$to =~ s/\n$//;
+	$self->{mail_info}->{head}->{to} = $to; 
+	$num_receivers += scalar (@_=
+					split(/,/,$to)
+				);
 
-#$self->{zlog}->log( "$$ to receivers: ". $self->{mail_info}->{head}->{to} );
-#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
+	$cc = $head->get('CC') || '';
+	$self->{mail_info}->{head}->{cc} = $cc;
+	$num_receivers += scalar (@_=
+					split(/,/,$cc)
+				);
 
-	$self->{mail_info}->{head}->{cc} = $head->get('CC');
-	$num_receivers += scalar split(/,/,$head->get('CC'));
-#$self->{zlog}->log( "$$ cc receivers: ". $self->{mail_info}->{head}->{cc} );
-#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
-
-	$num_receivers += scalar split(/,/,$head->get('BCC'));
-	$self->{mail_info}->{head}->{bcc} = $head->get('BCC');
-#$self->{zlog}->log( "$$ bcc receivers: ".  $self->{mail_info}->{head}->{bcc});
-#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
+	$bcc = $head->get('BCC') || '';
+	$self->{mail_info}->{head}->{bcc} = $bcc;
+	$num_receivers += scalar (@_=
+					split(/,/,$bcc)
+				);
 
 	# get all to+cc+bcc
 	$self->{mail_info}->{to_cc_bcc_num} = $num_receivers;
-#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
 
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};
@@ -235,7 +242,7 @@ sub get_body_info
 
                 if ( !defined $filename ){
                         $filename = $path;
-			$prefix = $self->{prefix} || "AKA-MailFilter-$$";
+			$prefix = $self->{prefix} || "AMC";
 
                         $filename =~ s/^.*\/$prefix\-//g;
 			$self->{mail_info}->{body}->{$filename}->{nofilename} = 1;
