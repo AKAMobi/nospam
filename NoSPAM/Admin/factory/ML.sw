@@ -14,16 +14,17 @@ ExpireDate=2004-8-1
 Version=2
 
 FactoryName=思维世纪
-ProductName=iXRay
+ProductName=iXRay高速反垃圾邮件网关
 ProductSN=$prodno
 
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
 
-LicenseHTML=<b>客户试用体验(非销售)版</b>
+LicenseHTML=<b>广州客户试用体验(非销售)版</b>
 
 MailGateway=100
 DynamicEngine=100
+AntiVirusEngine=100
 SpamEngine=100
 ContentEngine=100
 GAInterface=100

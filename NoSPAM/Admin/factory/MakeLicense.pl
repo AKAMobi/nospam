@@ -39,11 +39,10 @@ ArchiveEngine=100
 InteractiveEngine=100
 GAInterface=100
 
-
-#独立服务器的License限制；
 MailServerMaxUser=1000
 MailServerMaxDomain=10
-MailServerMaxQuota=30000000
+#10G = 10737418240
+MailServerMaxQuota=10737418240
 
 _LICENSE_
 
