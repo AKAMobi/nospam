@@ -59,12 +59,10 @@ if ($process) {
         exit ('System Error!');
 }
 
-$pageNo = intval ($_POST['pn']);
-$pageSize = intval ($_POST['ps']);
+$pageNo = intval ($_POST['pn']?$_POST['pn']:$_GET['pn']);
+$pageSize = intval ($_POST['ps']?$_POST['ps']:$_GET['ps']);
 $pageTool = new PageTool ($pageNo, $currentUser->mailCnt, $pageSize);
 $currentUser->maillist ($pageTool->start, $pageTool->num);
-
-
 
 html_init ();
 

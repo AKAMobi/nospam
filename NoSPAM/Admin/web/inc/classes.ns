@@ -775,6 +775,8 @@ class EmailUser {
     }
     
     function get_file ($file) {
+        if (strstr ($file, '..'))
+            exit ('parameter error');
         return $this->path . '/' . $file;    
     }
     
