@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-12 23:15+0800\n"
+"POT-Creation-Date: 2004-06-13 00:46+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: ../Bin/NoSPAM.pl:233
 msgid "Can't create directory for upgrade"
-msgstr "无法建立省级目录"
+msgstr "无法建立升级目录"
 
 #: ../Bin/NoSPAM.pl:235
 msgid "Please specify upgrade package name."
@@ -42,7 +42,7 @@ msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
 
 #: ../Bin/NoSPAM.pl:263
 msgid "System version higher then current upgrade package, can't downgrade."
-msgstr "当前系统已经使用过比当前升级包版本高的升级包，无法降级。"
+msgstr "系统已经安装过更高的升级包，无法降级。"
 
 #: ../Bin/NoSPAM.pl:271 ../Bin/NoSPAM.pl:278 ../Bin/NoSPAM.pl:287
 msgid "System internal error"
@@ -53,7 +53,7 @@ msgid "Upgrade package checksum error"
 msgstr "升级包校验和错误"
 
 #: ../Bin/NoSPAM.pl:318
-msgid "upgrade successful finished."
+msgid "upgrade successful."
 msgstr "升级完成。"
 
 #: ../Bin/NoSPAM.pl:346
@@ -93,9 +93,147 @@ msgid "License expired"
 msgstr "当前许可证无效或已经过期！"
 
 #: ../Lib/AKA/License.pm:242
-msgid "License will expired in "
+msgid "License will expired after "
 msgstr "许可证将在"
 
 #: ../Lib/AKA/License.pm:242
 msgid " days, please upload valid license."
 msgstr "天后过期。"
+
+#: ../Lib/AKA/Mail.pm:470
+msgid "Sorry, System had no valid license now, It still can't work.\n"
+msgstr "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n"
+
+#: ../Lib/AKA/Mail.pm:558
+msgid "Sorry, due to "
+msgstr "对不起，由于 "
+
+#: ../Lib/AKA/Mail.pm:559
+msgid "Security Policy"
+msgstr "安全策略"
+
+#: ../Lib/AKA/Mail.pm:560
+msgid "System reject your mail."
+msgstr "系统拒收您的邮件。"
+
+#: ../Lib/AKA/Mail.pm:607 ../Lib/AKA/Mail.pm:615 ../Lib/AKA/Mail.pm:623
+#: ../Lib/AKA/Mail.pm:631 ../Lib/AKA/Mail.pm:639
+msgid "not run"
+msgstr "未运行"
+
+#: ../Lib/AKA/Mail.pm:888
+msgid "[Black List]"
+msgstr "【黑名单】"
+
+#: ../Lib/AKA/Mail.pm:894
+msgid "[VIRUS "
+msgstr "【病毒 "
+
+#: ../Lib/AKA/Mail.pm:894
+msgid "]"
+msgstr "】"
+
+#: ../Lib/AKA/Mail.pm:994 ../Lib/AKA/Mail.pm:1122 ../Lib/AKA/Mail.pm:1244
+#: ../Lib/AKA/Mail.pm:1380 ../Lib/AKA/Mail.pm:1583
+msgid "OFF"
+msgstr "未启用"
+
+#: ../Lib/AKA/Mail.pm:1013
+msgid "Need not check outgoing mail"
+msgstr "内向外未检查"
+
+#: ../Lib/AKA/Mail.pm:1029
+msgid "Need not check incoming mail"
+msgstr "外向内未检查"
+
+#: ../Lib/AKA/Mail.pm:1051
+msgid "This mail is not in circle of check"
+msgstr "采样抽签未中"
+
+#: ../Lib/AKA/Mail.pm:1138
+msgid "not set"
+msgstr "未设置"
+
+#: ../Lib/AKA/Mail.pm:1191
+msgid "not fit condition"
+msgstr "未符合条件"
+
+#: ../Lib/AKA/Mail.pm:1203
+msgid "internal error"
+msgstr "内部错误"
+
+#: ../Lib/AKA/Mail.pm:1216
+msgid "commited"
+msgstr "已提交"
+
+#: ../Lib/AKA/Mail.pm:1235
+msgid "AntiSpam Engine"
+msgstr "垃圾识别引擎"
+
+#: ../Lib/AKA/Mail.pm:1248
+msgid "Traceable"
+msgstr "可追查检查"
+
+#: ../Lib/AKA/Mail.pm:1258
+msgid "Authed user"
+msgstr "认证用户"
+
+#: ../Lib/AKA/Mail.pm:1264
+msgid "Sender must as same as auth user"
+msgstr "发信人非身份认证用户"
+
+#: ../Lib/AKA/Mail.pm:1400
+msgid "outgoing mail is not limited"
+msgstr "内向外未限制"
+
+#: ../Lib/AKA/Mail.pm:1416
+msgid "incoming mail is not limited"
+msgstr "外向内未限制"
+
+#: ../Lib/AKA/Mail.pm:1445
+msgid "Sender white list"
+msgstr "发信人白名单"
+
+#: ../Lib/AKA/Mail.pm:1460
+msgid "Mail sender"
+msgstr "发信人"
+
+#: ../Lib/AKA/Mail.pm:1477
+msgid "Mail subject white list"
+msgstr "邮件主题白名单"
+
+#: ../Lib/AKA/Mail.pm:1492
+msgid "Mail"
+msgstr "邮件"
+
+#: ../Lib/AKA/Mail.pm:1511
+msgid "white list"
+msgstr "白名单"
+
+#: ../Lib/AKA/Mail.pm:1539
+msgid "Overrun check was passed"
+msgstr "通过动态监测"
+
+#: ../Lib/AKA/Mail.pm:1603
+msgid "Outgoing mail need not filter"
+msgstr "内向外未过滤"
+
+#: ../Lib/AKA/Mail.pm:1619
+msgid "Incoming mail need not filter"
+msgstr "外向内未过滤"
+
+#: ../Lib/AKA/Mail.pm:1636
+msgid "Maximum size excceed"
+msgstr "尺寸超过配置最大值"
+
+#: ../Lib/AKA/Mail.pm:1662
+msgid "System has no valid license now"
+msgstr "本设备尚无可用许可证"
+
+#: ../Lib/AKA/Mail.pm:1698 ../Lib/AKA/Mail.pm:1708 ../Lib/AKA/Mail.pm:1713
+msgid "License error "
+msgstr "许可证错误"
+
+#: ../Lib/AKA/Mail.pm:1734
+msgid "License valid!"
+msgstr "许可证有效！"
