@@ -702,6 +702,9 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 		</TD>
 	</TR>
 	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/analyze.ns">“˝«Ê∑÷Œˆ</A>
 		</TD>
@@ -792,11 +795,11 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
-	<!--TR>
+	<TR>
 		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISC…Ë÷√</A>
 		</TD>
-	</TR-->
+	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
