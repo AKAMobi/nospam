@@ -69,8 +69,6 @@ $self->{GAISC} = &get_conf;
 my $socket = &_connect_ga;
 
 my $result;
-$result  = GAISC_get_alt_result( '200007230945560001.alt' );
-print "alt result: $result \n";
 
 close $socket;
 $socket = &_connect_ga;
@@ -78,10 +76,15 @@ $result = GAISC_get_ftp_info();
 print "ftp info: \n" . Dumper ( $result );
 
 
+$result  = GAISC_get_alt_result( '200007230945560001.alt' );
+print "alt result: $result \n";
+
 close $socket;
 $socket = &_connect_ga;
 $result  = GAISC_get_log_result( '200007230945560001.log' );
 print "log result: $result \n";
+
+exit;
 
 GAISC_server();
 
@@ -118,6 +121,7 @@ sub GAISC_server
 
 	use POSIX ":sys_wait_h";
 
+=pod
 	my $childnum;
 	for ( $childnum=0; $childnum<5; $childnum++ ){
 		$pid=fork();
@@ -133,11 +137,13 @@ sub GAISC_server
 			print "ERR: fork\n";
 		}
 	}
+=cut
+	$pid = 0;
 
 	while ( 0==$pid ){
 
 		$client = $server->accept;
-		print "I'm the $childnum th child\n";
+		#print "I'm the $childnum th child\n";
 
 		if (!$client) {
 			# this can happen when interrupted by SIGCHLD on Solaris,

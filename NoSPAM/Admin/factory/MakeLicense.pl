@@ -5,11 +5,11 @@ die "pls provide prodno\n" unless $prodno ;
 
 $License = <<_LICENSE_;
 ForSell=No
-ExpireDate=2004-3-1
+ExpireDate=2004-8-1
 Version=2
 
-FactoryName=测试部
-ProductName=测试版
+FactoryName=四维世纪
+ProductName=iXRay
 
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay,Tailer
