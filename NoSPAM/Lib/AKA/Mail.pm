@@ -1416,7 +1416,7 @@ sub check_license_file
 			$license_data = $1;
 			$license_data =~ s/\s*//g;
 		}elsif ( /^LicenseHTML=(.+)$/ ){
-			$LicenseHTML = $1;
+			$LicenseHTML = $1 . '<br>';
 		}elsif ( /^HardwareLicense=(.+)$/ ){
 			$hardware_license = $1;
 		}elsif ( /^ExpireDate=(.+)$/ ){
