@@ -290,7 +290,6 @@ class ConfFile
 	function save()
 	{
 		if(!adminPerm(PERM_ADMIN_WRITE)){
-		_("You have not permission to modify system config")
 			echo _("You have not permission to modify system config");
 			return;
 		}
