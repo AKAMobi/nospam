@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# 2004-12-31 by zixia
+# upgrade to clamav 0.80, ÎÄ¼þ·ÏÆú
+exit 0
 #
 # freshclam      Start/Stop the freshclam.
 #
