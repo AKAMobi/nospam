@@ -36,7 +36,7 @@ function popmenu(ss,ii)
 </SCRIPT>
 </head>
 
-<body bgColor="#cccccc" leftMargin="0" topMargin="0">
+<body leftMargin="0" topMargin="0">
 <table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
 <TR>
 <TD class="mu" height="20">
