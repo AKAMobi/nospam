@@ -19,7 +19,7 @@ sub new
 
 	bless $self, $class;
 
-	$self->{define}->{rrdfile} = '/home/NoSPAM/etc/nospam.rrd';
+	$self->{define}->{rrdpath} = '/home/NoSPAM/var/rrd/';
 	$self->{define}->{gifpath} = "/home/NoSPAM/admin/status/";
 	return $self;
 }
@@ -30,37 +30,74 @@ sub gen_gif
 	
 	my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 
-	my $rrdfile = $self->{define}->{rrdfile};
-	my $gifpath = $self->{define}->{gifpath};
+	#my $rrdfile = $self->{define}->{rrdfile};
+
+	my $rrdgraph_func = {};
+	my $rrdgraph_param = {};
 
 	my ( $start_time,$end_time,@vrules );
 
-	( $start_time,$end_time,@vrules ) = $self->get_day_param;
+	#( $start_time,$end_time,@vrules ) = $self->get_day_param;
+	my @day_params = $self->get_day_param;
+	$rrdgraph_param->{day} = \@day_params;
+	my @week_params = $self->get_week_param;
+	$rrdgraph_param->{week} = \@week_params;
+	my @month_params = $self->get_month_param;
+	$rrdgraph_param->{month} = \@month_params;
+	my @year_params = $self->get_year_param;
+	$rrdgraph_param->{year} = \@year_params;
+
+	$rrdgraph_func->{mail_size} = \&rrdgraph_size;
+	$rrdgraph_func->{mail_traffic} = \&rrdgraph_traffic;
+	$rrdgraph_func->{mail_engine} = \&rrdgraph_engine;
+	$rrdgraph_func->{mail_type} = \&rrdgraph_type;
+	$rrdgraph_func->{dns} = \&rrdgraph_dns;
+
+	my $rrdpath = $self->{define}->{rrdpath};
+	my $gifpath = $self->{define}->{gifpath};
+
+	foreach my $name ( keys %$rrdgraph_func ){
+		foreach my $period ( keys %$rrdgraph_param ){
+			my $rrdfile = $rrdpath . $name . '.rrd';
+			my $giffile = $gifpath . $name . "-$period.gif";
+			my @params = @{$rrdgraph_param->{$period}};
+#print "gen gif : $name , $rrdfile, $giffile, $period, " . join (',',@params) . "\n";
+			&{$rrdgraph_func->{$name}}( $self, $rrdfile, $giffile, $now, @params );
+
+			my $err=RRDs::error;
+			if ($err) {print "problem generating the graph: $err\n";}
+		}
+	}
+
+=pod
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-day.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-day.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-day.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-day.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_dns($rrdfile, $gifpath . 'dns-day.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_week_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-week.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-week.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-week.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-week.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_dns($rrdfile, $gifpath . 'dns-week.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_month_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-month.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-month.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-month.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-month.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_dns($rrdfile, $gifpath . 'dns-month.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_year_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-year.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-year.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-year.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-year.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_dns($rrdfile, $gifpath . 'dns-year.gif', $now, $start_time, $end_time, @vrules);
+=cut
 
-	my $err=RRDs::error;
-	if ($err) {print "problem generating the graph: $err\n";}
 }
 
 sub get_day_param
@@ -125,11 +162,10 @@ sub get_year_param
 sub create_rrd
 {
 	my $self = shift;
-	my $file = $self->{define}->{rrdfile};
+	my $rrdpath = $self->{define}->{rrdpath};
 
 	RRDs::create(
-		$file
-	#	,'--step 300'
+		"$rrdpath/mail_type.rrd"
             	,'DS:num_all:GAUGE:600:U:U'
             	,'DS:num_ok:GAUGE:600:U:U'
             	,'DS:num_in:GAUGE:600:U:U'
@@ -141,12 +177,56 @@ sub create_rrd
             	,'DS:num_overrun:GAUGE:600:U:U'
             	,'DS:num_archive:GAUGE:600:U:U'
 
+            	,'RRA:MIN:0.5:1:600'
+            	,'RRA:MIN:0.5:6:700'
+            	,'RRA:MIN:0.5:24:775'
+            	,'RRA:MIN:0.5:288:797'
+            	,'RRA:AVERAGE:0.5:1:600'
+            	,'RRA:AVERAGE:0.5:6:700'
+            	,'RRA:AVERAGE:0.5:24:775'
+            	,'RRA:AVERAGE:0.5:288:797'
+            	,'RRA:MAX:0.5:1:600'
+            	,'RRA:MAX:0.5:6:700'
+            	,'RRA:MAX:0.5:24:775'
+            	,'RRA:MAX:0.5:288:797'
+
+	);
+	my $ERR = RRDs::error;
+	if ( $ERR ){
+		die "RRDs mail_type.rrd err: $ERR\n";
+	}
+
+
+	RRDs::create(
+		"$rrdpath/mail_traffic.rrd"
             	,'DS:size_all:GAUGE:600:U:U'
             	,'DS:size_in:GAUGE:600:U:U'
             	,'DS:size_out:GAUGE:600:U:U'
             	,'DS:size_in_ok:GAUGE:600:U:U'
             	,'DS:size_out_ok:GAUGE:600:U:U'
 
+            	,'RRA:MIN:0.5:1:600'
+            	,'RRA:MIN:0.5:6:700'
+            	,'RRA:MIN:0.5:24:775'
+            	,'RRA:MIN:0.5:288:797'
+            	,'RRA:AVERAGE:0.5:1:600'
+            	,'RRA:AVERAGE:0.5:6:700'
+            	,'RRA:AVERAGE:0.5:24:775'
+            	,'RRA:AVERAGE:0.5:288:797'
+            	,'RRA:MAX:0.5:1:600'
+            	,'RRA:MAX:0.5:6:700'
+            	,'RRA:MAX:0.5:24:775'
+            	,'RRA:MAX:0.5:288:797'
+
+	);
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		die "RRDs mail_traffic.rrd err: $ERR\n";
+	}
+
+	RRDs::create(
+		"$rrdpath/mail_size.rrd"
+            	,'DS:num_all:GAUGE:600:U:U'
             	,'DS:size_4K:GAUGE:600:U:U'
             	,'DS:size_16K:GAUGE:600:U:U'
             	,'DS:size_32K:GAUGE:600:U:U'
@@ -158,7 +238,28 @@ sub create_rrd
             	,'DS:size_5M:GAUGE:600:U:U'
             	,'DS:size_10M:GAUGE:600:U:U'
             	,'DS:size_gt10M:GAUGE:600:U:U'
+
+            	,'RRA:MIN:0.5:1:600'
+            	,'RRA:MIN:0.5:6:700'
+            	,'RRA:MIN:0.5:24:775'
+            	,'RRA:MIN:0.5:288:797'
+            	,'RRA:AVERAGE:0.5:1:600'
+            	,'RRA:AVERAGE:0.5:6:700'
+            	,'RRA:AVERAGE:0.5:24:775'
+            	,'RRA:AVERAGE:0.5:288:797'
+            	,'RRA:MAX:0.5:1:600'
+            	,'RRA:MAX:0.5:6:700'
+            	,'RRA:MAX:0.5:24:775'
+            	,'RRA:MAX:0.5:288:797'
+
+	);
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		die "RRDs mail_size.rrd err: $ERR\n";
+	}
 				
+	RRDs::create(
+		"$rrdpath/mail_engine.rrd"
             	,'DS:time_all:GAUGE:600:U:U'
             	,'DS:time_virus:GAUGE:600:U:U'
             	,'DS:time_spam:GAUGE:600:U:U'
@@ -173,6 +274,27 @@ sub create_rrd
             	,'DS:cpu_overrun:GAUGE:600:U:U'
             	,'DS:cpu_archive:GAUGE:600:U:U'
 
+            	,'RRA:MIN:0.5:1:600'
+            	,'RRA:MIN:0.5:6:700'
+            	,'RRA:MIN:0.5:24:775'
+            	,'RRA:MIN:0.5:288:797'
+            	,'RRA:AVERAGE:0.5:1:600'
+            	,'RRA:AVERAGE:0.5:6:700'
+            	,'RRA:AVERAGE:0.5:24:775'
+            	,'RRA:AVERAGE:0.5:288:797'
+            	,'RRA:MAX:0.5:1:600'
+            	,'RRA:MAX:0.5:6:700'
+            	,'RRA:MAX:0.5:24:775'
+            	,'RRA:MAX:0.5:288:797'
+
+	);
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		die "RRDs mail_engine.rrd err: $ERR\n";
+	}
+				
+	RRDs::create(
+		"$rrdpath/dns.rrd"
             	,'DS:dns_success:COUNTER:600:U:U'
             	,'DS:dns_referral:COUNTER:600:U:U'
             	,'DS:dns_nxrrset:COUNTER:600:U:U'
@@ -194,9 +316,9 @@ sub create_rrd
             	,'RRA:MAX:0.5:288:797'
 	);
 
-	my $ERR = RRDs::error;
+	$ERR = RRDs::error;
 	if ( $ERR ){
-		die "RRDs err: $ERR\n";
+		die "RRDs dns.rrd err: $ERR\n";
 	}
 }
 
@@ -215,9 +337,9 @@ sub rrdgraph_size
 			#"--color=SHADEB#9999CC",
 			"--height=200",        
 			"--width=500",        
-			"--upper-limit=40",  
+			"--upper-limit=20",  
 			"--lower-limit=0",   
-			"--lazy",
+			#"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 
@@ -416,6 +538,150 @@ sub rrdgraph_size
 
 }
 
+sub rrdgraph_dns
+{
+	my $self = shift;
+	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
+#print "rrdfile: $rrdfile, giffile: $giffile, now: $now, start_time: $start_time, end_time: $end_time, vrules: [" . join(',', @vrules) . "]\n" ;
+
+	RRDs::graph ("$giffile", 
+			"--title=DNS Status",  
+			"--vertical-label=Query per Minute", 
+			"--start=$start_time",      
+			"--end=$end_time",        
+			#"--color=BACK#CCCCCC",   
+			#"--color=CANVAS#CCFFFF",
+			#"--color=SHADEB#9999CC",
+			"--height=200",        
+			"--width=500",        
+			"--upper-limit=20",  
+			"--lower-limit=-10",   
+			#"--lazy",
+			#"--rigid",          
+			#"--base=1024",     
+
+#			($ds->{success},$ds->{referral},$ds->{nxrrset},$ds->{nxdomain},$ds->{recursion},$ds->{failure});
+			"DEF:dns_success_raw=$rrdfile:dns_success:AVERAGE", 
+			"CDEF:dns_success_pm=dns_success_raw,5,/",
+			"CDEF:dns_success_prev1=PREV(dns_success_pm)",
+			"CDEF:dns_success_prev2=PREV(dns_success_prev1)",
+			"CDEF:dns_success_prev3=PREV(dns_success_prev2)",
+			"CDEF:dns_success=dns_success_prev1,dns_success_prev2,dns_success_prev3,+,+,3,/",
+
+			"DEF:dns_recursion_raw=$rrdfile:dns_recursion:AVERAGE", 
+			"CDEF:dns_recursion_pm=dns_recursion_raw,5,/",
+			"CDEF:dns_recursion_prev1=PREV(dns_recursion_pm)",
+			"CDEF:dns_recursion_prev2=PREV(dns_recursion_prev1)",
+			"CDEF:dns_recursion_prev3=PREV(dns_recursion_prev2)",
+			"CDEF:dns_recursion=dns_success,dns_recursion_prev1,dns_recursion_prev2,dns_recursion_prev3,+,+,3,/,+",
+
+
+			"DEF:dns_referral_raw=$rrdfile:dns_referral:AVERAGE", 
+			"CDEF:dns_referral_pm=dns_referral_raw,5,/",
+			"CDEF:dns_referral_prev1=PREV(dns_referral_pm)",
+			"CDEF:dns_referral_prev2=PREV(dns_referral_prev1)",
+			"CDEF:dns_referral_prev3=PREV(dns_referral_prev2)",
+			"CDEF:dns_referral=dns_referral_prev1,dns_referral_prev2,dns_referral_prev3,+,+,3,/",
+
+			"DEF:dns_nxrrset_raw=$rrdfile:dns_nxrrset:AVERAGE", 
+			"CDEF:dns_nxrrset_pm=dns_nxrrset_raw,5,/",
+			"CDEF:dns_nxrrset_prev1=PREV(dns_nxrrset_pm)",
+			"CDEF:dns_nxrrset_prev2=PREV(dns_nxrrset_prev1)",
+			"CDEF:dns_nxrrset_prev3=PREV(dns_nxrrset_prev2)",
+			"CDEF:dns_nxrrset=0,dns_nxrrset_prev1,dns_nxrrset_prev2,dns_nxrrset_prev3,+,+,3,/,-",
+
+			"DEF:dns_nxdomain_raw=$rrdfile:dns_nxdomain:AVERAGE", 
+			"CDEF:dns_nxdomain_pm=dns_nxdomain_raw,5,/",
+			"CDEF:dns_nxdomain_prev1=PREV(dns_nxdomain_pm)",
+			"CDEF:dns_nxdomain_prev2=PREV(dns_nxdomain_prev1)",
+			"CDEF:dns_nxdomain_prev3=PREV(dns_nxdomain_prev2)",
+			"CDEF:dns_nxdomain=dns_nxrrset,dns_nxdomain_prev1,dns_nxdomain_prev2,dns_nxdomain_prev3,+,+,3,/,-",
+
+			"DEF:dns_failure_raw=$rrdfile:dns_failure:AVERAGE", 
+			"CDEF:dns_failure_pm=dns_failure_raw,5,/",
+			"CDEF:dns_failure_prev1=PREV(dns_failure_pm)",
+			"CDEF:dns_failure_prev2=PREV(dns_failure_prev1)",
+			"CDEF:dns_failure_prev3=PREV(dns_failure_prev2)",
+			"CDEF:dns_failure=dns_nxdomain,dns_failure_prev1,dns_failure_prev2,dns_failure_prev3,+,+,3,/,-",
+
+
+			"CDEF:dns_all_raw=dns_success_raw,dns_referral_raw,dns_nxrrset_raw,dns_nxdomain_raw,dns_recursion_raw,dns_failure_raw,+,+,+,+,+", 
+			"CDEF:dns_all_pm=dns_all_raw,5,/",
+			"CDEF:dns_all_prev1=PREV(dns_all_pm)",
+			"CDEF:dns_all_prev2=PREV(dns_all_prev1)",
+			"CDEF:dns_all_prev3=PREV(dns_all_prev2)",
+			"CDEF:dns_all=dns_all_prev1,dns_all_prev2,dns_all_prev3,+,+,3,/",
+
+			"CDEF:dns_success_percent=100,dns_success_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_referral_percent=100,dns_referral_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_nxrrset_percent=100,dns_nxrrset_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_nxdomain_percent=100,dns_nxdomain_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_recursion_percent=100,dns_recursion_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_failure_percent=100,dns_failure_raw,*,dns_all_raw,/,FLOOR",
+
+
+			'COMMENT:Succ DNS Query(qpm) -Max----------Avg----------Min----------Cur---------Percent---------\n'
+
+			,"LINE2:dns_all_raw#FFFFFF:Total    "
+			,"GPRINT:dns_all_pm:MAX:%11.0lf"
+			,"GPRINT:dns_all_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_all_pm:MIN:%11.0lf"
+			,"GPRINT:dns_all_raw:LAST:%11.0lf"
+			,'COMMENT:        100%\n'
+
+			,'AREA:dns_success#00FF00:1 Query  '
+			,"GPRINT:dns_success_pm:MAX:%11.0lf"
+			,"GPRINT:dns_success_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_success_pm:MIN:%11.0lf"
+			,"GPRINT:dns_success_pm:LAST:%11.0lf"
+			,'GPRINT:dns_success_percent:LAST:%11lg%%\\n'
+
+			,'AREA:dns_recursion#00FFFF:Above 1  '
+			,"GPRINT:dns_recursion_pm:MAX:%11.0lf"
+			,"GPRINT:dns_recursion_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_recursion_pm:MIN:%11.0lf"
+			,"GPRINT:dns_recursion_pm:LAST:%11.0lf"
+			,'GPRINT:dns_recursion_percent:LAST:%11lg%%\\n'
+
+
+			,'COMMENT:\n'
+			,'COMMENT:Failed DNS Query\n'
+
+			,'AREA:dns_failure#FF0000:Failure  '
+			,"GPRINT:dns_failure_pm:MAX:%11.0lf"
+			,"GPRINT:dns_failure_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_failure_pm:MIN:%11.0lf"
+			,"GPRINT:dns_failure_pm:LAST:%11.0lf"
+			,'GPRINT:dns_failure_percent:LAST:%11lg%%\\n'
+
+
+			,'AREA:dns_nxdomain#FF8800:No Domain'
+			,"GPRINT:dns_nxdomain_pm:MAX:%11.0lf"
+			,"GPRINT:dns_nxdomain_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_nxdomain_pm:MIN:%11.0lf"
+			,"GPRINT:dns_nxdomain_pm:LAST:%11.0lf"
+			,'GPRINT:dns_nxdomain_percent:LAST:%11lg%%\\n'
+
+			,'AREA:dns_nxrrset#FFFF00:No Record'
+			,"GPRINT:dns_nxrrset_pm:MAX:%11.0lf"
+			,"GPRINT:dns_nxrrset_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_nxrrset_pm:MIN:%11.0lf"
+			,"GPRINT:dns_nxrrset_pm:LAST:%11.0lf"
+			,'GPRINT:dns_nxrrset_percent:LAST:%11lg%%\\n'
+
+
+			,'COMMENT:\n'
+
+			,@vrules
+			,'HRULE:0#000000:Last Updated\: '
+			,"COMMENT:$now\\n"
+
+
+		);
+
+}
+
+
 sub rrdgraph_traffic
 {
 	my $self = shift;
@@ -444,14 +710,6 @@ sub rrdgraph_traffic
 			"CDEF:size_all_prev3=PREV(size_all_prev2)",
 			"CDEF:size_all=size_all_prev1,size_all_prev2,size_all_prev3,+,+,3,/",
 
-			"DEF:size_in_raw=$rrdfile:size_in:AVERAGE", 
-			"CDEF:size_in_percent=100,size_in_raw,*,size_all_raw,/,FLOOR",
-			"CDEF:size_in_bps=size_in_raw,5,/,60,/,8,*",
-			"CDEF:size_in_prev1=PREV(size_in_bps)",
-			"CDEF:size_in_prev2=PREV(size_in_prev1)",
-			"CDEF:size_in_prev3=PREV(size_in_prev2)",
-			"CDEF:size_in=size_in_prev1,size_in_prev2,size_in_prev3,+,+,3,/",
-
 			"DEF:size_out_raw=$rrdfile:size_out:AVERAGE", 
 			"CDEF:size_out_percent=100,size_out_raw,*,size_all_raw,/,FLOOR",
 			"CDEF:size_out_bps=size_out_raw,5,/,60,/,8,*",
@@ -460,12 +718,13 @@ sub rrdgraph_traffic
 			"CDEF:size_out_prev3=PREV(size_out_prev2)",
 			"CDEF:size_out=size_out_prev1,size_out_prev2,size_out_prev3,+,+,3,/",
 
-			"DEF:size_in_ok_raw=$rrdfile:size_in_ok:AVERAGE", 
-			"CDEF:size_in_ok_bps=size_in_ok_raw,5,/,60,/,8,*",
-			"CDEF:size_in_ok_prev1=PREV(size_in_ok_bps)",
-			"CDEF:size_in_ok_prev2=PREV(size_in_ok_prev1)",
-			"CDEF:size_in_ok_prev3=PREV(size_in_ok_prev2)",
-			"CDEF:size_in_ok=0,size_in_ok_prev1,size_in_ok_prev2,size_in_ok_prev3,+,+,3,/,-",
+			"DEF:size_in_raw=$rrdfile:size_in:AVERAGE", 
+			"CDEF:size_in_percent=100,size_in_raw,*,size_all_raw,/,FLOOR",
+			"CDEF:size_in_bps=size_in_raw,5,/,60,/,8,*",
+			"CDEF:size_in_prev1=PREV(size_in_bps)",
+			"CDEF:size_in_prev2=PREV(size_in_prev1)",
+			"CDEF:size_in_prev3=PREV(size_in_prev2)",
+			"CDEF:size_in=size_out,size_in_prev1,size_in_prev2,size_in_prev3,+,+,3,/,+",
 
 			"DEF:size_out_ok_raw=$rrdfile:size_out_ok:AVERAGE", 
 			"CDEF:size_out_ok_bps=size_out_ok_raw,5,/,60,/,8,*",
@@ -474,6 +733,13 @@ sub rrdgraph_traffic
 			"CDEF:size_out_ok_prev3=PREV(size_out_ok_prev2)",
 			"CDEF:size_out_ok=0,size_out_ok_prev1,size_out_ok_prev2,size_out_ok_prev3,+,+,3,/,-",
 
+			"DEF:size_in_ok_raw=$rrdfile:size_in_ok:AVERAGE", 
+			"CDEF:size_in_ok_bps=size_in_ok_raw,5,/,60,/,8,*",
+			"CDEF:size_in_ok_prev1=PREV(size_in_ok_bps)",
+			"CDEF:size_in_ok_prev2=PREV(size_in_ok_prev1)",
+			"CDEF:size_in_ok_prev3=PREV(size_in_ok_prev2)",
+			"CDEF:size_in_ok=size_out_ok,0,size_in_ok_prev1,size_in_ok_prev2,size_in_ok_prev3,+,+,3,/,-,+",
+
 			"CDEF:size_all_ok_raw=size_in_ok_raw,size_out_ok_raw,+", 
 			"CDEF:size_all_ok_bps=size_all_ok_raw,5,/,60,/,8,*",
 			"CDEF:size_all_ok_prev1=PREV(size_all_ok_bps)",
@@ -481,28 +747,28 @@ sub rrdgraph_traffic
 			"CDEF:size_all_ok_prev3=PREV(size_all_ok_prev2)",
 			"CDEF:size_all_ok=0,size_all_ok_prev1,size_all_ok_prev2,size_all_ok_prev3,+,+,3,/,-",
 
-			"CDEF:size_in_ok_percent=100,size_in_ok_raw,*,size_all_raw,/,FLOOR",
+			"CDEF:size_in_ok_percent=100,size_in_ok_raw,*,size_all_ok_raw,/,FLOOR",
 			"CDEF:size_out_ok_percent=100,size_out_ok_raw,*,size_all_ok_raw,/,FLOOR",
-			"CDEF:size_all_ok_percent=100,size_all_ok_raw,*,size_all_ok_raw,/,FLOOR",
+			"CDEF:size_all_ok_percent=100,size_all_ok_raw,*,size_all_raw,/,FLOOR",
 
 
-			'COMMENT:All Traffic (bps) ---Max----------Avg----------Min----------Cur---------Percent---------\n'
+			'COMMENT:All Traffic(bps) ----Max----------Avg----------Min----------Cur---------Percent---------\n'
 
-			,"AREA:size_all#FFFFFF:Total    "
+			,"LINE2:size_all#FFFFFF:Total    "
 			,"GPRINT:size_all_bps:MAX:%11.0lf"
 			,"GPRINT:size_all_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_all_bps:MIN:%11.0lf"
 			,"GPRINT:size_all_bps:LAST:%11.0lf"
 			,'COMMENT:        100%\n'
 
-			,'LINE2:size_in#00FF00:In       '
+			,'AREA:size_in#00FFFF:In       '
 			,"GPRINT:size_in_bps:MAX:%11.0lf"
 			,"GPRINT:size_in_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_in_bps:MIN:%11.0lf"
 			,"GPRINT:size_in_bps:LAST:%11.0lf"
 			,'GPRINT:size_in_percent:LAST:%11lg%%\\n'
 
-			,'LINE2:size_out#0000FF:Out      '
+			,'LINE2:size_out#FF00FF:Out      '
 			,"GPRINT:size_out_bps:MAX:%11.0lf"
 			,"GPRINT:size_out_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_out_bps:MIN:%11.0lf"
@@ -521,7 +787,7 @@ sub rrdgraph_traffic
 			,'GPRINT:size_all_ok_percent:LAST:%11lg%%\\n'
 
 
-			,'LINE2:size_in_ok#00FF00:In       '
+			,'AREA:size_in_ok#00FF00:In       '
 			,"GPRINT:size_in_ok_bps:MAX:%11.0lf"
 			,"GPRINT:size_in_ok_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_in_ok_bps:MIN:%11.0lf"
@@ -562,10 +828,10 @@ sub rrdgraph_engine
 			"--height=200",        
 			"--width=500",
 			"--interlaced",
-			"--lazy",
+			#"--lazy",
 			#'--imginfo "<IMG SRC="%s" WIDTH="%lu" HEIGHT="%lu" ALT="Demo">"',
-			"--upper-limit=200",  
-			"--lower-limit=-100",   
+			"--upper-limit=20",  
+			"--lower-limit=-10",   
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:time_all_raw=$rrdfile:time_all:AVERAGE", 
@@ -647,7 +913,7 @@ sub rrdgraph_engine
 			#"VRULE:$today_start#AA0000:"
 			#,"VRULE:$yesterday_start#AA0000:"
 
-			,"COMMENT:Real Time (ms) --------Max----------Avg----------Min----------Cur----------\\n"
+			,"COMMENT:Real Time(ms) ---------Max----------Avg----------Min----------Cur----------\\n"
 			,"AREA:time_all#00FF00:All Engines"
 			,"GPRINT:time_all_raw:MAX:%11.0lf"
 			,"GPRINT:time_all_raw:AVERAGE:%11.0lf"
@@ -687,7 +953,7 @@ sub rrdgraph_engine
 
 
 			,'COMMENT:\n'
-			,"COMMENT:CPU Time (ms)----------Max----------Avg----------Min----------Cur----------\\n"
+			,"COMMENT:CPU Time(ms) ----------Max----------Avg----------Min----------Cur----------\\n"
 			,"AREA:cpu_all#00FF00:All Engines"
 			,"GPRINT:cpu_all_raw:MAX:%11.0lf"
 			,"GPRINT:cpu_all_raw:AVERAGE:%11.0lf"
@@ -752,9 +1018,9 @@ sub rrdgraph_type
 			#"--color=SHADEB#9999CC",
 			"--height=200",        
 			"--width=500",        
-			"--upper-limit=100",  
-			"--lower-limit=-20",   
-			"--lazy",
+			"--upper-limit=20",  
+			"--lower-limit=-10",   
+			#"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 
@@ -1058,39 +1324,71 @@ sub ds2rrd
 
 	my @dns_ds = $self->get_dns_ds();
 
+print "dns_ds: " . join("\t", @dns_ds) . "\n";
 #	print "$rrd_num_virus:$rrd_num_spam:$rrd_num_content";
 #	print ":$rrd_num_overrun:";
 #	print "$rrd_num_archive:" ;
 #	print "$rrd_size_all:$rrd_size_min:$rrd_size_avg:$rrd_size_max:" ;
 #	print "$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_content:$rrd_time_overrun:$rrd_time_archive";
-	my $rrdfile = $self->{define}->{rrdfile};
+	my $rrdpath = $self->{define}->{rrdpath};
 #print "rrd: $rrdfile\n";
-	RRDs::update ( $rrdfile, '--template'
+	RRDs::update ( "$rrdpath/mail_type.rrd", '--template'
 			,'num_all:num_ok:num_in:num_out:' 
-			.'num_virus:num_spam:num_content:num_overrun:num_archive:' 
-			.'size_all:size_in:size_in_ok:size_out:size_out_ok:' 
-			.'size_4K:size_16K:size_32K:size_64K:size_128K:size_256K:size_512K:size_1M:size_5M:size_10M:size_gt10M:' 
-			.'time_all:time_virus:time_spam:time_content:time_overrun:time_archive:'
-			.'cpu_all:cpu_virus:cpu_spam:cpu_content:cpu_overrun:cpu_archive:'
-			.'dns_success:dns_referral:dns_nxrrset:dns_nxdomain:dns_recursion:dns_failure'
+			.'num_virus:num_spam:num_content:num_overrun:num_archive' 
 			,"N:$rrd_num_all:$rrd_num_ok:$rrd_num_in:$rrd_num_out:" 
-			."$rrd_num_virus:$rrd_num_spam:$rrd_num_content:$rrd_num_overrun:$rrd_num_archive:" 
-			."$rrd_size_all:$rrd_size_in:$rrd_size_in_ok:$rrd_size_out:$rrd_size_out_ok:" 
-			."$rrd_size_4K:$rrd_size_16K:$rrd_size_32K:$rrd_size_64K:$rrd_size_128K:$rrd_size_256K:$rrd_size_512K:"
-			."$rrd_size_1M:$rrd_size_5M:$rrd_size_10M:$rrd_size_gt10M:" 
-			."$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_content:$rrd_time_overrun:$rrd_time_archive:"
-			."$rrd_cpu_all:$rrd_cpu_virus:$rrd_cpu_spam:$rrd_cpu_content:$rrd_cpu_overrun:$rrd_cpu_archive:"
-			."$dns_ds[0]:$dns_ds[1]:$dns_ds[2]:$dns_ds[3]:$dns_ds[4]:$dns_ds[5]"
+			."$rrd_num_virus:$rrd_num_spam:$rrd_num_content:$rrd_num_overrun:$rrd_num_archive" 
 		     );
+	my $ERR = RRDs::error;
+	if ( $ERR ){
+		print STDERR "RRDs mail_type.rrd err: $ERR\n";
+	}
+
+	RRDs::update ( "$rrdpath/mail_traffic.rrd", '--template'
+			,'size_all:size_in:size_in_ok:size_out:size_out_ok' 
+			,"N:$rrd_size_all:$rrd_size_in:$rrd_size_in_ok:$rrd_size_out:$rrd_size_out_ok" 
+		     );
+
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		print STDERR "RRDs mail_traffic.rrd err: $ERR\n";
+	}
+
+	RRDs::update ( "$rrdpath/mail_size.rrd", '--template'
+			,'num_all:size_4K:size_16K:size_32K:size_64K:size_128K:size_256K:size_512K:size_1M:size_5M:size_10M:size_gt10M' 
+			,"N:$rrd_num_all:$rrd_size_4K:$rrd_size_16K:$rrd_size_32K:$rrd_size_64K:$rrd_size_128K:$rrd_size_256K:$rrd_size_512K:"
+			."$rrd_size_1M:$rrd_size_5M:$rrd_size_10M:$rrd_size_gt10M" 
+		     );
+
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		print STDERR "RRDs mail_size.rrd err: $ERR\n";
+	}
+
+	RRDs::update ( "$rrdpath/mail_engine.rrd", '--template'
+			,'time_all:time_virus:time_spam:time_content:time_overrun:time_archive:'
+			.'cpu_all:cpu_virus:cpu_spam:cpu_content:cpu_overrun:cpu_archive'
+			,"N:$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_content:$rrd_time_overrun:$rrd_time_archive:"
+			."$rrd_cpu_all:$rrd_cpu_virus:$rrd_cpu_spam:$rrd_cpu_content:$rrd_cpu_overrun:$rrd_cpu_archive"
+		     );
+
+	$ERR = RRDs::error;
+	if ( $ERR ){
+		print STDERR "RRDs mail_engine.rrd err: $ERR\n";
+	}
 
 #	print	"N:$rrd_num_all:$rrd_num_in:$rrd_num_out:$rrd_num_virus:$rrd_num_spam:$rrd_num_overrun:$rrd_num_archive:\n" .
 #		"$rrd_size_all:$rrd_size_min:$rrd_size_avg:$rrd_size_max:\n" .
 #		"$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_overrun:$rrd_time_archive\n"
 #		;
 
-	my $ERR = RRDs::error;
+	RRDs::update ( "$rrdpath/dns.rrd", '--template'
+			,'dns_success:dns_referral:dns_nxrrset:dns_nxdomain:dns_recursion:dns_failure'
+			,"N:$dns_ds[0]:$dns_ds[1]:$dns_ds[2]:$dns_ds[3]:$dns_ds[4]:$dns_ds[5]"
+		     );
+
+	$ERR = RRDs::error;
 	if ( $ERR ){
-		print STDERR "RRDs err: $ERR\n";
+		print STDERR "RRDs dns.rrd err: $ERR\n";
 	}
 #print "alltime: $rrd_time_all " . ($rrd_num_all?int($rrd_time_all/$rrd_num_all):0). "\n";
 #print "num: $rrd_num_all\n";
