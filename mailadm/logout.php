@@ -9,6 +9,11 @@ session_unset();
 session_destroy();
 
 ?>
+<html>
+<head>
+<META content="text/html; charset=gb2312" http-equiv=Content-Type>
+</head>
+<body>
 <br>
 <br>
 <br>
@@ -19,3 +24,5 @@ session_destroy();
 <div align="center">
 已成功退出。请关闭此窗口
 </div>
+</body>
+</html>
