@@ -1411,20 +1411,27 @@ sub spam_engine
 
 		# 检查用户白名单
 		my $is_user_whitelist = 0;
+		my $is_user_blacklist = 0;
 		if ( length($returnpath) ){
 			$is_user_whitelist = $self->{user}->is_user_whitelist($returnpath, split(/,/,$self->{mail_info}->{aka}->{recips}));
 			if ( $is_user_whitelist ){
-				( $is_spam, $reason, $dns_query_time ) = (0, _("User WhiteList"), 0);
+				( $is_spam, $reason, $dns_query_time ) = (0, _("User Whitelist"), 0);
 			}
+
+			$is_user_blacklist = $self->{user}->is_user_blacklist($returnpath, split(/,/,$self->{mail_info}->{aka}->{recips}));
+			if ( $is_user_blacklist ){
+				( $is_spam, $reason, $dns_query_time ) = (3, _("User Blacklist"), 0);
+			}
+
 		}
 
-		if ( !$is_user_whitelist && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
+		if ( !$is_user_whitelist && !$is_user_blacklist  && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/In/i ){
 			( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 #$self->{zlog}->debug ( "spam_checker: $returnpath: $is_spam, $reason" );
 		}
 		
-		if ( !$is_user_whitelist && !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
+		if ( !$is_user_whitelist && !$is_user_blacklist && !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
 			my $result = $self->get_sa_result();
 			if ( defined $result ){
