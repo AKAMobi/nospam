@@ -11,7 +11,7 @@ sh -c '
         ${LOCALNAME+"-l$LOCALNAME"} \
         ${BACKLOG+"-b$BACKLOG"} \
         ${CONCURRENCY+"-c$CONCURRENCY"} \
-        -x/var/qmail/service/pop3d/tcp.cdb \
+        -xtcp.cdb \
         -- "${IP-0}" "${PORT-110}" \
     /var/qmail/bin/qmail-popup "${POPUPHOST-`sed 1q /var/qmail/control/me`}" \
     ~vpopmail/bin/vchkpw \
