@@ -1,824 +1,272 @@
-<?php
-require_once("inc/include.ns");
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<title>menu</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>系统菜单</title>
-<link type="text/css" rel="stylesheet" href="css/style.css">
-<SCRIPT language=JavaScript>
+<!--Fireworks MX 2004 Dreamweaver MX 2004 target.  Created Tue Jun 29 14:02:01 GMT+0800 2004-->
+<script language="JavaScript">
 <!--
-function popmenu(ss,ii)
-{
-	os = document.getElementById(ss);
-	oi = document.getElementById(ii);
-	if (os.style.display=="none"){
-		tds = document.body.getElementsByTagName("td");
-		imgs = document.body.getElementsByTagName("img");
-		for (i = 0; i < tds.length; i++){
-			if (tds[i].id.indexOf("Aux") != -1)
-				tds[i].style.display = "none";
-		}
-		for (i = 0; i < imgs.length; i++){
-			if (imgs[i].id.indexOf("img") != -1)
-				imgs[i].src = "images/s1.gif";
-		}
-		os.style.display = "";
-		oi.src = "images/s2.gif";
-	} else {
-		os.style.display = "none";
-		oi.src = "images/s1.gif";
-	}
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
 }
+function MM_nbGroup(event, grpName) { //v6.0
+var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])?args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) { img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr) for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+
+function MM_preloadImages() { //v3.0
+ var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+   var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+   if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function mmLoadMenus() {
+  if (window.mm_menu_0629102457_0) return;
+  window.mm_menu_0629102457_0 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629102457_0.addMenuItem("本设备序列号","window.open('system/serialno.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("升级更新","window.open('system/upgrade.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("网络设置","window.open('system/network.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("SMTP参数","window.open('system/basesettings.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("配置管理","window.open('system/configmanage.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("系统时间","window.open('system/systemtime.ns', '_right');");
+  mm_menu_0629102457_0.addMenuItem("系统重启关机","window.open('system/reboot.ns', '_right');");
+   mm_menu_0629102457_0.bgImageUp="menu/mmmenu10_100x20_up.gif";
+   mm_menu_0629102457_0.bgImageOver="menu/mmmenu10_100x20_over.gif";
+   mm_menu_0629102457_0.hideOnMouseOut=true;
+   mm_menu_0629102457_0.bgColor='#999999';
+  window.mm_menu_0629112431_1 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112431_1.addMenuItem("管理员列表","window.open('urser/showadminlist.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("登录限制设置","window.open('urser/loginblacklist.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("修改自己的密码","window.open('urser/changePasswd.ns', '_right');");
+  mm_menu_0629112431_1.addMenuItem("修改IP限制列表","window.open('urser/changeIPlist.ns', '_right');");
+   mm_menu_0629112431_1.bgImageUp="menu/mmmenu2_100x20_up.gif";
+   mm_menu_0629112431_1.bgImageOver="menu/mmmenu2_100x20_over.gif";
+   mm_menu_0629112431_1.hideOnMouseOut=true;
+   mm_menu_0629112431_1.bgColor='#999999';
+  window.mm_menu_0629112431_2 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112431_2.addMenuItem("邮件域保护设定","window.open('gateway/protectdomain.ns', '_right');");
+  mm_menu_0629112431_2.addMenuItem("邮件队列监管","window.open('gateway/mailqueue.ns', '_right');");
+   mm_menu_0629112431_2.bgImageUp="menu/mmmenu1_100x20_up.gif";
+   mm_menu_0629112431_2.bgImageOver="menu/mmmenu1_100x20_over.gif";
+   mm_menu_0629112431_2.hideOnMouseOut=true;
+   mm_menu_0629112431_2.bgColor='#999999';
+  window.mm_menu_0629112352_3 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112352_3.addMenuItem("邮件域保护设定","window.open('gateway/protectdomain.ns', '_right');");
+  mm_menu_0629112352_3.addMenuItem("邮件队列监管","window.open('gateway/mailqueue.ns', '_right');");
+   mm_menu_0629112352_3.bgImageUp="menu/mmmenu4_100x20_up.gif";
+   mm_menu_0629112352_3.bgImageOver="menu/mmmenu4_100x20_over.gif";
+   mm_menu_0629112352_3.hideOnMouseOut=true;
+   mm_menu_0629112352_3.bgColor='#999999';
+  window.mm_menu_0629112351_4 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112351_4.addMenuItem("独立服务器设置","window.open('server/mailserver.ns', '_right');");
+  mm_menu_0629112351_4.addMenuItem("邮件队列监管","window.open('gateway/mailqueue.ns', '_right');");
+  mm_menu_0629112351_4.addMenuItem("用户管理","window.open('server/showuserlist.ns', '_right');");
+  mm_menu_0629112351_4.addMenuItem("查找用户","window.open('server/searchUser.ns', '_right');");
+  mm_menu_0629112351_4.addMenuItem("用户组管理","window.open('server/groupsControl.ns', '_right');");
+  mm_menu_0629112351_4.addMenuItem("群发邮件","window.open('server/sendGroupMails.ns', '_right');");
+   mm_menu_0629112351_4.bgImageUp="menu/mmmenu5_100x20_up.gif";
+   mm_menu_0629112351_4.bgImageOver="menu/mmmenu5_100x20_over.gif";
+   mm_menu_0629112351_4.hideOnMouseOut=true;
+   mm_menu_0629112351_4.bgColor='#999999';
+  window.mm_menu_0629112352_5 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112352_5.addMenuItem("基本设置","window.open('dynamic/dynengine.ns', '_right');");
+  mm_menu_0629112352_5.addMenuItem("同时连接数","window.open('dynamic/connperip.ns', '_right');");
+  mm_menu_0629112352_5.addMenuItem("用户重复限制","window.open('dynamic/sendrateperfrom.ns', '_right');");
+  mm_menu_0629112352_5.addMenuItem("邮件重复限制","window.open('dynamic/sendratepersubject.ns', '_right');");
+  mm_menu_0629112352_5.addMenuItem("连接频率","window.open('dynamic/connrateperip.ns', '_right');");
+  mm_menu_0629112352_5.addMenuItem("实时管理","window.open('dynamic/realtime.ns', '_right');");
+   mm_menu_0629112352_5.bgImageUp="menu/mmmenu3_100x20_up.gif";
+   mm_menu_0629112352_5.bgImageOver="menu/mmmenu3_100x20_over.gif";
+   mm_menu_0629112352_5.hideOnMouseOut=true;
+   mm_menu_0629112352_5.bgColor='#999999';
+  window.mm_menu_0629112347_6 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112347_6.addMenuItem("基本设置","window.open('antivirus/virusengine.ns', '_right');");
+  mm_menu_0629112347_6.addMenuItem("病毒识别","window.open('antivirus/recognize.ns', '_right');");
+  mm_menu_0629112347_6.addMenuItem("病毒处理","window.open('antivirus/treatment.ns', '_right');");
+   mm_menu_0629112347_6.bgImageUp="menu/mmmenu7_100x20_up.gif";
+   mm_menu_0629112347_6.bgImageOver="menu/mmmenu7_100x20_over.gif";
+   mm_menu_0629112347_6.hideOnMouseOut=true;
+   mm_menu_0629112347_6.bgColor='#999999';
+  window.mm_menu_0629112346_7 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112346_7.addMenuItem("基本设置","window.open('antispam/spamengine.ns', '_right');");
+  mm_menu_0629112346_7.addMenuItem("IP白名单","window.open('antispam/list.ns?option=WhiteIP', '_right');");
+  mm_menu_0629112346_7.addMenuItem("邮件域名白名单","window.open('antispam/list.ns?option=WhiteipDomain', '_right');");
+  mm_menu_0629112346_7.addMenuItem("邮件账号白名单","window.open('antispam/list.ns?option=Whitefrom', '_right');");
+  mm_menu_0629112346_7.addMenuItem("IP黑名单","window.open('antispam/list.ns?option=BlackIP', '_right');");
+  mm_menu_0629112346_7.addMenuItem("邮件域名黑名单","window.open('antispam/list.ns?option=BlackDomain', '_right');");
+  mm_menu_0629112346_7.addMenuItem("邮件账号黑名单","window.open('antispam/list.ns?option=Blackfrom', '_right');");
+  mm_menu_0629112346_7.addMenuItem("可追查性检查","window.open('antispam/traceable.ns', '_right');");
+  mm_menu_0629112346_7.addMenuItem("垃圾处理","window.open('antispam/treatment.ns', '_right');");
+   mm_menu_0629112346_7.bgImageUp="menu/mmmenu8_100x20_up.gif";
+   mm_menu_0629112346_7.bgImageOver="menu/mmmenu8_100x20_over.gif";
+   mm_menu_0629112346_7.hideOnMouseOut=true;
+   mm_menu_0629112346_7.bgColor='#999999';
+  window.mm_menu_0629111630_1 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629111630_1.addMenuItem("基本设置","window.open('content/contentengine.ns', '_right');");
+  mm_menu_0629111630_1.addMenuItem("规则管理","window.open('content/rulemanage.ns', '_right');");
+  mm_menu_0629111630_1.addMenuItem("类别管理","window.open('content/category.ns', '_right');");
+  mm_menu_0629111630_1.addMenuItem("列印规则","window.open('content/ruleprint.ns', '_right');");
+  mm_menu_0629111630_1.addMenuItem("文件类型","window.open('content/filetypes.ns', '_right');");
+   mm_menu_0629111630_1.bgImageUp="menu/mmmenu9_100x20_up.gif";
+   mm_menu_0629111630_1.bgImageOver="menu/mmmenu9_100x20_over.gif";
+   mm_menu_0629111630_1.hideOnMouseOut=true;
+   mm_menu_0629111630_1.bgColor='#999999';
+  window.mm_menu_0629112347_8 = new Menu("root",100,20,"Verdana, Arial, Helvetica, sans-serif",12,"#0f2c39","#ffffff","#88b8e7","#267dd4","left","middle",4,3,1000,-5,7,true,false,true,0,false,true);
+  mm_menu_0629112347_8.addMenuItem("系统状态","window.open('status/status.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("引擎分析","window.open('status/analyze.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("日志显示","window.open('log/logshow.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("日志统计","window.open('log/logstat.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("日志导出统计","window.open('log/logexport.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("日志清空删除","window.open('log/logflush.ns', '_right');");
+  mm_menu_0629112347_8.addMenuItem("操作日志审计","window.open('log/audit.ns', '_right');");
+   mm_menu_0629112347_8.bgImageUp="menu/mmmenu6_100x20_up.gif";
+   mm_menu_0629112347_8.bgImageOver="menu/mmmenu6_100x20_over.gif";
+   mm_menu_0629112347_8.hideOnMouseOut=true;
+   mm_menu_0629112347_8.bgColor='#999999';
+
+  mm_menu_0629112347_8.writeMenus();
+} // mmLoadMenus()
+
 //-->
-</SCRIPT>
-</head>
+</script>
+<script language="JavaScript1.2" src="js/mm_menu.js"></script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.style1 {font-size: 12px}
 
-<body leftMargin="0" topMargin="0">
-<table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
-<TR>
-<TD class="mu" height="20">
-	&nbsp;&nbsp;<A title="管理选项" href="javascript:;">管理</A>
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<?php
-if(adminPerm(PERM_ADMIN_SYSTEM)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux1','img1')" height="20">
-	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;系统管理
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux1" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">本设备序列号</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/upgrade.ns">升级更新</A>
-		</TD>
-	</TR>
-	<TR>
-		<TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<?if($Switchable){?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/gatewaymode.ns">运行模式</A>
-		</TD>
-	</TR>
-	<?}?>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/network.ns">网络设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/basesettings.ns">SMTP参数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/configmanage.ns">配置管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/systemtime.ns">系统时间</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/reboot.ns">系统重启关机</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?}?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux2','img2')" height="20">
-	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;管理员
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux2" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-<?
-if(adminPerm(PERM_ADMIN_ADMIN)){
-?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/showadminlist.ns">管理员列表</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/loginblacklist.ns">登录限制设置</A>
-		</TD>
-	</TR>
-	<TR>
-		<TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-<?}?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changeIPlist.ns">修改IP限制列表</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?
-if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
-	if(adminPerm(PERM_ADMIN_GATEWAY)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux3','img3')" height="20">
-	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;透明网关模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux3" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
+a:link {
+	color: #3366cc;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 12px;
+	text-decoration: underline;
+}
+a:visited {
+	text-decoration: none;
+	color: #009966;
+}
+a:active {
+	text-decoration: none;
+	color: #006633;
 }
 
-if($MailRelay > 0 && strstr($ServerMode,"Relay")){
-	if(adminPerm(PERM_ADMIN_GATEWAY)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux4','img4')" height="20">
-	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX转发模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux4" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-}
 
-if($MailServer > 0 && strstr($ServerMode,"Server")){
-	if(adminPerm(PERM_ADMIN_SERVER)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux5','img5')" height="20">
-	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;独立服务器模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux5" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">独立服务器设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/showuserlist.ns">用户管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/searchUser.ns">查找用户</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/groupsControl.ns">用户组管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/sendGroupMails.ns">群发邮件</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-}
-
-if($DynamicEngine > 0){
-	if(adminPerm(PERM_ADMIN_DYNAMIC)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux6','img6')" height="20">
-	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;动态限制引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux6" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connperip.ns">同时连接数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendrateperfrom.ns">用户重复限制</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendratepersubject.ns">邮件重复限制</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connrateperip.ns">连接频率</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/realtime.ns">实时管理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-}
-
-	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux7','img7')" height="20">
-	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;病毒识别引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux7" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/recognize.ns">病毒识别</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/treatment.ns">病毒处理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-
-if($SpamEngine > 0){
-	if(adminPerm(PERM_ADMIN_SPAM)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux8','img8')" height="20">
-	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;垃圾邮件引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux8" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteIP">IP白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteDomain">邮件域名白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteFrom">邮件帐号白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackIP">IP黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackDomain">邮件域名黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackFrom">邮件帐号黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/traceable.ns">可追查性检查</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/bayes.ns">贝叶斯过滤器</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/rbl.ns">智能实时黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/netcheck.ns">智能集中分析</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/sa.ns">智能内容分析</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/awl.ns">智能降噪系统</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">垃圾处理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-}
-
-if($ContentEngine > 0){
-	if(adminPerm(PERM_ADMIN_CONTENT)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux9','img9')" height="20">
-	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;内容过滤引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux9" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/rulemanage.ns">规则管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/category.ns">类别管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/ruleprint.ns">列印规则</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/filetypes.ns">文件类型</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
-	}
-}
-	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux10','img10')" height="20">
-	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;邮件审计引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux10" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archivetype.ns">选择性审计</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?
-	}
-
-if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux11','img11')" height="20">
-	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;智能交互引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux11" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/bigmail.ns">超大邮件提醒</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/exmail.ns">过量邮件提醒</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?
-}
-
-if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
-?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux12','img12')" height="20">
-	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;日志监控
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux12" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-<?
-	if (adminPerm(PERM_ADMIN_LOG)){
-?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.ns">系统状态</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/analyze.ns">引擎分析</A>
-		</TD>
-	</TR>
-
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logshow.ns">日志显示</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logstat.ns">日志统计</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logexport.ns">日志导出统计</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-<?
-		if(adminPerm(PERM_ADMIN_WRITE)){
-?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logflush.ns">日志清空删除</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-<?php
-		}
-	}
-	if(adminPerm(PERM_ADMIN_AUDIT)){
-?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/audit.ns">操作日志审计</A>
-		</TD>
-	</TR>
-<?
-	}
-}
-?>
-	</TABLE>
-</TD>
-</TR>
-<?
-if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
-?>
-<TR class="TableTitle2">
-<TD onclick="popmenu('Aux13','img13')" height="20">
-	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;公安网络监管
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux13" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/msp.ns">MSP设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISC设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/export.ns">四部委交换格式</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?
-}
-?>
-<TR>
-<TD height="20">
-	<A target="_top" href="logout.ns">退出系统</A>
-</TD>
-</TR>
-</table>
+-->
+</style></head>
+<body bgcolor="#ffffff" onLoad="MM_preloadImages('menu/menu_r2_c2_f2.gif','menu/menu_r2_c2_f4.gif','menu/menu_r2_c2_f3.gif','menu/menu_r4_c2_f2.gif','menu/menu_r4_c2_f4.gif','menu/menu_r4_c2_f3.gif','menu/menu_r6_c2_f2.gif','menu/menu_r6_c2_f4.gif','menu/menu_r6_c2_f3.gif','menu/menu_r8_c2_f2.gif','menu/menu_r8_c2_f4.gif','menu/menu_r8_c2_f3.gif','menu/menu_r10_c2_f2.gif','menu/menu_r10_c2_f4.gif','menu/menu_r10_c2_f3.gif','menu/menu_r12_c2_f2.gif','menu/menu_r12_c2_f4.gif','menu/menu_r12_c2_f3.gif','menu/menu_r14_c2_f2.gif','menu/menu_r14_c2_f4.gif','menu/menu_r14_c2_f3.gif','menu/menu_r16_c2_f2.gif','menu/menu_r16_c2_f4.gif','menu/menu_r16_c2_f3.gif','menu/menu_r18_c2_f2.gif','menu/menu_r18_c2_f4.gif','menu/menu_r18_c2_f3.gif','menu/menu_r20_c2_f2.gif','menu/menu_r20_c2_f4.gif','menu/menu_r20_c2_f3.gif');">
+<div align="left">
+  <script language="JavaScript1.2">mmLoadMenus();</script>
+  <table border="0" cellpadding="0" cellspacing="0" width="220">
+    <!-- fwtable fwsrc="works.png" fwbase="menu.gif" fwstyle="Dreamweaver" fwdocid = "1705235068" fwnested="0" -->
+    <tr>
+      <td><img src="menu/spacer.gif" width="5" height="1" border="0" alt=""></td>
+      <td><img src="menu/spacer.gif" width="108" height="1" border="0" alt=""></td>
+      <td><img src="menu/spacer.gif" width="107" height="1" border="0" alt=""></td>
+    </tr>
+    
+  <tr>
+      <td colspan="3"><img name="menu_r1_c1" src="menu/menu_r1_c1.gif" width="220" height="70" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td rowspan="20"><img name="menu_r2_c1" src="menu/menu_r2_c1.gif" width="5" height="264" border="0" alt=""></td>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r2_c2','menu/menu_r2_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629102457_0,112,0,null,'menu_r2_c2');MM_nbGroup('over','menu_r2_c2','menu/menu_r2_c2_f2.gif','menu/menu_r2_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r2_c2" src="menu/menu_r2_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+      <td rowspan="20"><!--DWLayoutEmptyCell-->&nbsp;</td>
+    </tr>
+    <tr>
+      <td><img name="menu_r3_c2" src="menu/menu_r3_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r4_c2','menu/menu_r4_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112431_1,112,0,null,'menu_r4_c2');MM_nbGroup('over','menu_r4_c2','menu/menu_r4_c2_f2.gif','menu/menu_r4_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r4_c2" src="menu/menu_r4_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r5_c2" src="menu/menu_r5_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r6_c2','menu/menu_r6_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112431_2,112,0,null,'menu_r6_c2');MM_nbGroup('over','menu_r6_c2','menu/menu_r6_c2_f2.gif','menu/menu_r6_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r6_c2" src="menu/menu_r6_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r7_c2" src="menu/menu_r7_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r8_c2','menu/menu_r8_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112352_3,112,0,null,'menu_r8_c2');MM_nbGroup('over','menu_r8_c2','menu/menu_r8_c2_f2.gif','menu/menu_r8_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r8_c2" src="menu/menu_r8_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r9_c2" src="menu/menu_r9_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r10_c2','menu/menu_r10_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112351_4,112,0,null,'menu_r10_c2');MM_nbGroup('over','menu_r10_c2','menu/menu_r10_c2_f2.gif','menu/menu_r10_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r10_c2" src="menu/menu_r10_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r11_c2" src="menu/menu_r11_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r12_c2','menu/menu_r12_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112352_5,112,0,null,'menu_r12_c2');MM_nbGroup('over','menu_r12_c2','menu/menu_r12_c2_f2.gif','menu/menu_r12_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r12_c2" src="menu/menu_r12_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r13_c2" src="menu/menu_r13_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r14_c2','menu/menu_r14_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112347_6,112,0,null,'menu_r14_c2');MM_nbGroup('over','menu_r14_c2','menu/menu_r14_c2_f2.gif','menu/menu_r14_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r14_c2" src="menu/menu_r14_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r15_c2" src="menu/menu_r15_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r16_c2','menu/menu_r16_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112346_7,112,0,null,'menu_r16_c2');MM_nbGroup('over','menu_r16_c2','menu/menu_r16_c2_f2.gif','menu/menu_r16_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r16_c2" src="menu/menu_r16_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r17_c2" src="menu/menu_r17_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r18_c2','menu/menu_r18_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629111630_1,112,0,null,'menu_r18_c2');MM_nbGroup('over','menu_r18_c2','menu/menu_r18_c2_f2.gif','menu/menu_r18_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r18_c2" src="menu/menu_r18_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td><img name="menu_r19_c2" src="menu/menu_r19_c2.gif" width="108" height="5" border="0" alt=""></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:;" target="_top" onClick="MM_nbGroup('down','navbar1','menu_r20_c2','menu/menu_r20_c2_f3.gif',1);" onMouseOver="MM_showMenu(window.mm_menu_0629112347_8,112,0,null,'menu_r20_c2');MM_nbGroup('over','menu_r20_c2','menu/menu_r20_c2_f2.gif','menu/menu_r20_c2_f4.gif',1);" onMouseOut="MM_nbGroup('out');MM_startTimeout();"><img name="menu_r20_c2" src="menu/menu_r20_c2.gif" width="108" height="20" border="0" alt=""></a></td>
+    </tr>
+    <tr>
+      <td valign="bottom"><span class="style1"><a href="logout.ns">退出系统</a></span></td>
+    </tr>
+  </table>
+</div>
 </body>
 </html>
