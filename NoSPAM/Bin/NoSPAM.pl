@@ -614,7 +614,7 @@ sub get_LogSimpleAnaylize
 			, $dynamic, $dynamic_reason 
 	   );
 
-	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num $virus_spam_num) = ( 0,0,0,0,0 );
+	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num ) = ( 0,0,0,0,0 );
 	my ( %from_top, %ip_top, %rule_top );
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
 
