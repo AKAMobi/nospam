@@ -342,7 +342,7 @@ sub spam_checker
 		$email_domain = $1;
 	}else{
 		$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr]." );
-		return undef;
+		return (1, '发件人格式错');
 	}
 
 	# 0: 非垃圾 

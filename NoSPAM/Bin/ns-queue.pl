@@ -917,7 +917,7 @@ sub AKA_mail_engine {
 			# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
 			. ',' . ($ins_queue?'1':'0') 
 			. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
-			. ",$AKA_is_spam,$AKA_spam_reason,$AKA_is_refuse_spam"
+			. ",$AKA_is_spam,$AKA_spam_reason," . ($AKA_is_spam?$AKA_is_refuse_spam:'0')
 			. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
 			. ",$AKA_is_overrun, $AKA_overrun_reason\n";
         	flock(LFD,LOCK_UN);
