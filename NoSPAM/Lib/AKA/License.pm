@@ -146,11 +146,15 @@ sub get_prodno
 	my $self = shift;
 	
 	my $IDserial = '';
+	my $id = '';
 
-	$IDserial .= &get_HD_serial;
-	$IDserial .= &get_SCSI_serial;
+	$id = &get_IDE_serial;
+	$IDserial .= $id if ( $id );
 
-	return md5_hex( 'okboy' . $ID_serial . 'zixia' . $ID_serial . '@2004-03-07' );
+	$id = &get_SCSI_serial;
+	$IDserial .= $id if ( $id );
+
+	return md5_hex( 'okboy' . $IDserial . 'zixia' . $IDserial . '@2004-03-07' );
 }
 
 sub get_SCSI_serial
@@ -161,7 +165,7 @@ sub get_SCSI_serial
 
 	my @lines;
 
-	if ( open ( FD, "</proc/scsi/aic7xxx/0> ) ){
+	if ( open ( FD, "</proc/scsi/aic7xxx/0" ) ){
 		@lines = <FD>;
 		@lines = grep ( /^0x/, @lines );
 	}
