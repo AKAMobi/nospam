@@ -16,6 +16,7 @@ test:
 		xgettext --output=./engine.nospam.cn.pot \
 			--copyright-holder="AKA Information & Technology Co., Ltd" \
 			--from-code=GBK \
+			--no-location \
 			--keyword --keyword='$__' --keyword=__ --keyword=__x \
 			--keyword=__n:1,2 --keyword=__nx:1,2 --keyword=__xn \
 			--keyword=N__ --language=perl ${srcfile} 
@@ -33,6 +34,7 @@ web_pot:
 	xgettext --output=./web.nospam.cn.pot \
 	--copyright-holder="AKA Information & Technology Co., Ltd" \
 	--from-code=GBK \
+	--no-location \
 	--keyword=_ --language=PHP --files-from=web.file.list 
 #	rm -f web.file.list
 
@@ -41,6 +43,7 @@ engine_pot:
 	xgettext --output=./engine.nospam.cn.pot \
 	--copyright-holder="AKA Information & Technology Co., Ltd" \
 	--from-code=GBK \
+	--no-location \
 	--keyword --keyword='$__' --keyword=__ --keyword=__x \
 	--keyword=__n:1,2 --keyword=__nx:1,2 --keyword=__xn \
 	--keyword=N__ --language=perl ${SRC_FILES} 

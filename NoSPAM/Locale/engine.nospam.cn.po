@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-23 10:31+0800\n"
+"POT-Creation-Date: 2004-07-13 02:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -15,290 +15,215 @@ msgstr ""
 "Content-Type: text/plain; charset=GBK\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../Lib/AKA/License.pm:167
 msgid "CPU is not licensed"
 msgstr "处理器未授权"
 
-#: ../Lib/AKA/License.pm:169
 msgid "Hareward system OK"
 msgstr "硬件系统已授权"
 
-#: ../Lib/AKA/License.pm:238
 msgid "License expired"
 msgstr "当前许可证无效或已经过期！"
 
-#: ../Lib/AKA/License.pm:242
 #, perl-brace-format
 msgid "License will expired after {days_left} days."
 msgstr "许可证将在 {days_left} 天后过期。"
 
-#: ../Lib/AKA/Mail.pm:475
 msgid "Sorry, System had no valid license now, It still can't work.\n"
 msgstr "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n"
 
-#: ../Lib/AKA/Mail.pm:564
 msgid "Sorry, due to "
 msgstr "对不起，由于 "
 
-#: ../Lib/AKA/Mail.pm:565
 msgid "Security Policy"
 msgstr "安全策略"
 
-#: ../Lib/AKA/Mail.pm:566
 msgid "System rejects your mail."
 msgstr "系统拒收您的邮件。"
 
-#: ../Lib/AKA/Mail.pm:613 ../Lib/AKA/Mail.pm:621 ../Lib/AKA/Mail.pm:629
-#: ../Lib/AKA/Mail.pm:637 ../Lib/AKA/Mail.pm:645
 msgid "not run"
 msgstr "未运行"
 
-#: ../Lib/AKA/Mail.pm:894
 msgid "[Black List]"
 msgstr "【黑名单】"
 
-#: ../Lib/AKA/Mail.pm:900
 #, perl-brace-format
 msgid "[VIRUS {result}]"
 msgstr "【病毒 {result}】"
 
-#: ../Lib/AKA/Mail.pm:1000 ../Lib/AKA/Mail.pm:1128 ../Lib/AKA/Mail.pm:1250
-#: ../Lib/AKA/Mail.pm:1390 ../Lib/AKA/Mail.pm:1596 ../Lib/AKA/Mail/Spam.pm:466
 msgid "OFF"
 msgstr "未启用"
 
-#: ../Lib/AKA/Mail.pm:1019
 msgid "Need not check outgoing mail"
 msgstr "内向外未检查"
 
-#: ../Lib/AKA/Mail.pm:1035
 msgid "Need not check incoming mail"
 msgstr "外向内未检查"
 
-#: ../Lib/AKA/Mail.pm:1057
 msgid "This mail is not in circle of check"
 msgstr "采样抽签未中"
 
-#: ../Lib/AKA/Mail.pm:1144 ../Lib/AKA/Mail/Dynamic.pm:116
-#: ../Lib/AKA/Mail/Dynamic.pm:142 ../Lib/AKA/Mail/Dynamic.pm:167
 msgid "not set"
 msgstr "未设置"
 
-#: ../Lib/AKA/Mail.pm:1197
 msgid "not fit condition"
 msgstr "未符合条件"
 
-#: ../Lib/AKA/Mail.pm:1209 ../Lib/AKA/Mail/Content.pm:67
 msgid "internal error"
 msgstr "内部错误"
 
-#: ../Lib/AKA/Mail.pm:1222
 msgid "submmited"
 msgstr "已提交"
 
-#: ../Lib/AKA/Mail.pm:1241
 msgid "AntiSpam Engine"
 msgstr "垃圾识别引擎"
 
-#: ../Lib/AKA/Mail.pm:1254
 msgid "Traceable"
 msgstr "可追查检查"
 
-#: ../Lib/AKA/Mail.pm:1264
 msgid "Authorized user"
 msgstr "认证用户"
 
-#: ../Lib/AKA/Mail.pm:1270
 msgid "Sender must as same as auth user"
 msgstr "发信人非身份认证用户"
 
-#: ../Lib/AKA/Mail.pm:1410
 msgid "outgoing mail is not limited"
 msgstr "内向外未限制"
 
-#: ../Lib/AKA/Mail.pm:1426
 msgid "incoming mail is not limited"
 msgstr "外向内未限制"
 
-#: ../Lib/AKA/Mail.pm:1455
 msgid "Sender white list"
 msgstr "发信人白名单"
 
-#: ../Lib/AKA/Mail.pm:1470
 msgid "Mail sender"
 msgstr "发信人"
 
-#: ../Lib/AKA/Mail.pm:1488
 msgid "Mail subject whitelist"
 msgstr "邮件主题白名单"
 
-#: ../Lib/AKA/Mail.pm:1503
 msgid "Mail"
 msgstr "邮件"
 
-#: ../Lib/AKA/Mail.pm:1523
 msgid "whitelist"
 msgstr "白名单"
 
-#: ../Lib/AKA/Mail.pm:1552
 msgid "Overrun check was passed"
 msgstr "通过动态监测"
 
-#: ../Lib/AKA/Mail.pm:1616
 msgid "Outgoing mail need not filter"
 msgstr "内向外未过滤"
 
-#: ../Lib/AKA/Mail.pm:1632
 msgid "Incoming mail need not filter"
 msgstr "外向内未过滤"
 
-#: ../Lib/AKA/Mail.pm:1649
 msgid "Maximum size exceeds"
 msgstr "尺寸超过配置最大值"
 
-#: ../Lib/AKA/Mail.pm:1675
 msgid "System has no valid license now"
 msgstr "本设备尚无可用许可证"
 
-#: ../Lib/AKA/Mail.pm:1711 ../Lib/AKA/Mail.pm:1721 ../Lib/AKA/Mail.pm:1726
 msgid "License error "
 msgstr "许可证错误"
 
-#: ../Lib/AKA/Mail.pm:1747
 msgid "License is valid!"
 msgstr "许可证有效！"
 
-#: ../Lib/AKA/Mail/AntiVirus.pm:89
 msgid "Updating"
 msgstr "更新中"
 
-#: ../Lib/AKA/Mail/Conf.pm:126
 msgid "[Spam]"
 msgstr "【垃圾邮件】"
 
-#: ../Lib/AKA/Mail/Conf.pm:127
 msgid "[LikelySpam]"
 msgstr "【疑似垃圾】"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:106 ../Lib/AKA/Mail/Dynamic.pm:131
-#: ../Lib/AKA/Mail/Dynamic.pm:157 ../Lib/AKA/Mail/Dynamic.pm:192
-#: ../Lib/AKA/Mail/Dynamic.pm:312
 msgid "need param"
 msgstr "无参数"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:185
 msgid "passed"
 msgstr "通过"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:201
 msgid "db failure"
 msgstr "加载失败"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:331
 #, perl-brace-format
 msgid " overrun deny {wait_time} minutes."
 msgstr "发送超限，还需{wait_time}分钟解封"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:351
 msgid " overrun"
 msgstr "超限"
 
-#: ../Lib/AKA/Mail/Dynamic.pm:355
 msgid " passed"
 msgstr "通过"
 
-#: ../Lib/AKA/Mail/Spam.pm:424
 msgid "bounced mail"
 msgstr "退信"
 
-#: ../Lib/AKA/Mail/Spam.pm:435
 msgid "IP WhiteList"
 msgstr "IP白名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:438
 msgid "Domain WhiteList"
 msgstr "域名白名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:441
 msgid "Sender WhiteList"
 msgstr "发信人白名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:444
 msgid "IP BlackList"
 msgstr "IP黑名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:447
 msgid "Domain BlackList"
 msgstr "域名黑名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:451
 msgid "Sender BlackList"
 msgstr "发信人黑名单"
 
-#: ../Lib/AKA/Mail/Spam.pm:464
 msgid "Traceable check"
 msgstr "可追查检查"
 
-#: ../Bin/NoSPAM.pl:234
 msgid "Can't create directory for upgrade"
 msgstr "无法建立升级目录"
 
-#: ../Bin/NoSPAM.pl:236
 msgid "Please specify upgrade package name."
 msgstr "请指定升级包文件名。"
 
-#: ../Bin/NoSPAM.pl:237
 msgid "Can't read upgrade package file"
 msgstr "无法访问升级包文件。"
 
-#: ../Bin/NoSPAM.pl:242
 msgid "Can't analyze upgrade package"
 msgstr "无法分析升级包。"
 
-#: ../Bin/NoSPAM.pl:251
 msgid "Upgrade package filename error."
 msgstr "升级包文件名错误。"
 
-#: ../Bin/NoSPAM.pl:260
 msgid "Upgrade package version mismatch with current system."
 msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
 
-#: ../Bin/NoSPAM.pl:264
 msgid "System version higher then current upgrade package, can't downgrade."
 msgstr "系统已经安装过更高的升级包，无法降级。"
 
-#: ../Bin/NoSPAM.pl:272 ../Bin/NoSPAM.pl:279 ../Bin/NoSPAM.pl:288
 msgid "System internal error"
 msgstr "系统内部错误"
 
-#: ../Bin/NoSPAM.pl:284
 msgid "Upgrade package checksum error"
 msgstr "升级包校验和错误"
 
-#: ../Bin/NoSPAM.pl:319
 msgid "upgrade successfully."
 msgstr "升级完成。"
 
-#: ../Bin/NoSPAM.pl:347
 msgid "Can't record upgrade log"
 msgstr "无法记录升级信息"
 
-#: ../Bin/NoSPAM.pl:351
 msgid "Can't record upgrade package information"
 msgstr "无法记录升级包信息"
 
-#: ../Bin/NoSPAM.pl:713
 msgid "License is not valide or already expires"
 msgstr "当前许可证无效或已经过期！"
 
-#: ../Bin/NoSPAM.pl:750
 msgid "User flood"
 msgstr "用户重复"
 
-#: ../Bin/NoSPAM.pl:751
 msgid "Mail flood"
 msgstr "邮件重复"
 
-#: ../Bin/NoSPAM.pl:752
 msgid "Connection flood"
 msgstr "连接频率"
