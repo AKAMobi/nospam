@@ -12,9 +12,9 @@ all: Loader.xs
 	LD_RUN_PATH="" gcc  -shared Loader.o  -o Loader.so     
 	chmod 755 Loader.so
 
-install:
+install: all
 	(mkdir -p /usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/auto/AKA/Loader)
-	(mv Loader.so /usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/AKA/Loader/Loader.so)
+	(mv Loader.so /usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/auto/AKA/Loader/Loader.so)
 	# decrypt.bs empty, zero size file, need to copy?
 clean:
 	rm -f Loader.so Loader.c Loader.o
