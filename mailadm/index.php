@@ -100,7 +100,7 @@ INPUT {
                     <TBODY>
                     <TR>
                       <TD class=csmtype vAlign=center align=middle 
-                        width="100%">欢迎使用WMail邮件管理系统 </TD></TR></TBODY></TABLE></TD></TR>
+                        width="100%">欢迎使用<a href="http://wmail.aka.cn/">WMail邮件</a>管理系统 </TD></TR></TBODY></TABLE></TD></TR>
               <TR>
                 <TD height=28></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-      <P class=ctype align=center>版权所有:　北京阿卡信息技术有限公司</P></FORM></TD></TR></TBODY></TABLE></BODY></HTML>
+      <P class=ctype align=center>版权所有:　<a href="http://www.aka.cn/">北京阿卡信息技术有限公司</a></P></FORM></TD></TR></TBODY></TABLE></BODY></HTML>
