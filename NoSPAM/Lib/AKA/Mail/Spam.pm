@@ -25,6 +25,8 @@ sub new
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;#die "Mail::Conf can't get parent conf!"; 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;#die "Mail::Conf can't get parent zlog!"; 
 	$self->{iputil} = $parent->{iputil} || new AKA::IPUtil;
+	# added by zxiia 2004-05-01 init dns when startup
+	$self->get_dns_resolver;
 	return $self;
 }
 
@@ -372,7 +374,11 @@ sub spam_checker
 		$reason = "地址黑名单";
 	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{Traceable} ){
 		# 只有启用了可追查性检查时才判断
+#use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+#my $start_time = [gettimeofday];
 		my $traceable = &is_traceable( $self, $smtp_ip, $email_domain );
+#my $elapsed_time = int(1000*tv_interval ( $start_time, [gettimeofday]));
+#$self->{zlog}->debug("is_traceable run $elapsed_time");
 
 		# strict_traceable:2 = NOT spam:0
 		# traceable:1 = maybe spam:1

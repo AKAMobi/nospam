@@ -12,6 +12,7 @@ package AKA::Mail::Log;
 #use XML::Simple;
 use POSIX qw(strftime);
 use Fcntl ':flock';
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 
 my $can_log = 1;
 my $can_debug = 1;
@@ -173,6 +174,10 @@ sub log_csv {
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
 
+	my ($user,$system,$cuser,$csystem) = times;
+	my $cputime = $user+$system+$cuser+$csystem;
+
+#$self->debug( "log spam cputime: [" . $engine->{spam}->{cputime} . "]" );
 	if ( open ( LFD, ">>/var/log/NoSPAM.rrdds" ) ){
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
@@ -183,22 +188,33 @@ sub log_csv {
 					) ?'1':'0' 
 				)
 			. ',' . $aka->{size} 
-			. ',' . $aka->{runtime}
+			. ',' . int(1000*tv_interval($mail_info->{aka}->{start_time}, [gettimeofday]))
+			. ',' . int(1000*$cputime)
 
 			. ',' . $engine->{antivirus}->{result}
 				. ',' . $engine->{antivirus}->{runtime}
+				. ',' . $engine->{antivirus}->{cputime}
+				. ',' . $engine->{antivirus}->{runned}
 
 			. ',' . $engine->{spam}->{result} 
 				. ',' . $engine->{spam}->{runtime}
+				. ',' . $engine->{spam}->{cputime}
+				. ',' . $engine->{spam}->{runned}
 
-			. ',' . ($engine->{content}->{result}||'')
+			. ',' . ($engine->{content}->{result}||0)
 				. ',' . $engine->{content}->{runtime}
+				. ',' . $engine->{content}->{cputime}
+				. ',' . $engine->{content}->{runned}
 				
 			. ',' . $engine->{dynamic}->{result} 
 				. ',' . $engine->{dynamic}->{runtime} 
+				. ',' . $engine->{dynamic}->{cputime} 
+				. ',' . $engine->{dynamic}->{runned}
 
 			. ',' . $engine->{archive}->{result} 
 				. ',' . $engine->{archive}->{runtime} 
+				. ',' . $engine->{archive}->{cputime} 
+				. ',' . $engine->{archive}->{runned}
 
 			. "\n";
 

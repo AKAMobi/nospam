@@ -100,7 +100,7 @@ sub process
 	}
 
 	$mail_info->{aka}->{engine}->{content} = {
-		result  => $rule_info->{rule_id},
+		result  => ($rule_info->{rule_id}||0),
 		desc    => $param,
 		action  => $action,
 
