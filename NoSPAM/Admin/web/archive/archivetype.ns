@@ -8,7 +8,7 @@ if($_POST["ArchiveType"]){
 		else
 			die("邮件地址有误");
 	}
-	$spamconf->setParam("ArchiveType",$_POST["ArchiveType"]);
+	$spamconf->setParam("ArchiveType",$_POST["ArchiveType"], "ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
 		echo "修改成功！";
