@@ -7,7 +7,7 @@
 
 
 use AKA::Mail::Police::Conf;
-use AKA::Mail::Police::Log;
+use AKA::Mail::Log;
 use AKA::Mail::Police::Filter;
 
 package AKA::Mail::Police;
@@ -39,7 +39,7 @@ sub new
 	#my $number = shift || 5;
 
 # Put these arguments inside class members
-	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
+	$self->{zlog} ||= new AKA::Mail::Log($self);
 	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
 	$self->{verify} ||= new AKA::Mail::Police::Verify($self);
 	$self->{filter} ||= new AKA::Mail::Police::Filter($self);

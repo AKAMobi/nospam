@@ -31,7 +31,7 @@ sub new
 
 	$self->{conf} = $conf;
 
-	$self->{zlog} = $conf->{zlog} || new AKA::Mail::Police::Log($self);
+	$self->{zlog} = $conf->{zlog} || new AKA::Mail::Log($self);
 	$self->{verify} = $conf->{verify} || new AKA::Mail::Police::Verify($self);
 
 	$self->{conf}{rule_add_modify} = undef;

@@ -7,7 +7,7 @@
 
 package AKA::Mail::Police::Filter;
 
-use AKA::Mail::Police::Log;
+use AKA::Mail::Log;
 use AKA::Mail::Police::Conf;
 use AKA::Mail::Police::Rule;
 use AKA::Mail::Police::Parser;
@@ -36,7 +36,7 @@ sub new
 
 	$self->{parent} = $parent;
 
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Police::Log($self) ;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
 	$self->{parser} = $parent->{parser} || new AKA::Mail::Police::Parser($self);
 	$self->{ruler} = $parent->{ruler} || new AKA::Mail::Police::Rule($self);

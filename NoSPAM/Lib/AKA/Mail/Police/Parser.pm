@@ -8,7 +8,7 @@
 package AKA::Mail::Police::Parser;
 
 use MIME::Parser;
-use AKA::Mail::Police::Log;
+use AKA::Mail::Log;
 use AKA::Mail::Police::Conf;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -33,7 +33,7 @@ sub new
 
 	$self->{parent} = $parent;
 
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Police::Log($self) ;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
 	$self->{mime_parser} ||= new MIME::Parser;
 

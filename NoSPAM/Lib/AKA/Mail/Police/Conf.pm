@@ -8,7 +8,7 @@
 
 package AKA::Mail::Police::Conf;
 
-use AKA::Mail::Police::Log;
+use AKA::Mail::Log;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -68,7 +68,7 @@ sub check_n_update
 	my $self = shift;
 
 	$self->{update} ||= new AKA::Mail::Police::Conf::Update($self);
-	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
+	$self->{zlog} ||= new AKA::Mail::Log($self);
 
 	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
 	if ( $newfilenum > 0 ){
