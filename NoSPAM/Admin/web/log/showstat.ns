@@ -17,9 +17,10 @@ $tmpTotal = $result[0];
 $tmpMaybe = $result[1];
 $tmpSPAM = $result[2];
 $tmpVirus = $result[3];
-$tmpFrom = $result[4];
-$tmpIP = $result[5];
-$tmpRule = $result[6];
+$tmpOverrun = $result[4];
+$tmpFrom = $result[5];
+$tmpIP = $result[6];
+$tmpRule = $result[7];
 
 list($dummy, $Total) = explode(":",$tmpTotal);
 $Total = intval(trim($Total));
@@ -29,6 +30,8 @@ list($dummy, $SPAM) = explode(":",$tmpSPAM);
 $SPAM = intval(trim($SPAM));
 list($dummy, $Virus) = explode(":",$tmpVirus);
 $Virus = intval(trim($Virus));
+list($dummy, $Overrun) = explode(":",$tmpOverrun);
+$Overrun = intval(trim($Overrun));
 
 list($dummy, $FromList) = explode(":",$tmpFrom);
 $FromList = explode(",",trim($FromList));
@@ -72,8 +75,9 @@ arsort($TopRule,SORT_NUMERIC);
 <p><?=$sTime?>-<?=$eTime?>:
 <p>
 <?=_("Total Mails")?>: <?=$Total?><br>
-<?=_("Normal Mails")?>: <?=$Total-$Virus-$Maybe-$SPAM?><p>
+<?=_("Normal Mails")?>: <?=$Total-$Virus-$Maybe-$SPAM-$Overrun?><p>
 
+<?=_("Overrun Mails")?>: <?=$Overrun?><br>
 <?=_("Virus Mails")?>: <?=$Virus?><br>
 <?=_("Likely Spam Mails")?>: <?=$Maybe?><br>
 <?=_("Spam Mails")?>: <?=$SPAM?>
