@@ -10,6 +10,7 @@ Version=2
 
 FactoryName=ÀƒŒ¨ ¿ºÕ
 ProductName=iXRay
+ProductSN=$prodno
 
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay,Tailer
