@@ -54,8 +54,10 @@ if(!file_exists(LICENSE)){
 <?
 	}
 	}else{
+		$LicenseInfo = trim(implode("",$result));
+		
 ?>
-<p> 错误： #<?=$ret?> License 许可已过期或者错误，请重新上载或联系销售商。  </p>
+<p> 错误： <?=$LicenseInfo?> #<?=$ret?> License 许可已过期或者错误，请重新上载或联系销售商。  </p>
 <?
 	}
 }
