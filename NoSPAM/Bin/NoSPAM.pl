@@ -893,7 +893,8 @@ mv -f /etc/fstab.new /etc/fstab
 chkconfig --level 3 named on
 chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
-chkconfig --level 3 clamd on
+#AKA::Mail::AntiVirus will start automatic
+#chkconfig --level 3 clamd on
 chkconfig --level 3 iptables off
 chkconfig --level 3 gpm off
 chkconfig --level 3 keytable off
