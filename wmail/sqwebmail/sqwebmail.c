@@ -2528,7 +2528,17 @@ time_t	timeouthard=TIMEOUTHARD;
 				// by lfan, correct maildirsize error
 				{
 					struct vqpasswd *mypw;
-					if ( (mypw = vauth_getpw( u, u2 )) != NULL ) {
+					char *p, *p1, *p2;
+					if( strchr( ubuf, '@' ) ) {
+						p = strdup( ubuf );
+			                	p1 = strtok(p, "@");
+						p2 = strtok(0, "@");
+					} else {
+						p = 0;
+						p1 = u;
+						p2 = 0;
+					}
+					if ( (mypw = vauth_getpw( p1, p2 )) != NULL ) {
 						struct maildirsize quotainfo;
 						char buf[1024];
 						long lSize = 0;
@@ -2546,6 +2556,8 @@ time_t	timeouthard=TIMEOUTHARD;
 							maildir_closequotafile(&quotainfo);
 						}
 					}
+					if( p ) 
+						free(p);
 				}
 
 				//by lfan
