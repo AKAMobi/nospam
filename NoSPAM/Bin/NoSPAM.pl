@@ -857,13 +857,14 @@ sub check_License
 {
 	my $AM = new AKA::Mail;
 
-	if ( $AM->check_license_file ){
+	my $LicenseHTML;
+	if ( $LicenseHTML = $AM->check_license_file ){
 		# VALID license!
-		print "<h1>通过检查！</h1>";
+		print "$LicenseHTML";
 		return 0;
 	}
 	# INVALID license!
-	print "<h1>未通过检查！</h1>";
+	print "<h1>许可证无效！</h1>";
 	return -1;
 }
 

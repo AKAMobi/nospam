@@ -30,9 +30,9 @@ sub new
 
 	$self->{conf} = new AKA::Mail::Conf;
 	$self->{zlog} = new AKA::Mail::Log;
-	$self->{spam} = new AKA::Mail::Spam;
-	$self->{dynamic} = new AKA::Mail::Dynamic;
-	$self->{police} = new AKA::Mail::Police;
+	#$self->{spam} = new AKA::Mail::Spam;
+	#$self->{dynamic} = new AKA::Mail::Dynamic;
+	#$self->{police} = new AKA::Mail::Police;
 
 	return $self;
 
@@ -61,7 +61,9 @@ sub spam_engine
 		return (0, "反垃圾引擎未启动" );
 	}
 
+	$self->{spam} ||= new AKA::Mail::Spam;
 	my ( $is_spam, $reason ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	undef $self->{spam};
 
 	return ( $is_spam, $reason );
 }
@@ -88,6 +90,8 @@ sub dynamic_engine
 		($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
 	}
 
+	$self->{dynamic} ||= new AKA::Mail::Dynamic;
+
 	if ( $mailfrom ){
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom );
 		return ($is_overrun,'发信人'.$reason) if ( $is_overrun );
@@ -103,6 +107,8 @@ sub dynamic_engine
 		return ($is_overrun,'IP'.$reason) if ( $is_overrun );
 	}
 
+	undef $self->{dynamic};
+
 	$is_overrun ||= 0;
 	$reason ||="已通过动态监测";
 
@@ -112,9 +118,12 @@ sub dynamic_engine
 sub content_engine_is_enabled
 {	
 	my $self = shift;
+	my $mail_size = shift;
 
 	if ( 'Y' eq uc $self->{conf}->{config}->{ContentFilterEngine} ){
-		return 1;
+		if ( $mail_size && $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
+			return 1 if ( $mail_size < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} )
+		}
 	}
 	return 0;
 }
@@ -127,6 +136,8 @@ sub content_engine_fd
 
 	my ($input_fd,$output_fd) = @_;
 
+	$self->{police} ||= new AKA::Mail::Police;
+
 	($action,$param) = $self->{police}->get_action( $input_fd );
 
 	print $output_fd "X-Police-Status: $action:($param) OK\n";
@@ -134,6 +145,8 @@ sub content_engine_fd
 	$self->{police}->print($action, $output_fd);
 
 	$self->{police}->clean;
+	
+	undef $self->{police};
 }
 
 # input : in_fd
@@ -143,6 +156,8 @@ sub content_engine_mime
 	my $self = shift;
 
 	my $input_fd = shift;
+
+	$self->{police} ||= new AKA::Mail::Police;
 
 	my ($action,$param,$ruleid) = $self->{police}->get_action( $input_fd );
 
@@ -156,6 +171,8 @@ sub content_engine_mime
 	#my $subject = $self->{police}->{filter}->{parser}->{mail_info}->{head}->{subject};
 
 	$self->{police}->clean;
+
+	undef $self->{police};
 
 	return ( $action,$param, $ruleid, $mime_data );
 }
@@ -183,6 +200,8 @@ sub check_license_file
 
 	my $licensefile = $self->{conf}->{define}->{licensefile};
 
+	my $LicenseHTML;
+
 	if ( ! open( LFD, "<$licensefile" ) ){
 		#$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
 		# No license
@@ -202,6 +221,8 @@ sub check_license_file
 		}elsif ( /^ProductLicense=(.+)$/ ){
 			$license_data = $1;
 			$license_data =~ s/\s*//g;
+		}elsif ( /^LicenseHTML=(.+)$/ ){
+			$LicenseHTML = $1;
 		}
 
 		$license_content .= $_;
@@ -230,7 +251,8 @@ sub check_license_file
 		return 0;
 	}
 	# it's valid
-	return 1;
+	$LicenseHTML ||= '<h1>许可证有效！</h1>';
+	return $LicenseHTML;
 }
 
 

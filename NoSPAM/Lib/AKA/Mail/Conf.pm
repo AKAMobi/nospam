@@ -41,11 +41,31 @@ sub new
 
 	#$self->{zlog} = $parent->{zlog};
 
-	$self->init_config();
+	$self->init_config;
+	$self->init_intconf;
 
 	return $self;
 }
 
+
+sub init_intconf
+{
+	my $self = shift;
+
+        my $intconf;
+        
+	use Config::Tiny;
+	my $C = Config::Tiny->read( $self->{define}->{intconffile} );
+
+	$intconf = $C->{_};
+                        
+        $intconf->{GAViewable} ||= 'Y';
+        $intconf->{UserLogUpload} ||= 'N';
+        $intconf->{MailGatewayInternalIP} ||= '10.4.3.7';
+        $intconf->{MailGatewayInternalMask} ||= 32;
+                        
+        $self->{intconf} = $intconf;
+}                       
 
 sub init_config
 {
