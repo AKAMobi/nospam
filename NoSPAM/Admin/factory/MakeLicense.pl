@@ -5,7 +5,13 @@ use POSIX qw(strftime);
 my $prodno = $ARGV[0];
 die "pls provide prodno\n" unless $prodno ;
 
+use AKA::License;
+$AL = new AKA::License;
+
 my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
+
+my $hw_lic = "CPU=5000;RAM=1025000";
+my $hw_lic_enc = $AL->encode($hw_lic);
 
 $License = <<_LICENSE_;
 ForSell=No
@@ -41,9 +47,7 @@ MailServerMaxQuota=30000000
 
 _LICENSE_
 
-
-use AKA::License;
-$AL = new AKA::License;
+$License .= "\nHardwareLicense=$hw_lic_enc\n" if ( $hw_lic_enc );
 
 print make_license( $License, $prodno ), "\n";
 
