@@ -2,12 +2,11 @@
 session_start(); 
 
 function getDomain(){
-#	return substr($_SERVER['SERVER_NAME'],5);
-	return "anti-spam.mail.aka.cn";
+	return substr($_SERVER['SERVER_NAME'],5);
 }
 
 define( 'DOMAIN', getDomain() );
-define( 'VPOPMAILHOME', '/home/vpopmail/' );
+define( 'VPOPMAILHOME', '/opt/vpopmail/' );
 system( VPOPMAILHOME . "bin/chmod 644 " .VPOPMAILHOME . "domains/" . DOMAIN . "/vpasswd" );
 define( "USERPROFILE", "USERDATA");
 define("GROUPFILE", "GROUPS");
