@@ -127,7 +127,7 @@ my $action_map = {
 
 		,'heartbeat_siwei' => [\&heartbeat_siwei, " : TAP watchdog heartbeat"]
 
-		,'ZombieFile_clean' => [\&ZombieFile_clean, " : clean orphen files"]
+		,'Crontab' => [\&Crontab, " : clean orphen files"]
 
 		,'Version' => [\&Version, " : Show noSPAM system verion infomation"]
 
@@ -184,7 +184,7 @@ _USAGE_
 	print NSOUT "\n";
 }
 
-sub ZombieFile_clean
+sub Crontab
 {
 	`find /home/NoSPAM/spool/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
 	`find /home/NoSPAM/spool/working/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;

@@ -149,6 +149,7 @@ if ($alarm_status and $alarm_status ne "" ) {
   }
 }
 
+&clean_up();
 exit 0;
 
 ############################################################################
@@ -164,6 +165,7 @@ sub error_condition {
   &debug("error_condition: $string");
 
   print NSOUT $string, "\r\n";
+  &clean_up();
   exit $errcode;
 }
 
@@ -228,6 +230,12 @@ sub qmail_parent_check {
     #Exit with temp error anyway - just to be real anal...
     exit 111; 
   }
+}
+
+
+sub clean_up
+{
+	unlink "$scandir/$wmaildir/new/$file_id";
 }
 
 #
