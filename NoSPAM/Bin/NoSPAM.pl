@@ -1141,6 +1141,9 @@ for file in /etc/lilo.*.conf; do
 	rm -f $file
 done
 
+cp /home/NoSPAM/etc/NoSPAM.default.conf /home/NoSPAM/etc/NoSPAM.conf
+chown nospam /home/NoSPAM/etc/NoSPAM.conf
+
 unlink /root/post_install
 ';
 	system ( "$cmd" );
