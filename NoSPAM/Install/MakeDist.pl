@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-$NSVER='2.0-5.8';
+$NSVER='2.0-5.9';
 
 `chmod +s aka/home/NoSPAM/bin/wi aka/home/NoSPAM/bin/qns_loader`;
 `rm -fr Dist/*.rpm`;
