@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Imperia AG Huerth/Germany
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: noSPAM v2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-06-12 23:15+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ed Li <zixia@zixia.net>\n"
+"Language-Team: AKA <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GBK\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../Bin/NoSPAM.pl:233
+msgid "Can't create directory for upgrade"
+msgstr "无法建立省级目录"
+
+#: ../Bin/NoSPAM.pl:235
+msgid "Please specify upgrade package name."
+msgstr "请指定升级包文件名。"
+
+#: ../Bin/NoSPAM.pl:236
+msgid "Can't read upgrade package file"
+msgstr "无法访问升级包文件。"
+
+#: ../Bin/NoSPAM.pl:241
+msgid "Can't analyze upgrade package"
+msgstr "无法分析升级包。"
+
+#: ../Bin/NoSPAM.pl:250
+msgid "Upgrade package filename error."
+msgstr "升级包文件名错误。"
+
+#: ../Bin/NoSPAM.pl:259
+msgid "Upgrade package version mismatch with current system."
+msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
+
+#: ../Bin/NoSPAM.pl:263
+msgid "System version higher then current upgrade package, can't downgrade."
+msgstr "当前系统已经使用过比当前升级包版本高的升级包，无法降级。"
+
+#: ../Bin/NoSPAM.pl:271 ../Bin/NoSPAM.pl:278 ../Bin/NoSPAM.pl:287
+msgid "System internal error"
+msgstr "系统内部错误"
+
+#: ../Bin/NoSPAM.pl:283
+msgid "Upgrade package checksum error"
+msgstr "升级包校验和错误"
+
+#: ../Bin/NoSPAM.pl:318
+msgid "upgrade successful finished."
+msgstr "升级完成。"
+
+#: ../Bin/NoSPAM.pl:346
+msgid "Can't record upgrade log"
+msgstr "无法记录升级信息"
+
+#: ../Bin/NoSPAM.pl:350
+msgid "Can't record upgrade package information"
+msgstr "无法记录升级包信息"
+
+#: ../Bin/NoSPAM.pl:702
+msgid "License is not valide or expired."
+msgstr "当前许可证无效或已经过期！"
+
+#: ../Bin/NoSPAM.pl:739
+msgid "User flood"
+msgstr "用户重复"
+
+#: ../Bin/NoSPAM.pl:740
+msgid "Mail flood"
+msgstr "邮件重复"
+
+#: ../Bin/NoSPAM.pl:741
+msgid "Connection flood"
+msgstr "连接频率"
+
+#: ../Lib/AKA/License.pm:167
+msgid "CPU is not licensed"
+msgstr "处理器未授权"
+
+#: ../Lib/AKA/License.pm:169
+msgid "Hareward system OK"
+msgstr "硬件系统已授权"
+
+#: ../Lib/AKA/License.pm:238
+msgid "License expired"
+msgstr "当前许可证无效或已经过期！"
+
+#: ../Lib/AKA/License.pm:242
+msgid "License will expired in "
+msgstr "许可证将在"
+
+#: ../Lib/AKA/License.pm:242
+msgid " days, please upload valid license."
+msgstr "天后过期。"
