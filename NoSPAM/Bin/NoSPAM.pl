@@ -338,17 +338,25 @@ sub System_patch
 
 sub ZombieFile_clean
 {
-	`find /home/NoSPAM/spool/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
-	`find /home/NoSPAM/spool/working/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
-	`find /home/NoSPAM/spool/working/new -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
+	my $workdirs = { '/home/NoSPAM/spool/tmp/'	=>	'+1'
+		, '/home/NoSPAM/spool/working/new'	=>	'+1'
+		, '/home/NoSPAM/spool/working/tmp'	=>	'+1'
 
-	`find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
-	`find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
-	`find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+		, '/home/vpopmail/domains/localhost.localdomain/archive/Maildir/new/'	=>	'+7'
+		, '/home/vpopmail/domains/localhost.localdomain/archive/Maildir/cur/'	=>	'+7'
 
-	`find /home/vpopmail/domains/localhost.localdomain/archive/Maildir/{new,cur} -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+		, '/home/ssh/rule/'	=>	'+7'
+		, '/home/ssh/log'	=>	'+7'
+		, '/home/ssh/alert'	=>	'+7'
+	};
 
-	`rm -f /var/log/*.{1,2,3,4}* > /dev/null 2>&1`;
+	foreach my $workdir ( keys %$workdirs ){
+		my $mtime = $workdirs->{$workdir};
+		`find $workdir -path $workdir/* -mtime $mtime -exec rm -rf {} \\; >/dev/null 2>&1`;
+	}
+
+	`find /var/log -path "/var/log/*.*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+
 	return 0;
 }
 
