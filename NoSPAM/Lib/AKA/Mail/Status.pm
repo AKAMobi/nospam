@@ -627,7 +627,7 @@ sub rrdgraph_dns
 			,"GPRINT:dns_all_pm:MAX:%11.0lf"
 			,"GPRINT:dns_all_pm:AVERAGE:%11.0lf"
 			,"GPRINT:dns_all_pm:MIN:%11.0lf"
-			,"GPRINT:dns_all_raw:LAST:%11.0lf"
+			,"GPRINT:dns_all_pm:LAST:%11.0lf"
 			,'COMMENT:        100%\n'
 
 			,'AREA:dns_recursion#00FFFF:Above 1  '
@@ -740,7 +740,7 @@ sub rrdgraph_traffic
 			"CDEF:size_in_ok_prev1=PREV(size_in_ok_bps)",
 			"CDEF:size_in_ok_prev2=PREV(size_in_ok_prev1)",
 			"CDEF:size_in_ok_prev3=PREV(size_in_ok_prev2)",
-			"CDEF:size_in_ok=size_out_ok,0,size_in_ok_prev1,size_in_ok_prev2,size_in_ok_prev3,+,+,3,/,-,+",
+			"CDEF:size_in_ok=size_out_ok,size_in_ok_prev1,size_in_ok_prev2,size_in_ok_prev3,+,+,3,/,-",
 
 			"CDEF:size_all_ok_raw=size_in_ok_raw,size_out_ok_raw,+", 
 			"CDEF:size_all_ok_bps=size_all_ok_raw,5,/,60,/,8,*",
@@ -770,7 +770,7 @@ sub rrdgraph_traffic
 			,"GPRINT:size_in_bps:LAST:%11.0lf"
 			,'GPRINT:size_in_percent:LAST:%11lg%%\\n'
 
-			,'LINE2:size_out#FF00FF:Out      '
+			,'AREA:size_out#FF00FF:Out      '
 			,"GPRINT:size_out_bps:MAX:%11.0lf"
 			,"GPRINT:size_out_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_out_bps:MIN:%11.0lf"
@@ -796,7 +796,7 @@ sub rrdgraph_traffic
 			,"GPRINT:size_in_ok_bps:LAST:%11.0lf"
 			,'GPRINT:size_in_ok_percent:LAST:%11lg%%\\n'
 
-			,'LINE2:size_out_ok#0000FF:Out      '
+			,'AREA:size_out_ok#0000FF:Out      '
 			,"GPRINT:size_out_ok_bps:MAX:%11.0lf"
 			,"GPRINT:size_out_ok_bps:AVERAGE:%11.0lf"
 			,"GPRINT:size_out_ok_bps:MIN:%11.0lf"
