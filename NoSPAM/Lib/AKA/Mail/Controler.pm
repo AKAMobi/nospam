@@ -646,6 +646,7 @@ sub qmail_stop
 sub qmail_start
 {
 	system ('/usr/bin/svc -u /service/qmail');
+	system ('killall -9 qmail-send');
 }
 
 sub qmail_restart
