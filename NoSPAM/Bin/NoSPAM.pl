@@ -375,7 +375,7 @@ sub start_System
 	my $AM = new AKA::Mail;
 	my ($lic_ok,$lic_html) = $AM->check_license_file ;
 	unless ( $lic_ok ){
-		print NSOUT <<_POD_;
+		print STDOUT <<_POD_;
 
 ******************************************************************************
 ** noSPAM AntiSPAM system need a VALID LICENSE, Please get a license ASAP.  **
@@ -1148,6 +1148,8 @@ done
 
 cp /home/NoSPAM/etc/NoSPAM.default.conf /home/NoSPAM/etc/NoSPAM.conf
 chown nospam /home/NoSPAM/etc/NoSPAM.conf
+
+rm -f etc/sysconfig/network-scripts/ifcfg-eth{0,1}
 
 unlink /root/post_install
 ';
