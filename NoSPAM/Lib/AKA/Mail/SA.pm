@@ -13,7 +13,7 @@ use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use Mail::SpamAssassin;
 
-se lib '/usr/lib/perl5/site_perl/5.8.0';                   # substituted at 'make' time
+use lib '/usr/lib/perl5/site_perl/5.8.0';                   # substituted at 'make' time
 
 #BEGIN {    # added by jm for use inside the distro
 #  if ( -e '../blib/lib/Mail/SpamAssassin.pm' ) {
@@ -53,7 +53,7 @@ sub init
     			rules_filename       => 0,
     			site_rules_filename  => 0,
     			local_tests_only     => 0,
-    			debug                => 0,
+    			debug                => 6,
     			paranoid             => 0,
     			home_dir_for_helpers => '/home/NoSPAM/sa',
     			PREFIX          => '/usr/',
@@ -69,7 +69,7 @@ sub init
 	$self->{spamtest}->finish_learner();
 }
 
-sub sa_check {
+sub get_result {
 	my $self = shift;
 	my $emlfile = shift;
 
@@ -146,5 +146,7 @@ sub sa_result
 	$result->{TESTS} = $status->_get_tag('TESTS','£¬');
 	$result->{TESTSSCORES} = $status->_get_tag('TESTSSCORES','£¬');
 	
-	$result;
+	return $result;
 }
+
+1;
