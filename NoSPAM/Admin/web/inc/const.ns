@@ -13,6 +13,6 @@ if ( !defined("CONST_DEFINED") ){
 	define("WARNEXMAIL","/home/NoSPAM/template/warn/MuchMail.template");
 	define("FILETYPE","/home/NoSPAM/etc/FileTypes.conf");
 	define("PAGENUM",30);
-	define("NOSPAM_VERSION","1.0");
+	define("NOSPAM_VERSION","2");
 }
 ?>

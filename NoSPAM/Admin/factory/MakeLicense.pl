@@ -16,11 +16,11 @@ ServerGateway=Gateway,Server,MXRelay,Tailer
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
-DynamicEngine=100
-ContentEngine=100
-SpamEngine=100
-ArchiveEngine=100
-AntivirusEngine=100
+DynamicEngine=Yes
+ContentEngine=Yes
+SpamEngine=Yes
+ArchiveEngine=Yes
+AntivirusEngine=Yes
 
 _LICENSE_
 

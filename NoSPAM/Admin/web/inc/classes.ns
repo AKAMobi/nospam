@@ -436,17 +436,17 @@ class License
 	
 	function isDynamicEngineEnabled()
 	{
-		return ($this->params["DynamicEngineEnabled"]=="Yes");
+		return ($this->params["DynamicEngine"]=="Yes");
 	}
 
 	function isContentEngineEnabled()
 	{
-		return ($this->params["ContentEngineEnabled"]=="Yes");
+		return ($this->params["ContentEngine"]=="Yes");
 	}
 
 	function isSpamEngineEnabled()
 	{
-		return ($this->params["SpamEngineEnabled"]=="Yes");
+		return ($this->params["SpamEngine"]=="Yes");
 	}
 	
 	function getVersion()

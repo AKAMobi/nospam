@@ -67,9 +67,36 @@ sub new
 	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat', 'pif' ];
 	$self->{filetype_num}->{exe} = 5;
 
-
+	$self->load_user_filetype;
 
 	return $self;
+}
+
+sub load_user_filetype
+{
+	my $self = shift;
+
+	if ( ! open ( FD, '<' . $self->{conf}->{user_filetype} ) ){
+		$self->{zlog}->fatal( "Parser: open user_filetype failure!" );
+		return;
+	}
+
+	my ( $num, $type, $exts, @exts );
+	while ( <FD> ){
+		chomp;
+		next if ( /^$/ );
+		( $num, $type, $exts ) = split ( /\t/ );
+		unless ( $num && $type && $exts ){
+			$self->{zlog}->fatal ( "Parser: can't parse filetype line: [$_]" );
+			next;
+		}
+		@exts = split( /,/, $exts );
+		$self->{filetype}->{$type} = \@exts;
+		$self->{filetype_num}->{$type} = $num;
+	}
+	close ( FD );
+
+	return;
 }
 
 sub get_mail_info
