@@ -13,19 +13,21 @@ foreach ( @stop_users ){
 		last;
 	}
 }
+
+my $remote_ip = $ENV{'TCPREMOTEIP'};
+
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
 open ( WFD, ">>/var/log/chkpw.log" );
 
+my $now = `date +"%Y-%m-%d %H:%M:%S"`;
+chomp $now;
+
 if ( $smtp->auth('LOGIN', $user, $pass) ){
-	if ( ! $nolog ) {
-		print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP succ.\n" ;
-	}
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip succ.\n" ;
         exit 0;
 }else{
-	if ( ! $nolog ) {
-		print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP failed.\n" ;
-	}
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip failed.\n" ;
 }
 close ( WFD );
 
