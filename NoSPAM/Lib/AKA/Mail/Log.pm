@@ -238,13 +238,11 @@ sub log_csv {
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
 
-&debug ( "AKA_mail_engine::log out SCORE:" . $engine->{spam}->{sa}->{SCORE} );
 	if ( $engine->{spam}->{sa}->{SCORE} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
-&debug ( "AKA_mail_engine::log in SCORE:" . $engine->{spam}->{sa}->{SCORE} );
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
-		print LFD "\n==================================================\n"
+		print LFD "\n" . &get_log_time . "==================================================\n"
 			. "TCPREMOTEIP: " . $aka->{TCPREMOTEIP} . "\n" . "Envelope-From: " . $aka->{returnpath} . "\n"
 				. "Recips: " . $recips . "\nSubject: " . $esc_subject . "\n"
 
