@@ -1,0 +1,108 @@
+<?
+require_once("../inc/vpopadm.inc.ns");
+?>
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=gb2312">
+<TITLE>修改IP地址列表</TITLE>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<BODY>
+<DIV align="center">
+<?
+
+function changeIPList() {
+
+	if (!adminPerm(PERM_ADMIN_BASIC) ){
+?>
+		<br>
+		您没有访问该网页的权限。<br>
+<?php
+		return false;
+	}
+
+	$id=getAdminID();
+
+	if ( isset($_REQUEST["changeIPList"])){ //实际修改用户信息
+
+	switch($_REQUEST['iprule']){				//IP地址列表
+		case "PERMIT":
+		$iplist = "+".trim($_REQUEST['iplist']);
+		break;
+		case "DENY":
+		$iplist = "-".trim($_REQUEST['iplist']);
+		break;
+		case "PASS":
+		default:
+		$iplist = "";
+	}
+	
+	$result=setIPList($id,$iplist);
+
+	if ( ($result==ERR_FORMAT_IP) ){
+		errorReturn("IP地址格式错误,请重新输入",$_SERVER['REQUEST_URI']);
+	}
+
+	if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
+		session_unset();
+		session_destroy();
+		errorReturn("无此管理员账号,请重新输入",$_SERVER['REQUEST_URI']);
+	} 
+
+	if ($result!=OK) {
+		errorReturn('其他错误，叫系统管理员来debug', $_SERVER['REQUEST_URI']);
+	}
+		echo "IP地址列表修改成功！";
+		return true;
+	}
+	
+	$info = getAdminInfo($id);
+	
+	if($info['ip'][0]=="+"){
+		$iprule = "permit";
+		$ip = substr($info['ip'],1);
+	}elseif($info['ip'][0]=="-"){
+		$iprule = "deny";
+		$ip = substr($info['ip'],1);
+	}else{
+		$ip = $info['ip'];
+		$iprule = "pass";
+	}
+	
+?>
+<FORM action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" name="form1">
+<INPUT type="hidden" name="changeIPList">
+<table>
+<tbody>
+<tr>
+<td>管理员账号</td>
+<td><? echo $id; ?></td>
+</tr>
+<tr>
+	<td>IP地址限制：</td>
+	<td>
+		<input type="text" name="iplist" value="<?=$ip?>"<?if($iprule=="pass") echo " disabled";?>>
+		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>>允许
+		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>>禁止
+		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>>不限制
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td>使用192.168.1.1或192.168.1.0/24这样的格式，用逗号","分割</td>
+</tr>
+</tbody>
+</table>
+<INPUT type="submit" value="提交修改信息">
+</form>
+<?php
+
+}
+
+
+changeIPList();
+
+?>
+</div>
+</BODY>
+</HTML>

@@ -1,0 +1,123 @@
+<?
+require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_INTERACTIVE))
+	die("您没有访问该网页的权限。");
+
+if($_POST["Submit"]=="修改"){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
+	if($_POST["WarnBigMail"]=="Y"){
+		if(!is_numeric($_POST["MinSize"]))
+			die("邮件尺寸请输入数字");
+		$units = array(
+					"Bytes"=>1,
+					"KB"=>1024,
+					"MB"=>1048576
+				);
+		$spamconf->setParam("WarnBigMail","Y","InteractiveEngine");
+		$spamconf->setParam("WarnMinimumMailSize",intval($_POST["MinSize"])*$units[$_POST["unit"]],"InteractiveEngine");
+		savetofile($_POST["Content"],WARNBIGMAIL);
+	}else{
+		$spamconf->setParam("WarnBigMail","N","InteractiveEngine");
+	}
+	$spamconf->save();
+	if(($ret=wi("reset_WarnBigMail",$result))==0)
+		echo "修改成功";
+	else
+		echo "修改失败，错误代码：".$ret;
+}else{
+	$bWarnBigMail = ($spamconf->getParam("WarnBigMail","InteractiveEngine")=="Y");
+	$iMinSize = $spamconf->getParam("WarnMinimumMailSize","InteractiveEngine");
+	$sContent = "";
+	if(file_exists(WARNBIGMAIL)){
+		$fp = fopen(WARNBIGMAIL,"r");
+		$sContent = trim(fread($fp,filesize(WARNBIGMAIL)));
+		fclose($fp);
+	}
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>超大邮件提醒</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<script language="javascript">
+function change()
+{
+	bChecked = form1.WarnBigMail.checked;
+	if(bChecked){
+		form1.MinSize.disabled=false;
+		form1.unit.disabled=false;
+		form1.Content.disabled=false;
+	}else{
+		form1.MinSize.disabled=true;
+		form1.unit.disabled=true;
+		form1.Content.disabled=true;
+	}
+}
+</script>
+</head>
+
+<body>
+<form name="form1" method="post" action="">
+<p><input type="checkbox" value="Y" name="WarnBigMail"<?if($bWarnBigMail) echo " checked";?> onclick="change()">开启超大邮件提醒功能</p>
+<p>
+最大邮件尺寸（超过此尺寸则触发提醒动作）：
+<input type="text" name="MinSize" value="<?=$iMinSize?>"<?if(!$bWarnBigMail) echo " disabled";?>><select name="unit"<?if(!$bWarnBigMail) echo " disabled";?>><option value="Bytes">Bytes<option value="KB">KB<option value="MB">MB</select>
+</p>
+<p>
+提醒信笺内容：<br>
+<textarea cols="90" rows="20" name="Content"<?if(!$bWarnBigMail) echo " disabled";?>><?=$sContent?></textarea>
+</p>
+<p>
+    <input type="submit" name="Submit" value="修改">
+</p>
+</form>
+<?
+if(!$bInteractive){
+?>
+<script>
+alert("注意：智能交互引擎未开启！");
+</script>
+<?
+}
+?>
+</body>
+</html>
+<?
+	}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>超大邮件提醒</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+<p><input type="checkbox" value="Y" name="WarnBigMail"<?if($bWarnBigMail) echo " checked";?> disabled>开启超大邮件提醒功能</p>
+<p>
+最大邮件尺寸（超过此尺寸则触发提醒动作）：<?=$iMinSize?>Bytes
+</p>
+<p>
+提醒信笺内容：<br>
+<textarea cols="90" rows="20" name="Content" disabled><?=$sContent?></textarea>
+</p>
+<?
+if(!$bInteractive){
+?>
+<script>
+alert("注意：智能交互引擎未开启！");
+</script>
+<?
+}
+?>
+</body>
+</html>
+<?
+	}
+}
+?>
