@@ -78,7 +78,7 @@ msgid "AntiSpam Engine"
 msgstr "垃圾识别引擎"
 
 msgid "Traceable"
-msgstr "可追查检查"
+msgstr "可追查性检查"
 
 msgid "Authorized user"
 msgstr "认证用户"
@@ -178,7 +178,7 @@ msgid "Sender BlackList"
 msgstr "发信人黑名单"
 
 msgid "Traceable check"
-msgstr "可追查检查"
+msgstr "可追查性检查"
 
 msgid "Can't create directory for upgrade"
 msgstr "无法建立升级目录"

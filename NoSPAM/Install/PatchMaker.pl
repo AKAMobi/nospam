@@ -7,8 +7,8 @@ use strict;
 
 #my $NSVER='2.0-5.09';
 #my $ISOVER='2.0.1';
-my $NSVER='2.1-7.13';
-my $ISOVER='2.1.1';
+my $NSVER='2.2-7.24';
+my $ISOVER='2.2.0';
 
 my $PATCHVER='89';
 

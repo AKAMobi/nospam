@@ -23,6 +23,44 @@ use AKA::Mail::Log;
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 
+use constant	{
+	RESULT_SPAM_NOT		=>	0,
+	RESULT_SPAM_MAYBE	=>	1,
+	RESULT_SPAM_MUST	=>	2,
+	RESULT_SPAM_BLACK	=>	3,
+
+	ACTION_PASS		=>	0,
+	
+	# main process func impl
+	ACTION_REJECT		=>	1,
+	ACTION_DISCARD		=>	2,
+	ACTION_QUARANTINE	=>	3,
+
+	ACTION_STRIP		=>	4,
+	ACTION_DELAY		=>	5,
+
+	ACTION_NULL		=>	6,
+	ACTION_ACCEPT		=>	7,
+
+	# in main process 
+	ACTION_ADDRCPT		=>	8,
+	ACTION_DELRCPT		=>	9,
+	ACTION_CHGRCPT		=>	10,
+
+	# qmail_rqueue impl
+	ACTION_ADDHDR		=>	11,
+	ACTION_DELHDR		=>	12,
+	ACTION_CHGHDR		=>	13,
+
+	# 标记通过
+	ACTION_TAG		=>	14
+	
+	,QUARANTINE_DROP	=>	0
+	,QUARANTINE_USER	=>	1
+	,QUARANTINE_ADMIN	=>	2
+};
+
+
 
 sub new
 {
@@ -41,7 +79,6 @@ sub new
 	$self->{define}->{licensefile} = $self->{define}->{home} . "/etc/License.dat";
 	$self->{define}->{upgrade_log} = $self->{define}->{home} . "/var/upgrade/log";
 	$self->{define}->{quarantine_dir} = '/home/NoSPAM/Quarantine';
-
 	#$self->{zlog} = $parent->{zlog};
 
 	$self->init_config;	# config
@@ -127,7 +164,7 @@ sub init_config
 	$config->{SpamEngine}->{SpamTag} ||= __("[Spam]");
 	$config->{SpamEngine}->{MaybeSpamTag} ||= __("[LikelySpam]");
 
-	$config->{SpamEngine}->{RefuseSpam} ||= "N";
+	$config->{SpamEngine}->{SpamAction} ||= "N";
 
 	$config->{SpamEngine}->{TagHead} ||= "Y";
 	$config->{SpamEngine}->{TagSubject} ||= "Y";

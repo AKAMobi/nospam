@@ -111,7 +111,7 @@ sub catch_virus
 	}
 
 	my ($is_virus,$virus_name,$action) = (0,undef,0);
-	$action = 0; #(AKA::Mail::ACTION_PASS);
+	$action = AKA::Mail::Conf::ACTION_PASS;
 
 	if ( length($result) && ($result=~m#^$file: (.+)#) ){
 		# get rid of filename
@@ -126,15 +126,15 @@ sub catch_virus
 
 #$self->{zlog}->debug ( "antivirus: action: [" . $action . "]" );
 	if ( $is_virus ){
-		if ( 'Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
-			$action = 1; #(AKA::Mail::ACTION_REJECT); # 1¡¢reject£º
-		}elsif ( 'D' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
-			$action = 2; #(AKA::Mail::ACTION_DISCARD); # 2¡¢discard
-		}else{ # 'N'
-			$action = 6; # (AKA::Mail::ACTION_NULL);
-		}
+		local $_ = uc $self->{conf}->{config}->{AntiVirusEngine}->{VirusAction};
+		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1¡¢reject 
+		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2¡¢drop
+		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3¡¢quarantine
+		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7¡¢accept
+		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14¡¢tag & accept
+		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 ÅäÖÃ³ö´íÀ²
 	}else{
-		$action = 7; #(AKA::Mail::ACTION_ACCEPT);
+		$action = AKA::Mail::Conf::ACTION_ACCEPT; #(AKA::Mail::ACTION_ACCEPT);
 	}
 
 	return ( {	result	=> $is_virus,

@@ -7,6 +7,7 @@ package AKA::Mail::Controler;
 #use strict;
 
 use AKA::Mail::Log;
+use AKA::Mail::Conf;
 
 sub new
 {
@@ -828,11 +829,11 @@ sub write_queue
 	my ($pf_action, $pf_param) = ( $aka->{engine}->{content}->{action}, 
 					$aka->{engine}->{content}->{desc} );
 	my ($pf_hdr_key,$pf_hdr_done);
-	if (  ACTION_ADDHDR<=$pf_action && ACTION_CHGHDR>=$pf_action ){
+	if (  AKA::Mail::Conf::ACTION_ADDHDR<=$pf_action && ACTION_CHGHDR>=$pf_action ){
 		$pf_hdr_done = 0;
 		if ( $pf_param =~ /^([^:]+): /){
 			$pf_hdr_key = $1;
-		}elsif ( ACTION_DELHDR!=$pf_action ){
+		}elsif ( AKA::Mail::Conf::ACTION_DELHDR!=$pf_action ){
 			$self->{zlog}->debug ( "pf: pf_param: [$pf_param] can't parse to header data when requeue, pf_action: [$pf_action]" );
 		}
 	}else{

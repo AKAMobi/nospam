@@ -20,13 +20,7 @@ if( wi("get_Serial",$result)==0 ){
 
 <body>
 <p><?=_("SerialNo & License")?>:<?=$serial?></p>
-<p><?=_("This Product has not get valid License, Please contact with your product provider.")?></p>
 
-<?=_("Upload License")?>:
-<form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
-  <input type="file" name="license">
-  <input type="submit" name="Submit" value="<?=_("Submit")?>">
-</form>
 <?
 	unset($result);
 	if(($ret=wi("check_License License.dat",$result))==0){	
@@ -48,10 +42,17 @@ if( wi("get_Serial",$result)==0 ){
 <?
 	}
 	}else{
+		echo "<p>" . _("This Product has not get valid License, Please contact with your product provider.") . "</p>";
 		$LicenseInfo = trim(implode("",$result));
 		echo "<p>"._(" Error").": ".$LicenseInfo." #".$ret._()."<p>";
 	}
 
 ?>
+<?=_("Upload License")?>:
+<form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
+  <input type="file" name="license">
+  <input type="submit" name="Submit" value="<?=_("Submit")?>">
+</form>
+
 </body>
 </html>

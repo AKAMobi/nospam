@@ -9,7 +9,7 @@ if(!adminPerm(PERM_ADMIN_VIRUS))
 if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
-	$spamconf->setParam("RefuseVirus",$_POST["RefuseVirus"],"AntiVirusEngine");
+	$spamconf->setParam("VirusAction",$_POST["VirusAction"],"AntiVirusEngine");
 	$tagpos = $_POST["tagpos"];
 	$spamconf->setParam("TagHead","N","AntiVirusEngine");
 	$spamconf->setParam("TagSubject","N","AntiVirusEngine");
@@ -25,7 +25,7 @@ if($_POST["Submit"]==_("Modify")){
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
-	$RefuseVirus = $spamconf->getParam("RefuseVirus","AntiVirusEngine");
+	$VirusAction = $spamconf->getParam("VirusAction","AntiVirusEngine");
 	$cTagHead = $spamconf->getParam("TagHead","AntiVirusEngine");
 	$cTagSubject = $spamconf->getParam("TagSubject","AntiVirusEngine");
 	$cTagReason = $spamconf->getParam("TagReason","AntiVirusEngine");
@@ -44,15 +44,23 @@ if($_POST["Submit"]==_("Modify")){
 <form name="form1" method="post" action="">
   <p><?=_("Virus Mail Treatment")?>: <br>
     <label>
-    <input type="radio" name="RefuseVirus" value="N"<? if($RefuseVirus=="N") echo " checked"; ?>>
-    <?=_("Tag & Pass")?></label>
+    <input type="radio" name="VirusAction" value="F"<? if($VirusAction=="F") echo " checked"; ?>>
+    <?=_("Accept")?></label>
     <br>
     <label>
-    <input type="radio" name="RefuseVirus" value="Y"<? if($RefuseVirus=="Y") echo " checked"; ?>>
-    <?=_("Perm. Reject")?></label>
-    <label>
+    <input type="radio" name="VirusAction" value="T"<? if($VirusAction=="T") echo " checked"; ?>>
+    <?=_("Tag & Accept")?></label>
     <br>
-    <input type="radio" name="RefuseVirus" value="D"<? if($RefuseVirus=="D") echo " checked"; ?>>
+    <label>
+    <input type="radio" name="VirusAction" value="Q"<? if($VirusAction=="Q") echo " checked"; ?>>
+    <?=_("Quarantine")?></label>
+    <br>
+    <label>
+    <input type="radio" name="VirusAction" value="R"<? if($VirusAction=="R") echo " checked"; ?>>
+    <?=_("Reject")?></label>
+    <br>
+    <label>
+    <input type="radio" name="VirusAction" value="D"<? if($VirusAction=="D") echo " checked"; ?>>
     <?=_("Drop")?></label>
     <br>
   </p>
@@ -95,15 +103,15 @@ alert("<?=_("ALERT: AntiVirus Engine is OFF")?>");
 <body>
   <p>
     <label>
-    <input type="radio" name="RefuseVirus" value="N"<? if($RefuseVirus=="N") echo " checked"; ?> disabled>
+    <input type="radio" name="VirusAction" value="N"<? if($VirusAction=="N") echo " checked"; ?> disabled>
     <?=_("Tag & Pass")?></label>
     <br>
     <label>
-    <input type="radio" name="RefuseVirus" value="Y"<? if($RefuseVirus=="Y") echo " checked"; ?> disabled>
+    <input type="radio" name="VirusAction" value="Y"<? if($VirusAction=="Y") echo " checked"; ?> disabled>
     <?=_("Perm. Reject")?></label>
     <label>
     <br>
-    <input type="radio" name="RefuseVirus" value="D"<? if($RefuseVirus=="D") echo " checked"; ?> disabled>
+    <input type="radio" name="VirusAction" value="D"<? if($VirusAction=="D") echo " checked"; ?> disabled>
     <?=_("Drop")?></label>
   </p>
   <p>

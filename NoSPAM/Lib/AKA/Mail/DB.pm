@@ -23,8 +23,6 @@ sub new
 	
 	$self->{define}->{DBFile} = "/home/NoSPAM/var/sqlite/nospam.sqlite";
 
-	$self->connect();
-
 	return $self;
 }
 
@@ -32,6 +30,8 @@ sub connect
 {
 	my $self = shift;
 	
+	return $self->{dbh} if defined $self->{dbh};
+
 	my $DBFile = $self->{define}->{DBFile};
 	$self->{dbh} = DBI->connect("dbi:SQLite:dbname=$DBFile","","") or 
 		$self->{zlog}->fatal( "DB::connect failed! $!" );
@@ -43,6 +43,7 @@ sub disconnect
 {
 	my $self = shift;
 	eval { $self->{dbh}->disconnect(); };
+	undef $self->{dbh};
 }
 
 # drop: if true, then drop first
@@ -61,7 +62,7 @@ create table UserEmail_TB (
 );
 __SQL__
 
-	my $dbh = $self->{dbh};
+	my $dbh = $self->connect;
 
 	if ( $drop ){
 		eval {
@@ -86,8 +87,10 @@ sub user_email_add($$)
 sub user_email_add_prepare
 {
 	my $self = shift;
-	my $sth_del = $self->{dbh}->prepare( "delete from UserEmail_TB where EMail=?" );
-	my $sth_ins = $self->{dbh}->prepare( "insert into UserEmail_TB (EMail) values (?)" );
+	my $dbh = $self->connect;
+
+	my $sth_del = $dbh->prepare( "delete from UserEmail_TB where EMail=?" );
+	my $sth_ins = $dbh->prepare( "insert into UserEmail_TB (EMail) values (?)" );
 
 	return ( $sth_del,$sth_ins );
 }
@@ -113,7 +116,8 @@ sub user_email_list($)
 {
 	my $self = shift;
 	
-	my $dbh = $self->{dbh};
+	my $dbh = $self->connect;
+
 	my $sth = $dbh->prepare ( "select Email from UserEmail_TB" );
 	$sth->execute();
 	while( my ($email)=$sth->fetchrow_array() ){
@@ -126,7 +130,7 @@ sub user_email_clean($)
 {
 	my $self = shift;
 
-	$self->{dbh}->do ( "delete from UserEmail_TB" );
+	$self->connect()->do ( "delete from UserEmail_TB" );
 }
 # 判断用户email是否存在
 sub user_email_exist($$)
@@ -134,7 +138,8 @@ sub user_email_exist($$)
 	my $self = shift;
 	my $email = shift;
 
-	my $dbh = $self->{dbh};
+	my $dbh = $self->connect();
+
 	my $sth = $dbh->prepare ( "select count(*) from UserEmail_TB where Email=?" );
 	$sth->execute( $email );
 	my ($count) = $sth->fetchrow_array();

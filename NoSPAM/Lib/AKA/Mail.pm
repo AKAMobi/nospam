@@ -31,37 +31,9 @@ use AKA::Mail::Content;
 use AKA::Mail::Dynamic;
 
 use AKA::Mail::Archive;
+use AKA::Mail::Quarantine;
 
-use constant	{
-	RESULT_SPAM_NOT		=>	0,
-	RESULT_SPAM_MAYBE	=>	1,
-	RESULT_SPAM_MUST	=>	2,
-	RESULT_SPAM_BLACK	=>	3,
-
-	ACTION_PASS		=>	0,
-	
-	# main process func impl
-	ACTION_REJECT		=>	1,
-	ACTION_DISCARD		=>	2,
-	ACTION_QUARANTINE	=>	3,
-
-	ACTION_STRIP		=>	4,
-	ACTION_DELAY		=>	5,
-
-	ACTION_NULL		=>	6,
-	ACTION_ACCEPT		=>	7,
-
-	# in main process 
-	ACTION_ADDRCPT		=>	8,
-	ACTION_DELRCPT		=>	9,
-	ACTION_CHGRCPT		=>	10,
-
-	# qmail_rqueue impl
-	ACTION_ADDHDR		=>	11,
-	ACTION_DELHDR		=>	12,
-	ACTION_CHGHDR		=>	13
-	
-};
+use AKA::Mail::User;
 
 sub new
 {
@@ -93,6 +65,9 @@ sub new
 	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
+
+	$self->{user} 		= new AKA::Mail::User($self);
+	$self->{quarantine}	= new AKA::Mail::Quarantine($self);
 
 	($self->{license_ok},$self->{license_html}) = $self->check_license_file();
 
@@ -164,9 +139,6 @@ sub server
 					, Type => SOCK_STREAM
 					, Listen => SOMAXCONN
 			) || sleep 1 && die "Could not create UNIX socket: $! $@\n";
-
-
-
 
 	my $client;
 	my $pid;
@@ -478,21 +450,6 @@ sub send_mail_info
 }
 
 
-# 初始化数据库
-sub init_database($)
-{
-	my $self = shift;
-	
-	if ( defined $self->{database} ){
-		#	ping
-		# 不是很熟悉ping的用法
-		# 而且SQLite是文件型的，暂时 unimpl.
-	}else{
-		$self->{database} = new AKA::Mail::DB($self);
-	}
-	return $self->{database};
-}
-
 sub process
 {
 	my $self = shift;
@@ -504,9 +461,6 @@ sub process
 	}
 
 	$self->{mail_info} = $mail_info;
-
-	# XXX DB init here: 这个这个循环会被重复执行，循环中没有其他fork，可以在第一次循环的时候初始化数据库。
-	$self->init_database();
 
 	$mail_info->{aka}->{start_time} = $self->{start_time};
 	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
@@ -524,6 +478,13 @@ sub process
 	my $last_cputime;
 
 	$last_cputime = $user+$system+$cuser+$csystem;
+
+
+	$self->quarantine_engine() 	unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{quarantine}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 
 	$self->antivirus_engine() 	unless $self->{mail_info}->{aka}->{drop};
 	($user,$system,$cuser,$csystem) = times;
@@ -569,9 +530,9 @@ sub process
 	# 处理邮件动作，大家都有的动作
 	foreach my $engine ( keys %{$mail_info->{aka}->{engine}} ){
 		next unless $_ = $self->{mail_info}->{aka}->{engine}->{$engine}->{action};
-		next if ( $_ eq ACTION_PASS );
+		next if ( $_ eq AKA::Mail::Conf::ACTION_PASS );
 
-		if ( $_ eq ACTION_REJECT ){
+		if ( $_ eq AKA::Mail::Conf::ACTION_REJECT ){
 			$self->cleanup();
 
 			unless ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc}){
@@ -594,12 +555,32 @@ sub process
 			}
 
 			return $mail_info;
-		}elsif ( $_ eq ACTION_DISCARD ){
+		}elsif ( $_ eq AKA::Mail::Conf::ACTION_DISCARD ){
 			$self->cleanup();
 			$mail_info->{aka}->{resp}->{exit_code} = 0;
 			return $mail_info;
-		}elsif ( $_ eq ACTION_QUARANTINE ){
-			$self->quarantine();
+		}elsif ( $_ eq AKA::Mail::Conf::ACTION_QUARANTINE ){
+			# spam & antivirus 是用户隔离
+			# content 是管理员隔离
+			my $quarantine_type;
+			my ($q_reason,$q_desc);
+
+			$q_desc = $self->{mail_info}->{aka}->{engine}->{$engine}->{desc};
+
+			if ( 'spam' eq $engine) {
+				$quarantine_type = AKA::Mail::Conf::QUARANTINE_USER;
+				$q_reason = 'S';
+			}elsif ('antivirus' eq $engine){
+				$quarantine_type = AKA::Mail::Conf::QUARANTINE_USER;
+				$q_reason = 'V';
+			}elsif ('content' eq $engine){
+				$quarantine_type = AKA::Mail::Conf::QUARANTINE_ADMIN;
+				$q_reason = 'C';
+			}else{
+				$self->{zlog}->fatal ( "AKA::Mail::process found unknown quarantine engine: [$engine]" );
+				$quarantine_type = AKA::Mail::Conf::QUARANTINE_ADMIN;
+			}
+			$self->quarantine_action( $quarantine_type, $q_reason, $q_desc );
 			$mail_info->{aka}->{resp}->{exit_code} = 0;
 			return $mail_info;
 		}else{
@@ -621,6 +602,104 @@ REQUEUE:
 	return $self->{mail_info};
 }
 
+sub quarantine_action($$$$)
+{
+	my $self = shift;
+	my ($q_type,$q_reason,$q_desc) = @_;
+
+	my ($emlfile,$mailfrom,$mailto,$size,$subject);
+	$emlfile = $self->{mail_info}->{aka}->{emlfilename};
+	$mailfrom = $self->{mail_info}->{aka}->{mail_from};
+	$mailto = $self->{mail_info}->{aka}->{recips};
+	$subject = $self->{mail_info}->{aka}->{subject};
+	$size = $self->{mail_info}->{aka}->{size};
+
+	$self->{quarantine}->quarantine( $q_type, $emlfile, $mailfrom, $mailto, $subject, $size, $q_reason, $q_desc);
+}
+
+sub quarantine_engine
+{
+	my $self = shift;
+
+	# 如果是由内向外发信则不检查收件人
+	return if ( (defined $self->{mail_info}->{aka}->{RELAYCLIENT} && '1' eq $self->{mail_info}->{aka}->{RELAYCLIENT})
+                         ||
+              length($self->{mail_info}->{aka}->{TCPREMOTEINFO}) );
+
+	my $recips = $self->{mail_info}->{aka}->{recips};
+	my ($email) = split(/,/,$recips); 	# 如果有多个收件人，只判断第一个
+
+	my $start_time = [gettimeofday];
+
+	my $userlistdb = $self->{conf}->{config}->{QuarantineEngine}->{UserListDB};
+	if ( 'Disabled' eq $userlistdb ){
+		$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+			result 	=> 0,
+			desc	=> __("OFF"),
+			action 	=> 0, 
+
+			enabled	=> 0,
+			runned	=> 1,
+			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+		} );
+		return;
+	}elsif( 'DB' eq $userlistdb ){
+		if ( ! $self->{user}->is_user_exist($email) ){
+			my $nosuchuseraction = uc $self->{conf}->{config}->{QuarantineEngine}->{NoSuchUserAction} ;
+			if ('F' eq $nosuchuseraction){
+				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+					result 	=> 1,
+					desc	=> __("User does not exist"),
+					action 	=> AKA::Mail::Conf::ACTION_ACCEPT, 
+
+					enabled	=> 1,
+					runned	=> 1,
+					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+				} );
+			}elsif( 'D' eq $nosuchuseraction){
+				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+					result 	=> 1,
+					desc	=> __("User does not exist"),
+					action 	=> AKA::Mail::Conf::ACTION_DISCARD, 
+
+					enabled	=> 1,
+					runned	=> 1,
+					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+				} );
+			}elsif('R' eq $nosuchuseraction){
+				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+					result 	=> 1,
+					desc	=> __("User does not exist"),
+					action 	=> AKA::Mail::Conf::ACTION_REJECT, 
+
+					enabled	=> 1,
+					runned	=> 1,
+					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+				} );
+
+			}else{
+				$self->{zlog}->fatal ( "AKA::Mail::quaratine_engine found unknown NoSucnUserAction" );
+			}
+		}else{
+			$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+				result 	=> 0,
+				desc	=> __("registered user"),
+				action 	=> AKA::Mail::Conf::ACTION_ACCEPT, 
+
+				enabled	=> 1,
+				runned	=> 1,
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+			} );
+		}
+	}else{
+		$self->{zlog}->fatal ( "AKA::Mail::quaratine_check_user unsupport CheckUserList" );
+	}
+
+	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( 
+			$self->{mail_info}->{aka}->{engine}->{quarantine}->{action} 
+	);
+}
+
 sub init_engine_info
 {
 	my $self = shift;
@@ -630,7 +709,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 			result	=>0,
 			desc	=>__("not run"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -638,7 +717,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{spam} = {	
 			result	=>0,
 			desc	=>__("not run"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -646,7 +725,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{content} = {	
 			result	=>0,
 			desc	=>__("not run"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -654,7 +733,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 			result	=>0,
 			desc	=>__("not run"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -662,11 +741,20 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>__("not run"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
 	};
+	$self->{mail_info}->{aka}->{engine}->{quarantine} = {	
+			result	=>0,
+			desc	=>__("not run"),
+			action	=>AKA::Mail::Conf::ACTION_PASS,
+               		enabled => 0,
+               		runned  => 0,
+                      	runtime => 0
+	};
+
 }
 
 sub action_rcpts
@@ -682,13 +770,13 @@ sub action_rcpts
 		my $pf_param = $aka->{engine}->{content}->{desc};
 		my $env_recips = $aka->{env_recips};
 
-		if ( ACTION_ADDRCPT eq $action ){
+		if ( AKA::Mail::Conf::ACTION_ADDRCPT eq $action ){
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->{zlog}->debug("pf_a: addrcpt param is: [$pf_param] invalid email address.");
 				return;
 			}
 			$env_recips = "T$pf_param\0" . $env_recips;
-		}elsif ( ACTION_DELRCPT eq $action ){
+		}elsif ( AKA::Mail::Conf::ACTION_DELRCPT eq $action ){
 			# 9、delrcpt 删除指定收件人（该动作只允许在信封收件人的信头规则中使用）。无参数
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->{zlog}->debug("pf_a: delrcpt param is: [$pf_param] invalid email address.");
@@ -703,7 +791,7 @@ sub action_rcpts
 				# XXX by zixia 2004-04-24 
 				# why exit 0;
 			}# 即使是一个地址，结尾也是两个\0
-		}elsif ( ACTION_CHGRCPT eq $action ){
+		}elsif ( AKA::Mail::Conf::ACTION_CHGRCPT eq $action ){
 			# 10、chgrcpt 改变指定的收件人为新的收件人（该动作只允许在信封收件人的信头规则中使用）。
 			#     带一个字符串参数，内容为新的收件人邮件地址
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
@@ -863,11 +951,11 @@ sub write_queue
 					$aka->{engine}->{content}->{desc}, 
 					$aka->{engine}->{content}->{result} );
 	my ($pf_hdr_key,$pf_hdr_done);
-	if (  ACTION_ADDHDR<=$pf_action && ACTION_CHGHDR>=$pf_action ){
+	if (  AKA::Mail::Conf::ACTION_ADDHDR<=$pf_action && AKA::Mail::Conf::ACTION_CHGHDR>=$pf_action ){
 		$pf_hdr_done = 0;
 		if ( $pf_param =~ /^([^:]+): /){
 			$pf_hdr_key = $1;
-		}elsif ( ACTION_DELHDR!=$pf_action ){
+		}elsif ( AKA::Mail::Conf::ACTION_DELHDR!=$pf_action ){
 			$self->{zlog}->debug ( "pf: pf_param: [$pf_param] can't parse to header data when requeue, pf_action: [$pf_action]" );
 		}
 	}else{
@@ -878,12 +966,12 @@ sub write_queue
 
 	while (<STDIN>) {
 		if ($still_headers) {
-			if ( !$pf_hdr_done && (ACTION_ADDHDR<=$pf_action || ACTION_CHGHDR>=$pf_action) ){
-				if ( ACTION_ADDHDR==$pf_action ){
+			if ( !$pf_hdr_done && (AKA::Mail::Conf::ACTION_ADDHDR<=$pf_action || AKA::Mail::Conf::ACTION_CHGHDR>=$pf_action) ){
+				if ( AKA::Mail::Conf::ACTION_ADDHDR==$pf_action ){
 					# 11、addhdr 添加信头纪录。带一个字符串参数，内容为新的信头记录
 					print QMQ "$pf_param\n";
 					$pf_hdr_done = 1;
-				}elsif ( ACTION_DELHDR==$pf_action ){
+				}elsif ( AKA::Mail::Conf::ACTION_DELHDR==$pf_action ){
 						# 12、delhdr 删除信头纪录，删除匹配到指定信头规则的信头记录
 						#     （该动作只允许在信头规则中使用）。无参数
 					if ( /^$pf_hdr_key: / ){
@@ -891,7 +979,7 @@ sub write_queue
 						$pf_hdr_done = 1;
 						next;
 					}
-				}elsif ( ACTION_CHGHDR==$pf_action ){
+				}elsif ( AKA::Mail::Conf::ACTION_CHGHDR==$pf_action ){
 					# 13、chghdr 修改信头纪录，将匹配到指定信头规则的信头记录换成新的信头记录
 					#    （该动作只允许在信头规则中使用）。
 					#    带一个字符串参数，内容为新的信头记录
@@ -905,11 +993,11 @@ sub write_queue
 			if (/^Subject: (.+)/i){
 				my $tagged_subj = $1;
 				if ( 'Y' eq uc $config->{SpamEngine}->{TagSubject} ){
-					if ( RESULT_SPAM_MAYBE==$aka->{engine}->{spam}->{result} ){
+					if ( AKA::Mail::Conf::RESULT_SPAM_MAYBE==$aka->{engine}->{spam}->{result} ){
 						$tagged_subj = $config->{SpamEngine}->{MaybeSpamTag} . ' ' . $tagged_subj; 
-					}elsif ( RESULT_SPAM_MUST==$aka->{engine}->{spam}->{result} ){
+					}elsif ( AKA::Mail::Conf::RESULT_SPAM_MUST==$aka->{engine}->{spam}->{result} ){
 						$tagged_subj = $config->{SpamEngine}->{SpamTag} . ' ' . $tagged_subj; 
-					}elsif ( RESULT_SPAM_BLACK==$aka->{engine}->{spam}->{result} ){
+					}elsif ( AKA::Mail::Conf::RESULT_SPAM_BLACK==$aka->{engine}->{spam}->{result} ){
 						$tagged_subj = ($config->{SpamEngine}->{BlackTag}||__("[Black List]")) . ' ' . $tagged_subj; 
 					}
 				}
@@ -1036,7 +1124,7 @@ sub antivirus_engine
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 					result	=>0,
 					desc	=>__("Need not check outgoing mail"),
-					action	=>ACTION_PASS,
+					action	=>AKA::Mail::Conf::ACTION_PASS,
 
                   			enabled => 1,
                      			runned  => 1,
@@ -1089,8 +1177,8 @@ sub antivirus_engine
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
 
 
-	if ( (ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}
-			|| (ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}){
+	if ( (AKA::Mail::Conf::ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}
+			|| (AKA::Mail::Conf::ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}){
 		$self->{mail_info}->{aka}->{drop} = 1;
 #$self->{zlog}->debug ( "antivirus action drop set [" . $self->{mail_info}->{aka}->{drop} . "]" );
 	}
@@ -1145,7 +1233,7 @@ sub archive_engine
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>__("OFF"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
                       	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
@@ -1161,7 +1249,7 @@ sub archive_engine
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>__("not set"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
                       	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
@@ -1214,7 +1302,7 @@ sub archive_engine
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>__("not fit condition"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
                       	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
@@ -1226,7 +1314,7 @@ sub archive_engine
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>__("internal error"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
                       	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
@@ -1239,7 +1327,7 @@ sub archive_engine
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>1,
 			desc	=>__("submmited"),
-			action	=>ACTION_PASS,
+			action	=>AKA::Mail::Conf::ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
                       	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
@@ -1265,11 +1353,11 @@ sub spam_engine
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 0;
 
-		$is_spam = RESULT_SPAM_NOT;
+		$is_spam = AKA::Mail::Conf::RESULT_SPAM_NOT;
 		$reason = __("OFF");
 	}
 	elsif ( $self->{mail_info}->{aka}->{RELAYCLIENT} ) { # 内部RELAY
-		$is_spam = RESULT_SPAM_NOT;
+		$is_spam = AKA::Mail::Conf::RESULT_SPAM_NOT;
 		$reason = __("Traceable");
 
 	}
@@ -1279,13 +1367,13 @@ sub spam_engine
 		$auth_user .= '@' . $self->{conf}->{config}->{MailServer}->{MailHostName}
 			unless ( $auth_user =~ /\@/ );
 		
-		$is_spam = RESULT_SPAM_NOT;
+		$is_spam = AKA::Mail::Conf::RESULT_SPAM_NOT;
 		$reason = __("Authorized user");
 
 		if ( ($auth_user ne $returnpath) &&
 				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # 内部可追查
 				  ($self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/Out/i) ) ){ 
-			$is_spam = RESULT_SPAM_MAYBE;
+			$is_spam = AKA::Mail::Conf::RESULT_SPAM_MAYBE;
 			$reason = __("Sender must as same as auth user");
 		}
 		
@@ -1300,7 +1388,7 @@ sub spam_engine
 	#elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
 		# A blank MAIL FROM: is typically used for error mail, 
 		# and error mail typically would not be sent to multiple recipients.
-	#	$is_spam = RESULT_SPAM_MAYBE;
+	#	$is_spam = AKA::Mail::Conf::RESULT_SPAM_MAYBE;
 	#	$reason = '邮件格式伪造';
 	#}
 	else{ #由外向内
@@ -1320,18 +1408,20 @@ sub spam_engine
 		}
 	}
 
-	my $action = ACTION_PASS;
+	my $action = AKA::Mail::Conf::ACTION_PASS;
 
+	#
+	#
 	if ( $is_spam ) {
-		if ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ){
-			$action = ACTION_REJECT; # 1、reject
-		}elsif ( 'D' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ){
-			$action = ACTION_DISCARD; # 2、drop
-		}else{ #'N'
-			$action = ACTION_NULL;
-		}
+		local $_ = uc $self->{conf}->{config}->{SpamEngine}->{SpamAction};
+		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1、reject 
+		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2、drop
+		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3、quarantine
+		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7、accept
+		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14、tag & accept
+		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 配置出错啦
 	}else{
-		$action = ACTION_ACCEPT;
+		$action = AKA::Mail::Conf::ACTION_ACCEPT;
 	}
 
 #$self->{zlog}->log ( "SA: " . $sa_result->{VERSION} );
@@ -1346,12 +1436,20 @@ sub spam_engine
 						dns_query_time => $dns_query_time||0
 	};
 
-	if ( (ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{spam}->{action}
-			|| (ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{spam}->{action}){
-		$self->{mail_info}->{aka}->{drop} = 1;
-	}
-
+	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( $self->{mail_info}->{aka}->{engine}->{content}->{action} );
 	return;
+}
+
+sub if_action_is_drop($$)
+{
+	my $self = shift;
+	my $action = shift;
+
+	return ( AKA::Mail::Conf::ACTION_REJECT eq $action )
+			||
+		( AKA::Mail::Conf::ACTION_DISCARD eq $action )
+			||
+		( AKA::Mail::Conf::ACTION_QUARANTINE eq $action );
 }
 
 sub get_sa_result
@@ -1368,9 +1466,9 @@ sub get_sa_result
 		if ( $sa_result->{SCORE} > 10 ){
 			$reason = $sa_result->{TESTS};
 			if ( $sa_result->{SCORE} < 15 ){
-				$is_spam = RESULT_SPAM_MAYBE ;
+				$is_spam = AKA::Mail::Conf::RESULT_SPAM_MAYBE ;
 			}else{
-				$is_spam = RESULT_SPAM_MUST;
+				$is_spam = AKA::Mail::Conf::RESULT_SPAM_MUST;
 			}
 		}
 		if ( $is_spam ){
@@ -1427,7 +1525,7 @@ sub dynamic_engine
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 					result	=>0,
 					desc	=>__("outgoing mail is not limited"),
-					action	=>ACTION_PASS,
+					action	=>AKA::Mail::Conf::ACTION_PASS,
 
                   			enabled => 1,
                      			runned  => 1,
@@ -1589,13 +1687,7 @@ sub content_engine
 	$self->{mail_info} = $self->{content}->process( $self->{mail_info} );
 #$self->{zlog}->debug( "content_engine 2 action: [" . $self->{mail_info}->{aka}->{engine}->{content}->{action} . "]" );
 
-	$self->{mail_info}->{aka}->{drop} ||= ( 
-						( ACTION_REJECT eq $self->{mail_info}->{aka}->{engine}->{content}->{action} )
-						||
-						( ACTION_DISCARD eq $self->{mail_info}->{aka}->{engine}->{content}->{action} )
-						||
-						( ACTION_QUARANTINE eq $self->{mail_info}->{aka}->{engine}->{content}->{action} )
-					      );
+	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop( $self->{mail_info}->{aka}->{engine}->{content}->{action} );
 	#$self->{mail_info}->{aka}->{drop_info} ||= '553 ' . $self->{mail_info}->{aka}->{engine}->{content}->{desc};
 
 	return;
@@ -1633,7 +1725,7 @@ sub content_engine_is_enabled
 			$self->{mail_info}->{aka}->{engine}->{content} = {	
 					result	=>0,
 					desc	=>__("Outgoing mail need not filter"),
-					action	=>ACTION_PASS,
+					action	=>AKA::Mail::Conf::ACTION_PASS,
 
                   			enabled => 1,
                      			runned  => 1,

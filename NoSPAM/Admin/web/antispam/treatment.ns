@@ -7,10 +7,10 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["RefuseSpam"]){
+if($_POST["SpamAction"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
-	$spamconf->setParam("RefuseSpam",$_POST["RefuseSpam"],"SpamEngine");
+	$spamconf->setParam("SpamAction",$_POST["SpamAction"],"SpamEngine");
 	$tagpos = $_POST["tagpos"];
 	$spamconf->setParam("TagHead","N","SpamEngine");
 	$spamconf->setParam("TagSubject","N","SpamEngine");
@@ -27,7 +27,7 @@ if($_POST["RefuseSpam"]){
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
-	$RefuseSpam = $spamconf->getParam("RefuseSpam","SpamEngine");
+	$SpamAction = $spamconf->getParam("SpamAction","SpamEngine");
 	$cTagHead = $spamconf->getParam("TagHead","SpamEngine");
 	$cTagSubject = $spamconf->getParam("TagSubject","SpamEngine");
 	$cTagReason = $spamconf->getParam("TagReason","SpamEngine");
@@ -47,15 +47,26 @@ if($_POST["RefuseSpam"]){
 <form name="form1" method="post" action="">
   <p>
     <label>
-    <input type="radio" name="RefuseSpam" value="N"<? if($RefuseSpam=="N") echo " checked"; ?>>
-    <?=_("Tag & Pass")?></label>
+    <input type="radio" name="SpamAction" value="F"<? if($SpamAction=="F") echo " checked"; ?>>
+    <?=_("Accept")?></label>
+    <br>
+ 
+    <label>
+    <input type="radio" name="SpamAction" value="T"<? if($SpamAction=="T") echo " checked"; ?>>
+    <?=_("Tag & Accept")?></label>
+    <br>
+ 
+    <label>
+    <input type="radio" name="SpamAction" value="Q"<? if($SpamAction=="Q") echo " checked"; ?>>
+    <?=_("Quarantine")?></label>
+    <br>
+ 
+    <label>
+    <input type="radio" name="SpamAction" value="R"<? if($SpamAction=="R") echo " checked"; ?>>
+    <?=_("Reject")?></label>
     <br>
     <label>
-    <input type="radio" name="RefuseSpam" value="Y"<? if($RefuseSpam=="Y") echo " checked"; ?>>
-    <?=_("Perm. Reject")?></label>
-    <br>
-    <label>
-    <input type="radio" name="RefuseSpam" value="D"<? if($RefuseSpam=="D") echo " checked"; ?>>
+    <input type="radio" name="SpamAction" value="D"<? if($SpamAction=="D") echo " checked"; ?>>
     <?=_("Drop")?></label>
   </p>
   <p>
@@ -100,15 +111,26 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 <body>
   <p>
     <label>
-    <input type="radio" name="RefuseSpam" value="N"<? if($RefuseSpam=="N") echo " checked"; ?> disabled>
-    <?=_("Tag & Pass")?></label>
+    <input type="radio" name="SpamAction" value="F"<? if($SpamAction=="F") echo " checked"; ?> disabled>
+    <?=_("Accept")?></label>
+    <br>
+ 
+    <label>
+    <input type="radio" name="SpamAction" value="T"<? if($SpamAction=="T") echo " checked"; ?> disabled>
+    <?=_("Tag & Accept")?></label>
+    <br>
+
+    <label>
+    <input type="radio" name="SpamAction" value="Q"<? if($SpamAction=="Q") echo " checked"; ?> disabled>
+    <?=_("Quarantine")?></label>
     <br>
     <label>
-    <input type="radio" name="RefuseSpam" value="Y"<? if($RefuseSpam=="Y") echo " checked"; ?> disabled>
-    <?=_("Perm. Reject")?></label>
+    <input type="radio" name="SpamAction" value="R"<? if($SpamAction=="R") echo " checked"; ?> disabled>
+    <?=_("Reject")?></label>
     <br>
+
     <label>
-    <input type="radio" name="RefuseSpam" value="D"<? if($RefuseSpam=="D") echo " checked"; ?> disabled>
+    <input type="radio" name="SpamAction" value="D"<? if($SpamAction=="D") echo " checked"; ?> disabled>
     <?=_("Drop")?></label>
   </p>
   <p>
