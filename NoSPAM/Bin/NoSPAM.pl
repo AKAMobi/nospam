@@ -280,7 +280,7 @@ sub rebuild_default_bridge
 	$ret ||= system ( "$brctl_binary addif nospam eth0" );
 	$ret ||= system ( "$brctl_binary addif nospam eth1" );
 	$ret ||= system ( "$ifconfig_binary nospam 192.168.0.150 netmask 255.255.255.0 up" );
-	$ret ||= system ( "$ifconfig_binary nospam:0 10.4.3.7 netmask 255.255.255.0 up" );
+	$ret ||= system ( "$ifconfig_binary nospam:0 " . $intconf->{MailGatewayInternalIP}||'10.4.3.7' . " netmask 255.255.255.255 up" );
 
 	return $ret;
 }
@@ -1080,11 +1080,13 @@ sub _network_reset_smtp_dnat
 
 	return 0 unless $domain_ip;
 
-	my $GWIP = $conf->{config}->{Network}->{IP};
-	if ( !defined $GWIP ){
-		$zlog->fatal ( "GW has no IP???" );
-		$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
-	}
+	# we use static internal ip here
+	$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
+	#my $GWIP = $conf->{config}->{Network}->{IP};
+	#if ( !defined $GWIP ){
+	#	$zlog->fatal ( "GW has no IP???" );
+	#	$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
+	#}
 
 	my $ret = 0;
 	my $err = 0;
@@ -1155,7 +1157,8 @@ sub _file_update_hosts
 	if ( $IP && $Hostname ){
 		$host_map{$IP} = $Hostname;
 	}else{
-		$host_map{'10.4.3.7'} = 'factory.gw.nospam.aka.cn';
+		#$host_map{'10.4.3.7'} = 'factory.gw.nospam.aka.cn';
+		$host_map{ $intconf->{MailGatewayInternalIP}||'10.4.3.7' } = 'factory.gw.nospam.aka.cn';
 	}
 
 

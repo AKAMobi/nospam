@@ -430,6 +430,7 @@ sub check_single_keyword_rule
 	$match_type = $rule->{type};
 	$match_keyword = $rule->{keyword};
 
+	# XXX fix it, or find out reason.
 	if ( ! length($mail_info->{body_text}) ){
 		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
 	}

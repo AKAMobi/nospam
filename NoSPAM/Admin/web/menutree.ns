@@ -29,6 +29,12 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
+
+	var b = new WebFXTreeItem('用户管理','help/user.htm','main');
+	tree.add(b);
+	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
+
 <?
 }
 
@@ -45,10 +51,6 @@ if(strstr($ServerMode,"Server")){
 	}
 }
 ?>
-	var b = new WebFXTreeItem('用户管理','help/user.htm','main');
-	tree.add(b);
-	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
-	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>

@@ -22,6 +22,10 @@ SpamEngine=Yes
 ArchiveEngine=Yes
 AntivirusEngine=Yes
 
+DynamicEngineEnabled=Yes
+ContentEngineEnabled=Yes
+SpamEngineEnabled=Yes
+
 _LICENSE_
 
 
