@@ -1065,7 +1065,7 @@ sub dynamic_engine
 	if ( $mailfrom ){
 		# 检查白名单
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteFromList}} ){
-			if ( /^$mailfrom$/ ){
+			if ( $_ eq $mailfrom ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
 	                                desc    => '发信人白名单',
@@ -1097,7 +1097,7 @@ sub dynamic_engine
 	if ( $subject ){
 		# 检查白名单
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteSubjectList}} ){
-			if ( /^$subject$/ ){
+			if ( $_ eq $subject ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
 	                                desc    => '邮件主题白名单',
@@ -1128,8 +1128,10 @@ sub dynamic_engine
 
 	if ( $ip ){
 		# 检查白名单
+		use AKA::IPUtil;
+		my $AI = new AKA::IPUtil;
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteIPRateList}} ){
-			if ( /^$ip$/ ){
+			if ( $AI->is_ip_in_range($ip, $_){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
 	                                desc    => 'IP白名单',
