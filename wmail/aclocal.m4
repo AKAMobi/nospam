@@ -756,3 +756,42 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.])
 fi])])
 
+# $Id$
+# Configure sysconftool
+# Copyright 2000 Double Precision, Inc.  See COPYING for
+# distribution information.
+#
+# AC_PROG_SYSCONFTOOL
+
+AC_DEFUN(AC_PROG_SYSCONFTOOL,
+[
+
+	AC_PATH_PROGS(SYSCONFTOOL_PERL, perl5 perl, perl)
+
+	if test "$SYSCONFTOOL_PERL" = "perl"
+	then
+		AC_ERROR(perl not found - please install perl)
+	fi
+
+	AC_MSG_CHECKING(for sysconftool...)
+	SYSCONFTOOL=""
+	for sysconf_dir in $ac_aux_dir . .. ../..
+	do
+		if test -f $srcdir/$sysconf_dir/sysconftool
+		then
+			SYSCONFTOOL=$srcdir/$sysconf_dir/sysconftool
+			break
+		fi
+	done
+
+	if test "$SYSCONFTOOL" = ""
+	then
+		AC_ERROR(sysconftool missing - not in the package)
+	fi
+
+	AC_MSG_RESULT( $SYSCONFTOOL)
+	SYSCONFTOOL="$SYSCONFTOOL_PERL $SYSCONFTOOL"
+	AC_SUBST(SYSCONFTOOL)
+]
+)
+

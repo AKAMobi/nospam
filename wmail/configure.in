@@ -5,7 +5,7 @@ dnl distribution information.
 
 AC_INIT(dbobj.config.in)
 LPATH="$PATH:/usr/local/bin"
-AM_INIT_AUTOMAKE(sqwebmail, 3.5.1.20030423, 0)
+AM_INIT_AUTOMAKE(wmail, 0.99b.20030508, 0)
 
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
@@ -278,8 +278,8 @@ AC_ARG_ENABLE(hostname, [],
 
 if test "x$prefix" = xNONE
 then
-	prefix=/usr/local/share/sqwebmail
-	ac_configure_args="$ac_configure_args --prefix=/usr/local/share/sqwebmail"
+	prefix=/home/wmail
+	ac_configure_args="$ac_configure_args --prefix=/home/wmail"
 fi
 
 test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
