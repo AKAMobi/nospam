@@ -107,7 +107,7 @@ function change(bState)
 		if(!$bAntiSpam){
 ?>
 <script>
-alert(<?=_("ALERT: AntiSpam Engine is OFF")?>);
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}
