@@ -15,6 +15,18 @@ diff -rua qmail-1.03.cocktail/conf-spawn qmail-1.03/conf-spawn
  
  This is a silent concurrency limit. You can't set it above 255. On some
  systems you can't set it above 125. qmail will refuse to compile if the
+diff -rua qmail-1.03.cocktail/qmail-queue.c qmail-1.03/qmail-queue.c
+--- qmail-1.03.cocktail/qmail-queue.c	1998-06-15 18:53:16.000000000 +0800
++++ qmail-1.03/qmail-queue.c	2004-05-05 23:20:47.000000000 +0800
+@@ -70,7 +70,7 @@
+  unsigned int i;
+  unsigned int len;
+  len = 0;
+- i = fmt_str(s,"Received: (qmail "); len += i; if (s) s += i;
++ i = fmt_str(s,"Received: (noSPAM "); len += i; if (s) s += i;
+  i = fmt_ulong(s,mypid); len += i; if (s) s += i;
+  i = fmt_str(s," invoked "); len += i; if (s) s += i;
+  if (uid == auto_uida)
 diff -rua qmail-1.03.cocktail/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
 --- qmail-1.03.cocktail/qmail-smtpd.c	2004-04-29 11:32:38.000000000 +0800
 +++ qmail-1.03/qmail-smtpd.c	2004-05-05 20:37:56.000000000 +0800
