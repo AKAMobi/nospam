@@ -67,7 +67,7 @@ foreach ( $SATests as $RuleKey=>$RuleDesc ){
 			echo "checked"; 
 		?>
 	> 
-	<?=$RuleDesc['S']?> <br> <?=$RuleDesc['L']?><p>
+	<b><?=$RuleDesc['S']?></b> £º <?=$RuleDesc['L']?><p>
 <?
 }
 ?>

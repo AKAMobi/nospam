@@ -106,7 +106,7 @@ function Razor_change(bState)
 
 <body>
 <form name="form1" method="post"> 
-  <p>集中分析方案A<br>
+  <p>分析服务器1<br>
     <label>
     <input id="idDCCEnabledY" type="radio" name="DCCEnabled" value="Y"<? if($bDCCEnabled) echo " checked" ?> onclick="DCCchange(false)">
   开启</label><br>
@@ -122,7 +122,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p>集中分析方案B：<br>
+  <p>分析服务器2：<br>
     <label>
     <input id="idPyzorEnabledY" type="radio" name="PyzorEnabled" value="Y"<? if($bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(false)">
   开启</label><br>
@@ -136,7 +136,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p>集中分析方案C：<br>
+  <p>分析服务器3：<br>
     <label>
     <input id="idRazorEnabledY" type="radio" name="RazorEnabled" value="Y"<? if($bRazorEnabled) echo " checked" ?> onclick="Razor_change(false)">
   开启</label><br>
