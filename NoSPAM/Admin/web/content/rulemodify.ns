@@ -61,6 +61,7 @@ $attachmentscount = count($attachments);
 <html>
 <head>
 <script language="javascript" src="../js/rulemodify.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <form action="rulemodify.ns?id=<?=$rule_id?>" method="POST" name="ParamForm">
@@ -356,6 +357,7 @@ function modify()
 <html>
 <head>
 <script language="javascript" src="../js/rulemodify.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <form action="rulemodify.ns?id=<?=$rule_id?><? if($_GET["action"]=="add") echo "&action=add"; ?>" method="POST" name="ParamForm">
@@ -855,6 +857,7 @@ function add()
 <html>
 <head>
 <script language="javascript" src="../js/rulemodify.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <form action="rulemodify.ns?action=add" method="POST" name="ParamForm">

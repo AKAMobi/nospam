@@ -46,7 +46,7 @@ $dynamic = array("正常","超限");
 <html>
 <head>
 <title>日志显示</title>
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
 <script language="javascript">
@@ -82,6 +82,7 @@ function enableMonitor()
 	document.all.oDynamic.src="monitor.ns?interval="+interval+"&line="+line;
 }
 </script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <div id="oStatic" name="oStatic">

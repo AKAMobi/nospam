@@ -26,6 +26,7 @@ if($_POST["submit"]=="提交"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>连接频率</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

@@ -13,6 +13,7 @@ if($_POST["SystemTime"]){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>系统时间</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

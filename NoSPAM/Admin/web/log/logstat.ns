@@ -3,7 +3,7 @@ require_once("../inc/include.ns");
 ?>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+
 <script>
 function initSelect()
 {
@@ -151,17 +151,22 @@ function showStat()
 {
 	sTime = new Date(0);
 	sTime.setFullYear(document.all.sYear.value);
-	sTime.setMonth(document.all.sMonth.value);
+	sTime.setMonth(document.all.sMonth.value-1);
 	sTime.setDate(document.all.sDate.value);
 	sTime.setHours(document.all.sHour.value);
 	eTime = new Date(0);
 	eTime.setFullYear(document.all.eYear.value);
-	eTime.setMonth(document.all.eMonth.value);
+	eTime.setMonth(document.all.eMonth.value-1);
 	eTime.setDate(document.all.eDate.value);
 	eTime.setHours(document.all.eHour.value);
-	document.all.statFrame.src = "showstat.ns?s="+sTime.valueOf()+"&e="+eTime.valueOf();
+	if(sTime.valueOf() > eTime.valueOf()){
+		alert('开始时间不能大于结束时间！');
+		return;
+	}
+	document.all.statFrame.src = "showstat.ns?s="+(sTime.valueOf()/1000)+"&e="+(eTime.valueOf()/1000);
 }
 </script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="initSelect()">
 统计开始时间：

@@ -6,6 +6,7 @@ require_once("../inc/include.ns");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>配置管理</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
@@ -16,10 +17,10 @@ require_once("../inc/include.ns");
   </tr>
   <tr>
     <td><div align="center">
-      <input type="button" value="下载" onclick="location.href='downfile.ns?file=config'";>
+      <input type="button" value="下载" onclick="window.open('downfile.ns?file=config','_blank')";>
     </div></td>
     <td><div align="center">
-      <input type="button" value="下载" onclick="location.href='downfile.ns?file=rule'">
+      <input type="button" value="下载" onclick="window.open('downfile.ns?file=rule','_blank')">
     </div></td>
   </tr>
   <tr>

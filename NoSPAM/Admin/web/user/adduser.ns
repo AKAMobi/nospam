@@ -11,7 +11,8 @@ table { font-size:x-small;}
 
 .title {font-size:medium;color:#ffffff;background-color:#6fa6e6;}
 </style>
-</HEAD>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
 <BODY>
 
 <!-- Insert HTML here -->

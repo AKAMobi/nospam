@@ -23,6 +23,9 @@ tr.RuleTB2 {
 	height: 20px;
 }
 
-a:link { color: #000000; text-decoration: none; }
-a:hover { color: blue; text-decoration: underline; }
-a:visited { text-decoration: none; }
+body,th,td,p,li,input,select {font-size:12px;}
+A:link {color:#00007f;}
+A:visited {color:#65038e;}
+A:active {color:#ff0000;}
+A:hover {color:#ff0000;}
+

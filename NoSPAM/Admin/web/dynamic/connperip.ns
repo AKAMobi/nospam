@@ -16,6 +16,7 @@ if($_POST["submit"]){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>同时连接数</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

@@ -33,6 +33,7 @@ function loadPage()
 	parent.document.all.oMonitor.innerHTML = document.body.innerHTML;
 }
 </script>
+
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="loadPage()">
@@ -57,9 +58,8 @@ function loadPage()
 </tr>
 <?
 if(count($output) > 0){
-	$i = 1;
 	foreach($output as $line){
-		$className = $i%2? "RuleTB2":"RuleTB1";
+		$className = $start%2? "RuleTB2":"RuleTB1";
 		$values = explode(",",$line);
 ?>
 <tr class="<?=$className?>">
@@ -80,7 +80,7 @@ if(count($output) > 0){
 	<td nowrap><?=$values[13]?></td>
 </tr>
 <?
-		$i++;$start++;
+		$start++;
 	}
 }
 ?>

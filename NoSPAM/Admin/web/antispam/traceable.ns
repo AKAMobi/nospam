@@ -81,6 +81,7 @@ function formReset()
 }
 </script>
 <link type="text/css" rel="StyleSheet" href="../css/winclassic.css" />
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

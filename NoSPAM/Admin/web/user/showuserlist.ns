@@ -20,7 +20,8 @@ TD {font-size: x-small;}
 BODY {font-size: x-small;}
 span {font-size: x-small;}
 </style>
-</HEAD>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
 <BODY onclick="hideFilterMenu();">
 <OBJECT id="userlist" CLASSID="clsid:333C7BC4-460F-11D0-BC04-0080C7055A83" VIEWASTEXT>
 	<PARAM NAME="DataURL" VALUE="userlist.ns">

@@ -8,6 +8,8 @@ require_once('../inc/vpopadm.inc.ns');
 <?php
 		return false;
 	}
+$id=getAdminID();
+$adminList=getAdminList();
 ?>
 <HTML>
 <HEAD>
@@ -20,13 +22,11 @@ TD {font-size: x-small;}
 BODY {font-size: x-small;}
 span {font-size: x-small;}
 </style>
-</HEAD>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/sortabletable.css">
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+</head>
 <BODY onclick="hideFilterMenu();">
-<OBJECT id="userlist" CLASSID="clsid:333C7BC4-460F-11D0-BC04-0080C7055A83" VIEWASTEXT>
-	<PARAM NAME="DataURL" VALUE="adminlist.ns">
-	<PARAM NAME="UseHeader" VALUE="True">
-	<PARAM NAME="CHARSET" VALUE="GB2312">
-</OBJECT>
 <SCRIPT language="JScript">
 var filterCol="";
 
@@ -166,25 +166,43 @@ function clearFilter() {
 </DIV>
 
 <DIV align="center">
-<table border="1" datasrc="#userlist" id="oUserInfo" width="99%">
+<table class="sort-table" id="table-1" cellspacing="0">
+<caption>管理员列表</caption>
 <thead>
-<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">管理员账号</span><span id="oSortOn_account"></span></th>
-<TH><span onclick="return sort('note');"  oncontextmenu="filter('note');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">备注</span><span id="oSortOn_note"></span></th>
-<TH>修改密码</th>
-<TH>修改权限</th>
-<TH>删除</th>
+<tr>
+	<td>管理员账号</td>
+	<td>备注</td>
+	<td>修改密码</td>
+	<td>修改权限</td>
+	<td>删除</td>
+</tr>
 </thead>
 <tbody>
-<td ><span datafld="account"></span></td>
-<td><span datafld="note"></span></td>
-<td><A datafld="changePasswdURL" class=a6>修改密码</a></td>
-<td><A datafld="modifyPrivilidgeURL" class=a6>修改权限</a></td>
-<td><A datafld="deleteURL" class=a6>删除</a></td>
+<?
+for( $i = 0 ; $i < count($adminList) ; $i++)
+{
+	$adminID=$adminList[$i]['id'];
+	$note=$adminList[$i]['note'];
+	$changePasswdURL="changeAdminPasswd.ns?id={$adminID}";
+	$modifyPrivilidgeURL="modifyAdminPrivilidge.ns?id={$adminID}";
+	$deleteURL="deleteAdmin.ns?id={$adminID}";
+?>
+	<tr>
+		<td><?=$adminID?></td>
+		<td><?=$note?></td>
+		<td><a href="<?=$changePasswdURL?>">修改密码</a></td>
+		<td><a href="<?=$modifyPrivilidgeURL?>">修改权限</a></td>
+		<td><a href="<?=$deleteURL?>">删除</a></td>
+	</tr>
+<?
+}
+?>
 </tbody>
 </table>
 </div>
-<SCRIPT language="JScript">
-sort('account');
+<script>
+var st = new SortableTable(document.getElementById("table-1"),
+			["String", "String", "None", "None", "None"]);
 </script>
 </BODY>
 </HTML>

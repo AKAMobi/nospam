@@ -20,6 +20,7 @@ function test()
 		form1.submit();
 }
 </script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

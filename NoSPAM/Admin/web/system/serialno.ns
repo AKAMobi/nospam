@@ -12,6 +12,7 @@ if( wi("get_Serial",$result)==0 ){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>本设备序列号</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

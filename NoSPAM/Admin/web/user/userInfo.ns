@@ -7,7 +7,8 @@ require_once("../inc/vpopadm.inc.ns");
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
 <TITLE>账户信息</TITLE>
-</HEAD>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
 <style>
 table {font-size:x-small;}
 

@@ -12,6 +12,7 @@ header("Refresh: 0;URL=/admin/");
 <html>
 <head>
 <META content="text/html; charset=gb2312" http-equiv=Content-Type>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <br>

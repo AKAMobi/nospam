@@ -6,6 +6,7 @@ require_once("../inc/include.ns");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>日志导出统计</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
@@ -15,7 +16,7 @@ if(!file_exists(LOGFILE)){
 }else{
 ?>
 日志尺寸：<?=intval(filesize(LOGFILE)/1024)?>KByte
-<input type="button" value="下载" onclick="location.href='downlog.ns'">
+<input type="button" value="下载" onclick="window.open('downlog.ns','_blank')">
 <?
 }
 ?>

@@ -48,7 +48,7 @@ $Flag[$sort] = $orderFlag[$order];
 <head>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
 <title>规则列表</title>
-<link rel="stylesheet" type="text/css" href="../css/style.css">
+
 <script language="javascript">
 oldbgcolor = "";
 newbgcolor = "#FFFF00";
@@ -109,6 +109,7 @@ function sortTable(sKey)
 	location.href = "rulemanage.ns?sort="+sKey+"&order="+order+"&page=<?=$page?>&pagenum=<?=$pagenum?><?if($readonly) echo "&db=police"?>";
 }
 </script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 数据库选择：
