@@ -30,48 +30,50 @@ if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 	$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
 	errorReturn(_("Username or Password is invalid, please Input again"),"/admin/");
 }
-if ($id==SYSOPID) {
-	setSessionVal('Privilidge',PERM_ADMIN_MAX);
-} else {
-	$result=getAdminInfo($id);
-	if ($result['$returnCode']!=OK){
-		$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
-		errorReturn(_("Username or Password is invalid, please Input again"),"/admin/");
-	}else{
-		if(!havePerm($result['privilidge'],PERM_ADMIN_LOGIN))
-			errorReturn(_("This User is not allow Login"),"/admin");
 
-		$iplist=trim($result["ip"]);
-		if($iplist!=""){
-			$valid = false;
-			$bypass = false;
-			if($iplist[0]=="+"){
-				$bDeny = false;
-			}
-			elseif($iplist[0]=="-"){
-				$bDeny = true;
-			}else{
-				$bypass=true;
-			}
-			if(!$bypass){
-				$iplist = substr($iplist,1);
+$result=getAdminInfo($id);
+if ($result['$returnCode']!=OK){
+	$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
+	errorReturn(_("Username or Password is invalid, please Input again"),"/admin/");
+}else{
+	if(!havePerm($result['privilidge'],PERM_ADMIN_LOGIN))
+		errorReturn(_("This User is not allow Login"),"/admin");
 
-				$ips = explode(",",$iplist);
-
-				foreach($ips as $ip){
-					if(ValidateIP($_SERVER['REMOTE_ADDR'],trim($ip))){
-						$valid = true;
-						break;
-					}
-				}
-
-				if(!($valid xor $bDeny))
-					errorReturn(_("This User can not Login from this IP"),"/admin");
-			}
+	$iplist=trim($result["ip"]);
+	if($iplist!=""){
+		$valid = false;
+		$bypass = false;
+		if($iplist[0]=="+"){
+			$bDeny = false;
 		}
+		elseif($iplist[0]=="-"){
+			$bDeny = true;
+		}else{
+			$bypass=true;
+		}
+		if(!$bypass){
+			$iplist = substr($iplist,1);
+
+			$ips = explode(",",$iplist);
+
+			foreach($ips as $ip){
+				if(ValidateIP($_SERVER['REMOTE_ADDR'],trim($ip))){
+					$valid = true;
+					break;
+				}
+			}
+
+			if(!($valid xor $bDeny))
+				errorReturn(_("This User can not Login from this IP"),"/admin");
+		}
+	}
+	if ($id==SYSOPID) {
+		setSessionVal('Privilidge',PERM_ADMIN_MAX);
+	}else{ 
 		setSessionVal('Privilidge',$result['privilidge']);
 	}
 }
+
 setSessionVal('AdminID',$id);
 LogAction(_("Admin Login"),_("Login"),"","",_("Succeed"));
 header("Refresh: 0;URL=frames.ns");
