@@ -23,11 +23,11 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	tree.add(a);
 	a.add(new WebFXTreeItem('本设备序列号','system/serialno.ns', 'main'));
 <?if($Switchable){?>
-	a.add(new WebFXTreeItem('网关运行模式','system/gatewaymode.ns','main'));
+	a.add(new WebFXTreeItem('运行模式','system/gatewaymode.ns','main'));
 <?}?>
 
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
-	a.add(new WebFXTreeItem('邮件基本参数','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('SMTP参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
@@ -47,12 +47,26 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 <?
 }
 ?>
+
+<?
+if($MailRelay > 0 && strstr($ServerMode,"Relay")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
+	var n = new WebFXTreeItem('MX转发模式');
+	tree.add(n);
+	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+<?
+	}
+}
+?>
+
 <?
 
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var l = new WebFXTreeItem('透明网关模式管理');
+	var l = new WebFXTreeItem('透明网关模式');
 	tree.add(l);
 	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
 	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
@@ -63,7 +77,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-	var k = new WebFXTreeItem('独立服务器模式管理');
+	var k = new WebFXTreeItem('独立服务器模式');
 	tree.add(k);
 	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
 	k.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
@@ -76,16 +90,9 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 <?php
 	}
 }
-if($MailRelay > 0 && strstr($ServerMode,"Relay")){
-	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var n = new WebFXTreeItem('MX转发模式管理');
-	tree.add(n);
-	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
-	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+
 <?
-	}
-}
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
@@ -169,17 +176,8 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	i.add(new WebFXTreeItem('过量邮件提醒','interactive/exmail.ns','main'));
 <?
 }
-
-if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
-	tree.add(m);
-	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
-	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
-	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
-	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
 <?
-}
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
@@ -214,6 +212,21 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	}	
 }
 ?>
+
+<?
+if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
+?>
+	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
+	tree.add(m);
+	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
+	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
+<?
+}
+?>
+
+
 	var h = new WebFXTreeItem('退出系统','logout.ns','_top');
 	tree.add(h);
 	document.write(tree);
