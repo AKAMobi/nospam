@@ -5,10 +5,10 @@ use Digest::MD5 qw(md5_base64 md5_hex);
 
 use strict;
 
-my $NSVER='2.0-4.27';
-my $ISOVER='2.0RC6';
+my $NSVER='2.0-4.26';
+my $ISOVER='2.0RC5';
 
-my $PATCHVER='11';
+my $PATCHVER='1';
 
 #
 # ÖÆ×÷Patch£º
@@ -73,5 +73,6 @@ close FD;
 
 print "adding VER & INFO & SUM & TIMESTAMP ...\n";
 `tar cf $PATCHNAME.no $PATCHNAME.ns SUM VER INFO`;
+unlink "$PATCHNAME.ns";
 
 print "Build SUCCEED!\n";

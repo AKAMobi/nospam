@@ -31,7 +31,12 @@ foreach $pkg ( @pkgs ){
 			last;
 		}
 	}
-	`cp -Raf * ../tmp` if ( $not_tarball );
+	if ( $not_tarball ){
+		`cp -Raf * ../tmp` 
+	}else{
+		`cp -Raf post_proc.sh ../tmp` if ( -f 'post_proc.sh' );
+	}
+
 	chdir '..';
 	
 	chdir 'tmp';
