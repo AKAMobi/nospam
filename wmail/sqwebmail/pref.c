@@ -85,21 +85,8 @@ void get_dotqmail_file( char* fpath )
 //by roy
 void get_antispam_file( char* fpath )
 {
-	struct vqpasswd *mypw;
-	char *user, *domain, *p, *p2;
-	p=login_returnaddr();
-	p2=strdup(p);
-	user=strtok(p2, "@");
-	domain=strtok(0, "@");
-	
-	if ( (mypw = vauth_getpw( user, domain )) != NULL ) {
-		sprintf( fpath, "%s/Maildir/.antispam", mypw->pw_dir );
-		free(mypw);
-	}
-	if( p2 )
-		free(p2);
+	strcpy(fpath,".antispam");
 }
-
 static int nybble(char c)
 {
 char	*p=strchr(hex, c);
@@ -553,14 +540,12 @@ int flag;
 
 
 	get_antispam_file(fpath);
-
 	flag = 0;
         if ((fp=fopen(fpath, "r")) != NULL)
         {
 		fscanf(fp,"%d",&flag);		
                 fclose(fp);
-        }
-		
+	}
 	printf("<input type=checkbox name=\"spam\" value=\"yes\" %s>保存可疑邮件到垃圾邮件箱中", flag? "checked":"" );
 }
 
