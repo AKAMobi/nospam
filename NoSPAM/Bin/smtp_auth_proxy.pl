@@ -29,10 +29,10 @@ my $now = `date +"%Y-%m-%d %H:%M:%S"`;
 chomp $now;
 
 if ( $smtp->auth('LOGIN', $user, $pass) ){
-	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip succ.\n" if ( $logit );
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.\n" if ( $logit );
         exit 0;
 }else{
-	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip failed.\n" if ( $logit );
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.\n" if ( $logit );
 }
 close ( WFD ) if ( $logit );
 
