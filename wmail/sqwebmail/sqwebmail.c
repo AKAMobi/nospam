@@ -1676,7 +1676,7 @@ char	*p;
 
 	if (strcmp(formname, "logout") == 0)
 	{
-		unlink(IPFILE);
+		//unlink(IPFILE);
 		http_redirect_top("");
 		return;
 	}
@@ -2425,6 +2425,26 @@ time_t	timeouthard=TIMEOUTHARD;
 				char	*q;
 				const	char *saveip=ip_addr;
 				char	*tz;
+				char	*p;
+				time_t  last_time, current_time;
+			
+				// add by lfan, support concurrent login
+				time(&current_time);	
+				p=read_sqconfig(".", IPFILE, &last_time);
+				if( p && (last_time + timeouthard > current_time) ) {
+					char	*pp;
+				
+					if( (pp=strdup(p)) && (p=strtok(pp, " ")) 
+						&& (strcmp(p, ip_addr) == 0 || strcmp(p, "none") == 0)
+						&& (p=strtok(NULL, " ")) ) 
+					{
+						sqwebmail_sessiontoken=strdup(p);
+						free(pp);
+					}
+					
+				}
+				else
+					sqwebmail_sessiontoken=random128();
 
 #if 0
 #if ENABLE_WEBPASS
@@ -2434,10 +2454,10 @@ time_t	timeouthard=TIMEOUTHARD;
 #endif
 				sqwebmail_mailboxid=mailboxid;
 				sqwebmail_folder="INBOX";
-				sqwebmail_sessiontoken=random128();
+				//sqwebmail_sessiontoken=random128();
 
 				tz=get_timezone();
-				if (*cgi("sameip") == 0)
+				if (*cgi("nosecure") != 0)
 					saveip="none";
 
 				q=malloc(strlen(saveip)
@@ -2509,7 +2529,6 @@ time_t	timeouthard=TIMEOUTHARD;
 					if ( (mypw = vauth_getpw( u, u2 )) != NULL ) {
 						struct maildirsize quotainfo;
 						char buf[1024];
-						int rc;
 						sprintf( buf, "%sS", mypw->pw_shell );
 						if( maildir_openquotafile_init( &quotainfo, ".", buf) == 0 )
 						{
