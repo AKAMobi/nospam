@@ -1,7 +1,24 @@
-iff -ruNa qmail-1.03.orig/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
---- qmail-1.03.orig/qmail-smtpd.c	1998-06-15 18:53:16.000000000 +0800
-+++ qmail-1.03/qmail-smtpd.c	2004-02-28 20:35:31.000000000 +0800
-@@ -414,6 +414,7 @@
+diff -rua qmail-1.03.cocktail/conf-cc qmail-1.03/conf-cc
+--- qmail-1.03.cocktail/conf-cc	2004-04-29 11:32:38.000000000 +0800
++++ qmail-1.03/conf-cc	2004-04-29 11:33:03.000000000 +0800
+@@ -1,3 +1,3 @@
+-cc -O2 -DTLS=20021228 -I/usr/local/ssl/include
++cc -O2 -DTLS=20021228
+ 
+ This will be used to compile .c files.
+diff -rua qmail-1.03.cocktail/conf-spawn qmail-1.03/conf-spawn
+--- qmail-1.03.cocktail/conf-spawn	2004-04-29 11:32:38.000000000 +0800
++++ qmail-1.03/conf-spawn	2004-04-29 11:34:07.000000000 +0800
+@@ -1,4 +1,4 @@
+-1000
++509
+ 
+ This is a silent concurrency limit. You can't set it above 255. On some
+ systems you can't set it above 125. qmail will refuse to compile if the
+diff -rua qmail-1.03.cocktail/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
+--- qmail-1.03.cocktail/qmail-smtpd.c	2004-04-29 11:32:38.000000000 +0800
++++ qmail-1.03/qmail-smtpd.c	2004-05-05 20:37:56.000000000 +0800
+@@ -963,6 +963,7 @@
    if (chdir(auto_qmail) == -1) die_control();
    setup();
    if (ipme_init() != 1) die_ipme();
@@ -9,3 +26,15 @@ iff -ruNa qmail-1.03.orig/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
    smtp_greet("220 ");
    out(" ESMTP\r\n");
    if (commands(&ssin,&smtpcommands) == 0) die_read();
+diff -rua qmail-1.03.cocktail/received.c qmail-1.03/received.c
+--- qmail-1.03.cocktail/received.c	2004-04-29 11:32:38.000000000 +0800
++++ qmail-1.03/received.c	2004-05-05 13:31:19.000000000 +0800
+@@ -63,7 +63,7 @@
+   safeput(qqt,remoteip);
+   qmail_puts(qqt,")\n\tby ");
+   safeput(qqt,local);
+-  qmail_puts(qqt," (qmail 1.03 + ejcp v14) with ");
++  qmail_puts(qqt," (noSPAM V2) with ");
+   qmail_puts(qqt,protocol);
+   qmail_puts(qqt,";\n\t");
+   datetime_tai(&dt,now());
