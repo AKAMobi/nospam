@@ -6,19 +6,83 @@ use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-#&test_black_ip;
-#&test_dynamic_clean;
-#&test_dynamic_init;
-#&test_dynamic_dump;
-&test_ext_dat;
-#&test_archive;
-#&test_dynamic_subject;
-#&test_queue;
-#&test_black_ip;
-#&test_traceable;
-#&test_check_license_file;
+my $action;
+
+(my $prog=$0) =~ s/^.*\///g;
+$prog=~/NoSPAM_(.+)/;
+$action = $1 if defined $1;
+
+$action ||= shift @ARGV;
+
+my @param = @ARGV;
+
+my $action_map = { 
+	'export_archive' => [\&test_ext_dat, "导出公安交换格式的archive mail" ]
+		, 'list_queue' => [\&test_queue, "List qmail queue" ]
+		, 'pfc' => [\&pfc, "Police Filter Client" ]
+};
+
+if ( ! defined $action ){
+	&usage;
+	exit -1;
+}elsif( defined $action_map->{$action}[0] ){
+	exit &{$action_map->{$action}[0]};
+}else{
+	print "unsuport action: $action( " . join(',',@param) . " )\n";
+	exit 0;
+}
+
 exit;
+
+sub usage
+{
+	print  <<_USAGE_;
+
+$prog <action> [action params ...]
+	action could be:
+_USAGE_
+		foreach ( sort keys %{$action_map} ){
+			print "    $_ ";
+			if ( defined $action_map->{$_}[1] ){
+				print "$action_map->{$_}[1]";
+			}
+			print "\n";
+		}
+	print "\n";
+}
+
+
 ############################
+sub pfc
+{
+	use AKA::Mail::Log;
+	use AKA::Mail::Police::Conf;
+	use AKA::Mail::Police::Verify;
+	use AKA::Mail::Police::Parser;
+	use AKA::Mail::Police::Filter;
+	use AKA::Mail::Police;
+
+	use Data::Dumper;
+# 改变$转义、缩进
+	$Data::Dumper::Useperl = 1;
+	$Data::Dumper::Indent = 1;
+
+
+	my $self = {};
+
+
+	my $police = new AKA::Mail::Police();
+
+	my ($action, $param) = $police->get_action ( \*STDIN );
+
+	print "X-AKA-Police-Status: $action:($param) OK\n";
+
+	$police->{filter}->print($action, \*STDOUT );
+
+	$police->{filter}->clean;
+
+}
+
 sub test_ext_dat
 {
 	use AKA::Mail::Archive;
@@ -42,16 +106,16 @@ sub test_queue
 {
 	use AKA::Mail::Controler;
 	my $AMC = new AKA::Mail::Controler;
-	
+
 	my @q = $AMC->list_queue;
 	my @del_list;
 	foreach ( @q ){
-		#next unless ( $_->{size} > 20000000 );
-		#$_->{file} =~ m#/(\d+/\d+)$#;
-		#push ( @del_list, $1 );
+#next unless ( $_->{size} > 20000000 );
+#$_->{file} =~ m#/(\d+/\d+)$#;
+#push ( @del_list, $1 );
 		print Dumper( $_ );
 	}
-	#$AMMC->delete_queues( @del_list );
+#$AMMC->delete_queues( @del_list );
 }
 
 sub test_check_license_file
@@ -172,9 +236,9 @@ sub test_dynamic_subject
 	}else{
 		print "subject: $subject is NOT overrun!\n";
 	}
-	
+
 	$AMD->dump or die "can't dump";
-	#print Dumper($AMD->{dynamic_info}) or die "can't dump";
+#print Dumper($AMD->{dynamic_info}) or die "can't dump";
 }
 
 sub test_spam_checker
