@@ -16,7 +16,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>DNS 运行状态</H1><BR>
+<H1>DNS 系统状态</H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 <HR>
 <H3>每日 图表 (5 分钟 平均)</H3>

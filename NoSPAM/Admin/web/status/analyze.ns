@@ -36,7 +36,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 <hr>
 
 </DIV>
-<DIV><h2>DNS 系统状态</h2></DIV>
+<DIV><h2>DNS 查询结果</h2></DIV>
 <DIV><A HREF="dns.ns"><IMG BORDER=1 ALT="DNS Status Graph" SRC="dns-day.gif"></A>
 <BR>
 </DIV>
