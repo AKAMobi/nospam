@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Configuration Settings</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+[#$PWDERR=<p class="error">Error: Password cannot be changed. Possible reasons:</p><ul class="error"><li>Original password is incorrect<br><br><li>Two inputs for the new password are inconsistent<br><br><li>Password is too short or too simple<br><br><li>Password is identical to the original one, or you change passwords too often<br><br></ul>#]
+[#$DATE=Date#]
+[#$SENDER=Sender#]
+[#$SUBJECT=Subject#]
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="preferences" action="[#R#]">
+[#P#]
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align=center>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr> 
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left rowspan="9" bgcolor="#FFFFF8" nowrap width="80">Configuration Settings</td>
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+            <input type="hidden" name="form" value="myconfig">[#x#]
+	    Display my name when sending messages [#l1#]
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+            [#H#] Display messages in HTML format 
+	  </td>
+        </tr>
+        <tr>
+          <td valign=top align=left bgcolor="#FFFFF8">
+            [#z#]
+            Display all header information
+          </td>
+        </tr>	
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+            [#NOARCHIVE#] Don't archive sent messages to Sent folder
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8">
+            [#y#] New messages appear at bottom
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8"> Sort messages by
+	    [#w#]
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8"> Messages per page
+	    [#u#]
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8">
+            Automatically empty Trash folder
+            [#v#]
+            Day (0: Disable Auto Empty feature)
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8">
+            <input class=mybtn type="submit" name="do.changeprefs" value="Save Changes">
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

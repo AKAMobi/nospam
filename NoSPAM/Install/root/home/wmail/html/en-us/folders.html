@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <title>Folders[#d#]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+</head>
+
+<!--
+
+[#$INVALID=<FONT CLASS="error" color="#FF0000">Illegal folder name</FONT>#]
+[#$EXISTS=<FONT CLASS="error" color="#FF0000">Folder existed</FONT>#]
+[#$DELETE=<FONT CLASS="error" color="#FF0000">The folder cannot be deleted or changed. It contains emails or it is used for email filtering.</FONT>#]
+[#$WASSENT=<FONT COLOR="#008000" CLASS="sentmsg">Your mail has been sent.</FONT>#]
+[#$INBOX=Inbox#]
+[#$DRAFTS=Drafts#]
+[#$SENT=Sent#]
+[#$TRASH=Trash#]
+[#$SPAM=Spam#]
+[#$QUOTAUSAGE=<P>Your Quota: %dMB Used: %.1fMB Available: %.1fMB</P>#]
+[#$QUOTANOUSE=<P>Welcome To The New Mailbox!</P>#]
+[#$REFRESH_LEFT=<SCRIPT LANGUAGE="JAVASCRIPT">parent.menu.document.location.reload()</SCRIPT>#]
+
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" action="[#p#]">
+  <table width="90%" align=center border="0" cellspacing="0" cellpadding="3" class="csmtype">
+    <tr> 
+      <td> 
+        <table style="border: #93bee2 1px solid;" cellSpacing=0 cellPadding=5 width=100% border=0 bgcolor=#eff7ff>
+ 	  <tr bgcolor=#336699><td class="wmtype"><b>Storage Usage Summary</b></td></tr>
+	  <tr><td>
+           [#QUOTA#]
+	  </td></tr><tr><td height=15></td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td height="30"></td></tr>
+    <tr> 
+      <td> 
+        <table width="100%" bgcolor="#336699" border="0" cellspacing="1" cellpadding="3" class="csmtype">
+	  <tr align="center" bgcolor="#336699" class="wmtype">
+	    <td width=5%><b>Select</b></td>
+	    <td width=28%><b>Folder</b></td>
+	    <td width=22%><b>Total</b></td>
+	    <td width=22%><b>New</b></td>
+	    <td width=23%><b>Used(KB)</b></td>
+	  </tr>
+	  [#L#]
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFC"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="csmtype">
+          <tr> 
+            <td align=center> 
+              <p> 
+                <input type="hidden" name="form" value="folders">
+                <input type="hidden" name="folder" value="INBOX">
+		<input class="mybtn" type="submit" value="Delete" name="do.delete">
+	        <input class="mybtn" type="submit" value="Rename" name="do.rename">
+                <input class="myinput" type="text" size="16" name="foldername" maxlength="128">
+		<input class="mybtn" type="submit" value="Create" name=do.create>
+	      </p>
+              [#l#]
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+
+</body>
+</html>

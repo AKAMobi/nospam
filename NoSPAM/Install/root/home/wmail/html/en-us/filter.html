@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <title>Mail Filtering</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+</head>
+
+<body>
+<!--
+
+[#$BADIMPORT=<font color="#EE0000">Error: You have inconsistent filtering rules. Please contact your admin.</font><br>#]
+[#$BADRULENAME=<font color="#EE0000">Error£ºIllegal rule name or no rule name. Please input again.</font><br>#]
+[#$BADHEADER=<font color="#EE0000">Error£ºIllegal header information or no header information.</font><br>#]
+[#$AUTOREPLY=<font color="#EE0000">Error£ºIllegal auto reply name or no auto reply name. Please input again.</font><br>#]
+[#$BADVALUE=<font color="#EE0000">Error£ºIllegal information mode or illegal Sent To address. Please input again.</font><br>#]
+[#$TOFOLDER=<font color="#EE0000">Error£ºIllegal Forward To information or illegal mail folder. Please input again.<br>#]
+[#$FROMHDR=<font color="#EE0000">Error£ºDefault <tt>From:</tt> contains illegal characters. Please input again.</font><br>#]
+[#$INTERNAL=<font color="#EE0000">Error: Can't save the filtering rule. Please contact your admin.</font></br>#]
+[#$UPDATED=<font color="#008000">Following rules have been saved:</font><br>#]
+[#$INBOX=Inbox#]
+[#$SPAM=Spam#]
+[#$DRAFTS=Drafts#]
+[#$TRASH=Trash#]
+[#$SENT=Sent#]
+
+-->
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" action="[#R#]">
+[#P#]<input type="hidden" name="form" value="filter">
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=csmtype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8" nowrap width="80">Mail Filtering</td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+            <table border="0">
+              <tr>
+                <td align="center">[#LOADMAILFILTER#]
+		  Press the "Save Changes" button before finish<br>
+                  <select name="currentfilter" size="8">
+                    [#MAILFILTERLIST#]
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <input class=mybtn type="submit" value="Up" name="do.moveup">
+                  <input class=mybtn type="submit" value="Down" name="do.movedown">
+                  <input class=mybtn type="submit" value="Edit" name="do.edit">
+                  <input class=mybtn type="submit" value="Delete" name="do.delete">
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <input class=mybtn type="submit" value="Save Changes" name="do.save">
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr bgcolor="#FFFFFC">
+          <td valign=top align=left bgcolor="#FFFFF8">Rule 
+          </td>
+          <td valign=top align=left bgcolor="#FFFFF8">
+                  <table border="0">
+                    <tbody>
+                      <tr>
+                        <td>Rule Name:</td>
+                        <td><input class=myinput type="text" size="20" name="rulename" value="[#input:rulename#]"></td>
+                      </tr>
+                      <tr>
+                        <td height=20></td>
+                      </tr>
+                      <tr>
+                        <td valign=top>Conditions:</td>
+                        <td>
+                          <table border="0">
+                            <tbody>
+                              <tr>
+                                <td>[#radio:filtertype:header#]</td>
+                                <td>
+				  <input type="hidden" value="FROM" name="headername">
+                                  From 
+                                  [#select:headermatchtype#]
+                                  [#option:startswith:headermatch:startswith#]
+                                  starts with
+                                  [#option:contains:headermatch:contains#]
+                                  contains
+                                  [#option:endswith:headermatch:endswith#]
+                                  ends with
+                                  [#option:notstartswith:headermatch:notstartswith#]
+                                  not starts with
+                                  [#option:notcontains:headermatch:notcontains#]
+                                  not contains
+                                  [#option:notendswith:headermatch:notendswith#]
+                                  not ends with [#endselect#]
+				</td>
+				<td>
+                                  <input class=myinput type="text" size="20" name="headervalue" value="[#input:headervalue#]"> 
+		 	        </td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:filtertype:hasrecipient#]</td>
+                                <td>
+				  To
+				  [#select:hasrecipienttype#]
+                                  [#option:hasrecipient:hasrecipienttype:hasrecipient#]
+                                  has recipient
+                                  [#option:nothasrecipient:hasrecipienttype:nothasrecipient#]
+                                  not has recipient [#endselect#]  
+				</td>
+				<td>
+				  <input class=myinput type="text" size="20" name="hasrecipientaddr" value="[#input:hasrecipientaddr#]">
+				</td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:filtertype:hassize#]</td>
+                                <td>Size [#select:sizecompare#]
+                                  [#option:islargerthan:sizecompare:islargerthan#]
+                                  is larger than
+                                  [#option:issmallerthan:sizecompare:issmallerthan#]
+                                  is smaller than [#endselect#] 
+				</td>
+				<td>
+				  <input class=myinput 
+                                  type="text" size="8" name="bytecount"
+                                  value="[#input:bytecount#]"> byte(s)</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td height=20></td>
+                      </tr>
+                      <tr>
+                        <td valign=top>Action:</td>
+                        <td>
+                          <table border="0">
+                            <tbody>
+                              <tr>
+                                <td>[#radio:action:savefolder#]</td>
+                                <td>Save to:</td>
+                                <td>[#MAILFILTERLISTFOLDERS#]</td>
+                                <td rowspan="2">
+				  [#checkbox:continuefiltering:continuefiltering#] Continue filtering.</td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:action:forwardto#]</td>
+                                <td>Forward to:</td>
+                                <td><input class=myinput type="text" size="20"
+                                  name="forwardaddy"
+                                  value="[#input:forwardaddy#]"></td>
+                              </tr>
+                              <tr>
+                                <td colspan="4"> </td>
+                              </tr>
+                              <tr>
+                                <td>[#radio:action:bounce#]</td>
+                                <td>Reject.Error message:</td>
+                                <td colspan="2"><input class=myinput type="text" size="20"
+                                  name="bouncemsg"
+                                  value="[#input:bouncemsg#]"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align=center colspan="2" height=30 valign=bottom>
+                          <input class=mybtn type="submit" value="Submit" name="do.submitfilter">
+			</td>
+                      </tr>
+                    </tbody>
+                  </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

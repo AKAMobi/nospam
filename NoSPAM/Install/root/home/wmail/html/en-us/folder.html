@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Mail Folders</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+<script language="javascript">
+<!--
+function select_all(s)
+{
+	form = document.forms("delete");
+	for (var i=0;i<form.elements.length;i++)
+    {
+	  var e = form.elements[i];
+	  if (e.name.substring(0, 5) == 'MOVE-')
+		e.checked = s.checked;
+    }
+}
+function delete_msg()
+{
+	if(confirm("Are you sure?"))
+		return true;
+	else
+		return false;
+}
+function GotoPage(form){
+	if(form.page.value=="-"){
+		return false;
+	}
+	parent.main.document.location = "[#p#]" + form.page.value;
+}
+//-->
+</script>
+<!--
+
+[#$DSPFMT_YDATE=%YYead%mMonth%dDay#]
+[#$DSPFMT_WDATE=%A %p %I:%M#]
+[#$STATUS=<input type=checkbox name="selectall" onclick="select_all(this)">#]
+[#$DATE=Date#]
+[#$FROM=From#]
+[#$SUBJECT=Subject#]
+[#$SIZE=Size#]
+[#$FOLDERTITLE=%s#]
+[#$NOMESSAGES=No Messages...#]
+[#$DELETE=Delete#]
+[#$PURGE=Purge#]
+[#$ORMOVETO=Or Move To: #]
+[#$GO=Go#]
+[#$PAGETOTAL=<B>Page Total£º</B>#]
+[#$FIRSTPAGE=First Page#]
+[#$LASTPAGE=Last Page#]
+[#$PREVPAGE=Previous Page#]
+[#$NEXTPAGE=Next Page#]
+[#$CURPOS=<B>Current Mail Box£º</B>#]
+[#$CURPAGE=<B>Current Page£º</B>#]
+[#$MAILMSG=<B>Mail Messages: </B>%d <B>New Messages: </B>%d#]
+[#$NOSUB=No Subject#]
+
+[#$UNREADICON=@@unread.gif,width=20 height=18 alt="Unread"@@#]
+[#$REPLIEDICON=@@replied.gif,width=20 height=18 alt="Replied"@@#]
+[#$ATTICON=@@attachsign.gif,width=8 height=18 alt="Attachment"@@#]
+
+[#$INBOX=Inbox#]
+[#$DRAFTS=Drafts#]
+[#$TRASH=Trash#]
+[#$SENT=Sent#]
+[#$SPAM=Spam#]
+[#$PERMERR=<font color="#FF0000" size="+1">Error: You don't have the rights to add messages to this folder or your quota has been exceeded.</font>#]
+
+-->
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+<STYLE type=text/css>
+A {
+	COLOR: #000099; TEXT-DECORATION: none
+}
+A:hover {
+	TEXT-DECORATION: underline
+}
+</STYLE>
+
+<form method="post" name="delete" action="[#p#]">
+[#P#]<input type="hidden" name="form" value="folderdel">
+<table width="90%" align="center" border="0" cellspacing="0" cellpadding="3">
+  <tr> 
+    <td> 
+      [#F#]
+      <table width="100%" align="center" border="0" cellspacing="0" class="csmtype" cellpadding="0">
+	<tr>
+	  <td colspan=3 height=10></td>
+        </tr>
+	<tr>
+	  <td align=center>[#T#]</td>
+	</tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

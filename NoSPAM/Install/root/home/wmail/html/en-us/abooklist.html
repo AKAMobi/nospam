@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Address Book</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+[#$PROMPT=<table border=0><tr><td align=right>Select: </td><td>#]
+[#$SUBMIT=</td><td><input class=mybtn type="submit" value="Edit" name="nick.edit"><input class=mybtn type="submit" value="Delete" name="nick.delete"></td></tr><tr><td align=right>Nickname:</td><td><input class=myinput name="nick2"></td><td><input class=mybtn type=submit name=nick.edit2 value=Create></td></tr></table>#]
+[#$TITLE1=</td></tr><tr bgcolor="#FFFFFC"><td valign=top><font class=ctype>#]
+[#$TITLE2=</font></td><td>#]
+[#$DELETE=Delete#]
+[#$NAME=Name: #]
+[#$ADDRESS=Address: #]
+[#$ADD=Add#]
+[#$EDIT=Edit#]
+-->
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<form method="post" name="addressbook" action="[#R#]">
+<table width="90%" border="0" cellspacing="0" cellpadding="3" align=center>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr> 
+          <td bgcolor="#336699">&nbsp; </td>
+        </tr>
+      </table>
+      <table class=ctype cellspacing=1 cellpadding=5 width="100%" border=0 bgcolor="#336699">
+        <tbody> 
+        <tr bgcolor="#FFFFFC"> 
+          <td valign=top align=left bgcolor="#FFFFF8" width="100">Contact</td>
+          <td valign=top align=left bgcolor="#FFFFF8"> 
+              [#P#]
+              <input type="hidden" name="form" value="abooklist">
+	      [#a#] 
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

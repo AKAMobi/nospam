@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>GnuPG Encryption Settings</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<body>
+<!--
+
+[#$DELETEFAIL=<p class="error">Error when attempting to delete keys:</p>#]
+[#$SIGNFAIL=<p class="error">Error when attempting to sign keys:</p>#]
+[#$DISABLED=Warning: This key is disabled#]
+[#$REVOKED=Warning: This key is revoked#]
+[#$EXPIRED=Warning: This key has expired#]
+
+-->
+
+<center>
+
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+    <tr>
+      <td align="left" valign="top">[#@graytopleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="top">[#@graytopright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+    <tr bgcolor="#efefef">
+      <td></td>
+      <td width="100%">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="left" width="100%" valign="middle" class="pageheader">
+			  [#@logo.gif, width="263" height="39" alt="mail logo" align="absmiddle" border="0"@@#]
+			  GnuPG Encryption Settings
+			  </td>
+              <td align="right" valign="middle"><b>[#G#]</b></td>
+            </tr>
+        </table>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td align="left" valign="bottom">
+	   [#@graybottomleft.gif, width="11" height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#cccccc"></td>
+      <td align="right" valign="bottom">
+	  [#@graybottomright.gif, width="11" height="11" alt="" border="0"@@#]</td>
+    </tr>
+</table>
+<!-- End of Top Header -->
+<!-- Sections. Folders, Create Messages, Preferences, Etc. -->
+[#include:navbar#] [#DOGPG#]
+
+<table cellpadding="0" cellspacing="0" border="0" width="95%">
+  <tbody>
+    <tr style="line-height: 0">
+      <td align="left" valign="top">[#@bluetopleft.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#99ccff" valign="middle"> </td>
+      <td style="line-height: 0" align="right"
+        valign="top">[#@bluetopright.gif, width="11" height="11" alt=""
+        border="0"@@#]</td>
+    </tr>
+    <tr bgcolor="#99ccff">
+      <td></td>
+      <td valign="middle" width="100%">
+        <form method=pos action="[#p#]">
+          [#P#] <input type="hidden" name="form" value="gpg">
+
+          <center class="gpgpublickeytitle">
+          Public Key</center>
+          <br>
+          [#LISTPUB#]
+
+          <p>     
+          <input type="submit" value="Delete Public Key" name="delpub"></p>
+          <hr width="90%" noshade size="1" color="#000000">
+
+          <center class="gpgprivatekeytitle">
+          Private Key</center>
+          <br>
+          [#LISTSEC#]
+
+          <p>     
+          <input type="submit" value="Delete Private Key"
+          name="delsec"><input type="checkbox" name="really">I am sure to do so</p>
+          <hr size="1" noshade size="1" color="#000000">
+
+          <p align="center" class="gpgsignkeytitle">Sign public key</p>
+          <!-- [#?6#] -->
+
+          <p>  Private key pass phrase: <input type="password" size="20"
+          name="passphrase"></p>
+          <!-- [#?#] -->
+
+          <p>  Select one public key and private key, then  
+          <input type="submit" value="Sign" name="sign"></p>
+          <hr size="1" noshade size="1" color="#000000">
+          <p align="center" class="gpgdefaulttitle">Default private key</p>
+
+          <p>  Select a default private key, then 
+          <input type="submit" value="Set to default private key"
+          name="setdefault"></p>
+        </form>
+        <hr size="1" noshade size="1" color="#000000">
+
+        <form method=pos action="[#p#]">
+          [#P#] <input type="hidden" name="form" value="gpgcreate">
+
+          <p align="center" class="gpgcreatetitle">Create a key</p>
+
+          <table border="0" cellpadding="8">
+            <tbody>
+              <tr>
+                <td align="right">Name:</td>
+                <td><input type="text" size="20" name="newname"></td>
+              </tr>
+              <tr>
+                <td align="right">E-mail:</td>
+                <td><input type="text" size="20" name="newaddress"></td>
+              </tr>
+              <tr>
+                <td align="right">Comments:</td>
+                <td><input type="text" size="20" name="newcomment"></td>
+              </tr>
+              <tr>
+                <td align="right">Signature key length(DSA):</td>
+                <td>
+                  <select name="skeylength">
+                    <option value="512">512 bits</option>
+                    <option value="768">768 bits</option>
+                    <option value="1024" selected="selected">1024
+                    bits</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">Encryption key length(ElGamal):</td>
+                <td>
+                  <select name="ekeylength">
+                    <option value="512">512 bits</option>
+                    <option value="768">768 bits</option>
+                    <option value="1024" selected="selected">1024
+                    bits</option>
+                    <option value="2048">2048 bits</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">Expire when:</td>
+                <td><input type="text" size="4" name="newexpire"> 
+                  <select name="newexpirewhen">
+                    <option value="" selected="selected">-- None--
+                    </option>
+                    <option value="d">Day </option>
+                    <option value="w">Week </option>
+                    <option value="m">Month </option>
+                    <option value="y">Year </option>
+                  </select>
+                </td>
+              </tr>
+              <!-- [#?6#] -->
+              <tr>
+                <td align="right">Pass phrase(self-selection):</td>
+                <td><input type="password" size="20" name="passphrase"></td>
+              </tr>
+              <tr>
+                <td align="right">Check pass phrase:</td>
+                <td><input type="password" size="20" name="passphrase2"></td>
+              </tr>
+              <!-- [#?#] -->
+              <tr>
+                <td> </td>
+                <td>
+                  <input type="submit" value="Submit" name="submit"></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </td>
+      <td> </td>
+    </tr>
+    <tr style="line-height: 0">
+      <td align="left" valign="bottom">[#@bluebottomleft.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+      <td bgcolor="#99ccff" valign="middle"> </td>
+      <td align="right" valign="bottom">[#@bluebottomright.gif, width="11"
+        height="11" alt="" border="0"@@#]</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+</body>
+</html>

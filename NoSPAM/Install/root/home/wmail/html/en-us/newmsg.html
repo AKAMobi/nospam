@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Compose</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+
+<!--
+[#$DSPFMT_DATE=%YYear%b%dDay, %p %I:%M:%S#]
+[#$DSPHDR_FROM=&nbsp;From#]
+[#$DSPHDR_TO= &nbsp;To#] 
+[#$DSPHDR_CC=&nbsp;CC#]
+[#$DSPHDR_SUBJECT= Subject#]
+[#$DSPHDR_DATE= Date#]
+[#$TOLAB=To:#]
+[#$CCLAB=CC:#]
+[#$BCCLAB=BCC:#]
+[#$SUBJECTLAB=Subject:#]
+[#$MESSAGELAB=Message:#]
+[#$SENDLAB=&nbsp;Send&nbsp;#]
+[#$PREVIEWLAB=&nbsp;Preview&nbsp;#]
+[#$FORWARDLAB=---------- Forwarded Messages ----------#]
+[#$SAVEDRAFT=Save Draft#]
+[#$UPLOAD=Upload Attachments#]
+[#$ATTACHMENTS=<FONT class=ctype>%d Attachment(s)</FONT>#]
+[#$SALUTATION=%sSalutation:#]
+[#$SPELLCHECKDONE=<B CLASS="spellcheckdone">Spelling checking done</B>#]
+[#$CHECKSPELLING=Check Spelling#]
+[#$QUOTAERR=<font color="#FF0000" class="error">Error: Disk quota is excceeded</font>#]
+[#$FROMLAB=From:#]
+[#$REPLYTOLAB=Reply To:#]
+[#$ADDRESSBOOK=Address Book:#]
+[#$PRESERVELAB=Preserve a copy in Sent folder#]
+[#$SIGNLAB=Signature#]
+[#$ENCRYPTLAB=Encryption#]
+[#$PASSPHRASE=Pass Phrase&nbsp;(if&nbsp;required):&nbsp;#]
+[#$ATTACHMENT=Attachment: %s#]
+[#$DISPATT=<FONT CLASS="message-attachment-link">Display</FONT>#]
+[#$DOWNATT=<FONT CLASS="message-attachment-link">Download</FONT>#]
+[#$KEY=<table border=0 bgcolor="#000000" cellpadding=1><tr><td><table border=0 cellspacing=0 cellpadding=8 bgcolor="#EEEEEE"><tr><td>Encryption Keys</td></tr></table></td></tr></table>#]
+
+-->
+<script language="Javascript">
+<!--
+function init()
+{
+	if (document.msg.focusto.value == "headers")
+	{
+		document.msg.headerto.focus();
+	}
+}
+
+function check() {
+	mesg = "";
+        if(document.msg.headerto.value == "") mesg = "No receiver address!\n";
+        if(mesg != ""){
+                alert(mesg);
+                return false;
+        }
+        return true;
+}
+//-->
+</script>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0" onload="init();">
+[#include:navbar#]
+
+<form method="post" name="msg" action="[#p#]">
+[#P#]
+<table align=center width="90%" border="0" cellspacing="0" cellpadding="3" bgcolor=#93BEE2 class=ctype>
+  <tr> 
+    <td> 
+      [#W#]
+    </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>

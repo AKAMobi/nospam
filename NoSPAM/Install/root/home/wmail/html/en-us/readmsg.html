@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Read Message</title>
+  <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+</head>
+<!--
+
+[#$DSPFMT_DATE=%YYear%b%dDay, %p %I:%M:%S#]
+[#$DSPHDR_FROM=&nbsp;From#]
+[#$DSPHDR_TO= &nbsp;To#] 
+[#$DSPHDR_CC=&nbsp;CC#]
+[#$DSPHDR_SUBJECT= Subject#]
+[#$DSPHDR_DATE= Date#]
+[#$NEXTLAB= Next#]
+[#$PREVLAB= Prev#]
+[#$DELETELAB= Delete#]
+[#$FULLHDRS= Full#]
+[#$PURGELAB=Purge#]
+[#$FOLDERLAB= Return#]
+[#$BADCONTENTTYPE=Cannot display unknown MIME type: %s#]
+[#$ATTACHMENT=Attachment: %s#]
+[#$DISPATT=<FONT CLASS="message-attachment-link">Display</FONT>#]
+[#$DOWNATT=<FONT CLASS="message-attachment-link">Download</FONT>#]
+[#$REPLY= Reply#]
+[#$REPLYALL= Reply All#]
+[#$FORWARD= Forward#]
+[#$MSGNUM=Messages %d/%d #]
+[#$MSGNEWNUM=Messages %d/%d  <font color="red">New</font>#]
+[#$MOVETO=Move To:#]
+[#$INBOX=Inbox#]
+[#$DRAFTS=Drafts#]
+[#$TRASH=Trash#]
+[#$SENT=Sent#]
+[#$SPAM=Spam#]
+[#$CREATEFAIL=<font color="#FF0000" class="error">Error: You do not have the right to create messages in this folder, or your disk quota is exceeded.</font>#]
+[#$GOLAB=Go#]
+[#$QUICKADD=Add To Address Book#]
+[#$CHSET=<table width="90%%" align=center border=0 bgcolor="#000000" cellspacing=1 cellpadding=0><tr><td><table width="100%%" border=0 cellspacing=1 cellpadding=8 bgcolor="#EEEEEE"><tr><td>The following texts use <tt>%s</tt> encoding format.  Your encoding format is <tt>%s</tt> , so some characters may not be displayed correctly.</td></tr></table></td></tr></table>#]
+[#$MIMEGPGNOTICE=<p align=center>The following information contains signature or encrypted contents.</p>#]
+[#$PASSPHRASE=<p align=center>Pass phrase&nbsp;(if&nbsp;required):&nbsp;<input type=password name=passphrase></p>
+[#$DECRYPT=<p align=center><input type=submit name=mimegpg value="Decryption/Check"></p>#]
+[#$NOTCOMPACTGPG=<p align=center style="color: #800000" class="message-gpg-unsupported">The encryption of the following messages is not supported</p>#]
+[#$PUBKEY=Import Public Key#]
+[#$PRIVKEY=Import Private Key#]
+-->
+<STYLE type=text/css>
+A {
+        COLOR: #000099; TEXT-DECORATION: none
+}
+A:hover {
+        TEXT-DECORATION: underline
+}
+</STYLE>
+
+<body bgcolor="#FFFFFC" link="#2A3FAA" vlink="#2A3FAA" leftmargin="0" topmargin="0">
+[#include:navbar#]
+
+<table width="90%" border="0" cellpadding="1" cellspacing="0" align="center">
+  <tbody>
+    <tr>
+      <td>
+        <table class=ctype width="100%" border="0" cellpadding="5" cellspacing="0">
+          <tbody>
+            <tr>
+              <td>
+                <form method="post" action="[#p#]">
+                  [#n#] 
+		  <input type="hidden" name="form" value="delmsg">[#P#]
+                  [#N#]
+                </form>
+
+                <table border="0" cellspacing="0" cellpadding="8" width="100%">
+                  <tbody>
+                    <tr>
+                      <td align="left">[#M#]</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <form method="post" action="[#p#]">
+                  <input type="hidden" name="form" value="delmsg">[#P#]
+                  [#N#]
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
