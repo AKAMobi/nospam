@@ -14,3 +14,4 @@
 0 4 * * * (cat /dev/null > /var/log/clamav/clamd.log)
 0 4 * * * (cat /dev/null > /home/NoSPAM/spool/ns-queue.debug)
 
+01 01 * * *  (umask 0077; /usr/bin/openssl genrsa -out /var/qmail/control/rsa512.new 512 > /dev/null 2>&1 && chown qmaild.qmail /var/qmail/control/rsa512.new && /bin/mv -f /var/qmail/control/rsa512.new /var/qmail/control/rsa512.pem)
