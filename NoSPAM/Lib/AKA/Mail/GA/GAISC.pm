@@ -113,13 +113,25 @@ sub _get_action
 		}
 }
 
+sub isEnabled
+{
+	my $self = shift;
+	return $self->SUPER::isEnabled() && ('GAISC' eq uc $self->{conf}->{config}->{GAInterface}->{GAProtocol});
+}
+
 
 sub start_daemon_process
 {
 	my $self = shift;
 
+	unless ( $self->isEnabled() ){
+		$self->{zlog}->debug ( "GA::GAISC not enabled, use parent sleep processer" );
+		return $self->SUPER::start_daemon_process();
+	}
+
 	$self->GAISC_get_ftp_info();
-	$self->GAISC_server;
+	return $self->GAISC_server;
+	
 }
 
 sub update_rule
@@ -311,6 +323,7 @@ sub _connect_ga
 		$self->{zlog}->fatal( "GA::GAISC connect_ga IP: [" 
 			. $self->{GAISC}->{ServerIP} . "] Port: [" 
 			. $self->{GAISC}->{ServerPort} . "] failure" );
+		sleep 1;
 		return undef;
 	}
 
@@ -426,7 +439,7 @@ sub GAISC_resp_rule_update
 	$err = 1 unless $ftp;
 
 	$self->{files} = ();
-	$self->ftp_get_file( $ftp, '/dzyj/rule/', $ruledir, @rule_files ) unless $err;
+	$self->ftp_get_file( $ftp, '/' . $self->{GAISC}->{FTPDir} . '/rule/', $ruledir, @rule_files ) unless $err;
 
 	my ($rule_add_modify, $rule_del) = $self->parse_rule_to_filterdb( @{$self->{files}} );
 
@@ -436,7 +449,7 @@ sub GAISC_resp_rule_update
 		$pkg->{data} = DATA_FAIL;
 	}
 
-	$pkg = { data_cate	=> CATE_MAILRULE_RESULT };
+	$pkg->{data_cate} = CATE_MAILRULE_RESULT;
 	$pkg = $self->_make_pkg( $pkg );
 
 	$self->_send_pkg( $socket, $pkg );
@@ -532,7 +545,7 @@ sub _pkg2filter
 
 	my $val;
 	while ( ($_,$val) = each ( %{$pkg} ) ){
-		print "$_, $val\n";
+		#print "$_, $val\n";
 		if ( /^ruleid$/ ){
 			$ruleid = $val;
 		}elsif( /^time$/ ){
@@ -556,6 +569,11 @@ sub _pkg2filter
 			for ( my $n=0; $n<length($val); $n++ ){
 				if ( '1' eq substr($val,$n,1) ){
 					$rule_info->{rule_keyword}->{key} = $keyword_keymap->{$val};
+					if ( 11==($n+1) ){	# IP match
+						$rule_info->{rule_keyword}->{type} = 6;
+					}else{
+						$rule_info->{rule_keyword}->{type} = 0;
+					}
 					last;
 				}
 			}
@@ -665,8 +683,8 @@ sub _update_config
 		$C->{_}->{$_} = $config->{$_};
 	}
 
-	return $C->write($self->{define}->{GAISC_conffile});
 
+	$C->write($self->{define}->{GAISC_conffile}); 
 	$self->{GAISC} = $self->get_conf;
 }
 
@@ -695,6 +713,11 @@ sub _send_pkg
 	my $socket = shift;
 	my $pkg = shift;
 
+	unless ( $socket ){
+		$self->{zlog}->fatal ( "GA::GAISC::_recv_pkg can't get socket" );
+		return undef;
+	}
+
 	$socket->print ( $pkg->{data_id} . $pkg->{sys_id} . $pkg->{gw_id}
 			. $pkg->{timestamp} . $pkg->{data_cate} . $pkg->{data} . "E\n" );
 }
@@ -705,7 +728,12 @@ sub _recv_pkg
 
 	my $socket = shift;
 
+	unless ( $socket ){
+		$self->{zlog}->fatal ( "GA::GAISC::_recv_pkg can't get socket" );
+		return undef;
+	}
 	my $resp = $socket->getline;
+
 
 	return undef unless $resp =~ /^(.{5})(.{10})(.{10})(.{14})(.{10})(.+)E/ ;
 
@@ -730,6 +758,7 @@ sub _connect_ftp
 		$self->{zlog}->fatal ( "GA::GAISC::_connect_ftp to IP: [" 
 			. $self->{GAISC}->{ServerIP} . "] Port: [" 
 			. $self->{GAISC}->{FTPPort} . "] failure" );
+		sleep 1;
 		return undef;
 	}
 

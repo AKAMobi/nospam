@@ -14,6 +14,7 @@ use AKA::Mail::Content::Parser;
 use AKA::Mail::Content::Verify;
 use MIME::Base64;
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+# FIXME: use strict;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -85,6 +86,7 @@ sub process
 
 		enabled => 1,
 		runned  => 1,
+		rule_info  => $rule_info,
 		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 	};
 
@@ -107,7 +109,11 @@ sub get_action
 
 	if ( $rule_info ){
 		# only log GA rule
-		$self->log_match($rule_info, $mail_info) if ( $is_user_rule );
+		if ( 'user' eq lc $rule_info->{id_type} ){
+			$self->log_match($rule_info, $mail_info);
+		}else{
+			# GA rule
+		}
 		$action = $rule_info->{rule_action}->{action};
 		$param = $rule_info->{rule_action}->{action_param};
 		$rule_id = $rule_info->{rule_id};

@@ -142,7 +142,7 @@ sub merge_new_rule
 		return 0;
 	}
 
-	my $filterdb = &get_filter_db;
+	my $filterdb = $self->get_filter_db;
 
 	my ($last_rule_id,$last_rule_time);
 
@@ -168,6 +168,9 @@ sub merge_new_rule
 	#$Data::Dumper::Indent = 1;
 	#print Dumper($filterdb);
 
+
+	# add by zixia 2004-04-27 
+	my $xs = $self->get_filterdb_xml_simple();
 
 	$new_filterdb = $xs->XMLout($filterdb, XMLDecl=>'<?xml version="1.0" encoding="ISO-8859-1"?>');
 
@@ -272,12 +275,12 @@ _SPAMXML_
 }
 
 
-sub DESTROY
-{
-	my $self = shift;
+#sub DESTROY
+#{
+#	my $self = shift;
 
-	delete $self->{content};
-
-}
+#	delete $self->{content};
+#
+#}
 
 1;

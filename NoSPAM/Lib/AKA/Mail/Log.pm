@@ -22,6 +22,10 @@ BEGIN
 	open MYLOG, ">>/var/log/NoSPAM" or $can_log = 0;
 	open DEBUG, ">>/var/log/NoSPAM.debug" or $can_debug = 0;
 	open FATAL, ">>/var/log/NoSPAM.fatal" or $can_fatal = 0;
+	select MYLOG; $|=1;
+	select DEBUG; $|=1;
+	select FATAL; $|=1;
+	select STDOUT;
 }
 
 sub new
@@ -69,6 +73,8 @@ sub fatal
 	if ( $can_fatal ){
 		print FATAL &get_log_time . " $what\n";
 	}
+
+	return 0;
 }
 
 

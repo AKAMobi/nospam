@@ -125,7 +125,7 @@ sub server
 			if ($! == &Errno::EINTR) {
 				next;
 			} else {
-				sleep 1;
+				# daemontools should restart me
 				die "accept failed: $!\n";
 			}
 		}
@@ -280,7 +280,7 @@ sub net_process
 
 		$self->send_mail_info ( $socket );
 	}; if ($@) {	
-		$self->{zlog}->fatal ( "Mail::net_process call recv_mail_info from socket[$@]" );
+		$self->{zlog}->fatal ( "Mail::net_process call send_mail_info from socket[$@]" );
 		# content engine have not start to work
 		#$self->cleanup;
 		return;

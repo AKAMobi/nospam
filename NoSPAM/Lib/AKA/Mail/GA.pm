@@ -25,20 +25,33 @@ sub new
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
 
+	$self->init();
+
+	return $self;
+}
+
+sub init
+{
+	my $self = shift;
+
 	$self->{define}->{home} = "/home/ssh/";
 	$self->{define}->{tmpdir} = "/home/NoSPAM/spool/tmp/";
+	$self->{define}->{ruledir} = $self->{define}->{home} . "/rule/";
 
 	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 	$self->{define}->{updatedb} = $self->{define}->{home} . "/Update/Update.Xml";
 
 	$self->{rule_add_modify} = undef;
 	$self->{rule_del} = undef;
-
-	return $self;
-
 }
 
-sub start_daemon
+sub isEnabled
+{
+	my $self = shift;
+	return ('Y' eq uc $self->{conf}->{config}->{GAInterface}->{GAInterface});
+}
+
+sub start_daemon_process
 {
 	my $self = shift;
 
@@ -134,6 +147,7 @@ sub merge_new_rule
 
 	for my $rule_id ( keys %{$rule_del} ){
 		$self->{zlog}->log ( "deleting rule id: [$rule_id] from filterdb" );
+		next unless ( $rule_id );
 		delete $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} 
 			if defined $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id};
 	}
@@ -206,10 +220,10 @@ sub rebirth_update
 		return $self->{zlog}->fatal( "can't rename [$updatedb_file" . ".new] to [$updatedb_file]" );
 
 	# XXX move it to GA::MSP use ->SUPER::
-	my $sign = $self->{verify} || new AKA::Mail::Content::Verify($self);
-	if ( ! $sign->sign_key ( $updatedb_file ) ){
-		$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
-	}
+	#my $sign = $self->{verify} || new AKA::Mail::Content::Verify($self);
+	#if ( ! $sign->sign_key ( $updatedb_file ) ){
+	#	$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
+	#}
 }
 
 

@@ -56,7 +56,6 @@ sub get_match_rule
 		# we should let other know which type of rule we matched.
 		# 0 for user rule, >0 for GA.
 		my $rule_info = $self->{filterdb}->{$rule_id};
-		$rule_info->{id_type} = 'user';
 		return (1,$rule_info);
 	}
 
@@ -67,6 +66,7 @@ sub get_match_rule
 		#$self->{zlog}->debug( "pf: user rule id $rule_id info: \n" . Dumper($self->{user_filterdb}->{$rule_id}) ), 
 		# we should let other know which type of rule we matched.
 		# 0 for user rule, > 0 for GA.
+		$self->{filterdb}->{$rule_id}->{id_type} = 'user';
 		return (0,$self->{user_filterdb}->{$rule_id});
 	}
 
