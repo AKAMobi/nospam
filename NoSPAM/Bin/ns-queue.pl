@@ -128,9 +128,8 @@ eval {
   #This SMTP session is incomplete until we see dem envelope headers!
   &grab_envelope_hdrs;
 
-  # FIXME get qmail-queue err ret code
   &AKA_engine_run;
-  
+
   if ( length($mail_info->{aka}->{resp}->{smtp_code}) ){
 	my $smtp_code = $mail_info->{aka}->{resp}->{smtp_code};
 	my $smtp_info = $mail_info->{aka}->{resp}->{smtp_info};

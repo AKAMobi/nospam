@@ -1025,6 +1025,10 @@ sub _netfilter_set_fw
 	$ret ||= system( "$iptables -A INPUT -s 211.157.100.10/26 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -s 211.151.91.20/27 -j ACCEPT" );
 
+	$ret ||= system( "$iptables -A INPUT -s " 
+			. $conf->{config}->{Network}->{IP}
+			. "/24 -j ACCEPT" );
+
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 25 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 26 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 80 -j ACCEPT" );
