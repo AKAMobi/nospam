@@ -156,7 +156,7 @@ sub get_spam_tag_params
 	$TagSubject = $self->{conf}->{config}->{TagSubject};
 	$TagReason = $self->{conf}->{config}->{TagReason};
 
-	return ( $RagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag );
+	return ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag );
 }
 1;
 

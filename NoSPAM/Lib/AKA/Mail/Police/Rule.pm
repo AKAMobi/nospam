@@ -116,7 +116,7 @@ sub check_all_rule_backend
 	my $has_rule;
 	foreach my $rule_id ( keys %{$self->{$which_db}} ){
 		next if ( ! $rule_id );
-		$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
+		#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 
 		$has_rule = 0;
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
@@ -134,7 +134,7 @@ sub check_all_rule_backend
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
-			$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
+			#$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
 			return $rule_id;
 		}
 	}	

@@ -4,7 +4,7 @@ use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-&test_mail_engine_dynamic;
+&test_black_ip;
 #&test_traceable;
 ############################
 sub test_mail_engine_content
@@ -126,8 +126,9 @@ sub test_white_ip
 
 sub test_black_ip
 {
-	$ip = "202.205.99.1";
+	$ip = "192.168.1.1";
 
+	my $S = new AKA::Mail::Spam;
 	$ret = $S->is_black_ip($ip);
 	print "$ret\n";
 }

@@ -96,6 +96,9 @@ sub is_overrun_rate_per_XXX
 
 	my ( $namespace, $key, $num, $sec ) = @_;
 
+	# 0 means unlimited
+	return 0 if ( defined $num && defined $sec && 0==$num && 0==$sec );
+
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join("",@_) . "]" );
 		return 0;
@@ -111,9 +114,9 @@ sub is_overrun_rate_per_XXX
 
 	$self->lock;
 
-	# 每5分钟清理一下内存 XXX
+	# 每2分钟清理一下内存 XXX
 	$self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} ||= 0;
-	if ( time - $self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} > 300 ){
+	if ( time - $self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} > 120 ){
 		$self->refresh_info( $namespace, $sec );
 		$self->{dynamic_info}->{$namespace}->{'_LAST_REFRESH_TIME_'} = time;
 	}
