@@ -1112,7 +1112,8 @@ sub log_engine
 {
 	my $self = shift;
 
-	$self->{zlog}->log_csv ( $self->{mail_info} );
+	#$self->{zlog}->log_csv ( $self->{mail_info} );
+	$self->{zlog}->log_mail ( $self->{mail_info} );
 }
 
 sub antivirus_engine

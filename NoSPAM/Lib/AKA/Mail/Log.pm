@@ -9,10 +9,13 @@
 package AKA::Mail::Log;
 
 
+#use AKA::Mail::DB;
+
 #use XML::Simple;
 use POSIX qw(strftime);
 use Fcntl ':flock';
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+use Data::Dumper;
 
 my $can_log = 1;
 my $can_debug = 1;
@@ -47,6 +50,9 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
+	
+	#$self->{db} = new AKA::Mail::DB;
+
 	#$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf;
 	#$self->{verify} = $parent->{verify};
 	#XXX by zixia no need to load Verify in Log module  || new AKA::Mail::Content::Verify;
@@ -123,57 +129,105 @@ sub get_time_stamp
 	strftime "%Y%m%d%H%M%S", localtime;
 }
 
-sub log_csv {
+sub log_mail
+{
 	my $self = shift;
+	my $mail_info = shift;
 
+	my $mail_log = $self->get_mail_log_from_info( $mail_info );
+	
+ 	open ( FD, ">/tmp/log" ); print FD Dumper($mail_log); close (FD);
+
+	$self->log_csv( $mail_log );
+	#$self->{db}->log_mail( $mail_log );
+
+	$self->log_rrdds( $mail_info );
+	$self->log_sa ( $mail_info );
+}
+
+sub get_mail_log_from_info
+{
+	my $self = shift;
 	my $mail_info = shift;
 
 	my $aka = $mail_info->{aka};
 	my $engine = $mail_info->{aka}->{engine};
 
 	my $esc_subject = $mail_info->{head}->{subject} || $mail_info->{aka}->{subject} || '';
-
-#$self->debug ( "subject: [$esc_subject]" );
-
 	$esc_subject =~ s/,/_/g;
 	$esc_subject = ' ' . $esc_subject . ' ';
 	my $recips = $aka->{recips};
-	$recips =~ s/,/£¬/g;
+	
+	# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
+	return { 
+			UnixTime	=> time # UnixTime
+			, Direction 	=> (	( 	(defined $aka->{RELAYCLIENT} && '1' eq $aka->{RELAYCLIENT})
+							|| 
+						length($aka->{TCPREMOTEINFO})
+					) ?'1':'0' 
+				) # Direction
+			, IP		=> $aka->{TCPREMOTEIP} # IP
+			, MailFrom	=> $aka->{returnpath}  # MailFrom
+			, MailTo	=> $recips # MailTo
+			, Subject	=> $esc_subject # Subject
+			, Size		=> $aka->{size} # Size
+
+			, isVirus	=> $engine->{antivirus}->{result}
+				, VirusReason	=> $engine->{antivirus}->{desc} 
+				, VirusAction	=> $engine->{antivirus}->{action} 
+
+			, isSpam	=> $engine->{spam}->{result} 
+				, SpamReason	=> $engine->{spam}->{desc} 
+				, SpamAction	=> $engine->{spam}->{action}
+
+			, RuleNo	=> ($engine->{content}->{result}||'')
+				, RuleAction	=> $engine->{content}->{action}
+				, RuleParam	=> $engine->{content}->{desc}
+					
+			, isOverrun	=> $engine->{dynamic}->{result} 
+				, OverrunReason	=> $engine->{dynamic}->{desc} 
+
+			, isAudit	=> $engine->{archive}->{result} 
+				, AuditReason	=> $engine->{archive}->{desc} 
+
+			, isQuarantine	=> ''
+				, QuarantineReason	=> '' # Quarantine
+		};
+}
+
+sub log_csv {
+	my $self = shift;
+
+	my $mail_log = shift;
 
 	if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
-		print LFD time
-# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && '1' eq $aka->{RELAYCLIENT})
-							|| 
-						length($aka->{TCPREMOTEINFO})
-					) ?'1':'0' 
-				)
-			. ',' . $aka->{TCPREMOTEIP} . ', ' . $aka->{returnpath} 
-				. ' , ' . $recips . ' ,' . $esc_subject
+		print LFD $mail_log->{UnixTime}
+			. ',' . $mail_log->{Direction}
+			. ',' . $mail_log->{IP} . ', ' . $mail_log->{MailFrom}
+				. ' , ' . $mail_log->{MailTo} . ' ,' . $mail_log->{Subject}
 
-			. ',' . $aka->{size} 
+			. ',' . $mail_log->{Size} 
 
-			. ',' . $engine->{antivirus}->{result}
-				. ',' . $engine->{antivirus}->{desc} 
-				. ',' . $engine->{antivirus}->{action} 
+			. ',' . $mail_log->{isVirus}
+				. ',' . $mail_log->{VirusReason}
+				. ',' . $mail_log->{VirusAction}
 
-	
-			. ',' . $engine->{spam}->{result} 
-				. ',' . $engine->{spam}->{desc} 
-				. ',' . $engine->{spam}->{action}
+			. ',' . $mail_log->{isSpam}
+				. ',' . $mail_log->{SpamReason}
+				. ',' . $mail_log->{SpamAction}
 
-			. ',' . ($engine->{content}->{result}||'')
-				. ',' . $engine->{content}->{action}
-				. ',' . $engine->{content}->{desc}
+			. ',' . $mail_log->{RuleNo}
+				. ',' . $mail_log->{RuleAction}
+				. ',' . $mail_log->{RuleParam}
 				
-			. ',' . $engine->{dynamic}->{result} 
-				. ',' . $engine->{dynamic}->{desc} 
+			. ',' . $mail_log->{isOverrun}
+				. ',' . $mail_log->{OverrunReason}
 
-			. ',' . $engine->{archive}->{result} 
-				. ',' . $engine->{archive}->{desc} 
+			. ',' . $mail_log->{isAudit}
+				. ',' . $mail_log->{AuditReason}
 
 			. "\n";
 
@@ -182,6 +236,15 @@ sub log_csv {
 	}else{
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
+}
+
+sub log_rrdds
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	my $aka = $mail_info->{aka};
+	my $engine = $mail_info->{aka}->{engine};
 
 	my ($user,$system,$cuser,$csystem) = times;
 	my $cputime = $user+$system+$cuser+$csystem;
@@ -235,8 +298,17 @@ sub log_csv {
 		$self->{last_cputime} = $cputime;
 
 	}else{
-		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+		&debug ( "AKA_mail_engine::log open NoSPAM.rrdds failure." );
 	}
+}
+
+sub log_sa
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	my $aka = $mail_info->{aka};
+	my $engine = $mail_info->{aka}->{engine};
 
 	if ( $engine->{spam}->{sa}->{SCORE} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
 		flock(LFD,LOCK_EX);
@@ -244,11 +316,10 @@ sub log_csv {
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
 		print LFD "\n" . &get_log_time . " ==================================================\n"
 			. "TCPREMOTEIP: " . $aka->{TCPREMOTEIP} . "\n" . "Envelope-From: " . $aka->{returnpath} . "\n"
-				. "Recips: " . $recips . "\nSubject: " . $esc_subject . "\n"
+				. "Recips: " . $aka->{recips} . "\nSubject: " . $aka->{subject} . "\n"
 
 			. "Size: " . $aka->{size} . "\n";
 
-use Data::Dumper;
 		print LFD Dumper ( $engine->{spam}->{sa} );
 
 		flock(LFD,LOCK_UN);

@@ -31,9 +31,15 @@ sub connect
 {
 	my $self = shift;
 	
-	# XXX
-	#return $self->{dbh} if defined $self->{dbh};
-	eval { $self->{dbh}->disconnect; $self->{dbh} = undef; } if defined $self->{dbh};
+	# XXX 2004-12-31 by zixia
+	# 以前好像怀疑重复使用 dbh 会有问题
+	if( defined $self->{dbh} ){
+		if ( $self->{dbh_counter}++ < 100 ){
+			return $self->{dbh} 
+		}else{
+			eval { $self->{dbh}->disconnect; $self->{dbh} = undef; };# if defined $self->{dbh};
+		}
+	}
 
 	#$self->{zlog}->debug( "DB::connect pid $$" );
 	my $DBFile = $self->{define}->{DBFile};
@@ -60,9 +66,12 @@ sub create_table($$)
 			,'drop table UserWhiteList_TB;'
 			);
 
-	my @create_sql = ( 'create table UserEmail_TB (
+	my @create_sql = ( 
+			# 隔离用户列表
+			'create table UserEmail_TB (
 				Email varchar(64) primary key
 				);'
+			# 用户黑、白名单表
 			,"create table UserWhiteList_TB ( 
         			AutoID INTEGER PRIMARY KEY, 
         			User VARCHAR(50) NOT NULL, 
@@ -72,7 +81,52 @@ sub create_table($$)
 			);"
 			,'create index UWL_Email_IDX ON UserWhiteList_TB(Email);'
 			,'create index UWL_User_IDX ON UserWhiteList_TB(User,Domain,Type);'
-			);
+
+			# 邮件日志表
+			,'create table MailLog_TB (
+        			AutoID          unsigned long primary key,
+        			UnixTime        integer,
+        			Direction       unsigned int,
+        			IP              varchar(16),
+			        MailFrom        varchar(128),
+			        MailTo          TEXT,
+			        Subject         TEXT,
+			        Size            unsigned int,
+
+			        isQuarantine    unsigned int,
+			        QuarantineReason varchar(64),
+
+			        isOverrun       unsigned int,
+			        OverrunReason   varchar(64),
+
+			        isVirus         unsigned int,
+			        VirusReason     varchar(64),
+			        VirusAction     unsigned int,
+        
+			        isSpam          unsigned int,
+			        SpamReason      varchar(64),    
+			        SpamAction      unsigned int,
+        
+			        RuleNO          varchar(64),
+			        RuleAction      unsigned int,
+			        RuleParam       varchar(128),
+        
+			        isAudit         unsigned int,
+			        AuditReason     varchar(64)
+			);'
+
+			,'create index MailLog_TimeStamp_IDX on MailLog_TB ( TimeStamp );'
+
+			# 为了插入数据库的性能，这些索引暂时不做，因为只有管理员察看的时候才有用。
+			#,'create index MailLog_Direction_IDX on MailLog_TB ( Direction );'
+			#,'create index MailLog_Size_IDX on MailLog_TB ( Size );'
+			#,'create index MailLog_isAudit_IDX on MailLog_TB ( isAudit );'
+			#,'create index MailLog_isOverrun_IDX on MailLog_TB ( isOverrun );'
+			#,'create index MailLog_isQuarantine_IDX on MailLog_TB ( isQuarantine );'
+			#,'create index MailLog_isSpam_IDX on MailLog_TB ( isSpam );'
+			#,'create index MailLog_isVirus_IDX on MailLog_TB ( isVirus );'
+
+		);
 
 	my $dbh = $self->connect;
 
@@ -195,4 +249,56 @@ sub is_user_whitelist
 	return 0;
 }
 
+sub log_mail
+{
+	my $self = shift;
+	my $mail_log = shift;
+
+	my $dbh = $self->connect();
+
+	my $sth = $dbh->prepare ( "insert into MailLog_TB 
+				( UnixTime, Direction, IP, MailFrom, MailTo, Subject, Size
+					, isVirus, VirusReason, VirusAction
+					, isSpam, SpamReason, SpamAction
+					, RuleNO, RuleAction, RuleParam
+					, isAudit, AuditReason
+					, isOverrun, OverrunReason
+					, isQuarantine, QuarantineReason 
+				)
+				values
+				( ?,?,?,?,?,?,?
+					,?,?,?
+					,?,?,?
+					,?,?,?
+					,?,?
+					,?,?
+					,?,?
+				)" );
+
+	$sth->execute( 
+		$mail_log->{UnixTime} , $mail_log->{Direction} , $mail_log->{IP}
+		, $mail_log->{MailFrom} , $mail_log->{MailTo} , $mail_log->{Subject} , $mail_log->{Size}
+		, $mail_log->{isVirus}
+			, $mail_log->{VirusReason}
+			, $mail_log->{VirusAction}
+		, $mail_log->{isSpam}
+			, $mail_log->{SpamReason}
+			, $mail_log->{SpamAction}
+		, $mail_log->{RuleNO}
+			, $mail_log->{RuleAction}
+			, $mail_log->{RuleParam}
+		, $mail_log->{isAudit}
+			, $mail_log->{AuditReason}
+		, $mail_log->{isOverrun}
+			, $mail_log->{OverrunReason}
+		, $mail_log->{isQuarantine}
+			, $mail_log->{QuarantineReason}
+	 );
+
+	$sth->finish;
+	#$self->{zlog}->debug( "DB::is_user_whitelist $user\@$domain NOT treate $sender as [$type] list." );
+	return 0;
+}
+
 1;
+
