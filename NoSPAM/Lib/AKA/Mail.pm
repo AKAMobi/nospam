@@ -285,18 +285,17 @@ sub net_process_ex
     # needs SIG_IGN to avoid leaving zombies.
     $SIG{CHLD} = 'DEFAULT';
 
-open ( ZZZ, ">>/tmp/zzz.log" );
 	$self->recv_mail_info_ex();
 
-use Data::Dumper;
+#use Data::Dumper;
 
-$self->{zlog}->debug ( "after recv_mail_info_ex" );
+#$self->{zlog}->debug ( "after recv_mail_info_ex" );
 	$self->process ( $self->{mail_info} );
-$self->{zlog}->debug ( "after process" );
-print ZZZ Dumper($self->{mail_info} );
-close ZZZ;
+#$self->{zlog}->debug ( "after process" );
+#print ZZZ Dumper($self->{mail_info} );
+#close ZZZ;
 	$self->send_mail_info_ex();
-$self->{zlog}->debug ( "after send_mail_info_ex" );
+#$self->{zlog}->debug ( "after send_mail_info_ex" );
 }
 
 sub send_mail_info_ex
@@ -313,15 +312,15 @@ $self->{zlog}->debug( "send_mail_info smtp_code: [$smtp_code],"
 	. "smtp_info: [$smtp_info], exit_code:[$exit_code]" );
 
 
-	if ( $self->{license_ok} ){
+#	if ( $self->{license_ok} ){
 		print STDOUT $smtp_code . "\n";
 		print STDOUT $smtp_info . "\n";
 		print STDOUT $exit_code . "\n";
-	}else{
-		print STDOUT "553\n";
-		print STDOUT "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n";
-		print STDOUT "150\n";
-	}
+#	}else{
+#		print STDOUT "553\n";
+#		print STDOUT "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n";
+#		print STDOUT "150\n";
+#	}
 }
 
 
@@ -465,6 +464,9 @@ sub process
 	# 获取文件尺寸和标题等基本信息
 	$self->get_mail_base_info;
 
+	# 如果License过期，则直接将信件投递
+	goto REQUEUE unless ( $self->{license_ok} );
+
 	my ($user,$system,$cuser,$csystem) = times;
 	my $last_cputime;
 
@@ -554,6 +556,7 @@ sub process
 	# ACTION_ADDRCPT / ACTION_DELRCPT / ACTION_CHGRCPT
 	$self->action_rcpts();
 
+REQUEUE:
 	# ACTION_ADDHDR / ACTION_DELHDR / ACTION_CHGHDR
 	$self->qmail_requeue();
 
