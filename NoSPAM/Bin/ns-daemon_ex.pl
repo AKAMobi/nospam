@@ -56,7 +56,7 @@ sub configure_hook {
 
 	$self->{server}->{log_level} = 4;
 
-	$self->{server}->{serialize} = 'semaphore';
+	$self->{server}->{serialize} = undef; # use default: flock
 
 	open(STDIN, '</dev/null') || die "Can't close STDIN [$!]";
 	open(STDOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
