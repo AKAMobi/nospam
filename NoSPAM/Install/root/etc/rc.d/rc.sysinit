@@ -28,9 +28,10 @@ fi
 # add by zixia 2004-05-07
 PROMPT="no"
 echo
- [ "$BOOTUP" = "color" ] && echo -en $"\\033[0;31m"
- echo -en "noSPAM "
- [ "$BOOTUP" = "color" ] && echo -en $"\\033[0;39m"
+echo -en $"\t\tWelcome to "
+[ "$BOOTUP" = "color" ] && echo -en $"\\033[0;31m"
+echo -en "noSPAM "
+[ "$BOOTUP" = "color" ] && echo -en $"\\033[0;39m"
 echo "System V2"
 echo
  

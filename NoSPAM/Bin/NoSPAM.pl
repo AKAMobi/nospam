@@ -1131,10 +1131,13 @@ chmod 000 /etc/cron.daily/slocate.cron
 depmod -a 2.4.26-noSPAM
 mkinitrd -f /boot/initrd-2.4.26-noSPAM.img 2.4.26-noSPAM
 
-echo \'#!/bin/sh\' > /sbin/lilo.dummy
-chmod +x /sbin/lilo.dummy
-mv /sbin/lilo /sbin/lilo.ns
-mv /sbin/lilo.dummy /sbin/lilo
+if [ ! -e /sbin/lilo.ns ]; then 
+	echo \'#!/bin/sh\' > /sbin/lilo.dummy
+	chmod +x /sbin/lilo.dummy
+	mv -f /sbin/lilo /sbin/lilo.ns
+	mv -f /sbin/lilo.dummy /sbin/lilo
+fi
+
 
 for file in /etc/lilo.*.conf; do
 	lilo.ns -C $file
