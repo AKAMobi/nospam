@@ -26,7 +26,8 @@ exit;
 sub configure_hook {
 	my $self = shift;
 
-	$self->{server}->{port}   = ['127.0.0.1:40307'];
+	#$self->{server}->{port}   = ['127.0.0.1:40307'];
+	$self->{server}->{port}   = ['/home/NoSPAM/.ns|SOCK_STREAM|unix'];
 #$self->{server}->{chdir}  = '/';      # chdir to root
 	$self->{server}->{user}   = 'root'; # user to run as
 	$self->{server}->{group}  = 'root'; # group to run as

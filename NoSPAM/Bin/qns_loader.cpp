@@ -15,6 +15,7 @@
 #include <fstream>
 
 #include <socket++/sockinet.h>
+#include <socket++/sockunix.h>
 
 #include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
 #include <boost/filesystem/fstream.hpp>    // ditto
@@ -30,6 +31,7 @@ using namespace std;
 #define BUF_LEN 2048
 #define EML_DIR "/home/NoSPAM/spool/working"
 #define EML_PREFIX "emlfile.gw.nospam"
+#define UNIXSOCKETFILE "/home/NoSPAM/.ns"
 
 // Email´ÅÅÌÎÄ¼þ
 string emlfile;
@@ -183,10 +185,13 @@ int net_process( string &result,
 		string relayclient, string tcpremoteip, 
 		string tcpremoteinfo, string emlfile, qmail_hdrs *hdrs )
 {
-	iosockinet io (sockbuf::sock_stream);
+	//iosockinet io (sockbuf::sock_stream);
+	iosockunix io (sockbuf::sock_stream);
+
 
 	try {
-		io->connect ("127.0.0.1", "40307", "tcp");
+		//io->connect ("127.0.0.1", "40307", "tcp");
+		io->connect (UNIXSOCKETFILE);
 	} catch ( ... ) {
 		qns_err_n_exist ( "443 Engine temporarily unavailable.", 150 );
 		return 150;
