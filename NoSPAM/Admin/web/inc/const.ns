@@ -8,7 +8,7 @@ if ( !defined("CONST_DEFINED") ){
 	define("PoliceDB","/home/ssh/etc/PoliceDB.xml");
 	define("UserDB","/home/NoSPAM/etc/UserFilterRule.xml");
 	define("Category","/home/NoSPAM/etc/category");
-	define("WI","/home/NoSPAM/bin/wi");
+	define("WI","/home/NoSPAM/bin/NoSPAM");
 	define("PAGENUM",30);
 }
 ?>

@@ -10,7 +10,7 @@ else
 if($_POST["Mode"]){
 	$spamconf->setParam("ServerGateway",$_POST["Mode"]);
 	$spamconf->save();
-	if(($ret=wi("get_GW_Mode",$result))==0){
+	if(($ret=wi("set_GW_Mode",$result))==0){
 		echo "请重启系统以更新设置";
 	}else{
 		echo "无法更新设置，错误代码：".$ret;
