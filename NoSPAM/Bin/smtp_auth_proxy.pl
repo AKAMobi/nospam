@@ -1,8 +1,11 @@
 #!/usr/bin/perl -w
 use Net::SMTP_auth;
 
-my $REMOTE_SMTP = $ARGV[0];
-my $logit = $ARGV[1];
+
+my $REMOTE_SMTP = &get_remote_smtp_ip();
+exit 20 if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) );
+
+my $logit = $ARGV[0];
 $logit = 0 if ( $logit ne "log" );
 
 my ($user, $pass, $challenge) = &get_info();
@@ -56,3 +59,21 @@ sub get_info
 
 	($user,$pass,$challenge);
 }
+
+sub get_remote_smtp_ip
+{
+	my $line;
+	my $ip = "";
+	if ( open( FD, "</var/qmail/control/smtproutes") ){
+		$line = <FD>;
+		close FD;
+	
+		chomp $line;
+		if ( $line=~/^[^:]+:(\d+\.\d+\.\d+\.\d+)/ ){
+			$ip = $1;
+		}
+	}
+	
+	return $ip;
+}
+
