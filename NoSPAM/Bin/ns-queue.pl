@@ -664,6 +664,10 @@ sub clean_zombie_file {
   `find $scandir/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
   `find $scandir/working/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
   `find $scandir/working/new -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
+
+  `find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+  `find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+  `find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 }
 
 # zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
