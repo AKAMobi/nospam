@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-06 17:39+0800\n"
+"POT-Creation-Date: 2004-12-14 01:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -25,7 +25,7 @@ msgid " already exists"
 msgstr "已经存在"
 
 msgid " into both white list and black list"
-msgstr ""
+msgstr "同时设为白名单与黑名单"
 
 msgid " items"
 msgstr "项"
@@ -88,6 +88,14 @@ msgstr "动作"
 
 msgid "Action Parameter"
 msgstr "动作参数"
+
+msgid "Action after timeout"
+msgstr "超时动作参数"
+
+msgid ""
+"Action if the receiver of an inward email does not exist in the Quarantine "
+"Engine User List"
+msgstr "如果用户不在隔离用户列表中，则采取如下动作："
 
 msgid "Add"
 msgstr "添加"
@@ -236,7 +244,7 @@ msgstr "用户登录时自动登记用户"
 msgid "Auto-Download Policy"
 msgstr "公安监管配置"
 
-msgid "Auto-Download Policy(Readonly)"
+msgid "Auto-Download Policy(Read Only)"
 msgstr "公安规则数据数据库（只读）"
 
 msgid "BSP Bonded Sender Program"
@@ -245,7 +253,7 @@ msgstr "BSP Bonded Sender Program"
 msgid "Bayes Filter"
 msgstr "贝叶斯过滤器"
 
-msgid "Bayes Switch: "
+msgid "Bayes Filter Switch: "
 msgstr "贝叶斯识别开关："
 
 msgid "Before Modify"
@@ -374,9 +382,6 @@ msgstr "清空"
 msgid "Commit"
 msgstr "修改"
 
-msgid "Concurrent SMTP Connect per IP"
-msgstr "同时连接数"
-
 msgid "Config Commit Fail, ErrNo: "
 msgstr "修改失败，错误代码："
 
@@ -388,6 +393,9 @@ msgstr "配置文件"
 
 msgid "Configuration Management"
 msgstr "配置管理"
+
+msgid "Confirm New Password"
+msgstr "输入新密码"
 
 msgid "Confirm: Continue?"
 msgstr "确认即将执行的操作？"
@@ -467,6 +475,7 @@ msgstr "天"
 msgid "Days"
 msgstr "天"
 
+#, php-format
 msgid "Deal with"
 msgstr "正在处理的邮件"
 
@@ -545,7 +554,7 @@ msgstr "显示"
 msgid "Display Last"
 msgstr "显示最后"
 
-msgid "Do not use x.x.x.x format, Please use Mask length"
+msgid "Do not use x.x.x.x format. Please use mask length"
 msgstr "请使用掩码位数，不能使用x.x.x.x格式"
 
 msgid "Domain"
@@ -614,6 +623,9 @@ msgstr "用户名或密码错误"
 msgid "Email password"
 msgstr "邮箱密码"
 
+msgid "Empty Quarantine Bin"
+msgstr "清空隔离区"
+
 msgid "Empty user list database before new data add"
 msgstr "添加新用户数据前先清空系统数据库"
 
@@ -635,7 +647,7 @@ msgstr "引擎运行状态"
 msgid "Engine Switch"
 msgstr "引擎开关"
 
-msgid "Engines Switches"
+msgid "Engines Switch"
 msgstr "引擎开关"
 
 msgid "ErrNo: "
@@ -791,6 +803,9 @@ msgstr "通过"
 msgid "Free Declaration Check"
 msgstr "免费声明检查"
 
+msgid "GAISC Setting"
+msgstr "GAISC 设置"
+
 msgid "Gateway"
 msgstr "缺省网关"
 
@@ -863,16 +878,13 @@ msgstr "IP地址格式有误"
 msgid "IP List can not has character ':' "
 msgstr "IP地址列表中含有非法字符“:”,请重试"
 
-msgid "IP Restrict"
-msgstr "IP限制"
-
 msgid "IP Restriction"
 msgstr "IP限制"
 
 msgid "IP Seg Match"
 msgstr "连续IP地址匹配"
 
-msgid "IP WhiteList"
+msgid "IP Whitelist"
 msgstr "IP白名单"
 
 msgid "IP format Error, re-Input:"
@@ -885,9 +897,12 @@ msgid "Image File"
 msgstr "图片文件"
 
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 msgid "Import successfully"
+msgstr "导入成功"
+
+msgid "In"
 msgstr ""
 
 msgid "Incept"
@@ -906,7 +921,7 @@ msgstr "从外向内"
 msgid "Input"
 msgstr "请您首先输入"
 
-msgid "Input Password again, and must identical with first input."
+msgid "Input Password again, and must be identical with the first input."
 msgstr "请再次输入密码，两次密码必须相同。"
 
 msgid "Input User Account you want to search"
@@ -1027,7 +1042,7 @@ msgstr "若不修改请保留空白"
 msgid "Leave empty is Preserve"
 msgstr "若不修改请保留空白"
 
-msgid "License Expire: "
+msgid "License Expires: "
 msgstr "许可证过期时间："
 
 msgid "Likely Spam"
@@ -1219,10 +1234,10 @@ msgstr "管理选项"
 msgid "Management IP List"
 msgstr "修改IP地址列表"
 
-msgid "Management IP List Modify Success!"
+msgid "Management IP List Modify succeeded!"
 msgstr "IP地址列表修改成功！"
 
-msgid "Management IP Restrict"
+msgid "Management IP Restriction"
 msgstr "IP地址限制"
 
 msgid "Management System"
@@ -1240,8 +1255,20 @@ msgstr "类型"
 msgid "Matched Rule ID"
 msgstr "匹配规则号"
 
+msgid "Max"
+msgstr "最大"
+
 msgid "Max User Counts must be Positive Integer"
 msgstr "最大用户数必须设置为正整数"
+
+msgid "Maximum concurrent SMTP connections per IP"
+msgstr "同时连接数"
+
+msgid "Maximum retries in 5 minutes for the same IP"
+msgstr "5分钟内对不同重试次数："
+
+msgid "Maximum retries in 5 minutes for the same user:"
+msgstr "5分钟内对同一用户重试次数："
 
 msgid "Memory Usage"
 msgstr "内存使用状态图"
@@ -1264,8 +1291,8 @@ msgstr "分钟"
 msgid "Modification Succeed! "
 msgstr "修改成功"
 
-msgid "Modification Success! "
-msgstr "修改成功！"
+msgid "Modification succeeded! "
+msgstr "修改成功"
 
 msgid "Modify"
 msgstr "修改"
@@ -1328,29 +1355,29 @@ msgstr "无法建立信件！"
 msgid "New Password"
 msgstr "输入新密码"
 
-msgid "New Password again"
-msgstr "确认新密码"
-
 msgid "New User"
 msgstr "添加新用户"
 
 msgid "New domain is not in restrict domain list"
-msgstr ""
+msgstr "此域名不在系统允许域名列表中"
 
 msgid "No Permission"
 msgstr "无此权限"
 
-msgid "No Restrict"
+msgid "No Restriction"
 msgstr "不限制"
 
 msgid "No User Group Define now"
 msgstr "目前尚无用户组定义！"
 
 msgid "No file selected"
-msgstr ""
+msgstr "没有选择文件"
 
 msgid "No file upload"
-msgstr ""
+msgstr "没有上载文件"
+
+msgid "No more than 1800 seconds of blocking time is suggested."
+msgstr "推荐设置值小于1800秒"
 
 msgid "No this Admin, re-Input:"
 msgstr "无此管理员账号,请重新输入"
@@ -1388,14 +1415,16 @@ msgstr "备注"
 msgid "Note can not has character ':' "
 msgstr "备注中含有非法字符“:”,请重试"
 
-msgid "Note: Concurrent SMTP Connect per IP only function on Inward traffic."
-msgstr ""
-"注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。"
-
 msgid "Note: From Left to Right is Spam, Likely Spam, NonSpam"
 msgstr ""
 "注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非"
 "垃圾邮件"
+
+msgid ""
+"Note: Maximum concurrent SMTP connections per IP only functions on inward "
+"traffic."
+msgstr ""
+"注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。"
 
 msgid "Note: This will delete all undeliverd mails permamently, Continue?"
 msgstr "注意！此操作将永久删除所有未投递的邮件，确认吗？"
@@ -1427,6 +1456,9 @@ msgstr "同一封邮件最多发送"
 msgid "One Sender should send no more than"
 msgstr "同一用户最多发送"
 
+msgid "One domain each line."
+msgstr "每行一个域名。"
+
 msgid "One mail address a line, data will merge into that before"
 msgstr "每行一个邮件地址，新上载数据将和系统数据合并"
 
@@ -1444,6 +1476,9 @@ msgstr "操作成功"
 
 msgid "Optional"
 msgstr "可以不选"
+
+msgid "Options for Traceability Analysis"
+msgstr "可追查性检查选项"
 
 msgid "Other Error, need DEBUG"
 msgstr "其他错误，叫系统管理员来debug"
@@ -1511,10 +1546,10 @@ msgstr "口令格式错误,请重新输入"
 msgid "Password Modify Succeed!"
 msgstr "口令修改成功！"
 
-msgid "Password Modify Success!"
+msgid "Password Modify succeeded!"
 msgstr "口令修改成功！"
 
-msgid "Password must use digit and Latin character."
+msgid "Password must use digits and latin characters."
 msgstr "请使用大小写英文字母和数字作为邮件密码。"
 
 msgid "Password needed"
@@ -1571,6 +1606,9 @@ msgstr "隔离"
 msgid "Quarantine Engine"
 msgstr "隔离引擎"
 
+msgid "Quarantine Engine User List"
+msgstr "隔离用户列表"
+
 msgid "Quarantine Mail"
 msgstr "隔离邮件"
 
@@ -1590,16 +1628,13 @@ msgid "Quarantine email white/black list"
 msgstr "隔离邮件黑白名单"
 
 msgid "Quarantine engin can't support this method"
-msgstr ""
+msgstr "隔离引擎不支持此种方法"
 
 msgid "Quarantine reason"
 msgstr "隔离原因"
 
 msgid "Quarantine time"
 msgstr "隔离时间"
-
-msgid "Quarantine time out action"
-msgstr "隔离队列超时动作"
 
 msgid "QuarantineEnginUserList"
 msgstr "隔离用户列表"
@@ -1619,10 +1654,10 @@ msgstr "隔离用户列表"
 msgid "Query Timeout"
 msgstr "查询超时"
 
-msgid "Queue LifeTime"
+msgid "Queue Lifetime"
 msgstr "邮件队列投递超时"
 
-msgid "Queue LifeTime must > 0s and < 7days"
+msgid "Queue Lifetime must > 0s and < 7days"
 msgstr "邮件队列投递超时必须大于0秒小于7天"
 
 msgid "RBL+"
@@ -1631,10 +1666,10 @@ msgstr "RBL+"
 msgid "RFC-Ignorant blacklists (both name and IP based)"
 msgstr "RFC-Ignorant blacklists (both name and IP based)"
 
-msgid "Readonly"
+msgid "Read Only"
 msgstr "只读"
 
-msgid "Readonly Admin"
+msgid "Read Only Admin"
 msgstr "只读管理员"
 
 msgid "RealName"
@@ -1730,6 +1765,9 @@ msgstr "规则管理"
 msgid "Rule Match Mail Top10"
 msgstr "根据每个内容规则匹配的邮件数Top10"
 
+msgid "Rule Number"
+msgstr "规则编号"
+
 msgid "Rule Number Error"
 msgstr "错误的规则编号"
 
@@ -1781,6 +1819,9 @@ msgstr "SMTP 发送邮件超时"
 msgid "SMTP connect"
 msgstr "SMTP 连接状态图"
 
+msgid "SMTP connections no more than"
+msgstr "最多连接"
+
 msgid "SMTP per IP"
 msgstr "同时连接数"
 
@@ -1817,6 +1858,9 @@ msgstr "查找用户"
 msgid "Second(s)"
 msgstr "秒"
 
+msgid "Seconds"
+msgstr "秒"
+
 msgid "Select"
 msgstr "选择"
 
@@ -1841,7 +1885,7 @@ msgstr "发送群体信件"
 msgid "Send Success !"
 msgstr "发送成功"
 
-msgid "Send to a given Email Address"
+msgid "Send to the following email addresses"
 msgstr "发往特定地址"
 
 msgid "Sender"
@@ -1850,7 +1894,7 @@ msgstr "发信人"
 msgid "Sender IP"
 msgstr "源客户端IP"
 
-msgid "Sender WhiteList"
+msgid "Sender Whitelist"
 msgstr "发件人白名单"
 
 msgid "Sending Address Check"
@@ -1973,7 +2017,7 @@ msgstr "主题"
 msgid "Subject Check"
 msgstr "察看邮件主题"
 
-msgid "Subject WhiteList"
+msgid "Subject Whitelist"
 msgstr "主题白名单"
 
 msgid "Submit"
@@ -1997,7 +2041,7 @@ msgstr "超级"
 msgid "Switch"
 msgstr "开关"
 
-msgid "SwitchBoard"
+msgid "Switch Board"
 msgstr "基本设置"
 
 msgid "Sync"
@@ -2155,14 +2199,11 @@ msgstr "总邮件数"
 msgid "Total number"
 msgstr "总数"
 
+msgid "Traceability Analysis"
+msgstr "可追查性检查"
+
 msgid "Traceable"
 msgstr "可追查性检查"
-
-msgid "Traceable Check"
-msgstr "可追查性检查"
-
-msgid "Traceable Options"
-msgstr "可追查性选项"
 
 msgid "Type"
 msgstr "类型"
@@ -2185,9 +2226,6 @@ msgstr "未知的隔离超时动作"
 msgid "Unkown list type"
 msgstr "无效的黑白名单参数"
 
-msgid "Update"
-msgstr "更新"
-
 msgid "Update Time"
 msgstr "更新时间"
 
@@ -2209,11 +2247,11 @@ msgstr "升级包"
 msgid "Upgrade Release"
 msgstr "升级号"
 
-msgid "Upgrade Success!"
-msgstr "升级成功！"
-
 msgid "Upgrade Success, need Reboot system."
 msgstr "升级成功，重新启动系统后生效"
+
+msgid "Upgrade succeeded!"
+msgstr "升级成功！"
 
 msgid "Upload"
 msgstr "上载"
@@ -2285,7 +2323,7 @@ msgid "User list file is too large"
 msgstr "用户列表文件太大"
 
 msgid "User list file was not entirely uploaded"
-msgstr ""
+msgstr "用户列表文件没有完全上载"
 
 msgid "User's ID Card Number"
 msgstr "用户的身份号码"
@@ -2305,9 +2343,17 @@ msgstr "账号"
 msgid "UserName Error"
 msgstr "错误的帐号"
 
+msgid "Username"
+msgstr "账号"
+
 msgid ""
-"UserName must use digit and lower-case Latin character, and start with "
-"character."
+"Username must use digits and lower-case latin characters, and start with "
+"characters."
+msgstr "请使用小写英文字母及数字起帐号名，必须使用英文字母开头。"
+
+msgid ""
+"Username must use digits and lower-case latin charactesr, and start with "
+"characters."
 msgstr "请使用小写英文字母及数字起帐号名，必须使用英文字母开头。"
 
 msgid "Username or Password is invalid, please Input again"
@@ -2370,9 +2416,6 @@ msgstr "病毒识别"
 msgid "Weekly"
 msgstr "每周 图表 (30 分钟 平均)"
 
-msgid "When the address that incurrent mail will forword to is not exist"
-msgstr "收件人不在隔离用户数据库中时的系统动作"
-
 msgid "White list"
 msgstr "白名单"
 
@@ -2386,7 +2429,7 @@ msgid "Yearly"
 msgstr "每年 图表 (1 天 平均)"
 
 msgid "You can't put "
-msgstr ""
+msgstr "你无法设置"
 
 msgid "You have max white/black user list: "
 msgstr "已达到最大黑白名单上限："
@@ -2445,11 +2488,20 @@ msgstr "省略"
 msgid "on which Version"
 msgstr "适用版本"
 
+msgid "one mail should be sent no more than"
+msgstr "同一封邮件最多发送"
+
+msgid "one sender should send no more than"
+msgstr "同一用户最多发送"
+
 msgid "or will be blocked"
 msgstr "超限封禁时间为"
 
 msgid "quarantine function enabled."
 msgstr "的隔离功能已激活。"
+
+msgid "second(s)"
+msgstr "秒"
 
 msgid "times"
 msgstr "次"
@@ -2510,6 +2562,9 @@ msgstr "被封禁到"
 #~ msgid "Engine Switche"
 #~ msgstr "引擎开关"
 
+#~ msgid "Engines Switches"
+#~ msgstr "引擎开关"
+
 #~ msgid "Friendly Mails"
 #~ msgstr "正常邮件数"
 
@@ -2522,7 +2577,10 @@ msgstr "被封禁到"
 #~ msgid "IP Blacklist"
 #~ msgstr "IP黑名单"
 
-#~ msgid "IP Whitelist"
+#~ msgid "IP Restrict"
+#~ msgstr "IP限制"
+
+#~ msgid "IP WhiteList"
 #~ msgstr "IP白名单"
 
 #~ msgid "Incept "
@@ -2550,6 +2608,12 @@ msgstr "被封禁到"
 #~ msgid "Invalid email address!"
 #~ msgstr "非法邮件地址!"
 
+#~ msgid "Modification Success! "
+#~ msgstr "修改成功！"
+
+#~ msgid "New Password again"
+#~ msgstr "确认新密码"
+
 #~ msgid "Number Rule"
 #~ msgstr "数值规则"
 
@@ -2565,6 +2629,9 @@ msgstr "被封禁到"
 #~ msgid "Pages"
 #~ msgstr "页"
 
+#~ msgid "Password Modify Success!"
+#~ msgstr "口令修改成功！"
+
 #~ msgid "Please Input Rule Number"
 #~ msgstr "请输入规则编号"
 
@@ -2573,6 +2640,9 @@ msgstr "被封禁到"
 
 #~ msgid "Protect Mail Domain"
 #~ msgstr "邮件域保护设定"
+
+#~ msgid "Quarantine time out action"
+#~ msgstr "隔离队列超时动作"
 
 #~ msgid "Recommended: "
 #~ msgstr "推荐值："
@@ -2589,7 +2659,7 @@ msgstr "被封禁到"
 #~ msgid "Sender Blacklist"
 #~ msgstr "发件人黑名单"
 
-#~ msgid "Sender Whitelist"
+#~ msgid "Sender WhiteList"
 #~ msgstr "发件人白名单"
 
 #~ msgid "System Config"
@@ -2603,6 +2673,15 @@ msgstr "被封禁到"
 #~ msgid "This Product has not get valid License, Please contact factory."
 #~ msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
 
+#~ msgid "Traceable Check"
+#~ msgstr "可追查性检查"
+
+#~ msgid "Traceable Options"
+#~ msgstr "可追查性选项"
+
+#~ msgid "Update"
+#~ msgstr "更新"
+
 #~ msgid "VENUS INFO TECH INC.Corporate"
 #~ msgstr "启明星辰信息技术有限公司"
 
@@ -2612,6 +2691,9 @@ msgstr "被封禁到"
 # msgstr "错误"
 #~ msgid "We suggest"
 #~ msgstr "我们建议"
+
+#~ msgid "When the address that incurrent mail will forword to is not exist"
+#~ msgstr "收件人不在隔离用户数据库中时的系统动作"
 
 #~ msgid "error!"
 #~ msgstr "错误"

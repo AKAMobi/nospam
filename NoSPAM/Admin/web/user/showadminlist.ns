@@ -437,7 +437,7 @@ function modify()
 <tr>
 	<td align="right"><?=_("Local Mail Domain")?>: </td>
 	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
-	<td>每行一个。</td>
+	<td><?=_("One domain each line.")?></td>
 </tr>
 <?}?>
 <tr align="center" >

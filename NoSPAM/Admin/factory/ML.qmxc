@@ -10,7 +10,7 @@ my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-10-3
+ExpireDate=2005-02-28
 Version=2
 
 FactoryName=启明星辰
@@ -20,19 +20,27 @@ Language=zh_CN
 
 
 ServerGatewaySwitchable=Y
-ServerGateway=Gateway,MXRelay
+ServerGateway=Gateway,MXRelay,Server
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 
 MailGateway=100
 MailRelay=100
+MailServer=100
 AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100
 ContentEngine=100
-ArchiveEngine=100
+#ArchiveEngine=100
+QuarantineEngine=100
+#GAInterface=100
 
+
+MailServerMaxUser=1000
+MailServerMaxDomain=10
+#10G = 10737418240
+MailServerMaxQuota=10737418240
 _LICENSE_
 
 

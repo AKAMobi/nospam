@@ -10,14 +10,15 @@ my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-12-31
+ExpireDate=2005-01-31
 Version=2
 
 FactoryName=天津时空
 ProductName=时空反邮件垃圾系统
 ProductSN=$prodno
+Language=zh_CN
 
-ServerGatewaySwitchable=N
+ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
@@ -29,8 +30,9 @@ AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100
 ContentEngine=100
-ArchiveEngine=100
-GAInterface=100
+QuarantineEngine=100
+#ArchiveEngine=100
+#GAInterface=100
 
 MailServerMaxUser=1000
 MailServerMaxDomain=10

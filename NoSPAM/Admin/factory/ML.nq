@@ -10,7 +10,7 @@ my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-9-1
+ExpireDate=2005-01-01
 Version=2
 
 FactoryName=AKA IT

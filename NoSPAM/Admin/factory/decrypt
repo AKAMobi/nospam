@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # This script will decrypt a Perl script that has been encrypted using the
 # "encrypt" script. It cannot decrypt any other kind of encrypted Perl script.
@@ -12,13 +12,13 @@ use warnings;
 use vars qw($XOR $BLOCKSIZE $HEADERSIZE $CRYPT_MAGIC_1 $CRYPT_MAGIC_2
             $size $mode $line $Fingerprint $file $block $sharp_bang $f
            ) ;   
-$XOR             = 'Perl' ;
+$XOR	 	= 'okboy&zixia@2004-03-07' ;
 $BLOCKSIZE       = length $XOR ;
 $HEADERSIZE      = 2 ;
-$CRYPT_MAGIC_1   = 0xff ;
-$CRYPT_MAGIC_2   = 0x00 ;
+$CRYPT_MAGIC_1   = 0xfe ;
+$CRYPT_MAGIC_2   = 0x01 ;
 my $Version         = 1 ;
-my $module_name     = 'Filter::decrypt' ;
+my $module_name     = 'AKA::Loader' ;
 
 my $Fingerprint     = pack ("C*", $CRYPT_MAGIC_1, $CRYPT_MAGIC_2) ;
 
