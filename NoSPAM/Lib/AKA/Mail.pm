@@ -1131,7 +1131,7 @@ sub dynamic_engine
 		use AKA::IPUtil;
 		my $AI = new AKA::IPUtil;
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteIPRateList}} ){
-			if ( $AI->is_ip_in_range($ip, $_){
+			if ( $AI->is_ip_in_range($ip, $_) ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
 	                                desc    => 'IP°×Ãûµ¥',
