@@ -39,6 +39,7 @@ ContentEngine=100
 ArchiveEngine=100
 InteractiveEngine=100
 GAInterface=100
+QuarantineEngine=100
 
 MailServerMaxUser=1000
 MailServerMaxDomain=10

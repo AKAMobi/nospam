@@ -42,6 +42,7 @@ sub quarantine
 	my $qdir = $self->{define}->{quarantinedir};
 	my $sdir = $self->{define}->{sysdir};
 
+	my $old_umask = umask 0022;
 	my ($filename, $infoname);
 $self->{zlog}->debug ( "Quarantine::quarantine get mailfrom: [$mailfrom] mailto: [$mailto]" );
 	$mailfile =~ m#([^/]+)$#;
@@ -63,7 +64,7 @@ $self->{zlog}->debug ( "Quarantine::quarantine get mailfrom: [$mailfrom] mailto:
 		my ($user,$domain);
 		($mailto) = split(/,/,$mailto); # XXX 只给一个人隔离
 		if ( $mailto=~/(\S+)\@(\S+)/ ){
-			($user,$domain) = ($1,$2);
+			($user,$domain) = (lc $1,lc $2);
 		}else{
 			$self->{zlog}->fatal ( "AKA::Mail::Quarantine::quarantine can't parse email address: [$mailfrom]" );
 			return undef;

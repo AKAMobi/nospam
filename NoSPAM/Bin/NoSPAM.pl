@@ -748,6 +748,7 @@ sub QuarantineGetInfo
 	my $passwd = shift @param;
 
 	$email && $passwd || return -1;
+	$email = lc $email;
 
 	my ($smtp_ip,$user_raw,$user_domain) = &get_remote_smtp_ip($email) ;
 	$smtp_ip && $user_raw && $user_domain || return -1;
