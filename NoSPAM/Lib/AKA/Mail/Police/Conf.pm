@@ -21,21 +21,23 @@ sub new
 
 	bless $self, $class;
 
-	my ($main) = @_;
+	my ($police) = @_;
 
-	$self->{main} = $main;
+	$self->{police} = $police;
 
-	$self->{zlog} = $main->{zlog};
+	$self->{zlog} = $police->{zlog} || new Police::Log();
 
 	$self->{define}->{home} = "/home/ssh/";
+
 	$self->{define}->{verify_binary} = $self->{define}->{home} . "/bin/GAverify";
 	$self->{define}->{sign_binary} = $self->{define}->{home} . "/bin/GAsign";
+
 	$self->{define}->{cen_pub_key} = $self->{define}->{home} . "/key/cen_verify_key";
 	$self->{define}->{cen_pri_key} = $self->{define}->{home} . "/key/cen_sign_key";
 	$self->{define}->{msp_pub_key} = $self->{define}->{home} . "/key/msp_verify_key";
 	$self->{define}->{msp_pri_key} = $self->{define}->{home} . "/key/msp_sign_key";
 
-#$self->{xs} = get_xml_simple();
+	$self->{define}->{spamdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 
 	$self->{rule_add_modify} = undef;
 	$self->{rule_del} = undef;
@@ -51,7 +53,7 @@ sub check_n_update
 
 	$self->{update} ||= new Police::Conf::Update($self);
 
-	my $newfilenum = $self->{update}->check_new_rule();
+	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
 	if ( $newfilenum > 0 ){
 		$self->{zlog}->log ( "found $newfilenum new rule file(s), mergeing to local database" );
 # 更新文件
@@ -71,17 +73,41 @@ sub merge_new_rule
 		return 0;
 	}
 
-	use Data::Dumper;
-# 改变$转义、缩进
-	$Data::Dumper::Useperl = 1;
-	$Data::Dumper::Indent = 1;
+	$self->{xs} || get_xml_simple($self);
 
+	my $spamdb_file = $self->{define}->{spamdb};
 
-	print "rule_add_modify: \n";
-	print Dumper( $rule_add_modify );
-	print "\n\n";
-	print "rule_del: \n";
-	print Dumper( $rule_del );
+	if ( !-f $spamdb_file ) {
+		open ( WDB, ">$spamdb_file" ) or die "can't open $spamdb_file for writing";
+		print WDB "<rule><rule_id></rule_id></rule>";
+		close ( WDB );
+	}
+
+	my $spamdb = $self->{xs}->XMLin( $spamdb_file, ForceArray=>'rule', 
+							KeyAttr=> {rule=>'rule_id'} );
+
+	for my $rule_id ( keys %{$rule_del} ){
+		$self->{zlog}->log ( "deleting rule id: [$rule_id] from spamdb" );
+		delete $spamdb->{$rule_id} if defined $spamdb->{$rule_id};
+	}
+
+	for my $rule_id ( keys %{$rule_add_modify} ){
+		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to spamdb" );
+		$spamdb->{$rule_id} = $rule_add_modify->{$rule_id};
+	}
+
+	$new_spamdb = $self->{xs}->XMLout($spamdb, ForceArray=>'rule',
+							KeyAttr=> {rule=>'rule_id'} );
+						
+
+	$new_spamdb_file = $spamdb_file . ".new";
+
+	open ( WDB, ">$new_spamdb_file" ) or die "can't open [$new_spamdb_file] for writting";
+	print WDB $new_spamdb;
+	close ( WDB );
+
+	$self->{zlog}->log( "renaming [$new_spamdb_file] to [$spamdb_filel]..." );
+	rename ( $new_spamdb_file, $spamdb_file ) or die "can't rename [$new_spamdb_file] to [$spamdb_file]";
 
 	return 1;
 }
@@ -110,7 +136,7 @@ sub DESTROY
 {
 	my $self = shift;
 
-	delete $self->{main};
+	delete $self->{police};
 }
 
 1;

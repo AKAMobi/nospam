@@ -20,16 +20,17 @@ sub new
 
 	bless $self, $class;
 
-	my ($main) = @_;
+	my ($conf) = @_;
 
-	$self->{main} = $main;
+	$self->{conf} = $conf;
 
-	$self->{zlog} = $main->{zlog};
+	$self->{zlog} = $conf->{zlog} || new Police::Log($self);
+	$self->{verify} = $conf->{verify} || new Police::Verify($self);
 
 	#$self->{xs} = get_xml_simple();
 
-	$self->{main}{rule_add_modify} = undef;
-	$self->{main}{rule_del} = undef;
+	$self->{conf}{rule_add_modify} = undef;
+	$self->{conf}{rule_del} = undef;
 
 	return $self;
 }
@@ -56,34 +57,34 @@ sub get_rule_files_in_dir {
 sub read_rule {
 	my ($self) = @_;
 
-	return '' unless defined $self->{main}->{define}->{home};
+	return '' unless defined $self->{conf}->{define}->{home};
 
 	my $path;
-	$path = $self->{main}->{define}->{home} . "/rule/";
+	$path = $self->{conf}->{define}->{home} . "/rule/";
 
-	$self->{main}->{zlog}->log ("using \"$path\" for check rule");
+	$self->{conf}->{zlog}->log ("using \"$path\" for check rule");
 
-	$self->{main}->{xs} ||= $self->{main}->get_xml_simple( $self->{main} );
+	$self->{conf}->{xs} ||= $self->{conf}->get_xml_simple( $self->{conf} );
 #_get_xml_simple($self) or die "can't load xml simple";
 
-	my $newfile = 0;
+	my $newfilenum = 0;
 	if (-d $path) {
 
-		$self->{main}->{xs} or $self->{main}->get_xml_simple();
+		$self->{conf}->{xs} or $self->{conf}->get_xml_simple();
 
 		foreach my $file ($self->get_rule_files_in_dir ($path)) {
-			$newfile++;
-			$self->{main}->{zlog}->log( "found new spam rule file \"$file\", processing..." );
+			$newfilenum++;
+			$self->{zlog}->log( "found new spam rule file \"$file\", processing..." );
 
-			verify_key( $self, $file ) or warn "cannot verify \"$file\": $?\n", next;
-			$ruleref = $self->{main}->{xs}->XMLin($file) or warn "cannot xml simple \"$file\": $!\n", next;
+			$self->{verify}->verify_key( $file ) or warn "cannot verify \"$file\": $?\n", next;
+			$ruleref = $self->{conf}->{xs}->XMLin($file) or warn "cannot xml simple \"$file\": $!\n", next;
 
 			add_rule( $self, $ruleref );
 			push ( @{$self->{files}}, $file );
 		}
 
 	}
-	$newfile;
+	$newfilenum;
 }   
 
 sub add_rule
@@ -145,27 +146,6 @@ sub clean
 		unlink $file;
 		unlink "$file\.sig";
 	}
-}
-
-
-sub verify_key
-{
-	my ($self, $file) = @_;
-	my $verify_binary = $self->{main}->{define}->{verify_binary};
-	my $verify_opts = " " . $self->{main}->{define}->{cen_pub_key};
-
-
-	if ( ! -f $verify_binary ){
-		warn "cannot find verify_binary: \"$verify_binary\"\n";
-		return 0;
-	}
-
-	`$verify_binary $verify_opts $file`;
-	if ( 0==$? ){
-		return 1;
-	}
-
-	return 0;
 }
 
 #sub DESTROY
