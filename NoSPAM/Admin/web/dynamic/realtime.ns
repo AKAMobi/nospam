@@ -139,6 +139,7 @@ function hidedetail()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_("Overrun Limit Engine")?>-<?=_("Realtime Monitor")?></font></center>
 <div align="center">
 <h2><?=_("Overrun Limit Engine Realtime Management")?></h2>
 <input type="button" value="<?=_("Mails per Sender")?>" onclick="location.href='realtime.ns?option=From'">
@@ -393,7 +394,7 @@ function flushdb()
 	$Option = $_GET['option'];
 	$name = $_GET['name'];
 	if(($ret=wi("clean_DynamicEngineKey $Option",$result))==0)
-		echo _("Flush Database")." "._("Succeed");
+		echo _("Flush Database")." "._("Success");
 	else
 		echo _("Flush Database")." $name "._("Fail").", "._("ErrNo: ").$ret;
 }

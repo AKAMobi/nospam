@@ -43,9 +43,9 @@ $action = $config->get_action_rule($rule_id);
 </tr>
 <tr>
 	<td><?=_("Expire Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):_("none")?></td>
-	<td><?if($bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
+	<td><?if(!$bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
 </tr>
-<?if ($bPolice){?>
+<?if (!$bPolice){?>
 <tr>
 	<td><?=_("Realtime Upload")?>: <?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "Y":"N"):"N"?></td>
 	<td></td>

@@ -520,6 +520,14 @@ class License
 		return intval($this->params['MailServerMaxDomain']);
 	}
 
+	function getMaxProtectDomainNumber()	{	    
+if (!array_key_exists('MaxProtectDomainNumber',$this->params))
+	        return -1;	    return intval($this->params['MaxProtectDomainNumber']);    	}	    
+
+	function getRestrictDomainList() {
+return $this->params['RestrictDomainList'];
+	}
+
 	function getMaxQuota()
 	{
 		if (!array_key_exists('MailServerMaxQuota',$this->params))

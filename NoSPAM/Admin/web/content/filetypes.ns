@@ -72,6 +72,7 @@ function hidedetail()
 </script>
 </head>
 <body>
+<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("User Define File Type")?></font></center>
 <form method="POST">
 <input type="hidden" name="action" value="del" />
 <table class="RuleTB" width="100%">

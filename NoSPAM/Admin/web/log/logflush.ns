@@ -27,6 +27,7 @@ function test()
 </head>
 
 <body>
+<center><font size="+3"><?=_(""Log")?>-<?=_("Flush Log")?></font></center>
 <form name="form1" method="post">
   <input type="hidden" name="action" value="flush">
   <input type="button" value="<?=_("Flush Log")?>" onclick="test()">

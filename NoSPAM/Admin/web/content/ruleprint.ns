@@ -33,6 +33,7 @@ function changeDB()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("Rules List")?></font></center>
 <p>
 <select name="DBSelect" onchange="changeDB()">
 <? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected"._("Auto-Download Policy(Readonly)");?>><? } ?>

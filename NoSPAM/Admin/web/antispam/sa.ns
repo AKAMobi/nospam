@@ -36,7 +36,7 @@ $SATests = array(	'DATE' => array ('S'=>_("Date Check"), 'L'=>_("Checking if the
 	);
 
 
-if($_POST["isCommit"]){
+if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
@@ -52,7 +52,7 @@ if($_POST["isCommit"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -69,6 +69,7 @@ if($_POST["isCommit"]){
 </head>
 
 <body>
+<center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("Content Analyze")?></font></center>
 <?=_("Analyze Email Content")?><p>
 <?
 foreach ( $SATests as $RuleKey=>$RuleDesc ){
@@ -86,7 +87,7 @@ foreach ( $SATests as $RuleKey=>$RuleDesc ){
 ?>
   <p>
     <input type="reset" name="reset" value="<?=_("Reset")?>">
-    <input type="submit" name="isCommit" value="<?=_("Commit")?>">
+    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
   </p>
 </form>
 <!--form name="form1" method="post" action="">
@@ -99,7 +100,7 @@ foreach ( $SATests as $RuleKey=>$RuleDesc ){
     <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?>>
     <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Commit" value="<?=_("Modify")?>">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form-->
 </body>

@@ -3,7 +3,7 @@ if(!isset($_GET["id"]))
 	die(_(" Error"));
 
 require_once("../inc/include.ns");
-require_once("Mail/mimeDecode.php");
+require_once("../inc/mimedecode.ns");
 
 if($MailGateway <= 0 && $MailRelay <= 0 )
 	die(_("Sorry, This Product has no Gateway Mode License"));
@@ -18,12 +18,7 @@ if(($ret=wi("MailQueue_getMail $id",$result)) != 0)
 
 $input = implode("\n",$result);
 
-$params['include_bodies'] = true;
-$params['decode_bodies']  = true;
-$params['decode_headers'] = true;
 
-$decoder = new Mail_mimeDecode($input);
-$output = $decoder->decode($params);
 ?>
 <html>
 <head>
@@ -31,16 +26,16 @@ $output = $decoder->decode($params);
 <title><?=_("Mail Content")?></title>
 <link type="text/css" rel="StyleSheet" href="../css/style.css" />
 <script>
-function switch(flag)
+function switchBlock(flag)
 {
-	switch($flag){
+	switch(flag){
 		case 1:
-		document.all.undecode.style.display = "";
-		document.all.decoded.style.display = "none";
+		document.all.undecode.style = "display:all;";
+		document.all.decoded.style = "display:none;";
 		break;
 		case 2:
-		document.all.undecode.style.display = "none";
-		document.all.decoded.style.display = "";
+		document.getElementById('undecode').style = "display:none";
+		document.getElementById('decoded').style = "display:all";
 		break;
 	}
 }
@@ -48,17 +43,128 @@ function switch(flag)
 </head>
 <body>
 <p align="center">
-	<input type="button" onclick="switch(1)" value="<?=_("View Mails unDecoded")?>">
-	<input type="button" onclick="switch(2)" value="<?=_("View Mails Decoded")?>">
+	<input type="button" onclick="switchBlock(1)" value="<?=_("View Mails unDecoded")?>">
+	<input type="button" onclick="switchBlock(2)" value="<?=_("View Mails Decoded")?>">
 	<input type="button" onclick="location.href='mailqueue.ns?action=del&<?="id={$id}&page={$_GET["page"]}&pagenum={$_GET["pagenum"]}"?>'" value="<?=_("Delete")?>">
 </p>
 <p>
-<div style="display: none" id="undecode" name="undecode">
-<pre><?=$input?></pre>
+<div style="display:none;" id="undecode" name="undecode" align="center">
+<textarea cols=80 rows=20 readonly ><?=$input?></textarea>
 </div>
-<div style="display: none" id="decoded" name="decoded">
-<pre><?=$output?></pre>
+<div style="display:all;" id="decoded" name="decoded" align="center">
+<table width="80%" border="1" cellspacing="0" cellpadding="10"><tr><td>
+<?php view_decode_mail($id, $input);?></td></tr></table>
 </div>
 </p>
 </body>
 </html>
+<?php
+function view_decode_mail ($mailId, $content) {
+    $nl = (strpos($content,"\r\n")?"\r\n":"\n");
+    $params = array(
+					'include_bodies' => true,
+					'decode_headers' => true,
+					'decode_bodies'  => true
+					);
+    $decode = new Mail_mimeDecode($content, $nl);
+    $structure = $decode->decode($params);
+?>
+<br /><center>
+<table cellspacing="0" cellpadding="5" width="90%" border="1" >
+    <tr><td width="80"><?=_("Sender")?></td><td><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
+    <tr><td><?=_("Incept")?></td><td><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
+    <tr><td><?=_("Cc")?></td><td><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
+    <tr><td ><?=_("Date")?></td><td><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
+    <tr><td><?=_("Subject")?></td><td><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
+    <tr><td colspan="2" align="left" valign="top">
+<?php
+    print_mail_body ($id, $structure);
+?>    
+    </td></tr>
+    <tr><td colspan="2" align="left" valign="top">
+<?php
+    $idArr = array ();
+    $depth = 1;
+    //print_attachments_link ($mailId, $structure->parts, $depth, $idArr);
+?>    
+    </td></tr>
+</table>
+</center>
+<?php    
+    unset ($content);
+    unset ($decode);
+    unset ($structure);
+}
+
+
+function print_attachments_link ($mailId, $struct, $depth, &$idArr) {
+    for ($i = 0; $i < sizeof ($struct); $i ++) {
+        $idArr[$depth]=$i;
+        $obj = $struct[$i];
+        if (strcasecmp ($obj->ctype_primary, 'multipart')==0) {
+            print_attachments_link ($mailId, $obj->parts, $depth+1, $idArr);
+        }
+        elseif (strcasecmp ($obj->disposition, 'attachment')!=0) {
+            continue;
+        }    
+        else {
+            echo '<li><a target="_blank" href="'.get_file_url ($mailId, $depth, $idArr).'">'.($obj->ctype_parameters['name']?html_format ($obj->ctype_parameters['name']):_("Attachments")).'</a></li>';
+        }
+    }
+}
+
+function get_mail_body ($struct, &$content, &$useHtml, &$find) {
+    for ($i = 0; $i < sizeof ($struct); $i ++) {
+        if ($find) break;
+        $obj = $struct[$i];
+        if (strcasecmp ($obj->ctype_primary, 'multipart')==0) {
+            if (strcasecmp ($obj->ctype_secondary, 'alternative')==0)
+                $useHtml = 1;
+            get_mail_body ($obj->parts, $content, $useHtml, $find);
+            if ($find) break;
+        }
+        elseif (strcasecmp ($obj->disposition, 'attachment')==0) {
+            continue;
+        }    
+        else {
+            if (strcasecmp ($obj->ctype_primary, 'text')==0 && strcasecmp ($obj->ctype_secondary, 'plain')==0 && $useHtml)
+                continue;
+            $find = 1;
+            $content = $obj;
+        }
+    }
+    return $find;
+}
+
+function print_mail_body ($mailId, $structure) {
+    $priCtype = $structure->ctype_primary;
+    $secCtype = $structure->ctype_secondary;
+    if (strcasecmp ($priCtype, 'text')==0) {
+        echo html_format ($structure->body, 1, (strcasecmp ($secCtype, 'html')==0)?1:0);
+        return;
+    }
+    elseif (strcasecmp ($priCtype, 'image')==0) {
+        echo '<img src="'.get_file_url ($mailId,1 , array (0)).'" border="0">';
+        return;
+    }
+    elseif (strcasecmp ($priCtype, 'multipart')==0) {
+        $find = 0;
+        $useHtml = (strcasecmp ($structure->ctype_secondary, 'alternative')==0);
+        if (!get_mail_body ($structure->parts, $content, $find, $useHtml))
+            return;
+        print_mail_body ($mailId, $content);
+    }
+    else {
+        echo '<a target="_blank" href="'.get_file_url ($mailId, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'µã»÷²é¿´').'</a>';
+        return;
+    }
+    
+}
+
+function get_file_url ($mailId, $depth, $idArr) {
+    $url = 'download.ns?id='.urlencode ($mailId).'&depth='.intval ($depth);
+    for ($i=1; $i <= $depth; $i ++)
+        $url .= '&id'.$i.'='.$idArr[$i];
+    return $url;
+}
+?>

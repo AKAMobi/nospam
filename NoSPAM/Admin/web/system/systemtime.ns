@@ -6,7 +6,7 @@ if(!adminPerm(PERM_ADMIN_SYSTEM))
 
 if($_POST["SystemTime"]){
 	if(($ret=wi("reset_DateTime ".$_POST["SystemTime"],$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -44,6 +44,7 @@ function realtime()
 </head>
 
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("System Clock")?></font></center>
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -51,7 +52,7 @@ function realtime()
   <?=_("System Clock")?>:
     <input name="SystemTime" type="text" id="SystemTime" value="<?=date("Y-m-d H:i:s")?>">
     <input type="checkbox" name="synch" onclick="realtime()"><?=_("Sync")?><br>
-    <input type="submit" name="Commit" value="<?=_("Commit")?>">
+    <input type="submit" name="Submit" value="<?=_("Submit")?>">
 </form>
 <?
 	}else{

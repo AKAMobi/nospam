@@ -41,6 +41,7 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<center><font size="+3"><?=_("Standalone Server Mode")?>-<?=_("User Management")?>-<?=_("User Group Management")?></font></center>
 <div>
 <?
 	echo _("Mail Domain").":";

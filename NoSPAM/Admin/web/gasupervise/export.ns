@@ -18,7 +18,7 @@ if($_GET["action"]){
 		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
         	else    
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
@@ -33,6 +33,7 @@ if($_GET["action"]){
 </head>
 
 <body>
+<center><font size="+3"><?=_(""Auto-Download Policy")?>-<?=_("Exchange Format")?></font></center>
 <?=_("Log Size")?>: <?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><br>
 <?=_("Download")?>: <input type="button" value="<?=_("Download")?>" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=download','_blank')"><br>
 <?=_("Flush Log")?>: <input type="button" value="<?=_("Clear")?>" onclick="document.location.href='<?=$_SERVER['PHP_SELF']?>?action=clean';">

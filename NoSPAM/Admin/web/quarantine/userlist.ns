@@ -38,7 +38,7 @@ if($_POST["act"]){
                         $param = 'QuarantineUserListImport '.$tmpFile;
                         $ret = wi ($param, $result);
                         if ($ret==0) {
-                            echo _("Modification Succeed! ");
+                            echo _("Modification Success! ");
                             echo '<br/><br/>';
                             if (is_array($result)) {
                                 foreach ($result as $line)
@@ -48,7 +48,7 @@ if($_POST["act"]){
                                 echo $result;
                         }
                         else {
-                            echo _("Config Commit Fail, ErrNo: ").$ret;
+                            echo _("Config Modify Fail, ErrNo: ").$ret;
                         }
                         break;
                     case UPLOAD_ERR_INI_SIZE:
@@ -90,9 +90,9 @@ if($_POST["act"]){
             $spamconf->setParam("NoSuchUserAction",$_POST['NoSuchUserAction'],"QuarantineEngine");
             $spamconf->save();
             if(($ret=wi("QuarantineUpdate",$result))==0)
-        		echo _("Modification Succeed! ");
+        		echo _("Modification Success! ");
         	else
-        		echo _("Config Commit Fail, ErrNo: ").$ret;
+        		echo _("Config Modify Fail, ErrNo: ").$ret;
             
     }
 }
@@ -157,6 +157,7 @@ function displaySettings(userListType)
 </script>
 </head>
 <body onload="displaySettings(userListType)">
+<center><font size="+3"><?=_("QuarantineEngine")?>-<?=_("Quarantine User DB")?></font></center>
 <form name="form1" id="form1" method="post" action="" ENCTYPE="multipart/form-data">
 <input type="hidden" name="act" id="act" value="modify" />
   <p> <?=_("QuarantineEngineUserList")?>:<br>
@@ -173,7 +174,7 @@ function displaySettings(userListType)
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
     </select></label></p>
-    <input type="button" name="isCommit"   onclick="dosubmit('modify')"  value="<?=_("Commit")?>">
+    <input type="button" name="isSubmit"   onclick="dosubmit('modify')"  value="<?=_("Modify")?>">
   </p>
 </form>
 </body>
@@ -238,7 +239,7 @@ function displaySettings(userListType)
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
     </select></label></p>
-    <input type="button" name="isCommit"  disabled  value="<?=_("Commit")?>">
+    <input type="button" name="isSubmit"  disabled  value="<?=_("Modify")?>">
   </p>
 </form>
 </body>

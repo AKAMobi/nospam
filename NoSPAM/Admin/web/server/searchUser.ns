@@ -43,6 +43,7 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<center><font size="+3"><?=_("Standalone Server Mode")?>-<?=_("User Management")?>-<?=_("Search User")?></font></center>
 <div><?=_("Mail Domain")?>:
 <?
 	if($count == 1)

@@ -22,12 +22,38 @@ if($_POST["Commit"]==_("Commit")){
 	$spamconf->setParam("IP",$_POST["IP"],"Network");
 	$spamconf->setParam("Netmask",$_POST["Netmask"],"Network");
 	$spamconf->setParam("Gateway",$_POST["Gateway"],"Network");
+	
+	if ($_POST["useSystemDns"]=="Y") {
+	    $spamconf->delParam ("DNSServer1", "System");
+	    $spamconf->delParam ("DNSServer2", "System");
+	}
+	else {
+	    $dns1 = trim($_POST["dnsServer1"]);
+	    $dns2 = trim($_POST["dnsServer2"]);
+	    if (!$dns1) {
+	        $spamconf->delParam ("DNSServer1", "System");
+	        $spamconf->delParam ("DNSServer2", "System");   
+	    }
+	    else {
+	        $spamconf->setParam("DNSServer1", $dns1, "System");
+	        $spamconf->setParam("DNSServer2", $dns2, "System");
+	    }
+	}
 	$spamconf->save();
 	if(($ret=wi("reset_Network",$result))==0)
 		echo _("Modification Succeed! ");
 	else
 		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
+    $useSystemDns = !($spamconf->hasParam("DNSServer1", "System"));
+    if (!$useSystemDns) {
+        $dns1 = $spamconf->getParam("DNSServer1", "System");
+        $dns2 = $spamconf->getParam("DNSServer2", "System");   
+        if (!$dns1 && !$dns2)
+            $useSystemDns = true;
+    }
+    
+
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -37,8 +63,22 @@ if($_POST["Commit"]==_("Commit")){
 <title><?=_("Network Setting")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-
+<script language="javascript">
+function switchDnsSettings () {
+    if (form1.useSystemDns.checked==true)
+    {
+        form1.dnsServer1.disabled = true;
+        form1.dnsServer2.disabled = true;    
+    }
+    else {
+        form1.dnsServer1.disabled = false;
+        form1.dnsServer2.disabled = false;      
+    }
+    
+}
+</script>
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("Network Setting")?></font></center>
 <form name="form1" method="post" action="">
   <table class="TableBorder2" width="80%" align="center">
     <caption>
@@ -59,6 +99,19 @@ if($_POST["Commit"]==_("Commit")){
     <tr class="TableBody1">
       <td scope="row"> <?=_("Default Gateway")?>: </td>
       <td class="TableBody1"><input name="Gateway" type="text" id="Gateway" value="<?=$spamconf->getParam("Gateway","Network")?>"></td>
+    </tr>
+    <tr class="TableBody1">
+        <td scope="row"><?=_("DNS Server")?>: </td>
+        <td class="TableBody1">
+            <input type="checkbox" id="useSystemDns" name="useSystemDns" value="Y" onclick="switchDnsSettings()" <?php if ($useSystemDns) echo 'checked'; ?> />
+            <?=_("Use System DNS Server")?>
+            <br />
+            <?=_("DNS Server 1")?>: 
+            <input type="text" id="dnsServer1" name="dnsServer1" value="<?php echo $dns1; ?>" <?php if ($useSystemDns) echo ' disabled '; ?>/><br />
+            <?=_("DNS Server 2")?>: 
+            <input type="text" id="dnsServer2" name="dnsServer2" value="<?php echo $dns2; ?>" <?php if ($useSystemDns) echo ' disabled '; ?>/>
+            
+        </td>
     </tr>
   </table>
 
@@ -99,6 +152,17 @@ if($_POST["Commit"]==_("Commit")){
       <th scope="row"> <?=_("Default Gateway")?>: </th>
       <td class="TableBody1"><?=$spamconf->getParam("Gateway","Network")?></td>
     </tr>
+<tr>        <th scope="row"> <?=_("DNS Server")?>: </th>        <td class="TableBody1">        <?php                if ($useSystemDns)                    echo _("Use System DNS Server");                else                    echo $dns1."<br/>".$dns2;        ?>        </td>     </tr>    
+<tr>
+        <th scope="row"> <?=_("DNS Server")?>: </th>
+        <td class="TableBody1">
+        <?php
+                if ($useSystemDns)
+                    echo _("Use System DNS Server");
+                else
+                    echo $dns1."<br/>".$dns2;
+        ?>
+        </td>
   </table>
 </body>
 </html>

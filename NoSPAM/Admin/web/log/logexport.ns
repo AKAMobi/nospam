@@ -13,6 +13,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 
 <body>
+<center><font size="+3"><?=_(""Log")?>-<?=_("Log Export")?></font></center>
 <?
 if(!file_exists(LOGFILE)){
 	echo _("Error: File does not exist!");

@@ -4,7 +4,7 @@ require_once('../inc/include.ns');
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have no permission to access this page"));
 
-if (isset($_POST["Commit"]) && $_POST["Commit"] == _("Upload")){
+if (isset($_POST["Submit"]) && $_POST["Submit"] == "上载"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	upgrade();
@@ -31,7 +31,7 @@ ksort($aUpgradeLog, SORT_NUMERIC);
 <html>
 <head>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<title><?=_("System Update")?></title>
+<title><?=_("System Upgrade")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -56,11 +56,12 @@ function closeTips(obj)
 {
 	obj.style.backgroundColor = oldbgcolor;
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = "<?=_("Loading Update package, waiting......")?>";
+	document.all.InfoLayer.innerHTML = "<?=_("Loading Upgrade package, waiting......")?>";
 }
 </script>
 </head>
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("Upgrade")?></font></center>
 <table border="0">
 <tr>
 	<td>
@@ -69,15 +70,15 @@ function closeTips(obj)
 </tr>
 <tr>
 	<td>
-<?=_("Update History")?>: <br>
+<?=_("Upgrade History")?>: <br>
 		<table width="100%" class="sort-table" id="table-1" cellspacing="0">
 		<thead>
 			<tr class="TableTitle2">
 				<td><?=_("No.")?></td>
-				<td><?=_("Update Date")?></td>
+				<td><?=_("Upgrade Date")?></td>
 				<td><?=_("Release Date")?></td>
-				<td><?=_("Update Package")?></td>
-				<td><?=_("Update Release")?></td>
+				<td><?=_("Upgrade Package")?></td>
+				<td><?=_("Upgrade Release")?></td>
 				<td><?=_("on which Version")?></td>
 			</tr>
 		</thead>
@@ -109,10 +110,10 @@ if (count($aUpgradeLog) > 0){
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
 <tr>
 	<td><br>
-<p><?=_("Upload Update Package")?>:</p>
+<p><?=_("Upload Upgrade Package")?>:</p>
 <form action="?action=upload" method="post" enctype="multipart/form-data">
   <input type="file" name="upgradepkg">
-  <input type="submit" name="Commit" value="<?=_("Upload")?>">
+  <input type="submit" name="Submit" value="<?=_("Upload")?>">
 </form>
 	</td>
 </tr>
@@ -154,7 +155,7 @@ st.onsort = function () {
 	}
 };
 </script>
-<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;"><?=_("Uploading Update Package, waiting......")?></div>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;"><?=_("Uploading Upgrade Package, waiting......")?></div>
 <iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
 </body>
 </html>
@@ -170,13 +171,13 @@ function upgrade()
 	
 	switch ($ret){
 		case 0:
-		echo _("Update Succeed!");
+		echo _("Upgrade Success!");
 		break;
 		case 1:
-		echo _("Update Succeed, need reboot system.");
+		echo _("Upgrade Success, need Reboot system.");
 		break;
 		default:
-		echo _("Update Fail!");
+		echo _("Upgrade Fail!");
 	}
 	echo "</body></html>";
 }

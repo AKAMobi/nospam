@@ -8,6 +8,7 @@ require_once("../inc/include.ns");
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<center><font size="+3"><?=_("Administrator")?>-<?=_("IP Restriction")?></font></center>
 <DIV align="center">
 <?
 
@@ -49,7 +50,7 @@ function changeIPList() {
 	if ($result!=OK) {
 		errorReturn(_("Other Error, need DEBUG"), $_SERVER['REQUEST_URI']);
 	}
-		echo _("Management IP List Modify Succeed!");
+		echo _("Management IP List Modify Success!");
 		return true;
 	}
 	
@@ -90,7 +91,7 @@ function changeIPList() {
 </tr>
 </tbody>
 </table>
-<INPUT type="submit" value="<?=_("Commit")?>">
+<INPUT type="submit" value="<?=_("Submit")?>">
 </form>
 <?php
 

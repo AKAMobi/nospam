@@ -91,6 +91,8 @@ if(file_exists(LICENSE)){
 	$Version = $license->getVersion();
 	$MaxUser = $license->getMaxUser();
 	$MaxDomain = $license->getMaxDomain();
+	$RestrictDomainList = $license->getRestrictDomainList();
+	$MaxProtectDomainNumber = $license->getMaxProtectDomainNumber();
 	$MaxQuota = $license->getMaxQuota();
 	$GAInterface = $license->getGAInterface();
 

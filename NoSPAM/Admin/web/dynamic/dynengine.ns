@@ -7,7 +7,7 @@ if($DynamicEngine <= 0)
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Commit"]==_("Commit")){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	
@@ -21,9 +21,9 @@ if($_POST["Commit"]==_("Commit")){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_DynamicEngine",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$sDirection = $spamconf->getParam("ProtectDirection","DynamicEngine");
 	if(adminPerm(PERM_ADMIN_WRITE)){
@@ -39,11 +39,11 @@ if($_POST["Commit"]==_("Commit")){
 function change(bState)
 {
 	if(bState){
-		form2.idCommit.disabled = true;
+		form2.idSubmit.disabled = true;
 		form2.idProtectDirectionOut.disabled = true;
 		form2.idProtectDirectionIn.disabled = true;
 	}else{
-		form2.idCommit.disabled = false;;
+		form2.idSubmit.disabled = false;;
 		form2.idProtectDirectionOut.disabled = false;;
 		form2.idProtectDirectionIn.disabled = false;;
 	}
@@ -55,6 +55,7 @@ function change(bState)
 </head>
 
 <body>
+<center><font size="+3"><?=_("Overrun Limit Engine")?>-<?=_("SwitchBoard")?></font></center>
 <form name="form1" method="post" action="">
   <p>
   	<?=_("Engine Switch")?>:<br>
@@ -66,19 +67,19 @@ function change(bState)
     <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?> onclick="change(true)">
     <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Commit" value="<?=_("Commit")?>">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form>
 <form name="form2" method="post" action="">
   <p>
   	<?=_("Direction")?>:<br>
     <input type="checkbox" id="idProtectDirectionOut" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bDynamic) echo " disabled"?>>
-    <?=_("Outgoing")?>
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="idProtectDirectionIn" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bDynamic) echo " disabled"?>>
-    <?=_("Incoming")?>
+    <?=_("Inward")?>
     <br>
-    <input type="submit" id="idCommit" name="Commit" value="<?=_("Commit")?>"<?if(!$bDynamic) echo " disabled"?>>
+    <input type="submit" id="idSubmit" name="Submit" value="<?=_("Modify")?>"<?if(!$bDynamic) echo " disabled"?>>
   </p>
 </form>
 </body>
@@ -109,10 +110,10 @@ function change(bState)
   <p>
   	<?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";?> disabled>
-    <?=_("Outgoing")?>
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";?> disabled>
-    <?=_("Incoming")?>
+    <?=_("Inward")?>
     <br>
   </p>
 </body>

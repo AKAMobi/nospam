@@ -88,6 +88,7 @@ function info()
 <script type="text/javascript" src="../js/sortabletable.js"></script>
 </head>
 <BODY>
+<center><font size="+3"><?=_("Standalone Server Mode")?>-<?=_("User Management")?>-<?=_("User Management")?></font></center>
 <div><?=_("Mail Domain")?>:
 <?
 	if($count == 1)

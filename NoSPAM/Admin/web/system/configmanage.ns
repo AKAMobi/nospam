@@ -13,6 +13,7 @@ if(!adminPerm(PERM_ADMIN_SYSTEM))
 </head>
 
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("Configuration Management")?></font></center>
 <table width="100%"  border="0">
   <tr>
     <th scope="col" width="50%"><?=_("System Configuration File Upload/Download")?></th>

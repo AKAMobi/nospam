@@ -65,7 +65,8 @@ function view_mail ($file) {
 function view_decode_mail ($file, $fileName) {
     global $currentUser;
     $content = fread(fopen($file, 'r'), filesize($file));
-    $nl = (strpos($content,"\r\n")?"\r\n":"\n");
+    fclose($file);
+	$nl = (strpos($content,"\r\n")?"\r\n":"\n");
     $params = array(
 					'include_bodies' => true,
 					'decode_headers' => true,

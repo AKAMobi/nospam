@@ -171,6 +171,7 @@ function showStat()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="initSelect()">
+<center><font size="+3"><?=_(""Log")?>-<?=_("Log Stat.")?></font></center>
 <?=_("Start Time")?>:
 <select id="sYear" name="sYear" onchange="recalcDate('s')"></select>/
 <select id="sMonth" name="sMonth" onchange="recalcDate('s')"></select>/

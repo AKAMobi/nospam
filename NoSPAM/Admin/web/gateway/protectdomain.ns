@@ -23,6 +23,64 @@ switch($_GET["action"]){
 	show();
 }
 
+function check_new_domain ($newDomain='') {
+    global $spamconf,$RestrictDomainList,$MaxProtectDomainNumber;
+
+    if ($RestrictDomainList && $newDomain) {
+        $buf = explode (',', ltrim(trim($RestrictDomainList)));
+        if (sizeof($buf) > 0) {
+            $inList = false;
+            foreach($buf as $buf2) {
+                $buf2 = ltrim(trim($buf2));
+                if (strcasecmp ($newDomain, $buf2)==0)
+                    $inList = true;
+                    break;
+            }
+            if (!$inList) {
+            die(_("New domain is not in restrict domain list"));
+            return -1;
+            }
+        }
+    }
+    
+    if ($MaxProtectDomainNumber < 0)
+        return 0;
+        
+    
+	if(array_key_exists("MailServer",$spamconf->params))
+		$Section = $spamconf->params["MailServer"];
+	else
+		$Section = array();
+	
+	$Domains = array();
+	if(count($Section) > 0){
+		foreach($Section as $key=>$value){
+			if(preg_match("/ProtectDomain_(.+)_(?:IPPort|Cate)/",$key,$matches)){
+				if(in_array($matches[1],$Domains))
+					continue;
+				array_push($Domains, $matches[1]);
+			}
+			
+			if(preg_match("/VirtualDomain_(.+)_(?:Admin|Quota|MaxUser|Memo)/",$key,$matches)){
+				if(in_array($matches[1],$Domains))
+					continue;
+				array_push($Domains, $matches[1]);
+			}
+			
+		}
+	}
+
+	if (sizeof($Domains)+1 > $MaxProtectDomainNumber) {
+	    die(_("Too many pretect domains"));
+	    return -2;
+	}
+	
+	return 0;
+    
+}
+
+
+
 function show()
 {
 	global $spamconf;
@@ -42,7 +100,8 @@ function show()
 			}
 		}
 	}
-
+    
+    
 ?>
 <html>
 <head>
@@ -168,6 +227,8 @@ function add()
 		echo _("You have no permission to modify system configuration");
 		return;
 	}
+	
+	if (check_new_domain() != 0) die(_("Error"));
 ?>
 <html>
 <head>
@@ -195,7 +256,7 @@ function add()
 	<td><input type="text" name="Cate"></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" value="<?=_("Commit")?>"></td>
+	<td colspan="2"><input type="submit" value="<?=_("Submit")?>"></td>
 </tr>
 </table>
 </form>
@@ -250,7 +311,7 @@ function modify()
 	<td><input type="text" name="Cate" value="<?=$spamconf->getParam("ProtectDomain_{$domain}_Cate","MailServer")?>"></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" value="<?=_("Commit")?>"></td>
+	<td colspan="2"><input type="submit" value="<?=_("Submit")?>"></td>
 </tr>
 </table>
 </form>
@@ -313,7 +374,7 @@ function save()
 		die(_("IP Format Error"));
 	if (!is_numeric($Port) || intval($Port) < 1 || intval($Port) > 65535)
 		die(_("Port Must between 1 and 65535 !"));
-	
+	if (check_new_domain($domain) != 0) die(_("Error"));
 	if(!$bModify){
 		if( $spamconf->hasParam("ProtectDomain_{$Domain}_IPPort","MailServer") ){
 			echo _("This Mail Domain has existed !");
@@ -330,14 +391,14 @@ function save()
 	$spamconf->save();
 	if($bModify){
 		if(($ret=wi("ProtectDomain_reset $domain",$result)) == 0){
-			errorReturn(_("Modify Succeed !"),$_SERVER['PHP_SELF']);
+			errorReturn(_("Modify Success !"),$_SERVER['PHP_SELF']);
 		}else{
 			echo _("Modify Fail, ErrNo: ").$ret;
 		}
 		return;
 	}else{
 		if(($ret=wi("ProtectDomain_add $domain",$result)) == 0){
-			errorReturn(_("Add Succeed !"),$_SERVER['PHP_SELF']);
+			errorReturn(_("Add Success !"),$_SERVER['PHP_SELF']);
 		}else{
 			echo _("Add Fail, ErrNo: ").$ret;
 		}

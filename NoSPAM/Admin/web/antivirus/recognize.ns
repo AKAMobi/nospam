@@ -7,7 +7,7 @@ if($AntiVirusEngine <= 0)
 if(!adminPerm(PERM_ADMIN_VIRUS))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Commit"]==_("Commit")){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 		
@@ -19,9 +19,9 @@ if($_POST["Commit"]==_("Commit")){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 $bCheck = ($spamconf->getParam("SampleCheck","AntiVirusEngine")=="Y");
 $iProbability = intval($spamconf->getParam("SampleProbability","AntiVirusEngine"));
@@ -51,6 +51,7 @@ function restore()
 </script>
 </head>
 <body>
+<center><font size="+3"><?=_("AntiVirus Engine")?>-<?=_("Virus Recognise")?></font></center>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -68,7 +69,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 	}
 ?>
 	</select>%<br>
-	<input type="submit" name="Commit" value="<?=_("Commit")?>">
+	<input type="submit" name="Submit" value="<?=_("Modify")?>">
 	<input type="reset" value="<?=_("Reset")?>">
 	</p>
 </form>

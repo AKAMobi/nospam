@@ -56,6 +56,7 @@ function change()
 </head>
 
 <body>
+<center><font size="+3"><?=_("Interactive")?>-<?=_("Too Many Mails")?></font></center>
 <form name="form1" method="post" action="">
 <p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> onclick="change()">开启过量邮件提醒功能</p>
 <p>

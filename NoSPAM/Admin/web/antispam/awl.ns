@@ -19,7 +19,7 @@ if($_POST["AWLEnabled"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -49,6 +49,7 @@ function change(bState)
 </head>
 
 <body>
+<center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("Noise Reduce System")?></font></center>
 <form name="form1" method="post">
   <p><?=_("Intelligent Noise Reduction System: ")?><br>
     <label>
@@ -59,10 +60,10 @@ function change(bState)
   <?=_("Off")?></label>
     <p>
 
-    <?=_("Intelligent Factor: ")?><input size=4 name="AWLFactor" type="input" id="idAWLFactor" value="<?=$iAWLFactor?>"<? if(!$bAWLEnabled) echo " disabled";?>> <?=_("Recommended: ")?>0.5<br>
+    <?=_("Intelligent Factor: ")?><input size=4 name="AWLFactor" type="input" id="idAWLFactor" value="<?=$iAWLFactor?>"<? if(!$bAWLEnabled) echo " disabled";?>> <?=_("Recommend: ")?>0.5<br>
 
     <input type="reset" name="reset" value=<?=_("Reset")?>>
-    <input type="submit" name="submit" value=<?=_("Commit")?>>
+    <input type="submit" name="submit" value=<?=_("Submit")?>>
   </p>
 </form>
 <p>

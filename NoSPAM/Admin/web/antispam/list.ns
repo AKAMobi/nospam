@@ -7,32 +7,33 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
-switch($_GET["option"]){
-	case "WhiteIP":
-	case "BlackIP":
-	$sOption = "BlockIP";
-	$title = ($_GET["option"]=="WhiteIP")?_("IP Whitelist"):_("IP BlackList");
-	$column = "IP";
-	break;
-	case "WhiteDomain":
-	case "BlackDomain":
-	$sOption = "BlockDomain";
-	$title = ($_GET["option"]=="WhiteDomain")?_("Domain Whitelist"):_("Domain BlackList");
-	$column = _("Email Domain");
-	break;
-	case "WhiteFrom":
-	case "BlackFrom":
-	$sOption = "BlockFrom";
-	$title = ($_GET["option"]=="WhiteFrom")?_("Sender Whitelist"):_("Sender BlackList");
-	$column = _("Email Address");
-	break;
-	default:
-	die(_("Parameter Error! "));
-}
 
-$sList = $_GET["option"]."List";
-$List = $spamconf->getList($sList,"SpamEngine");
-$bState = ($spamconf->getParam($sOption,"SpamEngine")=="Y");
+
+$allLists = array (
+        array ("BlockIP",_("IP"),_("IP")),
+        //array ("BlockIP",_("IP"),_("IP BlackList")),
+        array ("BlockDomain",_("Email Domain"),_("Domain")),
+        //array ("BlockDomain",_("Email Domain"),_("Domain BlackList")),
+        array ("BlockFrom",_("Email Address"),_("Sender")),
+        //array ("BlockFrom",_("Email Address"),_("Sender BlackList")),
+        );
+
+$allListTypes = array(array("WhiteIP","BlockIP"),array("BlackIP","BlockIP"),array("WhiteDomain","BlockDomain"),array("BlackDomain","BlockDomain"),array("WhiteFrom","BlockFrom"),array("BlackFrom","BlockFrom"));
+
+$List = array ();
+$bState = array ();
+$i = 1;
+foreach ($allListTypes as $listType) {
+    $sList = $listType[0]."List";
+    $buf = $spamconf->getList($sList,"SpamEngine");
+    if (sizeof($buf)>0) {
+        foreach ($buf as $key=>$val) {
+            $List[$i]=array($listType[0], $key, $val);    
+            $i ++;
+        }
+    }
+    $bState[$listType[1]] = ($spamconf->getParam($listType[1],"SpamEngine")=="Y");
+}
 
 switch($_GET["action"]){
 	case "add":
@@ -41,8 +42,14 @@ switch($_GET["action"]){
 	case "del":
 	del();
 	break;
-	case "modify":
-	modify();
+	case "modify": 
+    modify();
+	break;
+	case "export":
+	export();
+	break;
+	case "import":
+	import();
 	break;
 	case "save":
 	save();
@@ -50,9 +57,58 @@ switch($_GET["action"]){
 	show();
 }
 
+function export() {
+global $List;
+header("Cache-control: private");
+header("Content-type: application/text");
+header("Content-Disposition: attachment; filename=NoSpam_White_Black_List.txt");
+header("Pragma: public");   
+if (sizeof ($List)>0){
+foreach ($List as $item) {
+    echo sprintf ("%s\t%s\t%s\n", $item[0], $item[1], $item[2]);    
+}
+}
+exit();
+}
+
+function import() {
+global $List,$allListTypes,$spamconf;
+$file = $_FILES['listfile'];
+if (!is_uploaded_file($file['tmp_name']))
+    die(_("Upload error"));    
+if (!($fh=fopen($file['tmp_name'],'r')))
+    die(_("Can't open uploaded file"));
+flock ($fh, LOCK_SH);
+while (!feof($fh)) {
+    $line = ltrim(trim(fgets($fh)));
+    if (!$line) continue;
+    list ($type, $key, $note)=explode ("\t", $line);
+    if (!$type || !$key) continue;
+    $List[]=array($type, $key, $note);    
+}
+
+flock($fh, LOCK_UN);
+fclose($fh);
+unlink($file['tmp_name']);
+
+$ListBuf = array ();
+	foreach ($List as $item) {
+	    $ListBuf[$item[0]][$item[1]]=$item[2];    
+	}
+	foreach ($allListTypes as $listType) {
+	    $spamconf->setList($listType[0]."List", $ListBuf[$listType[0]],"SpamEngine");
+	}
+	$spamconf->save();
+
+	if(($ret=wi("reset_".$_REQUEST['option'],$result))==0)
+		echo _("Import successfully");
+	else
+		echo _("Config Modify Fail, ErrNo: ").$ret;
+}
+
 function show()
 {
-	global $title,$bAntiSpam,$bState,$List,$column,$sOption;
+	global $allLists,$title,$bAntiSpam,$bState,$List,$column,$sOption;
 
 	$pagenum = $_GET["pagenum"];
 	if(!$pagenum || $pagenum < 1)
@@ -80,58 +136,55 @@ function show()
 </head>
 <body>
 <p>
-<?
-	if(adminPerm(PERM_ADMIN_WRITE)){
-?>
-<form action="<?="?option=".$_GET['option']."&action=save"?>" method="post">
+<form action="?action=save" method="post">
 <input type="hidden" name="type" value="switch">
-<label><input type="radio" name="<?=$sOption?>" value="Y" <? if($bState) echo " checked" ?>><?=_("On")?></label>
-<label><input type="radio" name="<?=$sOption?>" value="N" <? if(!$bState) echo " checked" ?>><?=_("Off")?></label>
+<?php
+    foreach ($allLists as $listType) {
+        echo "<b>".$listType[1]."</b>";
+?>
+<label><input type="radio" name="<?=$listType[0]?>" <?php if (!adminPerm(PERM_ADMIN_WRITE)) echo ' disabled '; ?> value="Y" <? if($bState[$listType[0]]) echo " checked" ?>><?=_("On")?></label>
+<label><input type="radio" name="<?=$listType[0]?>" <?php if (!adminPerm(PERM_ADMIN_WRITE)) echo ' disabled '; ?>   value="N" <? if(!$bState[$listType[0]]) echo " checked" ?>><?=_("Off")?></label>&nbsp;&nbsp;&nbsp;
+<?php
+}
+?>
 <input type="submit" value=<?=_("Modify")?>>
 </form>
-<?
-	}else{
-?>
-	<label><input type="radio" name="<?=$sOption?>" value="Y" <? if($bState) echo " checked" ?> disabled><?=_("On")?></label>
-	<label><input type="radio" name="<?=$sOption?>" value="N" <? if(!$bState) echo " checked" ?> disabled><?=_("Off")?></label>
-<?
-	}
-?>
 </p>
-<form action="<?="?option=".$_GET['option']."&action=del"?>" method="post">
+<form action="?action=del" method="post">
 <table width="100%" class="RuleTB">
-<caption><?=$title?></caption>
+<caption><?=_("Blacklist & Whitelist")?></caption>
 <tr class="TableTitleLink">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Select")."</th>"; }
-	echo "<th>"._("No.")."</th> <th>".$column."</th> <th>"._("Note")."</th>";
+	echo "<th>"._("No.")."</th> <th>"._("Key")."</th> <th>"._("Type")."</th> <th>"._("Note")."</th>";
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Edit")."</th>"; }
 ?>
 </tr>
 <?
 	if($iSize > 0){
-		$i = 1;$j=1;
-		foreach($List as $key=>$note){
-			if($i>($page-1)*$pagenum && $i<=$page*$pagenum){
+		$j=1;
+		foreach($List as $i=>$item){
+		    if($i>($page-1)*$pagenum && $i<=$page*$pagenum){
 				$className = $j%2? "TableBody1":"TableBody2";
 ?>
 <tr class="<?=$className?>">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td align="center"><input type="checkbox" name="key[]" value="<?=$key?>"></td>
+	<td align="center"><input type="checkbox" name="key[]" value="<?=$i?>"></td>
 <?
 	}
 ?>
-	<td><?=$i?></td>
-	<td><?=$key?></td>
-	<td><?=$note?></td>
+	<td><?=($i)?></td>
+	<td><?=$item[1]?></td>
+	<td><?=$item[0]?></td>
+	<td><?=$item[2]?></td>
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 	<td align="center">
-		<input type="button" value=<?=_("Modify")?> onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&key=$key&action=modify"?>'">
-		<input type="button" value=<?=_("Delete")?> onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&key=$key&action=del"?>'">
+		<input type="button" value=<?=_("Modify")?> onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$i&action=modify"?>'">
+		<input type="button" value=<?=_("Delete")?> onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$i&action=del"?>'">
 	</td>
 <?
 	}
@@ -140,17 +193,17 @@ function show()
 <?
 				$j++;
 			}
-			$i++;
 		}
 	}
 ?>
 </table>
+
 <script>
 function jump()
 {
 	page = document.all.oPage.value;
 	pagenum = document.all.oPagenum.value;
-	location.href="<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']?>&page="+page+"&pagenum="+pagenum;
+	location.href="<?=$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']?>&page="+page+"&pagenum="+pagenum;
 }
 </script>
 <table border="0" width="100%"> 
@@ -159,7 +212,7 @@ function jump()
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-<input type="button" value="<?=_("Add")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&action=add"?>'">
+<input type="button" value="<?=_("Add")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&action=add"?>'">
 <input type="submit" name="submit" value="<?=_("Delete")?>">
 <?
 	}
@@ -167,24 +220,24 @@ function jump()
 </td>
 <td align="right">
 <?
-echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=1&pagenum=$pagenum'>&lt;&lt;</a>&nbsp;";
+echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&page=1&pagenum=$pagenum'>&lt;&lt;</a>&nbsp;";
 if($page == 1)
 	echo "&lt;&nbsp;";
 else
-	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=".($page-1)."&pagenum=$pagenum'>&lt;</a>&nbsp;";
+	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&page=".($page-1)."&pagenum=$pagenum'>&lt;</a>&nbsp;";
 
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
 		echo $i."&nbsp;";
 	else
-		echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=$i&pagenum=$pagenum'>$i</a>&nbsp;";
+		echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&page=$i&pagenum=$pagenum'>$i</a>&nbsp;";
 }
 
 if($page == $pages)
 	echo "&gt;&nbsp;";
 else
-	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
-echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
+	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
+echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']."&page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
 echo _("Jump to Page")."<select name='oPage' id='oPage' onchange='jump()'>";
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -214,6 +267,22 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 <?
 }
 ?>
+<p>
+<?php
+    if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+<form name="formimport" enctype="multipart/form-data" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>?action=import">
+        <input name="listfile" type="file" id="listfile">
+        <input name="submit" type="submit" id="submit" value="<?=_("Import")?>">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" value="<?=_("Export")?>" onclick='window.location.href="<?=$_SERVER['PHP_SELF']?>?action=export"' />
+      </form>
+<?php            
+    }else{
+?>
+<input type="button" value="<?=_("Export")?>" onclick='window.location.href="<?=$_SERVER['PHP_SELF']?>?action=export"' />
+<?php } ?>
+</p>
 </body>
 </html>
 <?
@@ -221,7 +290,7 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 
 function del()
 {
-	global $spamconf,$List,$sList;
+	global $spamconf,$List,$sList, $allLists, $allListTypes;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
@@ -235,29 +304,47 @@ function del()
 	}else{
 		unset($List[$key]);
 	}
-	$spamconf->setList($sList,$List,"SpamEngine");
+	$ListBuf = array ();
+	foreach ($List as $item) {
+	    $ListBuf[$item[0]][$item[1]]=$item[2];    
+	}
+	foreach ($allListTypes as $listType) {
+	    $spamconf->setList($listType[0]."List", $ListBuf[$listType[0]],"SpamEngine");
+	}
 	$spamconf->save();
 
-	if(($ret=wi("reset_".$_GET["option"],$result))==0)
-		header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
+	if(($ret=wi("reset_".$_REQUEST['option'],$result))==0)
+		header("Location: ".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']);
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }
 
 function add()
 {
-	global $title,$column;
+	global $title,$column , $allListTypes, $allLists;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 ?>
 <html>
 <body>
-<form method="POST" action="<?="?&option=".$_GET["option"]."&action=save"?>">
+<form method="POST" action="<?="?action=save"?>">
 <table width="50%" border="1" align="center">
-<caption><?=_("Add")?><?=$title?></caption>
+<caption><?=_("Add")?><?=_("Blacklist & Whitelist")?></caption>
 <tr>
-	<th scope="row"><?=$column?>£º</th>
+	<th scope="row"><?=_("Type")?>£º</th>
+	<td align="left">
+	<select name="option">
+	<?php
+	    foreach ($allListTypes as $listType) {
+	        echo '<option value="'.$listType[0].'">'._($listType[0]).'</option>';
+	    }
+	    
+	?></select>
+	</td>
+</tr>
+<tr>
+	<th scope="row"><?=_("Key")?>£º</th>
 	<td align="left"><input type="text" name="key"></td>
 </tr>
 <tr>
@@ -278,21 +365,26 @@ function modify()
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
+
+    $i = intval ($_GET['key']);
+    if (!isset($List[$i]))
+        die(_("Item is not exist"));
+    $item = $List[$i];
 ?>
 <html>
 <body>
-<form method="POST" action="<?="?&option=".$_GET["option"]."&action=save"?>">
+<form method="POST" action="?action=save&option=<?php echo $item[0]; ?>">
 <input type="hidden" name="type" value="modify">
-<input type="hidden" name="oKey" value="<?=$_GET["key"]?>">
+<input type="hidden" name="oKey" value="<?=$i?>">
 <table width="50%" border="1" align="center">
-<caption><?=_("Modify")?> <?=$title?></caption>
+<caption><?=_("Modify")?> <?_($item[0])?></caption>
 <tr>
-	<th scope="row"><?=$column?>£º</th>
-	<td align="left"><input type="text" name="key" value="<?=$_GET["key"]?>"></td>
+	<th scope="row"><?=_("Key")?>£º</th>
+	<td align="left"><input type="text" name="key" value="<?=$item[1]?>"></td>
 </tr>
 <tr>
 	<th scope="row"><?=_("Note")?>: </th>
-	<td align="left"><input type="text" name="note" value="<?=$List[$_GET["key"]]?>"></td>
+	<td align="left"><input type="text" name="note" value="<?=$item[2]?>"></td>
 </tr>
 <tr>
 	<th colspan="2"><input type="submit" value="<?=_("Save")?>" /><input type="reset" value="<?=_("Reset")?>" /></th>
@@ -304,17 +396,19 @@ function modify()
 
 function save()
 {
-	global $List,$sList,$spamconf,$column,$sOption;
+	global $allLists,$List,$sList,$spamconf,$column,$sOption;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
 	switch($_POST['type']){
 		case 'switch':
-		$spamconf->setParam($sOption,$_POST[$sOption],"SpamEngine");
+		foreach ($allLists as $listType) {
+		    $spamconf->setParam($listType[0],$_POST[$listType[0]],"SpamEngine");    
+		}
 		$spamconf->save();
-		if(($ret=wi("reset_".$_GET["option"],$result))==0)
-			header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
+		if(($ret=wi("reset_".$_REQUEST['option'],$result))==0)
+			header("Location: ".$_SERVER['PHP_SELF']."?option=".$_REQUEST['option']);
 		else
 			echo _("Config Modify Fail, ErrNo: ").$ret;
 		exit(0);
@@ -328,12 +422,29 @@ function save()
 			exit(-1);
 		}
 	}
+	
+	if (sizeof($List)>0) {
+	    foreach ($List as $item) {
+	        if (strcasecmp ($item[1], $_POST['key'])==0 && $item[0] != $_REQUEST['option']) {
+	            die(_("You can't put ").$_POST['key']._(" into both white list and black list"));
+	        }
+	    }
+	}
+	
 
-	$List[$_POST['key']] = $_POST['note'];
-	$spamconf->setList($sList,$List,"SpamEngine");
+	$List[] = array(
+	        $_REQUEST['option'],$_POST['key'],$_POST['note']
+	);
+	$buf = array();
+	foreach ($List as $item) {
+	    if ($item[0]==$_REQUEST['option'])
+	        $buf[$item[1]]=$item[2];    
+	}
+	
+	$spamconf->setList($_REQUEST['option']."List",$buf,"SpamEngine");
 	$spamconf->save();
-	if(($ret=wi("reset_".$_GET["option"],$result))==0)
-		header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
+	if(($ret=wi("reset_".$_REQUEST['option'],$result))==0)
+		header("Location: ".$_SERVER['PHP_SELF']);
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }

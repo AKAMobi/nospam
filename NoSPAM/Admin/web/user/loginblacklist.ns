@@ -4,7 +4,7 @@ require_once("../inc/include.ns");
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Commit"] == _("Commit")){
+if($_POST["Submit"] == _("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	if (!is_numeric($_POST['UserMaxLoginRetry']) ||
@@ -16,7 +16,7 @@ if($_POST["Commit"] == _("Commit")){
 	$spamconf->setParam("IPMaxLoginRetry",$_POST['IPMaxLoginRetry'],"System");
 	$spamconf->setParam("DenyTimeAfterMaxLogin",$_POST['DenyTimeAfterMaxLogin'],"System");
 	$spamconf->save();
-	echo _("Modification Succeed! ");
+	echo _("Modification Success! ");
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -29,13 +29,14 @@ if($_POST["Commit"] == _("Commit")){
 </head>
 
 <body>
+<center><font size="+3"><?=_("Administrator")?>-<?=_("Login Restrict")?></font></center>
 <div align="center">
 <form name="form1" method="post" action="">
 <table border="1">
 <tr> <td><?=_("Retries in 5 minutes for same person: ")?></td> <td align="left"><input type="text" name="UserMaxLoginRetry" value="<?=$spamconf->getParam("UserMaxLoginRetry","System")?>"></td> </tr>
 <tr> <td><?=_("Retries in 5 minutes for same IP: ")?></td> <td align="left"><input type="text" name="IPMaxLoginRetry" value="<?=$spamconf->getParam("IPMaxLoginRetry","System")?>"></td> </tr>
 <tr> <td><?=_("Block Time: ")?></td> <td align="left"><input type="text" name="DenyTimeAfterMaxLogin" value="<?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")?>"><?=_("Minutes")?></td> </tr>
-<tr> <td colspan="2"> <input type="submit" name="Commit" value="<?=_("Commit")?>"> </td> </tr>
+<tr> <td colspan="2"> <input type="submit" name="Submit" value="<?=_("Modify")?>"> </td> </tr>
 </table>
 </form>
 </div>

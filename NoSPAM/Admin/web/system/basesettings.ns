@@ -4,7 +4,7 @@ require_once("../inc/include.ns");
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Commit"] == _("Commit")){
+if($_POST["Submit"] == _("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 		
@@ -84,9 +84,9 @@ if($_POST["Commit"] == _("Commit")){
 	$spamconf->save();
 	
 	if(($ret=wi("MailBaseSetting_reset",$result)) == 0){
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	}else{
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
 }else{
 ?>
@@ -97,6 +97,7 @@ if($_POST["Commit"] == _("Commit")){
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("SMTP Parameters")?></font></center>
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -130,7 +131,8 @@ if($_POST["Commit"] == _("Commit")){
 		<input name="TimeoutConnectSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=true"><?=_("Default")?>: 60
 		<input name="TimeoutConnectSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=false">
 		<input name="TimeoutConnect" type="text" value="<?=$spamconf->getParam("TimeoutConnect","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " disabled";?>>
-	</td>
+<?=_("Second(s)")?>	
+</td>
 </tr>
 <tr class="TableBody1">
 	<td scope="row"> <?=_("SMTP Remote Deliver Timeout")?>: </td>
@@ -138,7 +140,7 @@ if($_POST["Commit"] == _("Commit")){
 		<input name="TimeoutRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=true"><?=_("Default")?>: 1200
 		<input name="TimeoutRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=false">
 		<input name="TimeoutRemote" type="text" value="<?=$spamconf->getParam("TimeoutRemote","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " disabled";?>>
-	</td>
+<?=_("Second(s)")?>	</td>
 </tr>
 <tr class="TableBody2">
 	<td scope="row"> <?=_("SMTP Receive Timeout")?>: </td>
@@ -146,7 +148,7 @@ if($_POST["Commit"] == _("Commit")){
 		<input name="TimeoutSmtpdSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=true"><?=_("Default")?>: 1200
 		<input name="TimeoutSmtpdSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=false">
 		<input name="TimeoutSmtpd" type="text" value="<?=$spamconf->getParam("TimeoutSmtpd","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " disabled";?>>
-	</td>
+<?=_("Second(s)")?>	</td>
 </tr>
 <tr class="TableBody1">
 	<td scope="row"> <?=_("Mail Max Size")?>: </td>
@@ -190,7 +192,7 @@ if($_POST["Commit"] == _("Commit")){
 	</td>
 </tr>
 </table>
-<input type="submit" name="Commit" value="<?=_("Commit")?>">
+<input type="submit" name="Submit" value="<?=_("Modify")?>">
 </form>
 <?
 	}else{

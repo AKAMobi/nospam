@@ -96,6 +96,7 @@ function jump()
 </script>
 </head>
 <body>
+<center><font size="+3"><?=_("Gateway")?>-<?=_("Mail Queue Monitor")?></font></center>
 <form action="?action=del" method="post" name="form1">
 <input type="hidden" name="page" value="<?=$page?>">
 <input type="hidden" name="pagenum" value="<?=$pagenum?>">
@@ -112,7 +113,7 @@ function jump()
 		<td><?=_("To")?></td>
 		<td><?=_("Size")?></td>
 <?if($bWritable){?>
-		<td><?=_("Operation")?></td>
+		<td><?=_("Op")?></td>
 <?}?>
 	</tr>
 </thead>
@@ -266,6 +267,6 @@ function dellall()
 	if(($ret=wi("MailQueue_delAll",$result)) != 0)
 		echo _("Error when Delete Mail Queue, ErrNo: ").$ret;
 	else
-		echo _("Flush Queue")." "._("Succeed");
+		echo _("Flush Queue")." "._("Success");
 }
 ?>

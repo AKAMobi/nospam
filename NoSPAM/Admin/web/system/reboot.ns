@@ -33,6 +33,7 @@ function formsubmit(action)
 </head>
 
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("Reboot & Shutdown")?></font></center>
 <p>
 <form method="POST" name="form1">
   <input type="hidden" name="action">

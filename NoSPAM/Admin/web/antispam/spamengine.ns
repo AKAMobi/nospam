@@ -7,7 +7,7 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["isCommit"]){
+if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
@@ -23,9 +23,9 @@ if($_POST["isCommit"]){
 	$spamconf->save();
 
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bSmartEngine = ($spamconf->getParam("SmartEngine","SpamEngine")=="Y")? true:false;
 	$bTraceEngine = ($spamconf->getParam("TraceEngine","SpamEngine")=="Y")? true:false;
@@ -36,7 +36,7 @@ if($_POST["isCommit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Engine Switch")?></title>
+<title><?=_("Engines Switches")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -71,6 +71,7 @@ function change(bState)
 </head>
 
 <body>
+<center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("SwitchBoard")?></font></center>
 <form name="form1" method="post" action="">
     <p><b><?=_("AntiSpam Engine")?></b>: 
     <input type="radio" name="SpamEngine" value="Y"<? if($bAntiSpam) echo" checked"; ?> onclick="change(false)">
@@ -78,7 +79,7 @@ function change(bState)
     <input type="radio" name="SpamEngine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> onclick="change(true)">
     <?=_("Off")?>
  <hr align="left" width="400">
-  <p><b><?=_("Traceable Check")?></b>：
+  <p><b><?=_("Traceable")?></b>：
     <input type="radio" id="idTraceEngineY" name="TraceEngine" value="Y"
 	<?	if(!$bAntiSpam) echo" disabled "; 
 		if($bTraceEngine) echo" checked "; 
@@ -94,9 +95,9 @@ function change(bState)
     <br>
     <?=_("Direction")?>: 
     <input type="checkbox" id="idTraceProtectDirectionOut" name="TraceProtectDirection[]" value="Out"<?if(strstr($sTraceProtectDirection,"Out")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    <?=_("Outgoing")?>: 
+    <?=_("Outward")?>: 
     <input type="checkbox" id="idTraceProtectDirectionIn" name="TraceProtectDirection[]" value="In"<?if(strstr($sTraceProtectDirection,"In")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    <?=_("Incoming")?>: 
+    <?=_("Inward")?>: 
     <p>
  
 <p>
@@ -123,16 +124,16 @@ function change(bState)
 		if(!$bAntiSpam) echo " disabled"
 	?>
     >
-    <?=_("Outgoing")?>: 
+    <?=_("Outward")?>: 
     <input type="checkbox" id="idSmartProtectDirectionIn" name="SmartProtectDirection[]" value="In"
 	<?
 		if(strstr($sSmartProtectDirection,"In")) echo " checked";
 		if(!$bAntiSpam) echo " disabled"
 	?> 
     >
-    <?=_("Incoming")?>: 
+    <?=_("Inward")?>: 
     <br>
-    <input type="submit" name="isCommit" value="<?=_("Commit")?>">
+    <input type="submit" name="isSubmit" value="<?=_("Modify")?>">
 </form>
 
 </body>

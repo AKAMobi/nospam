@@ -14,10 +14,17 @@ if($_GET["action"] == "add"){
 		$rule_id = $_POST["rule_id"];
 		if(!$rule_id)
 			$rule_id = $_GET["id"];
-		if(!$rule_id) die(_("Please Input Rule Number"));
+		//if(!$rule_id) die(_("Please Input Rule Number"));
 
 		$config = new RuleDB(UserDB);
+		if ($rule_id) {
 		if($config->get_rule_by_id($rule_id)) die(_("This Rule Number Already Exists"));
+		}
+		else {
+			$rule_id = 1;
+			while ($config->get_rule_by_id($rule_id))
+				$rule_id ++;
+		}
 		if($_POST["formAction"] == "save")
 			save();
 		else
@@ -948,6 +955,12 @@ function add()
 {
 	global $bContentFilter, $Category;
 	$time = time();
+	
+$config = new RuleDB(UserDB);
+$rule_id = 1;
+while ($config->get_rule_by_id($rule_id))
+$rule_id ++;
+
 ?>
 <html>
 <head>
@@ -962,7 +975,7 @@ d = new Date();
 <input type="hidden" name="formAction"/>
 <table border="0" align="center" width="100%">
 <tr>
-    <td><?=_("No.")?>: <input type="text" size="24" maxlength="22" name="rule_id" /></td>
+    <td><?=_("No.")?>: <input type="text" size="24" maxlength="22" name="rule_id" value="<?php echo $rule_id; ?>" /></td>
     <td><?=_("Description")?>: <input type="text" name="rule_comment" value="" /></td>
 </tr>
 <tr>

@@ -8,6 +8,7 @@ require_once("../inc/include.ns");
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<center><font size="+3"><?=_("Administrator")?>-<?=_("Changing Password")?></font></center>
 <DIV align="center">
 <?
 
@@ -60,7 +61,7 @@ function changeUserPasswd() {
 	if ($result!=OK) {
 		errorReturn(_("Other Error, need DEBUG"), $_SERVER['PHP_SELF']);
 	}
-		echo _("Password Modify Succeed!");
+		echo _("Password Modify Success!");
 		return true;
 	} 
 	
@@ -79,7 +80,7 @@ function changeUserPasswd() {
 
 </tbody>
 </table>
-<INPUT type="submit" value="<?=_("Commit")?>">
+<INPUT type="submit" value="<?=_("Submit")?>">
 </form>
 <?php
 

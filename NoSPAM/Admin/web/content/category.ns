@@ -55,6 +55,7 @@ function show()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("Rules Group")?></font></center>
 <form method="POST">
 <input type="hidden" name="action" value="del" />
 <table width="100%" class="RuleTB" width="100%">

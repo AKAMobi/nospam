@@ -44,6 +44,7 @@ function confirmCancel()
 </head>
 
 <body>
+<center><font size="+3"><?=_("System Management")?>-<?=_("System Mode")?></font></center>
 <form name="form1" method="post" action="">
   <p>
 <?

@@ -47,7 +47,7 @@ if($pos < $total/2){
 	exec("$tail -n ".($total-$pos+$pagenum)." ".LOGFILE." | $grep -m $pagenum ,",$lines);
 }
 
-$dir = array(_("Incoming"),_("Outgoing"));
+$dir = array(_("Inward"),_("Outward"));
 $vSpam = array(_("NonSpam"),_("Likely Spam"),_("Spam"),_("Blacklist"));
 $vVirus = array(_("NonVirus"),_("Virus"));
 $rAction = array(_("Pass"),_("Drop"));
@@ -95,6 +95,7 @@ function enableMonitor()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_(""Log")?>-<?=_("Log Browser")?></font></center>
 <div id="oStatic" name="oStatic">
 <table width="100%" class="sort-table" id="table-1" cellspacing="1">
 <thead>
@@ -311,7 +312,7 @@ for($i=10;$i<=60;$i+=10){
 <input type="checkbox" onclick="switchMonitor()"><?=_("Realtime Monitor")?><br>
 <?=_("Page Refresh Time")?>: <input type="text" size="2" maxlength="3" d="oInterval" name="oInterval" disabled><?=_("Second(s)")?>&nbsp;&nbsp;
 <?=_("Display Last")?><select name="oLine" id="oLine" disabled><option value="5">5<option value="10">10<option value="20">20<option value="40">40<option value="80">80</select><?=_("Lines")?><br>
-<input type="button" value="<?=_("Commit")?>" id="submit" name="submit" onclick="enableMonitor()" disabled>
+<input type="button" value="<?=_("Submit")?>" id="submit" name="submit" onclick="enableMonitor()" disabled>
 </p>
 <iframe id="oDynamic" name="oDynamic" style="display: none" src="../dummy.htm"></iframe>
 </body>

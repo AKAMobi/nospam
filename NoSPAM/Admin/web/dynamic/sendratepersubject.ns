@@ -8,7 +8,7 @@ if($DynamicEngine <= 0)
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
 	die(_("You have no permission to access this page"));
 
-if($_POST["submit"]==_("Commit")){
+if($_POST["submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Seconds"]) || !is_numeric($_POST["Block"]))
@@ -24,9 +24,9 @@ if($_POST["submit"]==_("Commit")){
 	$spamconf->setParam("SendRatePerSubject",$SendRatePerSubject,"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SendRatePerSubject",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	list($Counts,$Seconds,$Block) = explode("/",$spamconf->getParam("SendRatePerSubject","DynamicEngine"));
 ?>
@@ -39,6 +39,7 @@ if($_POST["submit"]==_("Commit")){
 </head>
 
 <body>
+<center><font size="+3"><?=_("Overrun Limit Engine")?>-<?=_("Mails per Subject")?></font></center>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -47,8 +48,8 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?=_("in")?><input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Second(s)")?><br>
 <?=_("One Mail should be sent no more than")?><input type="text" size="2" name="Counts" value="<?=$Counts?>"><?=_(" times")?><br>
 <?=_("or will be blocked")?><input type="text" size="2" name="Block" value="<?=$Block?>"><?=_("Second(s)")?><br>
-(<?=_("0 means No Limit").", "._("Suggest time-set is no more than 1800 seconds.")?>)
-<input type="submit" name="submit" value="<?=_("Commit")?>">
+(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
+<input type="submit" name="submit" value="<?=_("Submit")?>">
 </form>
 <?
 }else{
@@ -57,27 +58,27 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?=_("in")?> <font color="Red"><?=$Seconds?></font> <?=_("Second(s)")?><br>
 <?=_("One Mail should be sent no more than")?> <font color="Red"><?=$Counts?></font><?=_(" times")?><br>
 <?=_("or will be blocked")?><font color="Red"><?=$Block?></font> <?=_("Second(s)")?><br>
-(<?=_("0 means No Limit").", "._("Suggest time-set is no more than 1800 seconds.")?>)
+(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
 <?
 }
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteSubjectList","DynamicEngine",_("Subject Whitelist"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteSubjectList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject Whitelist"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteSubjectList","DynamicEngine",_("Subject Whitelist"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
 	SaveData("WhiteSubjectList","DynamicEngine",_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject Whitelist"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject Whitelist"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 
 if(!$bDynamic){

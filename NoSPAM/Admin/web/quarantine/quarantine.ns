@@ -7,7 +7,7 @@ if($QuarantineEngine <= 0)
 if(!adminPerm(PERM_ADMIN_QUARANTINE))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Commit"]==_("Commit")){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	
@@ -28,9 +28,9 @@ if($_POST["Commit"]==_("Commit")){
     $spamconf->setParam("TimeOutAction",$QuarantineTimeOutAction,"QuarantineEngine");
     $spamconf->save();
     if(($ret=wi("QuarantineUpdate",$result))==0)
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	else
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
     
 }else{
     $quarantineEnginTimeOut = intval ($spamconf->getParam("TimeOut", "QuarantineEngine"));
@@ -42,7 +42,7 @@ if($_POST["Commit"]==_("Commit")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Quarantine Engine")?></title>
+<title><?=_("QuarantineEngine")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function doSwitchTime() {
@@ -59,8 +59,9 @@ function doSwitchTime() {
 </script>
 </head>
 <body onload="doSwitchTime" >
+<center><font size="+3"><?=_("QuarantineEngine")?>-<?=_("SwitchBoard")?></font></center>
 <form name="form1" method="post" action="">
-  <p> <?=_("Quarantine Engine Settings")?>:<br>
+  <p> <?=_("QuarantineEngine Settings")?>:<br>
     <label>
     <?=_("Quarantine Time out")?>
     <input type="hidden" name="QuarantineTimeOutSeconds" value="<?php echo $quarantineEnginTimeOut; ?>" />
@@ -76,13 +77,13 @@ function doSwitchTime() {
     <?=_("Quarantine time out action")?>
     <select name="QuarantineTimeOutAction">
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'selected'; ?>><?=_("Drop")?></option>
-    <!--option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option-->
-    <!--option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'selected'; ?>><?=_("Tag")?></option-->
+    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option>
+    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'selected'; ?>><?=_("Tag")?></option>
     <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'selected'; ?>><?=_("Forward")?></option>
     </select>
     </label>
     <br><br/>
-    <input type="submit" name="Commit" value="<?=_("Commit")?>">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form>
 </body>
@@ -94,7 +95,7 @@ function doSwitchTime() {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Quarantine Engine")?></title>
+<title><?=_("QuarantineEngine")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function doSwitchTime() {
@@ -111,7 +112,7 @@ function doSwitchTime() {
 </script>
 </head>
 <body onload="doSwitchTime" >
-  <p> <?=_("Quarantine Engine Settings")?>:<br>
+  <p> <?=_("QuarantineEngine Settings")?>:<br>
     <label>
     <?=_("Quarantine Time out")?>
     <input type="hidden" name="QuarantineTimeOutSeconds" value="<?php echo $quarantineEnginTimeOut; ?>" />
@@ -127,13 +128,13 @@ function doSwitchTime() {
     <?=_("Quarantine time out action")?>
     <select name="QuarantineTimeOutAction" disabled >
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'checked'; ?>><?=_("Drop")?></option>
-    <!--option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option-->
-    <!--option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option-->
+    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option>
+    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option>
     <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'checked'; ?>><?=_("Forward")?></option>
     </select>
     </label>
     <br><br/>
-    <input type="submit" name="Commit" value="<?=_("Commit")?>" disabled >
+    <input type="submit" name="Submit" value="<?=_("Modify")?>" disabled >
   </p>
 </body>
 </html>

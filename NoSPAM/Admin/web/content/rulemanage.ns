@@ -121,6 +121,7 @@ function sortTable(sKey)
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("Rules Management")?></font></center>
 <?=_("Policy Select")?>:
 <select name="DBSelect" onchange="changeDB()">
 <? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>><?=_("Auto-Download Policy(Readonly)")?><? } ?>
@@ -129,7 +130,7 @@ function sortTable(sKey)
 </select><br>
 <form action="<?=$url?><?if($bPolice) echo "?db=police";?>" method="POST">
 <?=_("No.")?>:
-<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Commit")?>" />
+<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Submit")?>" />
 </form>
 <?
 if(!$readonly){

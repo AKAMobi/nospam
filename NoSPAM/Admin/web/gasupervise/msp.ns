@@ -7,7 +7,7 @@ if ($GAInterface <= 0)
 if (!adminPerm(PERM_ADMIN_GASUP))
 	die(_("You have no permission to access this page"));
 
-if ($_POST["Commit"] == _("Commit")){
+if ($_POST["Submit"] == _("Modify")){
 	if (!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	$spamconf->setParam("MSP_IP",$_POST['MSP_IP'],"GAInterface");
@@ -16,9 +16,9 @@ if ($_POST["Commit"] == _("Commit")){
 	$spamconf->save();
 	
 	if (($ret = wi("GA_reset",$result)) == 0){
-		echo _("Modification Succeed! ");
+		echo _("Modification Success! ");
 	} else {
-		echo _("Config Commit Fail, ErrNo: ").$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
 } else {
 	$bState = ($spamconf->getParam("GAInterface","GAInterface") == "Y") && adminPerm(PERM_ADMIN_WRITE);
@@ -30,6 +30,7 @@ if ($_POST["Commit"] == _("Commit")){
 <title>MSP</title>
 </head>
 <body>
+<center><font size="+3"><?=_(""Auto-Download Policy")?>-MSP</font></center>
 <div align="center">
 <form method="POST" name="form1">
 <table border="1">
@@ -47,7 +48,7 @@ if ($_POST["Commit"] == _("Commit")){
 </tr>
 </table>
 <br>
-<input type="submit" name="Commit" value="<?=_("Commit")?>"<?if (!$bState) echo " disabled";?>>
+<input type="submit" name="Submit" value="<?=_("Modify")?>"<?if (!$bState) echo " disabled";?>>
 <input type="reset" value="<?=_("Reset")?>"<?if (!$bState) echo " disabled";?>>
 </form>
 </div>
