@@ -92,7 +92,7 @@ sub get_mail_info
 	}
         
 	foreach my $filename ( %{$self->{mail_info}->{body}} ){
-		if ( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  )
+		if ( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  ){
 			$self->{mail_info}->{attachment} = 1;
 			last;
 		}
@@ -119,8 +119,13 @@ sub clean
 {
 	my $self = shift;
 
-	$self->{entity}->purge;
-	$self->{mime_parser}->filer->purge;
+	if ( $self->{entity} ){
+		$self->{entity}->purge;
+	}
+
+	if ( $self->{mime_parser} ){
+		$self->{mime_parser}->filer->purge;
+	}
 }
 
 sub get_head_info

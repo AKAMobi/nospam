@@ -7,7 +7,7 @@
 
 
 package AKA::Mail::Police::Log;
-package AKA::Mail::Police::Verify;
+use AKA::Mail::Police::Verify;
 
 
 use XML::Simple;
@@ -111,7 +111,7 @@ sub log_match
 	my $xml = $xs->XMLout( $logdata );
 
 	open ( FD, ">$logfile" ) or $self->{zlog}->log ( "pf: open $logfile for writing error" );
-	print FD $xml
+	print FD $xml;
 	close ( FD );
 	
 	if ( ! $self->{verify}->sign($emlfile) ){

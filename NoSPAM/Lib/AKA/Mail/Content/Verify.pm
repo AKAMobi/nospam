@@ -27,12 +27,12 @@ sub new
 
 	bless $self, $class;
 
-	my ($police) = @_;
+	my ($parent) = @_;
 
-	$self->{police} = $police;
+	$self->{parent} = $parent;
 
-	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
-	$self->{conf} = $police->{conf} || new AKA::Mail::Police::Conf($self);
+	$self->{zlog} = $parent->{zlog};
+	$self->{conf} = $parent->{conf};
 
 	return $self;
 }

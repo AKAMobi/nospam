@@ -10,6 +10,7 @@ package AKA::Mail::Police::Filter;
 use AKA::Mail::Police::Log;
 use AKA::Mail::Police::Conf;
 use AKA::Mail::Police::Rule;
+use AKA::Mail::Police::Parser;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -33,9 +34,9 @@ sub new
 
 	$self->{parent} = $parent;
 
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Police::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
-	$self->{parser} = new AKA::Mail::Police::parser($self);
+	$self->{zlog} = new AKA::Mail::Police::Log($self) ;
+	$self->{conf} = new AKA::Mail::Police::Conf($self) ;
+	$self->{parser} = new AKA::Mail::Police::Parser($self);
 	$self->{ruler} = new AKA::Mail::Police::Rule($self);
 	$self->{verify} = new AKA::Mail::Police::Rule($self);
 
@@ -85,7 +86,7 @@ sub get_action
 		# 缺省为'邮件附件中包含有不安全文件\$file，已经被剥离！'
 	}elsif ( 5==$action ){
 		# 5、 delay 给邮件处理操作加延时(秒)。带一个整数参数，内容为添加延时的秒数
-		if ( $param )
+		if ( $param ){
 			if ( $param < 600 ){
 				sleep ( $param );
 			}else{
@@ -143,7 +144,7 @@ sub get_action
 			if ( $param =~ /([^\:]+):\s*(.*)/ ){
 				my ( $tag, $data ) = ( $1, $2 );
 				my $head = $self->{parser}->{entity}->head;
-				$head->delete( $tag )
+				$head->delete( $tag );
 				$head->add( $tag, $data );
 			}else{
 				$self->{zlog}->log ( "pf: chghdr cannot parse param [$param] to tag: text." );
@@ -153,7 +154,7 @@ sub get_action
 	}	
 
 	if ( $action != 1 && $action != 2 && $action != 3 ){
-		self->{parser}->print ( \*STDOUT );
+		$self->{parser}->print ( \*STDOUT );
 	}
 
 	$self->{parser}->clean();

@@ -34,7 +34,7 @@ sub new
 
 	$self->{police} = $police;
 
-	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
+	$self->{zlog} = $police->{zlog};
 
 	$self->{define}->{mspid} = "300001";
 	$self->{define}->{home} = "/home/ssh/";
@@ -114,7 +114,8 @@ sub merge_new_rule
 	my $lastest_rule_id;
 
 	for my $rule_id ( sort { $rule_add_modify->{$a}->{update_time} cmp 
-					$rule_add_modify->{$b}->{update_time} keys %{$rule_add_modify} ){
+					$rule_add_modify->{$b}->{update_time} }
+				 keys %{$rule_add_modify} ){
 		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
 		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
 #push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
@@ -154,7 +155,7 @@ sub merge_new_rule
 	rename ( $new_filterdb_file, $filterdb_file ) or die "can't rename [$new_filterdb_file] to [$filterdb_file]";
 
 	my $rule_count;
-	$rule_count = keys %{$filterdb->{rule-add-modify}->{rule}}
+	$rule_count = keys %{$filterdb->{'rule-add-modify'}->{rule}};
 	$self->rebirth_update( $rule_count, $last_rule_id );
 
 	return 1;
