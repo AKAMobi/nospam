@@ -1193,11 +1193,7 @@ sub antivirus_engine
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
 
 
-	if ( (AKA::Mail::Conf::ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}
-			|| (AKA::Mail::Conf::ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}){
-		$self->{mail_info}->{aka}->{drop} = 1;
-#$self->{zlog}->debug ( "antivirus action drop set [" . $self->{mail_info}->{aka}->{drop} . "]" );
-	}
+	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( $self->{mail_info}->{aka}->{engine}->{antivirus}->{action} );
 	#$self->{mail_info}->{aka}->{drop_info} ||= '553 ÓÊ¼þ°üº¬²¡¶¾ ' . $self->{mail_info}->{aka}->{engine}->{antivirus}->{desc};
 }
 
@@ -1475,7 +1471,7 @@ sub spam_engine
 						dns_query_time => $dns_query_time||0
 	};
 
-	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( $self->{mail_info}->{aka}->{engine}->{content}->{action} );
+	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( $self->{mail_info}->{aka}->{engine}->{spam}->{action} );
 	return;
 }
 
