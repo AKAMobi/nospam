@@ -908,7 +908,7 @@ NOSPAM_LOG:
 
 				. ',' . $AKA_virus_result->{Result}
 					. ',' . $AKA_virus_result->{Reason} 
-					. ',' . $AKA_virus_result->{Action}
+					. ',' . ($AKA_virus_result->{Result}?$AKA_virus_result->{Action}:6)
 
 				. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
 				. ",$AKA_is_overrun, $AKA_overrun_reason\n";
