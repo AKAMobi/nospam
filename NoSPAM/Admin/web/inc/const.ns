@@ -24,5 +24,6 @@ if ( !defined("CONST_DEFINED") ){
 	define("UPGRADELOG","/home/NoSPAM/var/upgrade/log");
 	define("UPGRADEINFODIR","/home/NoSPAM/var/upgrade");
     define("QUARANTINEINFOSUFFIX","info"); //add by XiaoyingHu Jul 30,2004
+    define("QUARANTINEFILEPREFIX","emlfile.gw.nospam.");
 }
 ?>
