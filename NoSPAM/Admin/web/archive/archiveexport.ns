@@ -2,10 +2,12 @@
 require_once("../inc/include.ns");
 if($_GET["action"]){
 	if($_GET["action"]=="download"){
-        	if(($ret=wi("Archive_get_exchangedata",$result))==0)
-                	echo "操作成功！";
-        	else    
-                	echo "操作失败！错误代码：".$ret;
+		header("Cache-control: private");
+		header("Content-type: application/text");
+		header("Content-Disposition: attachment; filename=ArchiveExchange.zip");
+		header("Pragma: public");
+		passthru ( WI . " Archive_get_exchangedata", $result );
+		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
                 	echo "操作成功！";
