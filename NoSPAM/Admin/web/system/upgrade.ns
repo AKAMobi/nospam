@@ -31,7 +31,7 @@ ksort($aUpgradeLog, SORT_NUMERIC);
 <html>
 <head>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<title><=_("System Upgrade")></title>
+<title><?=_("System Upgrade")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -56,7 +56,7 @@ function closeTips(obj)
 {
 	obj.style.backgroundColor = oldbgcolor;
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = <?=_("Loading Upgrade package, waiting......")?>;
+	document.all.InfoLayer.innerHTML = "<?=_("Loading Upgrade package, waiting......")?>";
 }
 </script>
 </head>

@@ -36,7 +36,7 @@ if($_POST["Mode"]){
 function confirmCancel()
 {
 	if(form1.Server.defaultChecked){
-		if(!confirm(<?=_("ALERT: If current Standalone Mail Server has set Mail Domain, and now disable Standalone Server Mode, ALL Mail Domain Data and Mails will be DELETEd! Continue?")?>))
+		if(!confirm("<?=_("ALERT: If current Standalone Mail Server has set Mail Domain, and now disable Standalone Server Mode, ALL Mail Domain Data and Mails will be DELETEd! Continue?")?>"))
 			form1.Server.checked = true;			
 	}
 }

@@ -23,7 +23,7 @@ if($_POST["action"]){
 <script language="javascript">
 function formsubmit(action)
 {
-	if(confirm("<?=_("Confirm: Continue?")?>)){
+	if(confirm("<?=_("Confirm: Continue?")?>")){
 		form1.action.value=action;
 		form1.submit();
 	}

@@ -62,8 +62,8 @@ if($_GET["dul"] == "Yes" || 0!=$ret){
   <input type="file" name="license">
   <input type="submit" name="Submit" value="<?=_("Upload")?>">
 </form><br>
-</body>
-</html>
 <?
 }
 ?>
+</body>
+</html>

@@ -34,7 +34,7 @@ if (document.getElementById) {
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
-	var a = new WebFXTreeItem('<?=_("System")?>','help/system.htm','main');
+	var a = new WebFXTreeItem('<?=_("System Management")?>');
 	tree.add(a);
 	a.add(new WebFXTreeItem('<?=_("SerialNo & License")?>','system/serialno.ns', 'main'));
 	a.add(new WebFXTreeItem('<?=_("Upgrade")?>','system/upgrade.ns', 'main'));
@@ -48,7 +48,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	a.add(new WebFXTreeItem('<?=_("System Clock")?>','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('<?=_("Reboot & Shutdown")?>','system/reboot.ns','main'));
 
-	var b = new WebFXTreeItem('<?=_("Administrator")?>','help/user.htm','main');
+	var b = new WebFXTreeItem('<?=_("Administrator")?>');
 	tree.add(b);
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
@@ -58,7 +58,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 <?
 }
 ?>
-	b.add(new WebFXTreeItem('<?=_("Change Passwd")?>','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Change Password")?>','user/changePasswd.ns','main'));
 	b.add(new WebFXTreeItem('<?=_("IP Restrict")?>','user/changeIPlist.ns','main'));
 <?
 }
@@ -108,7 +108,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-	var e = new WebFXTreeItem('<?=_("Overrun Limit")?>','help/dynamic.htm','main');
+	var e = new WebFXTreeItem('<?=_("Overrun Limit")?>');
 	tree.add(e);
 	e.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','dynamic/dynengine.ns','main'));
 	e.add(new WebFXTreeItem('<?=_("SMTP per IP")?>','dynamic/connperip.ns','main'));
@@ -122,7 +122,7 @@ if($DynamicEngine > 0){
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	var j = new WebFXTreeItem('<?=_("AntiVirus")?>','help/antivirus.htm','main');
+	var j = new WebFXTreeItem('<?=_("AntiVirus")?>');
 	tree.add(j);
 	j.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antivirus/virusengine.ns','main'));
 	j.add(new WebFXTreeItem('<?=_("Virus Recognise")?>','antivirus/recognize.ns','main'));
@@ -134,7 +134,7 @@ if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
 
-	var c = new WebFXTreeItem('<?=_("AntiSpam")?>','help/antispam.htm','main');
+	var c = new WebFXTreeItem('<?=_("AntiSpam")?>');
 	tree.add(c);
 	c.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antispam/spamengine.ns','main'));
 	var c1 = new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>');
@@ -164,7 +164,7 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-	var d = new WebFXTreeItem('<?=_("Content Filter")?>','help/content.htm','main');
+	var d = new WebFXTreeItem('<?=_("Content Filter")?>');
 	tree.add(d);
 	d.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','content/contentengine.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rules Management")?>','content/rulemanage.ns','main'));
@@ -176,7 +176,7 @@ if($ContentEngine > 0){
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	var f = new WebFXTreeItem('<?=_("Audit")?>','help/archive.htm','main');
+	var f = new WebFXTreeItem('<?=_("Audit")?>');
 	tree.add(f);
 	f.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','archive/archiveengine.ns','main'));
 	//f.add(new WebFXTreeItem('<?=_("Archive Address")?>','archive/archiveaddress.ns','main'));
@@ -186,7 +186,7 @@ if($ContentEngine > 0){
 
 if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
-	var i = new WebFXTreeItem('<?=_("Interactive")?>','help/interengine.htm','main');
+	var i = new WebFXTreeItem('<?=_("Interactive")?>');
 	tree.add(i);
 	i.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','interactive/interengine.ns','main'));
 	i.add(new WebFXTreeItem('<?=_("Too Huge Mail")?>³¬´óÓÊ¼þÌáÐÑ','interactive/bigmail.ns','main'));
@@ -196,7 +196,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	var g = new WebFXTreeItem('<?=_("Log")?>','help/log.htm','main');
+	var g = new WebFXTreeItem('<?=_("Log")?>');
 	tree.add(g);
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
@@ -237,7 +237,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 
 if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-	var m = new WebFXTreeItem('<?=_("Auto-Download Policy")?>','help/gasupervise.htm','main');
+	var m = new WebFXTreeItem('<?=_("Auto-Download Policy")?>');
 	tree.add(m);
 	m.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','gasupervise/basesettings.ns','main'));
 	m.add(new WebFXTreeItem('MSP','gasupervise/msp.ns','main'));
