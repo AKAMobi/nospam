@@ -8,13 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-15 18:02+0800\n"
+"POT-Creation-Date: 2004-06-15 18:09+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=GBK\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "a1top_01_en.jpg"
+msgstr "a1top_01.jpg"
 
 #: ../Admin/web/logout.ns:9 ../Admin/web/inc/classes.ns:566
 #: ../Admin/web/inc/classes.ns:583 ../Admin/web/inc/classes.ns:619
@@ -73,8 +76,8 @@ msgstr "对不起，本系统没有垃圾邮件引擎License"
 #: ../Admin/web/system/reboot.ns:5 ../Admin/web/system/upload.ns:5
 #: ../Admin/web/system/systemtime.ns:5 ../Admin/web/system/pkginfo.ns:5
 #: ../Admin/web/system/upgrade.ns:5 ../Admin/web/system/basesettings.ns:5
-#: ../Admin/web/system/network.ns:5 ../Admin/web/system/gatewaymode.ns:5
-#: ../Admin/web/system/engine.ns:5 ../Admin/web/system/serialno.ns:5
+#: ../Admin/web/system/gatewaymode.ns:5 ../Admin/web/system/engine.ns:5
+#: ../Admin/web/system/serialno.ns:5 ../Admin/web/system/network.ns:5
 #: ../Admin/web/user/changePasswd.ns:17
 #: ../Admin/web/user/changeUserPasswd.ns:15
 #: ../Admin/web/user/showadminlist.ns:5 ../Admin/web/user/changeIPlist.ns:17
@@ -110,8 +113,8 @@ msgstr "您没有访问该网页的权限。"
 #: ../Admin/web/dynamic/dynengine.ns:12 ../Admin/web/inc/classes.ns:57
 #: ../Admin/web/inc/classes.ns:293 ../Admin/web/system/upload.ns:8
 #: ../Admin/web/system/upgrade.ns:9 ../Admin/web/system/basesettings.ns:9
-#: ../Admin/web/system/network.ns:15 ../Admin/web/system/gatewaymode.ns:9
-#: ../Admin/web/system/engine.ns:9 ../Admin/web/user/showadminlist.ns:232
+#: ../Admin/web/system/gatewaymode.ns:9 ../Admin/web/system/engine.ns:9
+#: ../Admin/web/system/network.ns:15 ../Admin/web/user/showadminlist.ns:232
 #: ../Admin/web/user/showadminlist.ns:334
 #: ../Admin/web/user/showadminlist.ns:451
 #: ../Admin/web/user/showadminlist.ns:630
@@ -150,8 +153,8 @@ msgstr "你无权进行更改操作"
 #: ../Admin/web/dynamic/sendrateperfrom.ns:27
 #: ../Admin/web/dynamic/sendratepersubject.ns:27
 #: ../Admin/web/dynamic/dynengine.ns:24 ../Admin/web/system/systemtime.ns:9
-#: ../Admin/web/system/basesettings.ns:87 ../Admin/web/system/network.ns:27
-#: ../Admin/web/system/engine.ns:13 ../Admin/web/user/loginblacklist.ns:19
+#: ../Admin/web/system/basesettings.ns:87 ../Admin/web/system/engine.ns:13
+#: ../Admin/web/system/network.ns:27 ../Admin/web/user/loginblacklist.ns:19
 #: ../Admin/web/antivirus/virusengine.ns:22
 #: ../Admin/web/antivirus/recognize.ns:22
 #: ../Admin/web/antivirus/treatment.ns:24
@@ -179,8 +182,8 @@ msgstr "修改成功！"
 #: ../Admin/web/dynamic/sendrateperfrom.ns:29
 #: ../Admin/web/dynamic/sendratepersubject.ns:29
 #: ../Admin/web/dynamic/dynengine.ns:26 ../Admin/web/system/systemtime.ns:11
-#: ../Admin/web/system/basesettings.ns:89 ../Admin/web/system/network.ns:29
-#: ../Admin/web/system/engine.ns:15 ../Admin/web/antivirus/virusengine.ns:24
+#: ../Admin/web/system/basesettings.ns:89 ../Admin/web/system/engine.ns:15
+#: ../Admin/web/system/network.ns:29 ../Admin/web/antivirus/virusengine.ns:24
 #: ../Admin/web/antivirus/recognize.ns:24
 #: ../Admin/web/antivirus/treatment.ns:26
 #: ../Admin/web/gasupervise/basesettings.ns:23
@@ -302,8 +305,9 @@ msgstr "推荐值"
 #: ../Admin/web/dynamic/dynengine.ns:69 ../Admin/web/dynamic/dynengine.ns:81
 #: ../Admin/web/inc/classes.ns:67 ../Admin/web/inc/classes.ns:260
 #: ../Admin/web/inc/classes.ns:264 ../Admin/web/system/basesettings.ns:7
-#: ../Admin/web/system/basesettings.ns:193 ../Admin/web/system/network.ns:65
+#: ../Admin/web/system/basesettings.ns:193
 #: ../Admin/web/system/gatewaymode.ns:57 ../Admin/web/system/engine.ns:41
+#: ../Admin/web/system/network.ns:13 ../Admin/web/system/network.ns:65
 #: ../Admin/web/user/showadminlist.ns:59
 #: ../Admin/web/user/showadminlist.ns:618
 #: ../Admin/web/user/loginblacklist.ns:7
@@ -999,8 +1003,8 @@ msgstr "邮件地址"
 #: ../Admin/web/archive/archivetype.ns:25 ../Admin/web/dynamic/realtime.ns:374
 #: ../Admin/web/dynamic/realtime.ns:384 ../Admin/web/log/monitor.ns:8
 #: ../Admin/web/system/downfile.ns:18 ../Admin/web/system/upload.ns:25
-#: ../Admin/web/system/network.ns:17 ../Admin/web/system/network.ns:18
-#: ../Admin/web/system/network.ns:19 ../Admin/web/system/serialno.ns:54
+#: ../Admin/web/system/serialno.ns:54 ../Admin/web/system/network.ns:17
+#: ../Admin/web/system/network.ns:18 ../Admin/web/system/network.ns:19
 #: ../Admin/web/server/mailcontent.ns:3 ../Admin/web/gateway/mailcontent.ns:3
 msgid " Error"
 msgstr "错误"
@@ -2329,20 +2333,6 @@ msgstr "天"
 msgid "Hours"
 msgstr "小时"
 
-#: ../Admin/web/system/network.ns:37 ../Admin/web/system/network.ns:45
-#: ../Admin/web/system/network.ns:77 ../Admin/web/system/network.ns:84
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:45
-msgid "Network Setting"
-msgstr "网络设置"
-
-#: ../Admin/web/system/network.ns:57
-msgid "Do not use x.x.x.x format, Please use Mask length"
-msgstr "请使用掩码位数，不能使用x.x.x.x格式"
-
-#: ../Admin/web/system/network.ns:60 ../Admin/web/system/network.ns:99
-msgid "Default Gateway"
-msgstr "缺省网关"
-
 #: ../Admin/web/system/gatewaymode.ns:15
 msgid "Please Reboot System!"
 msgstr "请重启系统以更新设置"
@@ -2443,6 +2433,20 @@ msgstr "许可证下载"
 #: ../Admin/web/system/serialno.ns:60
 msgid "Upload License"
 msgstr "许可证上载"
+
+#: ../Admin/web/system/network.ns:37 ../Admin/web/system/network.ns:45
+#: ../Admin/web/system/network.ns:77 ../Admin/web/system/network.ns:84
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:45
+msgid "Network Setting"
+msgstr "网络设置"
+
+#: ../Admin/web/system/network.ns:57
+msgid "Do not use x.x.x.x format, Please use Mask length"
+msgstr "请使用掩码位数，不能使用x.x.x.x格式"
+
+#: ../Admin/web/system/network.ns:60 ../Admin/web/system/network.ns:99
+msgid "Default Gateway"
+msgstr "缺省网关"
 
 #: ../Admin/web/user/changePasswd.ns:7
 msgid "Change Admin Passwd"
