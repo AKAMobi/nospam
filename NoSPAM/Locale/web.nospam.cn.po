@@ -7,25 +7,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-05 12:19+0800\n"
+"POT-Creation-Date: 2004-09-16 13:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=GBK\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "Admin Login"
-msgstr "管理员登录"
-
-msgid "Logout"
-msgstr "退出系统"
-
-msgid "Success"
-msgstr "成功"
-
-msgid "Logout Successfully. Please Close This Browser Window"
-msgstr "已成功退出。请关闭此窗口"
 
 msgid "Sorry, This Product has no AntiSpam Engine License"
 msgstr "对不起，本系统没有垃圾邮件引擎License"
@@ -37,67 +25,16 @@ msgid "You have no permission to modify system configuration"
 msgstr "你无权进行更改操作"
 
 msgid "Modification Success! "
-msgstr "修改成功"
+msgstr "修改成功！"
 
 msgid "Config Modify Fail, ErrNo: "
 msgstr "修改失败，错误代码："
 
-msgid "Spam Treatment"
-msgstr "垃圾处理"
-
-msgid "Accept"
-msgstr "通过"
-
-msgid "Tag & Accept"
-msgstr "标记通过"
-
-msgid "Quarantine"
-msgstr "隔离"
-
-msgid "Reject"
-msgstr "拒绝"
-
-msgid "Drop"
-msgstr "直接丢弃"
-
-msgid "Tag on header"
-msgstr "在邮件头上打标记"
-
-msgid "Tag on Subject"
-msgstr "在主题上打标记"
-
-msgid "Tag Reason on header"
-msgstr "在邮件头标记原因"
-
-msgid "Spam Subject Tag Text: "
-msgstr "垃圾邮件的主题标记："
-
-msgid "Recommend: "
-msgstr "推荐值："
-
-msgid "[Spam]"
-msgstr "【垃圾邮件】"
-
-msgid "Likely Spam Subject Tag Text: "
-msgstr "疑似垃圾的主题标记："
-
-msgid "[Likely Spam]"
-msgstr "【疑似垃圾】"
-
-msgid "Default"
-msgstr "缺省"
-
-msgid "Recommend"
-msgstr "推荐值"
-
-msgid "Modify"
-msgstr "修改"
-
-msgid "ALERT: AntiSpam Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
-
 msgid "Bayes Filter"
 msgstr "贝叶斯过滤器"
+
+msgid "AntiSpam Engine"
+msgstr "反垃圾引擎"
 
 msgid "Bayes Switch: "
 msgstr "贝叶斯识别开关："
@@ -114,6 +51,9 @@ msgstr "自学习："
 msgid "Highest Score of Self-Learning as NonSpam: "
 msgstr "作为正常邮件学习的最高分："
 
+msgid "Recommend: "
+msgstr "推荐值："
+
 msgid "Lowest Score of Self-Learning as Spam: "
 msgstr "作为垃圾邮件学习的最低分："
 
@@ -129,8 +69,11 @@ msgstr "非垃圾邮件数据："
 msgid "Reset"
 msgstr "恢复"
 
-msgid "Commit"
-msgstr "修改"
+msgid "Submit"
+msgstr "提交"
+
+msgid "ALERT: AntiSpam Engine is OFF"
+msgstr "注意：反垃圾引擎未启动"
 
 msgid "Date Check"
 msgstr "抽样检查"
@@ -219,14 +162,20 @@ msgstr "通过X-Header邮件头检查垃圾邮件"
 msgid "Intelligent Content Analyze"
 msgstr "智能内容分析"
 
+msgid "Content Analyze"
+msgstr "智能内容分析"
+
 msgid "Analyze Email Content"
 msgstr "对邮件内容进行分析"
 
-msgid "Config Commit Fail, ErrNo: "
-msgstr "修改失败，错误代码："
+msgid "Modify"
+msgstr "修改"
 
 msgid "Super"
 msgstr "超级"
+
+msgid "Realtime Blocklist"
+msgstr "智能实时黑名单"
 
 msgid "Switch"
 msgstr "开关"
@@ -306,71 +255,11 @@ msgstr ""
 "Include: RBL (Realtime Blackhole List),DUL (Dynamic User List),RSS (Relay "
 "Spam Stopper),OPS (Open Proxy Stopper)"
 
-msgid "IP Whitelist"
-msgstr "IP白名单"
-
-msgid "IP BlackList"
-msgstr "IP黑名单"
-
-msgid "Domain Whitelist"
-msgstr "发件域名白名单"
-
-msgid "Domain BlackList"
-msgstr "发件域名黑名单"
-
-msgid "Email Domain"
-msgstr "邮件域名"
-
-msgid "Sender Whitelist"
-msgstr "发件人白名单"
-
-msgid "Sender BlackList"
-msgstr "发件人黑名单"
-
-msgid "Email Address"
-msgstr "邮件地址"
-
-msgid "Parameter Error! "
-msgstr "参数错误！"
-
-msgid "Select"
-msgstr "选择"
-
-msgid "No."
-msgstr "编号"
-
-msgid "Note"
-msgstr "备注"
-
-msgid "Edit"
-msgstr "编辑"
-
-msgid "Delete"
-msgstr "删除"
-
-msgid "Add"
-msgstr "添加"
-
-msgid "Jump to Page"
-msgstr "跳至第"
-
-msgid ", "
-msgstr "页，每页"
-
-msgid " records/page"
-msgstr "条记录"
-
-msgid "Save"
-msgstr "保存"
-
-msgid "Same "
-msgstr "相同的"
-
-msgid " already exists"
-msgstr "已经存在"
-
 msgid "Noise Reduce"
 msgstr "降噪"
+
+msgid "Noise Reduce System"
+msgstr "降噪系统"
 
 msgid "Intelligent Noise Reduction System: "
 msgstr "智能降噪系统："
@@ -378,8 +267,8 @@ msgstr "智能降噪系统："
 msgid "Intelligent Factor: "
 msgstr "智能因数："
 
-msgid "Recommended: "
-msgstr "推荐值："
+msgid "Modification Succeed! "
+msgstr "修改成功"
 
 msgid "Traceable"
 msgstr "可追查性检查"
@@ -410,23 +299,149 @@ msgstr ""
 msgid "Last"
 msgstr "最后修改值"
 
-msgid "Engine Switch"
+msgid "Recommend"
+msgstr "推荐值"
+
+msgid "Commit"
+msgstr "修改"
+
+msgid "IP"
+msgstr ""
+
+msgid "Email Domain"
+msgstr "邮件域名"
+
+msgid "Email Address"
+msgstr "邮件地址"
+
+msgid "Sender"
+msgstr "发信人"
+
+msgid "Upload error"
+msgstr "上载错误"
+
+msgid "Can't open uploaded file"
+msgstr "打开上载文件错误"
+
+msgid "Import successfully"
+msgstr ""
+
+msgid "Blacklist & Whitelist"
+msgstr "黑白名单"
+
+msgid "Select"
+msgstr "选择"
+
+msgid "No."
+msgstr "编号"
+
+msgid "Key"
+msgstr ""
+
+msgid "Type"
+msgstr "类别"
+
+msgid "Note"
+msgstr "备注"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Jump to Page"
+msgstr "跳至第"
+
+msgid ", "
+msgstr "页，每页"
+
+msgid " records/page"
+msgstr "条记录"
+
+msgid "Import"
+msgstr ""
+
+msgid "Export"
+msgstr "日志导出"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Item is not exist"
+msgstr "所选项不存在"
+
+msgid "Same "
+msgstr "相同的"
+
+msgid " already exists"
+msgstr "已经存在"
+
+msgid "You can't put "
+msgstr ""
+
+msgid " into both white list and black list"
+msgstr ""
+
+msgid "Config Commit Fail, ErrNo: "
+msgstr "修改失败，错误代码："
+
+msgid "Spam Treatment"
+msgstr "垃圾处理"
+
+msgid "Accept"
+msgstr "通过"
+
+msgid "Tag & Accept"
+msgstr "标记通过"
+
+msgid "Quarantine"
+msgstr "隔离"
+
+msgid "Reject"
+msgstr "拒绝"
+
+msgid "Drop"
+msgstr "直接丢弃"
+
+msgid "Tag on header"
+msgstr "在邮件头上打标记"
+
+msgid "Tag on Subject"
+msgstr "在主题上打标记"
+
+msgid "Tag Reason on header"
+msgstr "在邮件头标记原因"
+
+msgid "Spam Subject Tag Text: "
+msgstr "垃圾邮件的主题标记："
+
+msgid "[Spam]"
+msgstr "【垃圾邮件】"
+
+msgid "Likely Spam Subject Tag Text: "
+msgstr "疑似垃圾的主题标记："
+
+msgid "[Likely Spam]"
+msgstr "【疑似垃圾】"
+
+msgid "Engines Switches"
 msgstr "引擎开关"
 
-msgid "AntiSpam Engine"
-msgstr "反垃圾引擎"
-
-msgid "Traceable Check"
-msgstr "可追查性检查"
+msgid "SwitchBoard"
+msgstr "基本设置"
 
 msgid "Direction"
 msgstr "作用方向"
 
-msgid "Outgoing"
-msgstr "从内向外"
+msgid "Outward"
+msgstr "由内向外"
 
-msgid "Incoming"
-msgstr "从外向内"
+msgid "Inward"
+msgstr "由外向内"
 
 msgid "Intelligent Test"
 msgstr "智能检测"
@@ -434,7 +449,10 @@ msgstr "智能检测"
 msgid "Network Diagnosis and Monitor"
 msgstr "网络校验和监测"
 
-msgid "Analyzing Server"
+msgid "Process Center"
+msgstr "智能集中分析"
+
+msgid "Analysis Server"
 msgstr "分析服务器"
 
 msgid "Network Timeout: "
@@ -448,9 +466,6 @@ msgstr "垃圾邮件特征1最少出现次数："
 
 msgid "Least Spams Spec 2 Counts: "
 msgstr "垃圾邮件特征2最少出现次数："
-
-msgid "Sorry, This Product has no Archive Engine License"
-msgstr "对不起，本系统没有归档引擎License"
 
 msgid "Audit Data Management"
 msgstr "审计数据管理"
@@ -466,6 +481,15 @@ msgstr "清空"
 
 msgid "ALERT: Audit Engine is OFF"
 msgstr "注意：审计引擎未启动"
+
+msgid "Sorry, This Product has no Archive Engine License"
+msgstr "对不起，本系统没有归档引擎License"
+
+msgid "Engine Switch"
+msgstr "引擎开关"
+
+msgid "Mail Audit Engine"
+msgstr "审计引擎"
 
 msgid "Email Address Error"
 msgstr "邮件地址有误"
@@ -524,6 +548,12 @@ msgstr "发往特定地址"
 msgid "Sorry, This Product has no Content Filter Engine License"
 msgstr "对不起，本系统没有内容过滤引擎License"
 
+msgid "Content Filter Engine"
+msgstr "内容过滤引擎"
+
+msgid "Rules Group"
+msgstr "类别管理"
+
 msgid "Rule Group Management"
 msgstr "规则组管理"
 
@@ -542,8 +572,8 @@ msgstr "分类编号必须为数字！"
 msgid "This Group Number already exists !"
 msgstr "相同的分类编号已存在！"
 
-msgid "Rule Number Error"
-msgstr "错误的规则编号"
+msgid "Error, Please input rule_id"
+msgstr "错误！请给出rule_id"
 
 msgid "Description"
 msgstr "描述"
@@ -563,6 +593,9 @@ msgstr "更新时间"
 msgid "Expire Time"
 msgstr "过期时间"
 
+msgid "none"
+msgstr "无"
+
 msgid "Alarm Level"
 msgstr "报警级别"
 
@@ -575,14 +608,47 @@ msgstr "规则间逻辑关系"
 msgid "Keyword and IP rules"
 msgstr "关键字及IP规则"
 
-msgid " items"
-msgstr "项"
-
 msgid "Sub-Rules logic"
 msgstr "规则内部逻辑关系"
 
 msgid "Match Position"
 msgstr "匹配位置"
+
+msgid "Match Type"
+msgstr "类型"
+
+msgid "Filter Content"
+msgstr "过滤内容"
+
+msgid "Size Value"
+msgstr "数值要求"
+
+msgid "Attachment rules"
+msgstr "附件规则"
+
+msgid "Filename Must be"
+msgstr "限制文件名"
+
+msgid "File Ext Must be"
+msgstr "限制文件类型"
+
+msgid "Action"
+msgstr "动作"
+
+msgid "Action Parameter"
+msgstr "动作参数"
+
+msgid "Rules List"
+msgstr "规则列表"
+
+msgid "Auto-Download Policy(Readonly)"
+msgstr "公安规则数据数据库（只读）"
+
+msgid "User Policy"
+msgstr "用户规则数据库"
+
+msgid " items"
+msgstr "项"
 
 msgid "Decode"
 msgstr "解码"
@@ -602,44 +668,8 @@ msgstr "区分大小写"
 msgid "Insensitive"
 msgstr "不区分大小写"
 
-msgid "Match Type"
-msgstr "类型"
-
-msgid "Filter Content"
-msgstr "过滤内容"
-
 msgid "Numeric rules"
 msgstr "数值规则"
-
-msgid "Size Value"
-msgstr "数值要求"
-
-msgid "Attachment rules"
-msgstr "附件规则"
-
-msgid "Filename Must be"
-msgstr "限制文件名"
-
-msgid "none"
-msgstr "无"
-
-msgid "File Ext Must be"
-msgstr "限制文件类型"
-
-msgid "Action"
-msgstr "动作"
-
-msgid "Action Parameter"
-msgstr "动作参数"
-
-msgid "Error, Please input rule_id"
-msgstr "错误！请给出rule_id"
-
-msgid "Auto-Download Policy(Readonly)"
-msgstr "公安规则数据数据库（只读）"
-
-msgid "User Policy"
-msgstr "用户规则数据库"
 
 msgid "All Extenstion List"
 msgstr "全部扩展名列表"
@@ -653,11 +683,11 @@ msgstr "附件扩展名"
 msgid "omit "
 msgstr "省略"
 
-msgid "Rules List"
-msgstr "规则列表"
-
 msgid "Loading, please waiting......"
 msgstr "载入中，请稍候……"
+
+msgid "Rules Management"
+msgstr "规则管理"
 
 msgid "Policy Select"
 msgstr "数据库选择"
@@ -665,8 +695,11 @@ msgstr "数据库选择"
 msgid "ALERT: Content Filter Engine is OFF"
 msgstr "注意：内容过滤引擎未启动"
 
-msgid "Please Input Rule Number"
-msgstr "请输入规则编号"
+msgid "Rule Number Error"
+msgstr "错误的规则编号"
+
+msgid "Expiring Time"
+msgstr "过期时间"
 
 msgid "This Rule Number Already Exists"
 msgstr "此规则编号已存在"
@@ -707,6 +740,79 @@ msgstr "替换信头记录"
 msgid "Sorry, This Product has no Overrun Limit Engine License"
 msgstr "对不起，本系统没有动态限制引擎License"
 
+msgid "Overrun Limit Engine"
+msgstr "动态限制引擎"
+
+msgid "Must Input a Number"
+msgstr "请输入数字"
+
+msgid "Concurrent SMTP Connect per IP"
+msgstr "同时连接数"
+
+msgid "SMTP per IP"
+msgstr "同时连接数"
+
+msgid "0 means No Limit"
+msgstr "0 表示不限制 "
+
+msgid "Note: Concurrent SMTP Connect per IP only function on Inward traffic."
+msgstr ""
+"注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。"
+
+msgid "IP WhiteList"
+msgstr "IP白名单"
+
+msgid "ALERT: Overrun Limit Engine is OFF"
+msgstr "注意：动态限制引擎未启动"
+
+msgid "SMTP Connect Frequency per IP"
+msgstr "连接频率"
+
+msgid "SMTP Frequency"
+msgstr "连接频率"
+
+msgid "in"
+msgstr "每"
+
+msgid "SMTP Connections no more than"
+msgstr "最多连接"
+
+msgid "times"
+msgstr "次"
+
+msgid "or will be blocked"
+msgstr "超限封禁时间为"
+
+msgid "Suggestion time-set is no more than 1800 seconds."
+msgstr "建议时间设置不要大于 1800 秒"
+
+msgid "Mails per Subject"
+msgstr "邮件重复"
+
+msgid "One Mail should be sent no more than"
+msgstr "同一封邮件最多发送"
+
+msgid " times"
+msgstr "次"
+
+msgid "Subject WhiteList"
+msgstr "主题白名单"
+
+msgid "Subject"
+msgstr "主题"
+
+msgid "Mails per Sender"
+msgstr "用户重复"
+
+msgid "One Sender should send no more than"
+msgstr "同一用户最多发送"
+
+msgid "Mails"
+msgstr "封邮件"
+
+msgid "Sender WhiteList"
+msgstr "发件人白名单"
+
 msgid "Cannot connect to Engine Database"
 msgstr "无法连接引擎数据库"
 
@@ -725,14 +831,8 @@ msgstr "动态引擎实时管理"
 msgid "Overrun Limit Database will be cleared, Continue?"
 msgstr "即将清空数据库，确定吗？"
 
-msgid "Mails per Sender"
-msgstr "用户重复"
-
-msgid "Mails per Subject"
-msgstr "邮件重复"
-
-msgid "SMTP Connect Frequency per IP"
-msgstr "连接频率"
+msgid "Realtime Monitor"
+msgstr "实时监控"
 
 msgid "Blocked Until"
 msgstr "解封时间"
@@ -752,57 +852,11 @@ msgstr "数据库重置"
 msgid "Delete Record "
 msgstr "删除记录"
 
+msgid "Success"
+msgstr "操作成功"
+
 msgid "Fail"
 msgstr "失败"
-
-msgid "Must Input a Number"
-msgstr "请输入数字"
-
-msgid "Concurrent SMTP Connect per IP"
-msgstr "同时连接数"
-
-msgid "0 means No Limit"
-msgstr "0 表示不限制 "
-
-msgid "Note: Concurrent SMTP Connect per IP only function on Incoming traffic."
-msgstr ""
-"注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。"
-
-msgid "ALERT: Overrun Limit Engine is OFF"
-msgstr "注意：动态限制引擎未启动"
-
-msgid "in"
-msgstr "每"
-
-msgid "SMTP Connections no more than"
-msgstr "最多连接"
-
-msgid "times"
-msgstr "次"
-
-msgid "or will be blocked"
-msgstr "超限封禁时间为"
-
-msgid "Suggest time-set is no more than 1800 seconds."
-msgstr "建议时间设置不要大于 1800 秒"
-
-msgid "One Mail should be sent no more than"
-msgstr "同一封邮件最多发送"
-
-msgid " times"
-msgstr "次"
-
-msgid "Subject Whitelist"
-msgstr "主题白名单"
-
-msgid "Subject"
-msgstr "主题"
-
-msgid "One Sender should send no more than"
-msgstr "同一用户最多发送"
-
-msgid "Mails"
-msgstr "封邮件"
 
 msgid "Error: Cannot Open Administrators Data file."
 msgstr "错误：管理员数据文件无法打开。"
@@ -825,6 +879,9 @@ msgstr "配置文件"
 msgid "Format Error"
 msgstr "格式错误"
 
+msgid "Admin Login"
+msgstr "管理员登录"
+
 msgid "Users in BlackList is trying to Login"
 msgstr "黑名单用户尝试登录"
 
@@ -833,6 +890,9 @@ msgstr "加入IP黑名单"
 
 msgid "Login Failure"
 msgstr "登录失败"
+
+msgid "SQLite Database File is not exist: "
+msgstr ""
 
 msgid "Mail From"
 msgstr "发件人"
@@ -924,33 +984,6 @@ msgstr "删除信头记录"
 msgid "Error: File does not exist!"
 msgstr "错误！文件不存在！"
 
-msgid "Log Export"
-msgstr "日志导出"
-
-msgid "Log Size"
-msgstr "日志大小"
-
-msgid "Operations Succeed"
-msgstr "操作成功"
-
-msgid "Operations Fail, ErrNo: "
-msgstr "操作失败，错误号："
-
-msgid "Flush Log"
-msgstr "日志清空"
-
-msgid "This will flush all logs, Continue?"
-msgstr "即将清空日志文件，确定吗？"
-
-msgid "Start Time cannot be later than End Time"
-msgstr "开始时间不能大于结束时间！"
-
-msgid "Start Time"
-msgstr "开始时间"
-
-msgid "End Time"
-msgstr "结束时间"
-
 msgid "Total Mails"
 msgstr "总邮件数"
 
@@ -983,6 +1016,57 @@ msgstr "根据每个内容规则匹配的邮件数Top10"
 
 msgid "Matched Rule ID"
 msgstr "匹配规则号"
+
+msgid ""
+"Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,"
+"Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,"
+"Description"
+msgstr ""
+"时间,邮件方向,发件人IP,发件人地址,收件人地址,主题,尺寸,病毒,病毒名,病毒动作,"
+"垃圾度,垃圾原因,垃圾动作,规则,动作类型,动作参数,动态限制,动态描述,审计,审计描"
+"述"
+
+msgid "Incoming"
+msgstr "从外向内"
+
+msgid "Outgoing"
+msgstr "从内向外"
+
+msgid "Blacklist"
+msgstr "黑名单"
+
+msgid "Log Export"
+msgstr "日志导出"
+
+msgid "Log"
+msgstr "日志监控"
+
+msgid "Log Size"
+msgstr "日志大小"
+
+msgid "Operations Succeed"
+msgstr "操作成功"
+
+msgid "Operations Fail, ErrNo: "
+msgstr "操作失败，错误号："
+
+msgid "Flush Log"
+msgstr "日志清空"
+
+msgid "This will flush all logs, Continue?"
+msgstr "即将清空日志文件，确定吗？"
+
+msgid "Start Time cannot be later than End Time"
+msgstr "开始时间不能大于结束时间！"
+
+msgid "Log Stat."
+msgstr "日志统计"
+
+msgid "Start Time"
+msgstr "开始时间"
+
+msgid "End Time"
+msgstr "结束时间"
 
 msgid "Log Flush Success !"
 msgstr "日志清空成功！"
@@ -1017,18 +1101,6 @@ msgstr "新值"
 msgid "Total"
 msgstr "共"
 
-msgid ""
-"Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,"
-"Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,"
-"Description"
-msgstr ""
-"时间,邮件方向,发件人IP,发件人地址,收件人地址,主题,尺寸,病毒,病毒名,病毒动作,"
-"垃圾度,垃圾原因,垃圾动作,规则,动作类型,动作参数,动态限制,动态描述,审计,审计描"
-"述"
-
-msgid "Blacklist"
-msgstr "黑名单"
-
 msgid "Log Browser"
 msgstr "日志显示"
 
@@ -1038,9 +1110,6 @@ msgstr "页面刷新时间请输入数字"
 msgid "Page Must be Number"
 msgstr "页数必须为数字！"
 
-msgid "Realtime Monitor"
-msgstr "实时监控"
-
 msgid "Page Refresh Time"
 msgstr "页面刷新时间"
 
@@ -1049,24 +1118,6 @@ msgstr "显示最后"
 
 msgid "Lines"
 msgstr "行"
-
-msgid "Submit"
-msgstr "提交"
-
-msgid "Mail Stat."
-msgstr "邮件分析显示"
-
-msgid "Mail Type Stat."
-msgstr "邮件类别分布"
-
-msgid "Mail Traffic Stat."
-msgstr "邮件流量分布"
-
-msgid "Mail Size Stat."
-msgstr "邮件尺寸分布"
-
-msgid "DNS Status"
-msgstr "DNS运行状态"
 
 msgid "Engine Running Status"
 msgstr "引擎运行状态"
@@ -1089,6 +1140,21 @@ msgstr "每月 图表 (2 小时 平均)"
 msgid "Yearly"
 msgstr "每年 图表 (1 天 平均)"
 
+msgid "Mail Stat."
+msgstr "邮件分析显示"
+
+msgid "Mail Type Stat."
+msgstr "邮件类别分布"
+
+msgid "Mail Traffic Stat."
+msgstr "邮件流量分布"
+
+msgid "Mail Size Stat."
+msgstr "邮件尺寸分布"
+
+msgid "DNS Status"
+msgstr "DNS运行状态"
+
 msgid "All & Each Type of Mail Stat.:"
 msgstr ""
 "Total: 处理邮件总数 <br>Received: 接收数 <br>Send: 发送数 <br>Normal: 正常邮"
@@ -1100,6 +1166,9 @@ msgid ""
 "Record: Can not Get DNS sub Record<br> No Domain: Can not Get DNS Domain "
 "Name Record<br> Failure: Query Fail"
 msgstr ""
+
+msgid "System Status"
+msgstr "系统状态"
 
 msgid "Internal Network Traffic"
 msgstr "内网流量图"
@@ -1128,6 +1197,9 @@ msgstr "磁盘使用率图"
 msgid "Configuration Management"
 msgstr "配置管理"
 
+msgid "System Management"
+msgstr "系统管理"
+
 msgid "System Configuration File Upload/Download"
 msgstr "系统配置文件上/下载"
 
@@ -1136,12 +1208,6 @@ msgstr "内容过滤策略文件上下载"
 
 msgid "Upload"
 msgstr "上载"
-
-msgid "Upload Fail!"
-msgstr "上载文件失败！"
-
-msgid "Upload Success!"
-msgstr "上载成功！"
 
 msgid "Please Reboot System!"
 msgstr "请重启系统以更新设置"
@@ -1172,8 +1238,8 @@ msgstr ""
 "注意！如果当前独立服务器设置了邮件域，则系统取消独立服务器模式，切换后所有邮"
 "件域数据和邮件都将被删除！确认吗？"
 
-msgid "Error: The Upgrade package is not existed!"
-msgstr "错误：该升级包信息文件不存在！"
+msgid "System Mode"
+msgstr "运行模式"
 
 msgid "System is REBOOTing, Please waiting......"
 msgstr "系统正在重启，请您耐心等候……"
@@ -1193,48 +1259,6 @@ msgstr "关机"
 msgid "Reboot"
 msgstr "重启"
 
-msgid "System Upgrade"
-msgstr "系统升级"
-
-msgid "Loading Upgrade package, waiting......"
-msgstr "载入中，请稍候……"
-
-msgid "Release No."
-msgstr "系统版本号"
-
-msgid "Upgrade History"
-msgstr "系统更新记录"
-
-msgid "Upgrade Date"
-msgstr "安装日期"
-
-msgid "Release Date"
-msgstr "发布日期"
-
-msgid "Upgrade Package"
-msgstr "升级包"
-
-msgid "Upgrade Release"
-msgstr "升级号"
-
-msgid "on which Version"
-msgstr "适用版本"
-
-msgid "Upload Upgrade Package"
-msgstr "上载升级包"
-
-msgid "Uploading Upgrade Package, waiting......"
-msgstr "升级包载入中，请稍候……"
-
-msgid "Upgrade Success!"
-msgstr "升级成功！"
-
-msgid "Upgrade Success, need Reboot system."
-msgstr "升级成功，重新启动系统后生效"
-
-msgid "Upgrade Fail!"
-msgstr "升级失败！"
-
 msgid "System Clock"
 msgstr "系统时钟"
 
@@ -1249,6 +1273,18 @@ msgstr "请使用掩码位数，不能使用x.x.x.x格式"
 
 msgid "Default Gateway"
 msgstr "缺省网关"
+
+msgid "DNS Server"
+msgstr "域名服务器"
+
+msgid "Use System DNS Server"
+msgstr "使用系统内置域名解析系统"
+
+msgid "DNS Server 1"
+msgstr "主域名服务器"
+
+msgid "DNS Server 2"
+msgstr "从域名服务器"
 
 msgid "SMTP Connect Timeout"
 msgstr "SMTP 连接超时"
@@ -1291,6 +1327,9 @@ msgstr "服务器名"
 
 msgid "SMTP HELO Name"
 msgstr "SMTP HELO主机名"
+
+msgid "Default"
+msgstr "缺省"
 
 msgid "SMTP Greeting"
 msgstr "SMTP 问候语"
@@ -1337,50 +1376,79 @@ msgstr "非正式销售版"
 msgid "Download License"
 msgstr "许可证下载"
 
-msgid "This Product has not get valid License, Please contact factory."
+msgid ""
+"This Product has not get valid License, Please contact with your product "
+"provider."
 msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
 
 msgid "Upload License"
 msgstr "许可证上载"
 
-msgid "Management IP List"
-msgstr "修改IP地址列表"
+msgid "Parameter Error! "
+msgstr "参数错误！"
 
-msgid "IP format Error, re-Input:"
-msgstr "IP地址格式错误,请重新输入"
+msgid "Error: The Update package is not existed!"
+msgstr "错误：该升级包信息文件不存在！"
 
-msgid "No this Admin, re-Input:"
-msgstr "无此管理员账号,请重新输入"
+msgid "System Upgrade"
+msgstr "系统升级"
 
-msgid "Other Error, need DEBUG"
-msgstr "其他错误，叫系统管理员来debug"
+msgid "Loading Upgrade package, waiting......"
+msgstr "载入中，请稍候……"
 
-msgid "Management IP List Modify Success!"
-msgstr "IP地址列表修改成功！"
+msgid "Upgrade"
+msgstr "升级更新"
 
-msgid "Admin Account"
-msgstr "管理员帐号"
+msgid "Release No."
+msgstr "系统版本号"
 
-msgid "Management IP Restrict"
-msgstr "IP地址限制"
+msgid "Upgrade History"
+msgstr "系统更新记录"
 
-msgid "Permit"
-msgstr "允许"
+msgid "Upgrade Date"
+msgstr "更新日期"
 
-msgid "Deny"
-msgstr "禁止"
+msgid "Release Date"
+msgstr "发布日期"
 
-msgid "No Restrict"
-msgstr "不限制"
+msgid "Upgrade Package"
+msgstr "升级包"
 
-msgid "Stand by format 192.168.1.1 or 192.168.1.0/24, one per line."
-msgstr "使用192.168.1.1或192.168.1.0/24这样的格式，每行一个。"
+msgid "Upgrade Release"
+msgstr "升级号"
+
+msgid "on which Version"
+msgstr "适用版本"
+
+msgid "Upload Upgrade Package"
+msgstr "上载升级包"
+
+msgid "Uploading Upgrade Package, waiting......"
+msgstr "升级包载入中，请稍候……"
+
+msgid "Upgrade Success!"
+msgstr "升级成功！"
+
+msgid "Upgrade Success, need Reboot system."
+msgstr "升级成功，重新启动系统后生效"
+
+msgid "Upgrade Fail!"
+msgstr "升级失败！"
+
+msgid "Upload Fail!"
+msgstr "上载文件失败！"
+
+msgid "Upload Succeed!"
+msgstr "上载成功！"
 
 msgid "Retries & Block time must be number"
 msgstr "重试次数和封禁时间必须都是数字！"
 
 msgid "Login Restrict"
 msgstr "登录限制"
+
+msgid "Administrator"
+msgstr "管理员"
 
 msgid "Retries in 5 minutes for same person: "
 msgstr "5分钟内对同一用户重试次数："
@@ -1393,36 +1461,6 @@ msgstr "超限封禁时间："
 
 msgid "Minutes"
 msgstr "分钟"
-
-msgid "Modify Email Account Info"
-msgstr "修改邮件账户信息"
-
-msgid "Error: No Email Account Selected !"
-msgstr "错误:未指定用户账号！"
-
-msgid "Error: Invalid Characters in Password"
-msgstr "错误：密码中含有非法字符"
-
-msgid "Error: Password not match"
-msgstr "错误：两次输入的密码不匹配"
-
-msgid "Password Modify Success!"
-msgstr "口令修改成功！"
-
-msgid "Error: Cannot find Email Account Info: "
-msgstr "未找到邮件帐户的用户信息："
-
-msgid "UserName"
-msgstr "账号"
-
-msgid "RealName"
-msgstr "用户姓名"
-
-msgid "New Password"
-msgstr "输入新密码"
-
-msgid "New Password again"
-msgstr "确认新密码"
 
 msgid "Admin List"
 msgstr "管理员列表"
@@ -1439,6 +1477,15 @@ msgstr "权限"
 msgid "Local Mail Domain"
 msgstr "管理本地邮件域"
 
+msgid "No Restrict"
+msgstr "不限制"
+
+msgid "Permit"
+msgstr "允许"
+
+msgid "Deny"
+msgstr "禁止"
+
 msgid "All Rights"
 msgstr "全部权限"
 
@@ -1450,9 +1497,6 @@ msgstr "只读管理员"
 
 msgid "Readonly"
 msgstr "只读"
-
-msgid "Administrator"
-msgstr "管理员"
 
 msgid "System"
 msgstr "系统管理"
@@ -1481,9 +1525,6 @@ msgstr "智能交互引擎"
 msgid "Audit"
 msgstr "邮件审计引擎"
 
-msgid "Log"
-msgstr "日志监控"
-
 msgid "Auto-Download Policy"
 msgstr "公安监管配置"
 
@@ -1510,14 +1551,17 @@ msgstr "重复口令"
 msgid "Input Password again, and must identical with first input."
 msgstr "请再次输入密码，两次密码必须相同。"
 
+msgid "Stand by format 192.168.1.1 or 192.168.1.0/24, one per line."
+msgstr "使用192.168.1.1或192.168.1.0/24这样的格式，每行一个。"
+
 msgid "Edit Administrator"
 msgstr "修改管理员信息"
 
+msgid "Admin Account"
+msgstr "管理员帐号"
+
 msgid "Leave empty if Preserve"
 msgstr "若不修改请保留空白"
-
-msgid "one per line"
-msgstr "每个一行"
 
 msgid "Error: have not input Admin username"
 msgstr "错误：未输入管理员账号"
@@ -1539,6 +1583,12 @@ msgstr "错误：未确认输入用户密码"
 
 msgid "Error: Must input Note"
 msgstr "错误：未输入备注"
+
+msgid "Error: Password not match"
+msgstr "错误：两次输入的密码不匹配"
+
+msgid "Error: Invalid Characters in Password"
+msgstr "错误：密码中含有非法字符"
 
 msgid "Error: Invalid Characters in Username"
 msgstr "错误：帐号中含有非法字符"
@@ -1567,17 +1617,74 @@ msgstr "删除管理员账号"
 msgid "Change Admin Passwd"
 msgstr "修改口令"
 
+msgid "Changing Password"
+msgstr "修改口令"
+
 msgid "Password Error, re-Input:"
 msgstr "口令错误,请重新输入"
+
+msgid "No this Admin, re-Input:"
+msgstr "无此管理员账号,请重新输入"
+
+msgid "Other Error, need DEBUG"
+msgstr "其他错误，叫系统管理员来debug"
 
 msgid "Password Format Error, re-Input:"
 msgstr "口令格式错误,请重新输入"
 
+msgid "Password Modify Success!"
+msgstr "口令修改成功！"
+
 msgid "Old Password"
 msgstr "输入旧密码"
 
+msgid "New Password"
+msgstr "输入新密码"
+
+msgid "New Password again"
+msgstr "确认新密码"
+
+msgid "Modify Email Account Info"
+msgstr "修改邮件账户信息"
+
+msgid "Error: No Email Account Selected !"
+msgstr "错误:未指定用户账号！"
+
+msgid "Password Modify Succeed!"
+msgstr "口令修改成功！"
+
+msgid "Error: Cannot find Email Account Info: "
+msgstr "未找到邮件帐户的用户信息："
+
+msgid "UserName"
+msgstr "账号"
+
+msgid "RealName"
+msgstr "用户姓名"
+
+msgid "Management IP List"
+msgstr "修改IP地址列表"
+
+msgid "IP Restriction"
+msgstr "IP限制"
+
+msgid "IP format Error, re-Input:"
+msgstr "IP地址格式错误,请重新输入"
+
+msgid "Management IP List Modify Success!"
+msgstr "IP地址列表修改成功！"
+
+msgid "Management IP Restrict"
+msgstr "IP地址限制"
+
 msgid "Sorry, This Product has no AntiVirus Engine License"
 msgstr "对不起，本系统没有防病毒邮件引擎License"
+
+msgid "AntiVirus Engine"
+msgstr "病毒识别引擎"
+
+msgid "Virus Recognise"
+msgstr "病毒识别"
 
 msgid "Sample Check"
 msgstr "抽样检查"
@@ -1589,6 +1696,9 @@ msgid "ALERT: AntiVirus Engine is OFF"
 msgstr "注意：反病毒引擎未启动"
 
 msgid "Virus Mail Treatment"
+msgstr "病毒处理"
+
+msgid "Virus Deal"
 msgstr "病毒处理"
 
 msgid "Virus Mail Subject Tag Text: "
@@ -1603,6 +1713,12 @@ msgstr "标记后通过"
 msgid "Perm. Reject"
 msgstr "永久弹回"
 
+msgid "Too Many Mails"
+msgstr "过量邮件提醒"
+
+msgid "Too Huge Mail"
+msgstr "超大邮件提醒"
+
 msgid "Sorry, This Product has no Standalone Server Mode License"
 msgstr "对不起，本系统没有独立服务器模式License"
 
@@ -1611,6 +1727,9 @@ msgstr "你目前没有任何邮件域管理权限"
 
 msgid "User Group Management"
 msgstr "用户组管理"
+
+msgid "User Management"
+msgstr "用户管理"
 
 msgid "Mail Domain"
 msgstr "邮件域"
@@ -1633,6 +1752,9 @@ msgstr "目前尚无用户组定义！"
 msgid "Current User Group List: "
 msgstr "当前用户组列表："
 
+msgid "Sorry, This Product has no Gateway Mode License"
+msgstr "对不起，本系统没有透明网关模式License"
+
 msgid "Error when fetch mail content, ErrNo: "
 msgstr "获取邮件内容时发生错误，错误代码："
 
@@ -1642,6 +1764,18 @@ msgstr "察看未解码邮件"
 msgid "View Mails Decoded"
 msgstr "察看解码邮件"
 
+msgid "To"
+msgstr "收件人"
+
+msgid "Cc"
+msgstr "抄收"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Attachments"
+msgstr "附件"
+
 msgid "Search User"
 msgstr "查找用户"
 
@@ -1650,42 +1784,6 @@ msgstr "请输入待查找的用户账号"
 
 msgid "Search"
 msgstr "查找"
-
-msgid "Maillist"
-msgstr "群发信件"
-
-msgid "New Mail Fail!"
-msgstr "无法建立信件！"
-
-msgid "Send Success !"
-msgstr "发送成功"
-
-msgid "Select Group the mail should send to, or will send to all users: "
-msgstr "请指定待发送的用户组,若不选择则信件将发给全部用户："
-
-msgid "Maillist Mail Content is Empty!"
-msgstr "群发信件内容为空!"
-
-msgid "Maillist Mail Subject is Empty!"
-msgstr "群发信件标题为空!"
-
-msgid "Admin Email Address is Empty!"
-msgstr "管理员地址为空!"
-
-msgid "Admin Email Address"
-msgstr "管理员地址"
-
-msgid "Maillist Mail Subject"
-msgstr "群发信件标题"
-
-msgid "Maillist Mail Content"
-msgstr "群发信件内容"
-
-msgid "Send Maillist"
-msgstr "发送群体信件"
-
-msgid "Add Attachment"
-msgstr "添加附件"
 
 msgid "Mail Domain User List"
 msgstr "邮件域用户列表"
@@ -1783,8 +1881,53 @@ msgstr "删除用户"
 msgid "Error: Can not find UserInfo, UserName: "
 msgstr "错误：未找到用户信息，账号为："
 
+msgid "Maillist"
+msgstr "群发信件"
+
+msgid "New Mail Fail!"
+msgstr "无法建立信件！"
+
+msgid "Send Success !"
+msgstr "发送成功"
+
+msgid "Select Group the mail should send to, or will send to all users: "
+msgstr "请指定待发送的用户组,若不选择则信件将发给全部用户："
+
+msgid "Maillist Mail Content is Empty!"
+msgstr "群发信件内容为空!"
+
+msgid "Maillist Mail Subject is Empty!"
+msgstr "群发信件标题为空!"
+
+msgid "Admin Email Address is Empty!"
+msgstr "管理员地址为空!"
+
+msgid "Admin Email Address"
+msgstr "管理员地址"
+
+msgid "Maillist Mail Subject"
+msgstr "群发信件标题"
+
+msgid "Maillist Mail Content"
+msgstr "群发信件内容"
+
+msgid "Send Maillist"
+msgstr "发送群体信件"
+
+msgid "Add Attachment"
+msgstr "添加附件"
+
+msgid "New domain is not in restrict domain list"
+msgstr ""
+
+msgid "Too many pretect domains"
+msgstr ""
+
 msgid "Disk Quota"
 msgstr "空间限额"
+
+msgid "Error"
+msgstr "错误"
 
 msgid "Delete Fail, ErrNo: "
 msgstr "删除失败，错误代码："
@@ -1828,12 +1971,6 @@ msgstr "管理系统"
 msgid "Sorry, This Product has no Policy Auto-Download Engine License"
 msgstr "对不起，本系统没有公安引擎License"
 
-msgid "Exchange Format"
-msgstr "四部委交换格式"
-
-msgid "SwitchBoard"
-msgstr "基本设置"
-
 msgid "Email Service Provider Code"
 msgstr "电子邮件供应商编码"
 
@@ -1852,8 +1989,8 @@ msgstr "本地端口"
 msgid "Email System Identifier"
 msgstr "电子邮件系统标识"
 
-msgid "Sorry, This Product has no Gateway Mode License"
-msgstr "对不起，本系统没有透明网关模式License"
+msgid "Exchange Format"
+msgstr "四部委交换格式"
 
 msgid "Mail Domain Safeguard"
 msgstr "邮件域保护"
@@ -1873,6 +2010,12 @@ msgstr "获取邮件队列时发生错误，错误代码："
 msgid "Monitor Mail Queue"
 msgstr "邮件队列监管"
 
+msgid "Gateway"
+msgstr "缺省网关"
+
+msgid "Mail Queue Monitor"
+msgstr "邮件队列监管"
+
 msgid "Mail ID"
 msgstr "邮件ID"
 
@@ -1881,9 +2024,6 @@ msgstr "发送时间"
 
 msgid "Size"
 msgstr "邮件大小"
-
-msgid "Operation"
-msgstr "操作"
 
 msgid "Select All"
 msgstr "全部选中"
@@ -1915,11 +2055,6 @@ msgstr "本设备序列号："
 msgid "Get Serial No Error! ErrNo: "
 msgstr "获取序列号时出现错误！错误代码："
 
-msgid ""
-"This Product has not get valid License, Please contact with your product "
-"provider."
-msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
-
 msgid "The License has expired"
 msgstr "许可证已经失效"
 
@@ -1932,38 +2067,29 @@ msgstr "请您首先输入"
 msgid "Cancel"
 msgstr "取消"
 
+msgid "a1top_01_en.jpg"
+msgstr "a1top_01.jpg"
+
+msgid "Customer Evaluation (Non-Sales)Edition"
+msgstr "客户试用体验（非销售）版"
+
+msgid " Expired"
+msgstr "过期"
+
 msgid "System Menu"
 msgstr "系统菜单"
 
-msgid "System Management"
-msgstr "系统管理"
-
-msgid "Upgrade"
-msgstr "升级更新"
-
-msgid "System Mode"
-msgstr "运行模式"
+msgid "Update"
+msgstr "更新"
 
 msgid "Login Restriction"
 msgstr "登录限制"
 
-msgid "Changing Password"
-msgstr "修改口令"
-
-msgid "IP Restriction"
-msgstr "IP限制"
-
 msgid "Mail Domain Protection"
 msgstr "邮件域用户管理"
 
-msgid "Mail Queue Monitor"
-msgstr "邮件队列监管"
-
 msgid "Mail Server Setting"
 msgstr "独立服务器设置"
-
-msgid "User Management"
-msgstr "用户管理"
 
 msgid "User List"
 msgstr "用户列表"
@@ -1977,38 +2103,14 @@ msgstr "隔离引擎"
 msgid "Quarantine User DB"
 msgstr "隔离用户库"
 
-msgid "Overrun Limit Engine"
-msgstr "动态限制引擎"
-
-msgid "SMTP per IP"
-msgstr "同时连接数"
-
-msgid "SMTP Frequency"
-msgstr "连接频率"
-
-msgid "AntiVirus Engine"
-msgstr "病毒识别引擎"
-
 msgid "Virus Identification"
 msgstr "病毒识别"
 
 msgid "Virus Processing"
 msgstr "病毒处理"
 
-msgid "Blacklist & Whitelist"
-msgstr "黑白名单"
-
-msgid "IP Blacklist"
-msgstr "IP黑名单"
-
-msgid "Domain Blacklist"
-msgstr "发件域黑名单"
-
-msgid "Sender Blacklist"
-msgstr "发件人黑名单"
-
-msgid "Realtime Blocklist"
-msgstr "智能实时黑名单"
+msgid "Traceable Check"
+msgstr "可追查性检查"
 
 msgid "Processing Center"
 msgstr "智能集中分析"
@@ -2022,26 +2124,14 @@ msgstr "降噪"
 msgid "Spam Processing"
 msgstr "垃圾处理"
 
-msgid "Content Filter Engine"
-msgstr "内容过滤引擎"
-
-msgid "Rules Management"
+msgid "Rule Management"
 msgstr "规则管理"
 
 msgid "Rule Group"
 msgstr "类别管理"
 
-msgid "Mail Audit Engine"
-msgstr "审计引擎"
-
-msgid "Too Huge Mail"
-msgstr "超大邮件提醒"
-
-msgid "Too Many Mails"
-msgstr "过量邮件提醒"
-
-msgid "System Status"
-msgstr "系统状态"
+msgid "Rule List"
+msgstr "规则列表"
 
 msgid "Internal Traffic"
 msgstr "内网流量图"
@@ -2067,38 +2157,74 @@ msgstr "引擎运行状态"
 msgid "Engine Load Status"
 msgstr "引擎负载状态"
 
-msgid "Log Stat."
-msgstr "日志统计"
-
-msgid "a1top_01_en.jpg"
-msgstr "a1top_01.jpg"
-
-msgid "Customer Evaluation (Non-Sales)Edition"
-msgstr "客户试用体验（非销售）版"
-
-msgid " Expired"
-msgstr "过期"
+msgid "Logout"
+msgstr "退出系统"
 
 msgid "Introduction"
 msgstr "介绍"
 
-msgid "Due to login attempts exceed maximum times, current IP:"
-msgstr "由于到达最大错误登录次数，当前IP："
-
-msgid "will not be permitted login untill "
-msgstr "被封禁到"
-
-msgid "Username or Password is invalid, please Input again"
-msgstr "用户名或密码错误,请重新输入"
-
-msgid "This User is not allow Login"
-msgstr "该账号登陆权限被禁止"
-
-msgid "This User can not Login from this IP"
-msgstr "该账号不能从此IP地址登录"
-
 msgid "Quarantine Mail"
 msgstr "隔离邮件"
+
+msgid "System Error"
+msgstr "系统错误"
+
+msgid "Database query error!"
+msgstr ""
+
+msgid "Unkown list type!"
+msgstr ""
+
+msgid "Invalid email address!"
+msgstr "非法邮件地址!"
+
+msgid "Email already in the list!"
+msgstr "邮件地址已经存在"
+
+msgid "You have max white/black user list: "
+msgstr "已达到最大黑白名单上限："
+
+msgid "Add success!"
+msgstr "添加成功"
+
+msgid "error!"
+msgstr "错误"
+
+msgid "Can't get user's white/black list!"
+msgstr "无法获取用户黑白名单！"
+
+msgid "Black list"
+msgstr "黑名单"
+
+msgid "White list"
+msgstr "IP白名单"
+
+msgid "All list"
+msgstr "全部名单"
+
+msgid "Return"
+msgstr "返回"
+
+msgid "Quarantine email white list"
+msgstr "隔离邮件白名单"
+
+msgid "Quarantine email black list"
+msgstr "隔离邮件黑名单"
+
+msgid "Quarantine email white/black list"
+msgstr "隔离邮件黑白名单"
+
+msgid "ID"
+msgstr ""
+
+msgid "Email"
+msgstr "邮件"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Add email to list: "
+msgstr "添加邮件在地址到列表："
 
 msgid "Sorry, This Product has no Quarantine Filter Engine License"
 msgstr "对不起，本系统没有隔离引擎License"
@@ -2163,6 +2289,9 @@ msgstr ""
 msgid "LDAP Time Out"
 msgstr "LDAP服务器超时"
 
+msgid "QuarantineEngine"
+msgstr "隔离"
+
 msgid "QuarantineEngineUserList"
 msgstr "隔离用户列表"
 
@@ -2184,7 +2313,7 @@ msgstr "通过"
 msgid "Unkonwn quarantine time out action"
 msgstr ""
 
-msgid "Quarantine Engine Settings"
+msgid "QuarantineEngine Settings"
 msgstr "隔离引擎设置"
 
 msgid "Quarantine Time out"
@@ -2202,38 +2331,94 @@ msgstr "隔离队列超时动作"
 msgid "Tag"
 msgstr "标记通过"
 
-#~ msgid "Update"
-#~ msgstr "更新"
+msgid "Due to login attempts exceed maximum times, current IP:"
+msgstr "由于到达最大错误登录次数，当前IP："
 
-#~ msgid "IP WhiteList"
+msgid "will not be permitted login untill "
+msgstr "被封禁到"
+
+msgid "Username or Password is invalid, please Input again"
+msgstr "用户名或密码错误,请重新输入"
+
+msgid "This User is not allow Login"
+msgstr "该账号登陆权限被禁止"
+
+msgid "This User can not Login from this IP"
+msgstr "该账号不能从此IP地址登录"
+
+msgid "Succeed"
+msgstr "成功"
+
+msgid "Logout Succeed. Please Close This Browser Window"
+msgstr "已成功退出。请关闭此窗口"
+
+#, fuzzy
+#~ msgid ","
+#~ msgstr "页，每页"
+
+#, fuzzy
+#~ msgid " disabled"
+#~ msgstr "关闭"
+
+#~ msgid "Recommended: "
+#~ msgstr "推荐值："
+
+#~ msgid "IP Whitelist"
 #~ msgstr "IP白名单"
+
+#~ msgid "IP BlackList"
+#~ msgstr "IP黑名单"
+
+#~ msgid "Domain Whitelist"
+#~ msgstr "发件域名白名单"
+
+#~ msgid "Domain BlackList"
+#~ msgstr "发件域名黑名单"
+
+#~ msgid "Sender Whitelist"
+#~ msgstr "发件人白名单"
+
+#~ msgid "Sender BlackList"
+#~ msgstr "发件人黑名单"
+
+#~ msgid "Optional Audit"
+#~ msgstr "选择审计"
+
+#~ msgid "Full Audit"
+#~ msgstr "全部审计"
+
+#~ msgid "Content Unmatched"
+#~ msgstr "未匹配规则"
+
+#~ msgid "Please Input Rule Number"
+#~ msgstr "请输入规则编号"
+
+#~ msgid "This Product has not get valid License, Please contact factory."
+#~ msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
+
+#~ msgid "one per line"
+#~ msgstr "每个一行"
+
+#~ msgid "Add Succeed !"
+#~ msgstr "添加成功"
+
+#~ msgid "Operation"
+#~ msgstr "操作"
+
+#~ msgid "IP Blacklist"
+#~ msgstr "IP黑名单"
+
+#~ msgid "Domain Blacklist"
+#~ msgstr "发件域黑名单"
+
+#~ msgid "Sender Blacklist"
+#~ msgstr "发件人黑名单"
 
 #~ msgid "Domain WhiteList"
 #~ msgstr "发件域名白名单"
 
-#~ msgid "Sender WhiteList"
-#~ msgstr "发件人白名单"
-
-#~ msgid "Engines Switches"
-#~ msgstr "引擎开关"
-
 #~ msgid "Engine Switche"
 #~ msgstr "引擎开关"
-
-#~ msgid "Outward"
-#~ msgstr "由内向外"
-
-#~ msgid "Inward"
-#~ msgstr "由外向内"
-
-#~ msgid "Virus Recognise"
-#~ msgstr "病毒识别"
-
-#~ msgid "Virus Deal"
-#~ msgstr "病毒处理"
-
-#~ msgid "QuarantineEngine"
-#~ msgstr "隔离"
 
 #~ msgid "Protect Mail Domain"
 #~ msgstr "邮件域保护设定"
@@ -2252,9 +2437,6 @@ msgstr "标记通过"
 
 #~ msgid "Policy Type"
 #~ msgstr "编号类型"
-
-#~ msgid "Op Success"
-#~ msgstr "操作成功"
 
 #~ msgid "Friendly Mails"
 #~ msgstr "正常邮件数"
