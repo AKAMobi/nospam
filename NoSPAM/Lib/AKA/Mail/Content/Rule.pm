@@ -114,7 +114,8 @@ sub check_all_rule_backend
 	my ($which_db,$mail_info) = @_;
 
 	my $has_rule;
-	foreach my $rule_id ( keys %{$self->{$which_db}} ){
+	# 规则检查顺序：以rule由小到大为序，依次检查
+	foreach my $rule_id ( sort keys %{$self->{$which_db}} ){
 		next if ( ! $rule_id );
 		#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 

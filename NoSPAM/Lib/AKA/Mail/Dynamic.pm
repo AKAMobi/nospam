@@ -200,7 +200,6 @@ sub is_overrun_rate_per_XXX
 	# protect our timer
 	$key = '__AMD_LAST_REFRESH_TIME__' if ( $key eq '_AMD_LAST_REFRESH_TIME_' );
 
-	$self->{sh}->SyncCacheSize( $self->{define}->{SyncCacheSize}||'100K' ); 
 	$self->lock_DBM;
 
 	my $namespace_obj = $self->{dynamic_info}->{$namespace};
@@ -389,6 +388,7 @@ sub attach
 	if ( ! $self->{sh} ){
 		return 0;
 	}
+	$self->{sh}->SyncCacheSize( $self->{define}->{SyncCacheSize}||'100K' ); 
 
 	return 1;
 }
@@ -483,6 +483,46 @@ sub unlock_IPC
 
 	return $self->{ipch}->shunlock;
 }
+
+sub get_dynamic_info_ns_name
+{
+	my $self = shift;
+
+	$self->attach;
+
+	return keys %{$self->{dynamic_info}};
+}
+
+sub get_dynamic_info_ns_data
+{
+	my $self = shift;
+	my $ns = shift;
+
+	$self->attach;
+
+	return $self->{dynamic_info}->{$ns};
+}
+
+sub del_dynamic_info_ns_item
+{
+	my $self = shift;
+	my ($ns,$item) = @_;
+
+	return undef unless ( $ns && $item );
+
+	$self->attach;
+
+	$self->lock_DBM;
+
+	my $ns_obj = $self->{dynamic_info}->{$ns};
+	delete 	$ns_obj->{$item};
+	$self->{dynamic_info}->{$ns} = $ns_obj;
+
+	$self->unlock_DBM;
+	
+	return 1;
+}
+
 
 sub test
 {
