@@ -8,6 +8,7 @@
 
 package AKA::Mail::AntiVirus;
 
+use AKA::Mail;
 use AKA::Mail::Log;
 use AKA::Mail::Conf;
 
@@ -121,12 +122,23 @@ sub catch_virus
 	my $is_virus = (defined $1)?0:1;
 	my $virus_name = $2 if $is_virus;
 
+	my $action = AKA::Mail::ACTION_PASS;
+
+	if ( $is_virus ){
+		if ( 'Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
+			$action = AKA::Mail::ACTION_REJECT; # 1¡¢reject£º
+		}elsif ( 'D' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
+			$action = AKA::Mail::ACTION_DISCARD; # 2¡¢discard
+		}else{ # 'N'
+			$action = AKA::Mail::ACTION_NULL;
+		}
+	}else{
+		$action = AKA::Mail::ACTION_ACCEPT;
+	}
+
 	return ( {	result	=> $is_virus,
 			desc => $virus_name||'',
-			action =>  ( 	('Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus}
-					) && $is_virus
-				 ) ? 1 : 0 ,
-
+			action => $action,
 			enabled	=> 1,
 			runned	=> 1,
 			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))

@@ -785,16 +785,6 @@ sub log_engine
 	my $self = shift;
 
 	$self->{zlog}->log_csv ( $self->{mail_info} );
-#
-# rrdtool data source
-#
-#
-#my $mail_type = {	'virus'		=>	0x000000001
-#			'spam'
-#			'content'
-#			'dynamic'
-#			,
-#	$self->{zlog}->log_ds ( $self->{mail_info} );
 }
 
 sub antivirus_engine
@@ -1054,11 +1044,22 @@ sub spam_engine
 
 	my ( $is_spam, $reason ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 
+	my $action = ACTION_PASS;
+	if ( $is_spam ) {
+		if ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ){
+			$action = ACTION_REJECT; # 1¡¢reject
+		}elsif ( 'D' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ){
+			$action = ACTION_DISCARD; # 2¡¢drop
+		}else{ #'N'
+			$action = ACTION_NULL;
+		}
+	}else{
+		$action = ACTION_ACCEPT;
+	}
+
 	$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>	$is_spam,
 							desc	=>	$reason,
-							action	=>	(
-			( $is_spam && ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ) ) 
-			? ACTION_REJECT : ACTION_PASS ) ,
+							action	=>	$action,
                       				enabled => 1,
                       				runned  => 1,
                                 		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
