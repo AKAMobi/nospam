@@ -18,10 +18,14 @@ $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 open ( WFD, ">>/var/log/chkpw.log" );
 
 if ( $smtp->auth('LOGIN', $user, $pass) ){
-	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP succ.\n" until $nolog;
+	if ( ! $nolog ) {
+		print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP succ.\n" ;
+	}
         exit 0;
 }else{
-	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP failed.\n" until $nolog;
+	if ( ! $nolog ) {
+		print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP failed.\n" ;
+	}
 }
 close ( WFD );
 
