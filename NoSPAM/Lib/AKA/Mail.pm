@@ -744,6 +744,58 @@ sub antivirus_engine
 {
 	my $self = shift;
 
+	my $start_time = [gettimeofday];
+
+	if ( 'Y' ne $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
+		return ( { 	result 	=> 0,
+				desc	=> '未启用',
+				action 	=> 0, 
+
+				enabled	=> 0,
+				runned	=> 1,
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			} );
+	}
+
+	#
+	# 判断保护方向
+	#
+	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
+		# 是“由内向外”
+		if ( $self->{conf}->{config}->{AntiVirusEngine}->{ProtectDirection}!~/Out/ ){
+			# 没有限制“由内向外”的邮件
+			$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
+					result	=>0,
+					desc	=>'内向外未检查',
+					action	=>ACTION_PASS,
+
+                  			enabled => 1,
+                     			runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return;
+		}
+
+	}else{
+		# 是“由外向内”
+		if ( $self->{conf}->{config}->{AntiVirusEngine}->{ProtectDirection}!~/In/ ){
+			# 没有限制“由外向内”的邮件
+			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
+					result  => 0,
+					desc	=>'外向内未检查',
+					action  => 0,
+
+					enabled => 1,
+					runned  => 1,
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return;
+		}
+
+	}
+
+
+
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = 
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
 
@@ -861,7 +913,7 @@ sub dynamic_engine
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => '未启动',
+	                                desc    => '未启用',
        	                         	action  => 0,
 	
                                 	enabled => 0,
@@ -1076,7 +1128,7 @@ sub content_engine_is_enabled
 
 	$self->{mail_info}->{aka}->{engine}->{content} = {
             		result  => '',
-                        desc    => '未启动',
+                        desc    => '未启用',
                         action  => 0,
 
                         enabled => 0,
