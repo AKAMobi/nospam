@@ -45,7 +45,7 @@ sub archive
 	my $self = shift;
 	my $eml_file = shift;
 
-$self->{zlog}->debug ( "archive $eml_file" );
+#$self->{zlog}->debug ( "archive $eml_file" );
 	$eml_file || return 0;
 
 	#$self->{controler} ||= new AKA::Mail::Controler;
@@ -120,19 +120,19 @@ sub print_archive_zip
 
 	my @file_list = $self->get_archive_files;
 
-	my $zip = Archive::Zip->new();
 	my $member;
-	my $status;
 
-	binmode(STDOUT);
+	my $zip = Archive::Zip->new();
 
 	foreach ( @file_list ){
 		m#(\d{8,}\.\d+)#;
+		
 		$member = $zip->addString( $self->get_exchange_data($_), "$1.log" );
 		$member->desiredCompressionMethod( COMPRESSION_DEFLATED );
-		$member->desiredCompressionLevel( COMPRESSION_LEVEL_FASTEST );
-		$status = $zip->writeToFileHandle( STDOUT );
+		$member->desiredCompressionLevel( COMPRESSION_LEVEL_DEFAULT );
 	}
+
+	my $status = $zip->writeToFileHandle( STDOUT, 0 );
 
 	1;
 }
