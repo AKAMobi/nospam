@@ -1,37 +1,5 @@
 --- Simple.orig.pm       2004-02-19 17:47:57.000000000 +0800
 +++ Simple.pm   2004-02-19 18:08:52.000000000 +0800
-@@ -873,6 +873,7 @@
-   }
-   elsif($self->{opt}->{normalisespace} == 2) {
-     while(my($key, $value) = each %$attr) {
-+      $key = lc ( $key );
-       $attr->{$key} = $self->normalise_space($value)
-     }
-   }
-@@ -882,6 +883,7 @@
- 
-   if(my $var = $self->{_var_values}) {
-     while(my($key, $val) = each(%$attr)) {
-+      $key = lc ( $key );
-       $val =~ s{\$\{(\w+)\}}{ $self->get_var($1) }ge;
-       $attr->{$key} = $val;
-     }
-@@ -893,6 +895,7 @@
-   my($key, $val);
-   while(@_) {
-     $key = shift;
-+    $key = lc ( $key );
-     $val = shift;
- 
-     if(ref($val)) {
-@@ -929,6 +932,7 @@
-         );
-       }
-       $key = $self->{opt}->{contentkey};
-+      $key = lc ( $key );
-     }
- 
- 
 @@ -973,9 +977,14 @@
    my $count = 0;
    if($self->{opt}->{keyattr}) {
@@ -48,35 +16,3 @@
        $count++;
      }
    }
-@@ -991,6 +1000,7 @@
-       my($child_key, $child_val) =  %$val;
- 
-       if($self->{opt}->{grouptags}->{$key} eq $child_key) {
-+       $key = lc ( $key );
-         $attr->{$key}= $child_val;
-       }
-     }
-@@ -1095,6 +1105,7 @@
-   if(ref($self->{opt}->{keyattr}) eq 'HASH') {
-     return($arrayref) unless(exists($self->{opt}->{keyattr}->{$name}));
-     ($key, $flag) = @{$self->{opt}->{keyattr}->{$name}};
-+    $key = lc ( $key );
-     for($i = 0; $i < @$arrayref; $i++)  {
-       if(UNIVERSAL::isa($arrayref->[$i], 'HASH') and
-          exists($arrayref->[$i]->{$key})
-@@ -1191,6 +1202,7 @@
- 
-   # now collapse them
-   foreach my $key (keys %$hashref) {
-+    $key = lc ( $key );
-     $hashref->{$key}=  $hashref->{$key}->{$contentkey};
-   }
- 
-@@ -1274,6 +1286,7 @@
-     if($self->{opt}->{grouptags}) {
-       while(my($key, $val) = each %$ref) {
-         if($self->{opt}->{grouptags}->{$key}) {
-+          $key = lc ( $key );
-           $ref->{$key} = { $self->{opt}->{grouptags}->{$key} => $val };
-         }
-       }
