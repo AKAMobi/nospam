@@ -81,7 +81,7 @@ function initSelect()
 			oOption.selected = true;
 		}
 	}
-	document.all.eHour.options(0).selected= true;
+	//document.all.eHour.options(0).selected= true;
 }
 
 function genDate(iYear, iMonth)
