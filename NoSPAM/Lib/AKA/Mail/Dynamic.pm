@@ -348,11 +348,11 @@ sub check_quota_exceed_ex
         if ( $num_counter > $num ) {
 		# limit OVERRUN! EXCEED!
 		$ns_obj_who->{_DENY_TO_} = time+$deny_sec;
-		return (1,__("mail overrun"));
+		return (1,__(" overrun"));
         }
 
 	# we still have quota!
-	return (0,__("passed"));
+	return (0,__(" passed"));
 }
 
 
