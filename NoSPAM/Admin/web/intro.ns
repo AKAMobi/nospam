@@ -21,7 +21,7 @@ if( ($ret=wi("get_Serial",$result))==0 ){
 if(!file_exists(LICENSE)){
 ?>
 <p> 本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。 </p>
-<form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
+<form action="system/upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
   <input type="file" name="license">
   <input type="submit" name="Submit" value="提交">
 </form>
