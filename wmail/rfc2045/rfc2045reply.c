@@ -865,41 +865,48 @@ static int mkreply(struct rfc2045_mkreplyinfo *ri)
 ** message).
 */
 
-static struct rfc2045 *do_mixed_fwd(struct rfc2045 *p, off_t *f)
-{
+static struct rfc2045 *do_mixed_fwd_inner(struct rfc2045 *p, off_t *f) {
+	
 const char *content_type, *dummy;
+struct rfc2045 *q;
 off_t	dummyp;
-
-	if (!p->firstpart || !p->firstpart->isdummy ||
-		!p->firstpart->next || !p->firstpart->next->next)
-		return (0);
-
-	rfc2045_mimepos(p->firstpart->next->next, f, &dummyp, &dummyp,
-		&dummyp, &dummyp);
-
-	p=p->firstpart->next;
-
-	rfc2045_mimeinfo(p, &content_type, &dummy, &dummy);
-
-	if (strcmp(content_type, "text/plain") &&
-		strcmp(content_type, "text/html") /* GRUMBLE */)
-	{
-		if (strcmp(content_type, "multipart/alternative"))
-			return (0);
-
-		for (p=p->firstpart; p; p=p->next)
-		{
-			if (p->isdummy)	continue;
-
-			rfc2045_mimeinfo(p, &content_type, &dummy, &dummy);
-			if (strcmp(content_type, "text/plain") == 0)
-				break;
+	if (!p) return (0);
+	do {
+		if (p->isdummy) continue;
+		rfc2045_mimeinfo(p, &content_type, &dummy, &dummy);
+		
+		if ( (strcmp(content_type, "text/plain")==0) ||
+			(strcmp(content_type, "text/html")==0) )  {
+			if (!p->next) 
+				break;	
+		
+			rfc2045_mimepos(p->next, f, &dummyp, &dummyp,
+				&dummyp, &dummyp);
+			break;
 		}
-		if (!p)	return (0);
-	}
-	return (p);
+		if ( (strcmp(content_type, "multipart/alternative")) &&
+			(strcmp(content_type, "multipart/related")) )
+			return (0);
+		if (q=do_mixed_fwd_inner(p->firstpart,f)) {
+			if (!(p->next))
+				return q;	
+
+			rfc2045_mimepos(p->next, f, &dummyp, &dummyp,
+				&dummyp, &dummyp);
+			return q;
+		}
+
+	} while (p=p->next) ;
+	return p;
 }
 
+static struct rfc2045 *do_mixed_fwd(struct rfc2045 *p, off_t *f) {
+	struct rfc2045 * q;
+	*f=0;
+	q=do_mixed_fwd_inner(p->firstpart,f);
+	if (*f) return q;
+	return (0);
+}
 /*
 ** Accept a list of recipients, and return a list that contains only those
 ** recipients that are defined as mailing lists.
