@@ -594,19 +594,11 @@ sub reset_Network_update_ismtp_relay
 	my @relays = <FD>;
 	close FD;
 
-	my %relay_hash;
-
-	my ($relay_ip, $relay_setting);
-	foreach ( @relays ){
-		($relay_ip, $relay_setting) = split (/:/,$_,2);
-		$relay_hash{$relay_ip} = $relay_setting if ( $relay_ip && $relay_setting );
-	}
+	@relays = grep (!/^$/, @relays);
+	@relays = grep (!/^$IP/, @relays);
+	unshift( @relays, "$IP:allow,RELAYCLIENT=\"\"\n" );
 	
-	$relay_hash{$IP} = "allow,RELAYCLIENT=\"\"";
-
-	my $content = '';
-	$content .= "$_:$relay_hash{$_}" foreach keys %relay_hash;
-
+	my $content = join('',@relays);
 	$ret = write_file($content, '/service/ismtpd/tcp');
 
 	return 20 if ( $ret );
@@ -626,7 +618,9 @@ sub reset_Network_update_rcpthosts
 	my @domains = <FD>;
 	close FD;
 
-	push ( @domains, "\n$Domain" ) if ( ! grep ( /^$Domain$/, @domains ) );
+	@domains = grep (!/^$/, @domains);
+	@domains = grep (!/^$Domain$/, @domains);
+	unshift( @domains, "$Domain\n" );
 	
 	my $content = join('',@domains);
 
@@ -676,6 +670,7 @@ sub write_file
 	return 60;
 }
 
+# FIXME: delete old one
 sub reset_Network_update_smtproutes_gateway
 {
 	my $Domain = $conf->{config}->{MailServerHostname} ;
@@ -683,8 +678,8 @@ sub reset_Network_update_smtproutes_gateway
 
 	my $ret=0;
 
-	# get real email domain 
-	$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
+	# no need to do this here: get real email domain 
+	#$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
 
 	return 10 unless ( $Domain && $IP );
 
@@ -693,16 +688,11 @@ sub reset_Network_update_smtproutes_gateway
 	my @smtproutes = <FD>;
 	close ( FD );
 
-	my $content = '';
-	my $exist = 0;
-	foreach ( @smtproutes ){
-		if (/^$Domain:$IP/ ){
-			$exist = 1;
-		}
-		$content .= "$_";
-	}
-
-	$content .= "$Domain:$IP\n" unless ( $exist );
+	@smtproutes = grep (!/^$/, @smtproutes);
+	@smtproutes = grep (!/^$Domain:$IP/, @smtproutes);
+	unshift( @smtproutes, "$Domain:$IP\n" );
+	
+	my $content = join('',@smtproutes);
 
 	$ret = write_file( $content, "/var/qmail/control/smtproutes" );
 	return 30 if $ret;
