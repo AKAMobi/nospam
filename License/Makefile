@@ -1,9 +1,9 @@
 all: lib
-	gcc -o a.out test.c -L. -lmd5
+	gcc -o a.out test.c -L. -lakalicense
 
-lib:	mddriver.c md5c.c 
-	gcc -c mddriver.c md5c.c
-	ar cr libmd5.a mddriver.o md5c.o
-	ranlib libmd5.a
+lib:	license.c
+	gcc -c license.c
+	ar cr libakalicense.a license.o md5/*.o
+	ranlib libakalicense.a
 
 

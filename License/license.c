@@ -190,6 +190,7 @@ int check_license_file ( const char* filepath )
 	return 0;
 }
 
+/*
  main (argc, argv) 
 	register int argc; 
 	register char *argv[]; 
@@ -210,3 +211,4 @@ int check_license_file ( const char* filepath )
 }
 
 
+*/
