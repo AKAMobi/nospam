@@ -1,0 +1,11 @@
+<?
+require_once("../inc/include.ns");
+
+$sTime = $_GET["s"];
+$eTime = $_GET["e"];
+
+if(($ret=wi("get_LogSimpleAnaylize $sTime $eTime",$result))!=0)
+	die("´íÎó´úÂë£º$ret");
+
+
+?>

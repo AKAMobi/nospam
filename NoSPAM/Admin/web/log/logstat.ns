@@ -1,0 +1,28 @@
+<?
+require_once("../inc/include.ns");
+?>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+function genDate()
+{
+	
+}
+function showStat()
+{
+}
+</script>
+</head>
+<body>
+Í³¼Æ¿ªÊ¼Ê±¼ä£º
+<select id="sYear" name="sYear"></select>Äê
+<select id="sMonth" name="Month"></select>ÔÂ
+
+Í¼Æ½áÊøÊ±¼ä£º<input type="text" id="eDay" name="eDay" size="2">ÈÕ<input type="text" id="eHour" name="eHour" size="2">Ê±£¨24Ð¡Ê±ÖÆ£¬ÄêÔÂÒÔµ±ÌìÎª×¼£©
+<br>
+<input type="button" value="²ì¿´½á¹û" onclick="showStat()">
+<div id="stat" name="stat"></div>
+<iframe id="statFrame" name="statFrame" style="display: none"></iframe>
+</body>
+</html>

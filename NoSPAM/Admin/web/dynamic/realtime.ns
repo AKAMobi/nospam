@@ -1,0 +1,281 @@
+<?
+require_once('../inc/include.ns');
+
+/*if(wi("get_DynamicEngineDBKey",$Keys)!=0)
+	die("无法连接引擎数据库");*/
+
+$Keys = array(
+			"IP,IP地址",
+			"Subject,邮件主题",
+			"From,发件人"
+			);
+switch($_GET["action"]){
+	case "del":
+	del();
+	exit();
+	break;
+	case "flush":
+	flushdb();
+	exit();
+	break;
+}
+
+switch($_GET["option"]){
+	case "From":
+	$sKey = $Keys[2];
+	$sOption = "From";
+	break;
+	case "Subject":
+	$sKey = $Keys[1];
+	$sOption = "Subject";
+	break;
+	default:
+	$sKey = $Keys[0];
+	$sOption = "IP";
+}
+
+list($Key,$column) = explode(",",$sKey);
+
+/*if(($ret = wi("get_DynamicEngineDBData $Key",$Data))!=0)
+	die("错误代码：$ret");*/
+$fp = fopen('test.txt','r');
+$str = fread($fp,filesize('test.txt'));
+fclose($fp);
+
+$Data = explode("\n",$str);
+
+$iSize = count($Data);
+$pagenum = $_GET["pagenum"];
+if(!$pagenum || $pagenum < 1)
+	$pagenum = PAGENUM;
+
+if($iSize == 0)
+	$pages = 1;
+else
+	$pages = $iSize%$pagenum? intval(($iSize/$pagenum)+1):intval(($iSize/$pagenum));
+
+$page = $_GET['page'];
+if(!$page || $page < 1)
+	$page = 1;
+if($page > $pages)
+	$page = $pages;
+
+$rData = array_slice($Data, ($page-1)*$pagenum, $pagenum);
+$start = ($page-1)*$pagenum+1;
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>动态引擎实时管理</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+<script>
+function jump()
+{
+	page = document.all.oPage.value;
+	pagenum = document.all.oPagenum.value;
+	location.href="<?=$_SERVER['PHP_SELF']."?option=$sOption"?>&page="+page+"&pagenum="+pagenum;
+}
+
+function flush()
+{
+	if(confirm("即将清空数据库，确定吗？")){
+		location.href="<?=$_SERVER['PHP_SELF']."?option=$sOption"?>&name=<?=$column?>&action=flush";
+	}
+}
+</script>
+</head>
+<body>
+<div align="center">
+<input type="button" value="发件人" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="主题" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="IP" onclick="location.href='realtime.ns?option=IP'">
+</div>
+<form action="<?="?option=$sOption&page=$page&pagenum=$pagenum&action=del"?>" method="post">
+<table class="sort-table" id="table-1" cellspacing="0">
+<thead>
+<tr>
+	<td>选择</td>
+	<td>编号</td>
+	<td><?=$column?></td>
+	<td>解封时间</td>
+	<td>发送次数</td>
+	<td>删除</td>
+	<td>发送记录</td>
+</tr>
+</thead>
+<tbody>
+<?
+if(count($rData)>0){
+	$i = 0;
+	foreach($rData as $line){
+		$className = $i%2? "RuleTB2":"RuleTB1";
+		$value = explode(",",$line);
+		$Content = $value[0];
+		if(trim($value[1])=="")
+			$OpenTime = "未封禁";
+		else
+			$OpenTime = date("Y-m-d H:i:s",intval($value[1]));
+		$SendTime = array_slice($value, 2);
+		$SendCount = count($SendTime);
+?>
+<tr class="<?=$className?>">
+	<td><input type="checkbox" name="key[]" value="<?=htmlentities($Content,ENT_COMPAT)?>"></td>
+	<td><?=$start?></td>
+	<td><?=$Content?></td>
+	<td><?=$OpenTime?></td>
+	<td><?=$SendCount?></td>
+	<td><input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=$sOption&page=$page&pagenum=$pagenum&action=del&key=".urlencode($Content)?>'"></td>
+	<td>
+<?
+		foreach($SendTime as $j=>$iTime){
+			echo date("Y-m-d H:i:s",intval($iTime));
+			if($j < ($SendCount-1))
+				echo "<br>";
+		}
+?>
+	</td>
+</tr>
+<?
+		$i++;$start++;
+	}
+}
+?>
+</tbody>
+</table>
+<script>
+<?
+switch($sOption){
+	case "From":
+	$sort = "Email";
+	break;
+	case "Subject":
+	$sort = "String";
+	case "IP":
+	$sort = "IP";
+}
+?>
+var st = new SortableTable(document.getElementById("table-1"),
+		["None", "Number", "<?=$sort?>", "String", "Number", "None", "None"]);
+
+function addClassName(el, sClassName) {
+    var s = el.className;
+    var p = s.split(" ");
+    var l = p.length;
+    for (var i = 0; i < l; i++) {
+        if (p[i] == sClassName)
+            return;
+    }
+    p[p.length] = sClassName;
+    el.className = p.join(" ");
+
+}
+function removeClassName(el, sClassName) {
+    var s = el.className;
+    var p = s.split(" ");
+    var np = [];
+    var l = p.length;
+    var j = 0;
+    for (var i = 0; i < l; i++) {
+        if (p[i] != sClassName)
+            np[j++] = p[i];
+    }
+    el.className = np.join(" ");
+}
+st.onsort = function () {
+    var rows = st.tBody.rows;
+    var l = rows.length;
+    for (var i = 0; i < l; i++) {
+        removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
+        addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+    }
+};
+</script>
+<table border="0" width="100%">
+<tr><td align="center">
+<input type="button" value="<?=$column?>数据库重置" onclick="flush()">
+<input type="submit" name="submit" value="批量删除">
+</td>
+<td align="right">
+<?
+echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=1&pagenum=$pagenum'>&lt;&lt;</a>&nbsp;";
+if($page == 1)
+	echo "&lt;&nbsp;";
+else
+	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=".($page-1)."&pagenum=$pagenum'>&lt;</a>&nbsp;";
+
+for($i = 1; $i <= $pages; $i++){
+	if($i == $page)
+		echo $i."&nbsp;";
+	else
+		echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=$i&pagenum=$pagenum'>$i</a>&nbsp;";
+}
+
+if($page == $pages)
+	echo "&gt;&nbsp;";
+else
+	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
+echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
+?>
+跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?
+for($i = 1; $i <= $pages; $i++){
+	if($i == $page)
+		echo "<option value='$i' selected>$i";
+	else
+		echo "<option value='$i'>$i";
+}
+?>
+</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+<?
+for($i = 10; $i <= 50; $i+=10){
+	if($i == $pagenum)
+		echo "<option value='$i' selected>$i";
+	else
+		echo "<option value='$i'>$i";
+}
+?>
+</select>条记录
+</td></tr>
+</table>
+</form>
+</body>
+</html>
+<?
+
+function del()
+{
+	$Option = $_GET['option'];
+	$key = $_REQUEST["key"];
+	if(is_array($key)){
+		if(count($key)>0){
+			foreach($key as $tmp){
+				$rawKey = html_entity_decode($tmp);
+				$sKey = escapeshellarg($rawKey);
+				if(($ret=wi("del_DynamicEngineKeyData $Option $sKey",$result))==0)
+					header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
+				else
+					die("删除$Option为$rawKey的记录时出现错误，错误代码：$ret");
+			}
+		}
+	}else{
+		$rawKey = urldecode($key);
+		$sKey = escapeshellarg($rawKey);
+		if(($ret=wi("del_DynamicEngineKeyData $Option $sKey",$result))==0)
+			header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
+		else
+			die("删除$Option为$rawKey的记录时出现错误，错误代码：$ret");
+	}
+}
+
+function flushdb()
+{
+	$Option = $_GET['option'];
+	$name = $_GET['name'];
+	if(($ret=wi("clean_DynamicEngineKey $Option",$result))==0)
+		echo "数据库清空成功！";
+	else
+		echo "清空数据库".$name."失败，错误代码：$ret";
+}
+?>
