@@ -83,7 +83,7 @@ extern char *scriptptrget();
 extern char *xlate_mdir(const char *foldername);
 extern int countcurnew(const char *, time_t *, off_t *, unsigned *);
 void list_folder_xlate(const char *p, const char *n_inbox, const char *n_drafts,
-	const char *n_sent, const char *n_trash);
+	const char *n_sent, const char *n_trash, const char *n_spam);
 
 void print_safe_len(const char *p, size_t n, void (*func)(const char *, size_t))
 {
@@ -133,19 +133,21 @@ void folder_contents_title()
 {
 const char *lab;
 const char *f;
-const char *inbox_lab, *drafts_lab, *trash_lab, *sent_lab;
+const char *inbox_lab, *drafts_lab, *trash_lab, *sent_lab,*spam_lab;
 
 	lab=getarg("FOLDERTITLE");
 	inbox_lab=getarg("INBOX");
 	drafts_lab=getarg("DRAFTS");
 	trash_lab=getarg("TRASH");
 	sent_lab=getarg("SENT");
+	spam_lab=getarg("SPAM");
 
 	f=sqwebmail_folder;
 	if (strcmp(f, INBOX) == 0)	f=inbox_lab;
 	else if (strcmp(f, DRAFTS) == 0)	f=drafts_lab;
 	else if (strcmp(f, SENT) == 0)	f=sent_lab;
 	else if (strcmp(f, TRASH) == 0)	f=trash_lab;
+	else if (strcmp(f, SPAM) == 0 ) f=spam_lab;
 
 	if (lab)
 	{
@@ -282,7 +284,7 @@ const char	*qerrmsg;
         
 	printf("<TABLE WIDTH=\"100%%\" CLASS=\"csmtype\" BGCOLOR=\"#93BEE2\" BORDER=0 CELLPADDING=2 CELLSPACING=1>\n");
 	printf("<TR><TD WIDTH=5%%></TD><TD WIDTH=25%%>%s", getarg("CURPOS"));
-	list_folder_xlate(dir, getarg("INBOX"), getarg("DRAFTS"), getarg("SENT"), getarg("TRASH"));
+	list_folder_xlate(dir, getarg("INBOX"), getarg("DRAFTS"), getarg("SENT"), getarg("TRASH"),getarg("SPAM"));
 	printf("</TD><TD WIDTH=25%%>");
 	printf(getarg("MAILMSG"), msg_total, msg_new);
 	printf("</TD><TD WIDTH=25%%>%s%d &nbsp;", getarg("PAGETOTAL"), 
@@ -574,6 +576,7 @@ static const char	*folder_inbox=0;
 static const char	*folder_drafts=0;
 static const char	*folder_trash=0;
 static const char	*folder_sent=0;
+static const char	*folder_spam=0;
 static const char	*msg_golab=0;
 
 static const char *msg_msglab;
@@ -683,6 +686,7 @@ void folder_initnextprev(const char *dir, size_t pos)
 	folder_drafts=getarg("DRAFTS");
 	folder_trash=getarg("TRASH");
 	folder_sent=getarg("SENT");
+	folder_spam=getarg("SPAM");
 
 	p=getarg("CREATEFAIL");
 	if (strcmp(cgi("error"),"quota") == 0)
@@ -928,7 +932,8 @@ void list_folder_xlate(const char *p,
 		       const char *n_inbox,
 		       const char *n_drafts,
 		       const char *n_sent,
-		       const char *n_trash)
+		       const char *n_trash,
+		       const char *n_spam)
 {
 	if (strcmp(p, INBOX) == 0)
 		printf("%s", n_inbox);
@@ -938,6 +943,8 @@ void list_folder_xlate(const char *p,
 		printf("%s", n_trash);
 	else if (strcmp(p, SENT) == 0)
 		printf("%s", n_sent);
+	else if (strcmp(p, SPAM) == 0)
+		printf("%s", n_spam);
 	else
 		list_folder(p);
 }
@@ -978,6 +985,8 @@ int	has_shared=0;
 			p=folder_trash;
 		else if (strcmp(p, SENT) == 0)
 			p=folder_sent;
+		else if (strcmp(p, SPAM) == 0)
+			p=folder_spam;
 		if (!p)	p=folders[i];
 
 		if (folders[i][0] == ':')
@@ -2887,6 +2896,7 @@ const char	*name_inbox;
 const char	*name_drafts;
 const char	*name_sent;
 const char	*name_trash;
+const char	*name_spam;
 // by lfan
 //const char	*folder_img;
 //const char	*folders_img;
@@ -2906,6 +2916,7 @@ int     	refresh_left = 0;
 	name_drafts=getarg("DRAFTS");
 	name_sent=getarg("SENT");
 	name_trash=getarg("TRASH");
+	name_spam=getarg("SPAM");
 	// by lfan
 	//folder_img=getarg("FOLDERICON");
 	//folders_img=getarg("FOLDERSICON");
@@ -3251,7 +3262,8 @@ int     	refresh_left = 0;
 		
 		printf("<TR BGCOLOR=\"#FFFFFC\" ALIGN=CENTER><TD ALIGN=RIGHT>");
                 if(strcmp(folders[i], INBOX) && strcmp(folders[i], DRAFTS) &&
-                   strcmp(folders[i], TRASH) && strcmp(folders[i], SENT)) {
+                   strcmp(folders[i], TRASH) && strcmp(folders[i], SENT) && 
+		   strcmp(folders[i], SPAM) ) {
 			printf("<INPUT BORDER=0 TYPE=\"radio\" NAME=\"DELETE\" VALUE=\"");
 			output_attrencoded(folders[i]);
 			printf("\">&nbsp;");
@@ -3274,6 +3286,8 @@ int     	refresh_left = 0;
 			shortname=name_trash;
 		else if (strcmp(folders[i], SENT) == 0)
 			shortname=name_sent;
+		else if (strcmp(folders[i], SPAM) == 0)
+			shortname=name_spam;
 		list_folder(shortname);
 
 		if (!isunsubscribed)
@@ -3349,6 +3363,10 @@ void folder_list3()
                 else if (strcmp(folders[i], SENT) == 0) {
 	                shortname=getarg("SENT");
 	                img = getarg("SENTICON");
+	        }
+                else if (strcmp(folders[i], SPAM) == 0) {
+	                shortname=getarg("SPAM");
+	                img = getarg("SPAMICON");
 	        }
                 else
 	                img = getarg("FOLDERICON");
@@ -3579,6 +3597,7 @@ void folder_showtransfer()
 	folder_drafts=getarg("DRAFTS");
 	folder_trash=getarg("TRASH");
 	folder_sent=getarg("SENT");
+	folder_spam=getarg("SPAM");
 
 	printf("<INPUT TYPE=HIDDEN NAME=pos VALUE=%s> ", cgi("pos"));
 	printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddel VALUE=\"%s\"> ",
