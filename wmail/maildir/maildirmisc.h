@@ -32,6 +32,7 @@ static const char maildirmisc_h_rcsid[]="$Id$";
 #define	DRAFTS	"Drafts"
 #define	SENT	"Sent"
 #define	TRASH	"Trash"
+#define SPAM	"Spam"
 
 #define	SHAREDSUBDIR	"shared-folders"
 
