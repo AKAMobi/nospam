@@ -55,15 +55,11 @@ if(!file_exists(LICENSE)){
 	}
 }
 
-if($_GET["dul"] == "Yes" || 0!=$ret){
 ?>
 <?=_("Upload License")?>:
 <form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
   <input type="file" name="license">
   <input type="submit" name="Submit" value="<?=_("Upload")?>">
 </form><br>
-<?
-}
-?>
 </body>
 </html>
