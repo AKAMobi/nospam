@@ -513,7 +513,8 @@ sub check_single_keyword_rule
 
 	# XXX fix it, or find out reason.
 	if ( ! length($mail_info->{body_text}) ){
-		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
+		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type mail_info has no body_text" );
+		#$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
 	}
 	if ( 1==$match_key ){ #1主题包含关键字
 		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type );

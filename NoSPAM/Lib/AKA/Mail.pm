@@ -14,6 +14,8 @@ use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Errno;
 use IO::Socket;
 
+use POSIX qw(:signal_h :errno_h :sys_wait_h);
+
 use AKA::License;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
@@ -97,6 +99,8 @@ sub server
 	my $client;
 	my $pid;
 
+	#local $SIG{CHLD} = \&REAPER;
+	local $SIG{CHLD} = 'IGNORE';
 	while ( $client = $server->accept() ){
 		if (!$client) {
 		# this can happen when interrupted by SIGCHLD on Solaris,
@@ -120,6 +124,23 @@ sub server
 			$self->{zlog}->fatal ( "Mail::server fork return < 0? [$pid]" );
 		}
 	}
+
+	sub REAPER {
+		my $pid;
+
+		$pid = waitpid(-1, &WNOHANG);
+
+		if ($pid == -1) {
+			# no child waiting.  Ignore it.
+		} elsif (WIFEXITED($?)) {
+			print "Process $pid exited.\n";
+		} else {
+			print "False alarm on $pid.\n";
+		}
+		$SIG{CHLD} = \&REAPER;          # in case of unreliable signals
+	}
+
+
 }
 
 sub net_process
@@ -132,35 +153,48 @@ sub net_process
 		return;
 	}
 
+print "\n#####################################\n";
 	$_ = <$socket>; chomp;
-	print "$_\n";
+	print "RELAYCLIENT: [$_]\n";
 	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
 
 	$_ = <$socket>; chomp;
-	print "$_\n";
-	$self->{mail_info}->{aka}->{REMOTEIP} = $_;
+	print "TCPREMOTEIP: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
 
 	$_ = <$socket>; chomp;
-	print "$_\n";
-	$self->{mail_info}->{aka}->{REMOTEINFO} = $_;
+	print "TCPREMOTEINFO: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
 
 	$_ = <$socket>; chomp;
-	print "$_\n";
+	print "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <$socket>; chomp;
-	print "$_\n";
+	print "fd1: [$_]\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
 
-open ( FD, ">/tmp/srv.debug" );
+open ( FD, ">>/tmp/srv.debug" );
 use Data::Dumper;
+print FD "mail_info.req\@srv\n";
 print FD Dumper ($self->{mail_info}->{aka} );
-close FD;
+print "<<<<processing...>>>\n";
 	$self->process ( $self->{mail_info} );
 
+	print "\n";
+
+	print "smtp_code: [" . $self->{mail_info}->{aka}->{resp}->{smtp_code} . "]\n";
 	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_code} . "\n";
+
+	print "smtp_info: [" . $self->{mail_info}->{aka}->{resp}->{smtp_info} . "]\n";
 	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_info} . "\n";
+
+	print "exit_code: [" .$self->{mail_info}->{aka}->{resp}->{exit_code} . "]\n";
 	print $socket $self->{mail_info}->{aka}->{resp}->{exit_code} . "\n";
+
+print FD "mail_info.resp\@srv\n";
+print FD Dumper ($self->{mail_info}->{aka} );
+close FD;
 	
 }
 
@@ -653,7 +687,7 @@ sub spam_engine
 
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 1;
 	
-	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{REMOTEINFO} ){
+	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
 		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
 							desc	=>'可追查检查',
 							action	=>ACTION_PASS,
@@ -719,7 +753,7 @@ sub dynamic_engine
 		return;
 	}
 
-	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{REMOTEINFO} ){
+	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
 		$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 						result	=>0,
 						desc	=>'本地用户',

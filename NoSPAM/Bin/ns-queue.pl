@@ -85,16 +85,15 @@ my $DEBUG='1';
 use POSIX qw(strftime);
 use Time::HiRes qw(gettimeofday tv_interval );
 
+# CORE DATA STRUCTURE
 my $mail_info;
+
 # 判断是否由内向外发的mail
-my $ins_queue = 0;
 if ( defined $ENV{RELAYCLIENT} ){
 	$mail_info->{aka}->{RELAYCLIENT} = $ENV{RELAYCLIENT};
-	$ins_queue = 1 ;
 }elsif (defined $ENV{TCPREMOTEINFO}){
 	# 如果经过身份认证，则 TCPREMOTEINFO 内存的是用户名
 	$mail_info->{aka}->{TCPREMOTEINFO} = $ENV{TCPREMOTEINFO};
-	$ins_queue = 2 ;
 }
 
 umask(0022);
@@ -135,7 +134,7 @@ my $xstatus=0;
 #double-delivery...
 
 eval {
-  $SIG{ALRM} = sub { die "Maximum time exceeded. Something cannot handle this message." };
+  local $SIG{ALRM} = sub { die "Maximum time exceeded. Something cannot handle this message." };
   alarm $MAXTIME;
 
   delete $ENV{'QMAILQUEUE'};
@@ -143,17 +142,15 @@ eval {
   #This SMTP session is incomplete until we see dem envelope headers!
   &grab_envelope_hdrs;
 
+  # FIXME get qmail-queue err ret code
   &AKA_engine_run;
   
-  &qmail_parent_check;
-
-  if ( $mail_info->{aka}->{resp} ){
+  if ( length($mail_info->{aka}->{resp}->{smtp_code}) ){
 	my $smtp_code = $mail_info->{aka}->{resp}->{smtp_code};
 	my $smtp_info = $mail_info->{aka}->{resp}->{smtp_info};
 	my $exit_code = $mail_info->{aka}->{resp}->{exit_code};
 	&error_condition ( "$smtp_code $smtp_info", $exit_code );
   }
-
 
   alarm 0;
 };
@@ -214,13 +211,17 @@ sub AKA_engine_run {
   $start_time=[gettimeofday];
 
   #&check_license;
+use Data::Dumper;
+print LOG "mail_info.orig\@ns-queue\n";
+print LOG Dumper($mail_info);
 
+
+  &qmail_parent_check;
   $mail_info = $AMC->net_process( $mail_info );
 
-open ( FD, ">/tmp/zixia.debug" );
 use Data::Dumper;
-print FD Dumper($mail_info);
-close FD;
+print LOG "mail_info.result\@ns-queue\n";
+print LOG Dumper($mail_info);
 
   my $run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
 

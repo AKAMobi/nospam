@@ -34,8 +34,8 @@ sub net_process
         }
 
 	print $socket ($mail_info->{aka}->{RELAYCLIENT}?1:0) . "\n";
-	print $socket $mail_info->{aka}->{REMOTEIP} . "\n";
-	print $socket $mail_info->{aka}->{REMOTEINFO} . "\n";
+	print $socket $mail_info->{aka}->{TCPREMOTEIP} . "\n";
+	print $socket $mail_info->{aka}->{TCPREMOTEINFO} . "\n";
 	print $socket $mail_info->{aka}->{emlfilename} . "\n";
 	print $socket $mail_info->{aka}->{fd1}  . "\n";
 

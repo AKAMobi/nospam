@@ -121,6 +121,8 @@ sub log_csv {
 	my $esc_subject = $mail_info->{aka}->{subject} || '';
 	$esc_subject =~ s/,/_/g;
 	$esc_subject = ' ' . $esc_subject . ' ';
+	my $recips = $aka->{recips};
+	$recips =~ s/,/£¬/g;
 
 	if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
 		flock(LFD,LOCK_EX);
@@ -128,9 +130,12 @@ sub log_csv {
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
 		print LFD time
 # ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-			. ',' . ((defined $aka->{RELAYCLIENT})?'1':'0') 
+			. ',' . ( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
+						|| 
+					($aka->{RELAYCLIENT})
+				) ?'1':'0'
 			. ',' . $aka->{TCPREMOTEIP} . ',' . $aka->{returnpath} 
-				. ',' . $aka->{recips} . ',' . $esc_subject
+				. ',' . $recips . ',' . $esc_subject
 
 			. ',' . $engine->{spam}->{result} 
 				. ',' . $engine->{spam}->{desc} 

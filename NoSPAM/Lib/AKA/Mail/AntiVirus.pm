@@ -97,7 +97,7 @@ sub catch_virus
 	}else{
 		# XXX pass virus for performance problem
 		return ( {	result	=> 0,
-				desc => '重起中',
+				desc => '更新中',
 				action =>  0,
 
 				enabled	=> 1,
