@@ -199,28 +199,25 @@ sub check_file_socket_tcp
 	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
 	alarm $old_alarm;
 	
+	shutdown ( $conn, 2 );
+	close $conn;
+
 	if ($alarm_status and $alarm_status ne "" ) { 
-		$self->{zlog}->debug ( "PING timeout" );
+		$self->{zlog}->debug ( "PING timeout #$rescue" );
 		#if ($alarm_status eq "CLAMAV DIE") {
 		$self->restart_clamd();
-		if ( $rescue ){
-			$self->{zlog}->fatal ( "check_file_socket_tcp still can't PING after a restart." );
-			return '';
+
+		if ( $rescue > 1 ){
+			return 'TIMEOUT';
 		}
-		shutdown ( $conn, 2 );
-		close $conn;
-		return $self->check_file_socket_tcp ( $file, 1 );
+		return $self->check_file_socket_tcp ( $file, $rescue+1 );
 	}
 
 	if ( $result ne 'PONG' ){
-		$self->{zlog}->fatal ( "PING return not PONG[$result]" );
-		shutdown ( $conn, 2 );
-		close $conn;
+		$self->{zlog}->fatal ( "PING return not PONG[$result] #$result." );
 		return '';
 	}
 
-	shutdown ( $conn, 2 );
-	close $conn;
 
 	eval {
 		$old_alarm_sig = $SIG{ALRM};
@@ -235,15 +232,21 @@ sub check_file_socket_tcp
 	$alarm_status=$@;
 	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
 	alarm $old_alarm;
+
+	shutdown ( $conn, 2 );
+	close $conn;
+
 	if ($alarm_status and $alarm_status ne "" ) { 
-		$self->{zlog}->fatal ( "check_file_socket_tcp SCAN file tcp timeout(10)." );
-		$result = '';
+		$self->{zlog}->fatal ( "check_file_socket_tcp SCAN file tcp timeout(10) #$rescue." );
+
+		unless ( $rescue > 2 ){
+			return $self->check_file_socket_tcp ( $file, $rescue+1 );
+		}
+		$result = 'TIMEOUT';
 	}
 	
 	#print $conn "END\n";
 	#<$conn>;
-	shutdown ( $conn, 2 );
-	close $conn;
 
 	return $result;
 }
