@@ -128,7 +128,7 @@ my $VALID_WINDOWS_EXTENSIONS="sav|htm|html|pst|ost|txt|gif|jpeg|mpeg|jpg|png|mny
 $ENV{'PATH'}='/bin:/usr/bin';
 
 #Generate nice random filename
-my $hostname='file.gw.nospam.aka.cn';
+my $hostname='emlfile.gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
 
@@ -335,7 +335,7 @@ exit 0;
 
 #Generate uniq identifiers
 sub uniq_id {
-  return "$hostname" . time .  __LINE__ . $$;
+  return "$hostname." . time . '.' . $$;
 }
 
 
