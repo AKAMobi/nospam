@@ -69,7 +69,7 @@ sub dynamic_engine
 {
 	my $self = shift;
 
-	my ( $subject, $mailfrom ) = @_;
+	my ( $subject, $mailfrom, $ip ) = @_;
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine} ){
 		return (0, "动态限制引擎未启动" );
@@ -82,12 +82,17 @@ sub dynamic_engine
 	}
 
 	if ( $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom ) ){
-		return ( 1, "重复用户发送邮件超额" );
+		return ( 1, "用户发送邮件频率超限" );
 	}
 
 	if ( $self->{dynamic}->is_overrun_rate_per_subject( $subject ) ){
-		return ( 1, "重复邮件发送频率超额" );
+		return ( 1, "重复邮件发送频率超限" );
 	}
+
+	if ( $self->{dynamic}->is_overrun_rate_per_ip( $ip ) ){
+		return ( 1, "IP发送频率超限" );
+	}
+
 
 	return ( 0, "已通过动态监测" );
 

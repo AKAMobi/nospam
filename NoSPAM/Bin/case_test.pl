@@ -1,10 +1,15 @@
 #!/usr/bin/perl -w
 
+use Data::Dumper;
+
 use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-&test_dynamic_dump;
+#&test_black_ip;
+#&test_dynamic_clean;
+#&test_dynamic_init;
+&test_dynamic_subject;
 #&test_black_ip;
 #&test_traceable;
 exit;
@@ -30,7 +35,7 @@ sub test_mail_engine_dynamic
 
 	my $AM = new AKA::Mail;
 
-	my ( $n, $reason ) = $AM->dynamic_engine( "This is a subject", "zixia\@zixia.net" );
+	my ( $n, $reason ) = $AM->dynamic_engine( "This is a subject", "zixia\@zixia.net", "192.168.1.1" );
 	print "spam: $n, reason: $reason\n" ;
 }
 
@@ -59,6 +64,38 @@ sub test_dynamic_dump
 
 	$AMD->dump or die "can't dump";
 }
+
+sub test_dynamic_ip
+{
+	use AKA::Mail::Dynamic;
+	my $AMD = new AKA::Mail::Dynamic;
+
+	my $ip = "192.168.1.1";
+
+	if ( $AMD->is_overrun_rate_per_ip( $ip ) ){
+		print "from: $ip is OVERRUN!\n";
+	}else{
+		print "from: $ip is NOT overrun!\n";
+	}
+	$AMD->dump or die "can't dump";
+}
+
+sub test_dynamic_init
+{
+	use AKA::Mail::Dynamic;
+	my $AMD = new AKA::Mail::Dynamic;
+
+	if ( $AMD->attach( 1 ) ){
+		print "init ok!\n";
+	}else{
+		print "init failed!\n";
+	}
+	$AMD->dump or die "can't dump";
+}
+
+
+
+
 sub test_dynamic_from
 {
 	use AKA::Mail::Dynamic;
@@ -87,7 +124,9 @@ sub test_dynamic_subject
 	}else{
 		print "subject: $subject is NOT overrun!\n";
 	}
-	$AMD->dump or die "can't dump";
+	
+#	$AMD->dump or die "can't dump";
+	#print Dumper($AMD->{dynamic_info}) or die "can't dump";
 }
 
 sub test_spam_checker

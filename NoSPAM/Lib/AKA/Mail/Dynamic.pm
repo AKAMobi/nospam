@@ -35,6 +35,7 @@ sub new
 
 	$self->{define}->{SendRatePerSubject} = $self->{conf}->{config}->{SendRatePerSubject} || '0/0';
 	$self->{define}->{SendRatePerFrom} = $self->{conf}->{config}->{SendRatePerFrom} || '0/0';
+	$self->{define}->{ConnRatePerIP} = $self->{conf}->{config}->{ConnRatePerIP} || '0/0';
 
 	return $self;
 }
@@ -76,6 +77,9 @@ sub is_overrun_rate_per_subject
 	$self->{define}->{SendRatePerSubject}=~ m#(\d+)/(\d+)#;
 	($num, $sec) = ( $1,$2 );
 	
+	# 0 or undef means no limit
+	return 0 if ( !$num || !$sec );
+
 	# is  overrun?
 	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec );
 }
@@ -95,10 +99,37 @@ sub is_overrun_rate_per_mailfrom
 	my ( $num, $sec );
 	$self->{define}->{SendRatePerFrom}=~ m#(\d+)/(\d+)#;
 	($num, $sec) = ( $1,$2 );
+
+	# 0 or undef means no limit
+	return 0 if ( !$num || !$sec );
 	
 	# is overrun?
 	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec );
 }
+
+# 给出ip，察看是否此ip超出限制频率
+sub is_overrun_rate_per_ip
+{
+	my $self = shift;
+
+	my $ip = shift;
+
+	if ( ! $ip ){
+		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_ip can't get ip." );
+		return 0;
+	}
+	
+	my ( $num, $sec );
+	$self->{define}->{ConnRatePerIP}=~ m#(\d+)/(\d+)#;
+	($num, $sec) = ( $1,$2 );
+	
+	# 0 or undef means no limit
+	return 0 if ( !$num || !$sec );
+
+	# is overrun?
+	return $self->is_overrun_rate_per_XXX ( 'IP', $ip, $num, $sec );
+}
+
 
 # 在 param1 为名的数组中，已 param2 为 key， 察看是否在 param4 秒内， param2 的 value 数目超过 param3
 sub is_overrun_rate_per_XXX
@@ -108,15 +139,18 @@ sub is_overrun_rate_per_XXX
 	my ( $namespace, $key, $num, $sec ) = @_;
 
 	# 0 means unlimited
-	return 0 if ( defined $num && defined $sec && 0==$num && 0==$sec );
+	return 0 if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
-		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join("",@_) . "]" );
+		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );
 		return 0;
 	}
 
 	# zero means UNLIMITED
 	return 0 if ( 0==$num || 0==$sec );
+
+	# 限制最长时间不大于1Hour
+	$sec = $self->{define}->{max_time} if ( $sec > $self->{define}->{max_time} );
 
 	if ( ! $self->attach ){
 		$self->{zlog}->fatal ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't attach" );
@@ -230,19 +264,42 @@ sub attach
 {
 	my $self = shift;
 
+	my $create = shift || '';
+
 	return 1 if ( $self->{ipch} && $self->{dynamic_info} );
 
 	my %options = ( 
-			create    => 'yes',
+			create    => '',
 			exclusive => '',
-			mode      => 0644,
+			mode      => '',
 			destroy   => '',
-			size      => $self->{define}->{size},
+			size      => '',
 		      );
 
-	if ( ! ($self->{ipch} = tie %{$self->{dynamic_info}}, 'IPC::Shareable', $self->{define}->{glue}, { %options }) ){
-		$self->{zlog}->fatal ( "AKA::Mail::Dynamic attach failed!" );
-		return 0;
+	eval {
+		$self->{ipch} = tie %{$self->{dynamic_info}}, 'IPC::Shareable', $self->{define}->{glue}, { %options };
+	}; 
+	if ( $@ ) {
+		if ( $create ){
+			$options{create} = 'yes';
+			$options{size} = $self->{define}->{size};
+			$options{mode} = 0640;
+			eval {
+				$self->{ipch} = tie %{$self->{dynamic_info}}, 
+							'IPC::Shareable', 
+							$self->{define}->{glue}, 
+							{ %options };
+			};
+			if ( $@ ){
+				$self->{zlog}->fatal ( "AKA::Mail::Dynamic attach & create failed!" );
+				return 0;
+			}
+			$self->{zlog}->log ( "AKA::Mail::Dynamic attach & create " . $options{size} . " bytes memory!" );
+			# create ok!
+		}else{
+			$self->{zlog}->fatal ( "AKA::Mail::Dynamic attach failed!" );
+			return 0;
+		}
 	}
 
 	# attach succ!
