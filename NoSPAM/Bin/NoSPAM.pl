@@ -63,6 +63,7 @@ my $action_map = {
 
 			,'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"]
 			,'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"]
+			,'get_LogSimpleAnaylize' => [\&get_LogSimpleAnaylize, "startTime endTime"]
 
 			,'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"]
 			,'reboot' => [\&reboot, ""]
@@ -953,4 +954,79 @@ sub del_DynamicEngineKeyItem
 	return 0;
 }
 
+sub get_LogSimpleAnaylize 
+{
+	my ( $start_time, $end_time ) = @param;
 
+	return 10 unless ( $start_time && $end_time );
+
+	my ( $timestamp, $direction
+			, $ip, $from, $to, $subject
+			, $spam, $spam_reason, $spam_action
+			, $rule, $rule_action, $rule_param
+			, $dynamic, $dynamic_reason 
+	   );
+
+	my ( $total_num, $maybe_spam_num, $spam_num ) = ( 0,0,0 );
+	my ( %from_top, %ip_top, %rule_top );
+	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
+	my ( $from_tops_num_ref, $ip_tops_num_ref, $rule_tops_num_ref );
+
+	open ( FD, "</var/log/NoSPAM.csv" ) or return 10;
+	while ( <FD> ){
+		( $timestamp, $direction
+		  , $ip, $from, $to, $subject
+		  , $spam, $spam_reason, $spam_action
+		  , $rule, $rule_action, $rule_param
+		  , $dynamic, $dynamic_reason 
+		) = split (/,/, $_);
+
+		next if ( $timestamp < $start_time || $timestamp > $end_time );
+
+		$total_num+=1;
+		$spam ||= 0;
+		$maybe_spam_num +=1 if ( 1==$spam );
+		$spam_num+=1 if ( 1<$spam );
+
+		$from_top{$from} += 1 if ( $from );
+		$ip_top{$ip} += 1 if ( $ip );
+		$rule_top{$rule} += 1 if ( $rule );
+	}
+	close FD;
+
+
+	sub get_top_n
+	{
+		my ($top_ref, $n) = @_;
+		return undef unless ($n && $top_ref);
+
+		my $counter = 1 ;
+		my (@tops, @tops_num);
+
+		foreach ( sort {$top_ref->{$b}<=>$top_ref->{$a}} keys %{$top_ref} ){
+			last if ( $counter++ > $n );
+# protect our .CSV format
+			s/,/£¬/g;
+			push (@tops, $_);
+			push (@tops_num, $top_ref->{$_});
+		}
+		return (\@tops,\@tops_num);
+	}
+
+	($from_tops_ref,$from_tops_num_ref) = &get_top_n ( \%from_top, 10 );
+	($ip_tops_ref,$ip_tops_num_ref) = &get_top_n ( \%ip_top, 10 );
+	($rule_tops_ref,$rule_tops_num_ref) = &get_top_n ( \%rule_top, 10 );
+
+	print "TOTAL: $total_num\n";
+	print "MAYBE: $maybe_spam_num\n";
+	print "SPAM: $spam_num\n";
+
+	print "FROM_TOP: " . join ( ',', @{$from_tops_ref} ) . "\n" ;
+	print "FROM_TOP_NUM: " . join ( ',', @{$from_tops_num_ref} ) . "\n" ;
+	print "IP_TOP: " . join ( ',', @{$ip_tops_ref} ) . "\n";
+	print "IP_TOP_NUM: " . join ( ',', @{$ip_tops_num_ref} ) . "\n";
+	print "RULE_TOP: " . join ( ',', @{$rule_tops_ref} ) . "\n";
+	print "RULE_TOP_NUM: " . join ( ',', @{$rule_tops_num_ref} ) . "\n";
+
+	return 0;
+}
