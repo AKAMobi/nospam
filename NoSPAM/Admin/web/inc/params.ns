@@ -77,6 +77,8 @@ if(file_exists(LICENSE)){
 	$license = new License;
 	$Swichable = $license->Switchable();
 	$intServerGateway = $license->ServerGateway();
+	// add by zixia
+	$ProductName = $license->getProductName();
 }
 
 $ServerMode = $Swichable? $spamconf->getParam("ServerGateway"):$intServerGateway;

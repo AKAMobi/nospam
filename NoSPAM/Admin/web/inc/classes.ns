@@ -307,5 +307,13 @@ class License
 	{
 		return $this->params["ServerGateway"];
 	}
+
+	function getProductName()
+	{
+		if ( array_key_exists( "ProductName", $this->params ) ){
+			return $this->params["ProductName"];
+		}
+		return "noSPAM";
+	}
 }
 ?>
