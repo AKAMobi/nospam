@@ -44,6 +44,7 @@ my $licenseconf = &get_licenseconf;
 my $zlog = new AKA::Mail::Log;
 my $iputil = new AKA::IPUtil;
 
+&reset_Network_update_smtproutes_gateway;
 my $action_map = { 
 			'start_System' => [\&start_System, "Init system on boot" ]
 			, 'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ]
@@ -689,7 +690,7 @@ sub reset_Network_update_smtproutes_gateway
 	my $content = '';
 	my $exist = 0;
 	foreach ( @smtproutes ){
-		if (/"^$Domain:$IP"/ ){
+		if (/^$Domain:$IP/ ){
 			$exist = 1;
 		}
 		$content .= "$_" 
