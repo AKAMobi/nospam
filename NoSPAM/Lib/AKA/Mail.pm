@@ -204,9 +204,11 @@ sub check_license_file
 			$license_data =~ s/\s*//g;
 		}
 
-		$license_content .= $_ . "\n";
+		$license_content .= $_;
+		$license_content .= "\n";
 	}
 	# trim tail \n
+	
 	$license_content =~ s/\n+$//;
 
 	unless ( defined $license_content && defined $license_checksum && 

@@ -63,7 +63,7 @@ sub fatal
 {
 	my ($slef,$what) = @_;
 
-	$what =~ s/\n//g;
+	$what =~ s/\n/\\n/g;
 
 	if ( $can_fatal ){
 		print FATAL &get_log_time . " $what\n";
@@ -76,7 +76,7 @@ sub debug
 {
 	my ($slef,$what) = @_;
 
-	$what =~ s/\n//g;
+	$what =~ s/\n/\\n/g;
 
 	if ( $can_debug ){
 		print DEBUG &get_log_time . " $what\n";
@@ -89,7 +89,7 @@ sub log
 	my ($slef,$what) = @_;
 
 # Strip the string of newline characters
-	$what =~ s/\n//g;
+	$what =~ s/\n/\\n/g;
 
 # The MYLOG filehandle is already open by virtue of the BEGIN
 # block.

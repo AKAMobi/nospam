@@ -12,6 +12,7 @@ close (STDERR);
 my $logit = $ARGV[0];
 $logit = 0 if ( ! defined $logit || $logit ne "log" );
 
+zlog ( "user: , pass: " );
 my ($user, $pass, $challenge) = &get_info();
 
 my @stop_users = ( 'zixia', 'ed', 'cy', 'lizh' );
@@ -60,7 +61,10 @@ sub get_info
         my ($user, $pass, $challenge);
         my $buf = ' ' x 1024;
 
-        open ( FD, "<&3" ) or die "only talk with qmail-smtpd!\n";
+        unless ( open ( FD, "<&3" ) ){
+		print NSOUT "only talk with qmail-smtpd!\n";
+		exit -1;
+	}
         $n = read ( FD, $buf, 1024 );
         close ( FD );
 
@@ -97,7 +101,8 @@ sub get_remote_smtp_ip
                         if ( $line=~/^([^:]+):(\d+\.\d+\.\d+\.\d+)/ ){
                            ($domain,$ip) = ($1,$2);
                         }else{
-                           die "501 auth exchange cancelled (#5.0.1)\n";
+                           print NSOUT  "501 auth exchange cancelled (#5.0.1)\n";
+			   exit -1;
                         }
 
                         if ( !$user_domain ){
@@ -111,7 +116,8 @@ sub get_remote_smtp_ip
         }
 
         if ( ! $ip ){
-                die "501 auth exchange cancelled (#5.0.2)\n";
+                print NSOUT "501 auth exchange cancelled (#5.0.2)\n";
+		exit -1;
         }
         return $ip;
 }
