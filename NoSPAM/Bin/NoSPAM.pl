@@ -1320,6 +1320,7 @@ sub _netfilter_set_fw
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 80 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 110 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 443 -j ACCEPT" );
+	$ret ||= system( "$iptables -A INPUT -p tcp --dport 995 -j ACCEPT" );
 
 
 	$ret ||= system( "$iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT" );
