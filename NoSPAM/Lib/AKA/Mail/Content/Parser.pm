@@ -83,6 +83,10 @@ sub load_user_filetype
 		return;
 	}
 
+
+	# 第一行是已用的最大号码
+	<FD>;
+
 	my ( $num, $type, $exts, @exts );
 	while ( <FD> ){
 		chomp;

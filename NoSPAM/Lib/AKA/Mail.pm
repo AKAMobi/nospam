@@ -80,6 +80,13 @@ sub new
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
 
+	if ( ! $self->check_license_file ){
+		$self->{license_ok} = 0;
+	}else{
+		$self->{license_ok} = 1;
+	}
+
+
 	return $self;
 
 }
@@ -87,7 +94,6 @@ sub new
 sub server
 {
 	my $self = shift;
-
 	my $server = new IO::Socket::INET( LocalAddr => '127.0.0.1',
 					LocalPort => '40307',
 					Proto => 'tcp',
@@ -141,6 +147,18 @@ sub server
 	}
 
 
+	sub restart {
+		
+	}
+}
+
+sub is_conf_updated
+{
+	my $self = shift;
+
+	my ($nospam_update_time,$content_update_time);
+	
+	
 }
 
 sub net_process
@@ -174,24 +192,35 @@ print "\n#####################################\n";
 	print "fd1: [$_]\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
 
-open ( FD, ">>/tmp/srv.debug" );
+open ( FD, ">>/var/log/NoSPAM.debug" );
 use Data::Dumper;
 print FD "mail_info.req\@srv\n";
 print FD Dumper ($self->{mail_info}->{aka} );
 print "<<<<processing...>>>\n";
+
 	$self->process ( $self->{mail_info} );
 
 	print "\n";
 
-	print "smtp_code: [" . $self->{mail_info}->{aka}->{resp}->{smtp_code} . "]\n";
-	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_code} . "\n";
+	my ($smtp_code,$smtp_info,$exit_code);
+	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code};
+	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info};
+	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code};
 
-	print "smtp_info: [" . $self->{mail_info}->{aka}->{resp}->{smtp_info} . "]\n";
-	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_info} . "\n";
+	print "smtp_code: [" . $smtp_code . "]\n";
+	print "smtp_info: [" . $smtp_info . "]\n";
+	print "exit_code: [" . $exit_code . "]\n";
 
-	print "exit_code: [" .$self->{mail_info}->{aka}->{resp}->{exit_code} . "]\n";
-	print $socket $self->{mail_info}->{aka}->{resp}->{exit_code} . "\n";
-
+	if ( $self->{license_ok} ){
+		print $socket $smtp_code . "\n";
+		print $socket $smtp_info . "\n";
+		print $socket $exit_code . "\n";
+	}else{
+		print $socket "553\n";
+		print $socket "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。";
+		print $socket "150\n";
+	}
+		
 print FD "mail_info.resp\@srv\n";
 print FD Dumper ($self->{mail_info}->{aka} );
 close FD;
@@ -234,30 +263,28 @@ sub process
 		next if ( $_ eq ACTION_PASS );
 
 		if ( $_ eq ACTION_REJECT ){
+			$self->cleanup();
+
+			unless ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc}){
+				$self->{zlog}->fatal ( "engine $engine has action buf no desc?" );
+			}
+	
+			$mail_info->{aka}->{resp} = {
+					smtp_code => 553,
+					smtp_info => '对不起，由于 ' 
+						. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || '安全策略')
+						. ' ，系统拒收您的邮件。',
+					exit_code => 150
+			};
+	
 			if ( $engine eq 'content' ){
-				$self->cleanup();
-				$mail_info->{aka}->{resp} = {
-						smtp_code => 553,
-						smtp_info => $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
-								|| 'This message was rejected.',
-						exit_code => 150
-				};
-				return $mail_info;
-			}else{
-				$self->cleanup();
-				unless ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc}){
-					$self->{zlog}->fatal ( "engine $engine has action buf no desc?" );
-				}
-				$mail_info->{aka}->{resp} = {
-						smtp_code => 553,
-						smtp_info => '对不起，由于 ' 
-							. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || '安全策略')
-							. ' ，系统拒收您的邮件。',
-						exit_code => 150
-				};
-				return $mail_info;
+				$mail_info->{aka}->{resp}->{smtp_info} -> $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
+								|| 'This message was rejected.';
+			}elsif ( $engine eq 'dynamic' ){
+					$mail_info->{aka}->{resp}->{smtp_code} = 451;
 			}
 
+			return $mail_info;
 		}elsif ( $_ eq ACTION_DISCARD ){
 			$self->cleanup();
 			$mail_info->{aka}->{resp}->{exit_code} = 0;
@@ -307,7 +334,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{content} = {	
 			result	=>0,
 			desc	=>'未运行',
-			action	=>ACTION_PASS,
+			action	=>ACTION_NULL,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -869,8 +896,8 @@ sub content_engine_is_enabled
 		if ( $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
 			return 1 if ( $self->{mail_info}->{aka}->{size} < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} );
 			$self->{mail_info}->{aka}->{engine}->{content} = {
-                			result  => 0,
-	                                desc    => '邮件超过配置最大值',
+                			result  => '',
+	                                desc    => '尺寸超过配置最大值',
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -882,7 +909,7 @@ sub content_engine_is_enabled
 	}
 
 	$self->{mail_info}->{aka}->{engine}->{content} = {
-            		result  => 0,
+            		result  => '',
                         desc    => '未启动',
                         action  => 0,
 

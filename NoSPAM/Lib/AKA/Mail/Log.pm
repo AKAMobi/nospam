@@ -138,15 +138,18 @@ sub log_csv {
 			. ',' . $aka->{TCPREMOTEIP} . ',' . $aka->{returnpath} 
 				. ',' . $recips . ',' . $esc_subject
 
-			. ',' . $engine->{spam}->{result} 
-				. ',' . $engine->{spam}->{desc} 
-				. ',' . $engine->{spam}->{action}
+			. ',' . $aka->{size} 
 
 			. ',' . $engine->{antivirus}->{result}
 				. ',' . $engine->{antivirus}->{desc} 
 				. ',' . $engine->{antivirus}->{action} 
 
-			. ',' . $engine->{content}->{result} 
+	
+			. ',' . $engine->{spam}->{result} 
+				. ',' . $engine->{spam}->{desc} 
+				. ',' . $engine->{spam}->{action}
+
+			. ',' . ($engine->{content}->{result}||'')
 				. ',' . $engine->{content}->{action}
 				. ',' . $engine->{content}->{desc}
 				
