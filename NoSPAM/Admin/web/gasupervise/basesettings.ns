@@ -1,0 +1,70 @@
+<?
+require_once('../inc/include.ns');
+
+if ($GAInterface <= 0)
+	die("本系统无监管功能支持");
+
+if (!adminPerm(PERM_ADMIN_GASUP))
+	die("你无权查看该页");
+
+if ($_POST["Submit"] == "修改"){
+	if (!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改");
+	if ($_POST['GAInterface'] == "Y"){
+		$spamconf->setParam("GAInterface","Y","GAInterface");
+		$spamconf->setParam("GAProtocol",$_POST['GAProtocol'],"GAInterface");
+	} else {
+		$spamconf->setParam("GAInterface","N","GAInterface");
+	}
+	$spamconf->save();
+	if (($ret = wi("GA_reset",$result)) == 0){
+		echo "修改成功！";
+	} else {
+		echo "修改失败，错误代码{$ret}";
+	}
+} else {
+	$bState = ($spamconf->getParam("GAInterface","GAInterface") == "Y") && adminPerm(PERM_ADMIN_WRITE);
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<title>基本设置</title>
+<script>
+function change(bState)
+{
+	objs = document.getElementsByName("GAProtocol");
+
+	for (i = 0; i < objs.length; i++)
+	{
+		objs[i].disabled = bState;
+	}
+}
+</script>
+</head>
+<body>
+<div align="center">
+<form method="POST" name="form1">
+<lable>
+	<input type="radio" value="Y" name="GAInterface" onclick="change(false)"<?if ($spamconf->getParam("GAInterface","GAInterface") == "Y") echo " checked";?><?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>启用
+</lable><br>
+<lable>
+	<input type="radio" value="N" name="GAInterface" onclick="change(true)"<?if ($spamconf->getParam("GAInterface","GAInterface") != "Y") echo " checked";?><?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>禁用
+</lable><br>
+<hr>
+<lable>
+	<input type="radio" value="MSP" name="GAProtocol"<?if ($spamconf->getParam("GAProtocol","GAInterface") == "MSP") echo " checked";if ($spamconf->getParam("GAInterface","GAInterface") == "N" || !$bState) echo " disabled";?>>MSP协议
+</lable><br>
+<lable>
+	<input type="radio" value="GAISC" name="GAProtocol"<?if ($spamconf->getParam("GAProtocol","GAInterface") == "GAISC") echo " checked";if ($spamconf->getParam("GAInterface","GAInterface") == "N" || !$bState) echo " disabled";?>>GAISC协议
+</lable><br>
+<br>
+<input type="submit" name="Submit" value="修改"<?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>
+<input type="reset" value="重置"<?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>
+</form>
+</div>
+</body>
+</html>
+<?
+}
+?>

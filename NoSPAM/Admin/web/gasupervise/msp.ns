@@ -1,0 +1,58 @@
+<?
+require_once('../inc/include.ns');
+
+if ($GAInterface <= 0)
+	die("本系统无监管功能支持");
+
+if (!adminPerm(PERM_ADMIN_GASUP))
+	die("你无权查看该页");
+
+if ($_POST["Submit"] == "修改"){
+	if (!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改");
+	$spamconf->setParam("MSP_IP",$_POST['MSP_IP'],"GAInterface");
+	$spamconf->setParam("MSP_Port",$_POST['MSP_Port'],"GAInterface");
+	$spamconf->setParam("MSP_ID",$_POST['MSP_ID'],"GAInterface");
+	$spamconf->save();
+	
+	if (($ret = wi("GA_reset",$result)) == 0){
+		echo "修改成功！";
+	} else {
+		echo "修改失败，错误代码{$ret}";
+	}
+} else {
+	$bState = ($spamconf->getParam("GAInterface","GAInterface") == "Y") && adminPerm(PERM_ADMIN_WRITE);
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<title>MSP设置</title>
+</head>
+<body>
+<div align="center">
+<form method="POST" name="form1">
+<table border="1">
+<tr>
+	<td>MSP_IP:</td>
+	<td align="left"><input type="text" name="MSP_IP" value="<?=$spamconf->getParam("MSP_IP","GAInterface")?>"<?if (!$bState) echo " disabled";?>></td>
+</tr>
+<tr>
+	<td>MSP_Port:</td>
+	<td align="left"><input type="text" name="MSP_Port" value="<?=$spamconf->getParam("MSP_Port","GAInterface")?>"<?if (!$bState) echo " disabled";?>></td>
+</tr>
+<tr>
+	<td>MSP_ID:</td>
+	<td align="left"><input type="text" name="MSP_ID" value="<?=$spamconf->getParam("MSP_ID","GAInterface")?>"<?if (!$bState) echo " disabled";?>></td>
+</tr>
+</table>
+<br>
+<input type="submit" name="Submit" value="修改"<?if (!$bState) echo " disabled";?>>
+<input type="reset" value="重置"<?if (!$bState) echo " disabled";?>>
+</form>
+</div>
+</body>
+</html>
+<?
+}
+?>

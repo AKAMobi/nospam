@@ -39,7 +39,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 }
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	b.add(new WebFXTreeItem('登录限制设置','system/loginblacklist.ns','main'));
+	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
 	b.add(new WebFXTreeItem('管理员管理','user/showadminlist.ns','main'));
 <?
 }
