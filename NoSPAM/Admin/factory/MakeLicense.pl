@@ -10,12 +10,13 @@ LicenseHTML=<b>客户试用体验(非卖)版 2004-3</b>
 _LICENSE_
 
 
+use AKA::License;
+$AL = new AKA::License;
+
 print make_license( $License, $prodno ), "\n";
 
 sub make_license
 {
-	use AKA::License;
-	$AL = new AKA::License;
 
         my ( $license_orig, $prodno ) = @_;
 

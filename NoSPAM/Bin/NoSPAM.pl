@@ -124,6 +124,7 @@ sub start_System
 
 	$zlog->log("NoSPAM System Restarted, Util init ret $ret" );
 
+	$ret ||=0;
 	return $ret;
 }
 
@@ -620,7 +621,7 @@ sub reset_Network_update_rcpthosts
 	my @domains = <FD>;
 	close FD;
 
-	push ( @domains, $Domain ) if ( ! grep ( /^$Domain$/, @domains ) );
+	push ( @domains, "\n$Domain" ) if ( ! grep ( /^$Domain$/, @domains ) );
 	
 	my $content = join('',@domains);
 
@@ -693,7 +694,7 @@ sub reset_Network_update_smtproutes_gateway
 		if (/^$Domain:$IP/ ){
 			$exist = 1;
 		}
-		$content .= "$_" 
+		$content .= "$_";
 	}
 
 	$content .= "$Domain:$IP\n" unless ( $exist );
