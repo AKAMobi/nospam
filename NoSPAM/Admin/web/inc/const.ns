@@ -31,5 +31,6 @@ if ( !defined("CONST_DEFINED") ){
     define("QUARANTINE_WHILE_LIST", 1);
     define("QUARANTINE_BLACK_LIST", 2);
     define("QUARANTINE_ALL_LIST",   0);
+	define ("QUARANTINE_WHITELIST_MAX", 100);
 }
 ?>

@@ -29,10 +29,15 @@ switch ($_GET['act']) {
                 $msg = _("Invalid email address!");
                 break;
             case -3:
-            case -4:
                 $msg = _("Database query error!");
                 break;
-            case 0:
+case -4:
+	$msg=_("Email already in the list!");
+break;
+            case -5:
+$msg = _("You have max white/black user list: ".QUARANTINE_WHITELIST_MAX);
+break;
+case 0:
                 $msg = _("Add success!");
                 break;
             default:

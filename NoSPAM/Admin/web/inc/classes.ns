@@ -826,20 +826,24 @@ class EmailUser {
             return -1;
         if (!checkmailaddr($email))
             return -2;
-        
-	/* by zixia 2004-09-04 使用sqlite auto increment功能自动生成新id.
-	$sql = sprintf ("SELECT MAX(autoid) as MAXID FROM %s ;", $this->listTable);
+       
+	 
+	$sql = sprintf ("SELECT COUNT(*) as EMAILCOUNT FROM %s WHERE User= '%s' AND Domain = '%s' AND Email = '%s' AND Type = %d;", 
+				$this->listTable,
+				db_escape_string($this->user),db_escape_string($this->domain),db_escape_string($email),intval($type)		
+);
         if (!$this->db->query ($sql)) {
             return -3;
         }
+	
         
         $buf = sqlite_fetch_array ($this->db->result, 1);
-        $id = intval ($buf['MAXID']);
-        if ($id == 0)
+        $id = intval ($buf['EMAILCOUNT']);
+        if ($id > 0)
             return -4;
-        $id ++;
-        */
 	
+	if ($this->listTotal + 1 > QUARANTINE_WHITELIST_MAX) return -5;
+
 	$sql = sprintf ("INSERT INTO %s (User , Domain , Email , Type ) VALUES ( '%s' , '%s' , '%s' , '%d' )" ,
                     $this->listTable,
                     db_escape_string ($this->user),
