@@ -17,7 +17,7 @@ close (STDERR);
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
-my $iptables = "/sbin/iptables";
+my $iptables = "/usr/sbin/iptables";
 my $ifconfig = "/sbin/ifconfig";
 my $ip_binary = "/sbin/ip";
 my $hostname_binary = "/bin/hostname";
