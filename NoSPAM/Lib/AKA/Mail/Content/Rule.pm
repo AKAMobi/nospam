@@ -120,28 +120,52 @@ sub check_all_rule_backend
 	my ($which_db,$mail_info) = @_;
 
 	my $has_rule;
+	my $match_logic;
 	# 规则检查顺序：以rule由小到大为序，依次检查
 	foreach my $rule_id ( sort keys %{$self->{$which_db}} ){
 		next if ( ! $rule_id );
 		#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 
+		# AND / OR / NOT
+		$match_logic = $self->{$which_db}->{$rule_id}->{match_logic} || 'AND';
+
 		$has_rule = 0;
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
 			# 如果有相关的 rule，则必须匹配才可能符合
 			# 不匹配则 next
-			next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info );
+			if ( 'OR' eq $match_logic ){
+				return $rule_id if $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}elsif ( 'NOT' eq $match_logic ){
+				next until ! $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}else{ # AND, is the default 
+				next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{size} ){
-			next until $self->check_size_rule ( $which_db, $rule_id, $mail_info ) ;
+			if ( 'OR' eq $match_logic ){
+				return $rule_id if $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
+			}elsif ( 'NOT' eq $match_logic ){
+				next until ! $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
+			}else{# AND, is the default 
+				next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
+			}
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{rule_keyword} ){
-			next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info );
+			if ( 'OR' eq $match_logic ){
+				return $rule_id if $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}elsif ( 'NOT' eq $match_logic ){
+				next until ! $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}else{# AND, is the default 
+				next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			}
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
 			#$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
+			# 'OR' already returned;
+			# 'NOT' and 'AND' return here.
 			return $rule_id;
 		}
 	}	
@@ -151,7 +175,7 @@ sub check_all_rule_backend
 sub check_attachment_rule
 {
 	my $self = shift;
-	my ($which_db,$rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info,$match_logic) = @_;
 
 	# 没有附件，则不匹配任何附件规则
 	if ( ! $mail_info->{attachment} ) { return 0; }
@@ -164,8 +188,12 @@ sub check_attachment_rule
 	if ( 'HASH' ne ref $attachment_rule ){
 		#多条
 		foreach my $sub_attachment_rule ( @{$attachment_rule} ){
-			if ( ! check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) ){
-				return 0;
+			if ( 'OR' eq $match_logic ){
+				return 1 if ( check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) );
+			}elsif ( 'NOT' eq $match_logic ){
+				return 0 if ( check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) );
+			}else{# AND, is the default 
+				return 0 if ( ! check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) );
 			}
 		}
 		return 1;
@@ -177,7 +205,7 @@ sub check_attachment_rule
 sub check_size_rule
 {
 	my $self = shift;
-	my ($which_db,$rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info,$match_logic) = @_;
 
 	my $size_rule = $self->{$which_db}->{$rule_id}->{size};
 
@@ -186,8 +214,12 @@ sub check_size_rule
 	if ( 'HASH' ne ref $size_rule ){
 		#多条
 		foreach my $sub_size_rule ( @{$size_rule} ){
-			if ( ! check_single_size_rule ( $self, $sub_size_rule, $mail_info ) ){
-				return 0;
+			if ( 'OR' eq $match_logic ){
+				return 1 if ( check_single_size_rule ( $self, $sub_size_rule, $mail_info ) );
+			}elsif ( 'NOT' eq $match_logic ){
+				return 0 if ( check_single_size_rule ( $self, $sub_size_rule, $mail_info ) );
+			}else{# AND, is the default 
+				return 0 if ( ! check_single_size_rule ( $self, $sub_size_rule, $mail_info ) );
 			}
 		}
 		return 1;
@@ -198,7 +230,7 @@ sub check_size_rule
 sub check_keyword_rule
 {
 	my $self = shift;
-	my ($which_db,$rule_id,$mail_info) = @_;
+	my ($which_db,$rule_id,$mail_info,$match_logic) = @_;
 
 	my $keyword_rule = $self->{$which_db}->{$rule_id}->{rule_keyword};
 
@@ -208,8 +240,12 @@ sub check_keyword_rule
 	if ( 'ARRAY' eq ref $keyword_rule ){
 		#多条
 		foreach my $sub_keyword_rule ( @{$keyword_rule} ){
-			if ( ! check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) ){
-				return 0;
+			if ( 'OR' eq $match_logic ){
+				return 1 if ( check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
+			}elsif ( 'NOT' eq $match_logic ){
+				return 0 if ( check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
+			}else{# AND, is the default 
+				return 0 if ( ! check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
 			}
 		}
 		return 1;
