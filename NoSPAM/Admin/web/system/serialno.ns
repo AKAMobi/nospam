@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if( wi("check_License",$result)==0 ){
+if( wi("get_Serial",$result)==0 ){
 	$serial = trim(implode("",$result));
 }else{
 	die("获取序列号时出现错误！");
@@ -27,6 +27,8 @@ if(!file_exists(LICENSE)){
 <?
 }else{
 	if(($ret=wi("check_License License.dat",$result))==0){	
+		$LicenseInfo = trim(implode("",$result));
+		echo $LicenseInfo;
 ?>
 <p> 本设备 License 许可正确！ </p>
 <?
