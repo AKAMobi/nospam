@@ -104,7 +104,7 @@ sub init_config
 	my @default_trace_type = ('Mail','IP');
 	$config->{SpamEngine}->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} ) || \@default_trace_type;
 	$config->{SpamEngine}->{TraceSpamMask} ||= "16";
-	$config->{SpamEngine}->TraceMaybeSpamMask} ||= "22";
+	$config->{SpamEngine}->{TraceMaybeSpamMask} ||= "22";
 
 	$config->{SpamEngine}->{BlockFrom} ||= "N";
 	$config->{SpamEngine}->{BlackFromList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{BlackFromList} );
@@ -135,6 +135,16 @@ sub init_config
 	$config->{DynamicEngine}->{SendRatePerSubject} ||= "0/0/0";
 	$config->{DynamicEngine}->{SendRatePerFrom} ||= "0/0/0";
 
+	$config->{DynamicEngine}->{WhiteIPConcurList} = $self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{WhiteIPConcurList} 
+							);
+	$config->{DynamicEngine}->{WhiteIPRateList} = $self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{WhiteIPRateList} 
+							);
+	$config->{DynamicEngine}->{WhiteSubjectList} = $self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{WhiteSubjectList} 
+							);
+
 	#
 	# Network
 	#
@@ -153,9 +163,51 @@ sub init_config
 	# MailServer
 	#
 	$config->{MailServer}->{ProtectDomain} = $self->get_protectd_domain_hash_ref($config);
+	$config->{MailServer}->{VirtualDomain} = $self->get_virtual_domain_hash_ref($config);
 
 	$self->{config} = $config;
 }
+
+#逗号分割的管理员列表
+#VirtualDomain_zixia.net_Admin=zixia,qinling
+# Bytes，0或者不存在key代表不限制
+#VirtualDomain_zixia.net_Quota=1024000
+#最多用户数
+#VirtualDomain_zixia.net_MaxUser=100
+#域的类别（分类）
+#VirtualDomain_zixia.net_Cate=个人域
+
+sub get_virtual_domain_hash_ref
+{
+	my $self = shift;
+	my $config = shift;
+
+	my $MailServer = $config->{MailServer};
+
+	#
+	# $h->{$domain}->{Admin}
+	#		->{Quota}
+	#		->{MaxUser}
+	#		->{Cate}
+	my $h = {};
+	my ( $key, $val );
+	my $domain;
+	while ( ($key,$val) = each %{$MailServer} ){
+		if ( $key=~/^VirtualDomain_(.+)_Admin$/ ){
+			my @array = split ( /,/, $val );
+			$h->{$1}->{Admin} = \@array;
+		}elsif ( $key =~ /^VirtualDomain_(.+)_Quota$/ ){
+			$h->{$1}->{Quota} = $val;
+		}elsif ( $key =~ /^VirtualDomain_(.+)_MaxUser$/ ){
+			$h->{$1}->{MaxUser} = $val;
+		}elsif ( $key =~ /^VirtualDomain_(.+)_Cate$/ ){
+			$h->{$1}->{Cate} = $val;
+		}
+	}
+
+	return $h;
+}
+
 
 #ProtectDomain_zixia.net_IPPort=202.205.10.7:25
 #ProtectDomain_zixia.net_Cate=个人域
@@ -184,7 +236,7 @@ sub get_protectd_domain_hash_ref
 			}else{
 				$h->{$domain}->{Port} = 25;
 			}
-		}elsif ( /^ProtectDomain_(.+)_Cate$/ ){
+		}elsif ( $key =~ /^ProtectDomain_(.+)_Cate$/ ){
 			$h->{$1}->{Cate} = $val;
 		}
 	}

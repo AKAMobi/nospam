@@ -41,7 +41,8 @@
 # 2004-03-12 by Ed
 open (NSOUT, ">&=2");
 close (STDERR);
-open (STDERR,">/dev/null");
+#open (STDERR,">/dev/null");
+open (STDERR,">/tmp/ns-queue.STDERR");
 
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 # Ê±¼ä¼ÇÂ¼

@@ -133,7 +133,7 @@ sub lock_file
 	return 1;
 }
 
-sub release_lock
+sub unlock_file
 {
 	my $self = shift;
 
