@@ -61,6 +61,8 @@ my $sync_binary = "/bin/sync";
 my $brctl_binary = "/usr/sbin/brctl";
 my $vadddomain_binary = "/home/vpopmail/bin/vadddomain";
 my $vdeldomain_binary = "/home/vpopmail/bin/vdeldomain";
+my $cmd_smtpd_down = "svc -d /service/smtpd";
+my $cmd_smtpd_up = "svc -u /service/smtpd";
 
 use constant ERR_OPEN_FILE	=> 0x0008;
 use constant ERR_WRITE_FILE	=> 0x0009;
@@ -400,7 +402,9 @@ sub start_System
 _POD_
 			close CON;
 		}
-		return 0;
+		# Stop smtp system
+		system ( $cmd_smtpd_down );
+		#return 0;
 		#return 250;
 	}
 
@@ -534,12 +538,6 @@ sub reset_Network
 	# secondly, we shutdown network, clean netfilter
 	# thridly, we update mail & tcp etc files
 	# fourthly, we start network with new settings
-
-	# Check License;
-	my $AM = new AKA::Mail;
-
-	my ($lic_ok,$lic_html) = $AM->check_license_file ;
-	return 250 unless $lic_ok;
 
 	my $ret = 0;
 	my $err = 0;
@@ -681,10 +679,12 @@ sub check_License
 
 	if ( $isValid ){
 # VALID license!
+		system ( $cmd_smtpd_up );
 		print "$LicenseHTML";
 		return 0;
 	}
 # INVALID license!
+	system ( $cmd_smtpd_down );
 	print ($LicenseHTML || "<h1>当前许可证无效或已经过期！</h1>");
 	return -1;
 }
@@ -1367,6 +1367,18 @@ sub _network_reset_smtp_dnat
 	my $domain_port = shift;
 
 	return 0 unless $domain_ip;
+
+
+	#
+	# no license, no dnat
+	#
+	my $AM = new AKA::Mail;
+	my ($isValid, $LicenseHTML);
+	($isValid,$LicenseHTML) = $AM->check_license_file();
+	unless ( $isValid ){
+		$zlog->fatal ( "no license, so no dnat set." );
+		return 0;
+	}
 
 	# we use static internal ip here
 	# by zixia 2004-04-22 this ip will show in mail header, better to use ip
