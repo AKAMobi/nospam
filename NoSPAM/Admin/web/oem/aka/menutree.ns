@@ -131,7 +131,7 @@ if($SpamEngine > 0){
 	var c = new WebFXTreeItem('垃圾邮件引擎','help/antispam.htm','main');
 	tree.add(c);
 	c.add(new WebFXTreeItem('基本设置','antispam/spamengine.ns','main'));
-	var c1 = new WebFXTreeItem('垃圾识别');
+	var c1 = new WebFXTreeItem('黑白名单');
 	c.add(c1);
 	c1.add(new WebFXTreeItem('IP白名单','antispam/list.ns?option=WhiteIP','main'));
 	c1.add(new WebFXTreeItem('邮件域名白名单','antispam/list.ns?option=WhiteDomain','main'));
@@ -139,12 +139,15 @@ if($SpamEngine > 0){
 	c1.add(new WebFXTreeItem('IP黑名单','antispam/list.ns?option=BlackIP','main'));
 	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
 	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
-	c1.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
-	c1.add(new WebFXTreeItem('贝叶斯过滤器','antispam/bayes.ns','main'));
-	c1.add(new WebFXTreeItem('超级实时黑名单','antispam/rbl.ns','main'));
-	c1.add(new WebFXTreeItem('网络校验和检测','antispam/dcc.ns','main'));
-	c1.add(new WebFXTreeItem('智能内容分析','antispam/sa.ns','main'));
-	c1.add(new WebFXTreeItem('自动白名单降噪','antispam/awl.ns','main'));
+	c.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
+	
+	var c3 = new WebFXTreeItem('智能检测');
+	c.add(c3);
+	c3.add(new WebFXTreeItem('贝叶斯过滤器','antispam/bayes.ns','main'));
+	c3.add(new WebFXTreeItem('智能实时黑名单','antispam/rbl.ns','main'));
+	c3.add(new WebFXTreeItem('智能集中分析','antispam/netcheck.ns','main'));
+	c3.add(new WebFXTreeItem('智能内容分析','antispam/sa.ns','main'));
+	c3.add(new WebFXTreeItem('智能降噪系统','antispam/awl.ns','main'));
 	c.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
 <?php
 	}
