@@ -1,28 +1,37 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bSpamEngineEnabled)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+
+if(!adminPerm(PERM_ADMIN_SPAM))
+	die("您没有访问该网页的权限。");
+
 if($_POST["submit"]){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
 	$tagpos = $_POST["tagpos"];
-	$spamconf->setParam("TagHead","N");
-	$spamconf->setParam("TagSubject","N");
-	$spamconf->setParam("TagReason","N");
+	$spamconf->setParam("TagHead","N","SpamEngine");
+	$spamconf->setParam("TagSubject","N","SpamEngine");
+	$spamconf->setParam("TagReason","N","SpamEngine");
 	if(count($tagpos) > 0){
 		foreach($tagpos as $pos)
-			$spamconf->setParam($pos,"Y");
+			$spamconf->setParam($pos,"Y","SpamEngine");
 	}
-	$spamconf->setParam("SpamTag",$_POST["SpamTag"]);
-	$spamconf->setParam("MaybeSpamTag",$_POST["MaybeSpamTag"]);
+	$spamconf->setParam("SpamTag",$_POST["SpamTag"],"SpamEngine");
+	$spamconf->setParam("MaybeSpamTag",$_POST["MaybeSpamTag"],"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SpamEngine",$result))==0)
 		echo "修改成功！";
 	else
 		echo "修改失败，错误代码：".$ret;
 }else{
-$cTagHead = $spamconf->getParam("TagHead");
-$cTagSubject = $spamconf->getParam("TagSubject");
-$cTagReason = $spamconf->getParam("TagReason");
-$SpamTag = $spamconf->getParam("SpamTag");
-$MaybeSpamTag = $spamconf->getParam("MaybeSpamTag");
+	$cTagHead = $spamconf->getParam("TagHead","SpamEngine");
+	$cTagSubject = $spamconf->getParam("TagSubject","SpamEngine");
+	$cTagReason = $spamconf->getParam("TagReason","SpamEngine");
+	$SpamTag = $spamconf->getParam("SpamTag","SpamEngine");
+	$MaybeSpamTag = $spamconf->getParam("MaybeSpamTag","SpamEngine");
+	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -52,16 +61,50 @@ $MaybeSpamTag = $spamconf->getParam("MaybeSpamTag");
 </p>
 </form>
 <?
-if(!$bAntiSpam){
+		if(!$bAntiSpam){
 ?>
 <script>
 alert("注意：反垃圾引擎未启动");
 </script>
 <?
-}
+		}
 ?>
 </body>
 </html>
 <?
+	}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>标记参数</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+  <p>
+    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?> disabled>在邮件头上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?> disabled>在主题上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?> disabled>在邮件头标记原因
+</p>
+  <p> 垃圾邮件的主题标记：
+    <?=$SpamTag?><br>
+	  疑似垃圾的主题标记：
+    <?=$MaybeSpamTag?>
+    </p>
+<?
+		if(!$bAntiSpam){
+?>
+<script>
+alert("注意：反垃圾引擎未启动");
+</script>
+<?
+		}
+?>
+</body>
+</html>
+<?
+	}
 }
 ?>

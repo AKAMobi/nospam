@@ -11,7 +11,7 @@ require_once("../inc/vpopadm.inc.ns");
 <DIV align="center">
 <h2>粘贴附件</h2>
 <?php
-if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
+if (!adminPerm(PERM_ADMIN_USER) ){
 ?>
 <br>
 您没有访问该网页的权限。<br>

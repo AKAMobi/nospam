@@ -1,5 +1,5 @@
 <?php
-
+require_once("functions.ns");
 
 define("ADMINFILE","ADMINFILE"); //用于保存管理员信息的数据文件
 
@@ -13,18 +13,31 @@ define("ERR_FORMAT_ID",-201);
 define("ERR_FORMAT_PASSWORD",-202);
 define("ERR_FORMAT_PRIVILIDGE",-203);
 define("ERR_FORMAT_NOTE",-204);
+define("ERR_FORMAT_IP",-205);
+define("ERR_FORMAT_DOMAIN",-206);
 
 define("ERR_IDEXIST",-300);
 define("ERR_WRONGPASSWORD",-400);
 
-define("PERM_ADMIN_BASIC",0x0001);
-define("PERM_ADMIN_USERCONTROL",0x0002);
-define("PERM_ADMIN_ADMINCONTROL",0x0004);
+define("PERM_ADMIN_LOGIN",			0x00000001);
+define("PERM_ADMIN_BASIC",			0x00000002);
+define("PERM_ADMIN_WRITE",			0x00000004);
+define("PERM_ADMIN_LOG",			0x00000008);
+define("PERM_ADMIN_SPAM",			0x00000010);
+define("PERM_ADMIN_CONTENT",		0x00000020);
+define("PERM_ADMIN_INTERACTIVE",	0x00000040);
+define("PERM_ADMIN_DYNAMIC",		0x00000080);
+define("PERM_ADMIN_DOMAIN",			0x00000100);
+define("PERM_ADMIN_VIRUS",			0x00000200);
+define("PERM_ADMIN_SYSTEM",			0x00000400);
+define("PERM_ADMIN_ADMIN",			0x00000800);
+define("PERM_ADMIN_SERVER",			0x00001000);
 
-define("PERM_ADMIN_MAX",0xffffffff);
+define("PERM_ADMIN_MAX",0xFFFFFFFF);
 
 
-$AdminDataFile= VPOPMAILHOME . 'domains/' . DOMAIN . '/' . ADMINFILE;
+//$AdminDataFile= VPOPMAILHOME . 'domains/' . DOMAIN . '/' . ADMINFILE;
+$AdminDataFile= VPOPMAILHOME . 'domains/localhost.localdomain/' . ADMINFILE;
 
 
 function havePerm($privilidge,$PermVal){
@@ -63,10 +76,31 @@ function isNoteFormatOK($note){
 	return ereg("^[^:]*$", $note);
 }
 
+//判断IP格式是否合法
+function isIpFormatOK($sip){
+	$ip=trim($sip);
+	if($ip=="")
+		return true;
 
+	if($ip[0]=="+" || $ip[0]=="-")
+		$ip = substr($ip,1);
+	
+	$ips=explode(",",trim($ip));
+	foreach($ips as $value){
+		if(!checkipaddr(trim($value),true))
+			return false;
+	}
+		
+	return true;
+}
+
+//判断域名格式是否合法
+function isDomainFormatOK($sDomain){
+	return true;
+}
 
 //添加管理员
-function addAdmin($id, $passwd, $privilidge, $note){
+function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
 	global $AdminDataFile;
 
 	if (!isIDFormatOK($id)){
@@ -81,10 +115,17 @@ function addAdmin($id, $passwd, $privilidge, $note){
 		return ERR_FORMAT_PRIVILIDGE;
 	}
 
-	if (!isNoteFormatOK($id)){
+	if (!isNoteFormatOK($note)){
 		return ERR_FORMAT_NOTE;
 	}
+	
+	if (!isIpFormatOK($ip)){
+		return ERR_FORMAT_IP;
+	}
 
+	if (!isIpFormatOK($domain)){
+		return ERR_FORMAT_DOMAIN;
+	}
 
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
@@ -99,7 +140,7 @@ function addAdmin($id, $passwd, $privilidge, $note){
 
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note, $IPs, $Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 	    	echo "错误：用户id已存在！<br>";
 		   	flock($hAdminProfile, LOCK_UN);
@@ -109,7 +150,7 @@ function addAdmin($id, $passwd, $privilidge, $note){
 
 	$encodedPasswd=crypt($passwd);
 
-	$adminInfo=implode(":",array($id, $encodedPasswd, $privilidge, $note));
+	$adminInfo=implode(":",array($id, $encodedPasswd, $privilidge, $note, $ip, $domain));
    	
 	$adminInfo .= "\n";
 	
@@ -152,7 +193,7 @@ function isPasswordRight($id, $passwd){
 
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $encodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 			$isFind=true;
 			break;
@@ -198,7 +239,7 @@ function getAdminInfo($id){
 
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 			$isFind=true;
 			break;
@@ -213,7 +254,7 @@ function getAdminInfo($id){
 		return array("returnCode"=>ERR_NOSUCHID);
 	}
 
-	return array("returnCode"=>OK, "privilidge"=>$Privilidge, "note"=>$Note);
+	return array("returnCode"=>OK, "privilidge"=>$Privilidge, "note"=>$Note, "ip"=>$IPs, "domain"=>$Domains);
 
 }
 
@@ -244,14 +285,16 @@ function setPassword($id, $passwd){
 	
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $encodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 			$isFind=true;
 	    }
 		array_push($userinfo_list,array("id" => rtrim($adminId),
 	    									"passwd" => rtrim($encodedPasswd),
 	    									"privilidge" => rtrim($Privilidge),
-	    									"note" => rtrim($Note)
+	    									"note" => rtrim($Note),
+	    									"ip"=> rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
 									)
 													
 		);
@@ -287,7 +330,9 @@ function setPassword($id, $passwd){
 		$adminID=$userinfo_list[$t]['id'];
 		$privilidge=$userinfo_list[$t]['privilidge'];
 		$note=$userinfo_list[$t]['note'];
-		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note));
+		$ips=$userinfo_list[$t]['ip'];
+		$domains=$userinfo_list[$t]['domain'];
+		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note,$ips,$domains));
 		$userinfo .= "\n";
 		fputs($hAdminProfile , $userinfo);
 	}
@@ -318,12 +363,14 @@ function getAdminList(){
 	$admin_list=array();
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 		if (rtrim($adminId)=='') continue;
 		array_push($admin_list,array("id" => rtrim($adminId),
 	    									"passwd" => rtrim($encodedPasswd),
 	    									"privilidge" => rtrim($Privilidge),
-	    									"note" => rtrim($Note)
+	    									"note" => rtrim($Note),
+	    									"ip" => rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
 									)
 		);
 	}
@@ -359,14 +406,16 @@ function modifyAdminPrivilidge($id,$Perm){
 	
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $encodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 			$isFind=true;
 	    }
 		array_push($userinfo_list,array("id" => rtrim($adminId),
 	    									"passwd" => rtrim($encodedPasswd),
 	    									"privilidge" => rtrim($Privilidge),
-	    									"note" => rtrim($Note)
+	    									"note" => rtrim($Note),
+	    									"ip" => rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
 									)
 													
 		);
@@ -402,7 +451,9 @@ function modifyAdminPrivilidge($id,$Perm){
 		$adminID=$userinfo_list[$t]['id'];
                 $encodedPasswd=$userinfo_list[$t]['passwd'];
 		$note=$userinfo_list[$t]['note'];
-		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note));
+		$ips=$userinfo_list[$t]['ip'];
+		$domains=$userinfo_list[$t]['domain'];
+		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note,$ips,$domains));
 		$userinfo .= "\n";
 		fputs($hAdminProfile , $userinfo);
 	}
@@ -440,7 +491,7 @@ function deleteAdmin($id){
 	
 	while (!feof($hAdminProfile)){
 	    $adminInfo = fgets($hAdminProfile,1024); 
-	    list ($adminId, $encodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
 			$isFind=true;
 			continue;
@@ -448,7 +499,9 @@ function deleteAdmin($id){
 		array_push($userinfo_list,array("id" => rtrim($adminId),
 	    									"passwd" => rtrim($encodedPasswd),
 	    									"privilidge" => rtrim($Privilidge),
-	    									"note" => rtrim($Note)
+	    									"note" => rtrim($Note),
+	    									"ip" => rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
 									)
 													
 		);
@@ -473,7 +526,9 @@ function deleteAdmin($id){
 		$adminID=$userinfo_list[$t]['id'];
                 $encodedPasswd=$userinfo_list[$t]['passwd'];
 		$note=$userinfo_list[$t]['note'];
-		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note));
+		$ips=$userinfo_list[$t]['ip'];
+		$domains=$userinfo_list[$t]['domain'];
+		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note,$ips,$domains));
 		$userinfo .= "\n";
 		fputs($hAdminProfile , $userinfo);
 	}
@@ -486,7 +541,175 @@ function deleteAdmin($id){
 
 }
 
+function setIPList($id, $iplist){
+		global $AdminDataFile;
+
+	if (!isIDFormatOK($id)){
+		return ERR_FORMAT_ID;
+	}
+
+    $hAdminProfile = fopen ($AdminDataFile,"a+");
+   
+    if ($hAdminProfile == NULL ){
+        echo "错误：管理员数据文件无法打开。<br>";
+		exit(-1);
+    }
+
+	flock($hAdminProfile, LOCK_EX);
+
+	fseek($hAdminProfile,0, SEEK_SET);
+
+	$isFind=false;
+
+	$userinfo_list=array();
+	
+	while (!feof($hAdminProfile)){
+	    $adminInfo = fgets($hAdminProfile,1024); 
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
+	    if (!strcmp($adminId,$id)){
+			$isFind=true;
+	    }
+		array_push($userinfo_list,array("id" => rtrim($adminId),
+	    									"passwd" => rtrim($encodedPasswd),
+	    									"privilidge" => rtrim($Privilidge),
+	    									"note" => rtrim($Note),
+	    									"ip"=> rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
+									)
+													
+		);
+	}
 
 
+	if (!$isFind) {
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+		return ERR_NOSUCHID;
+	}
 
+	if (!isIpFormatOK($iplist)){
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+		return ERR_FORMAT_IP;
+	}
+
+	ftruncate($hAdminProfile,0);	
+
+
+	for ($t=0; $t<count($userinfo_list); $t++){
+		if (!strcmp("", $userinfo_list[$t]['id'])) {
+				continue;
+		}
+		if (!strcmp($id, $userinfo_list[$t]['id'])){
+			$ips=$iplist;
+		} else {
+			$ips=$userinfo_list[$t]['ip'];
+		}
+		$adminID=$userinfo_list[$t]['id'];
+		$encodedPasswd=$userinfo_list[$t]['passwd'];
+		$privilidge=$userinfo_list[$t]['privilidge'];
+		$domains=$userinfo_list[$t]['domain'];
+		$note=$userinfo_list[$t]['note'];
+		$userinfo=implode(":",array($adminID, $encodedPasswd, $privilidge, $note,$ips,$domains));
+		$userinfo .= "\n";
+		fputs($hAdminProfile , $userinfo);
+	}
+
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+
+	return OK;
+
+}
+
+function modifyAdmin($id, $passwd, $privilidge, $note, $ip, $domain)
+{
+	global $AdminDataFile;
+
+	if (!isIDFormatOK($id)){
+		return ERR_FORMAT_ID;
+	}
+    $hAdminProfile = fopen ($AdminDataFile,"a+");
+   
+    if ($hAdminProfile == NULL ){
+        echo "错误：管理员数据文件无法打开。<br>";
+		exit(-1);
+    }
+
+	flock($hAdminProfile, LOCK_EX);
+
+	fseek($hAdminProfile,0, SEEK_SET);
+
+	$isFind=false;
+
+	$userinfo_list=array();
+	
+	while (!feof($hAdminProfile)){
+	    $adminInfo = fgets($hAdminProfile,1024); 
+	    list ($adminId, $encodedPasswd,$Privilidge,$Note,$IPs,$Domains) = explode( ':', $adminInfo);
+	    if (!strcmp($adminId,$id)){
+			$isFind=true;
+	    }
+		array_push($userinfo_list,array("id" => rtrim($adminId),
+	    									"passwd" => rtrim($encodedPasswd),
+	    									"privilidge" => rtrim($Privilidge),
+	    									"note" => rtrim($Note),
+	    									"ip" => rtrim($IPs),
+	    									"domain"=>rtrim($Domains)
+									)
+													
+		);
+	}
+
+
+	if (!$isFind) {
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+		return ERR_NOSUCHID;
+	}
+
+	if (!isPrivilidgeFormatOK($privilidge)){
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+		return ERR_FORMAT_PRIVILIDGE;
+	}
+
+	ftruncate($hAdminProfile,0);	
+	
+	$count = count($userinfo_list);
+	for ($t=0; $t<$count; $t++){
+		if (!strcmp("", $userinfo_list[$t]['id'])) {
+				continue;
+		}
+		if (!strcmp($id, $userinfo_list[$t]['id'])){
+			$Perm = $privilidge;
+			$sNote = $note;
+			$encodedPasswd = ($passwd == "")? $userinfo_list[$t]['passwd']:crypt($passwd);
+			$ips = $ip;
+			$domains = $domain;
+		} else {
+			$Perm=$userinfo_list[$t]['privilidge'];
+    	    $encodedPasswd=$userinfo_list[$t]['passwd'];
+			$sNote=$userinfo_list[$t]['note'];
+			$ips=$userinfo_list[$t]['ip'];
+			$domains=$userinfo_list[$t]['domain'];
+		}
+		$adminID=$userinfo_list[$t]['id'];
+		$userinfo=implode(":",array($adminID, $encodedPasswd, $Perm, $sNote,$ips,$domains));
+		$userinfo .= "\n";
+		fputs($hAdminProfile , $userinfo);
+	}
+
+	   	flock($hAdminProfile, LOCK_UN);
+   	
+   		fclose($hAdminProfile);
+
+	return OK;
+
+}
 ?>

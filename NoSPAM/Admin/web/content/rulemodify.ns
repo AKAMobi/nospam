@@ -1,6 +1,12 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bContentEngineEnabled)
+	die("对不起，本系统没有开启内容过滤引擎功能");
+
+if(!adminPerm(PERM_ADMIN_CONTENT) || !adminPerm(PERM_ADMIN_WRITE))
+	die("您没有访问该网页的权限。");
+
 if($_GET["action"] == "add"){
 	if(!$_POST["formAction"])
 		add();
@@ -72,7 +78,7 @@ $attachmentscount = count($attachments);
 	<td>规则说明：<input type="text" maxlength="255" name="rule_comment" value="<?=utf8_decode($rule->get_attribute("rule_comment"))?>" /></td>
 </tr>
 <tr>
-	<td>类别：<select name="category_id">
+	<td>类　　别：<select name="category_id">
 <?
 if(count($Category) > 0){
 	foreach($Category as $key=>$value){
@@ -87,16 +93,17 @@ if(!$Category[$category_id])
 ?>
 			  </select>
 	</td>
-	<td>编号类型：<select name="id_type">
+	<td><?/*?>编号类型：<select name="id_type">
 					<option value="asc"<? if($rule->get_attribute("id_type") == "asc") echo " selected"; ?>>ASC
 					<option value="msp"<? if($rule->get_attribute("id_type") == "msp") echo " selected"; ?>>MSP
-	 			  </select>
+	 			  </select><?*/?>
 	</td>
 </tr>
 <tr>
 	<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?><input type="hidden" name="create_time" value="<?=$rule->get_attribute("create_time")?>" /></td>
 	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
+<?/*?>
 <tr>
 	<td>报警级别：<select name="alarmlevel">
 <?
@@ -111,6 +118,7 @@ if(!$Category[$category_id])
 	</td>
 	<td></td>
 </tr>
+<?*/?>
 </table><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
@@ -126,11 +134,11 @@ if(!$Category[$category_id])
 匹配位置：
 <select name="KeyPos<?=$i?>">
 <?
-			for($j=1;$j<=10;$j++){
-				echo "<option value=\"".$j."\"";
-				if($j == $keyword->get_attribute("key"))
+			foreach($KeyPos as $key=>$value){
+				echo "<option value=\"".$key."\"";
+				if($key == $keyword->get_attribute("key"))
 					echo " selected ";
-				echo ">".$KeyPos[$j];
+				echo ">".$value;
 			}
 ?>
 </select>
@@ -148,13 +156,11 @@ if(!$Category[$category_id])
 类型：
 <select name="KeyMatchType<?=$i?>">
 <?
-            for($j=0;$j<=9;$j++){
-				if($j > 1 && $j < 6)
-					continue;
-                echo "<option value=\"".$j."\"";
-                if($j == $keyword->get_attribute("type"))
+            foreach($KeyMatchType as $key=>$value){
+                echo "<option value=\"".$key."\"";
+                if($key == $keyword->get_attribute("type"))
                     echo " selected ";
-                echo ">".$KeyMatchType[$j];
+                echo ">".$value;
             }
 ?>
 </select>
@@ -200,7 +206,7 @@ if(!$Category[$category_id])
 			}
 ?>
 </select>
-尺寸要求：<input type="text" name="SizeValue<?=$i?>" value="<?=$size->get_attribute("sizevalue")?>" /><br>
+数值要求：<input type="text" name="SizeValue<?=$i?>" value="<?=$size->get_attribute("sizevalue")?>" /><br>
 </fieldset>
 <?
 			$i++;
@@ -235,15 +241,17 @@ if($sizescount > 0){
 可以不选<input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" />限制文件名：<input type="text" name="FileName<?=$i?>" value="<?=utf8_decode($attachment->get_attribute("filename"))?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
 可以不选<input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / >限制文件类型：<select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype")) echo "disabled"; ?>/>
 <?
-			for($j=1;$j<=6;$j++){
-				echo "<option value=\"".$j."\"";
-				if($j == $attachment->get_attribute("filetype"))
-					echo " selected";
-				echo ">".$FileType[$j];
+			$blank = true;
+			foreach($FileType as $key=>$value){
+				if($blank && $key>=150){
+					$blank = false;
+					echo "<option value=\"null\" disabled>---------";
+				}
+				echo "<option value=\"".$key."\">".$value[0];;
 			}
 ?>
 </select><br>
-尺寸要求：<input type="text" value="<?=$attachment->get_attribute("sizevalue")?>" name="AttachSize<?=$i?>">
+数值要求：<input type="text" value="<?=$attachment->get_attribute("sizevalue")?>" name="AttachSize<?=$i?>">
 </fieldset>
 <?
 			$i++;
@@ -265,11 +273,11 @@ if($attachmentscount > 0){
 </fieldset>
 动作：<select name="Action">
 <?
-	for($j=1;$j<=13;$j++){
-		echo "<option value=\"".$j."\"";
-		if($j == $action->get_attribute("action"))
+	foreach($Actions as $key=>$value){
+		echo "<option value=\"".$key."\"";
+		if($key == $action->get_attribute("action"))
 			echo " selected";
-		echo ">".$Actions[$j];
+		echo ">".$value;
 	}
 ?>
 </select>
@@ -368,7 +376,7 @@ function modify()
     <td>规则说明：<input type="text" name="rule_comment" value="<?=$_POST["rule_comment"]?>" /></td>
 </tr>
 <tr>
-    <td>类别：<select name="category_id">
+    <td>类　　别：<select name="category_id">
 <?
 if(count($Category) > 0){
     foreach($Category as $key=>$value){
@@ -383,16 +391,17 @@ if(!$Category[$_POST["category_id"]])
 ?>
               </select>
     </td>
-    <td>编号类型：<select name="id_type">
+    <td><?/*?>编号类型：<select name="id_type">
                     <option value="asc"<? if($_POST["id_type"] == "asc") echo " selected"; ?>>ASC
                     <option value="msp"<? if($_POST["id_type"] == "msp") echo " selected"; ?>>MSP
-                  </select>
+                  </select><?*/?>
     </td>
 </tr>
 <tr>
     <td>建立时间：<?=FormatTime($_POST["create_time"])?><input type="hidden" name="create_time" value="<?=$_POST["create_time"]?>" /></td>
     <td>更新时间：<?=date("Y-m-d H:i:s");?></td>
 </tr>
+<?/*?>
 <tr>
     <td>报警级别：<select name="alarmlevel">
 <?
@@ -406,7 +415,7 @@ if(!$Category[$_POST["category_id"]])
                   </select>
     </td>
     <td></td>
-</tr>
+</tr><?*/?>
 </table><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
@@ -424,11 +433,11 @@ if(!$Category[$_POST["category_id"]])
 匹配位置：
 <select name="KeyPos<?=$ii?>">
 <?
-            for($j=1;$j<=10;$j++){
-                echo "<option value=\"".$j."\"";
-                if($j == $_POST["KeyPos".$i])
+            foreach($KeyPos as $key=>$value){
+                echo "<option value=\"".$key."\"";
+                if($key == $_POST["KeyPos".$i])
                     echo " selected ";
-                echo ">".$KeyPos[$j];
+                echo ">".$value;
             }
 ?>
 </select>
@@ -446,13 +455,11 @@ if(!$Category[$_POST["category_id"]])
 类型：
 <select name="KeyMatchType<?=$ii?>">
 <?
-            for($j=0;$j<=9;$j++){
-                if($j > 1 && $j < 6)
-                    continue;
-                echo "<option value=\"".$j."\"";
-                if($j == $_POST["KeyMatchType".$i])
+            foreach($KeyMatchType as $key=>$value){
+                echo "<option value=\"".$key."\"";
+                if($key == $_POST["KeyMatchType".$i])
                     echo " selected ";
-                echo ">".$KeyMatchType[$j];
+                echo ">".$value;
             }
 ?>
 </select>
@@ -467,7 +474,12 @@ if(!$Category[$_POST["category_id"]])
 <legend><input type="checkbox" name="KeywordDel<?=$ii?>" value="YES" />第<?=$ii?>条</legend>
 匹配位置：
 <select name="KeyPos<?=$ii?>">
-<option value="1">主题<option value="2">发件人<option value="3">收件人<option value="4">抄送人<option value="5">信头<option value="6">信体<option value="7">全文<option value="8">附件<option value="9">客户端IP<option value="10">源客户端IP</select>
+<?
+            foreach($KeyPos as $key=>$value){
+                echo "<option value=\"".$key."\">".$value;
+            }
+?>
+</select>
 解码：
 <select name="Decode<?=$ii?>">
 <option value="0">不先解码
@@ -481,7 +493,12 @@ if(!$Category[$_POST["category_id"]])
 <br>
 类型：
 <select name="KeyMatchType<?=$ii?>">
-<option value="0">字符串模糊匹配<option value="1">正则表达式匹配<option value="6">单个IP地址匹配<option value="7">连续IP地址匹配<option value="8">IP/MASK匹配<option value="9">字符串精确匹配</select>
+<?
+            foreach($KeyMatchType as $key=>$value){
+                echo "<option value=\"".$key."\">".$value;
+            }
+?>
+</select>
 过滤内容：<input type="text" name="Keyword<?=$ii?>" value="" /><br>
 <br>
 </fieldset>
@@ -524,7 +541,7 @@ if(!$Category[$_POST["category_id"]])
             }
 ?>
 </select>
-尺寸要求：<input type="text" name="SizeValue<?=$ii?>" value="<?=$_POST["SizeValue".$i]?>" /><br>
+数值要求：<input type="text" name="SizeValue<?=$ii?>" value="<?=$_POST["SizeValue".$i]?>" /><br>
 </fieldset>
 <?
             $ii++;
@@ -535,11 +552,13 @@ if(!$Category[$_POST["category_id"]])
 <legend><input type="checkbox" name="SizeDel<?=$ii?>" value="YES" />第<?=$ii?>条</legend>
 匹配位置：
 <select name="SizePos<?=$ii?>">
-<option value="1">全文<option value="2">信头<option value="3">信体<option value="4">附件大小
-<option value="5">附件个数
-<option value="150">TO,CC,BCC收件人总数
+<?
+			foreach($SizePos as $key=>$value){
+				echo "<option value=\"".$key."\">".$value;
+			}
+?>
 </select>
-尺寸要求：<input type="text" name="SizeValue<?=$ii?>" value="" /><br>
+数值要求：<input type="text" name="SizeValue<?=$ii?>" value="" /><br>
 </fieldset>
 <?
 		}
@@ -573,15 +592,20 @@ if($sizescount > 0){
 可以不选<input type="checkbox"<? if($_POST["FileName".$i]) echo " checked";?> onclick="changeState(FileName<?=$ii?>)" />限制文件名：<input type="text" name="FileName<?=$ii?>" value="<?=$_POST["FileName".$i]?>" <? if(!$_POST["FileName".$i]) echo "disabled"; ?>/>
 可以不选<input type="checkbox"<? if($_POST["FileType".$i]) echo " checked";?> onclick="changeState(FileType<?=$ii?>)" / >限制文件类型：<select name="FileType<?=$ii?>" <? if(!$_POST["FileType".$i]) echo "disabled"; ?>/>
 <?
-            for($j=1;$j<=6;$j++){
-                echo "<option value=\"".$j."\"";
-                if($j == $_POST["FileType".$i])
-                    echo " selected";
-                echo ">".$FileType[$j];
-            }
+			$blank = true;
+			foreach($FileType as $key=>$value){
+				if($blank && $key>=150){
+					$blank = false;
+					echo "<option value=\"0\">---------";
+				}
+				echo "<option value=\"".$key."\"";
+				if($key == $_POST["FileType".$i])
+					echo " selected";
+				echo ">".$value[0];;
+			}
 ?>
 </select><br>
-尺寸要求：<input type="text" value="<?=$_POST["AttachSize".$i]?>" name="AttachSize<?=$ii?>">
+数值要求：<input type="text" value="<?=$_POST["AttachSize".$i]?>" name="AttachSize<?=$ii?>">
 </fieldset>
 <?
             $ii++;
@@ -592,8 +616,18 @@ if($sizescount > 0){
 <legend><input type="checkbox" name="AttachmentDel<?=$ii?>" value="YES" />第<?=$ii?>条</legend>
 可以不选<input type="checkbox" onclick="changeState(FileName<?=$ii?>)" />限制文件名：<input type="text" name="FileName<?=$ii?>" value="" disabled/>
 可以不选<input type="checkbox" onclick="changeState(FileType<?=$ii?>)" / >限制文件类型：<select name="FileType<?=$ii?>" disabled/>
-<option value="1">压缩文件<option value="2">声音文件<option value="3">图片文件<option value="4">文本类型<option value="5">可执行文件<option value="6">其他类型</select><br>
-尺寸要求：<input type="text" value="" name="AttachSize<?=$ii?>">
+<?
+			$blank = true;
+			foreach($FileType as $key=>$value){
+				if($blank && $key>=150){
+					$blank = false;
+					echo "<option value=\"null\" disabled>---------";
+				}
+				echo "<option value=\"".$key."\">".$value[0];;
+			}
+?>
+</select><br>
+数值要求：<input type="text" value="" name="AttachSize<?=$ii?>">
 </fieldset>
 <?
 		}
@@ -613,11 +647,11 @@ if($attachmentscount > 0){
 </fieldset>
 动作：<select name="Action">
 <?
-    for($j=1;$j<=13;$j++){
-        echo "<option value=\"".$j."\"";
-        if($j == $_POST["Action"])
+    foreach($Actions as $key=>$value){
+        echo "<option value=\"".$key."\"";
+        if($key == $_POST["Action"])
             echo " selected";
-        echo ">".$Actions[$j];
+        echo ">".$value;
     }           
 ?>              
 </select>           
@@ -682,10 +716,10 @@ function checkParams()
 	||  (intval($tmp[4]) > 23 ) 
 	||  (intval($tmp[5]) > 59 )  
 	||  (intval($tmp[6]) > 59 ) )
-		return false; 
+		return false; */
 		
 	//AlarmLevel
-	if( !is_numeric($_POST["alarmlevel"]) || intval($_POST["alarmlevel"]) < 1 || intval($_POST["alarmlevel"]) > 4 )
+/*	if( !is_numeric($_POST["alarmlevel"]) || intval($_POST["alarmlevel"]) < 1 || intval($_POST["alarmlevel"]) > 4 )
 		return false;
 
 	//ID_Type
@@ -759,7 +793,7 @@ function checkParams()
 
 	//Size
 	for($i = 1; $i <= $_POST["SizeNum"]; $i++){
-/*		if(!is_numeric($_POST["SizePos".$i]) || intval($_POST["SizePos".$i]) < 1 || intval($_POST["SizePos".$i]) > 5  )
+/*		if(!is_numeric($_POST["SizePos".$i]) || intval($_POST["SizePos".$i]) < 1 || (intval($_POST["SizePos".$i]) > 5 && intval($_POST["SizePos".$i])!=150 ) )
 			return false;*/
 		$tmp = explode("-",$_POST["SizeValue".$i]);
 		if(count($tmp) != 2)
@@ -773,9 +807,10 @@ function checkParams()
 
 	//Attachment
 	for($i = 1; $i <= $_POST["AttachmentNum"]; $i++){
-/*		if($_POST["FileType".$i])
+/*		if($_POST["FileType".$i]){
 			if(!is_numeric($_POST["FileType".$i]) || intval($_POST["FileType".$i]) < 1 || intval($_POST["FileType".$i]) > 6)
-				return false;*/
+				return false;
+		}*/
 		$tmp = explode("-",$_POST["AttachSize".$i]);
         if(count($tmp) != 2)
             return false;
@@ -800,13 +835,15 @@ function saveParams()
 
 	$newrule->set_attribute("rule_comment",utf8_encode($_POST["rule_comment"]));
 	$newrule->set_attribute("category_id",$_POST["category_id"]);
-	$newrule->set_attribute("id_type",$_POST["id_type"]);
+	//$newrule->set_attribute("id_type",$_POST["id_type"]);
+	$newrule->set_attribute("id_type","msp");
 	if($_GET["action"]=="add")
 		$newrule->set_attribute("create_time",$_POST["create_time"]);
 	else
 		$newrule->set_attribute("create_time",$oldrule->get_attribute("create_time"));
 	$newrule->set_attribute("update_time",date("YmdHis"));
-	$newrule->set_attribute("alarmlevel",$_POST["alarmlevel"]);
+	//$newrule->set_attribute("alarmlevel",$_POST["alarmlevel"]);
+	$newrule->set_attribute("alarmlevel",1);
 
 	//rule_action
 	$action = $config->createNode("rule_action");
@@ -871,7 +908,7 @@ function add()
     <td>规则说明：<input type="text" name="rule_comment" value="" /></td>
 </tr>
 <tr>
-    <td>类别：<select name="category_id">
+    <td>类　　别：<select name="category_id">
 <?
 if(count($Category) > 0){
     foreach($Category as $key=>$value){
@@ -881,22 +918,22 @@ if(count($Category) > 0){
 ?>
               </select>
     </td>
-    <td>编号类型：<select name="id_type">
+    <td><!--编号类型：<select name="id_type">
                     <option value="asc">ASC
                     <option value="msp">MSP
-                  </select>
+                  </select>//-->
     </td>
 </tr>
 <tr>
     <td>建立时间：<?=date("Y-m-d H:i:s",$time)?><input type="hidden" name="create_time" value="<?=date("YmdHis",$time)?>" /></td>
     <td>更新时间：<?=date("Y-m-d H:i:s",$time)?></td>
 </tr>
-<tr>
+<!--<tr>
     <td>报警级别：<select name="alarmlevel">
-<option value="1">1<option value="2">2<option value="3">3<option value="4">4                  </select>
+<option value="1">1<option value="2">2<option value="3">3<option value="4">4</select>
     </td>
     <td></td>
-</tr>
+</tr>//-->
 </table><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共0条 </legend>

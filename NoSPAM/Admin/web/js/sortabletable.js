@@ -409,6 +409,20 @@ SortableTable.toIP = function (s) {
 	return ip;
 };
 
+SortableTable.toSize = function (s) {
+	var pos;
+	if((pos = s.indexOf("K")) != -1 || (pos = s.indexOf("k")) != -1){
+		return s.substr(0,pos)*1024;
+	}
+	if((pos = s.indexOf("M")) != -1 || (pos = s.indexOf("m")) != -1){
+		return s.substr(0,pos)*1024*1024;
+	}
+	if((pos = s.indexOf("G")) != -1 || (pos = s.indexOf("g")) != -1){
+		return s.substr(0,pos)*1024*1024*1024;
+	}
+	return s;
+};
+
 SortableTable.emailCompare = function (e1, e2) {
 	var parts1 = e1.value.split("@");
 	var parts2 = e2.value.split("@");
@@ -432,6 +446,7 @@ SortableTable.emailCompare = function (e1, e2) {
 SortableTable.prototype.addSortType("Number", Number);
 SortableTable.prototype.addSortType("CaseInsensitiveString", SortableTable.toUpperCase);
 SortableTable.prototype.addSortType("Date", SortableTable.toDate);
+SortableTable.prototype.addSortType("Size", SortableTable.toSize);
 SortableTable.prototype.addSortType("String");
 SortableTable.prototype.addSortType("IP", SortableTable.toIP);
 SortableTable.prototype.addSortType("Email", SortableTable.idFunction, SortableTable.emailCompare);

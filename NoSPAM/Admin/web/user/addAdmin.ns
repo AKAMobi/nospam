@@ -1,16 +1,13 @@
 <?
-require_once("../inc/vpopadm.inc.ns");
+require_once("../inc/include.ns");
+
+	if (!adminPerm(PERM_ADMIN_ADMIN) || !adminPerm(PERM_ADMIN_WRITE) )
+		die("您没有访问该网页的权限");
 ?>
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
 <TITLE>用户列表</TITLE>
-<style>
-
-table { font-size:x-small;}
-
-.title {font-size:medium;color:#ffffff;background-color:#6fa6e6;}
-</style>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
@@ -21,13 +18,6 @@ table { font-size:x-small;}
 
 function addUser(){
 	
-	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
-?>
-		<br>
-		您没有访问该网页的权限。<br>
-<?php
-		return false;
-	}
 //判断用户信息填写是否完整：
 	if (!isset($_REQUEST['user_id'])){ 
 		echo "错误：未输入用户ID<br>";
@@ -66,6 +56,18 @@ function addUser(){
 	$passwd2 = $_REQUEST['passwd2'];
 
 	$user_note = $_REQUEST['user_note'];		//用户证件号码
+	switch($_REQUEST['iprule']){				//IP地址列表
+		case "PERMIT":
+		$iplist = "+".trim($_REQUEST['iplist']);
+		break;
+		case "DENY":
+		$iplist = "-".trim($_REQUEST['iplist']);
+		break;
+		case "PASS":
+		default:
+		$iplist = "";
+	}
+	$domainlist = "";
 
     if ( $passwd1 != $passwd2 ) {
     	echo "错误：两次输入的密码不匹配<br>";
@@ -74,15 +76,52 @@ function addUser(){
 
 	$privilidge=PERM_ADMIN_BASIC;
 
-	if (isset($_POST['userControl'])) {
-		$privilidge |=PERM_ADMIN_USERCONTROL;
-	}
+        if (isset($_POST['Admin'])) {
+            $privilidge |=PERM_ADMIN_ADMIN;
+        }
 
-	if (isset($_POST['adminControl'])) {
-		$privilidge |=PERM_ADMIN_ADMINCONTROL;
-	}
+        if (isset($_POST['System'])) {
+            $privilidge |=PERM_ADMIN_SYSTEM;
+        }
 
-	$result=addAdmin($user_id,$passwd1,$privilidge,$user_note);
+        if (isset($_POST['Dynamic'])) {
+            $privilidge |=PERM_ADMIN_DYNAMIC;
+        }
+
+        if (isset($_POST['Spam'])) {
+            $privilidge |=PERM_ADMIN_SPAM;
+        }
+
+        if (isset($_POST['Virus'])) {
+            $privilidge |=PERM_ADMIN_VIRUS;
+        }
+
+        if (isset($_POST['Content'])) {
+            $privilidge |=PERM_ADMIN_CONTENT;
+        }
+
+        if (isset($_POST['Interactive'])) {
+            $privilidge |=PERM_ADMIN_INTERACTIVE;
+        }
+
+        if (isset($_POST['Log'])) {
+            $privilidge |=PERM_ADMIN_LOG;
+        }
+
+        if (isset($_POST['PermitWrite'])) {
+            $privilidge |=PERM_ADMIN_WRITE;
+        }
+
+        if (isset($_POST['PermitLogin'])) {
+            $privilidge |=PERM_ADMIN_LOGIN;
+        }
+
+        if ($ServerMode == "Server" && isset($_POST['Domain'])) {
+            $privilidge |=PERM_ADMIN_DOMAIN;
+            $domainlist = $_POST["domainlist"];
+        }
+
+    $result=addAdmin($user_id,$passwd1,$privilidge,$user_note,$iplist);
 	
 	if ($result==ERR_FORMAT_PASSWORD) {
 		errorReturn("密码含有非法字符,请重试",$_SERVER['PHP_SELF']);
@@ -95,6 +134,9 @@ function addUser(){
 	}
 	if ($result==ERR_FORMAT_NOTE) {
 		errorReturn("备注中含有非法字符“:”,请重试",$_SERVER['PHP_SELF']);
+	}
+	if ($result==ERR_FORMAT_IP) {
+		errorReturn("IP地址列表中含有非法字符“:”,请重试",$_SERVER['PHP_SELF']);
 	}
 	if ($result==ERR_IDEXIST) {
 		errorReturn("用户ID已存在,请重试",$_SERVER['PHP_SELF']);
@@ -114,34 +156,99 @@ if ( (isset($_REQUEST['addUser']) && addUser()) ){
 
 ?>
 <center>
-<form action="<? echo $_SERVER['PHP_SELF']; ?>" method=post>
+<form action="<? echo $_SERVER['PHP_SELF']; ?>" method=post name="form1">
 <INPUT type="hidden" name="addUser">
 <table border=0>
-<tr align="center" bgcolor=#6fa6e6>
-<td colspan="3" class=title><b>添加新管理员</b></td>
+<tr align="center">
+<td colspan="3"><b>添加新管理员</b></td>
 </tr>
 <tr>
 	<td align="right">新管理员帐号：</td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
 	</td>
-	<td><font color=#ff0000>请使用小写英文字母及数字起帐号名，必须使用英文字母开头。</font></td>
+	<td>请使用小写英文字母及数字起帐号名，必须使用英文字母开头。</td>
 </tr>
 <tr>
 	<td align="right">输入密码：</td><td><input type=password name="passwd1"></td>
-	<td><font color=#ff0000>请使用大小写英文字母和数字作为邮件密码。</font></td>
+	<td>请使用大小写英文字母和数字作为邮件密码。</td>
 </tr>
 <tr>
 	<td align="right">确认密码：</td><td><input type=password name="passwd2"></td>
-	<td><font color=#ff0000>请再次输入密码，两次密码必须相同。</font></td>
+	<td>请再次输入密码，两次密码必须相同。</td>
 </tr>
 <tr>
 	<td align="right" >管理权限：</td><td colspan=2>
-		<input type=checkbox name=userControl >用户管理<br>
-		<input type=checkbox name=adminControl >管理员管理<br>
+        <table border="1">
+        <tr>
+        	<td>管理员管理</td>
+        	<td><input type="checkbox" name="Admin"></td>
+        </tr>
+        <tr>
+        	<td>系统管理</td>
+        	<td><input type="checkbox" name="System"></td>
+        </tr>
+        <tr>
+        	<td>动态限制引擎</td>
+        	<td><input type="checkbox" name="Dynamic"></td>
+        </tr>
+        <tr>
+        	<td>垃圾邮件引擎</td>
+        	<td><input type="checkbox" name="Spam"></td>
+        </tr>
+        <tr>
+        	<td>病毒识别引擎</td>
+        	<td><input type="checkbox" name="Virus"></td>
+        </tr>
+        <tr>
+        	<td>内容过滤引擎</td>
+        	<td><input type="checkbox" name="Content"></td>
+        </tr>
+        <tr>
+        	<td>智能交互引擎</td>
+        	<td><input type="checkbox" name="Interactive"></td>
+        </tr>
+        <tr>
+        	<td>日志监控</td>
+        	<td><input type="checkbox" name="Log"></td>
+        </tr>
+<?if($ServerMode=="Server"){?>
+        <tr>
+        	<td>邮件域管理</td>
+        	<td><input type="checkbox" name="Domain" onclick="if(form1.Domain.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
+        </tr>
+<?}?>
+        <tr>
+        	<td>允许更改</td>
+        	<td><input type="checkbox" name="PermitWrite"></td>
+        </tr>
+        <tr>
+        	<td>允许登录</td>
+        	<td><input type="checkbox" name="PermitLogin" checked></td>
+        </tr>
+        </table>
 	</td>
 <tr>
-	<td align="right">备注：</td><td><input type=text name="user_note" value="<? echo $user_note ?>"></td>
+	<td align="right">备注：</td><td><input type=text name="user_note"></td>
 	<td><font color=#ff0000></font></td>
 </tr>
+<tr>
+	<td align="right">IP限制：</td><td><input type=text name="iplist" disabled></td>
+	<td>
+		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;">允许
+		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;">禁止
+		<input type="radio" value="PASS" name="iprule" checked  onclick="form1.iplist.disabled=true;">不限制
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，用逗号","分隔</td>
+</tr>
+<?if($ServerMode=="Server"){?>
+<tr>
+	<td align="right">管理邮件域：</td>
+	<td><input type=text name="domainlist" disabled></td>
+	<td>用逗号","分隔</td>
+</tr>
+<?}?>
 <tr align="center" >
 	<td colspan=3><input type=submit name="adduser" value="  确  认  ">
 		&nbsp;&nbsp;&nbsp;&nbsp;

@@ -21,7 +21,7 @@ table { font-size:x-small;}
 
 function addUser(){
 global $DEFAULTMAILBOXSIZE;
-		if (!adminPerm(PERM_ADMIN_USERCONTROL) )
+		if (!adminPerm(PERM_ADMIN_USER_READ) )
 	{
 ?>
 		<br>

@@ -31,12 +31,30 @@ if(!file_exists(LICENSE)){
 	if(($ret=wi("check_License License.dat",$result))==0){	
 		$LicenseInfo = trim(implode("",$result));
 		echo $LicenseInfo;
+		if($Version == NOSPAM_VERSION){
 ?>
 <p> 本设备 License 许可正确！ </p>
 <?
+		}else{
+?>
+<p> License版本错误！ </p>
+<?
+		}
+?>
+<p>
+发行厂商：<?=$sFactoryName?><br>
+许可证过期时间：<?=$sExpire?><br>
+<?= $bForSell? "正式销售版":"非正式销售版"?>
+</p>
+<?
 	}else{
 ?>
-<p> 错误： #<?=$ret?> License 许可已过期或者错误，请联系销售商。  </p>
+<p> 错误： #<?=$ret?> License 许可已过期或者错误，请重新上载或联系销售商。  </p>
+许可证上载：
+<form action="system/upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
+  <input type="file" name="license">
+  <input type="submit" name="Submit" value="上载">
+</form>
 <?
 	}
 }

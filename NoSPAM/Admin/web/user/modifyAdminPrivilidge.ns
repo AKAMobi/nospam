@@ -13,7 +13,7 @@ require_once("../inc/vpopadm.inc.ns");
 
 function changeUserPasswd() {
 
-	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
+	if (!adminPerm(PERM_ADMIN_ADMIN) ){
 ?>
 		<br>
 		您没有访问该网页的权限。<br>
@@ -25,8 +25,15 @@ function changeUserPasswd() {
 
 	if ( isset($_REQUEST["changeUserPasswd"])){ //实际修改用户信息
 
-	$selfID=getAdminID();
+		if (!adminPerm(PERM_ADMIN_WRITE) ){
+?>
+		<br>
+		你无权进行修改操作。<br>
+<?php
+		return false;
+	}
 
+	$selfID=getAdminID();
 	$id=$_REQUEST['adminID'];
 
 	if ($selfID==$id) {
@@ -43,14 +50,51 @@ function changeUserPasswd() {
 		errorReturn("错误：您无权修改最高管理员". SYSOPID ."的权限","showadminlist.ns");
 	}
 
-       $privilidge=PERM_ADMIN_BASIC;
+	$privilidge=PERM_ADMIN_BASIC;
 
-        if (isset($_POST['userControl'])) {
-                $privilidge |=PERM_ADMIN_USERCONTROL;
+        if (isset($_POST['Admin'])) {
+            $privilidge |=PERM_ADMIN_ADMIN;
         }
 
-        if (isset($_POST['adminControl'])) {
-                $privilidge |=PERM_ADMIN_ADMINCONTROL;
+        if (isset($_POST['System'])) {
+            $privilidge |=PERM_ADMIN_SYSTEM;
+        }
+
+        if (isset($_POST['Dynamic'])) {
+            $privilidge |=PERM_ADMIN_DYNAMIC;
+        }
+
+        if (isset($_POST['Spam'])) {
+            $privilidge |=PERM_ADMIN_SPAM;
+        }
+
+        if (isset($_POST['Virus'])) {
+            $privilidge |=PERM_ADMIN_VIRUS;
+        }
+
+        if (isset($_POST['Content'])) {
+            $privilidge |=PERM_ADMIN_CONTENT;
+        }
+
+        if (isset($_POST['Interactive'])) {
+            $privilidge |=PERM_ADMIN_INTERACTIVE;
+        }
+
+        if (isset($_POST['Log'])) {
+            $privilidge |=PERM_ADMIN_LOG;
+        }
+
+        if (isset($_POST['PermitWrite'])) {
+            $privilidge |=PERM_ADMIN_WRITE;
+        }
+
+        if (isset($_POST['PermitLogin'])) {
+            $privilidge |=PERM_ADMIN_LOGIN;
+        }
+
+        if ($ServerMode == "Server" && isset($_POST['Domain'])) {
+            $privilidge |=PERM_ADMIN_DOMAIN;
+            $domainlist = $_POST["domainlist"];
         }
 
 	$result=modifyAdminPrivilidge($id,$privilidge);	
@@ -73,8 +117,12 @@ function changeUserPasswd() {
 		return true;
 	} 
 	
+	$adminInfo = getAdminInfo($_REQUEST['id']);
+	$oPriviledge = $adminInfo["privilidge"];
+	
+	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-<FORM action="<? echo $_SERVER['PHP_SELF']; ?>" method="post">
+<FORM action="<? echo $_SERVER['PHP_SELF']; ?>" method="post" name="form1">
 <INPUT type="hidden" name="changeUserPasswd">
 <table>
 <tbody>
@@ -83,9 +131,56 @@ function changeUserPasswd() {
 <td><input type=hidden name="adminID" value="<?php echo $_REQUEST['id']; ?>"><?php echo $_REQUEST['id']; ?></td>
 </tr>
 <tr>
-        <td align="right" >管理权限：</td><td>
-                <input type=checkbox name=userControl >用户管理<br>
-                <input type=checkbox name=adminControl >管理员管理<br>
+        <td align="right" >管理权限：</td>
+        <td>
+        <table border="1">
+        <tr>
+        	<td>管理员管理</td>
+        	<td><input type="checkbox" name="Admin"<?if(havePerm($oPriviledge,PERM_ADMIN_ADMIN)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>系统管理</td>
+        	<td><input type="checkbox" name="System"<?if(havePerm($oPriviledge,PERM_ADMIN_SYSTEM)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>动态限制引擎</td>
+        	<td><input type="checkbox" name="Dynamic"<?if(havePerm($oPriviledge,PERM_ADMIN_DYNAMIC)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>垃圾邮件引擎</td>
+        	<td><input type="checkbox" name="Spam"<?if(havePerm($oPriviledge,PERM_ADMIN_SPAM)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>病毒识别引擎</td>
+        	<td><input type="checkbox" name="Virus"<?if(havePerm($oPriviledge,PERM_ADMIN_VIRUS)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>内容过滤引擎</td>
+        	<td><input type="checkbox" name="Content"<?if(havePerm($oPriviledge,PERM_ADMIN_CONTENT)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>智能交互引擎</td>
+        	<td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>日志监控</td>
+        	<td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?>></td>
+        </tr>
+<?if($ServerMode=="Server"){?>
+        <tr>
+        	<td>邮件域管理</td>
+        	<td><input type="checkbox" name="Domain"<?if(havePerm($oPriviledge,PERM_ADMIN_DOMAIN)) echo " checked";?>></td>
+        </tr>
+<?}?>
+        <tr>
+        	<td>允许修改</td>
+        	<td><input type="checkbox" name="PermitWrite"<?if(havePerm($oPriviledge,PERM_ADMIN_WRITE)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>允许登录</td>
+        	<td colspan="2" align="center"><input type="checkbox" name="PermitLogin"<?if(havePerm($oPriviledge,PERM_ADMIN_LOGIN)) echo " checked";?>></td>
+        </tr>
+        </table>
         </td>
 <tr>
 </tbody>
@@ -93,7 +188,71 @@ function changeUserPasswd() {
 <INPUT type="submit" value="提交修改信息">
 </form>
 <?php
-
+	}else{
+?>
+<table>
+<tbody>
+<tr>
+<td>管理员账号：</td>
+<td><?php echo $_REQUEST['id']; ?></td>
+</tr>
+<tr>
+        <td align="right" >管理权限：</td>
+        <td>
+        <table border="1">
+        <tr>
+        	<td>管理员管理</td>
+        	<td><input type="checkbox" name="Admin"<?if(havePerm($oPriviledge,PERM_ADMIN_ADMIN)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>系统管理</td>
+        	<td><input type="checkbox" name="System"<?if(havePerm($oPriviledge,PERM_ADMIN_SYSTEM)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>动态限制引擎</td>
+        	<td><input type="checkbox" name="Dynamic"<?if(havePerm($oPriviledge,PERM_ADMIN_DYNAMIC)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>垃圾邮件引擎</td>
+        	<td><input type="checkbox" name="Spam"<?if(havePerm($oPriviledge,PERM_ADMIN_SPAM)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>病毒识别引擎</td>
+        	<td><input type="checkbox" name="Virus"<?if(havePerm($oPriviledge,PERM_ADMIN_VIRUS)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>内容过滤引擎</td>
+        	<td><input type="checkbox" name="Content"<?if(havePerm($oPriviledge,PERM_ADMIN_CONTENT)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>智能交互引擎</td>
+        	<td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>日志监控</td>
+        	<td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?> disabled></td>
+        </tr>
+<?if($ServerMode=="Server"){?>
+        <tr>
+        	<td>邮件域管理</td>
+        	<td><input type="checkbox" name="Domain"<?if(havePerm($oPriviledge,PERM_ADMIN_DOMAIN)) echo " checked";?> disabled></td>
+        </tr>
+<?}?>
+        <tr>
+        	<td>允许修改</td>
+        	<td><input type="checkbox" name="PermitWrite"<?if(havePerm($oPriviledge,PERM_ADMIN_WRITE)) echo " checked";?> disabled></td>
+        </tr>
+        <tr>
+        	<td>允许登录</td>
+        	<td colspan="2" align="center"><input type="checkbox" name="PermitLogin"<?if(havePerm($oPriviledge,PERM_ADMIN_LOGIN)) echo " checked";?> disabled></td>
+        </tr>
+        </table>
+        </td>
+<tr>
+</tbody>
+</table>
+<?php
+	}
 }
 
 

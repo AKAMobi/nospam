@@ -53,6 +53,11 @@ class XMLConfig
 
 	function save()
 	{
+		if(!adminPerm(PERM_ADMIN_WRITE)){
+			echo "对不起，你没有修改权限";
+			return;
+		}
+		
 		$root = $this->dom->document_element();
 		$doc = domxml_new_doc("1.0");
 		$newroot = $this->cloneNode($root);
@@ -177,15 +182,18 @@ class ConfFile
 {
 	var $params;
 	var $file;
+	var $bSection;
 	
-	function ConfFile($file)
+	function ConfFile($file, $bSec)
 	{
 		$this->file = $file;
 		if(!file_exists($file)){
 			$fp = fopen($file,"w");
 			fclose($fp);
 		}
-		$fp = fopen($file,"r");
+		$this->bSection = $bSec;
+		$this->params = $this->parse_ini($file,$bSec);
+/*		$fp = fopen($file,"r");
 		$str = fread($fp,filesize($file));
 		fclose($fp);
 		$lines = explode("\n",trim($str));
@@ -195,24 +203,108 @@ class ConfFile
 				continue;
 			list($key,$value) = explode("=",$line);
 			$this->params[trim($key)] = trim($value);
-		}
+		}*/
 	}
 
-	function getParam($key)
+	function parse_ini($filename, $process_sections = false) {
+		$ini_array = array();
+		$sec_name = "";
+		$lines = file($filename);
+		foreach($lines as $line) {
+			$line = trim($line);
+
+			if($line == "" || $line[0] == "#") 
+				 continue;
+			
+			if($line[0] == "[" && $line[strlen($line) - 1] == "]")
+				 $sec_name = trim(substr($line, 1, strlen($line) - 2));
+			else {
+				$pos = strpos($line, "=");
+				$property = trim(substr($line, 0, $pos));
+				$value = substr($line, $pos + 1);
+				if($process_sections)
+					$ini_array[$sec_name][$property] = trim($value);
+				else
+					$ini_array[$property] = trim($value);
+			}
+		}
+		return $ini_array;
+	}
+	
+	function getParam($key,$section = "")
 	{
+		if($this->bSection){
+			if(!array_key_exists($section,$this->params))
+				return "";
+			
+			if(!array_key_exists($key,$this->params[$section]))
+				return "";
+			
+			return $this->params[$section][$key];
+		}
+		
+		if(!array_key_exists($key,$this->params))
+			return "";
+		
 		return $this->params[$key];
 	}
 
-	function setParam($key,$value)
+	function setParam($key,$value,$section = "")
 	{
-		$this->params[$key] = $value;
+		if($this->bSection)
+			$this->params[$section][$key] = $value;
+		else
+			$this->params[$key] = $value;
+	}
+	
+	function delParam($key, $section = "")
+	{
+		if($this->bSection)
+			unset($this->params[$section][$key]);
+		else
+			unset($this->params[$key]);
+	}
+	
+	function hasParam($key, $section = "")
+	{
+		if($this->bSection){
+			if(array_key_exists($section,$this->params))
+				return array_key_exists($key,$this->params[$section]);
+			return false;
+		}else{
+			return array_key_exists($key,$this->params);
+		}
 	}
 
 	function save()
 	{
+		if(!adminPerm(PERM_ADMIN_WRITE)){
+			echo "对不起，你没有修改权限";
+			return;
+		}
+		
+		$params = $this->params;
 		$str = "";
-		foreach($this->params as $key=>$value){
-			$str .= $key."=".$value."\n";
+		if($this->bSection){
+			if(count($params[""])>0){
+				foreach($params[""] as $key=>$value)
+					$str .= "$key=$value\n";
+			}
+			unset($params[""]);
+			if($str!="")
+				$str .= "\n";
+			foreach($params as $section=>$values){
+				$str .= "[$section]\n";
+				if(count($values)>0){
+					foreach($values as $key=>$value)
+						$str .= "$key=$value\n";
+				}
+				$str.="\n";
+			}
+		}else{
+			foreach($params as $key=>$value){
+				$str .= "$key=$value\n";
+			}
 		}
 		savetofile(trim($str),$this->file);
 	}
@@ -222,13 +314,13 @@ class NoSPAMConf extends ConfFile
 {
 	function NoSPAMConf()
 	{
-		ConfFile::ConfFile(CONF);
+		ConfFile::ConfFile(CONF,true);
 	}
 
-	function getList($sList)
+	function getList($sList, $sSection)
 	{
 		$ret = array();
-		$str = ConfFile::getParam($sList);
+		$str = ConfFile::getParam($sList, $sSection);
 		if(trim($str) == "")
 			return $ret;
 		$temp = explode(",",$str);
@@ -242,11 +334,11 @@ class NoSPAMConf extends ConfFile
 		return $ret;
 	}
 
-	function setList($sList,$aParam)
+	function setList($sList, $aParam, $sSection)
 	{
 		$temp = array();
 		$i = 0;
-		if($sList=="WhiteIPList" || $sList=="BlackIPList"){
+		if($sList=="WhiteIPList" || $sList=="BlackIPList" || $sList=="WhiteIPConcurList" || $sList=="WhiteIPRateList"){
 			if(count($aParam) > 0){
 				foreach($aParam as $key=>$note){
 					if(!checkipaddr($key,true))
@@ -264,7 +356,7 @@ class NoSPAMConf extends ConfFile
 			}
 		}
 		$sParam = trim(implode(",",$temp));
-		ConfFile::setParam($sList,$sParam);
+		ConfFile::setParam($sList,$sParam,$sSection);
 	}
 }
 
@@ -272,7 +364,7 @@ class NoSPAMIntConf extends ConfFile
 {
 	function NoSPAMIntConf()
 	{
-		ConfFile::ConfFile(INTCONF);
+		ConfFile::ConfFile(INTCONF,false);
 	}
 }
 
@@ -307,13 +399,51 @@ class License
 	{
 		return $this->params["ServerGateway"];
 	}
-
-	function getProductName()
+	
+	function ExpireDate()
 	{
-		if ( array_key_exists( "ProductName", $this->params ) ){
-			return $this->params["ProductName"];
-		}
-		return "noSPAM";
+		$parts = explode(" ",trim($this->params["ExpireDate"]));
+		return $parts[0];
+	}
+	
+	function LicenseHTML()
+	{
+		return $this->params["LicenseHTML"];
+	}
+	
+	function isForSell()
+	{
+		return $this->params["ForSell"] == "Yes";
+	}
+	
+	function get_LicenseID()
+	{
+		return $this->params["ProductLicense"];
+	}
+	
+	function get_FactoryName()
+	{
+		return $this->params["FactoryName"];
+	}
+	
+	function isDynamicEngineEnabled()
+	{
+		return ($this->params["DynamicEngineEnabled"]=="Yes");
+	}
+
+	function isContentEngineEnabled()
+	{
+		return ($this->params["ContentEngineEnabled"]=="Yes");
+	}
+
+	function isSpamEngineEnabled()
+	{
+		return ($this->params["SpamEngineEnabled"]=="Yes");
+	}
+	
+	function getVersion()
+	{
+		return $this->params["Version"];
 	}
 }
 ?>

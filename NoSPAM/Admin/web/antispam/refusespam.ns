@@ -1,15 +1,24 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bSpamEngineEnabled)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+
+if(!adminPerm(PERM_ADMIN_SPAM))
+	die("您没有访问该网页的权限。");
+
 if($_POST["RefuseSpam"]){
-	$spamconf->setParam("RefuseSpam",$_POST["RefuseSpam"]);
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+	$spamconf->setParam("RefuseSpam",$_POST["RefuseSpam"],"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SpamEngine",$result))==0)
 		echo "修改成功！";
 	else
 		echo "修改失败，错误代码：".$ret;
 }else{
-	$RefuseSpam = $spamconf->getParam("RefuseSpam");
+	$RefuseSpam = $spamconf->getParam("RefuseSpam","SpamEngine");
+	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -34,16 +43,49 @@ if($_POST["RefuseSpam"]){
   </p>
 </form>
 <?
-if(!$bAntiSpam){
+		if(!$bAntiSpam){
 ?>
 <script>
 alert("注意：反垃圾引擎未启动");
 </script>
 <?
-}
+		}
 ?>
 </body>
 </html>
 <?
+	}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>转发设置</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+  <p>
+    <label>
+    <input type="radio" name="RefuseSpam" value="N"<? if($RefuseSpam=="N") echo " checked"; ?> disabled>
+    允许垃圾邮件通过</label>
+    <br>
+    <label>
+    <input type="radio" name="RefuseSpam" value="Y"<? if($RefuseSpam=="Y") echo " checked"; ?> disabled>
+    直接丢弃垃圾邮件</label>
+  </p>
+<?
+		if(!$bAntiSpam){
+?>
+<script>
+alert("注意：反垃圾引擎未启动");
+</script>
+<?
+		}
+?>
+</body>
+</html>
+<?
+	}
 }
 ?>

@@ -1,6 +1,9 @@
 <?
 require_once("../inc/include.ns");
 
+if(!adminPerm(PERM_ADMIN_LOG) || !adminPerm(PERM_ADMIN_WRITE))
+	die("您没有访问该网页的权限。");
+
 if($_POST["action"]=="flush"){
 	if(($ret=wi("clean_Log",$result))==0)
 		echo "操作成功！";

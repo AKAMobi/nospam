@@ -1,5 +1,8 @@
 <?
 require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_LOG))
+	die("您没有访问该网页的权限。");
 ?>
 <html>
 <head>
@@ -70,11 +73,10 @@ function initSelect()
 		document.all.sHour.add(oOption1);
 		document.all.eHour.add(oOption2);
 		if(i == hour){
-			oOption1.selected = true;
 			oOption2.selected = true;
 		}
 	}
-
+	document.all.sHours.options(0).selected= true;
 }
 
 function genDate(iYear, iMonth)

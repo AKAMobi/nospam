@@ -1,6 +1,9 @@
 <?
 require_once("../inc/include.ns");
 
+if(!adminPerm(PERM_ADMIN_LOG))
+	die("您没有访问该网页的权限。");
+
 if(!$_GET["interval"] || !$_GET["line"])
 	die("错误！");
 

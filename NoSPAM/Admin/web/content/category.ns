@@ -1,6 +1,12 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bContentEngineEnabled)
+	die("对不起，本系统没有开启内容过滤引擎功能");
+
+if(!adminPerm(PERM_ADMIN_CONTENT))
+	die("您没有访问该网页的权限。");
+
 $action = $_POST["action"];
 if(!$action)
 	$action = $_GET["action"];
@@ -54,11 +60,23 @@ function show()
 <table class="RuleTB">
 <caption>规则类别管理</caption>
 <tr class="RuleTBH">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<th>选择</th>
+<?
+	}
+?>
 	<th>编号</th>
 	<th>分类名称</th>
 	<th>备注</th>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<th>编辑</th>
+<?
+	}
+?>
 </tr>
 <?
 if($iSize > 0){
@@ -69,14 +87,26 @@ if($iSize > 0){
 			$j++;
 ?>
 <tr class="<?=$className?>">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<td align="center"><input type="checkbox" name="id[]" value="<?=$id?>" /></td>
+<?
+	}
+?>
 	<td><?=$id?></td>
 	<td align="left"><?=$value[0]?></td>
 	<td align="left"><?=$value[1]?></td>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<td align="center">
 		<input type="button" value="修改" onclick="location.href='category.ns?action=modify&id=<?=$id?>'">
 		<input type="button" value="删除" onclick="location.href='category.ns?action=del&id=<?=$id?>'">
 	</td>
+<?
+	}
+?>
 </tr>
 <?
 		}
@@ -96,8 +126,14 @@ function jump()
 <table border="0" width="100%">
 <tr>
 <td align="center">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<input type="button" value="添加" onclick="location.href='category.ns?action=add'" /> 
 	<input type="submit" value="批量删除" />
+<?
+	}
+?>
 </td>
 <td align="right">
 <?
@@ -150,6 +186,8 @@ function del()
 {
 	global $Category;
 	$ids = $_REQUEST["id"];
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
 
 	if(is_array($ids)){
 		if(count($ids) > 0)
@@ -166,6 +204,8 @@ function del()
 function savefile()
 {
 	global $Category;
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
 
 	ksort($Category,SORT_NUMERIC);
 	$str = "";
@@ -179,6 +219,8 @@ function savefile()
 
 function add()
 {
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
 ?>
 <html>
 <body>
@@ -214,6 +256,8 @@ function add()
 function modify()
 {
 	global $Category;
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
 	
 	$id = $_GET["id"];
 	if(!array_key_exists($id,$Category))
@@ -254,15 +298,18 @@ function modify()
 function save()
 {
 	global $Category;
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行修改操作");
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
 	$note = $_POST["note"];
 	if(!is_numeric($id))
 		die("分类编号必须为数字！");
-	if($_POST["type"]!="modify")
+	if($_POST["type"]!="modify"){
 		if(array_key_exists($id,$Category))
 			die("相同的分类编号已存在！");
+	}
 
 	$Category[$id] = array($name,$note);	
 	savefile();

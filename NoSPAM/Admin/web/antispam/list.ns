@@ -1,6 +1,12 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bSpamEngineEnabled)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+
+if(!adminPerm(PERM_ADMIN_SPAM))
+	die("您没有访问该网页的权限。");
+
 switch($_GET["option"]){
 	case "WhiteIP":
 	case "BlackIP":
@@ -25,8 +31,8 @@ switch($_GET["option"]){
 }
 
 $sList = $_GET["option"]."List";
-$List = $spamconf->getList($sList);
-$bState = ($spamconf->getParam($sOption)=="Y")? true:false;
+$List = $spamconf->getList($sList,"SpamEngine");
+$bState = ($spamconf->getParam($sOption,"SpamEngine")=="Y");
 
 switch($_GET["action"]){
 	case "add":
@@ -46,7 +52,7 @@ switch($_GET["action"]){
 
 function show()
 {
-	global $spamconf,$title,$bAntiSpam,$bState,$List,$column,$sOption;
+	global $title,$bAntiSpam,$bState,$List,$column,$sOption;
 
 	$pagenum = $_GET["pagenum"];
 	if(!$pagenum || $pagenum < 1)
@@ -73,21 +79,46 @@ function show()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-<p><form action="<?="?option=".$_GET['option']."&action=save"?>" method="post">
+<p>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+<form action="<?="?option=".$_GET['option']."&action=save"?>" method="post">
 <input type="hidden" name="type" value="switch">
 <label><input type="radio" name="<?=$sOption?>" value="Y" <? if($bState) echo " checked" ?>>开启</label>
 <label><input type="radio" name="<?=$sOption?>" value="N" <? if(!$bState) echo " checked" ?>>关闭</label>
 <input type="submit" value="修改">
-</form></p>
+</form>
+<?
+	}else{
+?>
+	<label><input type="radio" name="<?=$sOption?>" value="Y" <? if($bState) echo " checked" ?> disabled>开启</label>
+	<label><input type="radio" name="<?=$sOption?>" value="N" <? if(!$bState) echo " checked" ?> disabled>关闭</label>
+<?
+	}
+?>
+</p>
 <form action="<?="?option=".$_GET['option']."&action=del"?>" method="post">
 <table class="RuleTB">
 <caption><?=$title?></caption>
 <tr class="RuleTBH">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<th>选择</th>
+<?
+	}
+?>
 	<th>编号</th>
 	<th><?=$column?></th>
 	<th>备注</th>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<th>编辑</th>
+<?
+	}
+?>
 </tr>
 <?
 	if($iSize > 0){
@@ -97,14 +128,26 @@ function show()
 				$className = $j%2? "RuleTB1":"RuleTB2";
 ?>
 <tr class="<?=$className?>">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<td align="center"><input type="checkbox" name="key[]" value="<?=$key?>"></td>
+<?
+	}
+?>
 	<td><?=$i?></td>
 	<td><?=$key?></td>
 	<td><?=$note?></td>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<td align="center">
 		<input type="button" value="修改" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&key=$key&action=modify"?>'">
 		<input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&key=$key&action=del"?>'">
 	</td>
+<?
+	}
+?>
 </tr>
 <?
 				$j++;
@@ -123,9 +166,16 @@ function jump()
 }
 </script>
 <table border="0" width="100%"> 
-<tr><td align="center">
+<tr>
+<td align="center">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 <input type="button" value="添加" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=".$_GET['option']."&action=add"?>'">
 <input type="submit" name="submit" value="批量删除">
+<?
+	}
+?>
 </td>
 <td align="right">
 <?
@@ -188,6 +238,9 @@ alert("注意：反垃圾引擎未启动");
 function del()
 {
 	global $spamconf,$List,$sList;
+
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
 	
 	$key = $_REQUEST["key"];
 	if(is_array($key)){
@@ -198,8 +251,9 @@ function del()
 	}else{
 		unset($List[$key]);
 	}
-	$spamconf->setList($sList,$List);
+	$spamconf->setList($sList,$List,"SpamEngine");
 	$spamconf->save();
+
 	if(($ret=wi("reset_".$_GET["option"],$result))==0)
 		header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
 	else
@@ -209,6 +263,9 @@ function del()
 function add()
 {
 	global $title,$column;
+
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
 ?>
 <html>
 <body>
@@ -234,6 +291,9 @@ function add()
 function modify()
 {
 	global $List,$title,$column;
+
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
 ?>
 <html>
 <body>
@@ -260,32 +320,33 @@ function modify()
 
 function save()
 {
-	global $List,$sList,$spamconf,$columni,$sOption;
-	
+	global $List,$sList,$spamconf,$column,$sOption;
+
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+
 	switch($_POST['type']){
 		case 'switch':
-		$spamconf->setParam($sOption,$_POST[$sOption]);
+		$spamconf->setParam($sOption,$_POST[$sOption],"SpamEngine");
 		$spamconf->save();
 		if(($ret=wi("reset_".$_GET["option"],$result))==0)
 			header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
 		else
 			echo "修改失败，错误代码：".$ret;
-		return;
+		exit(0);
 		break;
 		case 'modify':
 		unset($List[$_POST['oKey']]);
 		break;
 		default:
 		if(array_key_exists($_POST['key'],$List)){
-			echo "相同的$column已存在！";
-			//Cow! 你忘记大括号了！
-			// by zixia
-			exit();
+			echo "相同的".$column."已存在！";
+			exit(-1);
 		}
 	}
 
 	$List[$_POST['key']] = $_POST['note'];
-	$spamconf->setList($sList,$List);
+	$spamconf->setList($sList,$List,"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_".$_GET["option"],$result))==0)
 		header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);

@@ -20,34 +20,53 @@ if ( ($result==ERR_FORMAT_PASSWORD) || ($result==ERR_WRONGPASSWORD) ){
 	errorReturn("密码错误,请重新输入","/admin/");
 }
 
-$isSYSOPFirstLogin=false;
-if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
-	if ($id!=SYSOPID) {
+if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) )
 		errorReturn("无此管理员账号,请重新输入","/admin/");
-	} else {
-		$isSYSOPFirstLogin=true;
-	}
-}
 
-
-if ($isSYSOPFirstLogin){
-	$_SESSION['SYSOPFirstLogin']='TRUE';
-	header("Refresh: 0;URL=SYSOPFirstLogin.ns");
-} else {
 	if ($id==SYSOPID) {
 		$_SESSION['Privilidge']=PERM_ADMIN_MAX;
 	} else {
 		$result=getAdminInfo($id);
 		if ($result['$returnCode']!=OK){
 			errorReturn("无此管理员账号,请重新输入","/admin/");
-		}else {
+		}else{
+			if(!havePerm($result['privilidge'],PERM_ADMIN_LOGIN))
+				errorReturn("该账号登陆权限被禁止","/admin");
+			
+			$iplist=trim($result["ip"]);
+			if($iplist!=""){
+				$valid = false;
+				$bypass = fasle;
+				if($iplist[0]=="+"){
+					$bDeny = false;
+				}
+				elseif($iplist[0]=="-"){
+					$bDeny = true;
+				}else{
+					$bypass=true;
+				}
+				if(!$bypass){
+					$iplist = substr($iplist,1);
+				
+					$ips = explode(",",$iplist);
+			
+					foreach($ips as $ip){
+						if(ValidateIP($_SERVER['REMOTE_ADDR'],trim($ip))){
+							$valid = true;
+							break;
+						}
+					}
+				
+					if(!($valid xor $bDeny))
+						errorReturn("该账号不能从此IP地址登录","/admin");
+				}
+			}
+			
 			$_SESSION['Privilidge']=$result['privilidge'];
 		}
 	}
-
 	$_SESSION['AdminID']=$id;
 	header("Refresh: 0;URL=frames.ns");
-}
-exit();
 
+	exit();
 ?>

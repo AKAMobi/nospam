@@ -1,12 +1,22 @@
 <?
 require_once("../inc/include.ns");
 
+if(!$bContentEngineEnabled)
+	die("对不起，本系统没有开启内容过滤引擎功能");
+
+if(!adminPerm(PERM_ADMIN_CONTENT))
+	die("您没有访问该网页的权限。");
+
 $rule_id = $_GET["id"];
 
 if(!$rule_id) die("错误！请给出rule_id");
 
-if($_GET["db"] == "police" && $bGAView)
+$bPolice = false;
+
+if($_GET["db"] == "police" && $bGAView){
 	$config = new RuleDB(PoliceDB);
+	$bPolice = true;
+}
 else
 	$config = new RuleDB(UserDB);
 $rule = $config->get_rule_by_id($rule_id);
@@ -25,16 +35,18 @@ $action = $config->get_action_rule($rule_id);
 </tr>
 <tr>
 	<td>类　　别：<?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
-	<td>编号类型：<?=$rule->get_attribute("id_type")?></td>
+	<td><?if($bPolice){?>编号类型：<?=$rule->get_attribute("id_type")?><?}?></td>
 </tr>
 <tr>
 	<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
 	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
+<?if($bPolice){?>
 <tr>
 	<td>报警级别：<?=$rule->get_attribute("alarmlevel")?></td>
 	<td></td>
 </tr>
+<?}?>
 </table>
 <p style="font-size: 12px"><b>关键字及IP规则</b><br>
 <?
@@ -59,7 +71,7 @@ if(count($sizes) == 0){
     $i = 1;
     foreach($sizes as $size){
         echo $i."、"."匹配位置：".$SizePos[$size->get_attribute("key")];
-		echo "，尺寸要求：".$size->get_attribute("sizevalue")."<br>";
+		echo "，数值要求：".$size->get_attribute("sizevalue")."<br>";
 		$i++;
     }
 }
@@ -73,8 +85,8 @@ if(count($attachments) == 0){
     $i = 1;
     foreach($attachments as $attachment){
         echo $i."、"."限制文件名：".utf8_decode($attachment->get_attribute("filename"));
-		echo "，限制文件类型：".$FileType[$attachment->get_attribute("filetype")];
-		echo "，尺寸要求：".$attachment->get_attribute("sizevalue")."<br>";
+		echo "，限制文件类型：".$FileType[$attachment->get_attribute("filetype")][0];
+		echo "，数值要求：".$attachment->get_attribute("sizevalue")."<br>";
 		$i++;
     }
 }

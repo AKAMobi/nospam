@@ -1,6 +1,9 @@
 <?
 require_once("../inc/include.ns");
 
+if(!adminPerm(PERM_ADMIN_SYSTEM))
+	die("您没有访问该网页的权限。");
+
 if($_POST["SystemTime"]){
 	if(($ret=wi("reset_DateTime ".$_POST["SystemTime"],$result))==0)
 		echo "修改时间成功！";
@@ -17,11 +20,19 @@ if($_POST["SystemTime"]){
 </head>
 
 <body>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 <form name="form1" method="post" action="">
   系统时间：
     <input name="SystemTime" type="text" id="SystemTime" value="<?=date("Y-m-d H:i:s")?>">
     <input type="submit" name="Submit" value="提交">
 </form>
+<?
+	}else{
+		echo date("Y-m-d H:i:s");
+	}
+?>
 </body>
 </html>
 <?

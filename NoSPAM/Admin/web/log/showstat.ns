@@ -1,6 +1,9 @@
 <?
 require_once("../inc/include.ns");
 
+if(!adminPerm(PERM_ADMIN_LOG))
+	die("您没有访问该网页的权限。");
+
 $s = $_GET["s"];
 $e = $_GET["e"];
 
@@ -68,6 +71,7 @@ arsort($TopRule,SORT_NUMERIC);
 总邮件数：<?=$Total?>封<br>
 疑似垃圾邮件数：<?=$Maybe?>封<br>
 垃圾邮件数：<?=$SPAM?>封
+正常邮件数：<?=$Total-$Maybe-$SPAM?>封
 </p>
 <p>
 发件人地址的发邮件数Top10：

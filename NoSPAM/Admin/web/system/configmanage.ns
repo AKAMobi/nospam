@@ -1,5 +1,8 @@
 <?
 require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_SYSTEM))
+	die("您没有访问该网页的权限。");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,6 +26,9 @@ require_once("../inc/include.ns");
       <input type="button" value="下载" onclick="window.open('downfile.ns?file=rule','_blank')">
     </div></td>
   </tr>
+<?
+if(adminPerm(PERM_ADMIN_WRITE)){
+?>
   <tr>
     <td><div align="center">
       <form name="form1" enctype="multipart/form-data" method="post" action="upload.ns?file=config">
@@ -37,6 +43,9 @@ require_once("../inc/include.ns");
       </form>
     </div></td>
   </tr>
+<?
+}
+?>
 </table>
 </body>
 </html>

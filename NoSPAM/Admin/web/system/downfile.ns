@@ -1,12 +1,18 @@
 <?
 require_once("../inc/include.ns");
 
+if(!adminPerm(PERM_ADMIN_SYSTEM))
+	die("您没有访问该网页的权限。");
+
 switch($_GET["file"]){
 	case "config":
 	$file = CONF;
 	break;
 	case "rule":
 	$file = UserDB;
+	break;
+	case "license";
+	$file = LICENSE;
 	break;
 	default:
 	die("错误");

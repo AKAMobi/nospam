@@ -20,7 +20,7 @@ table { font-size:x-small;}
 <?
 
 function doConfig(){
-		if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
+		if (!adminPerm(PERM_ADMIN_ADMIN) ){
 ?>
 		<br>
 		您没有访问该网页的权限。<br>

@@ -74,6 +74,25 @@ function checkipaddr($str,$flag)
 	return true;
 }
 
+function ValidateIP($v,$s)
+{
+	if($v == $s)
+		return true;
+
+	if(!strpos($s,"/"))
+		return false;
+	
+	$tmp = explode("/",$s);
+	list($ip,$maskbit) = $tmp;
+	$temp = explode(".",$ip);
+	$ip1 = (intval($temp[0])<<24)+(intval($temp[1])<<16)+(intval($temp[2])<<8)+intval($temp[3]);
+	$temp = explode(".",$v);
+	$ip2 = (intval($temp[0])<<24)+(intval($temp[1])<<16)+(intval($temp[2])<<8)+intval($temp[3]);
+	$mask = ((1<<intval($maskbit))-1)<<(32-intval($maskbit));
+	
+	return ($ip1&$mask)==($ip2&$mask);
+}
+
 function unhtmlentities ($string) 
 { 
 	$trans_tbl = get_html_translation_table(HTML_ENTITIES); 
