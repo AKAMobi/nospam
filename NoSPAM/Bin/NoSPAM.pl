@@ -894,9 +894,9 @@ sub get_DynamicEngineDBKey
 
 	my $AMD = new AKA::Mail::Dynamic;
 
-	my %CName = ( 'IP' => 'IP地址'
-			,'Subject' => '邮件主题'
-			,'From' => '发件人'
+	my %CName = ( 'IP' => '连接频率'
+			,'Subject' => '邮件重复'
+			,'From' => '用户重复'
 			);
 
 	my @EName = $AMD->get_dynamic_info_ns_name;

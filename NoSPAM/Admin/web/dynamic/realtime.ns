@@ -113,9 +113,9 @@ function flush()
 <body>
 <div align="center">
 <h2>动态引擎数据库监管</h2>
-<input type="button" value="发件人" onclick="location.href='realtime.ns?option=From'">
-<input type="button" value="主题" onclick="location.href='realtime.ns?option=Subject'">
-<input type="button" value="IP" onclick="location.href='realtime.ns?option=IP'">
+<input type="button" value="用户重复" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="邮件重复" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="连接频率" onclick="location.href='realtime.ns?option=IP'">
 </div>
 <form action="<?="?option=$sOption&page=$page&pagenum=$pagenum&action=del"?>" method="post">
 <table class="sort-table" id="table-1" cellspacing="1">
@@ -320,9 +320,9 @@ function showselect()
 <body>
 <div align="center">
 <h2>动态引擎数据库监管</h2>
-<input type="button" value="发件人" onclick="location.href='realtime.ns?option=From'">
-<input type="button" value="主题" onclick="location.href='realtime.ns?option=Subject'">
-<input type="button" value="IP" onclick="location.href='realtime.ns?option=IP'">
+<input type="button" value="用户重复" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="邮件重复" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="连接频率" onclick="location.href='realtime.ns?option=IP'">
 </div>
 </body>
 </html>
