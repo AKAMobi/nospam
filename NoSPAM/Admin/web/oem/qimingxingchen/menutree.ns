@@ -105,6 +105,20 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 ?>
 
 <?
+if ($QuarantineEngine > 0) {
+	if(adminPerm(PERM_ADMIN_QUARANTINE)){
+?>
+	var qu = new WebFXTreeItem('<?=_("Quarantine Engine")?>');
+	tree.add(qu);
+	qu.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','quarantine/quarantine.ns','main'));
+	qu.add(new WebFXTreeItem('<?=_("Quarantine User DB")?>','quarantine/userlist.ns','main'));
+
+<?
+	}
+}
+?>
+
+<?
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
