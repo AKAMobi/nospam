@@ -56,36 +56,32 @@ sub create_table($$)
 	my $self = shift;
 	my $drop = shift;
 
-	my $drop_sql = <<__SQL__;
-drop table UserEmail_TB;
-drop table UserWhiteList_TB;
-__SQL__
+	my @drop_sql = ( 'drop table UserEmail_TB;'
+			,'drop table UserWhiteList_TB;'
+			);
 
-	my $create_sql = <<__SQL__;
-create table UserEmail_TB (
-	Email varchar(64) primary key
-);
-create table UserWhiteList_TB ( 
-        AutoID INTEGER PRIMARY KEY, 
-        User VARCHAR(50) NOT NULL, 
-        Domain VARCHAR(50) NOT NULL, 
-        Email VARCHAR(80) NOT NULL, 
-        Type INT(1) NOT NULL DEFAULT '1' 
-);
-
-create index UWL_Email_IDX ON UserWhiteList_TB(Email); 
-create index UWL_User_IDX ON UserWhiteList_TB(User,Domain,Type); 
-
-__SQL__
+	my @create_sql = ( 'create table UserEmail_TB (
+				Email varchar(64) primary key
+				);'
+			,"create table UserWhiteList_TB ( 
+        			AutoID INTEGER PRIMARY KEY, 
+        			User VARCHAR(50) NOT NULL, 
+        			Domain VARCHAR(50) NOT NULL, 
+        			Email VARCHAR(80) NOT NULL, 
+        			Type INT(1) NOT NULL DEFAULT '1' 
+			);"
+			,'create index UWL_Email_IDX ON UserWhiteList_TB(Email);'
+			,'create index UWL_User_IDX ON UserWhiteList_TB(User,Domain,Type);'
+			);
 
 	my $dbh = $self->connect;
 
 	if ( $drop ){
 		eval {
-			$dbh->do ( $drop_sql );
+			$dbh->do ( $_ ) foreach ( @drop_sql );
 		};
 	}
-	$dbh->do ( $create_sql ) or $self->{zlog}->fatal ( "DB::create_table failed: $!" );
+	$dbh->do ( $_ ) or $self->{zlog}->fatal ( "DB::create_table [$_] failed: $!" ) foreach ( @create_sql ) ;
 }
 
 # email addr add to UserEmail_TB
