@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-18 03:23+0800\n"
+"POT-Creation-Date: 2004-06-18 03:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -47,9 +47,8 @@ msgstr "对不起，本系统没有垃圾邮件引擎License"
 #: ../Admin/web/antispam/bayes.ns:8 ../Admin/web/antispam/rbl.ns:8
 #: ../Admin/web/antispam/list.ns:8 ../Admin/web/antispam/sa.ns:8
 #: ../Admin/web/antispam/spamengine.ns:8 ../Admin/web/antispam/traceable.ns:8
-#: ../Admin/web/antispam/netcheck.ns:8
+#: ../Admin/web/antispam/netcheck.ns:8 ../Admin/web/archive/archiveengine.ns:7
 #: ../Admin/web/archive/archiveaddress.ns:8
-#: ../Admin/web/archive/archiveengine.ns:7
 #: ../Admin/web/archive/archivetype.ns:7
 #: ../Admin/web/archive/archiveexport.ns:5 ../Admin/web/content/category.ns:8
 #: ../Admin/web/content/ruledelete.ns:8 ../Admin/web/content/ruledetail.ns:7
@@ -139,8 +138,8 @@ msgstr "你无权进行更改操作"
 #: ../Admin/web/antispam/bayes.ns:28 ../Admin/web/antispam/rbl.ns:22
 #: ../Admin/web/antispam/sa.ns:55 ../Admin/web/antispam/spamengine.ns:26
 #: ../Admin/web/antispam/traceable.ns:29 ../Admin/web/antispam/netcheck.ns:42
-#: ../Admin/web/archive/archiveaddress.ns:19
 #: ../Admin/web/archive/archiveengine.ns:13
+#: ../Admin/web/archive/archiveaddress.ns:19
 #: ../Admin/web/archive/archivetype.ns:33
 #: ../Admin/web/archive/archiveexport.ns:18
 #: ../Admin/web/content/contentengine.ns:23
@@ -166,8 +165,8 @@ msgstr "修改成功"
 #: ../Admin/web/antispam/list.ns:338 ../Admin/web/antispam/sa.ns:57
 #: ../Admin/web/antispam/spamengine.ns:28
 #: ../Admin/web/antispam/traceable.ns:31 ../Admin/web/antispam/netcheck.ns:44
-#: ../Admin/web/archive/archiveaddress.ns:21
 #: ../Admin/web/archive/archiveengine.ns:15
+#: ../Admin/web/archive/archiveaddress.ns:21
 #: ../Admin/web/archive/archivetype.ns:35
 #: ../Admin/web/archive/archiveexport.ns:20
 #: ../Admin/web/content/ruledelete.ns:22
@@ -209,7 +208,7 @@ msgstr "永久弹回"
 
 #: ../Admin/web/antispam/treatment.ns:59
 #: ../Admin/web/antispam/treatment.ns:112
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:38
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:140
 #: ../Admin/web/log/monitor.ns:29 ../Admin/web/log/logshow.ns:53
 #: ../Admin/web/antivirus/treatment.ns:56
 #: ../Admin/web/antivirus/treatment.ns:107
@@ -1037,11 +1036,21 @@ msgstr "垃圾邮件特征1最少出现次数："
 msgid "Least Spams Spec 2 Counts: "
 msgstr "垃圾邮件特征2最少出现次数："
 
-#: ../Admin/web/archive/archiveaddress.ns:5
 #: ../Admin/web/archive/archiveengine.ns:4
+#: ../Admin/web/archive/archiveaddress.ns:5
 #: ../Admin/web/archive/archivetype.ns:4
 msgid "Sorry, This Product has no Archive Engine License"
 msgstr "对不起，本系统没有归档引擎License"
+
+#: ../Admin/web/archive/archiveengine.ns:23
+#: ../Admin/web/content/contentengine.ns:34
+#: ../Admin/web/content/contentengine.ns:58
+#: ../Admin/web/content/contentengine.ns:90
+#: ../Admin/web/content/contentengine.ns:95
+#: ../Admin/web/dynamic/dynengine.ns:35 ../Admin/web/dynamic/dynengine.ns:60
+#: ../Admin/web/dynamic/dynengine.ns:93 ../Admin/web/dynamic/dynengine.ns:99
+msgid "Engine Switch"
+msgstr "引擎开关"
 
 #: ../Admin/web/archive/archiveaddress.ns:16
 msgid "Email Address Error"
@@ -1062,16 +1071,6 @@ msgstr "所有的审计邮件都将被发送到这个邮箱。"
 #: ../Admin/web/archive/archiveexport.ns:40
 msgid "ALERT: Audit Engine is OFF"
 msgstr "注意：审计引擎未启动"
-
-#: ../Admin/web/archive/archiveengine.ns:23
-#: ../Admin/web/content/contentengine.ns:34
-#: ../Admin/web/content/contentengine.ns:58
-#: ../Admin/web/content/contentengine.ns:90
-#: ../Admin/web/content/contentengine.ns:95
-#: ../Admin/web/dynamic/dynengine.ns:35 ../Admin/web/dynamic/dynengine.ns:60
-#: ../Admin/web/dynamic/dynengine.ns:93 ../Admin/web/dynamic/dynengine.ns:99
-msgid "Engine Switch"
-msgstr "引擎开关"
 
 #: ../Admin/web/archive/archivetype.ns:20
 msgid "Must a valid Email address"
@@ -1509,51 +1508,51 @@ msgstr "可以不选"
 msgid "Some Data Format is incorrect"
 msgstr "有不符合格式的数据项"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:37
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:139
 msgid "Reject"
 msgstr "拒绝"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:39
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:141
 msgid "Quarantine"
 msgstr "隔离"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:40
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:142
 msgid "Strip Attachment"
 msgstr "剥离附件"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:41
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:143
 msgid "Delay"
 msgstr "延迟处理"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:42
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:144
 msgid "NOOP"
 msgstr "无操作"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:43
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:145
 msgid "Accept"
 msgstr "接受"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:44
+#: ../Admin/web/content/rulemodify.ns:1027
 msgid "Add Recipient"
 msgstr "添加收件人"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:45
+#: ../Admin/web/content/rulemodify.ns:1027
 msgid "Delete Recipient"
 msgstr "替换收件人"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:46
+#: ../Admin/web/content/rulemodify.ns:1027
 msgid "Replace Recipient"
 msgstr "替换收件人"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:47
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:149
 msgid "Add Header"
 msgstr "增加信头记录"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:48
+#: ../Admin/web/content/rulemodify.ns:1027
 msgid "Delete Header"
 msgstr "删除信头记录"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:49
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:151
 msgid "Replace Header"
 msgstr "替换信头记录"
 
@@ -1767,7 +1766,8 @@ msgstr "主题白名单"
 #: ../Admin/web/dynamic/sendratepersubject.ns:73
 #: ../Admin/web/dynamic/sendratepersubject.ns:76
 #: ../Admin/web/dynamic/sendratepersubject.ns:77
-#: ../Admin/web/dynamic/sendratepersubject.ns:80 ../Admin/web/inc/params.ns:4
+#: ../Admin/web/dynamic/sendratepersubject.ns:80
+#: ../Admin/web/inc/params.ns:106
 msgid "Subject"
 msgstr "主题"
 
@@ -1782,110 +1782,6 @@ msgstr "错误：管理员数据文件无法打开。"
 #: ../Admin/web/inc/admin.inc.ns:150 ../Admin/web/user/showadminlist.ns:615
 msgid "Error: This Admin ID already exists !"
 msgstr "错误：管理员id已存在！"
-
-#: ../Admin/web/inc/params.ns:5 ../Admin/web/log/showstat.ns:86
-#: ../Admin/web/gateway/mailqueue.ns:111
-msgid "Mail From"
-msgstr "发件人"
-
-#: ../Admin/web/inc/params.ns:6 ../Admin/web/gateway/mailqueue.ns:112
-msgid "To"
-msgstr "收件人"
-
-#: ../Admin/web/inc/params.ns:7
-msgid "CC"
-msgstr "抄送人"
-
-#: ../Admin/web/inc/params.ns:8 ../Admin/web/inc/params.ns:23
-msgid "Header"
-msgstr "信头"
-
-#: ../Admin/web/inc/params.ns:9 ../Admin/web/inc/params.ns:24
-msgid "Body"
-msgstr "信体"
-
-#: ../Admin/web/inc/params.ns:10 ../Admin/web/inc/params.ns:22
-#: ../Admin/web/server/mailcontent.ns:25
-#: ../Admin/web/gateway/mailcontent.ns:31
-msgid "Mail Content"
-msgstr "全文"
-
-#: ../Admin/web/inc/params.ns:11
-msgid "Attachment"
-msgstr "附件"
-
-#: ../Admin/web/inc/params.ns:12
-msgid "Last Relay IP"
-msgstr "客户端IP"
-
-#: ../Admin/web/inc/params.ns:13
-msgid "Sender IP"
-msgstr "源客户端IP"
-
-#: ../Admin/web/inc/params.ns:15
-msgid "String Include"
-msgstr "字符串模糊匹配"
-
-#: ../Admin/web/inc/params.ns:16
-msgid "Regular Express Match"
-msgstr "正则表达式匹配"
-
-#: ../Admin/web/inc/params.ns:17
-msgid "Single IP Match"
-msgstr "单个IP地址匹配"
-
-#: ../Admin/web/inc/params.ns:18
-msgid "Continuous IP Match"
-msgstr "连续IP匹配"
-
-#: ../Admin/web/inc/params.ns:19
-msgid "IP/Mask Match"
-msgstr "IP/MASK匹配"
-
-#: ../Admin/web/inc/params.ns:20
-msgid "String Precision Match"
-msgstr "字符串精确匹配"
-
-#: ../Admin/web/inc/params.ns:25
-msgid "Attachment Size"
-msgstr "附件大小"
-
-#: ../Admin/web/inc/params.ns:26
-msgid "Attachment Counts"
-msgstr "附件个数"
-
-#: ../Admin/web/inc/params.ns:27
-msgid "To,CC,Bcc Total"
-msgstr "TO,CC,BCC收件人总数"
-
-#: ../Admin/web/inc/params.ns:29
-msgid "ZIP File"
-msgstr "压缩文件"
-
-#: ../Admin/web/inc/params.ns:30
-msgid "Audio File"
-msgstr "声音文件"
-
-#: ../Admin/web/inc/params.ns:31
-msgid "Image File"
-msgstr "图片文件"
-
-#: ../Admin/web/inc/params.ns:32
-msgid "Text File"
-msgstr "文本类型"
-
-#: ../Admin/web/inc/params.ns:33
-msgid "Exe File"
-msgstr "可执行文件"
-
-#: ../Admin/web/inc/params.ns:34
-msgid "Other File"
-msgstr "其他类型"
-
-#: ../Admin/web/inc/params.ns:36 ../Admin/web/log/monitor.ns:29
-#: ../Admin/web/log/logshow.ns:53
-msgid "Pass"
-msgstr "通过"
 
 #: ../Admin/web/inc/functions.ns:40 ../Admin/web/inc/functions.ns:148
 msgid "Cannot write file, Disk Full?"
@@ -1919,6 +1815,126 @@ msgstr "加入IP黑名单"
 #: ../Admin/web/inc/classes.ns:628
 msgid "Login Failure"
 msgstr "登录失败"
+
+#: ../Admin/web/inc/params.ns:107 ../Admin/web/log/showstat.ns:86
+#: ../Admin/web/gateway/mailqueue.ns:111
+msgid "Mail From"
+msgstr "发件人"
+
+#: ../Admin/web/inc/params.ns:108 ../Admin/web/gateway/mailqueue.ns:112
+msgid "To"
+msgstr "收件人"
+
+#: ../Admin/web/inc/params.ns:109
+msgid "CC"
+msgstr "抄送人"
+
+#: ../Admin/web/inc/params.ns:110 ../Admin/web/inc/params.ns:125
+msgid "Header"
+msgstr "信头"
+
+#: ../Admin/web/inc/params.ns:111 ../Admin/web/inc/params.ns:126
+msgid "Body"
+msgstr "信体"
+
+#: ../Admin/web/inc/params.ns:112 ../Admin/web/inc/params.ns:124
+#: ../Admin/web/server/mailcontent.ns:25
+#: ../Admin/web/gateway/mailcontent.ns:31
+msgid "Mail Content"
+msgstr "全文"
+
+#: ../Admin/web/inc/params.ns:113
+msgid "Attachment"
+msgstr "附件"
+
+#: ../Admin/web/inc/params.ns:114
+msgid "Last Relay IP"
+msgstr "客户端IP"
+
+#: ../Admin/web/inc/params.ns:115
+msgid "Sender IP"
+msgstr "源客户端IP"
+
+#: ../Admin/web/inc/params.ns:117
+msgid "String Include"
+msgstr "字符串模糊匹配"
+
+#: ../Admin/web/inc/params.ns:118
+msgid "Regular Express Match"
+msgstr "正则表达式匹配"
+
+#: ../Admin/web/inc/params.ns:119
+msgid "Single IP Match"
+msgstr "单个IP地址匹配"
+
+#: ../Admin/web/inc/params.ns:120
+msgid "IP Seg Match"
+msgstr "连续IP地址匹配"
+
+#: ../Admin/web/inc/params.ns:121
+msgid "IP/Mask Match"
+msgstr "IP/MASK匹配"
+
+#: ../Admin/web/inc/params.ns:122
+msgid "String Exact Match"
+msgstr "字符串精确匹配"
+
+#: ../Admin/web/inc/params.ns:127
+msgid "Attachment Size"
+msgstr "附件大小"
+
+#: ../Admin/web/inc/params.ns:128
+msgid "Attachment Counts"
+msgstr "附件个数"
+
+#: ../Admin/web/inc/params.ns:129
+msgid "To,CC,Bcc Total"
+msgstr "TO,CC,BCC收件人总数"
+
+#: ../Admin/web/inc/params.ns:131
+msgid "ZIP File"
+msgstr "压缩文件"
+
+#: ../Admin/web/inc/params.ns:132
+msgid "Audio File"
+msgstr "声音文件"
+
+#: ../Admin/web/inc/params.ns:133
+msgid "Image File"
+msgstr "图片文件"
+
+#: ../Admin/web/inc/params.ns:134
+msgid "Text File"
+msgstr "文本类型"
+
+#: ../Admin/web/inc/params.ns:135
+msgid "Exe File"
+msgstr "可执行文件"
+
+#: ../Admin/web/inc/params.ns:136
+msgid "Other File"
+msgstr "其他类型"
+
+#: ../Admin/web/inc/params.ns:138 ../Admin/web/log/monitor.ns:29
+#: ../Admin/web/log/logshow.ns:53
+msgid "Pass"
+msgstr "通过"
+
+#: ../Admin/web/inc/params.ns:146
+msgid "Add Receiptor"
+msgstr "添加收件人"
+
+#: ../Admin/web/inc/params.ns:147
+msgid "Del Receiptor"
+msgstr "删除收件人"
+
+#: ../Admin/web/inc/params.ns:148
+msgid "Replace Receiptor"
+msgstr "替换收件人"
+
+#: ../Admin/web/inc/params.ns:150
+msgid "Del Header"
+msgstr "删除信头记录"
 
 #: ../Admin/web/log/downlog.ns:10 ../Admin/web/log/logexport.ns:18
 #: ../Admin/web/log/audit.ns:11 ../Admin/web/log/logshow.ns:18
@@ -3687,6 +3703,9 @@ msgstr "该账号登陆权限被禁止"
 msgid "This User can not Login from this IP"
 msgstr "该账号不能从此IP地址登录"
 
+#~ msgid "Continuous IP Match"
+#~ msgstr "连续IP匹配"
+
 #~ msgid "Config Modify Success! "
 #~ msgstr "修改成功！"
 
@@ -3698,12 +3717,6 @@ msgstr "该账号不能从此IP地址登录"
 
 #~ msgid "Policy Type"
 #~ msgstr "编号类型"
-
-#~ msgid "Del Receiptor"
-#~ msgstr "删除收件人"
-
-#~ msgid "IP Seg Match"
-#~ msgstr "连续IP地址匹配"
 
 #~ msgid "Op Success"
 #~ msgstr "操作成功"
