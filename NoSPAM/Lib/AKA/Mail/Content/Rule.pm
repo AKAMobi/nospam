@@ -464,7 +464,7 @@ sub check_single_size_rule
 	# 以下是对 MSP1.8 的扩展 
 	#
 	}elsif ( 150==$match_key ){ # To+Cc+Bcc 个数 
-		return ( check_size_value( $self, $mail_info->{to_cc_bcc_num}, $match_size ) );
+		return ( check_size_value( $self, $mail_info->{head}->{to_cc_bcc_num}, $match_size ) );
 	}
 	
 	$self->{zlog}->fatal ( "error: unimplement size key: [$match_key]" );

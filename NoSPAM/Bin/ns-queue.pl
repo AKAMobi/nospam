@@ -204,9 +204,6 @@ my ($env_recips, $recips, $trecips, $recip, $one_recip);
 my ($alarm_status,$elapsed_time,$msg_size);
 my $xstatus=0;
 
-# 将邮件进行初步检测，写入tmp，然后 link 覆盖原mail文件
-&working_copy;
-
 #Now alarm this area so that hung networks/virus scanners don't cause 
 #double-delivery...
 
@@ -298,56 +295,6 @@ sub debug {
   print LOG "$nowtime:$$: ",@_,"\n" if ($DEBUG);
 }
 
-sub working_copy {
-  my ($hdr,$last_hdr,$value,$num_of_headers,$last_header,$last_value,$attachment_filename);
-  
-  &debug("w_c: mkdir $ENV{'TMPDIR'}");
-  mkdir("$ENV{'TMPDIR'}",0700)||&error_condition("$file_id exists - try again later...");
-  chdir("$ENV{'TMPDIR'}")||&error_condition("cannot chdir to $ENV{'TMPDIR'}/");
-
-  open(TMPFILE,"<$scandir/$wmaildir/tmp/$file_id")||&error_condition("cannot read from $scandir/$wmaildir/tmp/$file_id - $!");
-  
-  my $still_headers=1;
-  my $begin_content='';
-  my $still_attachment='';
-  while (<TMPFILE>) {
-#&debug( "TMPFILE still_headers: $still_headers $_" );
-   if ( $still_headers ){
-#&debug( "TMPFILE in still_headers: $_" );
-	if ( /^Subject: ([^\n]+)/i) {
-#&debug( "SUBJECT $_" );
-		$decoded_subject = $1 || '';
-		$decoded_subject=~s/[\r\n]*$//g;
-		if ($decoded_subject=~/^=\?[\w-]+\?B\?(.*)\?=$/) { 
-   			use MIME::Base64; 
-   			$decoded_subject = decode_base64($1); 
-#&debug( "SUBJECT $1 / $decoded_subject" );
-		}elsif ($decoded_subject=~/^=\?[\w-]+\?Q\?(.*)\?=$/) { 
-   			use MIME::QuotedPrint; 
-   			$decoded_subject = decode_qp($1); 
-#&debug( "SUBJECT $1 / $decoded_subject" );
-		}
-		# we only need subject.
-	}
-	if ( /^CC:\s*(.+)/i || /^To:\s*(.+)/i ){
-		$AKA_email_receiver_num += scalar split(/,/,$1);
-		&debug ( "To & CC info: $$ num: $AKA_email_receiver_num , raw data: $1" );
-	}
-	$still_headers = 0 if (/^(\r|\r\n|\n)$/);
-   }
-	# we only precess mail header here.
-	last unless $still_headers;
-  }
-  close(TMPFILE)||&error_condition("cannot close $scandir/$wmaildir/tmp/$file_id - $!");
-
-  &debug("w_c: rename new msg from $scandir/$wmaildir/tmp/$file_id to $scandir/$wmaildir/new/$file_id");
-
-  #Not atomic but who cares about the overhead - this is the only app using this area...
-  link("$scandir/$wmaildir/tmp/$file_id","$scandir/$wmaildir/new/$file_id")||&error_condition("cannot link $scandir/$wmaildir/tmp/$file_id into $scandir/$wmaildir/new/$file_id - $!");
-  $mail_size = -s "$scandir/$wmaildir/new/$file_id" || 0;
-  unlink("$scandir/$wmaildir/tmp/$file_id")||&error_condition("cannot delete $scandir/$wmaildir/tmp/$file_id - $!");
-}
-
 sub grab_envelope_hdrs {
   select(STDOUT); $|=1;
   
@@ -396,7 +343,7 @@ sub AKA_engine_run {
   #
   $start_time=[gettimeofday];
 
-  &check_license;
+  #&check_license;
 
   $engine_check_license_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
   &debug("AKA_check_license_engine $$: in $engine_check_license_time secs");
@@ -408,6 +355,10 @@ sub AKA_engine_run {
 
   $mail_info = $AM->process( $mail_info );
 
+  use Data::Dumper;
+  open ( FD, ">/tmp/zixia.debug" );
+  print FD Dumper($mail_info);
+  close ( FD );
   ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag ) = $AM->get_spam_tag_params;
 
   undef $AM;

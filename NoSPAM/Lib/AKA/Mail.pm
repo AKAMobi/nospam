@@ -150,10 +150,13 @@ sub spam_engine
 {
 	my $self = shift;
 
+        my $start_time=[gettimeofday];
+
 	my ( $client_smtp_ip, $returnpath ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
 						$self->{mail_info}->{aka}->{returnpath} );
 
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} =  'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine};
+	$self->{mail_info}->{aka}->{engine}->{spam}->{runned} =  1;
 
 	if ( ! $client_smtp_ip || ! $returnpath ){
 		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ ) );
@@ -179,6 +182,8 @@ sub spam_engine
 								   ) && $is_spam
 								) ? ACTION_REJECT : ACTION_PASS ;
 	
+        $self->{mail_info}->{aka}->{engine}->{spam}->{runtime} = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
+
 	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{spam}->{action};
 
 	return;
@@ -291,6 +296,8 @@ sub content_engine
 	# content parser get all mail information, and return it.
 	$self->{mail_info} = $self->{content}->process( $self->{mail_info} );
 
+	$self->{mail_info}->{aka}->{drop} = 1 if ( $self->{mail_info}->{aka}->{engine}->{content}->{action} eq ACTION_DISCARD 
+						|| $self->{mail_info}->{aka}->{engine}->{content}->{action} eq ACTION_REJECT );
 
 	return;
 }
@@ -463,9 +470,10 @@ sub get_mail_base_info
 
 	open ( MAIL, '<' . $self->{mail_info}->{aka}->{emlfilename} ) or return undef;
 
-	my $still_headers = 0;
+	my $still_headers = 1;
 	my $subject;
 	while (<MAIL>) {
+		chomp;
 		if ( $still_headers ){
 			if ( /^Subject: ([^\n]+)/i) {
 				$subject = $1 || '';

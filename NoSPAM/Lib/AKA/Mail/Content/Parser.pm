@@ -219,7 +219,7 @@ sub get_head_info
 				);
 
 	# get all to+cc+bcc
-	$self->{mail_info}->{to_cc_bcc_num} = $num_receivers;
+	$self->{mail_info}->{head}->{to_cc_bcc_num} = $num_receivers;
 
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};

@@ -11,7 +11,7 @@ use AKA::Mail::Log;
 use AKA::Mail::Content::Conf;
 use AKA::Mail::Content::Rule;
 use AKA::Mail::Content::Parser;
-
+use AKA::Mail::Content::Verify;
 use MIME::Base64;
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 #use Exporter;
