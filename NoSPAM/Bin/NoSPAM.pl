@@ -442,6 +442,7 @@ sub get_LogHead
 	print "时间,邮件方向"
 		. ",发件人IP,发件人地址,收件人地址,主题"
 		. ",垃圾度,垃圾原因,垃圾动作"
+		. ",病毒,病毒名,病毒动作"
 		. ",规则,动作类型,动作参数"
 		. ",动态限制,动态描述";
 	return 0;
@@ -1081,7 +1082,7 @@ sub _network_reset_smtp_dnat
 	return 0 unless $domain_ip;
 
 	# we use static internal ip here
-	$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
+	my $GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
 	#my $GWIP = $conf->{config}->{Network}->{IP};
 	#if ( !defined $GWIP ){
 	#	$zlog->fatal ( "GW has no IP???" );

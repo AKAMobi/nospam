@@ -815,7 +815,7 @@ sub AKA_mail_engine {
 	# AntiVirus Engine
 	#
   	$start_time=[gettimeofday];
-	$AKA_virus_result =$AM->antivirus_engine( {	emlfilename => "$scandir/$wmaildir/new/$file_id" });
+	$AKA_virus_result =$AM->antivirus_engine( "$scandir/$wmaildir/new/$file_id" );
   	$engine_antivirus_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
   	&debug("AKA_antivirus_engine $$: in $engine_antivirus_run_time secs ["
 			. $AKA_virus_result->{Result} 
@@ -824,7 +824,10 @@ sub AKA_mail_engine {
 			. ']' );
 
 	# 如果是病毒并且我们要拒绝，则不运行其他引擎；
-	goto noSPAM_log if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 );
+	if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 ){
+		&debug ( "FOUND virus AND DROP IT!" );
+		goto NOSPAM_LOG;
+	}
 	
 	#
 	# SPAM Engine
@@ -882,9 +885,9 @@ sub AKA_mail_engine {
   	&debug("AKA_archive_engine $$: in $engine_archive_run_time secs");
 
 NOSPAM_LOG:
-	&noSPAM_log;
+	#&noSPAM_log;
 
-	sub noSPAM_log {
+	#sub noSPAM_log {
 		my $esc_subject = $decoded_subject;
 		$esc_subject=~s/,/_/g;
 		$esc_subject=~s/[\r|\n]+//g;
@@ -914,7 +917,7 @@ NOSPAM_LOG:
 		}else{
 			&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 		}
-	}
+	#}
 	
 	######################## action #################################3
 
