@@ -482,7 +482,7 @@ sub check_single_size_rule
 sub check_re_match
 {
 	my $self = shift;
-	my ( $content, $match_keyword, $match_type ) = @_;
+	my ( $content, $match_keyword, $match_type, $match_case_sensitive ) = @_;
 
 	if ( ! defined $match_keyword || ! defined $match_type || ! defined $content ){
 		#$self->{zlog}->fatal ( "error: check_regex not enough param. re: $re, is_re: $is_re, content: $content" );
@@ -493,14 +493,23 @@ sub check_re_match
 		#字符串模糊匹配
 #print "in [$content] find [$match_keyword], result: " . "[" . index($content,$match_keyword) . "]\n\n\n";
 		#return ( -1 != rindex($content,$match_keyword) );
-		return ( $content=~/\Q$match_keyword/ );
+		if ( $match_case_sensitive ){
+			return ( $content=~/\Q$match_keyword/ );
+		}
+		return ( $content=~/\Q$match_keyword/i );
 	}elsif( 1==$match_type ){
 		#正则匹配
-		return ( $content=~/$match_keyword/ );
+		if ( $match_case_sensitive ){
+			return ( $content=~/$match_keyword/ );
+		}
+		return ( $content=~/$match_keyword/i );
 	}elsif( 9==$match_type ){
 		#字符串精确匹配
 		#return ( -1 != index($content,$match_keyword) );
-		return ( $content=~/^\Q$match_keyword\E$/ );
+		if ( $match_case_sensitive ){
+			return ( $content=~/^\Q$match_keyword\E$/ );
+		}
+		return ( $content=~/^\Q$match_keyword\E$/i );
 	}
 
 }
@@ -514,41 +523,44 @@ sub check_single_keyword_rule
 	$match_key = $rule->{key};
 	$match_type = $rule->{type};
 	$match_keyword = $rule->{keyword};
+	$match_case_sensitive = $rule->{case_sensitive};
+	$match_decode = $rule->{decode};
+
 
 	# XXX fix it, or find out reason.
 	if ( ! length($mail_info->{body_text}) ){
 		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type mail_info has no body_text" );
-use Data::Dumper;
-$self->{zlog}->fatal ( Dumper($mail_info) );
+#use Data::Dumper;
+#$self->{zlog}->fatal ( Dumper($mail_info) );
 		#$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
 	}
 	if ( 1==$match_key ){ #1主题包含关键字
-		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 2==$match_key ){ #2发件人包含关键字
-		return check_re_match ( $self, $mail_info->{head}->{from}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{from}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 3==$match_key ){ #3收件人包含关键字
-		return check_re_match ( $self, $mail_info->{head}->{to}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{to}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 4==$match_key ){ #4抄送人包含关键字
-		return check_re_match ( $self, $mail_info->{head}->{cc}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{cc}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 5==$match_key ){ #5信头包含关键字
-		return check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 6==$match_key ){ #6信体包含关键字
-		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive );
 	}elsif ( 7==$match_key ){ #7全文包含关键字
-		return (    	    check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type )
-				||  check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type )
+		return (    	    check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type, $match_case_sensitive )
+				||  check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive )
 			);
 	}elsif ( 8==$match_key ){ #8附件包含关键字
 		#FIXME 当前是匹配文件名而不是内容
 		foreach my $filename ( keys %{$mail_info->{body}} ){
-			if ( check_re_match ( $self, $filename, $match_keyword, $match_type ) ){
+			if ( check_re_match ( $self, $filename, $match_keyword, $match_type, $match_case_sensitive ) ){
 				return 1;
 			}
 		}
 		#
 		# FIXME 匹配文件名后，匹配所有的文本类型的附件；
 		#
-		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive );
 		# return 0;
 	}elsif ( 9==$match_key ){ #9客户端IP为指定值或在指定范围内
 		return check_ip_range( $self, $mail_info->{head}->{server_ip}, $match_keyword );
