@@ -18,8 +18,6 @@ use IO::Socket;
 use Config::Tiny;
 use Net::FTP;
 
-use Data::Dumper;
-
 # GW to GA
 use constant CATE_REQ_LINK		=> '0000000001';
 use constant CATE_RESP_LINK		=> '0000000099';
@@ -1179,7 +1177,7 @@ sub ftp_put_file
 
 	my ($ftp, $srcdir, $dstdir, @files) = @_;
 
-print "path: $srcdir -> $dstdir, files: " . join(',', @files) . "\n";
+#print "path: $srcdir -> $dstdir, files: " . join(',', @files) . "\n";
 
 	unless ( $ftp->cwd( $dstdir ) ){
 		$ftp->delete ( $dstdir );

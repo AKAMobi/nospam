@@ -28,6 +28,8 @@ sub new
 	$self->{define}->{rrdpath} = '/home/NoSPAM/var/rrd/';
 	$self->{define}->{gifpath} = "/home/NoSPAM/admin/status/";
 
+	$self->{conf} = new AKA::Mail::Conf;
+
 	return $self;
 }
 

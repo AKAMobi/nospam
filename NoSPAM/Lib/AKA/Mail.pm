@@ -14,6 +14,7 @@ use MIME::QuotedPrint;
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Errno;
 use IO::Socket;
+use POSIX ();
 
 use Data::Dumper;
 use POSIX qw(:signal_h :errno_h :sys_wait_h);
@@ -93,6 +94,9 @@ sub new
 
 	$self->check_conffile_update();
 
+	# 设置引擎运行的结果数据缺省值
+	$self->init_engine_info();
+
 	return $self;
 
 }
@@ -100,6 +104,30 @@ sub new
 sub server
 {
 	my $self = shift;
+
+#XXX test
+=pod
+	local $SIG{CHLD} = 'IGNORE';
+	my $counter = 0;
+	while ( 1 ){
+		my $pid = fork;
+		if ( $pid == 0 ){ #child
+			$self->{zlog}->debug ( "child $$ exist" );	
+			#for ( my $i=0;$i<100000; $i++ ){
+			#	$i=$i+2;
+			#	$i--;
+			#}
+			select(undef, undef, undef, 0.25);
+			exit;
+		}elsif ( $pid < 0 ){
+			exit;
+		}
+		$self->{zlog}->debug ( "parent forked $pid" );	
+		$counter ++;
+		exit 0 if $counter > 100;
+	}
+=cut
+
 	my $server = new IO::Socket::INET( LocalAddr => '127.0.0.1',
 					LocalPort => '40307',
 					Proto => 'tcp',
@@ -208,6 +236,80 @@ sub check_conffile_update
 	return 0;
 }
 
+sub recv_mail_info_ex
+{
+	my $self = shift;
+
+my $logstr;
+	$_ = <STDIN>; s/\r|\r\n|\n//g;
+$logstr .= "RELAYCLIENT: [$_]\n";
+	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
+
+	$_ = <STDIN>; s/\r|\r\n|\n//g;
+$logstr .= "TCPREMOTEIP: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
+
+	$_ = <STDIN>; s/\r|\r\n|\n//g;
+$logstr .= "TCPREMOTEINFO: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
+
+	$_ = <STDIN>; s/\r|\r\n|\n//g;
+$logstr .= "emlfilename: [$_]\n";
+	$self->{mail_info}->{aka}->{emlfilename} = $_;
+
+	$_ = <STDIN>; s/\r|\r\n|\n//g;
+	$self->{mail_info}->{aka}->{fd1} = $_;
+s/\0/\\0/g;
+$logstr .= "fd1: $_\n";
+
+$self->{zlog}->log ( $logstr );
+
+	$self->{mail_info};
+}
+
+# 2004-05-25
+# use Net::Server, socket io is STDIN/STDOUT
+sub net_process_ex
+{
+	my $self = shift;
+
+	$self->recv_mail_info_ex();
+
+$self->{zlog}->debug ( "before process" );
+	$self->process ( $self->{mail_info} );
+$self->{zlog}->debug ( "after process" );
+
+	$self->send_mail_info_ex();
+$self->{zlog}->debug ( "after send_mail_info_ex" );
+}
+
+sub send_mail_info_ex
+{
+	my $self = shift;
+
+	my ($smtp_code,$smtp_info,$exit_code);
+	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code} ||'';
+	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info} ||'';
+	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
+
+#print "after process, before send\n";
+$self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
+	. "smtp_info: [" . $smtp_info . "]\n"
+	. "exit_code: [" . $exit_code . "]" );
+
+
+	if ( $self->{license_ok} ){
+		print STDOUT $smtp_code . "\n";
+		print STDOUT $smtp_info . "\n";
+		print STDOUT $exit_code . "\n";
+	}else{
+		print STDOUT "553\n";
+		print STDOUT "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n";
+		print STDOUT "150\n";
+	}
+}
+
+
 sub recv_mail_info
 {
 	my $self = shift;
@@ -231,10 +333,11 @@ $logstr .= "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <$socket>; s/\r|\r\n|\n//g;
-$logstr .= "fd1: $_\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
+s/\0/\\0/g;
+$logstr .= "fd1: $_\n";
 
-#$self->{zlog}->log ( $logstr );
+$self->{zlog}->log ( $logstr );
 
 	$self->{mail_info};
 }
@@ -340,9 +443,6 @@ sub process
 
 	$mail_info->{aka}->{start_time} = $self->{start_time};
 	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
-
-	# 设置引擎运行的结果数据缺省值
-	$self->init_engine_info();
 
 	# 获取文件尺寸和标题等基本信息
 	$self->get_mail_base_info;
@@ -613,11 +713,21 @@ sub qmail_requeue {
 		#$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
 
 	}
+$self->{zlog}->debug ( "here" );
 
 	# We should now have queued the message.  Let's find out the exit status
 	# of qmail-queue.
-	waitpid ($pid, 0);
+	
+	#waitpid ($pid, 0);
+
+	#eval {
+		1 while (waitpid($pid, POSIX::WNOHANG()) > 0);
+	#}; 
+$self->{zlog}->debug ( "here1 $@" ) if $@;
+$self->{zlog}->debug ( "here1 $?" );
+
 	my $xstatus =($? >> 8);
+$self->{zlog}->debug ( "here2" );
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
