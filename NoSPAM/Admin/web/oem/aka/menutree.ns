@@ -86,7 +86,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	var k = new WebFXTreeItem('独立服务器模式');
 	tree.add(k);
 	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
-	k.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
+	k.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
 	var k2 = new WebFXTreeItem('用户管理');
 	k.add(k2);
 	k2.add(new WebFXTreeItem('用户管理','server/showuserlist.ns','main'));

@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if($MailGateway <= 0 && $MailRelay <= 0 )
+if($MailGateway <= 0 && $MailRelay <= 0 && $MailServer <=0 )
 	die("对不起，本系统没有开启本功能");
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
