@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-16 01:59+0800\n"
+"POT-Creation-Date: 2004-06-18 03:23+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -21,7 +20,7 @@ msgid "CPU is not licensed"
 msgstr "处理器未授权"
 
 #: ../Lib/AKA/License.pm:169
-msgid "Hareward system is licensed"
+msgid "Hareward system OK"
 msgstr "硬件系统已授权"
 
 #: ../Lib/AKA/License.pm:238
@@ -110,7 +109,7 @@ msgid "Authorized user"
 msgstr "认证用户"
 
 #: ../Lib/AKA/Mail.pm:1270
-msgid "Sender must as same as Authorized user"
+msgid "Sender must as same as auth user"
 msgstr "发信人非身份认证用户"
 
 #: ../Lib/AKA/Mail.pm:1410
@@ -122,7 +121,7 @@ msgid "incoming mail is not limited"
 msgstr "外向内未限制"
 
 #: ../Lib/AKA/Mail.pm:1455
-msgid "Sender WhiteList"
+msgid "Sender white list"
 msgstr "发信人白名单"
 
 #: ../Lib/AKA/Mail.pm:1470
@@ -217,7 +216,7 @@ msgid "IP WhiteList"
 msgstr "IP白名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:438
-msgid "Domain whitelist"
+msgid "Domain WhiteList"
 msgstr "域名白名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:441
@@ -261,11 +260,11 @@ msgid "Upgrade package filename error."
 msgstr "升级包文件名错误。"
 
 #: ../Bin/NoSPAM.pl:260
-msgid "Upgrade package version mismatches with current system."
+msgid "Upgrade package version mismatch with current system."
 msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
 
 #: ../Bin/NoSPAM.pl:264
-msgid "System version is higher then current upgrade package, can't downgrade."
+msgid "System version higher then current upgrade package, can't downgrade."
 msgstr "系统已经安装过更高的升级包，无法降级。"
 
 #: ../Bin/NoSPAM.pl:272 ../Bin/NoSPAM.pl:279 ../Bin/NoSPAM.pl:288
@@ -288,7 +287,7 @@ msgstr "无法记录升级信息"
 msgid "Can't record upgrade package information"
 msgstr "无法记录升级包信息"
 
-#: ../Bin/NoSPAM.pl:711
+#: ../Bin/NoSPAM.pl:712
 msgid "License is not valide or already expires"
 msgstr "当前许可证无效或已经过期！"
 

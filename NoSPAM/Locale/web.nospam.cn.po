@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-15 18:09+0800\n"
+"POT-Creation-Date: 2004-06-18 03:23+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -16,11 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=GBK\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "a1top_01_en.jpg"
-msgstr "a1top_01.jpg"
-
-#: ../Admin/web/logout.ns:9 ../Admin/web/inc/classes.ns:566
-#: ../Admin/web/inc/classes.ns:583 ../Admin/web/inc/classes.ns:619
+#: ../Admin/web/logout.ns:9 ../Admin/web/inc/classes.ns:575
+#: ../Admin/web/inc/classes.ns:592 ../Admin/web/inc/classes.ns:628
 #: ../Admin/web/login.ns:75
 msgid "Admin Login"
 msgstr "管理员登录"
@@ -36,26 +32,26 @@ msgid "Success"
 msgstr "成功"
 
 #: ../Admin/web/logout.ns:30
-msgid "Logout Success. Please Close This Browser Window"
+msgid "Logout Successfully. Please Close This Browser Window"
 msgstr "已成功退出。请关闭此窗口"
 
 #: ../Admin/web/antispam/treatment.ns:5 ../Admin/web/antispam/awl.ns:5
-#: ../Admin/web/antispam/bayes.ns:5 ../Admin/web/antispam/sa.ns:5
-#: ../Admin/web/antispam/rbl.ns:5 ../Admin/web/antispam/list.ns:5
+#: ../Admin/web/antispam/bayes.ns:5 ../Admin/web/antispam/rbl.ns:5
+#: ../Admin/web/antispam/list.ns:5 ../Admin/web/antispam/sa.ns:5
 #: ../Admin/web/antispam/spamengine.ns:5 ../Admin/web/antispam/traceable.ns:5
 #: ../Admin/web/antispam/netcheck.ns:5
-msgid "Sorry, This Product has not AntiSpam Engine License"
+msgid "Sorry, This Product has no AntiSpam Engine License"
 msgstr "对不起，本系统没有垃圾邮件引擎License"
 
 #: ../Admin/web/antispam/treatment.ns:8 ../Admin/web/antispam/awl.ns:8
-#: ../Admin/web/antispam/bayes.ns:8 ../Admin/web/antispam/sa.ns:8
-#: ../Admin/web/antispam/rbl.ns:8 ../Admin/web/antispam/list.ns:8
+#: ../Admin/web/antispam/bayes.ns:8 ../Admin/web/antispam/rbl.ns:8
+#: ../Admin/web/antispam/list.ns:8 ../Admin/web/antispam/sa.ns:8
 #: ../Admin/web/antispam/spamengine.ns:8 ../Admin/web/antispam/traceable.ns:8
 #: ../Admin/web/antispam/netcheck.ns:8
 #: ../Admin/web/archive/archiveaddress.ns:8
-#: ../Admin/web/archive/archiveexport.ns:5
 #: ../Admin/web/archive/archiveengine.ns:7
-#: ../Admin/web/archive/archivetype.ns:7 ../Admin/web/content/category.ns:8
+#: ../Admin/web/archive/archivetype.ns:7
+#: ../Admin/web/archive/archiveexport.ns:5 ../Admin/web/content/category.ns:8
 #: ../Admin/web/content/ruledelete.ns:8 ../Admin/web/content/ruledetail.ns:7
 #: ../Admin/web/content/ruleinfo.ns:8 ../Admin/web/content/ruleprint.ns:7
 #: ../Admin/web/content/contentengine.ns:8
@@ -67,17 +63,17 @@ msgstr "对不起，本系统没有垃圾邮件引擎License"
 #: ../Admin/web/dynamic/dynengine.ns:8 ../Admin/web/log/downlog.ns:5
 #: ../Admin/web/log/logexport.ns:5 ../Admin/web/log/logflush.ns:5
 #: ../Admin/web/log/logstat.ns:5 ../Admin/web/log/showstat.ns:5
-#: ../Admin/web/log/monitor.ns:5 ../Admin/web/log/logshow.ns:5
-#: ../Admin/web/log/audit.ns:5 ../Admin/web/status/analyze.ns:5
+#: ../Admin/web/log/monitor.ns:5 ../Admin/web/log/audit.ns:5
+#: ../Admin/web/log/logshow.ns:5 ../Admin/web/status/analyze.ns:5
 #: ../Admin/web/status/mail_engine.ns:5 ../Admin/web/status/mail_size.ns:5
 #: ../Admin/web/status/mail_type.ns:5 ../Admin/web/status/dns.ns:5
 #: ../Admin/web/status/mail_traffic.ns:5 ../Admin/web/status/status.ns:5
 #: ../Admin/web/system/configmanage.ns:5 ../Admin/web/system/downfile.ns:5
-#: ../Admin/web/system/reboot.ns:5 ../Admin/web/system/upload.ns:5
-#: ../Admin/web/system/systemtime.ns:5 ../Admin/web/system/pkginfo.ns:5
-#: ../Admin/web/system/upgrade.ns:5 ../Admin/web/system/basesettings.ns:5
-#: ../Admin/web/system/gatewaymode.ns:5 ../Admin/web/system/engine.ns:5
-#: ../Admin/web/system/serialno.ns:5 ../Admin/web/system/network.ns:5
+#: ../Admin/web/system/upload.ns:5 ../Admin/web/system/systemtime.ns:5
+#: ../Admin/web/system/upgrade.ns:5 ../Admin/web/system/gatewaymode.ns:5
+#: ../Admin/web/system/pkginfo.ns:5 ../Admin/web/system/basesettings.ns:5
+#: ../Admin/web/system/engine.ns:5 ../Admin/web/system/network.ns:5
+#: ../Admin/web/system/serialno.ns:5 ../Admin/web/system/reboot.ns:5
 #: ../Admin/web/user/changePasswd.ns:17
 #: ../Admin/web/user/changeUserPasswd.ns:15
 #: ../Admin/web/user/showadminlist.ns:5 ../Admin/web/user/changeIPlist.ns:17
@@ -90,14 +86,14 @@ msgstr "对不起，本系统没有垃圾邮件引擎License"
 #: ../Admin/web/gasupervise/gaisc.ns:8 ../Admin/web/gasupervise/msp.ns:8
 #: ../Admin/web/gasupervise/export.ns:8 ../Admin/web/gateway/mailcontent.ns:12
 #: ../Admin/web/gateway/protectdomain.ns:8 ../Admin/web/gateway/mailqueue.ns:8
-msgid "You have not permission to operate this page"
+msgid "You have no permission to access this page"
 msgstr "您没有访问该网页的权限。"
 
 #: ../Admin/web/antispam/treatment.ns:12 ../Admin/web/antispam/awl.ns:12
-#: ../Admin/web/antispam/bayes.ns:12 ../Admin/web/antispam/sa.ns:28
-#: ../Admin/web/antispam/rbl.ns:12 ../Admin/web/antispam/list.ns:227
-#: ../Admin/web/antispam/list.ns:252 ../Admin/web/antispam/list.ns:280
-#: ../Admin/web/antispam/list.ns:310 ../Admin/web/antispam/spamengine.ns:12
+#: ../Admin/web/antispam/bayes.ns:12 ../Admin/web/antispam/rbl.ns:12
+#: ../Admin/web/antispam/list.ns:227 ../Admin/web/antispam/list.ns:252
+#: ../Admin/web/antispam/list.ns:280 ../Admin/web/antispam/list.ns:310
+#: ../Admin/web/antispam/sa.ns:41 ../Admin/web/antispam/spamengine.ns:12
 #: ../Admin/web/antispam/traceable.ns:12 ../Admin/web/antispam/netcheck.ns:12
 #: ../Admin/web/content/category.ns:178 ../Admin/web/content/category.ns:196
 #: ../Admin/web/content/category.ns:211 ../Admin/web/content/category.ns:248
@@ -112,8 +108,8 @@ msgstr "您没有访问该网页的权限。"
 #: ../Admin/web/dynamic/sendratepersubject.ns:13
 #: ../Admin/web/dynamic/dynengine.ns:12 ../Admin/web/inc/classes.ns:57
 #: ../Admin/web/inc/classes.ns:293 ../Admin/web/system/upload.ns:8
-#: ../Admin/web/system/upgrade.ns:9 ../Admin/web/system/basesettings.ns:9
-#: ../Admin/web/system/gatewaymode.ns:9 ../Admin/web/system/engine.ns:9
+#: ../Admin/web/system/upgrade.ns:9 ../Admin/web/system/gatewaymode.ns:9
+#: ../Admin/web/system/basesettings.ns:9 ../Admin/web/system/engine.ns:9
 #: ../Admin/web/system/network.ns:15 ../Admin/web/user/showadminlist.ns:232
 #: ../Admin/web/user/showadminlist.ns:334
 #: ../Admin/web/user/showadminlist.ns:451
@@ -136,17 +132,17 @@ msgstr "您没有访问该网页的权限。"
 #: ../Admin/web/gateway/protectdomain.ns:265
 #: ../Admin/web/gateway/protectdomain.ns:302
 #: ../Admin/web/gateway/mailqueue.ns:236 ../Admin/web/gateway/mailqueue.ns:262
-msgid "You have not permission to modify system config"
+msgid "You have no permission to modify system configuration"
 msgstr "你无权进行更改操作"
 
 #: ../Admin/web/antispam/treatment.ns:26 ../Admin/web/antispam/awl.ns:22
-#: ../Admin/web/antispam/bayes.ns:28 ../Admin/web/antispam/sa.ns:42
-#: ../Admin/web/antispam/rbl.ns:22 ../Admin/web/antispam/spamengine.ns:26
+#: ../Admin/web/antispam/bayes.ns:28 ../Admin/web/antispam/rbl.ns:22
+#: ../Admin/web/antispam/sa.ns:55 ../Admin/web/antispam/spamengine.ns:26
 #: ../Admin/web/antispam/traceable.ns:29 ../Admin/web/antispam/netcheck.ns:42
 #: ../Admin/web/archive/archiveaddress.ns:19
-#: ../Admin/web/archive/archiveexport.ns:18
 #: ../Admin/web/archive/archiveengine.ns:13
 #: ../Admin/web/archive/archivetype.ns:33
+#: ../Admin/web/archive/archiveexport.ns:18
 #: ../Admin/web/content/contentengine.ns:23
 #: ../Admin/web/dynamic/connperip.ns:18
 #: ../Admin/web/dynamic/connrateperip.ns:27
@@ -161,19 +157,19 @@ msgstr "你无权进行更改操作"
 #: ../Admin/web/gasupervise/basesettings.ns:21
 #: ../Admin/web/gasupervise/gaisc.ns:22 ../Admin/web/gasupervise/msp.ns:19
 #: ../Admin/web/gasupervise/export.ns:21
-msgid "Config Modify Success! "
-msgstr "修改成功！"
+msgid "Modification Success! "
+msgstr "修改成功"
 
 #: ../Admin/web/antispam/treatment.ns:28 ../Admin/web/antispam/awl.ns:24
-#: ../Admin/web/antispam/bayes.ns:30 ../Admin/web/antispam/sa.ns:44
-#: ../Admin/web/antispam/rbl.ns:24 ../Admin/web/antispam/list.ns:244
-#: ../Admin/web/antispam/list.ns:319 ../Admin/web/antispam/list.ns:338
+#: ../Admin/web/antispam/bayes.ns:30 ../Admin/web/antispam/rbl.ns:24
+#: ../Admin/web/antispam/list.ns:244 ../Admin/web/antispam/list.ns:319
+#: ../Admin/web/antispam/list.ns:338 ../Admin/web/antispam/sa.ns:57
 #: ../Admin/web/antispam/spamengine.ns:28
 #: ../Admin/web/antispam/traceable.ns:31 ../Admin/web/antispam/netcheck.ns:44
 #: ../Admin/web/archive/archiveaddress.ns:21
-#: ../Admin/web/archive/archiveexport.ns:20
 #: ../Admin/web/archive/archiveengine.ns:15
 #: ../Admin/web/archive/archivetype.ns:35
+#: ../Admin/web/archive/archiveexport.ns:20
 #: ../Admin/web/content/ruledelete.ns:22
 #: ../Admin/web/content/contentengine.ns:25
 #: ../Admin/web/content/rulemodify.ns:732 ../Admin/web/dynamic/connperip.ns:20
@@ -286,8 +282,8 @@ msgstr "缺省"
 msgid "Recommend"
 msgstr "推荐值"
 
-#: ../Admin/web/antispam/treatment.ns:75 ../Admin/web/antispam/sa.ns:89
-#: ../Admin/web/antispam/list.ns:90 ../Admin/web/antispam/list.ns:133
+#: ../Admin/web/antispam/treatment.ns:75 ../Admin/web/antispam/list.ns:90
+#: ../Admin/web/antispam/list.ns:133 ../Admin/web/antispam/sa.ns:102
 #: ../Admin/web/antispam/spamengine.ns:135
 #: ../Admin/web/archive/archiveengine.ns:37
 #: ../Admin/web/archive/archivetype.ns:9
@@ -304,9 +300,9 @@ msgstr "推荐值"
 #: ../Admin/web/content/filetypes.ns:126 ../Admin/web/dynamic/dynengine.ns:10
 #: ../Admin/web/dynamic/dynengine.ns:69 ../Admin/web/dynamic/dynengine.ns:81
 #: ../Admin/web/inc/classes.ns:67 ../Admin/web/inc/classes.ns:260
-#: ../Admin/web/inc/classes.ns:264 ../Admin/web/system/basesettings.ns:7
-#: ../Admin/web/system/basesettings.ns:193
-#: ../Admin/web/system/gatewaymode.ns:57 ../Admin/web/system/engine.ns:41
+#: ../Admin/web/inc/classes.ns:264 ../Admin/web/system/gatewaymode.ns:57
+#: ../Admin/web/system/basesettings.ns:7
+#: ../Admin/web/system/basesettings.ns:193 ../Admin/web/system/engine.ns:41
 #: ../Admin/web/system/network.ns:13 ../Admin/web/system/network.ns:65
 #: ../Admin/web/user/showadminlist.ns:59
 #: ../Admin/web/user/showadminlist.ns:618
@@ -344,13 +340,13 @@ msgid "Noise Reduce"
 msgstr "降噪"
 
 #: ../Admin/web/antispam/awl.ns:53
-msgid "Intelligent Noise Reduce System: "
+msgid "Intelligent Noise Reduction System: "
 msgstr "智能降噪系统："
 
 #: ../Admin/web/antispam/awl.ns:56 ../Admin/web/antispam/bayes.ns:80
-#: ../Admin/web/antispam/bayes.ns:88 ../Admin/web/antispam/sa.ns:83
-#: ../Admin/web/antispam/rbl.ns:56 ../Admin/web/antispam/list.ns:88
-#: ../Admin/web/antispam/list.ns:95 ../Admin/web/antispam/spamengine.ns:77
+#: ../Admin/web/antispam/bayes.ns:88 ../Admin/web/antispam/rbl.ns:56
+#: ../Admin/web/antispam/list.ns:88 ../Admin/web/antispam/list.ns:95
+#: ../Admin/web/antispam/sa.ns:96 ../Admin/web/antispam/spamengine.ns:77
 #: ../Admin/web/antispam/spamengine.ns:87
 #: ../Admin/web/antispam/spamengine.ns:110
 #: ../Admin/web/antispam/traceable.ns:104
@@ -369,9 +365,9 @@ msgid "On"
 msgstr "开启"
 
 #: ../Admin/web/antispam/awl.ns:59 ../Admin/web/antispam/bayes.ns:83
-#: ../Admin/web/antispam/bayes.ns:91 ../Admin/web/antispam/sa.ns:87
-#: ../Admin/web/antispam/rbl.ns:59 ../Admin/web/antispam/list.ns:89
-#: ../Admin/web/antispam/list.ns:96 ../Admin/web/antispam/spamengine.ns:79
+#: ../Admin/web/antispam/bayes.ns:91 ../Admin/web/antispam/rbl.ns:59
+#: ../Admin/web/antispam/list.ns:89 ../Admin/web/antispam/list.ns:96
+#: ../Admin/web/antispam/sa.ns:100 ../Admin/web/antispam/spamengine.ns:79
 #: ../Admin/web/antispam/spamengine.ns:93
 #: ../Admin/web/antispam/spamengine.ns:117
 #: ../Admin/web/antispam/traceable.ns:108
@@ -394,8 +390,8 @@ msgid "Intelligent Factor: "
 msgstr "智能因数："
 
 #: ../Admin/web/antispam/awl.ns:64 ../Admin/web/antispam/bayes.ns:101
-#: ../Admin/web/antispam/sa.ns:75 ../Admin/web/antispam/rbl.ns:63
-#: ../Admin/web/antispam/list.ns:268 ../Admin/web/antispam/list.ns:298
+#: ../Admin/web/antispam/rbl.ns:63 ../Admin/web/antispam/list.ns:268
+#: ../Admin/web/antispam/list.ns:298 ../Admin/web/antispam/sa.ns:88
 #: ../Admin/web/antispam/traceable.ns:164
 #: ../Admin/web/antispam/netcheck.ns:155
 #: ../Admin/web/archive/archivetype.ns:121
@@ -414,7 +410,7 @@ msgid "Reset"
 msgstr "恢复"
 
 #: ../Admin/web/antispam/awl.ns:65 ../Admin/web/antispam/bayes.ns:102
-#: ../Admin/web/antispam/sa.ns:76 ../Admin/web/antispam/rbl.ns:64
+#: ../Admin/web/antispam/rbl.ns:64 ../Admin/web/antispam/sa.ns:89
 #: ../Admin/web/antispam/traceable.ns:166
 #: ../Admin/web/antispam/netcheck.ns:156
 #: ../Admin/web/archive/archiveaddress.ns:38
@@ -451,19 +447,19 @@ msgid "Bayes Switch: "
 msgstr "贝叶斯识别开关："
 
 #: ../Admin/web/antispam/bayes.ns:85
-msgid "Self-Study: "
-msgstr "自学习功能："
+msgid "Self-Learning: "
+msgstr "自学习："
 
 #: ../Admin/web/antispam/bayes.ns:93
-msgid "Highest Score Self-Study as NonSpam: "
+msgid "Highest Score of Self-Learning as NonSpam: "
 msgstr "作为正常邮件学习的最高分："
 
 #: ../Admin/web/antispam/bayes.ns:94
-msgid "Lowest Score Self-Study as Spam: "
+msgid "Lowest Score of Self-Learning as Spam: "
 msgstr "作为垃圾邮件学习的最低分："
 
 #: ../Admin/web/antispam/bayes.ns:97
-msgid "Min Knowledge that Bayes Filter can work: "
+msgid "Minimum Knowledge Needed for Bayes Filter to work: "
 msgstr "贝叶斯过滤器能够工作最少需要的数据量："
 
 #: ../Admin/web/antispam/bayes.ns:98
@@ -473,14 +469,6 @@ msgstr "垃圾邮件数据："
 #: ../Admin/web/antispam/bayes.ns:99
 msgid "Min NonSpam Knowledge: "
 msgstr "非垃圾邮件数据："
-
-#: ../Admin/web/antispam/sa.ns:54
-msgid "Intelligent Content Analyze"
-msgstr "智能内容分析"
-
-#: ../Admin/web/antispam/sa.ns:59
-msgid "Analyze Email Content"
-msgstr "对邮件内容进行分析"
 
 #: ../Admin/web/antispam/rbl.ns:33 ../Admin/web/antispam/rbl.ns:53
 msgid "Super"
@@ -508,7 +496,7 @@ msgstr "查询超时"
 #: ../Admin/web/dynamic/sendratepersubject.ns:57
 #: ../Admin/web/dynamic/sendratepersubject.ns:59
 #: ../Admin/web/log/logshow.ns:312 ../Admin/web/system/basesettings.ns:170
-msgid "Seconds"
+msgid "Second(s)"
 msgstr "秒"
 
 #: ../Admin/web/antispam/rbl.ns:67
@@ -516,12 +504,11 @@ msgid "Current Embeded RBL: "
 msgstr "目前系统内置已经支持的RBL："
 
 #: ../Admin/web/antispam/rbl.ns:69
-#, fuzzy
 msgid "SURBL Spam URI Realtime Blocklist"
 msgstr "SURBL Spam URI Realtime Blocklist"
 
 #: ../Admin/web/antispam/rbl.ns:70
-msgid "URI Black List, Check if URI in Email included in Blocklist."
+msgid "URI Black List, Check if URI in Email is included in the Blocklist."
 msgstr "URI Black List, 检查邮件内容包含的URI是否列在黑名单中。"
 
 #: ../Admin/web/antispam/rbl.ns:71
@@ -529,7 +516,7 @@ msgid "HABEAS"
 msgstr "HABEAS"
 
 #: ../Admin/web/antispam/rbl.ns:72
-msgid "AntiSpam via Head Tag Auth."
+msgid "AntiSpam via Head Tag Authorization"
 msgstr "使用Header标记授权的方法进行反垃圾"
 
 #: ../Admin/web/antispam/rbl.ns:73
@@ -691,7 +678,7 @@ msgstr "选择"
 #: ../Admin/web/content/rulemodify.ns:965 ../Admin/web/dynamic/realtime.ns:159
 #: ../Admin/web/log/showstat.ns:85 ../Admin/web/log/showstat.ns:111
 #: ../Admin/web/log/showstat.ns:137 ../Admin/web/log/monitor.ns:49
-#: ../Admin/web/log/logshow.ns:102 ../Admin/web/log/audit.ns:72
+#: ../Admin/web/log/audit.ns:72 ../Admin/web/log/logshow.ns:102
 #: ../Admin/web/system/upgrade.ns:76 ../Admin/web/server/showuserlist.ns:124
 #: ../Admin/web/gateway/mailqueue.ns:108
 msgid "No."
@@ -772,14 +759,13 @@ msgid "Add"
 msgstr "添加"
 
 #: ../Admin/web/antispam/list.ns:188
-#, fuzzy
 msgid "Jump to Page"
 msgstr "跳至第"
 
 #: ../Admin/web/antispam/list.ns:195 ../Admin/web/content/category.ns:154
 #: ../Admin/web/content/rulemanage.ns:235
 #: ../Admin/web/content/filetypes.ns:188 ../Admin/web/dynamic/realtime.ns:337
-#: ../Admin/web/log/logshow.ns:282 ../Admin/web/log/audit.ns:176
+#: ../Admin/web/log/audit.ns:176 ../Admin/web/log/logshow.ns:282
 #: ../Admin/web/server/showuserlist.ns:235
 #: ../Admin/web/gateway/mailqueue.ns:199
 msgid ", "
@@ -788,7 +774,7 @@ msgstr "页，每页"
 #: ../Admin/web/antispam/list.ns:203 ../Admin/web/content/category.ns:163
 #: ../Admin/web/content/rulemanage.ns:246
 #: ../Admin/web/content/filetypes.ns:197 ../Admin/web/dynamic/realtime.ns:346
-#: ../Admin/web/log/logshow.ns:305 ../Admin/web/log/audit.ns:187
+#: ../Admin/web/log/audit.ns:187 ../Admin/web/log/logshow.ns:305
 #: ../Admin/web/server/showuserlist.ns:244
 #: ../Admin/web/gateway/mailqueue.ns:208
 msgid " records/page"
@@ -806,8 +792,126 @@ msgstr "相同的"
 
 #: ../Admin/web/antispam/list.ns:327 ../Admin/web/server/groupsControl.ns:119
 #: ../Admin/web/server/groupsControl.ns:235
-msgid " has existed"
-msgstr "已存在"
+msgid " already exists"
+msgstr "已经存在"
+
+#: ../Admin/web/antispam/sa.ns:10
+msgid "Date Check"
+msgstr "抽样检查"
+
+#: ../Admin/web/antispam/sa.ns:10
+msgid ""
+"Checking if the date is legal, if it is too far from current time, if it is "
+"not consistent with RFC."
+msgstr "包括时期是否合法，是否和当前时间相差太远，是否不符合RFC"
+
+#: ../Admin/web/antispam/sa.ns:12
+msgid "Drug Check"
+msgstr "药品检查"
+
+#: ../Admin/web/antispam/sa.ns:12
+msgid "Checking drug advertisement(mainly AD for sex tools)"
+msgstr "检查常见的药品广告（主要为性用品广告）"
+
+#: ../Admin/web/antispam/sa.ns:14
+msgid "Bogus Information Check"
+msgstr "虚假信息检查"
+
+#: ../Admin/web/antispam/sa.ns:14
+msgid "Checking obvious bogus information"
+msgstr "检查明显虚假的信息"
+
+#: ../Admin/web/antispam/sa.ns:16
+msgid "Forged Information Check"
+msgstr "伪造信息检查"
+
+#: ../Admin/web/antispam/sa.ns:16
+msgid "Checking if the email is forged to normail email or webmail"
+msgstr "检查邮件是否被垃圾发送者伪装成其他的邮件客户端和Web邮件"
+
+#: ../Admin/web/antispam/sa.ns:18
+msgid "Free Declaration Check"
+msgstr "免费声明检查"
+
+#: ../Admin/web/antispam/sa.ns:18
+msgid "Checking if the email contains free declaration information"
+msgstr "检查垃圾邮件中是否包含声明免费的信息"
+
+#: ../Admin/web/antispam/sa.ns:20
+msgid "Sending Address Check"
+msgstr "检查发送地址"
+
+#: ../Admin/web/antispam/sa.ns:20
+msgid ""
+"Checking if the email sending address has character usually used by spam"
+msgstr "检查发件地址是否具有垃圾邮件常用的地址特征"
+
+#: ../Admin/web/antispam/sa.ns:22
+msgid "HELO Information Check"
+msgstr "检查HELO信息"
+
+#: ../Admin/web/antispam/sa.ns:22
+msgid ""
+"Checking if every HELO information of RELAY has character usually used by "
+"spam"
+msgstr "检查每一次RELAY的HELO是否有垃圾邮件的特征"
+
+#: ../Admin/web/antispam/sa.ns:24
+msgid "HTML Content Check"
+msgstr "检查邮件HTML内容"
+
+#: ../Admin/web/antispam/sa.ns:24
+msgid "Checking if the email uses HTML content/character usually used by spam"
+msgstr "邮件是否使用了垃圾发送者常用的HTML内容/特征"
+
+#: ../Admin/web/antispam/sa.ns:26
+msgid "MIME Content Check"
+msgstr "检查邮件MIME内容"
+
+#: ../Admin/web/antispam/sa.ns:26
+msgid "Checking spam character in MIME code"
+msgstr "在MIME编码中检查垃圾邮件特征"
+
+#: ../Admin/web/antispam/sa.ns:28
+msgid "Message-ID Check"
+msgstr "检查邮件的Message-ID"
+
+#: ../Admin/web/antispam/sa.ns:28
+msgid "Checking if Message-ID has spam character, if it is legal"
+msgstr "察看是否符合垃圾特征，是否合法"
+
+#: ../Admin/web/antispam/sa.ns:30
+msgid "Mail Sending Software Check"
+msgstr "检查发送软件类型"
+
+#: ../Admin/web/antispam/sa.ns:30
+msgid ""
+"Checking if the email was sent by some spam generator against email character"
+msgstr "通过提取邮件特征，察看是否发自常用的垃圾发送软件"
+
+#: ../Admin/web/antispam/sa.ns:32
+msgid "Subject Check"
+msgstr "察看邮件主题"
+
+#: ../Admin/web/antispam/sa.ns:32
+msgid "Checking if the email contains spam information against its subject"
+msgstr "通过主题察看是否邮件包含垃圾邮件常见内容"
+
+#: ../Admin/web/antispam/sa.ns:34
+msgid "X-Header Check"
+msgstr "察看邮件头X-Header"
+
+#: ../Admin/web/antispam/sa.ns:34
+msgid "Checking spam against email X-Header"
+msgstr "通过X-Header邮件头检查垃圾邮件"
+
+#: ../Admin/web/antispam/sa.ns:67
+msgid "Intelligent Content Analyze"
+msgstr "智能内容分析"
+
+#: ../Admin/web/antispam/sa.ns:72
+msgid "Analyze Email Content"
+msgstr "对邮件内容进行分析"
 
 #: ../Admin/web/antispam/spamengine.ns:39
 #: ../Admin/web/antivirus/virusengine.ns:32
@@ -908,12 +1012,12 @@ msgstr ""
 "垃圾邮件"
 
 #: ../Admin/web/antispam/netcheck.ns:64
-msgid "Network Diag and Monitor"
+msgid "Network Diagnosis and Monitor"
 msgstr "网络校验和监测"
 
 #: ../Admin/web/antispam/netcheck.ns:109 ../Admin/web/antispam/netcheck.ns:125
 #: ../Admin/web/antispam/netcheck.ns:139
-msgid "Analyze Server"
+msgid "Analysis Server"
 msgstr "分析服务器"
 
 #: ../Admin/web/antispam/netcheck.ns:118 ../Admin/web/antispam/netcheck.ns:134
@@ -946,40 +1050,18 @@ msgstr "邮件地址有误"
 #: ../Admin/web/archive/archiveaddress.ns:29
 #: ../Admin/web/archive/archiveaddress.ns:35
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:182
-msgid "Archive Address"
+msgid "Audit Address"
 msgstr "审计地址"
 
 #: ../Admin/web/archive/archiveaddress.ns:37
-msgid "All Archive Email will be sent to this Address."
+msgid "All Audit Email will be sent to this Address."
 msgstr "所有的审计邮件都将被发送到这个邮箱。"
 
 #: ../Admin/web/archive/archiveaddress.ns:44
-#: ../Admin/web/archive/archiveexport.ns:40
 #: ../Admin/web/archive/archivetype.ns:129
-#, fuzzy
-msgid "ALERT: Archive Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
-
-#: ../Admin/web/archive/archiveexport.ns:28
-msgid "Archive Data Management"
-msgstr "审计数据管理"
-
-#: ../Admin/web/archive/archiveexport.ns:33
-msgid "Current Audit Mail Size"
-msgstr "当前审计邮件大小"
-
-#: ../Admin/web/archive/archiveexport.ns:34 ../Admin/web/log/logexport.ns:22
-#: ../Admin/web/log/audit.ns:111 ../Admin/web/system/configmanage.ns:23
-#: ../Admin/web/system/configmanage.ns:26
-#: ../Admin/web/gasupervise/export.ns:37
-msgid "Download"
-msgstr "下载"
-
-#: ../Admin/web/archive/archiveexport.ns:35
-#: ../Admin/web/archive/archivetype.ns:122
-#: ../Admin/web/gasupervise/export.ns:38
-msgid "Clear"
-msgstr "清空"
+#: ../Admin/web/archive/archiveexport.ns:40
+msgid "ALERT: Audit Engine is OFF"
+msgstr "注意：审计引擎未启动"
 
 #: ../Admin/web/archive/archiveengine.ns:23
 #: ../Admin/web/content/contentengine.ns:34
@@ -988,7 +1070,6 @@ msgstr "清空"
 #: ../Admin/web/content/contentengine.ns:95
 #: ../Admin/web/dynamic/dynengine.ns:35 ../Admin/web/dynamic/dynengine.ns:60
 #: ../Admin/web/dynamic/dynengine.ns:93 ../Admin/web/dynamic/dynengine.ns:99
-#, fuzzy
 msgid "Engine Switch"
 msgstr "引擎开关"
 
@@ -1003,15 +1084,15 @@ msgstr "邮件地址"
 #: ../Admin/web/archive/archivetype.ns:25 ../Admin/web/dynamic/realtime.ns:374
 #: ../Admin/web/dynamic/realtime.ns:384 ../Admin/web/log/monitor.ns:8
 #: ../Admin/web/system/downfile.ns:18 ../Admin/web/system/upload.ns:25
-#: ../Admin/web/system/serialno.ns:54 ../Admin/web/system/network.ns:17
-#: ../Admin/web/system/network.ns:18 ../Admin/web/system/network.ns:19
+#: ../Admin/web/system/network.ns:17 ../Admin/web/system/network.ns:18
+#: ../Admin/web/system/network.ns:19 ../Admin/web/system/serialno.ns:54
 #: ../Admin/web/server/mailcontent.ns:3 ../Admin/web/gateway/mailcontent.ns:3
 msgid " Error"
 msgstr "错误"
 
 #: ../Admin/web/archive/archivetype.ns:44
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:183
-msgid "Select Archive"
+msgid "Selected Archive"
 msgstr "选择归档"
 
 #: ../Admin/web/archive/archivetype.ns:89
@@ -1051,7 +1132,7 @@ msgid "Content not Matched"
 msgstr "非匹配规则的邮件"
 
 #: ../Admin/web/archive/archivetype.ns:112
-msgid "include User Define Rules"
+msgid "include User Defined Rules"
 msgstr "包括用户规则"
 
 #: ../Admin/web/archive/archivetype.ns:113
@@ -1061,6 +1142,27 @@ msgstr "包括网监规则"
 #: ../Admin/web/archive/archivetype.ns:117
 msgid "Send to a given Email Address"
 msgstr "发往特定地址"
+
+#: ../Admin/web/archive/archivetype.ns:122
+#: ../Admin/web/archive/archiveexport.ns:35
+#: ../Admin/web/gasupervise/export.ns:38
+msgid "Clear"
+msgstr "清空"
+
+#: ../Admin/web/archive/archiveexport.ns:28
+msgid "Audit Data Management"
+msgstr "审计数据管理"
+
+#: ../Admin/web/archive/archiveexport.ns:33
+msgid "Current Audit Mail Size"
+msgstr "当前审计邮件大小"
+
+#: ../Admin/web/archive/archiveexport.ns:34 ../Admin/web/log/logexport.ns:22
+#: ../Admin/web/log/audit.ns:111 ../Admin/web/system/configmanage.ns:23
+#: ../Admin/web/system/configmanage.ns:26
+#: ../Admin/web/gasupervise/export.ns:37
+msgid "Download"
+msgstr "下载"
 
 #: ../Admin/web/content/category.ns:5 ../Admin/web/content/ruledelete.ns:5
 #: ../Admin/web/content/ruledetail.ns:5 ../Admin/web/content/ruleinfo.ns:5
@@ -1076,12 +1178,12 @@ msgstr "规则组管理"
 
 #: ../Admin/web/content/category.ns:65 ../Admin/web/content/category.ns:225
 #: ../Admin/web/content/category.ns:267
-msgid "GroupName"
+msgid "Group Name"
 msgstr "分组名称"
 
 #: ../Admin/web/content/category.ns:145 ../Admin/web/content/rulemanage.ns:224
 #: ../Admin/web/content/filetypes.ns:179 ../Admin/web/dynamic/realtime.ns:328
-#: ../Admin/web/log/logshow.ns:305 ../Admin/web/log/audit.ns:187
+#: ../Admin/web/log/audit.ns:187 ../Admin/web/log/logshow.ns:305
 #: ../Admin/web/server/showuserlist.ns:226
 #: ../Admin/web/gateway/mailqueue.ns:190
 msgid "Jump to Page "
@@ -1096,7 +1198,7 @@ msgid "Group Number Must be Numeric !"
 msgstr "分类编号必须为数字！"
 
 #: ../Admin/web/content/category.ns:299 ../Admin/web/content/filetypes.ns:335
-msgid "This Group Number has existed !"
+msgid "This Group Number already exists !"
 msgstr "相同的分类编号已存在！"
 
 #: ../Admin/web/content/ruledetail.ns:25 ../Admin/web/content/rulemodify.ns:57
@@ -1122,15 +1224,15 @@ msgstr "分组"
 
 #: ../Admin/web/content/ruledetail.ns:51 ../Admin/web/content/ruleinfo.ns:38
 #: ../Admin/web/content/ruleprint.ns:66
-msgid "Policy Type"
-msgstr "编号类型"
+msgid "Number Type"
+msgstr ""
 
 #: ../Admin/web/content/ruledetail.ns:54 ../Admin/web/content/ruleinfo.ns:41
 #: ../Admin/web/content/ruleprint.ns:69 ../Admin/web/content/rulemanage.ns:150
 #: ../Admin/web/content/rulemodify.ns:121
 #: ../Admin/web/content/rulemodify.ns:435
 #: ../Admin/web/content/rulemodify.ns:986
-msgid "Create Time"
+msgid "Creatation Time"
 msgstr "建立时间"
 
 #: ../Admin/web/content/ruledetail.ns:55 ../Admin/web/content/ruleinfo.ns:42
@@ -1354,7 +1456,7 @@ msgid "Action Parameter"
 msgstr "动作参数"
 
 #: ../Admin/web/content/ruleinfo.ns:12
-msgid "Error, Please input rule ID"
+msgid "Error, Please input rule_id"
 msgstr "错误！请给出rule_id"
 
 #: ../Admin/web/content/ruleprint.ns:38 ../Admin/web/content/rulemanage.ns:126
@@ -1383,16 +1485,15 @@ msgstr "数据库选择"
 #: ../Admin/web/content/rulemodify.ns:326
 #: ../Admin/web/content/rulemodify.ns:715
 #: ../Admin/web/content/rulemodify.ns:1039
-#, fuzzy
 msgid "ALERT: Content Filter Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
+msgstr "注意：内容过滤引擎未启动"
 
 #: ../Admin/web/content/rulemodify.ns:17
 msgid "Please Input Rule Number"
 msgstr "请输入规则编号"
 
 #: ../Admin/web/content/rulemodify.ns:20
-msgid "This Rule Number has existed"
+msgid "This Rule Number Already Exists"
 msgstr "此规则编号已存在"
 
 #: ../Admin/web/content/rulemodify.ns:270
@@ -1401,7 +1502,7 @@ msgstr "此规则编号已存在"
 #: ../Admin/web/content/rulemodify.ns:640
 #: ../Admin/web/content/rulemodify.ns:664
 #: ../Admin/web/content/rulemodify.ns:665
-msgid "Option"
+msgid "Optional"
 msgstr "可以不选"
 
 #: ../Admin/web/content/rulemodify.ns:734
@@ -1433,12 +1534,12 @@ msgid "Accept"
 msgstr "接受"
 
 #: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:44
-msgid "Add Receiptor"
+msgid "Add Recipient"
 msgstr "添加收件人"
 
 #: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:45
-msgid "Del Receiptor"
-msgstr "删除收件人"
+msgid "Delete Recipient"
+msgstr "替换收件人"
 
 #: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:46
 msgid "Replace Recipient"
@@ -1449,7 +1550,7 @@ msgid "Add Header"
 msgstr "增加信头记录"
 
 #: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:48
-msgid "Del Header"
+msgid "Delete Header"
 msgstr "删除信头记录"
 
 #: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:49
@@ -1457,7 +1558,7 @@ msgid "Replace Header"
 msgstr "替换信头记录"
 
 #: ../Admin/web/content/filetypes.ns:64
-msgid "All Ext List"
+msgid "All Extenstion List"
 msgstr "全部扩展名列表"
 
 #: ../Admin/web/content/filetypes.ns:78
@@ -1467,7 +1568,7 @@ msgstr "自定义文件类型"
 
 #: ../Admin/web/content/filetypes.ns:82 ../Admin/web/content/filetypes.ns:266
 #: ../Admin/web/content/filetypes.ns:305
-msgid "Attachment Ext"
+msgid "Attachment Extention"
 msgstr "附件扩展名"
 
 #: ../Admin/web/content/filetypes.ns:111
@@ -1502,7 +1603,7 @@ msgstr "同时连接数"
 #: ../Admin/web/dynamic/sendratepersubject.ns:50
 #: ../Admin/web/dynamic/sendratepersubject.ns:60
 #: ../Admin/web/system/basesettings.ns:154
-msgid "0 is No Limit"
+msgid "0 means No Limit"
 msgstr "0 表示不限制 "
 
 #: ../Admin/web/dynamic/connperip.ns:39 ../Admin/web/dynamic/connperip.ns:51
@@ -1514,9 +1615,8 @@ msgstr ""
 #: ../Admin/web/dynamic/connrateperip.ns:86
 #: ../Admin/web/dynamic/sendrateperfrom.ns:86
 #: ../Admin/web/dynamic/sendratepersubject.ns:86
-#, fuzzy
 msgid "ALERT: Overrun Limit Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
+msgstr "注意：动态限制引擎未启动"
 
 #: ../Admin/web/dynamic/connrateperip.ns:37
 #: ../Admin/web/dynamic/connrateperip.ns:46
@@ -1536,7 +1636,7 @@ msgstr "每"
 
 #: ../Admin/web/dynamic/connrateperip.ns:48
 #: ../Admin/web/dynamic/connrateperip.ns:58
-msgid "SMTP Connect no more than"
+msgid "SMTP Connections no more than"
 msgstr "最多连接"
 
 #: ../Admin/web/dynamic/connrateperip.ns:48
@@ -1550,7 +1650,7 @@ msgstr "次"
 #: ../Admin/web/dynamic/sendrateperfrom.ns:59
 #: ../Admin/web/dynamic/sendratepersubject.ns:49
 #: ../Admin/web/dynamic/sendratepersubject.ns:59
-msgid "or will be Block"
+msgid "or will be blocked"
 msgstr "超限封禁时间为"
 
 #: ../Admin/web/dynamic/connrateperip.ns:50
@@ -1559,15 +1659,15 @@ msgstr "超限封禁时间为"
 #: ../Admin/web/dynamic/sendrateperfrom.ns:60
 #: ../Admin/web/dynamic/sendratepersubject.ns:50
 #: ../Admin/web/dynamic/sendratepersubject.ns:60
-msgid "But you'd better no more then 1800 seconds."
+msgid "Suggestion time-set is no more than 1800 seconds."
 msgstr "建议时间设置不要大于 1800 秒"
 
 #: ../Admin/web/dynamic/realtime.ns:11
-msgid "Can not connect Engine Database"
+msgid "Cannot connect to Engine Database"
 msgstr "无法连接引擎数据库"
 
 #: ../Admin/web/dynamic/realtime.ns:14
-msgid "System has no Data currently"
+msgid "System has no data currently"
 msgstr "系统没有当前数据"
 
 #: ../Admin/web/dynamic/realtime.ns:46 ../Admin/web/dynamic/realtime.ns:374
@@ -1618,7 +1718,6 @@ msgid "Sent Records"
 msgstr "发送记录"
 
 #: ../Admin/web/dynamic/realtime.ns:219
-#, fuzzy
 msgid "omit"
 msgstr "省略"
 
@@ -1637,7 +1736,7 @@ msgstr "失败"
 
 #: ../Admin/web/dynamic/sendrateperfrom.ns:48
 #: ../Admin/web/dynamic/sendrateperfrom.ns:58
-msgid "One Sender should not sent more than"
+msgid "One Sender should send no more than"
 msgstr "同一用户最多发送"
 
 #: ../Admin/web/dynamic/sendrateperfrom.ns:48
@@ -1652,7 +1751,6 @@ msgstr "同一封邮件最多发送"
 
 #: ../Admin/web/dynamic/sendratepersubject.ns:48
 #: ../Admin/web/dynamic/sendratepersubject.ns:58
-#, fuzzy
 msgid " times"
 msgstr "次"
 
@@ -1678,45 +1776,12 @@ msgstr "主题"
 #: ../Admin/web/inc/admin.inc.ns:359 ../Admin/web/inc/admin.inc.ns:400
 #: ../Admin/web/inc/admin.inc.ns:485 ../Admin/web/inc/admin.inc.ns:559
 #: ../Admin/web/inc/admin.inc.ns:643
-msgid "Error: Can not Open Administrators Data file."
+msgid "Error: Cannot Open Administrators Data file."
 msgstr "错误：管理员数据文件无法打开。"
 
 #: ../Admin/web/inc/admin.inc.ns:150 ../Admin/web/user/showadminlist.ns:615
-msgid "Error: This Admin ID has existed !"
+msgid "Error: This Admin ID already exists !"
 msgstr "错误：管理员id已存在！"
-
-#: ../Admin/web/inc/classes.ns:67
-msgid "Rules Database"
-msgstr "规则数据库"
-
-#: ../Admin/web/inc/classes.ns:260 ../Admin/web/inc/classes.ns:264
-#: ../Admin/web/inc/classes.ns:272 ../Admin/web/inc/classes.ns:275
-msgid "Config File"
-msgstr "配置文件"
-
-#: ../Admin/web/inc/classes.ns:356
-msgid "Format Error"
-msgstr "格式错误"
-
-#: ../Admin/web/inc/classes.ns:566
-msgid "User in BlackList try to Login"
-msgstr "黑名单用户尝试登录"
-
-#: ../Admin/web/inc/classes.ns:583
-msgid "Add IP Blocklist"
-msgstr "加入IP黑名单"
-
-#: ../Admin/web/inc/classes.ns:619
-msgid "Login Fail"
-msgstr "登录失败"
-
-#: ../Admin/web/inc/functions.ns:40 ../Admin/web/inc/functions.ns:148
-msgid "Can not write file, Disk Full?"
-msgstr "无法写入文件，磁盘已满？"
-
-#: ../Admin/web/inc/functions.ns:44 ../Admin/web/inc/functions.ns:152
-msgid "Can not lock file !"
-msgstr "无法锁定文件！"
 
 #: ../Admin/web/inc/params.ns:5 ../Admin/web/log/showstat.ns:86
 #: ../Admin/web/gateway/mailqueue.ns:111
@@ -1770,15 +1835,15 @@ msgid "Single IP Match"
 msgstr "单个IP地址匹配"
 
 #: ../Admin/web/inc/params.ns:18
-msgid "IP Seg Match"
-msgstr "连续IP地址匹配"
+msgid "Continuous IP Match"
+msgstr "连续IP匹配"
 
 #: ../Admin/web/inc/params.ns:19
 msgid "IP/Mask Match"
 msgstr "IP/MASK匹配"
 
 #: ../Admin/web/inc/params.ns:20
-msgid "String Exact Match"
+msgid "String Precision Match"
 msgstr "字符串精确匹配"
 
 #: ../Admin/web/inc/params.ns:25
@@ -1822,10 +1887,43 @@ msgstr "其他类型"
 msgid "Pass"
 msgstr "通过"
 
+#: ../Admin/web/inc/functions.ns:40 ../Admin/web/inc/functions.ns:148
+msgid "Cannot write file, Disk Full?"
+msgstr "无法写入文件，磁盘已满？"
+
+#: ../Admin/web/inc/functions.ns:44 ../Admin/web/inc/functions.ns:152
+msgid "Cannot lock file !"
+msgstr "无法锁定文件！"
+
+#: ../Admin/web/inc/classes.ns:67
+msgid "Rules Database"
+msgstr "规则数据库"
+
+#: ../Admin/web/inc/classes.ns:260 ../Admin/web/inc/classes.ns:264
+#: ../Admin/web/inc/classes.ns:272 ../Admin/web/inc/classes.ns:275
+msgid "Configuration File"
+msgstr "配置文件"
+
+#: ../Admin/web/inc/classes.ns:356
+msgid "Format Error"
+msgstr "格式错误"
+
+#: ../Admin/web/inc/classes.ns:575
+msgid "Users in BlackList is trying to Login"
+msgstr "黑名单用户尝试登录"
+
+#: ../Admin/web/inc/classes.ns:592
+msgid "Add to IP Blocklist"
+msgstr "加入IP黑名单"
+
+#: ../Admin/web/inc/classes.ns:628
+msgid "Login Failure"
+msgstr "登录失败"
+
 #: ../Admin/web/log/downlog.ns:10 ../Admin/web/log/logexport.ns:18
-#: ../Admin/web/log/logshow.ns:18 ../Admin/web/log/audit.ns:11
+#: ../Admin/web/log/audit.ns:11 ../Admin/web/log/logshow.ns:18
 #: ../Admin/web/system/downfile.ns:22
-msgid "Error: File do not existed !"
+msgid "Error: File does not exist!"
 msgstr "错误！文件不存在！"
 
 #: ../Admin/web/log/logexport.ns:11
@@ -1838,11 +1936,11 @@ msgid "Log Size"
 msgstr "日志大小"
 
 #: ../Admin/web/log/logflush.ns:9
-msgid "Op Success"
+msgid "Operations Succeed"
 msgstr "操作成功"
 
 #: ../Admin/web/log/logflush.ns:11 ../Admin/web/system/reboot.ns:15
-msgid "Op Fail, ErrNo: "
+msgid "Operations Fail, ErrNo: "
 msgstr "操作失败，错误号："
 
 #: ../Admin/web/log/logflush.ns:18 ../Admin/web/log/logflush.ns:32
@@ -1852,7 +1950,7 @@ msgid "Flush Log"
 msgstr "日志清空"
 
 #: ../Admin/web/log/logflush.ns:22
-msgid "This Op will be Flush Log, Continue?"
+msgid "This will flush all logs, Continue?"
 msgstr "即将清空日志文件，确定吗？"
 
 #: ../Admin/web/log/logstat.ns:165
@@ -1872,8 +1970,8 @@ msgid "Total Mails"
 msgstr "总邮件数"
 
 #: ../Admin/web/log/showstat.ns:75
-msgid "Friendly Mails"
-msgstr "正常邮件数"
+msgid "Normal Mails"
+msgstr "总邮件数"
 
 #: ../Admin/web/log/showstat.ns:77
 msgid "Virus Mails"
@@ -1922,6 +2020,59 @@ msgstr ""
 msgid "Blacklist"
 msgstr "黑名单"
 
+#: ../Admin/web/log/audit.ns:21
+msgid "Log Flush Success !"
+msgstr "日志清空成功！"
+
+#: ../Admin/web/log/audit.ns:22 ../Admin/web/log/audit.ns:62
+#: ../Admin/web/log/audit.ns:69 ../Admin/web/user/showadminlist.ns:131
+#: ../Admin/web/user/showadminlist.ns:275
+#: ../Admin/web/user/showadminlist.ns:392
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:233
+msgid "Operation Log Management"
+msgstr "操作日志审计"
+
+#: ../Admin/web/log/audit.ns:22 ../Admin/web/log/audit.ns:112
+msgid "Flush"
+msgstr "清空"
+
+#: ../Admin/web/log/audit.ns:24
+msgid "No Permission"
+msgstr "无此权限"
+
+#: ../Admin/web/log/audit.ns:73
+msgid "Time"
+msgstr "时间"
+
+#: ../Admin/web/log/audit.ns:74 ../Admin/web/user/showadminlist.ns:620
+#: ../Admin/web/user/showadminlist.ns:621 ../Admin/web/server/mailserver.ns:63
+#: ../Admin/web/server/mailserver.ns:176 ../Admin/web/server/mailserver.ns:224
+#: ../Admin/web/oem/qimingxingchen/logon.ns:16
+#: ../Admin/web/oem/qimingxingchen/logon.ns:62
+#: ../Admin/web/oem/qimingxingchen/top.ns:21
+msgid "Admin"
+msgstr "管理员"
+
+#: ../Admin/web/log/audit.ns:76
+msgid "File"
+msgstr "文件"
+
+#: ../Admin/web/log/audit.ns:77
+msgid "Param"
+msgstr "参数"
+
+#: ../Admin/web/log/audit.ns:79
+msgid "Before Modify"
+msgstr "旧值"
+
+#: ../Admin/web/log/audit.ns:80
+msgid "After Modify"
+msgstr "新值"
+
+#: ../Admin/web/log/audit.ns:176 ../Admin/web/log/logshow.ns:282
+msgid "Total"
+msgstr "共"
+
 #: ../Admin/web/log/logshow.ns:58
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:221
 msgid "Log Browser"
@@ -1930,10 +2081,6 @@ msgstr "日志显示"
 #: ../Admin/web/log/logshow.ns:88
 msgid "Page Refresh Time must be Number"
 msgstr "页面刷新时间请输入数字"
-
-#: ../Admin/web/log/logshow.ns:282 ../Admin/web/log/audit.ns:176
-msgid "Total"
-msgstr "共"
 
 #: ../Admin/web/log/logshow.ns:290
 msgid "Page Must be Number"
@@ -1955,55 +2102,6 @@ msgstr "显示最后"
 #: ../Admin/web/log/logshow.ns:313
 msgid "Lines"
 msgstr "行"
-
-#: ../Admin/web/log/audit.ns:21
-msgid "Log Flush Success !"
-msgstr "日志清空成功！"
-
-#: ../Admin/web/log/audit.ns:22 ../Admin/web/log/audit.ns:62
-#: ../Admin/web/log/audit.ns:69 ../Admin/web/user/showadminlist.ns:131
-#: ../Admin/web/user/showadminlist.ns:275
-#: ../Admin/web/user/showadminlist.ns:392
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:233
-msgid "Op Log"
-msgstr "操作日志管理"
-
-#: ../Admin/web/log/audit.ns:22 ../Admin/web/log/audit.ns:112
-msgid "Flush"
-msgstr "清空"
-
-#: ../Admin/web/log/audit.ns:24
-msgid "No Permission"
-msgstr "无此权限"
-
-#: ../Admin/web/log/audit.ns:73
-msgid "Time"
-msgstr "时间"
-
-#: ../Admin/web/log/audit.ns:74 ../Admin/web/user/showadminlist.ns:620
-#: ../Admin/web/user/showadminlist.ns:621 ../Admin/web/server/mailserver.ns:63
-#: ../Admin/web/server/mailserver.ns:176 ../Admin/web/server/mailserver.ns:224
-#: ../Admin/web/oem/qimingxingchen/top.ns:21
-#: ../Admin/web/oem/qimingxingchen/logon.ns:16
-#: ../Admin/web/oem/qimingxingchen/logon.ns:62
-msgid "Admin"
-msgstr "管理员"
-
-#: ../Admin/web/log/audit.ns:76
-msgid "File"
-msgstr "文件"
-
-#: ../Admin/web/log/audit.ns:77
-msgid "Param"
-msgstr "参数"
-
-#: ../Admin/web/log/audit.ns:79
-msgid "Before Modify"
-msgstr "旧值"
-
-#: ../Admin/web/log/audit.ns:80
-msgid "After Modify"
-msgstr "新值"
 
 #: ../Admin/web/status/analyze.ns:10
 msgid "Mail Stat."
@@ -2125,12 +2223,12 @@ msgstr "磁盘使用率图"
 
 #: ../Admin/web/system/configmanage.ns:11
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:47
-msgid "Config & Policy"
+msgid "Configuration Management"
 msgstr "配置管理"
 
 #: ../Admin/web/system/configmanage.ns:18
-msgid "System Config"
-msgstr "网关配置文件上下载"
+msgid "System Configuration File Upload/Download"
+msgstr "系统配置文件上/下载"
 
 #: ../Admin/web/system/configmanage.ns:19
 msgid "Content Filter Policy"
@@ -2141,31 +2239,6 @@ msgstr "内容过滤策略文件上下载"
 #: ../Admin/web/system/serialno.ns:63
 msgid "Upload"
 msgstr "上载"
-
-#: ../Admin/web/system/reboot.ns:10
-msgid "System is REBOOTing, Please waiting......"
-msgstr "系统正在重启，请您耐心等候……"
-
-#: ../Admin/web/system/reboot.ns:12
-msgid "System is SHUTDOWN......"
-msgstr "系统正在关闭……"
-
-#: ../Admin/web/system/reboot.ns:22
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:49
-msgid "Reboot & Shutdown"
-msgstr "系统重启关机"
-
-#: ../Admin/web/system/reboot.ns:26
-msgid "Confirm: Continue?"
-msgstr "确认即将执行的操作？"
-
-#: ../Admin/web/system/reboot.ns:39
-msgid "Shutdown"
-msgstr "关机"
-
-#: ../Admin/web/system/reboot.ns:40
-msgid "Reboot"
-msgstr "重启"
 
 #: ../Admin/web/system/upload.ns:29
 msgid "Upload Fail!"
@@ -2184,9 +2257,9 @@ msgstr "系统时钟"
 msgid "Sync"
 msgstr "同步本地"
 
-#: ../Admin/web/system/pkginfo.ns:14
-msgid "Error: The Upgrade package is not existed!"
-msgstr "错误：该升级包信息文件不存在！"
+#: ../Admin/web/system/upgrade.ns:34
+msgid "System Upgrade"
+msgstr "系统升级"
 
 #: ../Admin/web/system/upgrade.ns:59
 msgid "Loading Upgrade package, waiting......"
@@ -2239,6 +2312,51 @@ msgstr "升级成功，重新启动系统后生效"
 #: ../Admin/web/system/upgrade.ns:179
 msgid "Upgrade Fail!"
 msgstr "升级失败！"
+
+#: ../Admin/web/system/gatewaymode.ns:15
+msgid "Please Reboot System!"
+msgstr "请重启系统以更新设置"
+
+#: ../Admin/web/system/gatewaymode.ns:17
+msgid "Can not update Setting, ErrNo: "
+msgstr "无法更新设置，错误代码："
+
+#: ../Admin/web/system/gatewaymode.ns:21 ../Admin/web/server/mailserver.ns:49
+#: ../Admin/web/server/mailserver.ns:169 ../Admin/web/server/mailserver.ns:216
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:92
+msgid "Standalone Server Mode"
+msgstr "独立服务器模式"
+
+#: ../Admin/web/system/gatewaymode.ns:22
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:72
+msgid "Bridge Mode"
+msgstr "透明网关模式"
+
+#: ../Admin/web/system/gatewaymode.ns:23
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:82
+msgid "MX Relay Mode"
+msgstr "MX转发模式"
+
+#: ../Admin/web/system/gatewaymode.ns:24
+msgid "Process Mode"
+msgstr "尾关模式"
+
+#: ../Admin/web/system/gatewaymode.ns:33 ../Admin/web/system/gatewaymode.ns:68
+msgid "System Running Mode"
+msgstr "系统运行模式"
+
+#: ../Admin/web/system/gatewaymode.ns:39
+msgid ""
+"ALERT: If current Standalone Mail Server has set Mail Domain, and now "
+"disable Standalone Server Mode, ALL Mail Domain Data and Mails will be "
+"DELETEd! Continue?"
+msgstr ""
+"注意！如果当前独立服务器设置了邮件域，则系统取消独立服务器模式，切换后所有邮"
+"件域数据和邮件都将被删除！确认吗？"
+
+#: ../Admin/web/system/pkginfo.ns:14
+msgid "Error: The Upgrade package is not existed!"
+msgstr "错误：该升级包信息文件不存在！"
 
 #: ../Admin/web/system/basesettings.ns:26
 #: ../Admin/web/system/basesettings.ns:128
@@ -2333,50 +2451,23 @@ msgstr "天"
 msgid "Hours"
 msgstr "小时"
 
-#: ../Admin/web/system/gatewaymode.ns:15
-msgid "Please Reboot System!"
-msgstr "请重启系统以更新设置"
-
-#: ../Admin/web/system/gatewaymode.ns:17
-msgid "Can not update Setting, ErrNo: "
-msgstr "无法更新设置，错误代码："
-
-#: ../Admin/web/system/gatewaymode.ns:21 ../Admin/web/server/mailserver.ns:49
-#: ../Admin/web/server/mailserver.ns:169 ../Admin/web/server/mailserver.ns:216
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:92
-msgid "Standalone Server Mode"
-msgstr "独立服务器模式"
-
-#: ../Admin/web/system/gatewaymode.ns:22
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:72
-msgid "Bridge Mode"
-msgstr "透明网关模式"
-
-#: ../Admin/web/system/gatewaymode.ns:23
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:82
-msgid "MX Relay Mode"
-msgstr "MX转发模式"
-
-#: ../Admin/web/system/gatewaymode.ns:24
-msgid "Process Mode"
-msgstr "尾关模式"
-
-#: ../Admin/web/system/gatewaymode.ns:33 ../Admin/web/system/gatewaymode.ns:68
-msgid "System Running Mode"
-msgstr "系统运行模式"
-
-#: ../Admin/web/system/gatewaymode.ns:39
-msgid ""
-"ALERT: If current Standalone Mail Server has set Mail Domain, and now "
-"disable Standalone Server Mode, ALL Mail Domain Data and Mails will be "
-"DELETEd! Continue?"
-msgstr ""
-"注意！如果当前独立服务器设置了邮件域，则系统取消独立服务器模式，切换后所有邮"
-"件域数据和邮件都将被删除！确认吗？"
-
 #: ../Admin/web/system/engine.ns:22 ../Admin/web/system/engine.ns:27
 msgid "System Main Engine Switch"
 msgstr "系统总引擎开关"
+
+#: ../Admin/web/system/network.ns:37 ../Admin/web/system/network.ns:45
+#: ../Admin/web/system/network.ns:77 ../Admin/web/system/network.ns:84
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:45
+msgid "Network Setting"
+msgstr "网络设置"
+
+#: ../Admin/web/system/network.ns:57
+msgid "Do not use x.x.x.x format, Please use Mask length"
+msgstr "请使用掩码位数，不能使用x.x.x.x格式"
+
+#: ../Admin/web/system/network.ns:60 ../Admin/web/system/network.ns:99
+msgid "Default Gateway"
+msgstr "缺省网关"
 
 #: ../Admin/web/system/serialno.ns:10
 msgid "Get SerialNo Error!"
@@ -2421,8 +2512,7 @@ msgid "Product Release"
 msgstr "正式销售版"
 
 #: ../Admin/web/system/serialno.ns:46
-#: ../Admin/web/oem/qimingxingchen/intro.ns:49
-#: ../Admin/web/oem/qimingxingchen/top.ns:21 ../Admin/web/intro.ns:39
+#: ../Admin/web/oem/qimingxingchen/intro.ns:49 ../Admin/web/intro.ns:39
 msgid "Demo Release"
 msgstr "非正式销售版"
 
@@ -2434,19 +2524,30 @@ msgstr "许可证下载"
 msgid "Upload License"
 msgstr "许可证上载"
 
-#: ../Admin/web/system/network.ns:37 ../Admin/web/system/network.ns:45
-#: ../Admin/web/system/network.ns:77 ../Admin/web/system/network.ns:84
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:45
-msgid "Network Setting"
-msgstr "网络设置"
+#: ../Admin/web/system/reboot.ns:10
+msgid "System is REBOOTing, Please waiting......"
+msgstr "系统正在重启，请您耐心等候……"
 
-#: ../Admin/web/system/network.ns:57
-msgid "Do not use x.x.x.x format, Please use Mask length"
-msgstr "请使用掩码位数，不能使用x.x.x.x格式"
+#: ../Admin/web/system/reboot.ns:12
+msgid "System is SHUTDOWN......"
+msgstr "系统正在关闭……"
 
-#: ../Admin/web/system/network.ns:60 ../Admin/web/system/network.ns:99
-msgid "Default Gateway"
-msgstr "缺省网关"
+#: ../Admin/web/system/reboot.ns:22
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:49
+msgid "Reboot & Shutdown"
+msgstr "系统重启关机"
+
+#: ../Admin/web/system/reboot.ns:26
+msgid "Confirm: Continue?"
+msgstr "确认即将执行的操作？"
+
+#: ../Admin/web/system/reboot.ns:39
+msgid "Shutdown"
+msgstr "关机"
+
+#: ../Admin/web/system/reboot.ns:40
+msgid "Reboot"
+msgstr "重启"
 
 #: ../Admin/web/user/changePasswd.ns:7
 msgid "Change Admin Passwd"
@@ -2621,7 +2722,6 @@ msgstr "管理员"
 #: ../Admin/web/user/showadminlist.ns:111
 #: ../Admin/web/user/showadminlist.ns:267
 #: ../Admin/web/user/showadminlist.ns:384
-#: ../Admin/web/oem/qimingxingchen/menutree.ns:37
 msgid "System"
 msgstr "系统管理"
 
@@ -2887,9 +2987,8 @@ msgstr "抽样概率"
 #: ../Admin/web/antivirus/recognize.ns:93
 #: ../Admin/web/antivirus/treatment.ns:77
 #: ../Admin/web/antivirus/treatment.ns:121
-#, fuzzy
 msgid "ALERT: AntiVirus Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
+msgstr "注意：反病毒引擎未启动"
 
 #: ../Admin/web/antivirus/treatment.ns:39
 #: ../Admin/web/antivirus/treatment.ns:45
@@ -2965,7 +3064,7 @@ msgstr "目前尚无用户组定义！"
 
 #: ../Admin/web/server/groupsControl.ns:299
 msgid "Current User Group List: "
-msgstr ""
+msgstr "当前用户组列表："
 
 #: ../Admin/web/server/mailcontent.ns:11
 #: ../Admin/web/gateway/mailcontent.ns:17
@@ -3363,7 +3462,7 @@ msgid "IP Format Error"
 msgstr "IP地址格式有误"
 
 #: ../Admin/web/gateway/protectdomain.ns:315
-msgid "Port Must between 1-65535 !"
+msgid "Port Must between 1 and 65535 !"
 msgstr "端口必须为数字且在1-65535之间！"
 
 #: ../Admin/web/gateway/mailqueue.ns:42
@@ -3399,7 +3498,7 @@ msgid "Flush Queue"
 msgstr "清空队列"
 
 #: ../Admin/web/gateway/mailqueue.ns:165
-msgid "Note: This Op will clear all undeliver mails, Continue?"
+msgid "Note: This will delete all undeliverd mails permamently, Continue?"
 msgstr "注意！此操作将永久删除所有未投递的邮件，确认吗？"
 
 #: ../Admin/web/gateway/mailqueue.ns:251 ../Admin/web/gateway/mailqueue.ns:267
@@ -3412,7 +3511,7 @@ msgid "Management"
 msgstr "管理选项"
 
 #: ../Admin/web/oem/qimingxingchen/bottom.ns:30
-msgid "VENUS INFO TECH INC.Corporate"
+msgid "Venus Info Tech Inc."
 msgstr "启明星辰信息技术有限公司"
 
 #: ../Admin/web/oem/qimingxingchen/intro.ns:7
@@ -3428,12 +3527,8 @@ msgid "Get Serial No Error! ErrNo: "
 msgstr "获取序列号时出现错误！错误代码："
 
 #: ../Admin/web/oem/qimingxingchen/intro.ns:53 ../Admin/web/intro.ns:43
-msgid "The License has Expired"
+msgid "The License has expired"
 msgstr "许可证已经失效"
-
-#: ../Admin/web/oem/qimingxingchen/top.ns:22
-msgid " Expired"
-msgstr "过期"
 
 #: ../Admin/web/oem/qimingxingchen/frames.ns:13
 #: ../Admin/web/oem/qimingxingchen/index.ns:25
@@ -3452,6 +3547,10 @@ msgstr "取消"
 msgid "System Menu"
 msgstr "系统菜单"
 
+#: ../Admin/web/oem/qimingxingchen/menutree.ns:37
+msgid "System Management"
+msgstr "系统管理"
+
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:40
 msgid "Upgrade"
 msgstr "升级更新"
@@ -3461,7 +3560,7 @@ msgid "System Mode"
 msgstr "运行模式"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:61
-msgid "Change Passwd"
+msgid "Change Password"
 msgstr "修改口令"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:74
@@ -3505,22 +3604,18 @@ msgid "Blacklist & Whitelist"
 msgstr "黑白名单"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:153
-#, fuzzy
 msgid "Realtime Blocklist"
 msgstr "智能实时黑名单"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:154
-#, fuzzy
 msgid "Process Center"
 msgstr "智能集中分析"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:155
-#, fuzzy
 msgid "Content Analyze"
 msgstr "智能内容分析"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:156
-#, fuzzy
 msgid "Noise Reduce System"
 msgstr "降噪"
 
@@ -3545,12 +3640,10 @@ msgid "System Status"
 msgstr "系统状态"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:206
-#, fuzzy
 msgid "Internal Traffic"
 msgstr "内网流量图"
 
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:207
-#, fuzzy
 msgid "External Traffic"
 msgstr "外网流量图"
 
@@ -3558,12 +3651,23 @@ msgstr "外网流量图"
 msgid "Log Stat."
 msgstr "日志统计"
 
+#: ../Admin/web/oem/qimingxingchen/top.ns:15
+msgid "a1top_01_en.jpg"
+msgstr "a1top_01.jpg"
+
+#: ../Admin/web/oem/qimingxingchen/top.ns:21
+msgid "Customer Evaluation (Non-Sales)Edition"
+msgstr "客户试用体验（非销售）版"
+
+#: ../Admin/web/oem/qimingxingchen/top.ns:22
+msgid " Expired"
+msgstr "过期"
+
 #: ../Admin/web/intro.ns:9
 msgid "Introduction"
 msgstr "介绍"
 
 #: ../Admin/web/login.ns:15
-#, fuzzy
 msgid "Due to login attempts exceed maximum times, current IP:"
 msgstr "由于到达最大错误登录次数，当前IP："
 
@@ -3583,6 +3687,42 @@ msgstr "该账号登陆权限被禁止"
 msgid "This User can not Login from this IP"
 msgstr "该账号不能从此IP地址登录"
 
+#~ msgid "Config Modify Success! "
+#~ msgstr "修改成功！"
+
+#~ msgid "Self-Study: "
+#~ msgstr "自学习功能："
+
+#~ msgid " has existed"
+#~ msgstr "已存在"
+
+#~ msgid "Policy Type"
+#~ msgstr "编号类型"
+
+#~ msgid "Del Receiptor"
+#~ msgstr "删除收件人"
+
+#~ msgid "IP Seg Match"
+#~ msgstr "连续IP地址匹配"
+
+#~ msgid "Op Success"
+#~ msgstr "操作成功"
+
+#~ msgid "Friendly Mails"
+#~ msgstr "正常邮件数"
+
+#~ msgid "Op Log"
+#~ msgstr "操作日志管理"
+
+#~ msgid "Config & Policy"
+#~ msgstr "配置管理"
+
+#~ msgid "System Config"
+#~ msgstr "网关配置文件上下载"
+
+#~ msgid "VENUS INFO TECH INC.Corporate"
+#~ msgstr "启明星辰信息技术有限公司"
+
 #~ msgid ""
 #~ "This Product License has Expired, Please re-Upload or contact with your "
 #~ "product provider."
@@ -3598,9 +3738,6 @@ msgstr "该账号不能从此IP地址登录"
 #~ "Config had saved, but This Product has no valid License, Please contact "
 #~ "with your product provider."
 #~ msgstr "配置已保存，但是系统目前尚无可用License，请联系销售商。"
-
-#~ msgid "System Upgrade"
-#~ msgstr "系统升级"
 
 #~ msgid "AntiVirus Engine"
 #~ msgstr "病毒识别引擎"

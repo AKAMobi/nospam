@@ -34,7 +34,7 @@ web_pot:
 	--copyright-holder="AKA Information & Technology Co., Ltd" \
 	--from-code=GBK \
 	--keyword=_ --language=PHP --files-from=web.file.list 
-	rm -f web.file.list
+#	rm -f web.file.list
 
 
 engine_pot:
@@ -63,4 +63,3 @@ install:
 	mv -f engine.nospam.cn.mo /home/NoSPAM/LocaleData/zh_CN/LC_MESSAGES 
 	mv -f web.nospam.cn.mo /home/NoSPAM/LocaleData/zh_CN/LC_MESSAGES 
 
-#
