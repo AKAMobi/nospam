@@ -35,6 +35,13 @@ sub new
 
 }
 
+sub should_refuse_spam
+{
+	my $self = shift;
+
+	return ( 'Y' eq $self->{conf}->{config}->{RefuseSpam} );
+}
+
 # return ( spam_level, reason );
 sub spam_engine
 {
@@ -56,6 +63,7 @@ sub spam_engine
 	return ( $is_spam, $reason );
 }
 
+# input: (subject, mailfrom)
 # return ( is_over_quota, reason );
 sub dynamic_engine
 {
@@ -85,16 +93,19 @@ sub dynamic_engine
 
 }
 
-sub is_content_engine_enabled
+sub content_engine_is_enabled
 {	
+	my $self = shift;
+
 	if ( 'Y' eq uc $self->{conf}->{config}->{ContentFilterEngine} ){
 		return 1;
 	}
 	return 0;
 }
 
-# return ( action, param );
-sub content_engine
+# input: in_fd, out_fd
+# output ( action, param );
+sub content_engine_fd
 {
 	my $self = shift;
 
@@ -102,15 +113,50 @@ sub content_engine
 
 	($action,$param) = $self->{police}->get_action( $input_fd );
 
-	print "X-Police-Status: $action:($param) OK\n";
+	print $output_fd "X-Police-Status: $action:($param) OK\n";
 
 	$self->{police}->print($action, $output_fd);
 
 	$self->{police}->clean;
 }
 
+# input : in_fd
+# output ( action, param, rule_id, mime_data );
+sub content_engine_mime
+{
+	my $self = shift;
 
+	my $input_fd = shift;
+
+	my ($action,$param,$ruleid) = $self->{police}->get_action( $input_fd );
+
+	#print "X-Police-Status: $action:($param) OK\n";
+	
+        if ( $action == 1 || $action == 2 || $action == 3 ){
+		return ( $action,$param, $ruleid, "" );
+	}
+
+	my $mime_data = $self->{police}->{filter}->{parser}->{entity}->stringify;
+	#my $subject = $self->{police}->{filter}->{parser}->{mail_info}->{head}->{subject};
+
+	$self->{police}->clean;
+
+	return ( $action,$param, $ruleid, $mime_data );
+}
+
+sub get_spam_tag_params
+{
+	my $self = shift;
+
+	my ( $SpamTag, $MaybeSpamTag, $TagHead, $TagSubject, $TagReason ) ;
+
+	$SpamTag = $self->{conf}->{config}->{SpamTag};
+	$MaybeSpamTag = $self->{conf}->{config}->{MaybeSpamTag};
+	$TagHead = $self->{conf}->{config}->{TagHead};
+	$TagSubject = $self->{conf}->{config}->{TagSubject};
+	$TagReason = $self->{conf}->{config}->{TagReason};
+
+	return ( $RagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag );
+}
 1;
-
-
 

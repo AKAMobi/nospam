@@ -256,7 +256,7 @@ sub check_size_value
 	my ( $size, $match_size ) = @_;
 
 	if ( ! defined $size || 0==length($size) ){
-		$self->{zlog}->fatal ( "error: cannot get  SIZEV:  it's undef?" );
+		$self->{zlog}->fatal ( "error: cannot get  SIZE:  it's undef?" );
 		return 0;
 	}
 

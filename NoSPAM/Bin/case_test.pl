@@ -4,7 +4,7 @@ use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-&test_mail_engine_content;
+&test_mail_engine_dynamic;
 #&test_traceable;
 ############################
 sub test_mail_engine_content
@@ -13,7 +13,12 @@ sub test_mail_engine_content
 
 	my $AM = new AKA::Mail;
 
-	$AM->content_engine( \*STDIN, \*STDOUT );
+	print "engine switch: " . $AM->content_engine_is_enabled . "\n";
+	my ( $action, $param, $rule_id, $mime_data ) = $AM->content_engine_mime( \*STDIN );
+
+	print "action: $action, rule_id: $rule_id, param; $param\n";
+	print "============================\n";
+	print $mime_data,"\n";
 }
 
 

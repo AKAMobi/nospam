@@ -55,16 +55,18 @@ sub get_action
 
 	my $rule_info = $self->{ruler}->get_match_rule ( $mail_info );
 	
-	my ( $action, $param );
+	my ( $action, $param, $rule_id );
 
 	if ( $rule_info ){
 		$self->log_match($rule_info, $mail_info), 
 		$action = $rule_info->{rule_action}->{action};
 		$param = $rule_info->{rule_action}->{action_param};
+		$rule_id = $rule_info->{rule_id};
 	}else{
 		# 缺省接收邮件 7、accept 接受该邮件，正常分发。无参数
 		$action = 7;
 		$param = "";
+		$rule_id = "";
 	}
 
 
@@ -161,7 +163,7 @@ sub get_action
 	
 	}	
 
-	($action, $param)
+	($action, $param, $rule_id);
 }
 
 sub log_match
