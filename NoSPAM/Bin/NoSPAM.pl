@@ -69,6 +69,10 @@ my $vdeldomain_binary = "/home/vpopmail/bin/vdeldomain";
 my $cmd_smtpd_down = "svc -d /service/smtpd";
 my $cmd_smtpd_up = "svc -u /service/smtpd";
 
+
+my $insmod_binary = "/sbin/insmod";
+my $rmmod_binary = "/sbin/rmmod";
+
 use constant ERR_OPEN_FILE	=> 0x0008;
 use constant ERR_WRITE_FILE	=> 0x0009;
 use constant ERR_LOCK_FILE	=> 0x000A;
@@ -521,6 +525,11 @@ sub rebuild_default_bridge
 {
 	my $ret = 0;
 
+	# modprobe device ( rh8 can't modprobe newly intel e1000 card )
+	system ( "$rmmod_binary eepro100 > /dev/null 2>&1" );
+	system ( "$insmod_binary e1000 > /dev/null 2>&1" );
+	system ( "$insmod_binary e100 > /dev/null 2>&1" );
+
 	# delete it
 	system ( "$ifconfig_binary nospam down > /dev/null 2>&1" );
 	system ( "$brctl_binary delbr nospam > /dev/null 2>&1" );
@@ -907,7 +916,10 @@ sub QuarantineGetInfo
 
 	my $smtp = Net::SMTP_auth->new($smtp_ip);
 
-	if ( $smtp->auth('LOGIN', $email, $passwd) || $smtp->auth('LOGIN', $user_raw, $passwd) ){
+	my $auth_stat = $smtp->auth('LOGIN', $email, $passwd) || $smtp->auth('LOGIN', $user_raw, $passwd);
+	$smtp->quit();
+
+	if ( $auth_stat ){
 		print "/home/NoSPAM/Quarantine/$user_domain/$user_raw";
 		return 0;
 	}else{
@@ -1651,8 +1663,8 @@ sub ProtectDomain_reset
 	$zlog->fatal ( "file_update_all: file_update_hosts err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
-	$ret = &_file_update_ismtp_relay ( values %{$Domain_IP} );
-	$zlog->fatal ( "file_update_all: file_update_ismtp_relay err # $ret !" ) if $ret;
+	$ret = &_file_update_smtp_relay ( values %{$Domain_IP} );
+	$zlog->fatal ( "file_update_all: file_update_smtp_relay err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
 	
@@ -1859,7 +1871,7 @@ sub SystemEngine_reset
 	return 0;
 }
 
-sub _file_update_ismtp_relay
+sub _file_update_smtp_relay
 {
 	# get all ip which we should relay it, on port 26.
 	my @IPs = @_;
@@ -1879,10 +1891,12 @@ sub _file_update_ismtp_relay
 
 	my $content = join("\n",@relays);
 	$ret = write_file($content, '/service/ismtpd/tcp');
+	$ret = write_file($content, '/service/smtpd/tcp');
 
 	return $ret if ( $ret );
 
 	return ERR_SYSTEM_CALL if system('cd /service/ismtpd;make>/dev/null 2>&1');
+	return ERR_SYSTEM_CALL if system('cd /service/smtpd;make>/dev/null 2>&1');
 
 	return 0;
 }
