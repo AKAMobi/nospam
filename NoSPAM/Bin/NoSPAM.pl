@@ -13,7 +13,7 @@ use AKA::IPUtil;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 open (NSOUT, ">&=2");
-close (STDERR);
+#close (STDERR);
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -362,8 +362,9 @@ sub reset_Network_up_eth
 		return -32 if ( $ret );
 	}
 
-	$ret = system ( "ifdown lo && ifup lo" );
-	return -40 if $ret;
+	# no need waste time to do this. by zixia
+	#$ret = system ( "ifdown lo && ifup lo" );
+	#return -40 if $ret;
 
 	return 0;
 }
@@ -597,13 +598,13 @@ sub reset_Network_update_ismtp_relay
 	$relay_hash{$IP} = "allow,RELAYCLIENT=\"\"";
 
 	my $content = '';
-	$content .= "$_:$relay_hash{$_}\n" foreach keys %relay_hash;
+	$content .= "$_:$relay_hash{$_}" foreach keys %relay_hash;
 
 	$ret = write_file($content, '/service/ismtpd/tcp');
 
 	return 20 if ( $ret );
 
-	return `cd /service/ismtpd;make`;
+	return system('cd /service/ismtpd;make>/dev/null 2>&1');
 }
 
 sub reset_Network_update_rcpthosts

@@ -6,7 +6,7 @@ die "pls provide prodno\n" unless $prodno ;
 $License = <<_LICENSE_;
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
-LicenseHTML=<b>紫光试用版 2004-3</b>
+LicenseHTML=<b>客户试用体验(非卖)版 2004-3</b>
 _LICENSE_
 
 
