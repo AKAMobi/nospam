@@ -926,6 +926,7 @@ chkconfig --level 3 snmpd on
 #chkconfig --level 3 clamd on
 chkconfig --level 3 freshclam  on
 chkconfig --level 3 xinetd  on
+chkconfig --level 3 ntpd  on
 chkconfig --level 3 iptables off
 chkconfig --level 3 gpm off
 chkconfig --level 3 keytable off
