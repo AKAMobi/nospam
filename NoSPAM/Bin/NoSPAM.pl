@@ -36,11 +36,10 @@ my $action_map = { 'reset_Network' => [\&reset_Network, ""],
 			'shutdown' => [\&shutdown, ""]
 		};
 
-
 #use Data::Dumper;
 #print Dumper( $intconf );
-print &get_GW_Mode(), "\n";
-exit 0;
+#print &get_GW_Mode(), "\n";
+#exit 0;
 
 # do the action now!
 if ( ! defined $action ){
@@ -151,7 +150,7 @@ sub reset_Network_down_eth
 	$ret = system( $ip_binary, "ad", "fl", "dev", "eth1" );
 	return -21 if ( $ret );
 
-	return (0==$ret0) && (0==$ret1);
+	return 0;
 }
 
 sub reset_Network_clean_netfilter
@@ -165,7 +164,7 @@ sub reset_Network_clean_netfilter
 	$ret = system( $iptables, '-F', 'FORWARD' );
 	return -11 if ( $ret );
 	
-	$ret = system( $iptables, '-F', '-t nat', 'PREROUTING' );
+	$ret = system( "$iptables -t nat -F PREROUTING" );
 	return -12 if ( $ret );
 	
 	$ret = system( $iptables, '-P', 'INPUT', 'ACCEPT' );
@@ -178,61 +177,55 @@ sub reset_Network_set_netfilter
 {
 	my $ret;
 
-$IPTABLES -A INPUT -p tcp -m state --state 
-$IPTABLES -A INPUT -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPTABLES -P INPUT DROP
-
-
-iptables -F FORWARD
-iptables -I FORWARD -d $MAIL_NET -j ACCEPT
-iptables -I FORWARD -s $MAIL_NET -j ACCEPT
-iptables -P FORWARD DROP
-~                                              
-	$ret = system( $iptables, '-A', 'INPUT', '-p icmp', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p icmp -j ACCEPT" );
 	return -1 if ( $ret );
 
-	$ret = system( $iptables, '-A', 'INPUT', '-s 127.0.0.0/8', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 127.0.0.0/8 -j ACCEPT" );
 	return -10 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-s 10.0.0.0/8', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT" );
 	return -11 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-s 192.168.0.0/16', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 192.168.0.0/16 -j ACCEPT" );
 	return -12 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-s 172.16.0.0/20', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 172.16.0.0/20 -j ACCEPT" );
 	return -13 if ( $ret );
 
-	$ret = system( $iptables, '-A', 'INPUT', '-s 202.205.10.10/32', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 202.205.10.10/32 -j ACCEPT" );
 	return -20 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-s 202.112.80.0/23', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 202.112.80.0/23 -j ACCEPT" );
 	return -21 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-s 211.157.100.10/26', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -s 211.157.100.10/26 -j ACCEPT" );
 	return -22 if ( $ret );
 
-	$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 25', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p tcp --dport 25 -j ACCEPT" );
 	return -30 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 80', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p tcp --dport 80 -j ACCEPT" );
 	return -31 if ( $ret );
 	#$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 110', '-j ACCEPT' );
 	#return -32 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 443', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p tcp --dport 443 -j ACCEPT" );
 	return -33 if ( $ret );
 
 
-	$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT" );
 	return -40 if ( $ret );
-	$ret = system( $iptables, '-A', 'INPUT', '-p udp', '-m state', '--state ESTABLISHED,RELATED', '-j ACCEPT' );
+	$ret = system( "$iptables -A INPUT -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT" );
 	return -41 if ( $ret );
 
-	$ret = system( $iptables, '-P', 'INPUT', 'DROP' );
+	$ret = system( "$iptables -P INPUT DROP" );
 	return -50 if ( $ret );
 
-	$ret = system( $iptables, '-A', 'FORWARD', 
-		'-s '. $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} , 
-		'-j ACCEPT' );
+	$ret = system( "$iptables -A FORWARD ". 
+		'-s '. $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
+		' -j ACCEPT' );
 	return -60 if ( $ret );
-	$ret = system( $iptables, '-A', 'FORWARD', 
-		'-d '. $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} , 
-		'-j ACCEPT' );
+	$ret = system( "$iptables -A FORWARD " . 
+		"-d ". $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
+		' -j ACCEPT' );
 	return -61 if ( $ret );
+
+	$ret = system( "$iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 25 -j DNAT --to " .
+		$intconf->{MailGatewayInternalIP} . ":25" );
+	return -70 if ( $ret );
 
 	return 0;
 }
@@ -268,7 +261,7 @@ sub reset_Network_up_eth
 
 		#本网关外口IP：NoSPAM.conf::MailGatewayIP
 		$ret = system( $ip_binary, "address", "ad", 
-			$intconf->{MailGatewayIP} . "/" . $intconf->{MailServerNetMask} , 
+			$conf->{config}->{MailGatewayIP} . "/" . $conf->{config}->{MailServerNetMask} , 
 			"dev", "eth1" );
 		return -22 if ( $ret );
 		$ret = system( $ip_binary, "link", "set", "eth1", "up" );
@@ -286,8 +279,8 @@ sub reset_Network_set_arp_backend
 	$ret = system ( $arp_binary, "-Ds", $src, $dev, "pub" );
 	return -1 if ( $ret );
 
-	$ret = system ( $arping_binary, "-A", "-c 1", "-I $dev", "-s $src", $dst );
-	return -2 if ( $ret );
+#	$ret = system ( $arping_binary, " -A -c 1 -I $dev -s $src $dst" );
+#	return -2 if ( $ret );
 	
 	return 0;
 }
@@ -299,7 +292,8 @@ sub reset_Network_set_arp
 	my $MailServerIP = $conf->{config}->{MailServerIP};
 	my $MailServerNetMask = $conf->{config}->{MailServerNetMask};
 
-	my ($NetB = $MailServerIP) =~ s/\d+$//;
+	my $NetB;
+	($NetB = $MailServerIP) =~ s/\d+$//;
 
 	my $local_net_ip;
 	#first, we arp internal net: eth0
@@ -313,7 +307,7 @@ sub reset_Network_set_arp
 	}
 
 	#second, we arp external net: eth1
-	$ret = &reset_Network_set_arp_backend( 'eth1', $MailServerIP, $config->{MailServerGateway} );
+	$ret = &reset_Network_set_arp_backend( 'eth1', $MailServerIP, $conf->{config}->{MailServerGateway} );
 	return -2 if ( $ret );
 
 	return 0;
@@ -323,12 +317,12 @@ sub reset_Network_set_route
 {
 	my $ret;
 	#出口网关：NoSPAM.conf::MailServerGateway
-	$ret = system( $ip_binary, "route", "replace", "default", "via", $self->{config}->{MailServerGateway}, "dev", "eth1" );
+	$ret = system( $ip_binary, "route", "replace", "default", "via", $conf->{config}->{MailServerGateway}, "dev", "eth1" );
 	return -1 if ( $ret );
 
 	#邮件服务器IP：NoSPAM.conf::MailServerIP
 	$ret = system( $ip_binary, "route", "add", 
-		$self->{config}->{MailServerIP}.'/32',
+		$conf->{config}->{MailServerIP}.'/32',
 		"dev", "eth0" );
 	return -2 if ( $ret );
 
@@ -339,10 +333,10 @@ sub reset_Network_set_sysctl
 {
 	my $ret;
 
-	$ret = system ( "echo", "1", ">proc/sys/net/ipv4/ip_nonlocal_bind" );
+	$ret = system ( "echo '1'>/proc/sys/net/ipv4/ip_nonlocal_bind" );
 	return -1 if ( $ret );
 
-	$ret = system ( "echo", "1", ">proc/sys/net/ipv4/ip_forward" );
+	$ret = system ( "echo '1'>/proc/sys/net/ipv4/ip_forward" );
 	return -2 if ( $ret );
 
 	return 0;
