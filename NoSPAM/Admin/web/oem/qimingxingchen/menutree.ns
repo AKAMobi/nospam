@@ -150,10 +150,10 @@ if($SpamEngine > 0){
 	var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
 	c.add(c3);
 	c3.add(new WebFXTreeItem('<?=_("Bayes Filter")?>','antispam/bayes.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Intelligent Realtime Blocklist")?>','antispam/rbl.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Intelligent Process Center")?>','antispam/netcheck.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Intelligent Content Analyze")?>','antispam/sa.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Intelligent Noise Reduce System")?>','antispam/awl.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Realtime Blocklist")?>','antispam/rbl.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Process Center")?>','antispam/netcheck.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Content Analyze")?>','antispam/sa.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Noise Reduce System")?>','antispam/awl.ns','main'));
 	c.add(new WebFXTreeItem('<?=_("Spam Treatment")?>','antispam/treatment.ns','main'));
 
 
@@ -203,8 +203,8 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	var gs = new WebFXTreeItem('<?=_("System Status")?>','status/status.ns','main');
         g.add(gs);
-	  gs.add( new WebFXTreeItem('<?=_("Internal Network Traffic")?>','status/internalnet.html','main') );
-	  gs.add( new WebFXTreeItem('<?=_("External Network Traffic")?>','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("Internal Traffic")?>','status/internalnet.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("External Traffic")?>','status/externalnet.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("TCP connect")?>','status/tcp.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("SMTP connect")?>','status/smtp.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("CPU Load")?>','status/cpu.html','main') );

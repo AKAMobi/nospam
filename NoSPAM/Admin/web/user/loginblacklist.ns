@@ -4,7 +4,7 @@ require_once("../inc/include.ns");
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"] == "<?=_("Modify")?>"){
+if($_POST["Submit"] == _("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have not permission to modify system config"));
 	if (!is_numeric($_POST['UserMaxLoginRetry']) ||

@@ -6,7 +6,7 @@ if($AntiVirusEngine <= 0)
 if(!adminPerm(PERM_ADMIN_VIRUS))
 	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"]=="<?=_("Modify")?>"){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have not permission to modify system config"));
 	if(isset($_POST["AntiVirusEngine"])){
@@ -31,6 +31,24 @@ if($_POST["Submit"]=="<?=_("Modify")?>"){
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title><?=_("Engines Switches")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+<!--
+function change(bState)
+{
+	if(bState){
+		form2.oDir1.disabled = true;
+		form2.oDir2.disabled = true;
+		form2.idSubmit.disabled = true;
+	}else{
+		form2.oDir1.disabled = false;
+		form2.oDir2.disabled = false;
+		form2.idSubmit.disabled = false;
+	}
+}
+-->
+</script>
+
+
 </head>
 
 <body>
@@ -41,11 +59,11 @@ if(adminPerm(PERM_ADMIN_WRITE)){
   <p>
   	<?=_("Engines Switches")?>: <br>
     <label>
-    <input type="radio" name="AntiVirusEngine" value="Y"<? if($bAntiVirus) echo" checked"; ?>>
+    <input type="radio" name="AntiVirusEngine" value="Y"<? if($bAntiVirus) echo" checked"; ?> onclick="change(false)">
     <?=_("On")?></label>
     <br>
     <label>
-    <input type="radio" name="AntiVirusEngine" value="N"<? if(!$bAntiVirus) echo" checked"; ?>>
+    <input type="radio" name="AntiVirusEngine" value="N"<? if(!$bAntiVirus) echo" checked"; ?> onclick="change(true)">
     <?=_("Off")?></label>
     <br>
     <input type="submit" name="Submit" value="<?=_("Modify")?>">
@@ -60,7 +78,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bAntiVirus) echo " disabled"?>>
     <?=_("Inward")?>
     <br>
-    <input type="submit" name="Submit" value="<?=_("Modify")?>"<?if(!$bAntiVirus) echo " disabled"?>>
+    <input type="submit" id="idSubmit" name="Submit" value="<?=_("Modify")?>"<?if(!$bAntiVirus) echo " disabled"?>>
   </p>
 </form><?
 }else{

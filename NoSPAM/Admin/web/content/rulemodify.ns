@@ -169,7 +169,7 @@ if(!$Category[$category_id])
 </select>
 <?=_("Decode")?>: 
 <select name="Decode<?=$i?>">
-<option value="0"<? if($keyword->get_attribute("decode")==0) echo" selected "; ?>><?£½_("not Decode")?>
+<option value="0"<? if($keyword->get_attribute("decode")==0) echo" selected "; ?>><?=_("not Decode")?>
 <option value="1"<? if($keyword->get_attribute("decode")==1) echo" selected "; ?>><?=_("Decode First")?>
 </select>
 <?=_("Case")?>: 
@@ -283,7 +283,7 @@ if($sizescount > 0){
 			}
 ?>
 </select><br>
-<?=_("Size Value").": <input type="text" value="<?=$attachment->get_attribute("sizevalue")?>" name="AttachSize<?=$i?>">
+<?=_("Size Value")?>: <input type="text" value="<?=$attachment->get_attribute("sizevalue")?>" name="AttachSize<?=$i?>">
 </fieldset>
 <?
 			$i++;
@@ -674,7 +674,7 @@ if($sizescount > 0){
 			}
 ?>
 </select><br>
-<?=_("Size Value").": <input type="text" value="" name="AttachSize<?=$ii?>">
+<?=_("Size Value")?>: <input type="text" value="" name="AttachSize<?=$ii?>">
 </fieldset>
 <?
 		}

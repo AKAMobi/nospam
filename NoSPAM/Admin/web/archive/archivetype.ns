@@ -6,7 +6,7 @@ if($ArchiveEngine <= 0)
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
 	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"] == "<?=_("Modify")?>"){
+if($_POST["Submit"] == _("Modify")){
 	if($_POST["ArchiveSwitch"]=="All"){
 		$type = "All";
 	}else{

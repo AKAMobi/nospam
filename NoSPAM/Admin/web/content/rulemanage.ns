@@ -91,7 +91,7 @@ function showInfoLayer(id)
 function hideInfoLayer()
 {
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = <?=_("Loading, please waiting......")?>;
+	document.all.InfoLayer.innerHTML = "<?=_("Loading, please waiting......")?>";
 }
 
 function changeDB()

@@ -39,7 +39,7 @@ function show()
 	
 	$start = ($page - 1)*$pagenum+1;
 	if(($ret=wi("MailQueue_getList $start $pagenum",$result)) != 0){
-		echo _(Error when fetch mail queue, ErrNo: ").$ret;
+		echo _("Error when fetch mail queue, ErrNo: ").$ret;
 		return;
 	}
 	

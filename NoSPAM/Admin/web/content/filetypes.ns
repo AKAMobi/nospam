@@ -108,7 +108,7 @@ if($iSize > 0){
 <?
 	if($count > 3){
 		echo $exts[0];
-		echo "<br>..."._("omit ").($count-2)._(" items")"...<br>";
+		echo "<br>..."._("omit ").($count-2)._(" items")."...<br>";
 		echo $exts[$count-1];
 	}else{
 		for($s=0;$s<$count;$s++){

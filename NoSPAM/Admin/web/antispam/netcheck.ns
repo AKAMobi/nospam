@@ -153,7 +153,7 @@ function Razor_change(bState)
 
   <p>
     <input type="reset" name="reset" value="<?=_("Reset")?>">
-    <input type="submit" name="isSubmit" value="<?_("Submit")=?>">
+    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
   </p>
 </form>
 <?

@@ -7,7 +7,7 @@ if($DynamicEngine <= 0)
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
 	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"]==_("Submit")){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have not permission to modify system config"));
 	
@@ -34,6 +34,24 @@ if($_POST["Submit"]==_("Submit")){
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+<!--
+function change(bState)
+{
+	if(bState){
+		form2.idSubmit.disabled = true;
+		form2.idProtectDirectionOut.disabled = true;
+		form2.idProtectDirectionIn.disabled = true;
+	}else{
+		form2.idSubmit.disabled = false;;
+		form2.idProtectDirectionOut.disabled = false;;
+		form2.idProtectDirectionIn.disabled = false;;
+	}
+}
+-->
+</script>
+
+
 </head>
 
 <body>
@@ -41,11 +59,11 @@ if($_POST["Submit"]==_("Submit")){
   <p>
   	<?=_("Engine Switch")?>:<br>
     <label>
-    <input type="radio" name="DynEngine" value="Y"<?if($bDynamic) echo " checked";?>>
+    <input type="radio" name="DynEngine" value="Y"<?if($bDynamic) echo " checked";?> onclick="change(false)">
     <?=_("On")?></label>
     <br>
     <label>
-    <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?>>
+    <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?> onclick="change(true)">
     <?=_("Off")?></label>
     <br>
     <input type="submit" name="Submit" value="<?=_("Modify")?>">
@@ -54,13 +72,13 @@ if($_POST["Submit"]==_("Submit")){
 <form name="form2" method="post" action="">
   <p>
   	<?=_("Direction")?>:<br>
-    <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bDynamic) echo " disabled"?>>
+    <input type="checkbox" id="idProtectDirectionOut" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bDynamic) echo " disabled"?>>
     <?=_("Outward")?>
     <br>
-    <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bDynamic) echo " disabled"?>>
+    <input type="checkbox" id="idProtectDirectionIn" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bDynamic) echo " disabled"?>>
     <?=_("Inward")?>
     <br>
-    <input type="submit" name="Submit" value="<?=_("Modify")?>"<?if(!$bDynamic) echo " disabled"?>>
+    <input type="submit" id="idSubmit" name="Submit" value="<?=_("Modify")?>"<?if(!$bDynamic) echo " disabled"?>>
   </p>
 </form>
 </body>
