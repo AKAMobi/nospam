@@ -1019,8 +1019,10 @@ sub spam_engine
 	my $self = shift;
 
 	my $start_time = [gettimeofday];
-	my ( $client_smtp_ip, $returnpath ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
-						$self->{mail_info}->{aka}->{returnpath} );
+	my ( $client_smtp_ip, $returnpath, $mailfrom ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
+						$self->{mail_info}->{aka}->{returnpath},
+						$self->{mail_info}->{aka}->{mailfrom},
+						 );
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
@@ -1049,7 +1051,9 @@ sub spam_engine
 
 	}
 
-	unless ( length($client_smtp_ip) && length($returnpath) ){
+	$returnpath ||= $mailfrom;
+	unless ( length($client_smtp_ip) && length($returnpath) )
+	{
 		#$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
 
 		$self->{mail_info}->{aka}->{engine}->{spam} = { result	=> RESULT_SPAM_MAYBE,
@@ -1063,7 +1067,7 @@ sub spam_engine
 		return;
 	}
 
-	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath||$mailfrom );
 
 	my $action = ACTION_PASS;
 	if ( $is_spam ) {
@@ -1483,17 +1487,28 @@ sub get_mail_base_info
 	open ( MAIL, '<' . $self->{mail_info}->{aka}->{emlfilename} ) or return undef;
 
 	my $still_headers = 1;
-	my $subject;
+	my ($subject,$mail_from);
 	while (<MAIL>) {
 		chomp;
 		if ( $still_headers ){
-			if ( /^Subject: ([^\n]+)/i) {
+			if ( /^Subject: ([^\n]+)/i) 
+			{
 				$subject = $1 || '';
 				$subject=~s/[\r\n]*$//g;
 				if ($subject=~/^=\?[\w-]+\?B\?(.*)\?=$/) { 
 					$subject = decode_base64($1); 
 				}elsif ($subject=~/^=\?[\w-]+\?Q\?(.*)\?=$/) { 
 					$subject = decode_qp($1); 
+				}
+			}
+			elsif ( /^From: (.+)/ )
+			{
+				$mail_from = $1;
+				if ( $mail_from=~m#([a-z0-9.-_]\S+?\@\S+\.\S+[a-z0-9])\s*#i )
+				{
+					$mail_from = $1;
+				}else{
+					$mail_from = '';
 				}
 			}
 			$still_headers = 0 if (/^(\r|\r\n|\n)$/);
@@ -1525,6 +1540,7 @@ sub get_mail_base_info
 	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
 
 	$self->{mail_info}->{aka}->{returnpath} = $returnpath;
+	$self->{mail_info}->{aka}->{mailfrom} = $mail_from;
 	$self->{mail_info}->{aka}->{recips} = $recips;
 	$self->{mail_info}->{aka}->{env_returnpath} = $env_returnpath;
 	$self->{mail_info}->{aka}->{env_recips} = $env_recips;
