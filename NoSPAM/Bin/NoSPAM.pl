@@ -653,14 +653,17 @@ sub check_License
 {
 	my $AM = new AKA::Mail;
 
-	my $LicenseHTML;
-	if ( $LicenseHTML = $AM->check_license_file ){
+	my ($isValid, $LicenseHTML);
+
+	($isValid,$LicenseHTML) = $AM->check_license_file();
+
+	if ( $isValid ){
 # VALID license!
 		print "$LicenseHTML";
 		return 0;
 	}
 # INVALID license!
-	print "<h1>当前许可证无效或已经过期！</h1>";
+	print ($LicenseHTML || "<h1>当前许可证无效或已经过期！</h1>");
 	return -1;
 }
 
