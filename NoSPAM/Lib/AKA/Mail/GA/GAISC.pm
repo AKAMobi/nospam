@@ -428,7 +428,7 @@ sub GAISC_resp_rule_update
 	$self->{files} = ();
 	$self->ftp_get_file( $ftp, '/dzyj/rule/', $ruledir, @rule_files ) unless $err;
 
-	my ($rule_add_modify, $rule_del) = $self->parse_rule_to_filterdb( $self->{files} );
+	my ($rule_add_modify, $rule_del) = $self->parse_rule_to_filterdb( @{$self->{files}} );
 
 	if ( $self->merge_new_rule ( $rule_add_modify, $rule_del ) ){
 		$pkg->{data} = DATA_SUCC;
@@ -441,7 +441,7 @@ sub GAISC_resp_rule_update
 
 	$self->_send_pkg( $socket, $pkg );
 
-	unlink @{$self->{files}};
+	unlink @{$self->{files}} if ( 'ARRAY' eq ref $self->{files} );
 
 	return 1;
 }
@@ -453,13 +453,12 @@ sub parse_rule_to_filterdb
 
 	my ( $rule_add_modify, $rule_del ) = ();
 
-	# TODO
 	my ($type, $db, $ruleid, $rule_info) = ();
 	foreach my $file ( @rule_files ){
 		($type, $db) = $self->_file2pkg( $file );
 		if ( 'ruleaddmodify' eq lc $type ){
 			($ruleid, $rule_info) = $self->_pkg2filter ( $db );
-			$rule_add_modify->{rule}->{$ruleid} = $rule_info;
+			$rule_add_modify->{$ruleid} = $rule_info;
 		}else{
 			$rule_del->{$ruleid} = '1';
 		}
@@ -475,7 +474,8 @@ sub _file2pkg
 	my $file = shift;
 
 	unless ( open ( FD, "<$file" ) ){
-#TODO
+		$self->{zlog}->fatal ( "GA::GAISC::_file2pkg open [$file] error!" );
+		return undef;
 	}
 
 	my $type = lc <FD>;
@@ -520,13 +520,15 @@ sub _pkg2filter
 			,4 => 5
 			,5 => 5 };
 
-	my $alarmlevel_map = { 1 => 4,
-				2 => 0 };
+	my $realtime_map = { 1 => 'YES',
+				2 => 'NO' };
 
 	my $rule_info = {};
 	my $ruleid;
 
 	$rule_info->{rule_keyword}->{type} = 0;
+	$rule_info->{id_type} = 'GAISC';
+	$rule_info->{update_time} = $self->{zlog}->get_time_stamp();
 
 	my $val;
 	while ( ($_,$val) = each ( %{$pkg} ) ){
@@ -537,8 +539,8 @@ sub _pkg2filter
 			$rule_info->{create_time} = $val;
 		}elsif( /^expiretime$/ ){
 			$rule_info->{expire_time} = $val;
-		}elsif( /^infolenth$/ ){
-			$rule_info->{size}->{size_value} = $val;
+		}elsif( /^infolength$/ ){
+			$rule_info->{size}->{sizevalue} = $val;
 		}elsif( /^infotype$/ ){
 			for ( my $n=0; $n<length($val); $n++ ){
 				if ( '1' eq substr($val, $n, 1) ){
@@ -563,8 +565,9 @@ sub _pkg2filter
 			$rule_info->{rule_keyword}->{decode} = int($val);
 		}elsif( /^rule$/ ){
 			if ( 2==length($val) ){
-				$rule_info->{rule_action}->{action} = $action_map->{substr($val,0,1)};
-				$rule_info->{alarmlevel} = $alarmlevel_map->{substr($val,1,1)};
+				$rule_info->{rule_action}->{action} = $action_map->{substr($val,0,1)} || 6;
+				$rule_info->{realtime_upload} = $realtime_map->{substr($val,1,1)} || 'NO';
+				$rule_info->{alarmlevel} = substr($val,1,1) || 0;
 			}
 		}elsif( /^alertrule$/ ){
 			$rule_info->{rule_comment} = $val;
