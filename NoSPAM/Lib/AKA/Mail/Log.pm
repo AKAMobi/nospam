@@ -140,7 +140,7 @@ sub log_csv {
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
 		print LFD time
 # ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
+			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && '1' eq $aka->{RELAYCLIENT})
 							|| 
 						length($aka->{TCPREMOTEINFO})
 					) ?'1':'0' 
@@ -187,14 +187,14 @@ sub log_csv {
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 		print LFD time
-			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
+			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && '1' eq $aka->{RELAYCLIENT})
 							|| 
 						length($aka->{TCPREMOTEINFO})
 					) ?'1':'0' 
 				)
 			. ',' . $aka->{size} 
 			. ',' . ( int(1000*tv_interval($mail_info->{aka}->{start_time}, [gettimeofday])) 
-				  - $engine->{spam}->{dns_query_time} )
+				  - ($engine->{spam}->{dns_query_time}||0) )
 			. ',' . int(1000*$cputime)
 
 			. ',' . $engine->{antivirus}->{result}
