@@ -1117,6 +1117,15 @@ unlink /root/post_install
        		my $VERSION=sprintf("%02d%02d%02d%02d",$1,$2,$3,$4);
 		`echo $VERSION > /home/NoSPAM/etc/VERSION`;
 	}
+
+	eval {
+		use AKA::Mail::Status;
+		my $AMS=new AKA::Mail::Status;
+		$AMS->create_rrd;
+	}; if ( $@ ){
+		print NSOUT "rrd: $@\n";
+	}
+
 	exit;
 }
 
