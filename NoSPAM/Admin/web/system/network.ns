@@ -34,7 +34,7 @@ if($_POST["Submit"]=="修改"){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_Network",$result))==0)
-		echo "请重启服务器使设置生效";
+		echo "设置网络成功！";
 	else
 		echo "无法更新设置，错误代码：".$ret;
 }else{
