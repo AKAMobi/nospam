@@ -71,7 +71,7 @@ function check_new_domain ($newDomain='') {
 	}
 
 	if (sizeof($Domains)+1 > $MaxProtectDomainNumber) {
-	    die(_("Too many pretect domains"));
+	    die(_("Too many protect domains"));
 	    return -2;
 	}
 	
