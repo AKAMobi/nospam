@@ -189,20 +189,21 @@ sub check_single_attachment_rule
 		my $size = $mail_info->{body}->{$filename}->{size} || 0;
 
 		if ( defined $match_filename && (lc($filename) ne lc($match_filename)) ){
-			return 0;
+			next;
 		}
 		if ( defined $match_filetype && ($typeclass != $match_filetype) ){
-			return 0;
+			next;
 		}
 		if ( defined $match_filesize ){
-			if ( 0==check_size_value( $self, $size, $match_filesize ) ){
-				return 0;
+			if ( ! check_size_value( $self, $size, $match_filesize ) ){
+				next;
 			}
 		}
+		# got match!
+		return 1
 	}
 
-	# got match!
-	return 1;
+	return 0;
 } 
 
 #
@@ -216,7 +217,7 @@ sub check_size_value
 
 	if ( defined $match_size && $match_size =~ /(\d+)\-(\d+)/ ){
 		$size_low = $1;
-		$size_high = $1;
+		$size_high = $2;
 	}elsif ( defined $match_filesize ){
 		$self->{zlog}->log ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
 		return 0;
@@ -229,7 +230,7 @@ sub check_size_value
 	if ( 0==$size_high && $size >= $size_low ){
 		return 1;
 	}
-	if ( $size >= $size_low || $size <= $size_high ){
+	if ( $size >= $size_low && $size <= $size_high ){
 		return 1;
 	}
 
@@ -270,23 +271,23 @@ sub check_ip_range
 		return 0;
 	}
 
-	if ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)/ ){
+	if ( $ip_range =~ /^(\d+\.\d+\.\d+\.\d+)$/ ){
 		#	1 一个具体的IP，如："202.116.12.34"
 		return ( $ip eq $1 );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\-(\d+\.\d+\.\d+\.\d+)/ ){
 		# 	2 用减号"-"连接两个IP值，表示一个连续的IP段（包括两个断点），如："202.116.22.1-202.116.22.24"
 		my ( $ip_start, $ip_end ) = ( $1, $2 );
 
-		$ip_long = ip2int($ip);
-		$start_long = ip2int($ip_start);
-		$end_long = ip2int($ip_end);
+		$ip_long = ip2int($self, $ip);
+		$start_long = ip2int($self, $ip_start);
+		$end_long = ip2int($self, $ip_end);
 
 		return ( ($ip_long >= $start_long) && ($ip_long <= $end_long) );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\/(\d+)/ ){
 		#	3 用斜杠"/"分隔的一个IP值和一个数字。如："202.116.22.0/24"表示202.116.22.*
 		my $bits = $2;
-		my $match_long = ip2int($1);
-		$ip_long = ip2int($ip);
+		my $match_long = ip2int($self, $1);
+		$ip_long = ip2int($self, $ip);
 
 		$match_long = $match_long >> $bits;
 		$ip_long = $ip_long >> $bits;
@@ -316,7 +317,7 @@ sub check_single_size_rule
 
 	if ( 1==$match_key ){ # 全文大小
 		my $mail_size;
-		$mail_size = $mail_info->{body_size} + $mail_info{head_size};
+		$mail_size = $mail_info->{body_size} + $mail_info->{head_size};
 		return ( check_size_value( $slef, $mail_size, $match_size ) );
 	}elsif ( 2==$match_key ){ # 信头
 		return ( check_size_value( $self, $mail_info->{head_size}, $match_size ) );
@@ -373,7 +374,7 @@ sub check_single_keyword_rule
 	}elsif ( 6==$match_key ){ #6信体包含关键字
 		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
 	}elsif ( 7==$match_key ){ #7全文包含关键字
-		return ( check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type ) &&
+		return ( check_re_match ( $self, $mail_info->{head}->{content} . $mail_info->{body_text}, $match_keyword, $match_type ) &&
 				check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type ) );
 	}elsif ( 8==$match_key ){ #8附件包含关键字
 		#FIXME 当前是匹配文件名而不是内容

@@ -169,7 +169,7 @@ sub get_head_info
 				$self->{mail_info}->{head}->{sender_ip} = $1;
 				$server_ip = 0;
 			}else{
-				$self->{mail_info}->{haad}->{sender_ip} = $1;
+				$self->{mail_info}->{head}->{sender_ip} = $1;
 			}
 		}
 	}
@@ -244,7 +244,7 @@ sub get_body_info
 		$self->{mail_info}->{body_size} += $size;
 			
 		# 获取文件类型
-		$self->{mail_info}->{body}->{$filename}->{typeclass} = get_attachment_type( $filename );
+		$self->{mail_info}->{body}->{$filename}->{typeclass} = get_attachment_type( $self,$filename );
 
         } else {  
                 foreach my $part ($blob->parts) {
@@ -265,7 +265,7 @@ sub get_attachment_type
 
 	foreach my $filetype ( keys %{$self->{filetype_num}} ){
 		$filetype_num = $self->{filetype_num}->{$filetype};
-		for ( $i=0; $self->{filetype}->{filetype}->[$i]; $i++ ){
+		foreach ( @{$self->{filetype}->{$filetype}} ){
 			if ( $filename =~ /$_$/ ){
 				return $filetype_num;
 			}
