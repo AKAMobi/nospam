@@ -562,14 +562,14 @@ sub rrdgraph_dns
 
 #			($ds->{success},$ds->{referral},$ds->{nxrrset},$ds->{nxdomain},$ds->{recursion},$ds->{failure});
 			"DEF:dns_success_raw=$rrdfile:dns_success:AVERAGE", 
-			"CDEF:dns_success_pm=dns_success_raw,5,/",
+			"CDEF:dns_success_pm=dns_success_raw,60,*",
 			"CDEF:dns_success_prev1=PREV(dns_success_pm)",
 			"CDEF:dns_success_prev2=PREV(dns_success_prev1)",
 			"CDEF:dns_success_prev3=PREV(dns_success_prev2)",
 			"CDEF:dns_success=dns_success_prev1,dns_success_prev2,dns_success_prev3,+,+,3,/",
 
 			"DEF:dns_recursion_raw=$rrdfile:dns_recursion:AVERAGE", 
-			"CDEF:dns_recursion_pm=dns_recursion_raw,5,/",
+			"CDEF:dns_recursion_pm=dns_recursion_raw,60,*",
 			"CDEF:dns_recursion_prev1=PREV(dns_recursion_pm)",
 			"CDEF:dns_recursion_prev2=PREV(dns_recursion_prev1)",
 			"CDEF:dns_recursion_prev3=PREV(dns_recursion_prev2)",
@@ -577,28 +577,28 @@ sub rrdgraph_dns
 
 
 			"DEF:dns_referral_raw=$rrdfile:dns_referral:AVERAGE", 
-			"CDEF:dns_referral_pm=dns_referral_raw,5,/",
+			"CDEF:dns_referral_pm=dns_referral_raw,60,*",
 			"CDEF:dns_referral_prev1=PREV(dns_referral_pm)",
 			"CDEF:dns_referral_prev2=PREV(dns_referral_prev1)",
 			"CDEF:dns_referral_prev3=PREV(dns_referral_prev2)",
 			"CDEF:dns_referral=dns_referral_prev1,dns_referral_prev2,dns_referral_prev3,+,+,3,/",
 
 			"DEF:dns_nxrrset_raw=$rrdfile:dns_nxrrset:AVERAGE", 
-			"CDEF:dns_nxrrset_pm=dns_nxrrset_raw,5,/",
+			"CDEF:dns_nxrrset_pm=dns_nxrrset_raw,60,*",
 			"CDEF:dns_nxrrset_prev1=PREV(dns_nxrrset_pm)",
 			"CDEF:dns_nxrrset_prev2=PREV(dns_nxrrset_prev1)",
 			"CDEF:dns_nxrrset_prev3=PREV(dns_nxrrset_prev2)",
 			"CDEF:dns_nxrrset=0,dns_nxrrset_prev1,dns_nxrrset_prev2,dns_nxrrset_prev3,+,+,3,/,-",
 
 			"DEF:dns_nxdomain_raw=$rrdfile:dns_nxdomain:AVERAGE", 
-			"CDEF:dns_nxdomain_pm=dns_nxdomain_raw,5,/",
+			"CDEF:dns_nxdomain_pm=dns_nxdomain_raw,60,*",
 			"CDEF:dns_nxdomain_prev1=PREV(dns_nxdomain_pm)",
 			"CDEF:dns_nxdomain_prev2=PREV(dns_nxdomain_prev1)",
 			"CDEF:dns_nxdomain_prev3=PREV(dns_nxdomain_prev2)",
 			"CDEF:dns_nxdomain=dns_nxrrset,dns_nxdomain_prev1,dns_nxdomain_prev2,dns_nxdomain_prev3,+,+,3,/,-",
 
 			"DEF:dns_failure_raw=$rrdfile:dns_failure:AVERAGE", 
-			"CDEF:dns_failure_pm=dns_failure_raw,5,/",
+			"CDEF:dns_failure_pm=dns_failure_raw,60,*",
 			"CDEF:dns_failure_prev1=PREV(dns_failure_pm)",
 			"CDEF:dns_failure_prev2=PREV(dns_failure_prev1)",
 			"CDEF:dns_failure_prev3=PREV(dns_failure_prev2)",
@@ -606,7 +606,7 @@ sub rrdgraph_dns
 
 
 			"CDEF:dns_all_raw=dns_success_raw,dns_referral_raw,dns_nxrrset_raw,dns_nxdomain_raw,dns_recursion_raw,dns_failure_raw,+,+,+,+,+", 
-			"CDEF:dns_all_pm=dns_all_raw,5,/",
+			"CDEF:dns_all_pm=dns_all_raw,60,*",
 			"CDEF:dns_all_prev1=PREV(dns_all_pm)",
 			"CDEF:dns_all_prev2=PREV(dns_all_prev1)",
 			"CDEF:dns_all_prev3=PREV(dns_all_prev2)",
@@ -618,6 +618,7 @@ sub rrdgraph_dns
 			"CDEF:dns_nxdomain_percent=100,dns_nxdomain_raw,*,dns_all_raw,/,FLOOR",
 			"CDEF:dns_recursion_percent=100,dns_recursion_raw,*,dns_all_raw,/,FLOOR",
 			"CDEF:dns_failure_percent=100,dns_failure_raw,*,dns_all_raw,/,FLOOR",
+			"CDEF:dns_err_percent=100,dns_failure_raw,dns_nxrrset_raw,dns_nxdomain_raw,+,+,*,dns_all_raw,/,FLOOR",
 
 
 			'COMMENT:Succ DNS Query(qpm) -Max----------Avg----------Min----------Cur---------Percent---------\n'
@@ -629,13 +630,6 @@ sub rrdgraph_dns
 			,"GPRINT:dns_all_raw:LAST:%11.0lf"
 			,'COMMENT:        100%\n'
 
-			,'AREA:dns_success#00FF00:1 Query  '
-			,"GPRINT:dns_success_pm:MAX:%11.0lf"
-			,"GPRINT:dns_success_pm:AVERAGE:%11.0lf"
-			,"GPRINT:dns_success_pm:MIN:%11.0lf"
-			,"GPRINT:dns_success_pm:LAST:%11.0lf"
-			,'GPRINT:dns_success_percent:LAST:%11lg%%\\n'
-
 			,'AREA:dns_recursion#00FFFF:Above 1  '
 			,"GPRINT:dns_recursion_pm:MAX:%11.0lf"
 			,"GPRINT:dns_recursion_pm:AVERAGE:%11.0lf"
@@ -643,9 +637,17 @@ sub rrdgraph_dns
 			,"GPRINT:dns_recursion_pm:LAST:%11.0lf"
 			,'GPRINT:dns_recursion_percent:LAST:%11lg%%\\n'
 
+			,'AREA:dns_success#00FF00:1 Query  '
+			,"GPRINT:dns_success_pm:MAX:%11.0lf"
+			,"GPRINT:dns_success_pm:AVERAGE:%11.0lf"
+			,"GPRINT:dns_success_pm:MIN:%11.0lf"
+			,"GPRINT:dns_success_pm:LAST:%11.0lf"
+			,'GPRINT:dns_success_percent:LAST:%11lg%%\n'
+
 
 			,'COMMENT:\n'
-			,'COMMENT:Failed DNS Query\n'
+			,'COMMENT:Failed DNS Query                                               '
+			,'GPRINT:dns_err_percent:LAST:%11lg%%\n'
 
 			,'AREA:dns_failure#FF0000:Failure  '
 			,"GPRINT:dns_failure_pm:MAX:%11.0lf"
@@ -669,7 +671,6 @@ sub rrdgraph_dns
 			,"GPRINT:dns_nxrrset_pm:LAST:%11.0lf"
 			,'GPRINT:dns_nxrrset_percent:LAST:%11lg%%\\n'
 
-
 			,'COMMENT:\n'
 
 			,@vrules
@@ -680,6 +681,7 @@ sub rrdgraph_dns
 		);
 
 }
+
 
 
 sub rrdgraph_traffic
