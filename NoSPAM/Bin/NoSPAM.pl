@@ -82,7 +82,7 @@ my $intconf = $conf->{intconf};
 my $licenseconf = $conf->{licconf}; #&get_licenseconf;
 
 # I18N
-my $language  = $licenseconf->{Language} || 'zh_CN';
+my $language  = $licenseconf->{Language} || 'en_US';
 #print $language, "\n";
 setlocale (LC_MESSAGES, $language);
 

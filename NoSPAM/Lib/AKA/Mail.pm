@@ -112,7 +112,7 @@ sub new
 
 sub get_language
 {
-	return shift->{conf}->{licconf}->{Language} || 'zh_CN';
+	return shift->{conf}->{licconf}->{Language} || 'en_US';
 }
 
 sub server

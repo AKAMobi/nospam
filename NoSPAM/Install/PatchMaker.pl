@@ -7,10 +7,10 @@ use strict;
 
 #my $NSVER='2.0-5.09';
 #my $ISOVER='2.0.1';
-my $NSVER='2.1-6.18';
-my $ISOVER='2.1.0';
+my $NSVER='2.1-7.13';
+my $ISOVER='2.1.1';
 
-my $PATCHVER='03';
+my $PATCHVER='89';
 
 #
 # ÖÆ×÷Patch£º
