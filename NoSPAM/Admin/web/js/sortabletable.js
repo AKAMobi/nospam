@@ -420,6 +420,9 @@ SortableTable.toSize = function (s) {
 	if((pos = s.indexOf("G")) != -1 || (pos = s.indexOf("g")) != -1){
 		return s.substr(0,pos)*1024*1024*1024;
 	}
+	if((pos = s.indexOf("Byte")) != -1 || (pos = s.indexOf("byte")) != -1){
+		return s.substr(0,pos);
+	}
 	return s;
 };
 

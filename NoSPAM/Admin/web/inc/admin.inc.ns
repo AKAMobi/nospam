@@ -3,7 +3,7 @@ require_once("functions.ns");
 
 define("ADMINFILE","ADMINFILE"); //用于保存管理员信息的数据文件
 
-define("SYSOPID", "PigRoy"); //最高管理员ID
+define("SYSOPID", "admin"); //最高管理员ID
 
 //返回值定义
 define("OK",0);
@@ -32,6 +32,7 @@ define("PERM_ADMIN_VIRUS",			0x00000200);
 define("PERM_ADMIN_SYSTEM",			0x00000400);
 define("PERM_ADMIN_ADMIN",			0x00000800);
 define("PERM_ADMIN_SERVER",			0x00001000);
+define("PERM_ADMIN_ARCHIVE",		0x00002000);
 
 define("PERM_ADMIN_MAX",0xFFFFFFFF);
 
@@ -123,7 +124,7 @@ function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
 		return ERR_FORMAT_IP;
 	}
 
-	if (!isIpFormatOK($domain)){
+	if (!isDomainFormatOK($domain)){
 		return ERR_FORMAT_DOMAIN;
 	}
 

@@ -75,7 +75,7 @@ alert("注意：病毒识别引擎未启动");
     直接退回病毒邮件</label>
   </p>
 <?
-		if(!$bAntiSpam){
+		if(!$bAntiVirus){
 ?>
 <script>
 alert("注意：病毒识别引擎未启动");

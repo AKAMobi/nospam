@@ -81,12 +81,12 @@ $sIntIP = $intConf->getParam("MailGatewayInternalIP");
 $sIntMask = $intConf->getParam("MailGatewayInternalMask");
 
 $spamconf = new NoSPAMConf;
-$bAntiVirus = ($spamconf->getParam("AntiVirusEngine","AntiVirusEngine") == "Y");
-$bInteractive = ($spamconf->getParam("InteractiveEngine","InteractiveEngine") == "Y");
-$bAntiSpam = ($spamconf->getParam("NoSPAMEngine","SpamEngine") == "Y");
-$bContentFilter = ($spamconf->getParam("ContentFilterEngine","ContentEngine") == "Y");
-$bDynamic = ($spamconf->getParam("DynamicEngine","DynamicEngine") == "Y");
-$bArchive = ($spamconf->getParam("ArchiveEngine","ArchiveEngine") == "Y");
+$bAntiVirus = $spamconf->getParam("AntiVirusEngine","AntiVirusEngine") == "Y";
+$bInteractive = $spamconf->getParam("InteractiveEngine","InteractiveEngine") == "Y";
+$bAntiSpam = $spamconf->getParam("NoSPAMEngine","SpamEngine") == "Y";
+$bContentFilter = $spamconf->getParam("ContentFilterEngine","ContentEngine") == "Y";
+$bDynamic = $spamconf->getParam("DynamicEngine","DynamicEngine") == "Y";
+$bArchive = $spamconf->getParam("ArchiveEngine","ArchiveEngine") == "Y";
 
 
 $Switchable = false;
@@ -106,7 +106,6 @@ if(file_exists(LICENSE)){
 	$bContentEngineEnabled = $license->isContentEngineEnabled();
 	$bSpamEngineEnabled = $license->isSpamEngineEnabled();
 	$sFactoryName = $license->get_FactoryName();
-	$sProductName = $license->get_ProductName();
 	$sExpire = $license->ExpireDate();
 	$bForSell = $license->isForSell();
 	$Version = $license->getVersion();

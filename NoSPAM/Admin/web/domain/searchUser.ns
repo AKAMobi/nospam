@@ -1,7 +1,7 @@
 <?php
 require_once('../inc/vpopadm.inc.ns');
 
-	if (!adminPerm(PERM_ADMIN_USER) ){
+	if (!adminPerm(PERM_ADMIN_DOMAIN) ){
 ?>
 		<br>
 		您没有访问该网页的权限。<br>

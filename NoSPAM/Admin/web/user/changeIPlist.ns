@@ -27,16 +27,16 @@ function changeIPList() {
 
 	switch($_REQUEST['iprule']){				//IP地址列表
 		case "PERMIT":
-		$iplist = "+".trim($_REQUEST['iplist']);
+		$iplist = "+".str_replace("\n",",",str_replace("\r","",trim($_REQUEST['iplist'])));
 		break;
 		case "DENY":
-		$iplist = "-".trim($_REQUEST['iplist']);
+		$iplist = "-".str_replace("\n",",",str_replace("\r","",trim($_REQUEST['iplist'])));
 		break;
 		case "PASS":
 		default:
 		$iplist = "";
 	}
-	
+
 	$result=setIPList($id,$iplist);
 
 	if ( ($result==ERR_FORMAT_IP) ){
@@ -81,7 +81,7 @@ function changeIPList() {
 <tr>
 	<td>IP地址限制：</td>
 	<td>
-		<input type="text" name="iplist" value="<?=$ip?>"<?if($iprule=="pass") echo " disabled";?>>
+		<TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA>
 		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>>允许
 		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>>禁止
 		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>>不限制

@@ -61,7 +61,7 @@ var newcolor = "#FFFF00";
 function selectAll()
 {
 	var aInputs = document.form1.all.tags("input");
-	for(i=1; i<a.Inputs.length; i++){
+	for(i=1; i<aInputs.length; i++){
 		if(aInputs[i].type == "checkbox"){
 			aInputs[i].checked = true;
 		}
@@ -71,7 +71,7 @@ function selectAll()
 function inverseSelect()
 {
 	var aInputs = document.form1.all.tags("input");
-	for(i=1; i<a.Inputs.length; i++){
+	for(i=1; i<aInputs.length; i++){
 		if(aInputs[i].type == "checkbox"){
 			if(aInputs[i].checked)
 				aInputs[i].checked = false;
@@ -104,6 +104,7 @@ function jump()
 		<td>发送时间</td>
 		<td>发送地址</td>
 		<td>目标地址</td>
+		<td>邮件尺寸</td>
 <?if($bWritable){?>
 		<td>操作</td>
 <?}?>
@@ -115,9 +116,16 @@ if(count($queue) > 0){
 	$i = 0;
 	foreach($queue as $mail){
 		$className = $i%2? "RuleTB2":"RuleTB1";
-		list($id, $date, $from, $to) = explode("," ,$mail);
+		list($id, $date, $from, $to, $size) = explode("," ,$mail);
 		$url = "mailcontent.ns?id={$id}&page={$page}&pagenum={$pagenum}";
 		list($num1,$num2) = explode("/",$id);
+		$size = intval($size);
+		if ($size > 1024)
+			$size = intval($size/1024)."KB";
+		else if ($size > 1024*1024)
+			$size = intval($size/(1024*1024))."MB";
+		else
+			$size .= "Bytes";
 ?>
 	<tr onmouseover="oldcolor = this.style.backgroundColor; this.style.backgroundColor = '#FFFF00'" onmouseout="this.style.backgroundColor = oldcolor">
 <?if($bWritable){?>
@@ -128,6 +136,7 @@ if(count($queue) > 0){
 		<td onclick="location.href='<?=$url?>'"><?=$date?></td>
 		<td onclick="location.href='<?=$url?>'"><?=$from?></td>
 		<td onclick="location.href='<?=$url?>'"><?=$to?></td>
+		<td onclick="location.href='<?=$url?>'"><?=$size?></td>
 <?if($bWritable){?>
 		<td><input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?page=".$page."&pagenum=".$pagenum."action=del&id=".$id?>'"></td>
 <?}?>
@@ -202,10 +211,10 @@ for($i = 10; $i < 60; $i+=10){
 <script>
 <?if($bWritable){?>
 var st = new SortableTable(document.getElementById("table-1"),
-		["None", "Number", "Number", "Date", "String", "String", "None"]);
+		["None", "Number", "Number", "Date", "String", "String", "Size","None"]);
 <?}else{?>
 var st = new SortableTable(document.getElementById("table-1"),
-		["Number", "Number", "Date", "String", "String"]);
+		["Number", "Number", "Date", "String", "String", "Size"]);
 <?}?>
 </script>
 </body>

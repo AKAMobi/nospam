@@ -98,11 +98,11 @@ function formReset()
 <form name="form1" method="post" onreset="formReset();">
   <p>
     <label>
-    <input type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> onclick="change(false)">
+    <input id="TraceY" type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> onclick="change(false)">
   开启</label>
     <br>
     <label>
-    <input name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> onclick="change(true)">
+    <input id="TraceN" name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> onclick="change(true)">
   关闭</label>
     <br>
     可追查性选项：
@@ -154,7 +154,7 @@ function formReset()
   </p>
   <p>
     <input type="reset" name="reset" value="恢复">
-	<input type="button" value="推荐值" onclick="form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
+	<input type="button" value="推荐值" onclick="form1.TraceY.check=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
     <input type="submit" name="submit" value="提交">
   </p>
 </form>

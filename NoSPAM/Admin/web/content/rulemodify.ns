@@ -247,7 +247,10 @@ if($sizescount > 0){
 					$blank = false;
 					echo "<option value=\"null\" disabled>---------";
 				}
-				echo "<option value=\"".$key."\">".$value[0];;
+				echo "<option value=\"".$key."\"";
+				if ($attachment->get_attribute("filetype") == $key)
+					echo " selected";
+				echo ">".$value[0];
 			}
 ?>
 </select><br>

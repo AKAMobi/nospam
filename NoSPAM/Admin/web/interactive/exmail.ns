@@ -55,7 +55,7 @@ function change()
 
 <body>
 <form name="form1" method="post" action="">
-<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> onclick="change()">开启过量邮件提醒功能</p>
+<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> onclick="change()">开启超大邮件提醒功能</p>
 <p>
 发件人发送最多邮件数目（超过此数目则触发提醒动作）：
 <input type="text" name="MinNum" value="<?=$iMinNum?>"<?if(!$bWarnExMail) echo " disabled";?>>封
@@ -91,7 +91,7 @@ alert("注意：智能交互引擎未开启！");
 </head>
 
 <body>
-<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> disabled>开启过量邮件提醒功能</p>
+<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> disabled>开启超大邮件提醒功能</p>
 <p>
 发件人发送最多邮件数目（超过此数目则触发提醒动作）：<?=$iMinNum?>封
 </p>

@@ -7,6 +7,18 @@ function FormatTime($str)
 
 function wi($param, &$result)
 {
+	exec(WI." check_License License.dat",$tmpResult,$tmpRet);
+	
+	if ($tmpRet != 0){
+?>
+<script>
+alert('配置已保存，但是系统目前尚无可用License，请联系销售商。');
+location.href='/admin/system/serialno.ns';
+</script>
+<?
+		return -1;
+	}
+
 	exec(WI." ".$param,$result,$ret);
 	return $ret;
 }

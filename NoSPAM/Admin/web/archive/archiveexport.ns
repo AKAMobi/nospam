@@ -1,5 +1,9 @@
 <?
 require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_ARCHIVE))
+	die("您没有访问该网页的权限。");
+
 if($_GET["action"]){
 	if($_GET["action"]=="download"){
 		header("Cache-control: private");
@@ -22,6 +26,7 @@ if($_GET["action"]){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>审计数据管理</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>

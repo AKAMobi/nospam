@@ -425,28 +425,20 @@ class License
 	{
 		return $this->params["FactoryName"];
 	}
-
-	function get_ProductName()
-	{
-             	if ( array_key_exists( "ProductName", $this->params ) ){
-                     return $this->params["ProductName"];
-		}
-		return "noSPAM";
-	}
 	
 	function isDynamicEngineEnabled()
 	{
-		return ($this->params["DynamicEngine"]=="Yes");
+		return ($this->params["DynamicEngineEnabled"]=="Yes");
 	}
 
 	function isContentEngineEnabled()
 	{
-		return ($this->params["ContentEngine"]=="Yes");
+		return ($this->params["ContentEngineEnabled"]=="Yes");
 	}
 
 	function isSpamEngineEnabled()
 	{
-		return ($this->params["SpamEngine"]=="Yes");
+		return ($this->params["SpamEngineEnabled"]=="Yes");
 	}
 	
 	function getVersion()

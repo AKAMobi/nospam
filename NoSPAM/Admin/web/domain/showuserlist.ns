@@ -45,10 +45,11 @@ switch($_GET["action"]){
 	info();
 }
 
-function info(){
+function info()
+{
 	global $aDomains, $count, $currentDomain;
 	
-	$UserList=getUserList($currentDomain);
+	$UserList=getUserList($currentDomain,false);
 	$user_count = count($UserList);
 
 	$pagenum = $_GET["pagenum"];
@@ -137,7 +138,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?
 $j = 1;
 $end = min($start + $pagenum,$user_count);
-for( $i = $start ; $i < $end ; $i++,$j++,$start++)
+for( $i = $start ; $i < $end ; $i++,$j++)
 {
 	$className = $j%2? "RuleTB1":"RuleTB2";
 ?>
@@ -149,7 +150,7 @@ for( $i = $start ; $i < $end ; $i++,$j++,$start++)
 <?
 	}
 ?>
-		<td><?=$start+1?></td>
+		<td><?=$i+1?></td>
 		<td><?=$UserList[$i]["id"]?></td>
 		<td><?=$UserList[$i]["name"]?></td>
 		<td><?=$UserList[$i]["unit"]?></td>
@@ -377,64 +378,111 @@ function modify()
 </head>
 <body>
 <center>
-<form action="?MailDomain=<?=$_REQUEST["MailDomain"]?>&action=save" method="post">
-<input type="hidden" name="modify">
-<table border=0>
-<tr align="center">
-<td colspan="2" class=title><b>修改用户信息</b></td>
+<FORM id=oForm action="?MailDomain=<?=$_REQUEST["MailDomain"]?>&action=save" method="post">
+<INPUT type="hidden" name="modify">
+<table>
+<tbody>
+<tr>
+<td>账号</td>
+<INPUT type="hidden" name="id" value="<? echo $user_account; ?>">
+<td><? echo $user_account; ?></td>
 </tr>
 <tr>
-	<td>帐号名：<input type=text name="user_id">
-	</td>
-	<td></td>
+<td>姓名</td>
+<td><input type="text" name="user_name" value="<? echo $user_name; ?>"></td>
 </tr>
 <tr>
-	<td>输入密码：<input type=password name="passwd1"></td>
-	<td>请使用大小写英文字母和数字作为邮件密码。</td>
+<td>单位</td>
+<td><input type="text" name="user_unit" value="<? echo $unit; ?>"></td>
 </tr>
 <tr>
-	<td>确认密码：<input type=password name="passwd2"></td>
-	<td>请再次输入密码，两次密码必须相同。</td>
+<td>部门</td>
+<td><input type="text" name="user_department" value="<? echo $department; ?>"></td>
 </tr>
 <tr>
-	<td>用户姓名：<input type=text name="user_name"></td>
-	<td>用户的姓名。</td>
+<td>岗位</td>
+<td><input type="text" name="user_station" value="<? echo $station; ?>"></td>
 </tr>
 <tr>
-	<td>用户单位：<input type=text name="user_unit"></td>
-	<td>用户所在的单位。</td>
+<td>证件号码</td>
+<td><input type="text" name="user_id_code" value="<? echo $id_code; ?>"></td>
 </tr>
 <tr>
-	<td>用户部门：<input type=text name="user_department"></td>
-	<td>用户所在的部门。</td>
+<td>账号建立时间</td>
+<td><? echo $create_time; ?></td>
 </tr>
 <tr>
-	<td>用户岗位：<input type=text name="user_station"></td>
-	<td>用户的岗位。</td>
+<td>邮箱容量</td>
+<td><input type="text" name="user_box_size" value="<? echo $user_quota_num; ?> ">MB</td>
 </tr>
 <tr>
-	<td>用户证件号码：<input type=text name="user_id_code"></td>
-	<td>用户的证件号码。</td>
+	<td colspan=2><input type=checkbox name="user_is_public" <? echo ($is_public?'checked':''); ?>>对外显示</td>
 </tr>
 <tr>
-	<td>邮箱大小（M）：<input type=text name="user_box_size"></td>
-	<td>用户的邮箱大小。</td>
+<td>用户所属组</td>
+<td><select id="oGroupList" size=5 multiple><? 
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
+   
+    $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
+   
+    if ($h_groupdefine_profile == NULL ){
+        echo "错误：用户组数据文件无法打开。<br>";
+		exit(-1);
+    }
+   
+    flock($h_groupdefine_profile, LOCK_SH);
+    
+
+	$group_list=array();
+	$group_count=0;
+
+   	while (!feof($h_groupdefine_profile)){
+	    $tmp = fgets($h_groupdefine_profile,1024); 
+	    $groupinfo= explode( ',', $tmp);
+		if (trim($groupinfo[1])!=''){
+			$group_list[]=trim($groupinfo[1]);
+			$group_count++;
+		}
+	}
+
+   	flock($h_groupdefine_profile, LOCK_UN);
+   	
+   	fclose($h_groupdefine_profile);
+
+	$groups=explode(',',$group);
+
+	for ($i=0;$i<$group_count;$i++){
+?>
+	<option <?php echo in_array($group_list[$i], $groups)?'selected':''; ?>><?php echo $group_list[$i] ?></option>
+<?php
+	}
+
+	?></select></td>
 </tr>
 <tr>
-	<td><input type=checkbox name="user_is_public">对外显示</td>
-	<td>是否公开对外显示在公共邮件列表中</td>
+	<td>备注</td>
+	<td><input type=text name="user_note" value="<? echo $note ?>"></td>
 </tr>
-<tr>
-	<td>备注：<input type=text name="user_note"></td>
-	<td></td>
-</tr>
-<tr align="center" >
-	<td colspan=2><input type=submit value="  确  认  ">
-		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  清  除  ">
-	</td>
-</tr>
+</tbody>
 </table>
+<script>
+function doModify(){
+	var dot=false;
+	for (i=0;i<document.all.oGroupList.length;i++){
+		if (document.all.oGroupList.options(i).selected) {
+			if (dot) {
+					document.all.oGroups.value+=',';
+			} else {
+				dot=true;
+			}
+			document.all.oGroups.value+=document.all.oGroupList.options(i).text;
+		}
+	}
+	oForm.submit();
+}
+</script>
+<input type="hidden" name="groups" id="oGroups" >
+<INPUT type="button" value="提交修改信息" onclick="doModify();">
 </form>
 </body>
 </html>
@@ -443,11 +491,196 @@ function modify()
 
 function save()
 {
+	global $currentDomain;
+	
 	if(!adminPerm(PERM_ADMIN_WRITE)){
 		echo "对不起，你无权进行修改操作";
 		return -1;
 	}
-	header("Location: ".$_SERVER['PHP_SELF']);
+	
+	$bModify = isset($_POST['modify']);
+//判断用户信息填写是否完整：
+	if (!isset($_REQUEST['user_id'])){ 
+		echo "错误：未输入用户ID<br>";
+		return false;
+	}
+	if (!$bModify && !isset($_REQUEST['passwd1'])){ 
+		echo "错误：未输入用户密码<br>";
+		return false;
+	}
+	if (!$bModify && !isset($_REQUEST['passwd2'])){ 
+		echo "错误：未确认输入用户密码<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_name'])){ 
+		echo "错误：未输入用户姓名<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_unit'])){ 
+		echo "错误：未输入用户所在单位<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_department'])){ 
+		echo "错误：未输入用户所在部门<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_station'])){ 
+		echo "错误：未输入用户岗位<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_id_code'])){ 
+		echo "错误：未输入用户证件号码<br>";
+		return false;
+	}
+
+	if (!isset($_REQUEST['user_box_size'])){ 
+		echo "错误：未输入邮箱大小<br>";
+		return false;
+	}
+	if (!isset($_REQUEST['user_note'])){ 
+		echo "错误：未输入备注<br>";
+		return false;
+	}
+
+	if ($_REQUEST['user_id']==''){ 
+		echo "错误：未输入用户ID<br>";
+		return false;
+	}
+	if (!$bModify && $_REQUEST['passwd1']==''){ 
+		echo "错误：未输入用户密码<br>";
+		return false;
+	}
+	if (!$bModify && $_REQUEST['passwd2']==''){ 
+		echo "错误：未确认输入用户密码<br>";
+		return false;
+	}
+	if ($_REQUEST['user_name']==''){ 
+		echo "错误：未输入用户姓名<br>";
+		return false;
+	}
+    if ( !ereg("^[0-9]+$", $_REQUEST['user_box_size'])){
+    	echo "错误：用户邮箱大小未指定或其不是有效数字“:”<br>";
+    	return false;
+    }
+
+	$user_id = $_REQUEST['user_id'];		//用户ID
+	$passwd1 = $_REQUEST['passwd1'];						
+	$passwd2 = $_REQUEST['passwd2'];
+	$user_name = $_REQUEST['user_name'];	//用户姓名
+	$user_unit = $_REQUEST['user_unit'];		//用户单位
+	$user_department = $_REQUEST['user_department']; 	//用户部门
+	$user_station = $_REQUEST['user_station']; 		//用户岗位
+	$user_id_code = $_REQUEST['user_id_code'];		//用户证件号码
+	$user_note = $_REQUEST['user_note'];		//用户证件号码
+	$user_is_public = isset($_REQUEST['user_is_public']);
+	$user_box_size = 1024 * 1024 * (intval($_REQUEST['user_box_size']) );
+	if($bModify){
+		$user_group = $_POST['groups'];
+	}
+	
+	if ($user_box_size<0) {
+		$user_box_size=0;
+	}
+
+	if ($user_unit==''){
+		$user_unit=' ';
+	}
+	if ($user_department==''){
+		$user_department=' ';
+	}
+	if ($user_station==''){
+		$user_station=' ';
+	}
+	if ($user_id_code==''){
+		$user_id_code=' ';
+	}
+    if (!ereg( "^[a-z][_0-9a-z\.]*$", $user_id )) { //
+        echo "错误：用户ID中含有非法字符<br>";
+        return false;
+    }
+    if (!eregi( "^[0-9a-z]+$", $passwd1 )) {
+    	echo  "错误：密码中含有非法字符<br>";
+    	return false;
+    }
+    if ( $passwd1 != $passwd2 ) {
+    	echo "错误：两次输入的密码不匹配<br>";
+    	return false;
+    }
+    
+    if ( !ereg("^[^:]+$", $user_name)){
+    	echo "错误：用户姓名中含有非法字符“:”<br>";
+    	return false;
+    }
+
+    if ( !ereg("^[^:]*$", $user_unit)){
+    	echo "错误：用户单位中含有非法字符“:”<br>";
+    	return false;
+    }
+    
+    if ( !ereg("^[^:]*$", $user_department)){
+    	echo "错误：用户部门中含有非法字符“:”<br>";
+    	return false;
+    }
+    
+    if ( !ereg("^[^:]*$", $user_station)){
+    	echo "错误：用户岗位中含有非法字符“:”<br>";
+    	return false;
+    }
+    
+    if ( !ereg("^[^:]*$", $user_id_code)){
+    	echo "错误：用户证件号码中含有非法字符“：”<br>";
+    	return false;
+    }
+    if ( !ereg("^[^:]*$", $user_note)){
+    	echo "错误：备注中含有非法字符“：”<br>";
+    	return false;
+    }
+
+    $user_list = getUserList($currentDomain,true);
+
+    if ($bModify){
+    	if (!array_key_exists($user_id, $user_list)){
+    		echo "错误的帐号";
+    		return -1;
+    	}
+    }else{
+    	if (array_key_exists($user_id, $user_list)){
+    		echo "相同的帐号已存在";
+    		return -1;
+    	}
+    }
+
+    if ($bModify)
+    	$create_time = $user_list[$user_id]["create_time"];
+
+    $user_list[$user_id] = array(
+					"name"			=>	$user_name,
+					"unit"			=>	$user_unit,
+					"department"	=>	$user_department,
+					"station"		=>	$user_station,
+					"id_code"		=>	$user_id_code,
+					"create_time"	=>	$bModify? $create_time:("Y-m-d"),
+					"quota"			=>	$user_quota_num,
+					"is_public"		=>	$user_is_public,
+					"note"			=>	$user_note,
+					"group"			=>	$bModify? $user_group:""
+    );
+    if ($bModify){
+    	system( VPOPMAILHOME.'bin/vmoduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' > /dev/null', $result );
+    	if ($passwd1 != "")
+    		system( VPOPMAILHOME.'bin/vpasswd '.$user_id."@".$currentDomain.' '.$passwd1.' > /dev/null', $result );;
+    }else{
+    	system( VPOPMAILHOME .'bin/vadduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' "'.$passwd1.'" > /dev/null', $result );
+    }
+    
+    $profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . USERPROFILE;
+    $str = "";
+    foreach ($user_list as $key=>$value){
+    	$str .= $key.":".$value['unit'].":".$value['department'].":".$value['station'].":".$value['id_code'];
+    	$str .= ":".$value['create_time'].":".$value['is_public'].":".$value['note'].":".$value['group']."\n";
+    }
+    savetofile(trim($str), $profile);
+    header("Location: ".$_SERVER['PHP_SELF']);
 }
 
 function del()
@@ -459,7 +692,7 @@ function del()
 	header("Location: ".$_SERVER['PHP_SELF']);
 }
 
-function getUserList($domain)
+function getUserList($domain, $bAssoc)
 {
 	$passwd = VPOPMAILHOME . 'domains/' . $domain . '/vpasswd';
 	$profile = VPOPMAILHOME . 'domains/' . $domain . '/' . USERPROFILE;
@@ -524,7 +757,21 @@ function getUserList($domain)
 			$note=rtrim($userinfo_list[$t]['note']);
 			$group=rtrim($userinfo_list[$t]['group']);
 		}
-		array_push($ret, array(
+		if ($bAssoc){
+			$ret[$user_account] = array(
+						"name"			=>	$user_name,
+						"unit"			=>	$unit,
+						"department"	=>	$department,
+						"station"		=>	$station,
+						"id_code"		=>	$id_code,
+						"create_time"	=>	$create_time,
+						"quota"			=>	$user_quota_num,
+						"is_public"		=>	$is_public,
+						"note"			=>	$note,
+						"group"			=>	$group
+			);
+		}else{
+			array_push($ret, array(
 						"id"			=>	$user_account,
 						"name"			=>	$user_name,
 						"unit"			=>	$unit,
@@ -537,6 +784,7 @@ function getUserList($domain)
 						"note"			=>	$note,
 						"group"			=>	$group
 							) );
+		}
 	}
 	return $ret;
 }

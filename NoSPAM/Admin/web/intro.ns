@@ -10,7 +10,7 @@ require_once("inc/include.ns");
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<p><?php echo $sProductName; ?> AntiSPAM System V2</p>
+<p><?php echo $ProductName; ?> AntiSPAM System V1.0</p>
 <?
 if( ($ret=wi("get_Serial",$result))==0 ){
 	$serial = trim(implode("",$result));
@@ -21,10 +21,6 @@ if( ($ret=wi("get_Serial",$result))==0 ){
 if(!file_exists(LICENSE)){
 ?>
 <p> 本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。 </p>
-<form action="system/upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
-  <input type="file" name="license">
-  <input type="submit" name="Submit" value="提交">
-</form>
 <?
 }else{
 	$result = "";
@@ -46,15 +42,6 @@ if(!file_exists(LICENSE)){
 许可证过期时间：<?=$sExpire?><br>
 <?= $bForSell? "正式销售版":"非正式销售版"?>
 </p>
-<?
-	}else{
-?>
-<p> 错误： #<?=$ret?> License 许可已过期或者错误，请重新上载或联系销售商。  </p>
-许可证上载：
-<form action="system/upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
-  <input type="file" name="license">
-  <input type="submit" name="Submit" value="上载">
-</form>
 <?
 	}
 }

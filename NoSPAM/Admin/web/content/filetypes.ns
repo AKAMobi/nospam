@@ -119,7 +119,7 @@ if($iSize > 0){
 <?
 	if($count > 3){
 		echo $exts[0];
-		echo "<br>... ...<br>";
+		echo "<br>...省略".($count-2)."项...<br>";
 		echo $exts[$count-1];
 	}else{
 		for($s=0;$s<$count;$s++){
@@ -275,7 +275,7 @@ function add()
 	</tr>
 	<tr>
 		<th scope="row">附件扩展名：</th>
-		<td align="left"><input type="text" name="note">（用逗号","分隔）</td>
+		<td align="left"><TEXTAREA name="note" cols="10" rows="10"></TEXTAREA></td>
 	</tr>
 	<tr>
 		<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
@@ -314,7 +314,9 @@ function modify()
 	</tr>
 	<tr>
 		<th scope="row">附件扩展名：</th>
-		<td align="left"><input type="text" name="note" value="<?=$FileType[$id][1]?>"/>（用逗号","分隔）</td>
+		<td align="left">
+			<TEXTAREA name="note" cols="10" rows="10"><?=str_replace(",","\n",$FileType[$id][1])?></TEXTAREA>
+		</td>
 	</tr>
 	<tr>
 		<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
@@ -336,7 +338,7 @@ function save()
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
-	$note = $_POST["note"];
+	$note = str_replace("\n",",",str_replace("\r","",($_POST["note"])));
 	if(!is_numeric($id))
 		die("分类编号必须为数字！");
 	if($_POST["type"]!="modify"){

@@ -216,7 +216,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 	if($SendCount > 3){
 		echo date("Y-m-d H:i:s",intval($SendTime[0]));
 		echo "<br>";
-		echo "...<br>";
+		echo "...КЎВФ".($SendCount-2)."По<br>";
 		echo date("Y-m-d H:i:s",intval($SendTime[$SendCount-1]));
 	}else{
 		foreach($SendTime as $j=>$iTime){
