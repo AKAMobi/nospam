@@ -1,0 +1,24 @@
+<?
+require_once("inc/include.ns");
+?>
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<LINK href="css/style.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<body text="#333333" link="#6666aa" alink="#aa6666" vlink="#6666aa" bgcolor="#ffffff" leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
+<table width=100%>
+<tr><td height=160 width=800 background=images/topbar.jpg>
+
+<table>
+<tr><td width=670></td><td valign=top>用户：
+<?=getAdminID()?><br><?=$bForSell? "正式销售版":"非销售版"?><br>
+<?if($sExpire!="") echo "{$sExpire}过期";?></td>
+</tr>
+</table>
+</td>
+<td height=160 background=images/topbarright.jpg></td>
+</tr>
+</table>
+
+</body>
+</html>
