@@ -14,9 +14,10 @@ use XML::Simple;
 use MIME::Base64;
 use POSIX qw(strftime);
 
+my $can_log = 1;
+
 BEGIN
 {
-	my $can_log = 1;
 	open MYLOG, ">>/var/log/police" or $can_log = 0;
 }
 
@@ -64,7 +65,7 @@ sub log
 # The MYLOG filehandle is already open by virtue of the BEGIN
 # block.
 	if ( $can_log ){
-		print MYLOG &get_time_stamp . $what, "\n";
+		print MYLOG &get_time_stamp . " $what\n";
 	}
 }
 
