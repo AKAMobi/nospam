@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w 
 
 ###----------------------------------------###
-###     noSPAM server class                 ###
+###     noSPAM server class                ###
 ###----------------------------------------###
 package noSPAM;
 
@@ -44,9 +44,9 @@ sub configure_hook {
 
 	$self->{server}->{serialize} = 'semaphore';
 
-open(STDIN, '</dev/null') || die "Can't close STDIN [$!]";
-open(STDOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
-#  open(STDERR,'>&STDOUT')   || die "Can't close STDERR [$!]";
+	open(STDIN, '</dev/null') || die "Can't close STDIN [$!]";
+	open(STDOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
+#  	open(STDERR,'>&STDOUT')   || die "Can't close STDERR [$!]";
 }
 
 
@@ -58,7 +58,30 @@ sub process_request {
 
 	local %ENV = ();
 
-	$AM->net_process_ex;
+	my ($old_alarm_sig,$old_alarm);
+
+	eval {
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
+
+		# 2 minute timeout
+		$old_alarm = alarm( 120 );
+
+		$AM->net_process_ex;
+	}; if ($@) {
+		$AM->{zlog}->fatal ( "Mail::net_process_ex call TIMEOUT [$@]" );
+		$AM->close_smtp ( 443, "引擎超时", 150 );
+
+		eval {
+			local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
+			alarm ( 30 );
+			$AM->send_mail_info_ex;
+		}; if ($@) {
+			$AM->{zlog}->fatal ( "Mail::send_mail_info_ex call TIMEOUT [$@]" );
+		}
+	}
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
+	alarm $old_alarm;
 
 	# 如果配置文件更新，则退出，supervixse会重起daemon
 	if ( $AM->check_conffile_update() ){
