@@ -124,6 +124,11 @@ sub is_traceable
 			$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) execeed timeout [$TIMEOUT], we got none from dns, DNS err? treat mail is not spam." );
 #			如果 DNS 超时，我们应该判断邮件为正常邮件
 			return 2;
+=pod
+			$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) execeed timeout [$TIMEOUT], we got none from dns, DNS err? treat mail is likely spam." );
+#			如果 DNS 超时，我们判断邮件为疑似垃圾邮件
+			return 1;
+=cut
 		}
 		$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) execeed timeout [$TIMEOUT], but we got something [$mx_n_a[0]] from DNS." );
 	}
