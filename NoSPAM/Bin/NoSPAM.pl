@@ -231,7 +231,9 @@ sub MailBaseSetting_reset
 	my $AMC = new AKA::Mail::Controler;
 
 	#服务器名
-	$AMC->set_control_file( 'me', $mailserver->{MailHostName} || 'factory.gw.nospam.aka.cn' );
+	$AMC->set_control_file( 'me', $mailserver->{MailHostName} 
+					|| $conf->{config}->{Network}->{Hostname} 
+					|| 'factory.gw.nospam.aka.cn' );
 
 	#SMTP HELO主机名
 	$AMC->set_control_file( 'helohost', $mailserver->{HeloHost} );
@@ -278,6 +280,7 @@ sub rebuild_default_bridge
 	$ret ||= system ( "$brctl_binary addif nospam eth0" );
 	$ret ||= system ( "$brctl_binary addif nospam eth1" );
 	$ret ||= system ( "$ifconfig_binary nospam 192.168.0.150 netmask 255.255.255.0 up" );
+	$ret ||= system ( "$ifconfig_binary nospam:0 10.4.3.7 netmask 255.255.255.0 up" );
 
 	return $ret;
 }
@@ -397,7 +400,7 @@ sub reset_ConnPerIP
 
 sub reset_ConnRatePerIP
 {
-	my $ConnRate = $conf->{config}->{ConnRatePerIP} || 0;
+	my $ConnRate = $conf->{config}->{DynamicEngine}->{ConnRatePerIP} || 0;
 
 	return 0;
 }
@@ -940,12 +943,8 @@ sub _network_set_ip
 		return ERR_PARAM_LACK;
 	}
 
-	$ret = system ( "$ip_binary address add $ip/$mask dev nospam" );
+	$ret = system ( "$ifconfig_binary nospam $ip/$mask up" );
 	$zlog->fatal( "_network_set_ip [$ip] [$mask] failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
-
-	$ret = system ( "$ip_binary link set nospam up" );
-	$zlog->fatal( "_network_set_ip ip link set nospam up failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
 	if ( defined $gw ){
@@ -953,7 +952,7 @@ sub _network_set_ip
 		$zlog->fatal( "_network_set_ip ip ro re gw dev nospam [$gw] failed with ret: $ret !" ) if ( $ret );
 		$err = 1 if ( $ret );
 
-		$ret = system ( "$ip_binary ro replace default via $gw" );
+		$ret = system ( "$ip_binary ro replace default via $gw dev nospam" );
 		$zlog->fatal( "_network_set_ip ip ro replace default via [$gw] failed with ret: $ret !" ) if ( $ret );
 		$err = 1 if ( $ret );
 	}
@@ -1129,14 +1128,14 @@ sub _file_update_hosts
 	my $err = 0;
 
 	my %host_map;
-	open ( FD, "</etc/hosts" ) or die "can't open hosts";
-	while ( <FD> ){
-		chomp;
-		if ( /(\d+\.\d+\.\d+\.\d+)\s+(.+)/ ){
-			$host_map{$1} = $2;;
-		}
-	}
-	close ( FD );
+	#open ( FD, "</etc/hosts" ) or die "can't open hosts";
+	#while ( <FD> ){
+	#	chomp;
+	#	if ( /(\d+\.\d+\.\d+\.\d+)\s+(.+)/ ){
+	#		$host_map{$1} = $2;;
+	#	}
+	#}
+	#close ( FD );
 
 	$host_map{'127.0.0.1'} = 'localhost.localdomain localhost';
 	
@@ -1146,13 +1145,6 @@ sub _file_update_hosts
 		$host_map{$IP} = $Hostname;
 	}else{
 		$host_map{'10.4.3.7'} = 'factory.gw.nospam.aka.cn';
-	}
-
-	#设置网关主机名称：
-	$ret = system( $hostname_binary, $Hostname );
-	if ( $ret ){
-		$zlog->fatal("NoSPAM Util::file_update_hosts  set hostname failed # $ret !" );
-		$err = 1;
 	}
 
 
@@ -1177,6 +1169,13 @@ sub _file_update_hosts
 	$ret = write_file ( $content, "/etc/hosts" );
 	if ( $ret ){
 		$zlog->fatal("NoSPAM Util::file_update_hosts write to /etc/hosts failed # $ret !");
+		$err = 1;
+	}
+
+	#最后设置网关主机名称：
+	$ret = system( $hostname_binary, $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.aka.cn' );
+	if ( $ret ){
+		$zlog->fatal("NoSPAM Util::file_update_hosts  set hostname failed # $ret !" );
 		$err = 1;
 	}
 
