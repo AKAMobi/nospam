@@ -29,7 +29,7 @@ if($_POST["Commit"]==_("Commit")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Engine Switche")?></title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -57,7 +57,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
   <p>
-  	<?=_("Engine Switche")?>: <br>
+  	<?=_("Engine Switch")?>: <br>
     <label>
     <input type="radio" name="AntiVirusEngine" value="Y"<? if($bAntiVirus) echo" checked"; ?> onclick="change(false)">
     <?=_("On")?></label>
@@ -84,7 +84,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 }else{
 ?>
   <p>
-  	<?=_("Engines Switches")?>: <br>
+  	<?=_("Engine Switch")?>: <br>
     <label>
     <input type="radio" name="AntiVirusEngine" value="Y"<? if($bAntiVirus) echo" checked"; ?> disabled>
     <?=_("On")?></label>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-03 20:48+0800\n"
+"POT-Creation-Date: 2004-08-05 12:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -131,24 +131,6 @@ msgstr "恢复"
 
 msgid "Commit"
 msgstr "修改"
-
-msgid "Network Diagnosis and Monitor"
-msgstr "网络校验和监测"
-
-msgid "Analysis Server"
-msgstr "分析服务器"
-
-msgid "Network Timeout: "
-msgstr "网络超时："
-
-msgid "Least Spams Counts: "
-msgstr "垃圾邮件最少出现次数："
-
-msgid "Least Spams Spec 1 Counts: "
-msgstr "垃圾邮件特征1最少出现次数："
-
-msgid "Least Spams Spec 2 Counts: "
-msgstr "垃圾邮件特征2最少出现次数："
 
 msgid "Date Check"
 msgstr "抽样检查"
@@ -324,32 +306,6 @@ msgstr ""
 "Include: RBL (Realtime Blackhole List),DUL (Dynamic User List),RSS (Relay "
 "Spam Stopper),OPS (Open Proxy Stopper)"
 
-msgid "Traceable"
-msgstr "可追查性检查"
-
-msgid "Traceable Options"
-msgstr "可追查性选项"
-
-msgid "Domain"
-msgstr "域名"
-
-msgid "Mail"
-msgstr "邮件"
-
-msgid "Likely Spam"
-msgstr "疑似垃圾"
-
-msgid "Spam"
-msgstr "垃圾邮件"
-
-msgid "NonSpam"
-msgstr "非垃圾邮件"
-
-msgid "Note: From Left to Right is Spam, Likely Spam, NonSpam"
-msgstr ""
-"注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非"
-"垃圾邮件"
-
 msgid "IP Whitelist"
 msgstr "IP白名单"
 
@@ -425,11 +381,43 @@ msgstr "智能因数："
 msgid "Recommended: "
 msgstr "推荐值："
 
+msgid "Traceable"
+msgstr "可追查性检查"
+
+msgid "Traceable Options"
+msgstr "可追查性选项"
+
+msgid "Domain"
+msgstr "域名"
+
+msgid "Mail"
+msgstr "邮件"
+
+msgid "Likely Spam"
+msgstr "疑似垃圾"
+
+msgid "Spam"
+msgstr "垃圾邮件"
+
+msgid "NonSpam"
+msgstr "非垃圾邮件"
+
+msgid "Note: From Left to Right is Spam, Likely Spam, NonSpam"
+msgstr ""
+"注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非"
+"垃圾邮件"
+
+msgid "Last"
+msgstr "最后修改值"
+
 msgid "Engine Switch"
 msgstr "引擎开关"
 
 msgid "AntiSpam Engine"
 msgstr "反垃圾引擎"
+
+msgid "Traceable Check"
+msgstr "可追查性检查"
 
 msgid "Direction"
 msgstr "作用方向"
@@ -442,6 +430,24 @@ msgstr "从外向内"
 
 msgid "Intelligent Test"
 msgstr "智能检测"
+
+msgid "Network Diagnosis and Monitor"
+msgstr "网络校验和监测"
+
+msgid "Analyzing Server"
+msgstr "分析服务器"
+
+msgid "Network Timeout: "
+msgstr "网络超时："
+
+msgid "Least Spams Counts: "
+msgstr "垃圾邮件最少出现次数："
+
+msgid "Least Spams Spec 1 Counts: "
+msgstr "垃圾邮件特征1最少出现次数："
+
+msgid "Least Spams Spec 2 Counts: "
+msgstr "垃圾邮件特征2最少出现次数："
 
 msgid "Sorry, This Product has no Archive Engine License"
 msgstr "对不起，本系统没有归档引擎License"
@@ -1591,9 +1597,6 @@ msgstr "病毒邮件的主题标记："
 msgid "[Virus]"
 msgstr "【病毒邮件】"
 
-msgid "Last"
-msgstr "最后修改值"
-
 msgid "Tag & Pass"
 msgstr "标记后通过"
 
@@ -1935,8 +1938,8 @@ msgstr "系统菜单"
 msgid "System Management"
 msgstr "系统管理"
 
-msgid "Update"
-msgstr "更新"
+msgid "Upgrade"
+msgstr "升级更新"
 
 msgid "System Mode"
 msgstr "运行模式"
@@ -1995,25 +1998,25 @@ msgstr "病毒处理"
 msgid "Blacklist & Whitelist"
 msgstr "黑白名单"
 
-msgid "IP WhiteList"
-msgstr "IP白名单"
+msgid "IP Blacklist"
+msgstr "IP黑名单"
 
-msgid "Domain WhiteList"
-msgstr "发件域名白名单"
+msgid "Domain Blacklist"
+msgstr "发件域黑名单"
 
-msgid "Sender WhiteList"
-msgstr "发件人白名单"
+msgid "Sender Blacklist"
+msgstr "发件人黑名单"
 
 msgid "Realtime Blocklist"
 msgstr "智能实时黑名单"
 
-msgid "Process Center"
+msgid "Processing Center"
 msgstr "智能集中分析"
 
-msgid "Content Analyze"
+msgid "Content Analyzer"
 msgstr "智能内容分析"
 
-msgid "Noise Reduce System"
+msgid "Noise Reduction System"
 msgstr "降噪"
 
 msgid "Spam Processing"
@@ -2199,6 +2202,18 @@ msgstr "隔离队列超时动作"
 msgid "Tag"
 msgstr "标记通过"
 
+#~ msgid "Update"
+#~ msgstr "更新"
+
+#~ msgid "IP WhiteList"
+#~ msgstr "IP白名单"
+
+#~ msgid "Domain WhiteList"
+#~ msgstr "发件域名白名单"
+
+#~ msgid "Sender WhiteList"
+#~ msgstr "发件人白名单"
+
 #~ msgid "Engines Switches"
 #~ msgstr "引擎开关"
 
@@ -2210,9 +2225,6 @@ msgstr "标记通过"
 
 #~ msgid "Inward"
 #~ msgstr "由外向内"
-
-#~ msgid "Upgrade"
-#~ msgstr "升级更新"
 
 #~ msgid "Virus Recognise"
 #~ msgstr "病毒识别"

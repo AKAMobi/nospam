@@ -106,7 +106,7 @@ function Razor_change(bState)
 
 <body>
 <form name="form1" method="post"> 
-  <p><?=_("Analysis Server")?> 1: <br>
+  <p><?=_("Analyzing Server")?> 1: <br>
     <label>
     <input id="idDCCEnabledY" type="radio" name="DCCEnabled" value="Y"<? if($bDCCEnabled) echo " checked" ?> onclick="DCCchange(false)">
   <?=_("On")?></label><br>
@@ -122,7 +122,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p><?=_("Analysis Server")?> 2: <br>
+  <p><?=_("Analyzing Server")?> 2: <br>
     <label>
     <input id="idPyzorEnabledY" type="radio" name="PyzorEnabled" value="Y"<? if($bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(false)">
   <?=_("On")?></label><br>
@@ -136,7 +136,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p><?=_("Analysis Server")?> 3: <br>
+  <p><?=_("Analyzing Server")?> 3: <br>
     <label>
     <input id="idRazorEnabledY" type="radio" name="RazorEnabled" value="Y"<? if($bRazorEnabled) echo " checked" ?> onclick="Razor_change(false)">
   <?=_("On")?></label><br>

@@ -73,8 +73,21 @@ if($_POST["Commit"]==_("Commit")){
     <input name="VirusTag" type="text" id="VirusTag" value="<?=$VirusTag?>">
   <?=_("Recommend")?>: <?=_("[Virus]")?> <br>
   <p>
+<script language=javascript>
+function setFormRadio (spamName, spamVal) {
+	for (i=0; i < form1.elements.length;i++) {
+		var e = form1.elements[i];
+		if (e.name == spamName) {
+			if (e.value != spamVal) e.checked= false;
+			else e.checked=true;
+		}
+	}
+}
+</script>
+
+
     <input type="reset" name="reset" value="<?=_("Last")?>">
-	<input type="button" value="<?=_("Recommend")?>" onclick="form1.VirusTag.value='<?=_("[Virus]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
+	<input type="button" value="<?=_("Recommend")?>" onclick="form1.VirusTag.value='<?=_("[Virus]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;setFormRadio('VirusAction','D');">
     <input type="submit" name="Commit" value="<?=_("Commit")?>">
 </p>
 </form>

@@ -36,7 +36,7 @@ if($_POST["isCommit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Engines Switches")?></title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -78,7 +78,7 @@ function change(bState)
     <input type="radio" name="SpamEngine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> onclick="change(true)">
     <?=_("Off")?>
  <hr align="left" width="400">
-  <p><b><?=_("Traceable")?></b>：
+  <p><b><?=_("Traceable Check")?></b>：
     <input type="radio" id="idTraceEngineY" name="TraceEngine" value="Y"
 	<?	if(!$bAntiSpam) echo" disabled "; 
 		if($bTraceEngine) echo" checked "; 

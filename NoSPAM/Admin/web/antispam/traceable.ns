@@ -45,11 +45,12 @@ if($_POST["Traceable"]){
 <script type="text/javascript" src="../js/timer.js"></script>
 <script type="text/javascript" src="../js/slider.js"></script>
 <script language="javascript">
-var bStop, s1Value, s2Value;
+var bStop, bTemp, s1Value, s2Value;
 <?
 		if(!$bTrace){
 ?>
 bStop = true;
+bTemp = true;
 s1Value = <?=$iTraceMaybeSpamMask?>; 
 s2Value = <?=$iTraceSpamMask?>;
 <?
@@ -165,7 +166,7 @@ function formReset()
  </script>
   </p>
   <p>
-    <input type="reset" name="reset" value="<?=_("Reset")?>">
+    <input type="reset" name="reset" value="<?=_("Last")?>">
 	<input type="button" value="<?=_("Recommend")?>" onclick="change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
     <input type="submit" name="submit" value="<?=_("Commit")?>">
   </p>

@@ -81,8 +81,20 @@ if($_POST["SpamAction"]){
     <input name="MaybeSpamTag" type="text" id="MaybeSpamTag" value="<?=$MaybeSpamTag?>">
   <?=_("Recommend: ")._("[Likely Spam]")?>
   <p>
+<script language=javascript>
+function setFormRadio (spamName, spamVal) {
+	for (i=0; i < form1.elements.length;i++) {
+		var e = form1.elements[i];
+		if (e.name == spamName) {
+			if (e.value != spamVal) e.checked= false;
+			else e.checked=true;
+		}
+	}
+}
+</script>
+
     <input type="reset" name="reset" value="<?=_("Default")?>">
-	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Likely Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
+	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Likely Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;setFormRadio('SpamAction','T');">
     <input type="submit" name="submit" value="<?=_("Modify")?>">
 </p>
 </form>

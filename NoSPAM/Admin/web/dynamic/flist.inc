@@ -145,7 +145,8 @@ function DrawModifyTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <input type="hidden" name="type" value="modify">
 <input type="hidden" name="oKey" value="<?=$_GET["key"]?>">
 <table width="50%" border="1" align="center">
-<caption><?=_("Add").$sTitle?></caption>
+<!--caption><?=_("Add").$sTitle?></caption-->
+<caption><?=$sTitle?></caption>
 <tr>
 	<th scope="row"><?=$sColumn?>:</th>
 	<td align="left"><input type="text" name="key" value="<?=$_GET["key"]?>"></td>
@@ -177,7 +178,8 @@ function DrawAddTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <body>
 <form method="POST" action="<?=$_SERVER['PHP_SELF']."?action=save"?>">
 <table width="50%" border="1" align="center">
-<caption><?=_("Add")?> <?=$sTitle?></caption>
+<!--caption><?=_("Add")?> <?=$sTitle?></caption-->
+<caption><?=$sTitle?></caption>
 <tr>
 	<th scope="row"><?=$sColumn?>£º</th>
 	<td align="left"><input type="text" name="key"></td>
