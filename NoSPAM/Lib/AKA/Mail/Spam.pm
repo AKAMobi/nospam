@@ -420,8 +420,8 @@ sub spam_checker
 	if ( $from_addr=~/\@(\S+)/ ){
 		$email_domain = $1;
 	}else{
-		#$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr]." );
-		return (0, __("bounced mail"));
+		#$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr], return str: [" . __("bounced mail") . "]" );
+		return (0, __("bounced mail"),0);
 	}
 
 	# 0: ·ÇÀ¬»ø 

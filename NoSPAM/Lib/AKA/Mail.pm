@@ -1284,9 +1284,11 @@ sub spam_engine
 	#	$reason = '邮件格式伪造';
 	#}
 	else{ #由外向内
+
 		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/In/i ){
 			( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+#$self->{zlog}->debug ( "spam_checker: $returnpath: $is_spam, $reason" );
 		}
 		
 		if ( !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
@@ -1343,7 +1345,7 @@ sub get_sa_result
 	my ($sa_result,$is_spam,$reason);
 	if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||153600) ){
 		$sa_result = $self->{sa}->get_result($self->{mail_info}->{aka}->{emlfilename});
-		if ( ! $is_spam && $sa_result->{SCORE} > 10 ){
+		if ( $sa_result->{SCORE} > 10 ){
 			$reason = $sa_result->{TESTS};
 			if ( $sa_result->{SCORE} < 15 ){
 				$is_spam = RESULT_SPAM_MAYBE ;
@@ -1351,8 +1353,10 @@ sub get_sa_result
 				$is_spam = RESULT_SPAM_MUST;
 			}
 		}
-		my @result = ($sa_result,$is_spam,$reason);
-		return \@result;
+		if ( $is_spam ){
+			my @result = ($sa_result,$is_spam,$reason);
+			return \@result;
+		}
 	}
 	return undef;
 
