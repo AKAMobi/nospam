@@ -1,6 +1,7 @@
-2003-05-07      Fan Lin <lfan@lfan.net>
+2003-05-08      Fan Lin <lfan@lfan.net>
 	rfc2646create.c folder.c
 			发信中文乱码得bug和显示标题得半个字符问题
+	mailfilter.c	生成过滤文件的bug
 
 2003-05-07	Fan Lin <lfan@lfan.net>
 	folder.c	解决邮箱刚创建时没有Quota信息的问题
