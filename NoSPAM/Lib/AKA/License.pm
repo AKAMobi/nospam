@@ -74,6 +74,7 @@ sub check_license_file
 			next;
 		}elsif ( /^ProductLicense=(.+)$/ ){
 			$license_data = $1;
+			$license_data =~ s/\s*//g;
 		}
 
 		$license_content .= $_ . "\n";
@@ -157,7 +158,7 @@ sub get_HD_serial
 	my $ret;
 
 	use Fcntl;
-	open ( HDAFD, "</dev/hda" ) or die "can't open\n";
+	open ( HDAFD, "</dev/hda" ) or open ( HDAFD, "</dev/hdb" ) or die "can't open\n";
 	ioctl( HDAFD, 0x030d, $id ) or die "can't ioctl\n";
 	close ( HDAFD );
 

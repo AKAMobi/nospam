@@ -1,8 +1,6 @@
 #!/usr/bin/perl -w
 use Net::SMTP_auth;
 
-
-
 my $logit = $ARGV[0];
 $logit = 0 if ( ! defined $logit || $logit ne "log" );
 

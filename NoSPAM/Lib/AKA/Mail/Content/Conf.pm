@@ -98,7 +98,8 @@ sub get_user_filter_db
 	<rule rule_id="" />
 </rule-add-modify> 
 _SPAMXML_
-			close ( WDB );
+		close ( WDB );
+		`chown nospam.nospam $filterdb_file`;
 	}
 
 	my $xs = get_filterdb_xml_simple();
