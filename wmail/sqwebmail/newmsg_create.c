@@ -116,6 +116,9 @@ char	*s;
 	{
 	struct rfc822t *t;
 	struct rfc822a *a;
+	char *pp;
+		// fix the recursively encoding problem
+		pp = rfc2047_decode_simple(p);
 
 		/*
 		** For proper RFC 2047 encoding, we must RFC822-parse
@@ -123,7 +126,7 @@ char	*s;
 		*/
 
 		s=0;
-		if ((t=rfc822t_alloc_new(p, NULL, NULL)) != 0)
+		if ((t=rfc822t_alloc_new(pp, NULL, NULL)) != 0)
 		{
 			if ((a=rfc822a_alloc(t)) != 0)
 			{
@@ -133,6 +136,7 @@ char	*s;
 			}
 			rfc822t_free(t);
 		}
+		free(pp);
 	}
 
 	if (!s)
