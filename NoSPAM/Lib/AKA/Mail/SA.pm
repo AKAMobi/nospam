@@ -267,7 +267,7 @@ sub get_local_cf_content
 
 	$local_cf_content = "";
 	while ( ($key,$val)=each %{$local_cf_hash} ){
-		$local_cf_content .= "$key $val\n";
+		$local_cf_content .= "$key $val\n" if ( defined $val && length($val) );
 	}
 
 	foreach ( split(/,/,$factory_score) ){
