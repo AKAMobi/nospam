@@ -827,7 +827,10 @@ sub AKA_mail_engine {
 
 	# 如果是病毒并且我们要拒绝，则不运行其他引擎；
 	if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 ){
-		&debug ( "FOUND virus AND DROP IT!" );
+		#&debug ( "FOUND virus AND DROP IT!" );
+		($AKA_is_spam, $AKA_spam_reason) = (0,'未作垃圾检查');
+		$AKA_content_engine_enable = 1; $pf_action = 6; $pf_param = ''; $pf_desc = "未作内容检查";
+	 	($AKA_is_overrun, $AKA_overrun_reason ) = (0, '未作动态检查');
 		goto NOSPAM_LOG;
 	}
 	
