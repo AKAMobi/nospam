@@ -78,6 +78,7 @@ my $iputil = new AKA::IPUtil;
 
 my $action_map = { 
 	 	  'start_System' => [\&start_System, "Init system on boot" ]
+	 	, 'System_patch' => [\&System_patch, "patch system by upgrad pkg" ]
 
 		, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
 		, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
@@ -183,6 +184,11 @@ _USAGE_
 	print NSOUT "\n";
 }
 
+sub System_patch
+{
+	return -1;
+}
+
 sub ZombieFile_clean
 {
 	`find /home/NoSPAM/spool/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
@@ -192,6 +198,7 @@ sub ZombieFile_clean
 	`find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 	`find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 	`find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`rm -f /var/log/*.{1,2,3,4}* > /dev/null 2>&1`;
 	return 0;
 }
 
