@@ -161,9 +161,9 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README AUTHORS COPYING ChangeLog INSTALL Makefile.am \
-	Makefile.in NEWS aclocal.m4 config.guess config.sub configure \
-	configure.in dbobj.config.in dbobj.h.in depcomp install-sh \
-	missing mkinstalldirs sqwebmail.spec.in index.html install
+	Makefile.in NEWS aclocal.m4 config.guess config.rpath \
+	config.sub configure configure.in dbobj.config.in dbobj.h.in \
+	depcomp install-sh install index.html missing mkinstalldirs sqwebmail.spec.in
 all: all-recursive
 
 .SUFFIXES:
@@ -683,7 +683,7 @@ mimegpg: gpglib/mimegpg
 install-exec-local: install-userdb-script
 	$(mkinstalldirs) $(DESTDIR)$(cgibindir)
 	test -w $(DESTDIR)$(cgibindir) || exit 0; \
-		$(INSTALL_PROGRAM) sqwebmail/sqwebmail \
+		$(INSTALL_PROGRAM) sqwebmail/wmail \
 			$(DESTDIR)$(cgibindir)/wmail ; \
 		test -w /etc || continue ; \
 			chown root $(DESTDIR)$(cgibindir)/wmail ; \
@@ -722,7 +722,7 @@ install-data-local: install-userdb-local
 
 uninstall-local: uninstall-userdb-local uninstall-userdb-script
 	test -w $(DESTDIR)$(cgibindir) || exit 0; \
-		rm -f $(DESTDIR)$(cgibindir)/wmail
+		rm -f $(DESTDIR)$(cgibindir)/sqwebmail
 	. authlib/authpwdprogs ; \
 	for f in `cat authlib/installlist authlib/installlist.sh ; echo $$PWPROGS $$PWSCRIPTS` ; do \
 			rm -f $(DESTDIR)$(libexecdir)/authlib/$$f ; done
@@ -815,10 +815,11 @@ install-configure:
 		for file in $$list; do \
 		file="$(DESTDIR)$(sysconfdir)/$$file" ; \
 		case "$$file" in *.dist) \
-			@SYSCONFTOOL@ $$file;; esac ; \
+			@SYSCONFTOOL@ $$file;; esac ; done; \
         echo "MAILDIRFILTER=../.mailfilter" > $(DESTDIR)$(sysconfdir)/maildirfilterconfig; \
         echo "MAILDIR=./Maildir" >> $(DESTDIR)$(sysconfdir)/maildirfilterconfig; \
-	cp -f $(srcdir)/index.html $(DESTDIR)$(cgibindir)/../index.html; done
+        cp -f $(srcdir)/index.html $(DESTDIR)$(cgibindir)/../index.html;
+
 
 upload-beta:
 	rm -f @PACKAGE@-@VERSION@.tar.bz2.sig; gpg --detach-sign --default-key mrsam@courier-mta.com @PACKAGE@-@VERSION@.tar.bz2; test -f @PACKAGE@-@VERSION@.tar.bz2.sig || exit 1

@@ -851,7 +851,7 @@ authdaemon     -- use a background daemon for authentication
   --prefix={dir}             Install sqwebmail HTML data in {dir}, instead of
                              PREFIX/share/sqwebmail (which is usually
                              /usr/local/share/sqwebmail)
-  --with-defaultlang={lang}  Default language to use (only zh-cn, so far)
+  --with-defaultlang={lang}  Default language to use (only en, so far)
   --enable-mimetypes={dir}   Your mime.types file.
   --enable-bannerprog=prog   Program which will generate a banner.
   --with-maxargsize=nbytes       Limit maximum size of CGI args
@@ -1530,7 +1530,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=wmail
- VERSION=0.99b
+ VERSION=0.99b.20030507
 
 
 # Some tools Automake needs.

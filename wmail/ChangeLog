@@ -1,5 +1,7 @@
 2003-05-07	Fan Lin <lfan@lfan.net>
 	folder.c	解决邮箱刚创建时没有Quota信息的问题
+	Makefile.in configure
+			安装bug的修改
 
 2003-05-04	Fan Lin <lfan@lfan.net>
 	newmsg.html newmsg.c 没有收件人不会报错
