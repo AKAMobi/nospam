@@ -3,7 +3,7 @@
 
 define("ADMINFILE","ADMINFILE"); //用于保存管理员信息的数据文件
 
-define("SYSOPID", "admin"); //最高管理员ID
+define("SYSOPID", "PigRoy"); //最高管理员ID
 
 //返回值定义
 define("OK",0);
