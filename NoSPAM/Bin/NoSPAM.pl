@@ -307,6 +307,13 @@ sub reset_Network_set_netfilter
 		$intconf->{MailGatewayInternalIP} . ":25" );
 	return -70 if ( $ret );
 
+	# for internal mail user
+	$ret = system( "$iptables -t nat -A PREROUTING -i eth0 -p tcp " .
+		" -s " . $conf->{config}->{MailServerIP} .
+		" --dport 25 -j DNAT --to " .
+		$intconf->{MailGatewayInternalIP} . ":26" );
+
+
 	return 0;
 }
 
