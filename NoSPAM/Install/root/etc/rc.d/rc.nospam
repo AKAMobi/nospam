@@ -5,7 +5,9 @@ is_locale_exist=`/usr/bin/localedef --list-archive | grep zh_CN | wc -l`
 # 0 means not exist, after create, is_locale_exist will eq 2
 if [ 0 -eq $is_locale_exist ]; then
         echo "`date` zh_CN not found in locale, creating..." >> /var/log/NoSPAM
-        /usr/bin/localedef -f GBK -i zh_CN zh_CN
+        /usr/bin/localedef -f GBK -i zh_CN zh_CN >> /var/log/NoSPAM
+	echo "`date` add locale so restart apache..." >> /var/log/NoSPAM
+	/etc/rc.d/init.d/httpd restart >> /var/log/NoSPAM
 fi
 
 if [ ! -e /home/NoSPAM/sa/razor/identity ]; then

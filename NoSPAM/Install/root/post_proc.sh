@@ -14,10 +14,15 @@ chown named service/named/log/main
 chmod +x service/*/run
 chmod +x service/*/log/run
 chmod +x etc/cron.hourly/*
+chmod 755 etc/mrtg/*.sh
+chmod 755 usr/bin/*
 
-ln -s /usr/etc/mail /etc/mail
+ln -s /usr/etc/mail etc/mail
 ln -s /home/NoSPAM/bin/NoSPAM etc/rc.d/rc3.d/S11NoSPAM_start_System
 ln -s /var/qmail/control/servercert.pem var/qmail/control/clientcert.pem
-chown qmaild.qmail var/qmail/control/*.pem
-chmod 700 /var/qmail/control/*.pem
+ln -s /var/qmail/bin/sendmail usr/bin/sendmail
 
+chown qmaild.qmail var/qmail/control/*.pem
+chmod 700 var/qmail/control/*.pem
+
+chmod 755 home/wmail -R
