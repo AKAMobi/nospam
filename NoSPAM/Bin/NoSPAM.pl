@@ -767,7 +767,7 @@ sub reset_Network_update_smtproutes_gateway
 	close ( FD );
 
 	@smtproutes = grep (!/^$/, @smtproutes);
-	@smtproutes = grep (!/^$Domain:$IP/, @smtproutes);
+	@smtproutes = grep (!/^$Domain:/, @smtproutes);
 	unshift( @smtproutes, "$Domain:$IP\n" );
 
 	my $content = join('',@smtproutes);
