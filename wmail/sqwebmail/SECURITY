@@ -1,0 +1,215 @@
+
+                              SqWebMail security
+
+   This   document   discloses  security-oriented  issues  regarding  the
+   SqWebMail CGI application.
+
+   In this document:
+     * User IDs and Passwords
+     * Mailbox IDs
+     * Authentication
+     * Browser Security - History
+     * Browser Security - Caching
+     * Browser Security - HTML
+     * Browser Security - Referer: Tags
+     * Sending Mail
+     * Setuid Root
+
+User IDs and Passwords
+
+   SqWebMail's security scheme requires a valid userid/password to access
+   an  account.  The actual method for validating the userid and password
+   is  a  black-box  module  that  can  be  easily  replaced. The example
+   black-box  implementation  uses the PAM library, if available, or with
+   the /etc/passwd, /etc/shadow and the crypt() function.
+
+   It  is  possible  to  configure  SqWebMail  to transmit the userid and
+   password  via secure HTTP. If secure HTTP is not available, the userid
+   and  password  is transmitted over the network in the clear, which can
+   be  picked  up  by a sniffer. SqWebMail supports an alternate password
+   which  is stored in a file in the Maildir directory. The file has read
+   and  write  permissions to the user only. If the alternate password is
+   compromised,  only  SqWebMail  recognizes  it,  and only access to the
+   private mail will be available. Access to the main account will not be
+   compromised, if the account password is different.
+
+Mailbox IDs
+
+   After  a  userid  and  password  is  authenticated, the authentication
+   module  returns  a  'mailboxid'. The mailboxid is used as a handle for
+   the  mailbox.  A  mailboxid  may  not  necessarily  be the same as the
+   userid, but the sample authentication modules make them the same.
+
+   Technically,  the  mailboxid  that's  generated  by recent versions of
+   sqwebmail are of the form "userid.method", where method represents the
+   authentication module that was used.
+
+   A  mailboxid  is  sent with every HTTP request, in the request itself.
+   Note  that the mailboxid is transmitted over the network in the clear.
+   It is also possible to use secure HTTP for the every HTTP request, not
+   just initial authentication, but this has not been tested.
+
+   Unless  the  mailboxid  is  the  same  as  a userid, there aren't many
+   security  considerations  in having the mailboxid broadcasted over the
+   network.  That's  because the mailboxid in the HTTP request is usually
+   validated  based  on a time-limited IP address (see "Authentication").
+   Note  that there certain other potential ways - in addition to network
+   traffic  sniffing  -  for  an  unauthorized  party  to attempt to grab
+   mailboxids.  See  "Browser  Security  - HTML", and "Browser Security -
+   Referrer: Tags".
+
+Authentication
+
+   Once  the  user  ID and password are authenticated, authentication for
+   subsequent  HTTP  requests is based on a combination of an IP address,
+   plus a 128-bit random number that was generated during the login.
+
+   By default, SqWebMail permits access to the mailbox only from the same
+   IP address as the one where the user ID and password was authenticated
+   from. This can be selectively turned off at login time, in cases where
+   the  client  is behind a load-balancing firewall that uses multiple IP
+   addresses.  In  all cases, a 128-bit random number must be transmitted
+   with every HTTP request, and it must match the number generated during
+   the login, which is saved in the Maildir directory.
+
+   The  Maildir  directory  must therefore have any group or world access
+   rights disabled. Additionally, every page served by SqWebMail includes
+   HTTP  headers  containing  instructions  to  proxies and browsers that
+   prohibit  this  page  from  being  cached.  There  are  some buggy web
+   browsers  out  there  -  most of them originating in Redmond,WA - that
+   ignore  these  caching  directives, and they end up saving the 128-bit
+   random  number  in  the  local  cache.  Unless  access to the physical
+   machine  is  secured,  the  local  cache  can be trawled to obtain the
+   128-bit authentication token.
+
+   However, access to the mailbox is allowed only for a maximum period of
+   time  after  the initial authentication. Access is allowed only if the
+   HTTP  requests  come within a different, shorter period of time. If no
+   access  requests  have  been made for a certain period of time, access
+   will  no  longer  be  available  even  if  it  comes from the right IP
+   address, with the right authentication token.
+
+   The  IP  address  of  the  initial authentication, the dates and times
+   involved, are all stored in files in the maildir directory, with group
+   and world permissions turned off.
+
+Browser Security - History
+
+   In  certain  situations  a  mailboxid  is  a  part  of  the actual URL
+   requested. A browser may maintain a history file of visited URLs.
+
+   SqWebMail  uses  a frame window in an attempt to keep the browser from
+   recording  visited  URLs.  This  approach  works  for most popular web
+   browsers  that support frames - these browsers do not maintain history
+   for individual frames. Note that frames are not required to access the
+   full SqWebMail functionality.
+
+Browser Security - Caching
+
+   SqWebMail  sets  the  expiration  header on every HTTP page it serves.
+   Individual  pages  contain URLs and hidden fields with mailboxids. The
+   expiration  header  should  keep the web pages from being saved in the
+   browser cache.
+
+Browser Security - HTML
+
+   SqWebMail  has  the  ability  to  display  HTML E-mail, which leads to
+   several  complicated  situations regarding embedded Javascript or Java
+   applets that try to grab the mailboxid of the recipient (amongst other
+   things). SqWebMail attempts to remove all forms of scripting from HTML
+   E-mail as follows:
+     * The  following  HTML tags are removed: <SCRIPT>, </SCRIPT>, <APP>,
+       </APP>,   <APPLET>,   </APPLET>,  <SERVER>,  </SERVER>,  <OBJECT>,
+       </OBJECT>,  <HTML>,  </HTML>,  <HEAD>,  </HEAD>,  <BODY>, </BODY>,
+       <META>, <TITLE>, </TITLE>, <FRAME>, </FRAME>, <LINK>, <IFRAME> and
+       </IFRAME>.
+     * The  following  HTML  attributes  are  stripped  from  every  tag:
+       ONLOAD=,  ONMOUSEOVER=,  and  all ON*= attributes; TARGET=, CODE=,
+       CODETYPE=,  and  LANGUAGE=  are removed; TARGET=_blank is added to
+       all <A> tags.
+     * The  HREF  and  SRC attributes are stripped, unless the URL starts
+       with one of the following: http:, https:, ftp:, gopher:, wais:, or
+       telnet, and cid:.
+     * The  HREF  and  SRC  attribute values are prefixed with a URL that
+       will  resolve to SqWebMail, and with an additional TARGET="_blank"
+       attribute.  A request to that resulting URL will result in a blank
+       page  with  a  0-second  refresh  to the original URL. This method
+       strips  mailbox  IDs from Referer: tags sent to external web site.
+       If  the  HREF  attribute  starts with a cid:, it is replaced by an
+       http:  reference  to SqWebMail that will return the specified MIME
+       part.
+     * IMG  tags are removed and replaced with an A tag, in order to keep
+       the  HTTP  client  from  automatically  loading  any  images  from
+       external web sites, upon opening a given message.
+
+Browser Security - Referer: Tags
+
+   See  the  previous  section regarding how SqWebMail attempts to remove
+   mailbox IDs from Referer: tags.
+
+Sending Mail
+
+   SqWebMail   includes  the  ability  to  send  mail.  Issues  regarding
+   transmitting  E-mail  from  the HTTP client to the server are obvious.
+   SqWebMail  runs  a  wrapper  shell  script in order to send the E-mail
+   message.   The   wrapper  shell  script  normally  runs  qmail-inject,
+   sendmail,   or  something  else,  immediately.  SqWebMail  prepares  a
+   complete E-mail message.
+
+   SqWebMail  depends  on  the  mail  server  to  read  the  headers  for
+   recipients  and  to  strip  out  the  Bcc:  header. SqWebMail uses the
+   black-box  authentication  module  to  set  the  contents of the From:
+   header and provide the envelope return address.
+
+   The  IP  address  of the HTTP client is not inserted into the headers,
+   however  the  wrapper and the mail server are invoked under the userid
+   of  an authenticated user. The wrapper shell script can be modified to
+   insert  the  IP  address,  if so desired. The wrapper shell script has
+   access to the CGI REMOTE_ADDR environment variable.
+
+Setuid Root
+
+   SqWebMail  is  invoked  by the web server to handle each HTTP request.
+   SqWebMail  must  assume  permissions of the mail client in order to be
+   able  to  access  its mailbox. Additionally, SqWebMail must be able to
+   authenticate access passwords. For both of these reasons SqWebMail has
+   to be installed as a setuid root program.
+
+   When  virtual  mailboxes  are  being  used,  it is possible to install
+   SqWebMail setuided to the virtual userid, instead of root. For that to
+   work, each account's Maildir must be created with the account password
+   already  saved  in Maildir/sqwebmail-webpass file, or a virtual domain
+   mechanism like vchkpw must be used.
+
+   On  some platforms this may not work without some additional tweaking.
+   If  authenticating  with  sqwebmail  setuided  to  the  virtual userid
+   doesn't work:
+     * Verify that the password has been correctly set.
+     * Remove  the source file authlib/changeuidgid.c. Replace everything
+       in  that  file  with the following three lines of code, exactly as
+       shown:
+void authchangegroup() {}
+void authchangeuidgid() {}
+void authchangeusername() {}
+
+     * Recompile and reinstall.
+
+   Immediately upon starting, SqWebMail's activity as root is as follows:
+     * Determine  if  the  HTTP request is a request from a client that's
+       already  logged  in. The other possibilities are the login request
+       itself, or a couple of requests which are used to show the initial
+       login screen. This is determined by the presence of the extra path
+       in  the  HTTP request. This approach avoids the need to parse HTTP
+       arguments.  If  the extra path containing the login ID is present,
+       the  login  ID  is  extracted,  SqWebMail changes to the account's
+       Maildir directory, and gives up root. The CGI environment is read,
+       and the request is authenticated (see Authentication, above).
+     * If it's a login screen, the appropriate forms are generated.
+     * If  it's  a  login  request, SqWebMail makes sure that the request
+       format  is  NOT  a  multipart/formdata  POST, which takes the most
+       amount  of  code  to  interpret. Additionally, requests indicating
+       more  than  128  bytes  of  posted data are rejected prior to even
+       parsing  them.  Barring  all  that, the userid/password is fetched
+       from  the  request,  and  processed.  The multipart/formdata check
+       shouldn't   be   necessary   given   a  64  byte  upper  limit  on
+       unauthenticated requests, but it can't hurt.

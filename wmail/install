@@ -1,0 +1,23 @@
+#!/bin/sh
+
+./configure --prefix=/home/wmail \
+        --enable-cgibindir=/home/wmail/www/cgi-bin \
+        --enable-imagedir=/home/wmail/www/image \
+        --enable-imageurl=/image \
+        --with-cachedir=/home/wmail/var/cache \
+        --enable-webpass=no \
+        --without-ispell \
+        --with-maxmsgsize=5242880 \
+        --enable-maxpurge=7 \
+        --without-authpam --without-authuserdb --without-authpwd --without-authshadow \
+        --without-authldap --without-authdaemon --with-authvchkpw \
+        --with-defaultlang=zh-cn --enable-unicode  \
+        --with-fcgi \
+        --enable-https=auto \
+        --with-cacheowner=vpopmail
+
+make configure-check
+make 
+make check
+make install-strip
+make install-configure
