@@ -325,7 +325,7 @@ sub check_quota_exceed_ex
 			}
 
 			$wait_time = int($wait_time/60);
-			return (1, __x("overrun, will not be allowed to send mail untill {wait_time} minutes later.", wait_time=>$wait_time));
+			return (1, __x(" overrun deny {wait_time} minutes.", wait_time=>$wait_time));
 		}else{
 			delete $ns_obj_who->{_DENY_TO_};
 		}

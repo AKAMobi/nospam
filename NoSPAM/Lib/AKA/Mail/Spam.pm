@@ -7,6 +7,7 @@
 
 
 package AKA::Mail::Spam;
+
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::IPUtil;
