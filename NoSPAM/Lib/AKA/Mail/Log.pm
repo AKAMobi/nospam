@@ -155,6 +155,10 @@ sub log_csv {
 				
 			. ',' . $engine->{dynamic}->{result} 
 				. ',' . $engine->{dynamic}->{desc} 
+
+			. ',' . $engine->{archive}->{result} 
+				. ',' . $engine->{archive}->{desc} 
+
 			. "\n";
 
 		flock(LFD,LOCK_UN);
