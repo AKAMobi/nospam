@@ -31,7 +31,7 @@ ksort($aUpgradeLog, SORT_NUMERIC);
 <html>
 <head>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<title><?=_("System Upgrade")?></title>
+<title><?=_("System Update")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -56,7 +56,7 @@ function closeTips(obj)
 {
 	obj.style.backgroundColor = oldbgcolor;
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = "<?=_("Loading Upgrade package, waiting......")?>";
+	document.all.InfoLayer.innerHTML = "<?=_("Loading Update package, waiting......")?>";
 }
 </script>
 </head>
@@ -69,15 +69,15 @@ function closeTips(obj)
 </tr>
 <tr>
 	<td>
-<?=_("Upgrade History")?>: <br>
+<?=_("Update History")?>: <br>
 		<table width="100%" class="sort-table" id="table-1" cellspacing="0">
 		<thead>
 			<tr class="TableTitle2">
 				<td><?=_("No.")?></td>
-				<td><?=_("Upgrade Date")?></td>
+				<td><?=_("Update Date")?></td>
 				<td><?=_("Release Date")?></td>
-				<td><?=_("Upgrade Package")?></td>
-				<td><?=_("Upgrade Release")?></td>
+				<td><?=_("Update Package")?></td>
+				<td><?=_("Update Release")?></td>
 				<td><?=_("on which Version")?></td>
 			</tr>
 		</thead>
@@ -109,7 +109,7 @@ if (count($aUpgradeLog) > 0){
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
 <tr>
 	<td><br>
-<p><?=_("Upload Upgrade Package")?>:</p>
+<p><?=_("Upload Update Package")?>:</p>
 <form action="?action=upload" method="post" enctype="multipart/form-data">
   <input type="file" name="upgradepkg">
   <input type="submit" name="Commit" value="<?=_("Upload")?>">
@@ -154,7 +154,7 @@ st.onsort = function () {
 	}
 };
 </script>
-<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;"><?=_("Uploading Upgrade Package, waiting......")?></div>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;"><?=_("Uploading Update Package, waiting......")?></div>
 <iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
 </body>
 </html>
@@ -170,13 +170,13 @@ function upgrade()
 	
 	switch ($ret){
 		case 0:
-		echo _("Upgrade Success!");
+		echo _("Update Success!");
 		break;
 		case 1:
-		echo _("Upgrade Success, need Reboot system.");
+		echo _("Update Success, need Reboot system.");
 		break;
 		default:
-		echo _("Upgrade Fail!");
+		echo _("Update Fail!");
 	}
 	echo "</body></html>";
 }

@@ -11,7 +11,7 @@ $pkgInfoFile = UPGRADEINFODIR.DIRECTORY_SEPARATOR.$_GET['pkgname'].".info";
 $errorStr = "";
 
 if (!file_exists($pkgInfoFile))
-	$errorStr = _("Error: The Upgrade package is not existed!");
+	$errorStr = _("Error: The Update package is not existed!");
 ?>
 <html>
 <body onload="parent.document.all.InfoLayer.innerHTML=document.body.innerHTML">

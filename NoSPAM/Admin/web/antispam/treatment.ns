@@ -25,7 +25,7 @@ if($_POST["SpamAction"]){
 	if(($ret=wi("reset_SpamEngine",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	$SpamAction = $spamconf->getParam("SpamAction","SpamEngine");
 	$cTagHead = $spamconf->getParam("TagHead","SpamEngine");
@@ -93,9 +93,9 @@ function setFormRadio (spamName, spamVal) {
 }
 </script>
 
-    <input type="reset" name="reset" value="<?=_("Default")?>">
+    <input type="reset" name="reset" value="<?=_("Last")?>">
 	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Likely Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;setFormRadio('SpamAction','T');">
-    <input type="submit" name="submit" value="<?=_("Modify")?>">
+    <input type="submit" name="submit" value="<?=_("Commit")?>">
 </p>
 </form>
 <?
