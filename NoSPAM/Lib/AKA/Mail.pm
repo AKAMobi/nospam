@@ -268,7 +268,7 @@ $logstr .= "emlfilename: [$_]\n";
 s/\0/\\0/g;
 $logstr .= "fd1: $_\n";
 
-$self->{zlog}->log ( $logstr );
+$self->{zlog}->debug ( $logstr );
 
 	$self->{mail_info};
 }
@@ -281,7 +281,7 @@ sub net_process_ex
 
 	$self->recv_mail_info_ex();
 
-$self->{zlog}->debug ( "before process" );
+$self->{zlog}->debug ( "after recv_mail_info_ex" );
 	$self->process ( $self->{mail_info} );
 $self->{zlog}->debug ( "after process" );
 
@@ -499,7 +499,7 @@ sub process
 
 	# 处理邮件动作，大家都有的动作
 	foreach my $engine ( keys %{$mail_info->{aka}->{engine}} ){
-		$_ = $self->{mail_info}->{aka}->{engine}->{$engine}->{action};
+		next unless $_ = $self->{mail_info}->{aka}->{engine}->{$engine}->{action};
 		next if ( $_ eq ACTION_PASS );
 
 		if ( $_ eq ACTION_REJECT ){
@@ -684,6 +684,7 @@ sub qmail_requeue {
 	select(EIN);$|=1;
 
 	local $SIG{PIPE} = 'IGNORE';
+	local $SIG{CHLD} = 'IGNORE';
 
 	my $pid = fork;
 
@@ -711,7 +712,14 @@ sub qmail_requeue {
 
 		# Feed the envelope addresses to qmail-queue.
 		#my $envelope = "$sender\0$env_recips";
-		my $envelope = $aka->{env_returnpath} . "\0" . $aka->{env_recips};
+		
+		my $envelope;
+
+		if ( $aka->{env_returnpath} || $aka->{env_recips} ) {
+			$envelope = $aka->{env_returnpath} . "\0" . $aka->{env_recips};
+		}else{
+			$envelope = "F\0T\0\0";
+		}
 
 
 		print EIN $envelope;

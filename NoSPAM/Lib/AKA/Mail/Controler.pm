@@ -7,7 +7,6 @@ package AKA::Mail::Controler;
 #use strict;
 
 use AKA::Mail::Log;
-use POSIX();
 
 sub new
 {
@@ -791,8 +790,8 @@ sub send_mail_file_by_queue {
 
 	# We should now have queued the message.  Let's find out the exit status
 	# of qmail-queue.
-	# waitpid ($pid, 0);
-	1 while (waitpid($pid, POSIX::WNOHANG()) > 0);
+	waitpid ($pid, 0);
+	#1 while (waitpid($pid, POSIX::WNOHANG()) > 0);
 
 	$xstatus =($? >> 8);
 	if ( $xstatus > 10 && $xstatus < 41 ) {
