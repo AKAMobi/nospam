@@ -42,9 +42,9 @@ sub new
 	#$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
 
 	$self->{mime_parser}->output_dir($tmpdir);
-	$self->{mime_parser}->output_prefix("AKA-MailFilter-$$");
+	$self->{mime_parser}->output_prefix("AMC-$$-");
 
-	$self->{prefix} = "AKA-MailFilter-$$";
+	$self->{prefix} = "AMC-$$-";
 
 
 	# 文件类型
@@ -115,7 +115,7 @@ sub print
 	$self->{entity}->print($fh);
 
 	# 只能 print 一次
-	clean ( $self );
+	$self->clean;
 	undef $self->{mail_info};
 	undef $self->{entity};
 }
@@ -154,9 +154,28 @@ sub get_head_info
 	$head->decode;
 	$head->unfold;
 
-	$self->{mail_info}->{head}->{from} = $head->get('From');
-	$self->{mail_info}->{head}->{to} = $head->get('To');
-	$self->{mail_info}->{head}->{cc} = $head->get('CC');
+	# TO/CC/BCC 总共接收的人数
+	my $num_receivers = 0;
+	my @receivers;
+
+	@receivers = $head->get('From');
+	$num_receivers += scalar @receivers;
+	$self->{mail_info}->{head}->{from} = join(',',@receivers);
+
+	@receivers = $head->get('To');
+	$num_receivers += scalar @receivers;
+	$self->{mail_info}->{head}->{to} = join(',',@receivers);
+
+	@receivers = $head->get('CC');
+	$num_receivers += scalar @receivers;
+	$self->{mail_info}->{head}->{cc} = join(',',@receiveds);
+
+	@receivers = $head->get('BCC');
+	$num_receivers += scalar @receivers;
+	$self->{mail_info}->{head}->{bcc} = join(',',@receiveds);
+
+	# get all to+cc+bcc
+	$self->{mail_info}->{to_cc_bcc_num} = $num_receivers;
 
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};

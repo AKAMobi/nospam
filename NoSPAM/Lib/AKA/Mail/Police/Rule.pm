@@ -368,7 +368,7 @@ sub check_single_size_rule
 	if ( 1==$match_key ){ # 全文大小
 		my $mail_size;
 		$mail_size = $mail_info->{body_size} + $mail_info->{head_size};
-		return ( check_size_value( $slef, $mail_size, $match_size ) );
+		return ( check_size_value( $self, $mail_size, $match_size ) );
 	}elsif ( 2==$match_key ){ # 信头
 		return ( check_size_value( $self, $mail_info->{head_size}, $match_size ) );
 	}elsif ( 3==$match_key ){ # 信体
@@ -377,6 +377,8 @@ sub check_single_size_rule
 		return ( check_size_value( $self, $mail_info->{attachment_size}, $match_size ) );
 	}elsif ( 5==$match_key ){ # 附件个数
 		return ( check_size_value( $self, $mail_info->{attachment_num}, $match_size ) );
+	}elsif ( 150==$match_key ){ # To+Cc+Bcc 个数 
+		return ( check_size_value( $self, $mail_info->{to_cc_bcc_num}, $match_size ) );
 	}
 	
 	$self->{zlog}->fatal ( "error: unimplement size key: [$match_key]" );
