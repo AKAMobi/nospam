@@ -105,7 +105,8 @@ my $action_map = {
 		, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
 
 		, 'MailQueue_getList' => [\&MailQueue_getList, ' : list all mail from mail queue' ]
-		, 'MailQueue_delID' => [\&MailQueue_delID, ' <SID1> ... : del from mail queue' ]
+		, 'MailQueue_delID' => [\&MailQueue_delByID, ' <SID1> ... : del from mail queue' ]
+		, 'MailQueue_delByEmail' => [\&MailQueue_delByEmail, ' <Email1> ... : del from mail queue' ]
 		, 'MailQueue_delAll' => [\&MailQueue_delAll, ' : del all mail from mail queue' ]
 		, 'MailQueue_getMail' => [\&MailQueue_getMail, ' <SID> : get mail content from mail queue' ]
 
@@ -1250,11 +1251,13 @@ sub MailQueue_getList
 
 		$mail->{$_} =~ s/,/£¬/g foreach ( keys %{$mail} );
 
-		$mail->{'file'} =~ m#(\d+/\d+)$#;
-
 		$q_from = $mail->{'from'};
 		$q_from =~ s/<//g;
 		$q_from =~ s/>//g;
+                $q_from =~ s/\s+//g;
+
+		$mail->{'file'} =~ m#(\d+/\d+)$#;
+
 		print $1
 			. ',' . $mail->{'date'}
 			. ',' . $q_from
@@ -1266,7 +1269,7 @@ sub MailQueue_getList
 	return 0;
 }
 
-sub MailQueue_delID
+sub MailQueue_delByID
 {
        	use AKA::Mail::Controler;
         my $AMC = new AKA::Mail::Controler;
@@ -1276,6 +1279,37 @@ sub MailQueue_delID
 	return 0;
 }
 
+sub MailQueue_delByEmail
+{
+	my $email = shift @param;
+
+       	use AKA::Mail::Controler;
+        my $AMC = new AKA::Mail::Controler;
+
+        my @q = $AMC->list_queue;
+
+	my @allIDs = ();
+	my ($id,$q_from);
+        foreach ( @q ){
+		$_->{'file'} =~ m#(\d+/\d+)$#;
+		$id = $1;
+
+                $q_from = $_->{'from'};
+                $q_from =~ s/<//g;
+                $q_from =~ s/>//g;
+                $q_from =~ s/\s+//g;
+
+		if ( $q_from eq $email ){
+			push (@allIDs, $id) ;
+		}
+        }
+
+	$AMC->delete_queues( @allIDs );
+
+	return 0;
+}
+
+
 sub MailQueue_delAll
 {
        	use AKA::Mail::Controler;
@@ -1283,10 +1317,13 @@ sub MailQueue_delAll
 
         my @q = $AMC->list_queue;
 
+	my @allIDs = ();
         foreach ( @q ){
 		$_->{'file'} =~ m#(\d+/\d+)$#;
-		$AMC->delete_queues( $1 );
+		push (@allIDs, $1);
         }
+
+	$AMC->delete_queues( @allIDs );
 
 	return 0;
 }
