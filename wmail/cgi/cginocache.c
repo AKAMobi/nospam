@@ -15,6 +15,19 @@
 
 void cginocache()
 {
+	printf("Cache-Control: no-store, max-age=0, s-maxage=0, proxy-revalidate, must-revalidate\n");
+	printf("Expires: -1\n");
+	printf("Pragma: no-cache\n");
+	return;
+		
+	if (cgi_useragent("MSIE"))
+		cginocache_msie();
+	else
+		cginocache_other();
+}
+
+void cginocache_other()
+{
 	printf("Cache-Control: no-store\n");
 	printf("Pragma: no-cache\n");
 }
