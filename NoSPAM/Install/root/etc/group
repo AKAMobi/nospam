@@ -30,6 +30,7 @@ named:x:25:
 pcap:x:77:
 vchkpw:x:48:
 nospam:x:48:
+clamav:x:48:
 apache:x:48:
 ssh:x:49:
 sshd:x:74:
