@@ -1,3 +1,3 @@
 #!/bin/sh
 
-chmod -R o+w home/NoSPAM/admin/status
+chmod -R 755 home/NoSPAM/admin/
