@@ -384,7 +384,7 @@ sub check_re_match
 	my ( $content, $re, $is_re ) = @_;
 
 	if ( ! defined $re || ! defined $is_re || ! defined $content ){
-		$self->{zlog}->fatal ( "error: check_regex not enough param." );
+		#$self->{zlog}->fatal ( "error: check_regex not enough param. re: $re, is_re: $is_re, content: $content" );
 		return 0;
 	}
 
@@ -406,6 +406,9 @@ sub check_single_keyword_rule
 	$match_type = $rule->{type};
 	$match_keyword = $rule->{keyword};
 
+	if ( ! length($mail_info->{body_text}) ){
+		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
+	}
 	if ( 1==$match_key ){ #1主题包含关键字
 		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type );
 	}elsif ( 2==$match_key ){ #2发件人包含关键字

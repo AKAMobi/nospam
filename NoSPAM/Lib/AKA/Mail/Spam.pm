@@ -352,7 +352,6 @@ sub spam_checker
 	# 3: 黑名单
 	$is_spam = 0;
 
-	$self->{zlog}->debug ( "Spam::spam_checker checking $smtp_ip <=> $from_addr ..." );
 
 	if ( &is_white_ip($self,$smtp_ip) ){
 		$reason = "IP白名单";
@@ -386,6 +385,8 @@ sub spam_checker
 	}
 
 	
+	$self->{zlog}->debug ( "Spam::spam_checker checking $smtp_ip <=> $from_addr spam result [$is_spam because $reason]" );
+
 	return ($is_spam, $reason);
 }
 
