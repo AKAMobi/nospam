@@ -880,13 +880,13 @@ sub dynamic_engine
 		if ( $self->{conf}->{config}->{DynamicEngine}->{ProtectDirection}!~/Out/ ){
 			# 没有限制“由内向外”的邮件
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
-						result	=>0,
-						desc	=>'通过',
-						action	=>ACTION_PASS,
+					result	=>0,
+					desc	=>'内向外未限制',
+					action	=>ACTION_PASS,
 
-                      				enabled => 1,
-                      				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                  			enabled => 1,
+                     			runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 			};
 			return;
 		}
@@ -897,7 +897,7 @@ sub dynamic_engine
 			# 没有限制“由外向内”的邮件
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 					result  => 0,
-					desc    => '通过',
+					desc	=>'外向内未限制',
 					action  => 0,
 
 					enabled => 1,
