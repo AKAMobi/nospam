@@ -79,7 +79,7 @@ sub load_user_filetype
 	my $type_file = $self->{content_conf}->{define}->{user_filetype}; 
 
 	if ( ! open ( FD, "<$type_file" ) ){
-		$self->{zlog}->fatal( "Parser: open user_filetype [ $type_file ] failure!" );
+		#$self->{zlog}->fatal( "Parser: open user_filetype [ $type_file ] failure!" );
 		return;
 	}
 

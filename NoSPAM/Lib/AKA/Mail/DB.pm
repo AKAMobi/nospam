@@ -9,6 +9,7 @@ package AKA::Mail::DB;
 
 use strict;
 use DBI;
+use AKA::Mail::Conf;
 
 sub new
 {
@@ -19,7 +20,7 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	$self->{zlog} = $parent->{zlog};
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Conf;
 	
 	$self->{define}->{DBFile} = "/home/NoSPAM/var/sqlite/nospam.sqlite";
 
@@ -101,10 +102,6 @@ sub user_email_add_execute
 
 	my ($sth_del,$sth_ins,$email) = @_;
 
-	chomp $email;
-	$email=~s/^\s+//;
-	$email=~s/\s+$//;
-
 	$sth_del->execute( $email ) or 
 		$self->{zlog}->fatal( "DB::user_email_add_execute failed when delete: $!" );
 
@@ -120,8 +117,8 @@ sub user_email_list($)
 
 	my $sth = $dbh->prepare ( "select Email from UserEmail_TB" );
 	$sth->execute();
-	while( my ($email)=$sth->fetchrow_array() ){
-       		print STDOUT "$email\n"
+	while( ($_)=$sth->fetchrow_array() ){
+       		print STDOUT "$_\n"
 	}
 	$sth->finish;
 }
