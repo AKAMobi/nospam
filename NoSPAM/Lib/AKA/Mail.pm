@@ -652,7 +652,9 @@ sub write_queue
 				}
 				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagSubject} ){
 					if ( $aka->{engine}->{antivirus}->{result} ){
-						$tagged_subj = ($config->{AntiVirusEngine}->{VirusTag}||"【病毒】") . ' ' . $tagged_subj; 
+						$tagged_subj = ( $config->{AntiVirusEngine}->{VirusTag}
+								|| "【病毒 " . $aka->{engine}->{antivirus}->{result} .  "】"
+							) . ' ' . $tagged_subj; 
 					}
 				}
 				$_ = 'Subject: ' . $tagged_subj . "\n";
@@ -746,7 +748,7 @@ sub antivirus_engine
 
 	my $start_time = [gettimeofday];
 
-	if ( 'Y' ne $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
+	if ( 'Y' ne uc $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
 		return ( { 	result 	=> 0,
 				desc	=> '未启用',
 				action 	=> 0, 
@@ -797,7 +799,7 @@ sub antivirus_engine
 	#
 	# 抽样检查
 	#
-	if ( 'Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{SampleCheck} ){
+	if ( 'Y' eq uc $self->{conf}->{config}->{AntiVirusEngine}->{SampleCheck} ){
 		if ( $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} < int(rand(98)+1) ){
 			# 不需要采样
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
@@ -1128,33 +1130,73 @@ sub content_engine_is_enabled
 
         my $start_time=[gettimeofday];
 
-	if ( 'Y' eq uc $self->{conf}->{config}->{ContentEngine}->{ContentFilterEngine} ){
-		if ( $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
-			return 1 if ( $self->{mail_info}->{aka}->{size} < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} );
-			$self->{mail_info}->{aka}->{engine}->{content} = {
-                			result  => '',
-	                                desc    => '尺寸超过配置最大值',
-       	                         	action  => 0,
+	if ( 'Y' ne uc $self->{conf}->{config}->{ContentEngine}->{ContentFilterEngine} ){
+		$self->{mail_info}->{aka}->{engine}->{content} = {
+               			result  => 0,
+                                desc    => '未启用',
+                        	action  => 0,
+
+                               	enabled => 1,
+                        	runned  => 1,
+                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
 	
-                                	enabled => 1,
-       	                         	runned  => 1,
+		return 0;
+	}
+
+	#
+	# 判断保护方向
+	#
+	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
+		# 是“由内向外”
+		if ( $self->{conf}->{config}->{ContentEngine}->{ProtectDirection}!~/Out/ ){
+			# 没有限制“由内向外”的邮件
+			$self->{mail_info}->{aka}->{engine}->{content} = {	
+					result	=>0,
+					desc	=>'内向外未过滤',
+					action	=>ACTION_PASS,
+
+                  			enabled => 1,
+                     			runned  => 1,
                                 	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 			};
 			return 0;
 		}
+
+	}else{
+		# 是“由外向内”
+		if ( $self->{conf}->{config}->{ContentEngine}->{ProtectDirection}!~/In/ ){
+			# 没有限制“由外向内”的邮件
+			$self->{mail_info}->{aka}->{engine}->{content} = {
+					result  => 0,
+					desc	=>'外向内未过滤',
+					action  => 0,
+
+					enabled => 1,
+					runned  => 1,
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return 0;
+		}
+
 	}
 
-	$self->{mail_info}->{aka}->{engine}->{content} = {
-            		result  => '',
-                        desc    => '未启用',
-                        action  => 0,
 
-                        enabled => 0,
-                        runned  => 1,
-                        runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+	if ( $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
+		if ( $self->{mail_info}->{aka}->{size} > $self->{conf}->{intconf}->{ContentEngineMaxMailSize} );
+		$self->{mail_info}->{aka}->{engine}->{content} = {
+               			result  => 0,
+                                desc    => '尺寸超过配置最大值',
+                        	action  => 0,
+
+                               	enabled => 1,
+                        	runned  => 1,
+                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 		};
-	
-	return 0;
+		return 0;
+	}
+
+	return 1;
 }
 
 # move check license to here to prevent hacker
