@@ -663,5 +663,20 @@ sub find_byname
 	@pids = grep { $_ != $$ } @pids;
 	return @pids;
 } 
+
+sub get_mail_from_queue
+{
+	my $self = shift;
+
+	my $sid = shift;
+
+        my @lines;
+        open(FILE, $self->{define}->{qmail_mess_dir} . "/$sid") || return undef;
+        @lines = <FILE>;
+        close(FILE);
+
+        return \@lines;
+}
+
 1;
 
