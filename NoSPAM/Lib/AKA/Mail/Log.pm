@@ -130,10 +130,11 @@ sub log_csv {
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
 		print LFD time
 # ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-			. ',' . ( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
-						|| 
-					($aka->{RELAYCLIENT})
-				) ?'1':'0'
+			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
+							|| 
+						length($aka->{TCPREMOTEINFO})
+					) ?'1':'0' 
+				)
 			. ',' . $aka->{TCPREMOTEIP} . ',' . $aka->{returnpath} 
 				. ',' . $recips . ',' . $esc_subject
 
