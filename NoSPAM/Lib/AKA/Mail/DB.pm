@@ -82,6 +82,8 @@ sub create_table($$)
 		};
 	}
 	$dbh->do ( $_ ) or $self->{zlog}->fatal ( "DB::create_table [$_] failed: $!" ) foreach ( @create_sql ) ;
+
+	system ( 'chown nospam ' . $self->{define}->{DBFile} );
 }
 
 # email addr add to UserEmail_TB
