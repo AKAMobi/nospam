@@ -1,0 +1,28 @@
+
+<html>
+<head>
+<script language="JavaScript">
+<!--
+if (self.parent.frames.length != 0)
+self.parent.location=document.location.href;
+// -->
+</script>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>天澄反邮件垃圾系统 管理系统</title>
+</head>
+
+<frameset rows="134,*,75" cols="*" framespacing="NO" frameborder="0" border="0">
+	<frame src="top.ns" name="topFrame" scrolling="NO" noresize >
+	<frameset cols="200,*" frameborder="NO" border="0" framespacing="0">
+  		<frame src="menutree.ns" name="menu" scrolling="YES" noresize>
+  		<frame src="intro.ns" scrolling="YES" name="main">
+	</frameset>
+	<frame src="bottom.ns" name="topFrame" scrolling="NO" noresize >
+</frameset>
+<noframes>
+<body>
+</body>
+</noframes>
+</html>

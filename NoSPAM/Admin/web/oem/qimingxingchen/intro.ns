@@ -1,0 +1,83 @@
+<?
+require_once("inc/include.ns");
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>介绍页面</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body leftmargin="0" topmargin="0">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="8" bgcolor="#FFFFFF"></td>
+    <td width="10" bgcolor="DDECF9">&nbsp;</td>
+    <td width="488"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="10" bgcolor="DDECF9"><img src="images/tr.gif" width="1" height="1"></td>
+        </tr>
+        <tr>
+          <td valign="top" bgcolor="F4FCFF"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="20">&nbsp;</td>
+                <td width="90%" valign="top"> <p><br>
+                    <br>
+<?php echo $ProductName; ?></p>
+<?
+if( ($ret=wi("get_Serial",$result))==0 ){
+	$serial = trim(implode("",$result));
+	echo "本设备序列号为：$serial<br>";
+}else{
+	echo "获取序列号时出现错误！错误代码$ret<br>";
+}
+if(!file_exists(LICENSE)){
+?>
+<p> 本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。 </p>
+<?
+}else{
+	$result = "";
+	if(($ret=wi("check_License License.dat",$result))==0){	
+		$LicenseInfo = trim(implode("",$result));
+		echo $LicenseInfo;
+		if($Version == NOSPAM_VERSION){
+?>
+<p> 本设备 License 许可正确！ </p>
+<?
+		}else{
+?>
+<p> License版本错误！ </p>
+<?
+		}
+?>
+<p>
+发行厂商：<?=$sFactoryName?><br>
+许可证过期时间：<?=$sExpire?><br>
+<?= $bForSell? "正式销售版":"非正式销售版"?>
+</p>
+<?
+	}else{
+		echo "<h2>许可证已经失效</h2>";
+		header("Refresh: 0;URL=/admin/system/serialno.ns");
+	}
+}
+?>
+
+
+                </td>
+              </tr>
+            </table>
+            <p>&nbsp;</p>
+            </td>
+        </tr>
+        <tr>
+          <td height="8" bgcolor="DDECF9"><img src="images/tr.gif" width="1" height="1"></td>
+        </tr>
+      </table></td>
+    <td width="10" bgcolor="F3F8FD">&nbsp;</td>
+    <td background="images/intro_bg.gif">&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>
+
