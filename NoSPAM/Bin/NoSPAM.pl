@@ -8,7 +8,7 @@ use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::IPUtil;
 
-# We close stdout, for hide all warn.
+# We close stderr, for hide all warn.
 # to disable any debug information to appear. 
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
@@ -44,21 +44,29 @@ my $zlog = new AKA::Mail::Log;
 my $iputil = new AKA::IPUtil;
 
 my $action_map = { 
-			'start_System' => [\&start_System, "Init system on boot" ],
-			'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ],
+			'start_System' => [\&start_System, "Init system on boot" ]
+			, 'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ]
 
-			'reset_Network' => [\&reset_Network, ""],
-			'reset_ConnPerIP' => [\&reset_ConnPerIP, ""],
-			'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""],
-			'get_GW_Mode' => [\&get_GW_Mode, ""], 
-			'set_GW_Mode' => [\&set_GW_Mode, ""], 
-			'get_Serial' => [\&get_Serial, ""],
-			'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"],
-			'check_License' => [\&check_License, ""],
-			'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"],
-			'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"],
-			'reboot' => [\&reboot, ""],
-			'shutdown' => [\&shutdown, ""]
+			, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, "Get All NameSpace from AMD" ]
+			, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, 'Get All Data of a NameSpace from AMD' ]
+			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, 'Del a item of a NameSpace from AMD' ]
+
+			,'reset_Network' => [\&reset_Network, ""]
+			,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
+			,'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""]
+
+			,'get_GW_Mode' => [\&get_GW_Mode, ""]
+			,'set_GW_Mode' => [\&set_GW_Mode, ""]
+
+			,'get_Serial' => [\&get_Serial, ""]
+			,'check_License' => [\&check_License, ""]
+
+			,'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"]
+			,'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"]
+
+			,'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"]
+			,'reboot' => [\&reboot, ""]
+			,'shutdown' => [\&shutdown, ""]
 		};
 
 #use Data::Dumper;
@@ -875,6 +883,74 @@ sub shutdown
 sub clean_Log
 {
 	return `cat /dev/null > /var/log/NoSPAM.csv`;
+}
+
+sub get_DynamicEngineDBKey
+{
+	use AKA::Mail::Dynamic;
+
+	my $AMD = new AKA::Mail::Dynamic;
+
+	my %CName = ( 'IP' => 'IP地址'
+			,'Subject' => '邮件主题'
+			,'From' => '发件人'
+			);
+
+	my @EName = $AMD->get_dynamic_info_ns_name;
+
+	foreach ( @EName ){
+		print "$_,$CName{$_}\n";
+	}
+
+	return 0;
+}
+
+sub get_DynamicEngineDBData
+{
+	my $ns = shift @param;
+
+	return 5 unless $ns;
+
+	use AKA::Mail::Dynamic;
+
+	my $AMD = new AKA::Mail::Dynamic;
+
+	my $ns_obj = $AMD->get_dynamic_info_ns_data($ns);
+	return 20 unless $ns_obj;
+
+	my $item;
+	my @result;
+	foreach $item ( keys %{$ns_obj} ){
+		$item =~ s/,/，/g;
+		@result = ($item);
+		if ( defined $ns_obj->{$item}->{_DENY_TO_} ){
+			push (@result,$ns_obj->{$item}->{_DENY_TO_});
+		}else{
+			push (@result,'');
+		}
+		foreach ( sort keys %{$ns_obj->{$item}} ){
+			push (@result,$1) if /^(\d+)\.(\d+)$/ ;
+		}
+		print join(',',@result), "\n";
+	}
+
+	return 0;
+}
+
+sub del_DynamicEngineKeyItem
+{
+	my $ns = shift @param;
+	my $item = shift @param;
+
+	return 5 unless ( $ns && $item );
+
+	use AKA::Mail::Dynamic;
+
+	my $AMD = new AKA::Mail::Dynamic;
+
+	return 10 unless $AMD->del_dynamic_info_ns_item ($ns,$item);
+
+	return 0;
 }
 
 
