@@ -179,7 +179,7 @@ sub is_overrun_rate_per_XXX
 	$deny_sec ||= $self->{define}->{DefaultDenyTime};
 
 	# 0 means unlimited
-	return (0,'引擎无参数') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
+	return (0,'引擎未限制') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );

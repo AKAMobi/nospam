@@ -55,7 +55,7 @@ if($ServerMode == "Server"){
 	e.add(new WebFXTreeItem('连接频率','dynamic/connrateperip.ns','main'));
 	e.add(new WebFXTreeItem('实时管理','dynamic/realtime.ns','main'));
 
-	var c = new WebFXTreeItem('垃圾邮件引擎','help/antispam.htm','main');
+	var c = new WebFXTreeItem('垃圾识别引擎','help/antispam.htm','main');
 	tree.add(c);
 	c.add(new WebFXTreeItem('引擎开关','antispam/spamengine.ns','main'));
 	var c1 = new WebFXTreeItem('垃圾识别');
