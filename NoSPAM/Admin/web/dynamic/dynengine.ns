@@ -1,0 +1,38 @@
+<?
+require_once("../inc/include.ns");
+
+if($_POST["DynEngine"]){
+	$spamconf->setParam("DynamicEngine",$_POST["DynEngine"]);
+	$spamconf->save();
+	if(($ret=wi("reset_DynamicEngine",$result))==0)
+		echo "修改成功";
+	else
+		echo "修改失败，错误代码：".$ret;
+}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>引擎开关</title>
+</head>
+
+<body>
+<form name="form1" method="post" action="">
+  <p>
+    <label>
+    <input type="radio" name="DynEngine" value="Y"<?if($bDynamic) echo " checked";?>>
+    开启</label>
+    <br>
+    <label>
+    <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?>>
+    关闭</label>
+    <br>
+    <input type="submit" name="Submit" value="修改">
+  </p>
+</form>
+</body>
+</html>
+<?
+}
+?>

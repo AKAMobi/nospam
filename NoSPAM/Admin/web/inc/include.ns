@@ -1,0 +1,15 @@
+<?
+require("const.ns");
+require("classes.ns");
+require("params.ns");
+require("functions.ns");
+require("vpopadm.inc.ns");
+
+if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
+?>
+<br>
+您没有访问该网页的权限。<br>
+<?php
+exit(0);
+}
+?>

@@ -1,0 +1,41 @@
+<?
+require_once("../inc/include.ns");
+
+if( wi("get Serial",$result)==0 ){
+	$serial = trim($result[0]);
+}else{
+	die("获取序列号时出现错误！");
+}
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>本设备序列号</title>
+</head>
+
+<body>
+<p>本设备序列号为： <?=$serial?></p>
+<?
+if(!file_exists(LICENSE)){
+?>
+<p> 本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。 </p>
+<form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
+  <input type="file" name="license">
+  <input type="submit" name="Submit" value="提交">
+</form>
+<?
+}else{
+	if(($ret=wi("check_License License.dat",$result))==0){	
+?>
+<p> 本设备 License 许可正确！ </p>
+<?
+	}else{
+?>
+<p> 错误： #<?=$ret?> License 许可已过期或者错误，请联系销售商。  </p>
+<?
+	}
+}
+?>
+</body>
+</html>

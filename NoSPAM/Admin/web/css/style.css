@@ -1,0 +1,28 @@
+table.RuleTB {
+	width: 100%;
+	border: 2px solid;
+}
+tr.RuleTBH {
+	background-color: #000000;
+	color: #FFFFFF;
+	font-size: 16px;
+	font-family: ËÎÌו, Verdana, Arial, Helvetica, sans-serif;
+}
+tr.RuleTB1 {
+	font-size: 12px;
+	font-family: ËÎÌו, Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	background-color: #FFFFFF;
+	height: 20px;
+}
+tr.RuleTB2 {
+	font-size: 12px;
+	font-family: ËÎÌו, Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	background-color: #CCCCCC;
+	height: 20px;
+}
+
+a:link { color: #000000; text-decoration: none; }
+a:hover { color: blue; text-decoration: underline; }
+a:visited { text-decoration: none; }

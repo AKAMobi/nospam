@@ -1,0 +1,163 @@
+<?
+require_once("../inc/include.ns");
+
+if($_POST["Traceable"]){
+	if($_POST["Traceable"]=="Y"){
+		$spamconf->setParam("Traceable","Y");
+		$spamconf->setParam("TraceSpamMask",intval(intval($_POST["TraceSpamMask"])/8));
+		$spamconf->setParam("TraceMaybeSpamMask",intval(intval($_POST["TraceMaybeSpamMask"])/8));
+		$sType = "HAND";
+		if(sizeof($_POST["options"]) > 0){
+			foreach($_POST["options"] as $option)
+				$sType .= ",".$option;
+		}
+		$spamconf->setParam("TraceType",$sType);
+	}else{
+		$spamconf->setParam("Traceable","N");
+	}
+	$spamconf->save();
+	if(($ret=wi("reset_Traceable",$result))==0)
+		echo "修改成功！";
+	else
+		echo "修改失败，错误代码：".$ret;
+}else{
+$bTrace = ($spamconf->getParam("Traceable")=="Y")? true:false;
+$sType = $spamconf->getParam("TraceType");
+$iTraceSpamMask = intval($spamconf->getParam("TraceSpamMask"))*8;
+$iTraceMaybeSpamMask = intval($spamconf->getParam("TraceMaybeSpamMask"))*8;
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>可追查性检查</title>
+<script type="text/javascript" src="../js/range.js"></script>
+<script type="text/javascript" src="../js/timer.js"></script>
+<script type="text/javascript" src="../js/slider.js"></script>
+<script language="javascript">
+var bStop, s1Value, s2Value;
+<?
+if(!$bTrace){
+?>
+bStop = true;
+s1Value = form1.slider1.defaultValue; 
+s2Value = form1.slider2.defaultValue;
+<?
+}
+?>
+function change(bState)
+{
+	if(bState){
+		bStop = true;
+		s1Value = s1.getValue();
+		s2Value = s2.getValue();
+		form1.option1.disabled = true;
+		form1.option2.disabled = true;
+		form1.slider1.disabled = true;
+		form1.slider2.disabled = true;
+	}else{
+		form1.option1.disabled = false;
+		form1.option2.disabled = false;
+		form1.slider1.disabled = false;
+		form1.slider2.disabled = false;
+		bStop = false;
+	}
+}
+
+function formReset()
+{
+	if(bStop){
+		bTemp = true;
+		bStop = false;
+	}
+	s1.setValue(form1.slider1.defaultValue);
+	s2.setValue(form1.slider2.defaultValue);
+	if(bTemp)
+		bStop = true;
+	if(form1.Traceable[0].defaultChecked)
+		change(false);
+	else
+		change(true);
+}
+</script>
+<link type="text/css" rel="StyleSheet" href="../css/winclassic.css" />
+</head>
+
+<body>
+<form name="form1" method="post" onreset="formReset();">
+  <p>
+    <label>
+    <input type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> onclick="change(false)">
+  开启</label>
+    <br>
+    <label>
+    <input name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> onclick="change(true)">
+  关闭</label>
+    <br>
+    可追查性选项：
+    <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Mail")!==false) echo " checked"; ?>>邮件
+    <input name="options[]" type="checkbox" id="option2" value="IP"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"IP")!==false) echo " checked"; ?>>IP </p>
+  <p>
+  <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td>严格可追查度：</td>
+  <td><div class="slider" id="slider-1" tabIndex="1">
+  	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>"/>
+  </div></td>
+  </tr>
+  <tr>
+  <td>可追查度：</td>
+  <td><div class="slider" id="slider-2" tabIndex="1">
+    <input class="slider-input" id="slider2" name="TraceSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceSpamMask?>"/>
+  </div></td>
+  </tr>
+  </table>
+ <script>
+ var s1 = new Slider(document.getElementById("slider-1"), document.getElementById("slider1"));
+ var s2 = new Slider(document.getElementById("slider-2"), document.getElementById("slider2")); 
+ s1.setMaximum(256);
+ s2.setMaximum(256);
+ s1.setValue(form1.slider1.defaultValue);
+ s2.setValue(form1.slider2.defaultValue);
+ s2.onchange = function (){
+	 if(bStop){
+		 s2.setValue(s2Value);
+	 }else{
+		 if(s2.getValue() > s1.getValue())
+			 s1.setValue(s2.getValue());
+	 }
+ }
+ s1.onchange = function (){
+	 if(bStop){
+		 s1.setValue(s1Value);
+	 }else{
+		 if(s2.getValue() > s1.getValue())
+			 s2.setValue(s1.getValue());
+	 }
+ }
+ window.onresize = function (){
+ 	s1.recalculate();
+	s2.recalculate();
+ };
+ </script>
+  </p>
+  <p>
+    <input type="reset" name="reset" value="恢复">
+	<input type="button" value="推荐值" onclick="s1.setValue(22*8);s2.setValue(16*8);">
+    <input type="submit" name="submit" value="提交">
+  </p>
+</form>
+<?
+if(!$bAntiSpam){
+?>
+<script>
+alert("注意：反垃圾引擎未启动");
+</script>
+<?
+}
+?>
+</body>
+</html>
+<?
+}
+?>

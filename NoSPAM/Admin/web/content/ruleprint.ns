@@ -1,0 +1,146 @@
+<?
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT"); // always modified
+header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache"); // HTTP/1.0
+
+require_once("../inc/include.ns");
+
+if($_GET["db"] == "police" && $bGAView)
+	$config = new RuleDB(PoliceDB);
+else
+	$config = new RuleDB(UserDB);
+
+$sort = $_GET["sort"];
+$order = $_GET["order"];
+$rules = $config->get_rules(0,-1,$sort,$order);
+?>
+<html>
+<head>
+<script language="javascript">
+function changeDB()
+{
+    if(document.all.DBSelect.value=="1")
+        location.href = "ruleprint.ns?sort=<?=$sort?>&order=<?=$order?>";
+    else
+        location.href = "ruleprint.ns?db=police&sort=<?=$sort?>&order=<?=$order?>";
+}
+</script>
+</head>
+<body>
+<p>
+<select name="DBSelect" onchange="changeDB()">
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安部数据（只读）<? } ?>
+<option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户自定义数据（可修改）
+</select>
+</p>
+<?
+foreach($rules as $rule){
+	$keywords = $rule->get_elements_by_tagname("rule_keyword");
+	$sizes = $rule->get_elements_by_tagname("size");
+	$attachments = $rule->get_elements_by_tagname("attachment");
+	$action = $config->get_action_rule($rule->get_attribute("rule_id"));
+	$keywordscount = count($keywords);
+	$sizescount = count($sizes);
+	$attachmentscount = count($attachments);
+?>
+<table border="1" width="100%">
+<tr><td align="center">
+	<table border="0" width="95%">
+	<tr>
+		<td>规则编号：<?=$rule->get_attribute("rule_id")?></td>
+		<td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
+	</tr>
+	<tr>
+		<td>类别：<?=$Category[$rule->get_attribute("category_id")]?></td>
+		<td>编号类型：<?=$rule->get_attribute("id_type")?></td>
+	</tr>
+	<tr>
+		<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
+		<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
+	</tr>
+	<tr>
+		<td>报警级别：<?=$rule->get_attribute("alarmlevel")?></td>
+		<td></td>
+	</tr>
+	</table>
+	<br>
+	<fieldset style="width: 95%">
+	<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
+	<div align="center">
+<?
+	if($keywordscount > 0){
+		$i = 1;
+		foreach($keywords as $keyword){
+?>
+		<fieldset style="border-style: double; width: 90%">
+		<legend>第<?=$i?>条</legend>
+		匹配位置：<?=$KeyPos[$keyword->get_attribute("key")]?>
+		解码：<? if($keyword->get_attribute("decode")) echo "先解码"; else echo "不先解码"; ?>
+		大小写：<? if($keyword->get_attribute("case_sensitive")) echo "区分大小写"; else echo "不区分大小写"; ?>
+		<br>
+		类型：<?=$KeyMatchType[$keyword->get_attribute("type")]?>
+		过滤内容：<?=utf8_decode($keyword->get_attribute("keyword"))?><br>
+		</fieldset><br><br>
+<?
+		$i++;
+		}
+	}
+?>
+	</div>
+	</fieldset>
+	<fieldset style="width: 95%">
+	<legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
+	<div align="center">
+<?
+	if($sizescount > 0){
+		$i = 1;
+		foreach($sizes as $size){
+?>
+		<fieldset style="border-style: double; width: 90%">
+		<legend>第<?=$i?>条</legend>
+		匹配位置：<?=$SizePos[$size->get_attribute("key")]?>
+		尺寸要求：<?=$size->get_attribute("sizevalue")?>
+		<br>
+		</fieldset><br><br>
+<?
+			$i++;
+		}
+	}
+?>
+	</div>
+	</fieldset>
+	<fieldset style="width: 95%"> 
+	<legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
+	<div align="center">
+<?
+	if($attachmentscount > 0){
+		$i = 1;
+		foreach($attachments as $attachment){
+?>
+		<fieldset style="border-style: double; width: 90%">
+		<legend>第<?=$i?>条</legend>
+		限制文件名：<? if(!$attachment->has_attribute("filename")) echo "无"; else echo $attachment->get_attribute("filename");?>
+		限制文件类型：<? if(!$attachment->has_attribute("filetype")) echo "无";else echo $attachment->get_attribute("filetype");?>
+		<br>
+		尺寸要求：<?=$attachment->get_attribute("sizevalue")?>
+		</fieldset><br><br>
+<?
+			$i++;
+		}
+	}
+?>
+	<div>
+	</fieldset>
+	<br>
+	动作：<?=$Actions[$action->get_attribute("action")]?>
+	动作参数：<? if($action->get_attribute("action_param")==null) echo "无"; else echo $action->get_attribute("action_param"); ?>
+</td></tr>
+</table>
+<br>
+<?
+}
+?>
+</body>
+</html>

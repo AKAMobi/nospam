@@ -1,0 +1,59 @@
+<?
+require_once("../inc/include.ns");
+
+if($_POST["BlockDomain"]){
+    if($_POST["BlockDomain"] == "Y"){
+        $spamconf->setParam("BlockDomain","Y");
+        $spamconf->setList("BlackDomainList",$_POST["BlackDomainList"]);
+    }else{
+        $spamconf->setParam("BlockDomain","N");
+    }
+    $spamconf->save();
+    if(($ret=wi("reset_BlackDomain",$result))==0)
+        echo "修改成功！";
+    else
+        echo "修改失败，错误代码：".$ret;
+}else{
+
+$bState = ($spamconf->getParam("BlockDomain")=="Y")? true:false;
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>邮件域名黑名单</title>
+</head>
+
+<body>
+<form name="form1" method="post" action="">
+  <p>
+    <label>
+    <input type="radio" name="BlockDomain" value="Y"<? if($bState) echo " checked" ?> onclick="form1.BlackDomainList.disabled=false">
+    开启</label>
+    <br>
+    <label>
+    <input name="BlockDomain" type="radio" value="N"<? if(!$bState) echo " checked" ?> onclick="form1.BlackDomainList.disabled=true">
+    关闭</label>
+  </p>
+  <p>
+    <textarea name="BlackDomainList" id="BlackDomainList" rows="15"<? if(!$bState) echo " disabled" ?>><?=$spamconf->getList("BlackDomainList");?></textarea>  
+  </p>
+  <p>
+    <input type="submit" name="Submit" value="修改">
+</p>
+</form>
+<?
+if(!$bAntiSpam){
+?>
+<script>
+alert("注意：反垃圾引擎未启动");
+</script>
+<?
+}
+?>
+</body>
+</html>
+<?
+}
+?>

@@ -1,0 +1,184 @@
+<?
+require_once("../inc/include.ns");
+
+$action = $_POST["action"];
+if(!$action)
+	$action = $_GET["action"];
+
+if($action != "del"){
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+	header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT"); // always modified
+	header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache"); // HTTP/1.0
+}
+
+switch($action){
+	case "add":
+		add();
+		break;
+	case "del":
+		del();
+		break;
+	case "save":
+		save();
+		break;
+	case "modify":
+		modify();
+		break;
+	default:
+		show();
+		break;
+}
+
+function show()
+{
+	global $Category;
+?>
+<html>
+<body>
+<table border="0" width="100%">
+<tr><td align="center" valign="middle">
+<table border="0" width="50%" cellspacing="15">
+<form method="POST">
+<input type="hidden" name="action" value="del" />
+<th align="right">分类编号</th>
+<th align="left">分类名称</th>
+<?
+if(sizeof($Category) > 0){
+	$i = 0;
+	foreach($Category as $id=>$name){
+?>
+<tr>
+	<td width="50%" align="right">
+		<input type="checkbox" name="Del<?=$i?>" value="YES" /><?=$id?>
+		<input type="hidden" name="id[]" value="<?=$id?>" />
+	</td>
+	<td align="left"><a href="category.ns?action=modify&id=<?=$id?>"><?=$name?></a>
+		<input type="hidden" name="name[]" value="<?=$name?>" />
+	</td>
+</tr>
+<?
+		$i++;
+		}
+	}
+?>
+<tr><td colspan="2" align="center">
+<input type="button" value="添加" onclick="location.href='category.ns?action=add'" /> 
+<input type="submit" value="删除" />
+</td></tr>
+</form></table>
+</td></tr>
+</table>
+</body>
+</html>
+<?
+}
+
+function del()
+{
+	$ids = $_POST["id"];
+	$names = $_POST["name"];
+	$str = "";
+
+	$i = -1;
+	foreach($ids as $id){
+		$i++;
+		if($_POST["Del".$i] == "YES")
+			continue;
+		$str .= $id."\t".$names[$i]."\n";
+	}
+	savefile(trim($str));
+	header("Location: category.ns");
+}
+
+function savefile($str)
+{
+	$categories = explode("\n",$str);
+	if(count($categories) > 1){
+		$temp = array();
+		foreach($categories as $category){
+			list($id,$name) = explode("\t",$category);
+			$temp[$id] = trim($name);
+		}
+		ksort($temp,SORT_NUMERIC);
+		$str = "";
+		foreach($temp as $id=>$name){
+			$str .=$id."\t".$name."\n";
+		}
+	}
+	savetofile($str,Category);
+}
+
+function add()
+{
+?>
+<html>
+<body>
+<table width="100%" border="0">
+<tr><td align="center">
+	<form method="POST">
+	<input type="hidden" name="action" value="save" />
+	分类编号：<input type="text" size="10" maxlength="8"  name="id" />&nbsp;&nbsp;
+	分类名称：<input type="text" name="name" /><br>
+	<input type="submit" value="保存" /> <input type="reset" value="重置" />
+	</form>
+</td></tr>
+</table>
+</body>
+</html>
+<?
+}
+
+function modify()
+{
+	$cid = $_GET["id"];
+	$fp = fopen(Category,"r");
+	$content = trim(fread($fp, filesize(Category)));
+	fclose($fp);
+	$categories = explode("\n",$content);
+	if(!$categories)
+		die("错误的分类编号");
+    foreach($categories as $category){
+		list($id,$name) = explode("\t",$category);
+		$temp[$id] = trim($name);
+	}
+	if(!$temp[$cid])
+		die("错误的分类编号");
+?>
+<html>
+<body>
+<table width="100%" border="0">
+<tr><td align="center">
+	<form method="POST">
+	<input type="hidden" name="action" value="save">
+	<input type="hidden" name="type" value="modify">
+	分类编号：<input type="hidden" size="10" maxlength="8" name="id" value="<?=$cid?>"><?=$cid?>&nbsp;&nbsp;
+	分类名称：<input type="text" name="name" value="<?=$temp[$cid]?>"><br>
+	<input type="submit" value="保存" /> <input type="reset" value="重置" />
+	</form>
+</td></tr>
+</table>
+</body>
+</html>
+<?
+}
+
+function save()
+{
+	$id = $_POST["id"];
+	$name = $_POST["name"];
+	if(!is_numeric($id))
+		die("分类编号必须为数字！");
+	$fp = fopen(Category,"r");
+	$content = trim(fread($fp, filesize(Category)));
+	fclose($fp);
+	if($_POST["type"]!="modify")
+		if(strstr($content,$id."\t"))
+			die("相同的分类编号已存在！");
+	
+	$str = $content."\n".$id."\t".$name;
+	savefile($str);
+	header("Location: category.ns");
+}
+?>

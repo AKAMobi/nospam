@@ -1,0 +1,14 @@
+<?
+if ( !defined("CONST_DEFINED") ){
+	define("CONST_DEFINED","DEFINED");
+	define("CONF","/home/NoSPAM/etc/NoSPAM.conf");
+	define("LICENSE","/home/NoSPAM/etc/License.dat");
+	define("INTCONF","/home/NoSPAM/etc/NoSPAM.intconf");
+	define("LOGFILE","/var/log/NoSPAM.log");
+	define("PoliceDB","/home/ssh/etc/PoliceDB.xml");
+	define("UserDB","/home/NoSPAM/etc/UserFilterRule.xml");
+	define("Category","/home/NoSPAM/etc/category");
+	define("WI","/home/NoSPAM/bin/wi");
+	define("PAGENUM",30);
+}
+?>

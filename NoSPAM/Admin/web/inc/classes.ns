@@ -1,0 +1,291 @@
+<?
+class XMLConfig
+{
+	var $file;
+	var $dom;
+	var $xpath;
+
+	function XMLConfig($file)
+	{
+		$this->file = $file;
+		if(!file_exists($file)){
+			$dom = domxml_open_mem("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><rule-add-modify><rule rule_id=\"\" /></rule-add-modify>");
+			$dom->dump_file($file,false,true);
+		}
+		$this->dom = domxml_open_file($file);
+		$this->xpath = xpath_new_context($this->dom);
+	}
+
+	function getNodes($path)
+	{
+		$xpresult = xpath_eval($this->xpath,$path); 
+		return $xpresult->nodeset;
+	}
+
+	function getRoot()
+	{
+		return $this->dom->document_element();
+	}
+
+	function createNode($node)
+	{
+		return $this->dom->create_element($node);
+	}
+
+	function cloneNode($node)
+	{
+		$ret=$node->clone_node();
+	    if($node->type == XML_ELEMENT_NODE){
+    	    if($attrArray = $node->attributes()){
+        	    foreach($attrArray as $attr){
+            	    $ret->set_attribute($attr->name,$attr->value);
+	            }
+    	    }
+        	if ($childArray = $node->children()){
+            	foreach($childArray as $child) {
+                	$newnode=$this->cloneNode($child);
+	                $ret->append_child($newnode);
+    	        }
+	        }
+   		 }
+		return $ret;
+	}
+
+	function save()
+	{
+		$root = $this->dom->document_element();
+		$doc = domxml_new_doc("1.0");
+		$newroot = $this->cloneNode($root);
+		$doc -> append_child($newroot);
+		$str = $doc->dump_mem(true,"ISO-8859-1");
+		savetofile($str,$this->file);
+	}
+}
+
+class RuleDB extends XMLConfig
+{
+	var $sort;
+	var $order;
+	
+	function RuleDB($file = POLICE_DB)
+	{
+		XMLConfig::XMLConfig($file);
+	}
+
+	function _rulecmp($a,$b)
+	{
+		switch($this->sort){
+			case "rule_id":
+			case "rule_comment":
+			case "category_id":
+			case "create_time":
+				$tmpa = $a->get_attribute($this->sort);
+				$tmpb = $b->get_attribute($this->sort);
+				break;
+			case "rule_keyword":
+			case "size":
+			case "attachment":
+				$tmpa = count($a->get_elements_by_tagname($this->sort));
+				$tmpb = count($b->get_elements_by_tagname($this->sort));
+				break;
+			case "action":
+				$actionsA = $a->get_elements_by_tagname("rule_action");
+				$actionA = $actionsA[0];
+				$actionsB =	$b->get_elements_by_tagname("rule_action");
+				$actionB = $actionsB[0];
+
+				$tmpa = $actionA->get_attribute("action");
+				$tmpb = $actionB->get_attribute("action");
+				break;
+		}
+		
+		if($tmpa == $tmpb)
+			return 0;
+
+		if($this->order == "asc")
+			return ($tmpa < $tmpb) ? -1 : 1;
+		elseif($this->order == "desc")
+			return ($tmpa > $tmpb) ? -1 : 1;
+	}
+
+	function get_rules($start = 0, $end = -1, $s = "rule_id" , $o = "unsorted")
+	{
+		$this->sort = $s;
+		$this->order = $o;
+
+		$path = "/rule-add-modify/rule";
+		$tmps = XMLConfig::getNodes($path);
+		$nodes = array();
+		$i = 0;
+		foreach($tmps as $node){
+			if($node->get_attribute("rule_id")){
+				$nodes[$i] = $node;
+				$i++;
+			}
+		}
+	
+		if($start < 0)	$start = 0;
+		if($end < 0 || $end >= $i)	$end = $i-1;
+
+		$ret = array();
+
+		if($order != "unsorted")
+			usort($nodes,array($this,"_rulecmp"));
+
+		while($start <= $end){
+			$ret[$start] = $nodes[$start];
+			$start++;
+		}
+
+		return $ret;
+	}
+
+	function get_rules_count()
+	{
+		$rules = $this->get_rules();
+		$i = 0;
+		foreach($rules as $rule){
+			if($rule->get_attribute("rule_id")){
+				$i++;
+			}
+		}
+		return $i;
+	}
+
+	function get_rule_by_id($id)
+	{
+		$rules = XMLConfig::getNodes("/rule-add-modify/rule[@rule_id='".$id."']");
+		return $rules[0];
+	}
+	
+	function get_action_rule($id)
+	{
+		$rule = $this->get_rule_by_id($id);
+		$tmp = $rule->get_elements_by_tagname("rule_action");
+		return $tmp[0];
+	}
+
+	function create_rule($id)
+	{
+		$rule = XMLConfig::createNode("rule");
+		$rule->set_attribute("rule_id",$id);
+		return $rule;
+	}
+}
+
+class ConfFile
+{
+	var $params;
+	var $file;
+	
+	function ConfFile($file)
+	{
+		$this->file = $file;
+		if(!file_exists($file)){
+			$fp = fopen($file,"w");
+			fclose($fp);
+		}
+		$fp = fopen($file,"r");
+		$str = fread($fp,filesize($file));
+		fclose($fp);
+		$lines = explode("\n",trim($str));
+		foreach($lines as $line){
+			$line = trim($line);
+			if($line=="" || $line[0]=="#")
+				continue;
+			list($key,$value) = explode("=",$line);
+			$this->params[trim($key)] = trim($value);
+		}
+	}
+
+	function getParam($key)
+	{
+		return $this->params[$key];
+	}
+
+	function setParam($key,$value)
+	{
+		$this->params[$key] = $value;
+	}
+
+	function save()
+	{
+		$str = "";
+		foreach($this->params as $key=>$value){
+			$str .= $key."=".$value."\n";
+		}
+		savetofile(trim($str),$this->file);
+	}
+}
+
+class NoSPAMConf extends ConfFile
+{
+	function NoSPAMConf()
+	{
+		ConfFile::ConfFile(CONF);
+	}
+
+	function getList($sList)
+	{
+		$str = ConfFile::getParam($sList);
+		return str_replace(",","\n",trim($str));
+	}
+
+	function setList($sList,$sParam)
+	{
+		$sParam = str_replace(" ","",trim($sParam));
+		$sParam = str_replace("　","",$sParam);
+		$sParam = str_replace("\r","",$sParam);
+		$sParam = str_replace("\n",",",$sParam);
+		if($sList=="WhiteIPList" || $sList=="BlackIPList"){
+			$IPArray = explode(",",$sParam);
+			foreach($IPArray as $ip){
+				if(!checkipaddr($ip))
+					die("IP地址".$ip."格式有误");
+			}
+		}
+		ConfFile::setParam($sList,$sParam);
+	}
+}
+
+class NoSPAMIntConf extends ConfFile
+{
+	function NoSPAMIntConf()
+	{
+		ConfFile::ConfFile(INTCONF);
+	}
+}
+
+class License
+{
+	var $params;
+	
+	function License()
+	{
+		$fp = fopen(LICENSE,"r");
+		$str = fread($fp,filesize(LICENSE));
+		fclose($fp);
+		$lines = explode("\n",trim($str));
+		foreach($lines as $line){
+			$line = trim($line);
+			if($line[0]=="#" )
+				continue;
+			list($key,$value) = explode("=",$line);
+			$this->params[trim($key)] = trim($value);
+		}
+	}
+
+	function Switchable()
+	{
+		if($this->params["ServerGatewaySwitchable"] == "Y")
+			return true;
+
+		return false;
+	}
+
+	function ServerGateway()
+	{
+		return $this->params["ServerGateway"];
+	}
+}
+?>
