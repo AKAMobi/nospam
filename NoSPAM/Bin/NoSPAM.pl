@@ -530,6 +530,11 @@ sub reset_Network
 	$zlog->fatal( "start_System ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
+	$ret = &_file_update_service_localname();
+	$zlog->fatal ( "file_update_all: file_update_service_localname err # $ret !" ) if $ret;
+	$err = 1 if ( $ret );
+
+
 	$ret = &reset_ConnPerIP;
 	$zlog->fatal( "start_System reset_ConnPerIP failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
@@ -1428,6 +1433,25 @@ sub _file_update_hosts
 
 	return $err;
 }
+
+sub _file_update_service_localname
+{
+	# get all ip which we should relay it, on port 26.
+	my $ret = 0; 
+
+	my $content = $conf->{config}->{Network}->{Hostname} || 'localhost';
+
+	$ret = write_file($content, '/service/smtpd/env/LOCALNAME');
+	$ret ||= write_file($content, '/service/ismtpd/env/LOCALNAME');
+
+
+	return ERR_SYSTEM_CALL if system('cd /service/ismtpd;make>/dev/null 2>&1;/usr/bin/svc -t /service/smtpd /service/ismtpd');
+
+	return $ret if ( $ret );
+
+	return 0;
+}
+
 
 
 sub _file_update_ismtp_relay
