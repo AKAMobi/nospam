@@ -1685,5 +1685,3 @@ sub netfilter_reset
 	return $err;
 }
 
-
-# test on branch noSPAM_v2_0
