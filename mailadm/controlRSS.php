@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>Open Relay Deny功能设置</TITLE>
+<TITLE>RSS功能设置</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -29,14 +29,14 @@ function doConfig(){
 	if (!isset($_POST['content'])){ 
 		return false;
 	}
-	$handle=fopen("/var/qmail/control/openrelaylist","w");	
+	$handle=fopen("/var/qmail/control/rsslist","w");	
 	if (!$handle) {
 		echo "错误，无法保存设置！<br>";
 		return false;
 	}
 	fputs($handle,str_replace("\r","",$_POST['content']));
 	fclose($handle);
-	$handle=fopen("/var/qmail/control/openrelaycontrol","w");	
+	$handle=fopen("/var/qmail/control/rsscontrol","w");	
 	if (!$handle) {
 		echo "错误，无法保存设置！<br>";
 		return false;
@@ -50,7 +50,7 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 	echo "设置保存成功！<br>";
 } else {
 
-$handle = fopen ("/var/qmail/control/openrelaycontrol", "r");
+$handle = fopen ("/var/qmail/control/rsscontrol", "r");
 if ($handle) {
 	$info=fscanf($handle,"%d");
 	list($config)=$info;
@@ -63,7 +63,7 @@ if ($handle) {
 	$config=0;
 }
 
-$handle = fopen ("/var/qmail/control/openrelaylist", "r");
+$handle = fopen ("/var/qmail/control/rsslist", "r");
 $list="";
 while (!feof ($handle)) {
     $buffer= fgets($handle, 4096);
@@ -77,12 +77,12 @@ fclose ($handle);
 <INPUT type="hidden" name="doConfig">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="2" class=title><b>设置Open Relay Deny功能</b></td>
+<td colspan="2" class=title><b>设置RSS功能</b></td>
 </tr>
-	<td colspan="2"><input type="checkbox" name="OpenRelay" value="true" <?php if ($config) echo "checked" ;?> >打开Open Relay Deny功能
+	<td colspan="2"><input type="checkbox" name="OpenRelay" value="true" <?php if ($config) echo "checked" ;?> >打开RSS功能
 	</td>
 <tr>
-	<td colspan="2">Open Relay列表服务器地址列表
+	<td colspan="2">RSS列表服务器地址列表
 	</td>
 </tr>
 <tr>
