@@ -1,0 +1,4 @@
+<?php
+define ('QUAR_HTDOCS_DIR'    , '/quar/');
+define ('QUAR_DEFAULT_TITLE' , '¹ýÂËÓÊ¼þ');
+?>

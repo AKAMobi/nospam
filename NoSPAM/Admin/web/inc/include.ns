@@ -10,4 +10,5 @@ require_once("classes.ns");
 require_once("functions.ns");
 require_once("vpopadm.inc.ns");
 require_once("params.ns");
+require_once("report.ns");// add by XiaoyingHu Jul 30,2004
 ?>

@@ -164,4 +164,14 @@ function ConvertSize($iSize)
 		return (intval(100*$iSize/1024)/100)."KB";
 	return $iSize."Bytes";
 }
+
+/*
+* add by XiaoyingHu Jul 30,2004
+*/
+function html_format ($str, $wrap=false) {
+    $str = str_replace (' ', '&nbsp;', htmlspecialchars ($str));
+    if ($wrap) $str = nl2br ($str);
+    return $str;
+}
+
 ?>

@@ -1,0 +1,177 @@
+<?php
+require_once ('funcs.ns');
+
+$actions = array (
+                'view'=>'察看未解码邮件',
+                'viewdecode'=>'察看解码邮件',
+                'del'=>'删除'
+                );
+
+if ($currentUser->init_maillist ()!==0)
+    exit ('System Error!');
+
+$fileName = trim ($_GET['file']);
+$file = $currentUser->get_file ($fileName);
+if (!file_exists ($file))
+    html_error (array ('参数错误!'), 0, 1, 1);
+
+html_init ();
+del_form ($fileName);
+display_navigation_bar ($fileName,$actions);
+switch (strtolower ($_GET['act'])) {
+    case 'view':
+        view_mail ($file);
+        break;
+    default: 
+        view_decode_mail ($file, $fileName);   
+}
+html_quit ();
+?>
+<?php
+/* function definations start */
+function del_form ($fileName) {
+?>
+<form action="main.ns" method="post" name="delform" id="delform">
+<input type="hidden" name="file" value="<?php echo $fileName; ?>" />
+<input type="hidden" name="do_action" value="1" />
+</form>
+<?php    
+}
+
+function display_navigation_bar ($fileName,$actions) {
+    $fileName = urlencode ($fileName);
+    echo '<p align="center">';
+    reset ($actions);
+    while (list ($act, $name)=each ($actions)) {
+        if (strcmp ($act, 'del')==0) 
+            echo '[ <a href="#" onclick="document.delform.submit()">'.$name.'</a> ]';
+        else
+            echo '[ <a href="'.$_SERVER['PHP_SELF'].'?file='.$fileName.'&act='.$act.'">'.$name.'</a> ]&nbsp;';
+    }
+    echo '</p>';
+}
+
+function view_mail ($file) {
+    global $currentUser;    
+?>
+<p align="center">
+<textarea cols="100" rows="30" readonly>
+<?php echo htmlspecialchars (fread(fopen($file, 'r'), filesize($file))); ?>
+</textarea>
+</p>
+<?php
+}
+
+function view_decode_mail ($file, $fileName) {
+    global $currentUser;
+    $content = fread(fopen($file, 'r'), filesize($file));
+    $nl = (strpos($content,"\r\n")?"\r\n":"\n");
+    $params = array(
+					'include_bodies' => true,
+					'decode_headers' => true,
+					'decode_bodies'  => true
+					);
+    $decode = new Mail_mimeDecode($content, $nl);
+    $structure = $decode->decode($params);
+?>
+<br /><center>
+<table cellspacing="0" cellpadding="5" width="90%" border="1" >
+    <tr><td width="80">发件人</td><td><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
+    <tr><td>收件人</td><td><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
+    <tr><td>抄送</td><td><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
+    <tr><td >日期</td><td><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
+    <tr><td>主题</td><td><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
+    <tr><td colspan="2" align="left" valign="top">
+<?php
+    print_mail_body ($fileName, $structure);
+?>    
+    </td></tr>
+    <tr><td colspan="2" align="left" valign="top">
+<?php
+    $idArr = array ();
+    $depth = 1;
+    print_attachments_link ($fileName, $structure->parts, $depth, $idArr);
+?>    
+    </td></tr>
+</table>
+</center>
+<?php    
+    unset ($content);
+    unset ($decode);
+    unset ($structure);
+}
+
+function print_attachments_link ($fileName, $struct, $depth, &$idArr) {
+    for ($i = 0; $i < sizeof ($struct); $i ++) {
+        $idArr[$depth]=$i;
+        $obj = $struct[$i];
+        if (strcasecmp ($obj->ctype_primary, 'multipart')==0) {
+            print_attachments_link ($fileName, $obj->parts, $depth+1, $idArr);
+        }
+        elseif (strcasecmp ($obj->disposition, 'attachment')!=0) {
+            continue;
+        }    
+        else {
+            echo '<li><a target="_blank" href="'.get_file_url ($fileName, $depth, $idArr).'">'.($obj->ctype_parameters['name']?html_format ($obj->ctype_parameters['name']):'附件').'</a></li>';
+        }
+    }
+}
+
+function get_mail_body ($struct, &$content, &$useHtml, &$find) {
+    for ($i = 0; $i < sizeof ($struct); $i ++) {
+        if ($find) break;
+        $obj = $struct[$i];
+        if (strcasecmp ($obj->ctype_primary, 'multipart')==0) {
+            if (strcasecmp ($obj->ctype_secondary, 'alternative')==0)
+                $useHtml = 1;
+            get_mail_body ($obj->parts, $content, $useHtml, $find);
+            if ($find) break;
+        }
+        elseif (strcasecmp ($obj->disposition, 'attachment')==0) {
+            continue;
+        }    
+        else {
+            if (strcasecmp ($obj->ctype_primary, 'text')==0 && strcasecmp ($obj->ctype_secondary, 'plain')==0 && $useHtml)
+                continue;
+            $find = 1;
+            $content = $obj;
+        }
+    }
+    return $find;
+}
+
+function print_mail_body ($fileName, $structure) {
+    $priCtype = $structure->ctype_primary;
+    $secCtype = $structure->ctype_secondary;
+    if (strcasecmp ($priCtype, 'text')==0) {
+        echo html_format ($structure->body, 1, (strcasecmp ($secCtype, 'html')==0)?1:0);
+        return;
+    }
+    elseif (strcasecmp ($priCtype, 'image')==0) {
+        echo '<img src="'.get_file_url ($fileName,1 , array (0)).'" border="0">';
+        return;
+    }
+    elseif (strcasecmp ($priCtype, 'multipart')==0) {
+        $find = 0;
+        $useHtml = (strcasecmp ($structure->ctype_secondary, 'alternative')==0);
+        if (!get_mail_body ($structure->parts, $content, $find, $useHtml))
+            return;
+        print_mail_body ($fileName, $content);
+    }
+    else {
+        echo '<a target="_blank" href="'.get_file_url ($fileName, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'点击查看').'</a>';
+        return;
+    }
+    
+}
+
+function get_file_url ($fileName, $depth, $idArr) {
+    $url = 'download.ns?file='.urlencode ($fileName).'&depth='.intval ($depth);
+    for ($i=1; $i <= $depth; $i ++)
+        $url .= '&id'.$i.'='.$idArr[$i];
+    return $url;
+}
+
+/* function definations end */
+
+?>

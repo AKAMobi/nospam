@@ -1,0 +1,56 @@
+<?
+require_once("../inc/include.ns");
+
+if($QuarantineEngine <= 0)
+	die(_("Sorry, This Product has no Quarantine Filter Engine License"));
+
+if(!adminPerm(PERM_ADMIN_QUARANTINE))
+	die(_("You have no permission to access this page"));
+	
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title><?=_("QuarantineEnginUserList")?></title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<form name="form1" method="post" action="">
+  <p> <?=_("QuarantineEngineUserList")?>:<br>
+    <label>
+    <select name="checkUserList" >
+        <option value="Disabled"><?=_("Disabled")?></option>
+        <option value="File"><?=_("File")?></option>
+    </select>
+    </label>
+    
+    
+    
+    
+    <label>
+    <?=_("Quarantine Time out")?>
+    <input type="hidden" name="QuarantineTimeOutSeconds" value="<?php echo $quarantineEnginTimeOut; ?>" />
+    <input type="text" name="QuarantineTimeOut" value="<?php echo intval ($quarantineEnginTimeOut / 360)/10; ?>" />
+    <select name="QuarantineTimeOutUnit" onchange="doSwitchTime()" >
+        <option value="0"><?=_("Second(s)")?></option>
+        <option value="1" selected ><?=_("Hour(s)")?></option>
+        <option value="2"><?=_("Day(s)")?></option>
+    </select>
+    </label>
+    <br />
+    <label>
+    <?=_("Quarantine time out action")?>
+    <select name="QuarantineTimeOutAction">
+    <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'checked'; ?>><?=_("Drop")?></option>
+    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option>
+    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option>
+    <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'checked'; ?>><?=_("Forward")?></option>
+    </select>
+    </label>
+    <br><br/>
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
+  </p>
+</form>
+</body>
+</html>

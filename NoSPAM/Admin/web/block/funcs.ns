@@ -1,0 +1,90 @@
+<?php
+require_once ('config.ns');
+require_once ('../inc/include.ns');
+require_once("../inc/mimeDecode.ns");
+ob_start ();
+
+session_start ();
+session_name  ();
+
+$currentUser = new EmailUser;
+if (!$stripInitUser)
+    login_init ();
+
+/* user functions start */
+function login_init () {
+    global $currentUser;
+    if (!session_is_registered ('sCurrentUser'))
+        html_error (array ('请先登录!'), 0, 1, 1);
+    if (!$_SESSION['sCurrentUser']['USER'] || strcasecmp ($_SESSION['sCurrentUser']['HOST'], $_SERVER['REMOTE_ADDR']))
+        html_error (array ('请重新登录!'), 0, 1, 1);
+    if (!$currentUser->set_login_user ($_SESSION['sCurrentUser']))
+        html_error (array ('系统错误!'), 0, 1, 1);
+}
+
+function display_mailbox_info () {
+    global $currentUser;
+?>
+<p align="left">
+您的邮箱：<?php echo $currentUser->email; ?>    当前隔离邮件：总共 <?php echo $currentUser->mailCnt; ?> 封，当前 <?php echo $currentUser->start; ?>-<?php echo $currentUser->end; ?> 封，占用空间 <?php echo $currentUser->totalSize; ?>
+&nbsp;&nbsp;&nbsp;&nbsp;[<a href="logout.ns">LOGOUT</a>]
+</p><br />
+<?php    
+}
+/* user functions end */
+
+/* html functions start */
+function html_init ($title=QUAR_DEFAULT_TITLE, $otherHeader='', $otherBodyParms='') {
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE><?php echo $title; ?></TITLE>
+<META http-equiv=content-type content="text/html; charset=gb2312">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+<?php echo $otherHeader; ?>
+</HEAD>
+<BODY <?php echo $otherBodyParms; ?>>
+<?php    
+}
+
+function html_quit () {
+?>
+</BODY></HTML>
+<?php    
+}
+
+function html_error ($errors ,$advices=false, $autoInit=false, $autoExit=true) {
+    if ($autoInit) html_init ();
+?>
+<center><br /><br /><br /><table cellspacing="0" cellpadding="5" border="0" style="border-color: #999999; border-width:1px;border-left-style: solid;border-top-style: solid"><tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
+<font style="font-size: 16px; font-weight: bold; color: #ff0000;">程序在运行过程中出现错误</font></td></tr>
+<tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
+<?php
+    for ($i=0; $i<sizeof ($errors); $i++) 
+        echo '<li>'.html_format ($errors[$i]).'</li>';
+?></td></tr>
+<?php 
+    if ($advices) {
+?>
+<tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">
+<font style="font-size: 14px; font-weight: bold; color: #000000;">我们建议：</font>
+<?php
+    for ($i=0; $i<sizeof ($advices); $i++) 
+        echo '<li>'.html_format ($advices[$i]).'</li>';
+?></td></tr>
+<?php   
+    }
+?>
+<tr><td align="center" style="border-color: #999999; border-width:1px;border-right-style: solid;border-bottom-style: solid">[ <a href="javascript: history.go(-1)">返回上一步</a> ]</td></tr>
+</table>
+<?php
+    if ($autoExit) exit ();
+}
+
+function html_alert ($msg) {
+?>
+<script language="javascript">alert ('<?php echo addslashes ($msg); ?>');</script>
+<?php    
+}
+
+/* html functions end */
+?>

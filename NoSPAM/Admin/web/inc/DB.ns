@@ -1,0 +1,114 @@
+<?php
+
+    /**
+     * DB 类文件，所有数据库驱动均从该类扩展
+     *
+     * @desc 数据库类，包含查询模式设置，错误处理方法，
+     *       数据库的初始化连接，数据库的选择
+     *
+     * @author  ShenKong <shenkong@openphp.cn>
+     * @version $id
+     * @package SPB Forum System
+     * @copyright 您可以使用或者修改该文件，但是不得删除所有版权信息
+     */
+
+    /**
+     * 定义数据库查询模式
+     * DB_FETCH_ASSOC 所得数组索引为字段名
+     * DB_FETCH_ARRAY 所得数组索引为字段名和数值索引
+     * DB_FETCH_ROW 所得数组为数字索引
+     */
+    define("DB_FETCH_ASSOC", 1);
+    define("DB_FETCH_ARRAY", 2);
+    define("DB_FETCH_ROW", 3);
+
+    class DB
+    {
+        /**
+         * 数据库密码
+         *
+         * @var     string
+         * @access  public
+         */
+        var $tblPre = null;
+
+        /**
+         * 错误字符串
+         *
+         * @var     string
+         * @access  public
+         */
+        var $errStr = null;
+
+        /**
+         * @return object 返回 DB 对象
+         * @param array $dsn Data Source name 数据源名称
+         * @param const $fetchMode 定义数据库查询模式     
+         *              DB_FETCH_ASSOC 所得数组索引为字段名
+         *              DB_FETCH_ARRAY 所得数组索引为字段名和数值索引
+         *              DB_FETCH_ROW 所得数组为数字索引
+         * @param bool $pConn 设置是否保持数据库持久性连接，true 为持久性连接，默认为 false
+         * @desc 初始化数据库驱动，并自动建立数据库连接，选择数据库，最终返回 DB 对象
+         */
+        function init($dsn, $fetchMode = DB_FETCH_ASSOC, $pConn = false)
+        {
+            switch (strtolower ($dsn['dbType'])) {
+                case 'sqlite':
+                    $className = "DB_SQLite";
+                    include_once ("DB/DB_SQLite.inc.ns");
+                    break;
+                case 'mysql':
+                    $className = "DB_MySQL";
+                    include_once ("DB/DB_MySQL.inc.ns");
+                    break;
+                default:
+                    $this->errStr = "Unable to include the DB/DB_{$dsn['dbType']}.inc.ns file";
+                    $this->dbError();
+            }
+
+            //  判断数据库驱动类是否存在，否则调用错误处理方法
+            if (!class_exists($className))
+            {
+                $this->errStr = "Unable to include the DB/DB_{$dsn['dbType']}.inc.ns file";
+                $this->dbError();
+            }
+
+            //  初始化数据库驱动，并传入 init 方法所获得的 $fetchMode
+            $db = & new $className($fetchMode);
+
+            //  连接数据库
+            $db->connect($dsn, $pConn);
+
+            //  初次连接自动选择数据库，可以手动改变数据库
+            $db->selectDB();
+
+            //  返回 DB 对象
+            return $db;
+        }
+
+        /**
+         * @return string 返回错误结果
+         * @desc 处理 DB 类所产生的一些错误，该函数还没改进
+         */
+        function dbError()
+        {
+            //  如果首页开启缓冲，在这里清空内容输出，不过后来发现这个并没必要
+            //ob_end_clean();
+
+            $errStr = "Error No : " . mysql_errno() . "\n";
+            $errStr .= "Time : " . date("Y-m-d H:i:s") . "\n";
+            if (isset($this->errStr))
+            {
+                $errStr .= $this->errStr . "\n";
+            }
+            if(isset($this->query))
+            {
+                $errStr .= "Query : " . $this->query . "\n";
+            }
+            $errStr .= "Error MSG : " . mysql_error();
+            echo nl2br($errStr);
+            exit;
+        }
+    }
+
+?>

@@ -1,0 +1,367 @@
+<?php
+
+    /**
+     * DB_MySQL 类文件
+     *
+     * @desc MySQL 数据库类，MySQL 数据库驱动，包含一些常用方法
+     *
+     * @author  ShenKong <shenkong@openphp.cn>
+     * @version $id
+     * @package SPB Forum System
+     * @copyright 您可以使用或者修改该文件，但是不得删除所有版权信息
+     */
+
+    define("DB_GETFETCH_ROW", MYSQL_NUM);
+    define("DB_GETFETCH_ASSOC", MYSQL_ASSOC);
+    define("DB_GETFETCH_ARRAY", MYSQL_BOTH);
+
+    function db_escape_string ($str) {
+        return addslashes ($str);
+    }
+
+    class DB_MySQL extends DB
+    {
+        /**
+         * 数据库类型，目前为 MySQL MySQLi
+         *
+         * @var     string
+         * @access  public
+         */
+        var $dbType = null;
+
+        /**
+         * 数据库主机名，如果为 SQLite 之类的估计就用不着了
+         *
+         * @var     string
+         * @access  public
+         */
+        var $dbHost = null;
+
+        /**
+         * 数据库名
+         *
+         * @var     string
+         * @access  public
+         */
+        var $dbName = null;
+
+        /**
+         * 数据库用户名
+         *
+         * @var     string
+         * @access  public
+         */
+        var $dbUser = null;
+
+        /**
+         * 数据库密码
+         *
+         * @var     string
+         * @access  public
+         */
+        var $dbPswd = null;
+
+        /**
+         * 数据库连接号
+         *
+         * @var     string
+         * @access  public
+         */
+        var $conn   = null;
+
+        /**
+         * 当前数据库查询语句
+         *
+         * @var     string
+         * @access  public
+         */
+        var $query  = null;
+
+        /**
+         * 数据库查询结果
+         *
+         * @var     string
+         * @access  public
+         */
+        var $result = null;
+
+        /**
+         * 错误字符串
+         *
+         * @var     string
+         * @access  public
+         */
+        var $errStr = null;
+
+        /**
+         * 快速查询
+         *
+         * @var     string
+         * @access  public
+         */
+        var $quick  = false;
+
+        /**
+         * 数据库查询语句数组，Debug 用
+         *
+         * @var     string
+         * @access  public
+         */
+        var $sqlStr = array();
+
+        /**
+         * 数据库数据查询次数
+         *
+         * @var     string
+         * @access  public
+         */
+        var $sQueries = 0;
+
+        /**
+         * 数据库数据更新次数
+         *
+         * @var     string
+         * @access  public
+         */
+        var $uQueries = 0;
+
+        function DB_MySQL($fetchMode)
+        {
+            if(!defined("DB_FETCH_MODE"))
+            {
+                switch ($fetchMode)
+                {
+                    case 3:
+                        define("DB_FETCH_MODE", DB_GETFETCH_ROW);
+                    break;
+                    case 2:
+                        define("DB_FETCH_MODE", DB_GETFETCH_ARRAY);
+                    break;
+                    default:
+                        define("DB_FETCH_MODE", DB_GETFETCH_ASSOC);
+                }
+            }
+        }
+
+        function connect($dsn, $pConn = false)
+        {
+            $this->dbHost = $dsn["dbHost"];
+            $this->dbName = $dsn["dbName"];
+            $this->dbUser = $dsn["dbUser"];
+            $this->dbPswd = $dsn["dbPswd"];
+            $this->tbsPre = $dsn["tbsPre"];
+
+            $connFunc = $pConn ? "mysql_pconnect" : "mysql_connect";
+            $this->conn = @ $connFunc($this->dbHost, $this->dbUser, $this->dbPswd);
+            if (!$this->conn)
+            {
+                $this->errStr = "DataBase Connect False : ($this->dbHost, $this->dbUser, ******) !";
+                $this->dbError();
+            }
+        }
+
+        function selectDB()
+        {
+            if ($this->dbName != null)
+            {
+                if(! @ mysql_select_db($this->dbName, $this->conn))
+                {
+                    $this->errStr = "DataBase -[$this->dbName]- does not exist !";
+                    $this->dbError();
+                }
+            }
+            return false;
+        }
+
+        function query($query, $quick = false)
+        {
+            $this->quick = $quick;
+            $this->query = $query;
+            $this->sqlStr[] = $this->query;
+            $queryFunc = $this->quick ? "mysql_unbuffered_query" : "mysql_query";
+            $this->result = @ $queryFunc($this->query, $this->conn);
+            $this->sQueries++;
+            if (!$this->result)
+            {
+                $this->dbError();
+            }
+            return $this->result;
+        }
+
+        function simpleQuery($query, $from = 0, $limit = 0)
+        {
+            if($from)
+            {
+                $from = $from . ',';
+            }
+            if($limit)
+            {
+                $query .= ' Limit ' . $from. $limit;
+            }
+            $this->query($query);
+        }
+
+        function getOne($query)
+        {
+            //$this->query = preg_replace("!(select .+ from [^ ]+)(.*)!i", "\\1", $query);
+            if (!stristr($query, "limit"))
+            {
+                $query .= " Limit 1";
+            }
+            $this->query($query, true);
+            $row = $this->fetchRow(DB_FETCH_ROW);
+            $this->free();
+            return $row[0];
+        }
+
+        function getRow($query, $fetchMode = DB_FETCH_MODE)
+        {
+            if (!stristr($query, "limit"))
+            {
+                $query .= " Limit 1";
+            }
+            $this->query($query, true);
+            $row = $this->fetchRow($fetchMode);
+            $this->free();
+            return $row;
+        }
+
+        function getAll($query, $fetchMode = DB_FETCH_MODE)
+        {
+            $this->query($query, true);
+            $allRows = array();
+            while($rows = @ $this->fetchRow($fetchMode))
+            {
+                $allRows[] = $rows;
+            }
+            $this->free();
+            return $allRows;
+        }
+
+        function update($query)
+        {
+            $this->query = $query;
+            $this->sqlStr[] = $this->query;
+            $this->result = mysql_unbuffered_query($query, $this->conn);
+            if (!$this->result)
+            {
+                $this->errStr = "Update data Error !";
+                $this->dbError();
+            }
+            $this->uQueries++;
+            $this->free();
+            return true;
+        }
+
+        function getTables()
+        {
+            $this->result = @ mysql_list_tables($this->dbName);
+            if (!$this->result)
+            {
+                $this->errStr = "List database's tables Error !";
+                $this->dbError();
+            }
+            $tablesNum = @ mysql_num_rows($this->result);
+            for ($i = 0; $i < $tablesNum; $i++)
+            {
+                $tables[] = mysql_tablename($this->result, $i);
+            }
+            return $tables;
+        }
+
+        function dbSize()
+        {
+            $this->query("Show Table Status Like '$this->tblPre%'", 'SILENT');
+            $dbSize = "";
+            while($table = $this->fetchRow())
+            {
+                $dbSize += $table['Data_length'] + $table['Index_length'];
+            }
+            return $dbSize;
+        }
+
+        function optimize()
+        {
+            $tables = $this->getTables();
+            print_r($tables);
+            $tablesNum = count($tables);
+            for($i=0; $i < $tablesNum; $i++)
+            {
+                $this->update("Optimize Table " . $tables[$i]);
+                echo "Optimeze Table " . $tables[$i] . "\n";
+            }
+        }
+
+        function fetchRow($fetchMode = DB_FETCH_MODE)
+        {
+            switch ($fetchMode)
+            {
+                case 3:
+                    $fetchMode = DB_GETFETCH_ROW;
+                break;
+                case 2:
+                    $fetchMode = DB_GETFETCH_ARRAY;
+                break;
+                case 1:
+                    $fetchMode = DB_GETFETCH_ASSOC;
+                break;
+                default:
+                    $fetchMode = DB_FETCH_MODE;
+            }
+            $rows = @ mysql_fetch_array($this->result, $fetchMode);
+            return $rows;
+        }
+
+        function seek()
+        {
+        }
+
+        function rows()
+        {
+            return @ mysql_num_rows($this->result);
+        }
+
+        function fields()
+        {
+            return @ mysql_num_fields($this->result);
+        }
+
+        function fieldNames()
+        {
+            $fieldNames = array();
+            $fields = $this->fields();
+            for ($i = 0; $i < $fields; $i++)
+            {
+                $fieldNames[] = mysql_field_name($this->result, $i);
+            }
+            return $fieldNames;
+        }
+
+        function lastID()
+        {
+            return @ mysql_insert_id($this->conn);
+        }
+
+        function free()
+        {
+            @ mysql_free_result($this->result);
+            $this->result = null;
+        }
+
+        function close()
+        {
+            @ mysql_close($this->conn);
+        }
+
+        function serverVersion()
+        {
+            return @ mysql_get_server_info($this->conn);
+        }
+
+        function clientVersion()
+        {
+            return @ mysql_get_client_info();
+        }
+    }
+
+?>

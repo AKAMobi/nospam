@@ -1,0 +1,67 @@
+<?php
+require_once ('funcs.ns');
+
+if ($_GET['file'])
+    $fileName = trim ($_GET['file']);
+else
+    html_error (array ('缺少文件名!'), 0, 1, 1);
+
+if ($_GET['depth'])
+    $depth = intval ($_GET['depth']);
+else
+    html_error (array ('缺少文件参数!'), 0, 1, 1);
+
+$idArr = array ();
+for ($i = 1 ; $i <= $depth ; $i ++) {
+    if (isset ($_GET['id'.$i]))
+        $idArr[$i] = intval ($_GET['id'.$i]);
+    else
+        html_error (array ('缺少文件参数!'), 0, 1, 1);
+}
+
+$file = $currentUser->get_file ($fileName);
+if (!file_exists ($file))
+    html_error (array ('参数错误!'), 0, 1, 1);
+
+$content = fread(fopen($file, 'r'), filesize($file));
+$nl = (strpos($content,"\r\n")?"\r\n":"\n");
+$params = array(
+        	'include_bodies' => true,
+			'decode_headers' => true,
+			'decode_bodies'  => true
+		                    		);
+$decode = new Mail_mimeDecode($content, $nl);
+$structure = $decode->decode($params);
+
+$buf = $structure;
+for ($i=1; $i <= $depth; $i ++) {
+    if (!isset ($buf->parts[$idArr[$i]]))
+        html_error (array ('参数错误!'), 0, 1, 1);
+    $buf = $buf->parts[$idArr[$i]];
+}
+
+$obj = $buf;
+html_init ();
+echo ('aaa<br/>');
+switch (strtolower ($obj->headers['content-transfer-encoding'])) {
+    case 'base64':
+        $content = base64_decode ($obj->body);
+        break;    
+    case 'quoted-printable':
+        $content = quoted_printable_decode ($obj->body);
+        break;
+    default:
+        $content = $obj->body;
+}
+
+Header ('Content-type: ' . $obj->ctype_primary.'/'.$obj->ctype_secondary);
+Header ('Accept-Ranges: bytes');
+Header ('Content-Length: ' . strlen ($content));
+Header ('Content-Disposition: attachment;filename='.($obj->d_parameters['filename']?addslashes ($obj->d_parameters['filename']):'inline'));
+echo $content;
+
+unset ($content);
+unset ($decode);
+unset ($structure);
+exit ();
+?>

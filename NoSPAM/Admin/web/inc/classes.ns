@@ -461,6 +461,11 @@ class License
 		return intval($this->params["ContentEngine"]);
 	}
 
+    function QuarantineEngine()
+	{
+	    return intval($this->params["QuarantineEngine"]);
+	}
+
 	function SpamEngine()
 	{
 		return intval($this->params["SpamEngine"]);
@@ -671,4 +676,321 @@ class LoginBlackList
 		savetofile($str,LOGINFAILLIST);
 	}
 }
+
+/* 
+ *  start
+ *  add by Xiaoying Hu Jul 30 , 2004
+ */
+
+class EmailUser {
+    var $email;
+    var $user;
+    var $domain;
+    var $path;
+    var $init;
+    var $fullMailList;
+    var $mailCnt;
+    var $mailList;
+    var $start;
+    var $end;
+    var $totalSize;
+    
+    /**
+        int login (string $emailAddr, string $password)
+        return 0: success
+               1: success
+               -1:emailAddr or Password error!
+               -2:system error
+    */
+    function login ($emailAddr, $password) {
+        if (!checkmailaddr($emailAddr) || !$password)
+            return -1;
+        $this->init = false;
+        $parms = ' QuarantineGetInfo ' . $emailAddr . '  ' . $password;
+        $ret = wi ($parms, $result);
+        
+        switch ($ret) {
+            case 1:
+                $this->init = true;
+            case 0:
+                $this->path = $result[0];
+                $this->email = trim ($emailAddr);
+                list ($this->user, $this->domain) = explode ('@', $this->email);
+                break;
+            default:
+                return $ret;
+        }
+        return 0;
+    }
+    
+    function set_login_user ($userInfo) {
+        if (!is_array ($userInfo)) return false;
+        if (!isset ($userInfo['USER'])) return false;
+        $this->user = $userInfo['USER'];
+        if (!isset ($userInfo['DOMAIN'])) return false;
+        $this->domain = $userInfo['DOMAIN'];
+        if (!isset ($userInfo['EMAIL'])) return false;
+        $this->email = $userInfo['EMAIL'];
+        if (!isset ($userInfo['PATH'])) return false;
+        $this->path = $userInfo['PATH'];
+        if (!isset ($userInfo['INIT'])) return false;
+        $this->init = $userInfo['INIT'];
+        return true;
+    }
+    
+    function init_maillist () {
+        if (!is_dir ($this->path))
+            return -1;
+        if (!($dh = opendir ($this->path))) return -2;
+        $this->fullMailList = array ();
+        while (false !== ($file = readdir ($dh))) {
+            if (strcmp ($file, '.')==0 || strcmp ($file, '..')==0)
+                continue;
+            list ($x, $x, $x, $time, $pid, $info) = explode ('.', $file);
+            if (strcmp ($info, QUARANTINEINFOSUFFIX)==0) { // mail infor file
+                $this->fullMailList[$pid.$time]['INFO'] = $file;
+            }
+            else {
+                $this->fullMailList[$pid.$time]['TIME'] = $time;
+                $this->fullMailList[$pid.$time]['FILE'] = $file;
+                $this->fullMailList[$pid.$time]['PID'] = $pid;
+            }
+        }
+        closedir ($dh);
+        uasort ($this->fullMailList, $this->_u_sort_func);
+        $this->mailCnt = sizeof ($this->fullMailList);
+        $this->totalSize = $this->get_dir_size ($this->path);
+        return 0;
+    }
+    
+    function _u_sort_func ($array1, $array2) {
+        if ($array1['TIME'] > $array2['TIME'])
+            return 1;
+        elseif ($array1['TIME'] < $array2['TIME'])
+            return -1;
+        else
+            return 0;
+    }
+    
+    function get_file ($file) {
+        return $this->path . '/' . $file;    
+    }
+    
+    function get_dir_size ($dir) {
+        if (!is_dir ($dir)) return false;
+        $cmd = 'du -sh '.$dir;
+        exec ($cmd, $buf);
+        $buf = explode ('	', $buf[0]);
+        return $buf[0];    
+    }
+        
+    function get_quarantine_info ($file, &$info) {
+        if (!file_exists ($file)) return false;
+        $lines = array ();
+        if (!($lines = file ($file))) return false;
+        $info = array (
+                        'FROM'=> trim ($lines[0]),
+                        'TO'  => explode (',', trim ($lines[1])),
+                        'SUBJECT' => trim ($lines[2]),
+                        'SIZE' => trim ($lines[3]),
+                        'TYPE'=> trim ($lines[4]),
+                        'REASON'=>trim ($lines[5])
+                        );
+        return true;
+    }
+    
+    function get_mail_info ($file, &$info) {
+        return;
+        /*
+        if (!file_exists ($file)) return false;    
+        $content = '';
+        if (!($fh = fopen ($file, 'r'))) return false;
+        while (!feof ($fh)) {
+            $content .= fgets ($fh);    
+        }
+        fclose ($fh);
+        $mimeDecodeParams = array(
+					'include_bodies' => false,
+					'decode_headers' => true,
+					'decode_bodies'  => false
+					);
+        
+        $nl = (strpos($content,"\r\n")?"\r\n":"\n");
+        $mailDecode = new Mail_mimeDecode ($content , $nl);
+        $mailArr = $mailDecode->decode($mimeDecodeParams);
+        $info['SUBJECT'] = $mailArr->headers['subject'];
+        unset ($content);
+        unset ($mailArr);
+        unset ($mimeDecodeParams);
+        unset ($mailDecode);
+        $info['SIZE'] = filesize ($file);
+        return true;
+        */
+    }
+            
+    function maillist ($start, $num) {
+        $start = intval ($start);
+        $num = intval ($num);
+        $start --;
+        if ($start < 0 || $num < 0 || $start + $num > $this->mailCnt)
+            return false;
+        $this->mailList = array ();
+        $i = 0;
+        reset ($this->fullMailList);
+        $end = $start + $num;
+        $this->start = $start + 1;
+        $this->end   = $end;
+        while (list ($id, $mailArr) = each ($this->fullMailList)) {
+            if ($i < $start) {
+                $i ++;
+                continue;    
+            }
+            if ($i > $end)   break;
+            if (!$this->get_quarantine_info ($this->get_file ($mailArr['INFO']), $qInfo))
+                continue;
+            if (!$this->get_mail_info ($this->get_file ($mailArr['FILE']), $mInfo))
+                continue;
+            $this->mailList[] = array (
+                            'REASON' => $qInfo['REASON'],
+                            'TYPE'   => $qInfo['TYPE'],
+                            'TIME'   => $mailArr['TIME'],
+                            'FILE'   => $mailArr['FILE'],
+                            'PID'    => $mailArr['PID'],
+                            'INFO'   => $mailArr['INFO'],
+                            'FROM'   => $qInfo['FROM'],
+                            'TO'     => $qInfo['TO'], //is a array
+                            'SUBJECT'=> $mInfo['SUBJECT'],
+                            'SIZE'   => $mInfo['SIZE']
+                            );
+            $i ++;
+        }
+        return true;
+    }
+    
+    function process ($jobList, &$result) {
+        $result = array ();
+        $tmp = tempnam ('/tmp', 'QUARANTINEPROCESSMAIL.');
+        $cmd = WI . " QuarantineProcessMail 2>&1 >".$tmp;
+        $pipe = popen($cmd, 'w');
+        if (!$pipe) {
+            unlink ($tmp);
+            return -1;
+        }
+        for ($i = 0 ; $i < sizeof ($jobList); $i ++) {
+            $cmd = ($i+1) . "," . $jobList[$i]['FILE'] . "," . $jobList[$i]['ACT'];
+            fputs ($pipe, $cmd, strlen ($cmd));
+        }
+        pclose ($pipe);
+        $fh = fopen ($tmp, 'rb');
+        if (!$fh) {
+            unlink ($tmp);
+            return -2;
+        }
+        $output = fread ($fh, filesize ($tmp));
+        fclose ($fh);
+        unlink ($tmp);
+        
+        $output = explode ("\n", $output);
+        for ($i=0; $i < sizeof ($output); $i ++) {
+            list ($no, $ret) = explode (',', $output[$i]);
+            $no = intval ($no);
+            if (!$no) continue;
+            $result[] = array ($no, intval ($ret));
+        }
+        return 0;
+    }
+}
+
+class PageTool {
+    var $pageSize;
+    var $pageNo;
+    var $totalNo;
+    var $totalPage;
+    var $defaultPageSize;
+    var $allowedPageSizes;
+    var $num;
+    var $start;
+    var $end;
+    var $etemNum;
+    
+    function PageTool ($pageNo, $totalNo, $pageSize=0, $defaultPageSize=PAGENUM, $allowedPageSizes = array (10, 20, 40, 80, 100)) {
+        $pageSize = intval ($pageSize);
+        $pageNo   = intval ($pageNo);
+        $totalNo  = intval ($totalNo);
+        $this->defaultPageSize = $defaultPageSize;
+        $this->allowedPageSizes = $allowedPageSizes;
+        $this->totalNo = max (0, $totalNo);
+        if ($pageSize < min ($this->allowedPageSizes) || $pageSize > max ($this->allowedPageSizes)) {
+            $pageSize = $this->defaultPageSize; 
+        }
+        $this->pageSize = $pageSize;
+        $this->totalPage = intval (($this->totalNo - 1) / $this->pageSize + 1 );
+        if ($pageNo < 1 || $pageNo > $this->totalPage)
+            $pageNo = 1;
+        $this->pageNo = $pageNo;
+        $this->start = ($this->pageNo - 1) * $this->pageSize + 1;
+        $this->end   = min ($this->totalNo, $this->start + $this->pageSize - 1);
+        $this->num   = $this->end - $this->start + 1;
+    }
+    
+    function gen_url ($url, $parmas) {
+        return '/';
+        //return $url . (strstr ($url, '?')?'&':'?') . $parmas;
+    }
+    
+    function page_list ($url, $etemNum) {
+        if ($etemNum > $this->totalPage) $etemNum = $this->totalPage;
+        $pre = intval ($etemNum / 2);
+        $next = $pre;
+        echo '[&nbsp;';
+        if ($this->pageNo-$pre > 1) 
+            echo '<a href="'.$this->gen_url ($url, 'pn=1&ps='.$this->pageSize).'">&lt;&lt;</a>&nbsp;'.
+                 '<a href="'.$this->gen_url ($url, 'pn='.($this->pageNo-$pre-1).'&ps='.$this->pageSize).'">&lt;</a>&nbsp;';
+        for ($i=$this->pageNo-$pre; $i < $this->pageNo; $i ++) 
+            echo '<a href="'.$this->gen_url ($url, 'pn='.$i.'&ps='.$this->pageSize).'">'.$i.'</a>&nbsp;';
+        echo $this->pageNo . '&nbsp;';
+        for ($i=$this->pageNo+1; $i <= $this->pageNo+$next; $i ++)
+            echo '<a href="'.$this->gen_url ($url, 'pn='.$i.'&ps='.$this->pageSize).'">'.$i.'</a>&nbsp;';
+        if ($this->pageNo-$next < $this->totalPage)
+            echo '<a href="'.$this->gen_url ($url, 'pn='.($this->pageNo+$next+1).'&ps='.$this->pageSize).'">&gt;</a>&nbsp;'.
+                 '<a href="'.$this->gen_url ($url, 'pn='.($this->totalPage).'&ps='.$this->pageSize).'">&gt;&gt;</a>&nbsp;';
+        echo ']&nbsp;&nbsp;&nbsp;';
+    }
+    
+    function page_form ($formName, $actions) {
+?>
+跳到第 <select name="pn" <?php echo $actions; ?>>
+<?php
+        for ($i=1; $i <= $this->totalPage; $i ++) {
+            if ($i == $this->pageNo)
+                echo '<option value="'.$i.'" selected>'.$i.'</option>';
+            else
+                echo '<option value="'.$i.'">'.$i.'</option>';
+        }
+?>
+</select> 页, 每页 <select name="ps" <?php echo $actions; ?>>
+<?php
+        foreach ($this->allowedPageSizes as $ps) {
+            if ($ps == $this->pageSize)
+                echo '<option value="'.$ps.'" selected>'.$ps.'</option>';
+            else
+                echo '<option value="'.$ps.'">'.$ps.'</option>';
+        }
+?>
+</select> 条记录
+<?php    
+    }
+        
+    function page_bar ($formName, $url, $etemNum=5, $actions='') {
+        if ($etemNum) {
+            $this->page_list ($url, $etemNum);
+        }
+        $this->page_form ($formName, $actions);
+    }
+}
+
+/*
+ * add end
+ * add by Xiaoying Hu , jul 30,2004
+ */
 ?>

@@ -1,0 +1,71 @@
+<?php
+require_once ('funcs.ns');
+
+$pageNo = intval ($_POST['pn']);
+$pageSize = intval ($_POST['ps']);
+if ($currentUser->init_maillist ()!==0)
+    exit ('System Error!');
+    
+$jobList = array ();
+if (!$_POST['do']) {
+    $file = trim ($_POST['file']);
+    if (!file_exists ($currentUser->get_file ($fileName)))
+        html_error (array ('参数错误!'), 0, 1, 1);
+    $jobList[] = array ('ACT'=>'D', 'FILE'=>$file);
+}
+else {
+    $start = intval ($_POST['etemstart']);
+    $num = intval ($_POST['etemnum']);
+    
+    if (!$currentUser->maillist ($start, $num))
+        html_error (array ('参数错误!'), 0, 1, 1);
+    for ($i = 0 ; $i < sizeof ($currentUser->mailList) ; $i ++) {
+        if (!isset ($_POST['file_'.$i]))
+            continue;
+        switch (strtoupper ($_POST['file_'.$i])) {
+                case 'D':
+                    $act = 'D';
+                    break;
+                case 'R':
+                    $act = 'R';
+                    break;
+                case 'T':
+                    $act = 'T';
+                    break;
+                case 'F':
+                    $act = 'F';
+                    break;
+            default:
+                continue;    
+        }
+        $file =  $currentUser->mailList[$i]['FILE'];
+        $jobList[] = array ('ACT'=>$act, 'FILE'=>$file);
+    }
+}
+
+$ret = $currentUser->process ($jobList, $result);
+if ($ret!=0) 
+    html_error (array ('程序错误，错误码 #'.$ret . '!'), 0, 1, 1);
+
+html_init ();
+display_mailbox_info ();
+display_process_result ($result);
+display_navigation_bar ();
+
+unset ($currentUser);
+html_quit ();
+
+function display_process_result ($result) {
+    for ($i=0; $i < sizeof ($result); $i ++) {
+        printf ('正在处理第 %d 封邮件……%s <br />', $result[$i][0], ($result[$i][1]===0)?'成功':'失败');    
+    }
+        
+}
+
+function display_navigation_bar () {
+?>
+<p align="center"><input type="button" onclick="window.location.href='main.ns';" value="返回邮件查看界面" /></p>
+<?php    
+}
+
+?>

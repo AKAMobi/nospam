@@ -1,0 +1,52 @@
+<?php
+$stripInitUser = true;
+require_once ('funcs.ns');
+
+if ($_POST['emailAddr'] && $_POST['emailPass']) {
+    $email = trim ($_POST['emailAddr']);
+    $pass  = trim ($_POST['emailPass']);
+    
+    if (!checkmailaddr($email))
+        html_error (array ('ÓÊ¼þµØÖ·´íÎó!'), 0, 1, 1);
+    if (!$pass)
+        html_error (array ('ÇëÊäÈëÃÜÂë!'), 0, 1, 1);
+    switch ($currentUser->login ($email, $pass)) {
+        case 0:
+            //if (session_is_registered ('sCurrentUser'))
+            //    session_unregister ('sCurrentUser');
+            $_SESSION['sCurrentUser'] = array (
+                    'USER' => $currentUser->user,
+                    'DOMAIN' => $currentUser->domain,
+                    'EMAIL' => $currentUser->email,
+                    'PATH'  => $currentUser->path,
+                    'INIT'  => $currentUser->init,
+                    'HOST'  => $_SERVER['REMOTE_ADDR']
+                                                );
+            header ('Location: main.ns' . ($currentUser->init?'init':''));
+            break;
+        case -1:
+            html_error (array ('ÓÃ»§Ãû/ÃÜÂë ´íÎó!'), 0, 1, 1);
+            break;
+        default:
+            html_error (array ('ÏµÍ³´íÎó!'), 0, 1, 1);
+    }
+    exit ();
+}
+
+html_init ();
+login_form ();
+html_quit ();
+
+/* funtion definations */
+function login_form () {
+?>
+<br /><br />
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" onclick="">
+<center><table border="0"><tr align="center"><td colspan="2">Login Form</td></tr><tr><td align="center">Email Address</td>
+<td><input type="text" name="emailAddr" id="emailAddr" size="20" /></td></tr><tr><td align="center">Email Password</td>
+<td><input type="password" name="emailPass" id="emailPass" size="20" /></td></tr>
+<tr><td colspan="2" align="center"><input type="submit" value="Login" /><input type="reset" value="ReSet" /></td></tr></table>
+</form>
+<?php    
+}
+?>

@@ -1,0 +1,306 @@
+<?php
+require_once ('DB.ns');
+
+define ('REPROT_SQL_FILE_DIR', '/home/NoSPAM/sql');
+define ('REPORT_DB_FILE_PATH' , '/home/NoSPAM/noSPAM.db');
+define ('REPORT_ALL_USER_DIR', '/home/NoSPAM/sql/All_Users');
+$reportDirMode = array ('ALL'=>1, 'USER'=>0);
+
+class Report {
+    /**
+     * an object of class DB_SQLite
+     * @var      class DB_SQLite
+     * @access   public
+     */
+    var $db;    
+    
+    /**
+     * SQL string
+     * @var      string
+     * @access   public
+     */
+    var $sql;
+    
+    /**
+     * admin ID
+     * @var      string
+     * @access   public
+     */
+    var $adminId;
+    
+    /**
+     * database file name
+     * @var     string
+     * @access  public
+     */
+    var $dbFile;
+    
+    /**
+     * error message
+     * @var     string
+     * @access  public
+     */
+    var $errMsg;
+    
+    /**
+     * database fetch mode
+     * @var     int
+     * @access  public
+     * @default DB_FETCH_ARRAY
+     */
+    var $fetchMode;
+    
+    /**
+     * defined sql string array
+     * @var    array
+     * @access public
+     */
+    var $definedSqls;
+    
+    /**
+     * defined sql number
+     * @var    int
+     * @access public
+     */
+    var $definedCnt;
+    
+    /**
+     * SQL query result rows
+     * @var     array
+     * @access  public
+     */
+    var $resRows;
+    
+    /**
+     *
+     * color mapping array
+     * @var     array
+     * @access  public
+     */
+    var $color;
+    
+    var $reporter;
+    var $title;
+    var $created;
+    
+    function Report ($adminId, $dbFetchMode=DB_FETCH_ARRAY) {
+        global $reportDirMode;
+        $this->adminId = $adminId;
+        $this->dbFile  = REPORT_DB_FILE_PATH;
+        
+        if (!file_exists ($this->dbFile)) {
+            $this->errMsg = sprintf ('Database file %s is NOT exist!', $this->dbFile);
+            return false;    
+        }
+        if (!file_exists ($this->_sql_dir ($reportDirMode['USER']))) {
+            if (!mkdir ($this->_sql_dir ($reportDirMode['USER']))) {
+                $this->errMsg = 'System error!';
+                return false;    
+            }
+        }
+        $dsn = array ('dbFile'=> $this->dbFile , 'dbMode'=>0666, 'dbType'=>'sqlite' );
+        $tmp = new DB;
+        $this->db = $tmp->init ($dsn);
+        unset ($tmp);
+        return true;
+    }
+    
+    function load () {
+        global $reportDirMode;
+        $this->definedSqls = array ();
+        $sqls = array ();
+        reset ($reportDirMode);
+        while (list ($key, $val)=each ($reportDirMode)) {
+            if (!$this->_load ($val, $sqls))
+                return false;
+            $this->definedSqls = array_merge ($this->definedSqls, $sqls);
+        }
+        $this->definedCnt = sizeof ($this->definedSqls);
+        return true;
+    }
+    
+    function _load ($dirMode, &$sqls) {
+        global $reportDirMode;
+        if (!($dh = opendir ($this->_sql_dir ($dirMode)))) {
+            $this->errMsg = sprintf ('Can NOT open SQL file dir!');
+            return false;    
+        }
+        
+        $sqls = array ();
+        while (false !== ($file = readdir ($dh))) {
+            if (strcmp ($file, '.')==0 || strcmp ($file, '..')==0)
+                continue;
+            list ($time, $type, $x) = explode ('.', $file);
+            $sqls[] = array (
+                                    'FILE' => $file,
+                                    'TIME' => $time,
+                                    'TYPE' => $type
+                                                                );
+        }
+        closedir ($dh);
+        usort ($sqls, '_report_cmp_func');
+        for ($i=0; $i < sizeof ($sqls); $i ++) { 
+            if (!$this->read ($dirMode, $sqls[$i]['FILE'], $sqls[$i]))
+                return false;
+        }
+        return true;
+    }
+    
+    function read ($dirMode, $file, &$sqlArr) {
+        if (!$sqlArr['FILE']) {
+            list ($time, $type, $x) = explode ('.', $file);
+            $sqlArr['FILE'] = $file;
+            $sqlArr['TIME'] = $time;
+            $sqlArr['TYPE'] = $type;
+        }
+        if (!$this->sql_file ($dirMode, $file)) 
+            return false;
+        if (!($fh = fopen ($file, 'r'))) {
+            $this->errMsg = sprintf ('Can NOT open SQL file %s', $file);
+            return false;    
+        }
+        $content = fread ($fh, filesize ($file));
+        fclose ($fh);
+        
+        $p = xml_parser_create();
+        xml_parse_into_struct($p,$content,$vals ,$index);
+        xml_parser_free($p);
+        $sqlArr['TITLE']   = rawurldecode ($vals[1]['value']);
+        $sqlArr['REPORTER']= rawurldecode ($vals[3]['value']);
+        $sqlArr['SQL']     = rawurldecode ($vals[5]['value']);
+        $sqlArr['COLOR']   = rawurldecode ($vals[7]['value']);
+        return true;
+    }
+    
+    function add ($dirMode, $title, $reporter, $sql, $color) {
+        global $reportDirMode;
+        if (!($file = tempnam ($this->_sql_dir ($dirMode), time (). '.' . $dirMode . '.'))) {
+            $this->errMsg = sprintf ('Can NOT create SQL file !');
+            return false;    
+        }
+        return $this->_wirte ($file, $title, $reporter, $sql, $color);
+    }
+    
+    function _wirte ($file, $title, $reporter, $sql, $color) {
+        $fh = fopen ($file, 'w');
+        fputs ($fh, "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<Report>\n");
+        $buf = sprintf ("<Title>%s</Title>\n", rawurlencode (ltrim (trim ($title))));
+        fputs ($fh, $buf);
+        $buf = sprintf ("<Reporter>%s</Reporter>\n", rawurlencode (ltrim (trim ($reporter))));
+        fputs ($fh, $buf);
+        $buf = sprintf ("<SQL>%s</SQL>\n", rawurlencode (ltrim (trim ($sql))));
+        fputs ($fh, $buf);
+        $buf = sprintf ("<Color>%s</Color>\n", rawurlencode (ltrim (trim ($color))));
+        fputs ($fh, $buf);
+        fputs ($fh, "</Report>");
+        fclose ($fh);
+        return true;
+    }
+    
+    function edit ($dirMode, $file, $title, $reporter, $sql, $color) {
+        if (!$this->can_edit_default () && $this->is_default ($dirMode)) {
+            $this->errMsg = 'You don\'t have permission to edit this file!';
+            return false;
+        }
+        if (!$this->sql_file ($dirMode, $file))
+            return false;
+        if (!file_exists ($file)) {
+            $this->errMsg = 'Format file is NOT exist!';    
+            return false;
+        }
+        return $this->_wirte ($file, $title, $reporter, $sql, $color);
+    }
+    
+    function is_default ($type) {
+        global $reportDirMode;
+        return ($type==$reportDirMode['ALL']);    
+    }
+    
+    function can_edit_default () {
+        return !strcasecmp ($this->adminId, 'admin');
+    }
+    
+    function del ($dirMode, $file) {
+        if (!$this->sql_file ($dirMode, $file))
+            return false;
+        if (!$this->can_edit_default () && $this->is_default ($dirMode)) {
+            $this->errMsg = 'You don\'t have permission to edit this file!';
+            return false;
+        }
+        return unlink ($file);    
+    }
+    
+    function query ($dirMode, $file) {
+        $sqlArr = array ();
+        $file = $this->sql_file ($dirMode, $file);
+        if (!$this->read ($dirMode, $file, $sqlArr))
+            return false;
+        $this->sql = $sqlArr['SQL'];
+        $this->resRows = $this->db->getAll ($this->sql, $this->fetchMode);
+        $this->color = $this->make_color_mapping ($sqlArr['COLOR']);
+        list ($this->created ,$x) = explode ('.', $file);
+        $this->reporter = $sqlArr['REPORTER'];
+        $this->title    = $sqlArr['TITLE'];
+        return true;
+    }
+    
+    function color ($colorStr) {
+        $lines = explode ("\n", ltrim (trim ($colorStr)));
+        $ret = array ();
+        for ($i=0; $i < sizeof ($lines); $i++) {
+            $line = trim (ltrim ($lines[$i]));
+            if (!$line) continue;
+            $line = preg_replace ("/ +/i"," ",$line);
+            list ($color, $key) = explode (" ", $line);
+            $ret[$key] = $color;
+        }
+        return $ret;    
+    }
+    
+    function quit () {
+        $this->db->close ();
+        unset ($this->db);  
+    }
+    
+    function _sql_dir ($dirMode) {
+        global $reportDirMode;
+        return ($dirMode==$reportDirMode['ALL'])?REPORT_ALL_USER_DIR:(REPROT_SQL_FILE_DIR . '/' . $this->adminId);
+    }
+    
+    function sql_file ($dirMode, &$fileName) {
+        if (!$this->check_filename ($fileName)) {
+            $this->errMsg = sprintf ("%s is NOT a valid file name!", $fileName);
+            return false;
+        }
+        $fileName = sprintf ("%s/%s",$this->_sql_dir ($dirMode),$fileName);
+        return true;
+    }
+    
+    function check_filename ($fileName) {
+        return  (!stristr ($fileName, "..") && !stristr ($fileName, "/"));
+    }
+}
+
+    function _report_cmp_func ($array1, $array2) {
+        return ($array1['TIME'] == $array2['TIME'])?0:(($array1['TIME'] > $array2['TIME'])?1:-1);
+    }
+
+    function check_sql_statement ($sql, &$err) {
+        $sql = ltrim (trim ($sql));
+        if (strcasecmp (substr ($sql, 0, 6), 'select') != 0) {
+            $err = 'The SQL must be a SELECT statement';
+            return false;    
+        }
+        $i = 0;
+        $buf = $sql;
+        while ($buf = stristr ($buf, 'select')) {
+            $buf = substr ($buf, 6);
+            if ($i > 1) {
+                $err = 'Only a single SQL statement is allowed';
+                return false;    
+            }
+            $i ++;
+        }
+        return true;
+    }
+?>

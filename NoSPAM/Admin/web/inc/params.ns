@@ -53,6 +53,7 @@ $iDenyTimeAfterMaxLogin = $spamconf->hasParam("DenyTimeAfterMaxLogin","System")?
 $Switchable = false;
 $intServerGateway = "Gateway";
 $DynamicEngine = 0;
+$QuarantineEngine = 0;
 $ContentEngine = 0;
 $SpamEngine = 0;
 $sFactoryName = "";
@@ -75,6 +76,7 @@ if(file_exists(LICENSE)){
 	$Switchable = $license->Switchable();
 	$intServerGateway = $license->ServerGateway();
 	$DynamicEngine = $license->DynamicEngine();
+    $QuarantineEngine = $license->QuarantineEngine();
 	$ContentEngine = $license->ContentEngine();
 	$SpamEngine = $license->SpamEngine();
 	$MailGateway = $license->MailGateway();

@@ -1,0 +1,8 @@
+<?php
+$stripInitUser = true;
+require_once ('funcs.ns');
+
+session_unregister ('sCurrentUser');
+unset ($currentUser);
+header ('Location: index.ns');
+?>

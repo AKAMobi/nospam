@@ -1,0 +1,176 @@
+<?php
+require_once ('funcs.ns');
+
+if ($currentUser->init_maillist ()!==0)
+    exit ('System Error!');
+
+$process = 0;
+$jobList = array ();
+$doAction = intval ($_POST['do_action']);
+if ($doAction==1) {
+    $file = trim ($_POST['file']);
+    if ($file) {
+        if (!file_exists ($currentUser->get_file ($fileName)))
+            html_error (array ('参数错误!'), 0, 1, 1);
+        $process = 1;
+        $jobList[] = array ('ACT'=>'D', 'FILE'=>$file);
+    }
+}
+elseif ($doAction==2) {
+    $start = intval ($_POST['etemstart']);
+    $num = intval ($_POST['etemnum']);
+    
+    if (!$currentUser->maillist ($start, $num))
+        html_error (array ('参数错误!'), 0, 1, 1);
+    for ($i = 0 ; $i < sizeof ($currentUser->mailList) ; $i ++) {
+        if (!isset ($_POST['file_'.$i]))
+            continue;
+        switch (strtoupper ($_POST['file_'.$i])) {
+                case 'D':
+                    $act = 'D';
+                    break;
+                case 'R':
+                    $act = 'R';
+                    break;
+                case 'T':
+                    $act = 'T';
+                    break;
+                case 'F':
+                    $act = 'F';
+                    break;
+            default:
+                continue;    
+        }
+        $file =  $currentUser->mailList[$i]['FILE'];
+        $jobList[] = array ('ACT'=>$act, 'FILE'=>$file);
+        $process = 1;
+    }
+}
+else
+    ;
+
+if ($process) {
+    $ret = $currentUser->process ($jobList, $result);
+
+    if ($ret!=0) 
+        html_error (array ('程序错误，错误码 #'.$ret . '!'), 0, 1, 1);
+        
+    if ($currentUser->init_maillist ()!==0)
+        exit ('System Error!');
+}
+
+$pageNo = intval ($_POST['pn']);
+$pageSize = intval ($_POST['ps']);
+$pageTool = new PageTool ($pageNo, $currentUser->mailCnt, $pageSize);
+$currentUser->maillist ($pageTool->start, $pageTool->num);
+
+
+
+html_init ();
+
+if (isset ($_GET['init']))
+    html_alert ('EMail account: ' . $currentUser->email . 'quarantine function enabled.');
+
+display_mailbox_info ();
+
+if ($process)
+    display_process_result ($result);
+?>
+<SCRIPT language=javascript>
+<!--
+function change(obj) {
+	oldbgcolor = obj.style.backgroundColor;
+	obj.style.backgroundColor = "#FFFF00";
+	obj.style.cursor = "hand";
+}
+function restore(obj) {
+	obj.style.backgroundColor = "";
+}
+function setDoVal() {
+    document.form1.do_action.value = "2";
+    document.form1.submit();
+}
+-->
+</SCRIPT>
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="form1" id="form1">
+<input type="hidden" name="etemstart" value="<?php echo $pageTool->start; ?>" />
+<input type="hidden" name="etemnum" value="<?php echo $pageTool->num; ?>" />
+<input type="hidden" name="do_action" value="0" />
+<?php
+    display_mail_list ($currentUser->mailList, $currentUser->start);
+?>
+<p align="right">
+<?php
+    $pageTool->page_bar ('form1', $_SERVER['PHP_SELF'], 9, ' onchange="document.form1.submit()" ');
+?>
+</p>
+<p align="center">
+<input type="button" value="处理邮件" onclick="setDoVal()" />
+
+</p>
+</form>
+<?php
+unset ($currentUser);
+unset ($pageTool);
+html_quit ();
+?>
+<?php 
+/* functions definations start */
+function display_mail_list ($mailList,$start) {
+?>
+<center>
+<table cellspacing="0" cellpadding="3" border="1" width="95%">
+	<tr>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>编号</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>隔离原因</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>隔离时间</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>收件人</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>发件人</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>主题</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>尺寸</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>察看</b></font></td>
+		<td bgcolor="#000000"><font color="#FFFFFF"><b>动作: </b></font> 
+		<input type="radio" value="D" name="action" id="actionDrop" /><font color="#FFFFFF">丢弃 
+		</font> 
+		<input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回 
+		</font> 
+		<input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发 
+		</font> 
+		<input type="radio" value="F" name="action" /><font color="#FFFFFF">转发</font></td>
+	</tr>
+<?php
+    for ($i = 0 ; $i < sizeof ($mailList) ; $i ++) {
+?>
+	<tr onmouseover="change(this)"   onmouseout="restore(this)">
+		<td><?php echo $i+$start; ?></td>
+		<td><?php echo $mailList[$i]['REASON']; ?></td>
+		<td><?php echo date ('Y-m-d H:i:s', $mailList[$i]['TIME']); ?></td>
+		<td><?php echo implode ('<br/>', $mailList[$i]['TO']); ?></td>
+		<td><i><?php echo $mailList[$i]['FROM']; ?></i></td>
+		<td onmouseover="bgcolor='FF0000';"><?php echo html_format ($mailList[$i]['SUBJECT']); ?></td>
+		<td><?php echo ConvertSize ($mailList[$i]['SIZE']); ?></td>
+		<td><font color="#00000">
+		<a target="_blank" href="viewmail.ns?file=<?php echo $mailList[$i]['FILE']; ?>">
+		<img alt="察看" src="images/view.gif" border="0"></a></font></td>
+		<td> 
+		<input type="radio" value="D" name="<?php echo 'file_'.$i; ?>" />丢弃 
+		<input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" />弹回 
+		<input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" />标记转发 
+		<input type="radio" value="F" name="<?php echo 'file_'.$i; ?>" />转发</td>
+	</tr>
+<?php
+    }
+?>
+</table>
+</center><br />
+<?php    
+}
+
+function display_process_result ($result) {
+    for ($i=0; $i < sizeof ($result); $i ++) {
+        printf ('正在处理第 %d 封邮件……%s <br />', $result[$i][0], ($result[$i][1]===0)?'成功':'失败');    
+    }
+        
+}
+/* functions definations end */
+
