@@ -103,7 +103,7 @@ sub init_config
 	#
 	$config->{SpamEngine}->{Traceable} ||= "N";
 	my @default_trace_type = ('Mail','IP');
-	$config->{SpamEngine}->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} ) || \@default_trace_type;
+	$config->{SpamEngine}->{TraceType} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{TraceType} ) || \@default_trace_type;
 	$config->{SpamEngine}->{TraceSpamMask} ||= "16";
 	$config->{SpamEngine}->{TraceMaybeSpamMask} ||= "22";
 
@@ -262,6 +262,9 @@ sub cut_comma_to_array_ref
 
 	my @ret;
 
+#use AKA::Mail::Log;
+#$self->{zlog} ||= new AKA::Mail::Log($self);
+#$self->{zlog}->debug ( "Conf::cut_comma_to_array_ref [$conf_line]" );
 	return \@ret if ( !defined $conf_line || !length($conf_line) );
 
 	foreach ( split(',', $conf_line) ){

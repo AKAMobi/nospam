@@ -89,15 +89,18 @@ sub is_traceable
 
 	my $TIMEOUT=30;
 	eval {
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable in eval " . join(',',@TraceType) );
 		$old_alarm_sig = $SIG{ALRM};
 		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
 		$old_alarm = alarm $TIMEOUT;
 
 		if ( grep(/^Mail$/i,@TraceType) ){
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable in Mail" );
 			push ( @mx_n_a, $self->get_mx_from_domain( $from_domain, $res ) );
 		}
 
 		if ( grep(/^IP$/i,@TraceType) ){
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable in IP" );
 			push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
 		}
 	};
@@ -132,7 +135,7 @@ sub is_traceable
 	my $strict_traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceMaybeSpamMask} || 22;
 
 	foreach my $mx_a_ip ( @mx_n_a ){
-		#$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
 		if ( $traceable && $strict_traceable ){
 			last;
 		}
@@ -172,6 +175,7 @@ sub get_a_from_domain
 
 	my $query = $res->search( $domain );
 
+#$self->{zlog}->debug ( "Mail::Spam::get_a_from_domain $query" );
 	if ($query) {
 		foreach my $rr ($query->answer) {
 			next unless $rr->type eq "A";
