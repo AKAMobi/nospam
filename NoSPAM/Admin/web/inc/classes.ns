@@ -398,6 +398,15 @@ class License
 		}
 	}
 
+	function Language()
+	{
+		if (!array_key_exists('Language',$this->params))
+			return "en_US";
+
+		return $this->params["Language"];
+	}
+
+
 	function Switchable()
 	{
 		if($this->params["ServerGatewaySwitchable"] == "Y")

@@ -10,4 +10,10 @@ require_once("classes.ns");
 require_once("functions.ns");
 require_once("vpopadm.inc.ns");
 require_once("params.ns");
+
+$locale = setlocale(LC_ALL, $license->Language());
+
+$gettext_domain = 'web.nospam.cn';
+bindtextdomain ($gettext_domain, "/home/NoSPAM/LocaleData");
+textdomain ($gettext_domain); 
 ?>
