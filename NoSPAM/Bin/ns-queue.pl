@@ -67,7 +67,7 @@ my $hostname='gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
 
-my $MAXTIME=30;
+my $MAXTIME=60;
 
 #Want debugging? Enable this and read $scandir/qmail-queue.log
 my $DEBUG='1';
@@ -239,7 +239,10 @@ sub qmail_parent_check {
 
 sub clean_up
 {
-	unlink "$scandir/$wmaildir/new/$file_id";
+	# tcp timeout cause engine can't find file ( antivirus/content )
+	# is it asso here?
+	#unlink "$scandir/$wmaildir/new/$file_id";
+	1;
 }
 
 #

@@ -24,17 +24,18 @@ foreach ( @stop_users ){
         }
 }
 
+my $remote_ip = $ENV{'TCPREMOTEIP'};
 my $REMOTE_SMTP = &get_remote_smtp_ip($user);
 
 if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) ){
 #	exit &local_auth( "zixia\@test.com\0zixia\0\0" );
+	zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to local.");
 	exit &local_auth( "$user\0$pass\0$challenge\0" );
 	exit 20;
 }
 
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
-my $remote_ip = $ENV{'TCPREMOTEIP'};
 if ( ! $smtp->auth('LOGIN', $user, $pass) ){
 	zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
 	exit 20;
@@ -133,7 +134,7 @@ sub local_auth
 
 	$SIG{PIPE} = 'IGNORE';
 
-#print NSOUT "fileno: " . fileno(EOUT) . "\n";
+#zlog ($logit, "fileno: [" . fileno(EOUT) . "]" );
 	unless ( 3==fileno(EOUT) ){
 		print NSOUT "535 Unable to create a right pipe.\r\n";
 		return 150;
@@ -143,9 +144,10 @@ sub local_auth
 	close EIN;
 
 #print NSOUT "exec $ARGV[0]\n";
+#zlog ($logit, "exec: $ARGV[0] $ARGV[1]" );
 	exec { $ARGV[0] } @ARGV or print NSOUT "535 Unable to exec for auth! $!\r\n";
 
-	exit 150;
+	return 150;
 }
 
 sub zlog

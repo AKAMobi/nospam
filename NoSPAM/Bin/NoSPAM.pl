@@ -792,7 +792,8 @@ sub get_LogSimpleAnaylize
 #print NSOUT time, "\n";
 	while ( <FD> ){
 		$timestamp = unpack ('A10', $_);
-		next if ( $timestamp < $start_time || $timestamp > $end_time );
+		next if ( $timestamp < $start_time );
+		last if ( $timestamp > $end_time );
 
 		( $timestamp, $direction
 		  , $ip, $from, $to, $subject, $size
