@@ -235,7 +235,7 @@ sub check_expiredate($$)
 
 	return ( 0, '许可证已经过期！' ) if ( $expire_time < $now_time );
 
-	my $days_left = int(($expire_time-$now_time)/86400);
+	my $days_left = int(($expire_time-$now_time)/86400)+1;
 
 	return ( 1, "<b><font color='red'>许可证将在$days_left天后过期！</font></b>") if ( $days_left < 30 );
 

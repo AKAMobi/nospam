@@ -80,7 +80,7 @@ sub new
 
 	$self->{antivirus} 	= new AKA::Mail::AntiVirus($self);
 	$self->{spam} 		= new AKA::Mail::Spam($self);
-	$self->{sa} 		= new AKA::Mail::SA($self);
+	$self->{sa} 		= new AKA::Mail::SA($self, 1);
 	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
@@ -93,6 +93,7 @@ sub new
 	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};	# PoliceDB.xml
 	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};	# UserFilterDB.xml
 	$self->{conffile_list}->{upgrade_log} = $self->{conf}->{define}->{upgrade_log};	# upgrade log
+	$self->{conffile_list}->{SpamAssassin} = "/etc/mail/spamassassin/local.cf";
 
 	$self->check_conffile_update();
 
@@ -1261,8 +1262,8 @@ sub spam_engine
 	else{
 		( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 		
-		# SpamAssassin, default max size 128KB
-		if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||131072) ){
+		# SpamAssassin, default max size 150KB
+		if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||153600) ){
 			$sa_result = $self->{sa}->get_result($self->{mail_info}->{aka}->{emlfilename});
 			if ( ! $is_spam && $sa_result->{SCORE} > 10 ){
 				$reason = $sa_result->{TESTS};

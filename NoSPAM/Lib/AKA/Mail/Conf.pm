@@ -70,11 +70,13 @@ sub init_intconf
 	my $self = shift;
 
         my $intconf;
+	my $intsaconf;
         
 	use Config::Tiny;
 	my $C = Config::Tiny->read( $self->{define}->{intconffile} );
 
 	$intconf = $C->{_};
+	$intsaconf = $C->{SA};
                         
         $intconf->{GAViewable} ||= 'N';
         $intconf->{UserLogUpload} ||= 'N';
@@ -82,6 +84,7 @@ sub init_intconf
         $intconf->{MailGatewayInternalMask} ||= 32;
                         
         $self->{intconf} = $intconf;
+	$self->{intsaconf} = $intsaconf;
 }                       
 
 sub init_config
@@ -128,6 +131,7 @@ sub init_config
 	$config->{SpamEngine}->{TagSubject} ||= "Y";
 	$config->{SpamEngine}->{TagReason} ||= "Y";
 
+	$config->{SpamEngine}->{DisabledTests} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{DisabledTests} );
 	#
 	# Dynamic
 	#
