@@ -46,6 +46,19 @@ sub should_refuse_spam
 	return ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} );
 }
 
+sub antivirus_engine
+{
+	my $self = shift;
+
+	my $emlfile = shift;
+
+	$self->{antivirus} ||= new AKA::Mail::AntiVirus($self);
+
+	return $self->{archive}->catch_virus( {		emlfilename => $emlfile
+						});
+}
+
+
 # return 0 if not archived, otherwise 1;
 # input: ( emlfile, is_spam, match_rule );
 sub archive_engine
