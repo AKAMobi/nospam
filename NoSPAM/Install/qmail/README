@@ -3,3 +3,6 @@ support SSL/TLS on port 25
 
 qmail /var/qmail directory, should has no control directory, for this directory is in *root* direcotory.
 /var/qmail/service/* also  in root/services/*
+
+2004-12-23
+add /var/qmail/queue.empty to fast clean qmail queue ( "mv queue queue.old; cp -Ra queue.empty queue" )
