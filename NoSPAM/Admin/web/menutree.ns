@@ -95,6 +95,7 @@ if($ServerMode == "Server"){
         g.add(gs);
 	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
 	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('TCP连接','status/tcp.html','main') );
 	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
 	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
 	  gs.add( new WebFXTreeItem('磁盘IO','status/hdio.html','main') );
