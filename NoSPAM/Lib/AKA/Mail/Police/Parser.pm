@@ -156,26 +156,28 @@ sub get_head_info
 
 	# TO/CC/BCC 总共接收的人数
 	my $num_receivers = 0;
-	my @receivers;
 
-	@receivers = $head->get('From');
-	$num_receivers += scalar @receivers;
-	$self->{mail_info}->{head}->{from} = join(',',@receivers);
+	$self->{mail_info}->{head}->{from} = $head->get('From');
 
-	@receivers = $head->get('To');
-	$num_receivers += scalar @receivers;
-	$self->{mail_info}->{head}->{to} = join(',',@receivers);
+	$self->{mail_info}->{head}->{to} = $head->get('To');
+	$num_receivers += scalar split(/,/,$head->get('To'));
 
-	@receivers = $head->get('CC');
-	$num_receivers += scalar @receivers;
-	$self->{mail_info}->{head}->{cc} = join(',',@receiveds);
+#$self->{zlog}->log( "$$ to receivers: ". $self->{mail_info}->{head}->{to} );
+#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
 
-	@receivers = $head->get('BCC');
-	$num_receivers += scalar @receivers;
-	$self->{mail_info}->{head}->{bcc} = join(',',@receiveds);
+	$self->{mail_info}->{head}->{cc} = $head->get('CC');
+	$num_receivers += scalar split(/,/,$head->get('CC'));
+#$self->{zlog}->log( "$$ cc receivers: ". $self->{mail_info}->{head}->{cc} );
+#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
+
+	$num_receivers += scalar split(/,/,$head->get('BCC'));
+	$self->{mail_info}->{head}->{bcc} = $head->get('BCC');
+#$self->{zlog}->log( "$$ bcc receivers: ".  $self->{mail_info}->{head}->{bcc});
+#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
 
 	# get all to+cc+bcc
 	$self->{mail_info}->{to_cc_bcc_num} = $num_receivers;
+#$self->{zlog}->log( "$$ total receivers: $num_receivers" );
 
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};
