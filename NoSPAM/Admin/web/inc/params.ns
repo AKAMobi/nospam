@@ -1,53 +1,6 @@
 <?
 require_once('functions.ns');
 
-$KeyPos[1] = _("Subject");
-$KeyPos[2] = _("Mail From");
-$KeyPos[3] = _("To");
-$KeyPos[4] = _("CC");
-$KeyPos[5] = _("Header");
-$KeyPos[6] = _("Body");
-$KeyPos[7] = _("Mail Content");
-$KeyPos[8] = _("Attachment");
-$KeyPos[9] = _("Last Relay IP");
-$KeyPos[10] = _("Sender IP");
-
-$KeyMatchType[0] = _("String Include");
-$KeyMatchType[1] = _("Regular Express Match");
-$KeyMatchType[6] = _("Single IP Match");
-$KeyMatchType[7] = _("IP Seg Match");
-$KeyMatchType[8] = _("IP/Mask Match");
-$KeyMatchType[9] = _("String Exact Match");
-
-$SizePos[1] = _("Mail Content");
-$SizePos[2] = _("Header");
-$SizePos[3] = _("Body");
-$SizePos[4] = _("Attachment Size");
-$SizePos[5] = _("Attachment Counts");
-$SizePos[150] = _("To,CC,Bcc Total");
-
-$FileType[1] = array(_("ZIP File"),"");
-$FileType[2] = array(_("Audio File"),"");
-$FileType[3] = array(_("Image File"),"");
-$FileType[4] = array(_("Text File"),"");
-$FileType[5] = array(_("Exe File"),"");
-$FileType[6] = array(_("Other File"),"");
-
-$Actions[0] = _("Pass");
-$Actions[1] = _("Reject");
-$Actions[2] = _("Drop");
-$Actions[3] = _("Quarantine");
-$Actions[4] = _("Strip Attachment");
-$Actions[5] = _("Delay");
-$Actions[6] = _("NOOP");
-$Actions[7] = _("Accept");
-$Actions[8] = _("Add Receiptor");
-$Actions[9] = _("Del Receiptor");
-$Actions[10] = _("Replace Receiptor");
-$Actions[11] = _("Add Header");
-$Actions[12] = _("Del Header");
-$Actions[13] = _("Replace Header");
-
 $Category = array();
 
 if(file_exists(Category)){
@@ -135,9 +88,67 @@ if(file_exists(LICENSE)){
 	$ProductName = $license->getProductName();
 }
 
+#
+# I18N here
+#
+$locale = setlocale(LC_ALL, $license->Language());
+
+$gettext_domain = 'web.nospam.cn';
+bindtextdomain ($gettext_domain, "/home/NoSPAM/LocaleData");
+textdomain ($gettext_domain); 
+
+
 $ServerMode = $Switchable? $spamconf->getParam("ServerGateway","System"):$intServerGateway;
 
 $AdminID = getSessionVal('AdminID');
 $Privilege = getSessionVal('Privilidge');
+
+$KeyPos[1] = _("Subject");
+$KeyPos[2] = _("Mail From");
+$KeyPos[3] = _("To");
+$KeyPos[4] = _("CC");
+$KeyPos[5] = _("Header");
+$KeyPos[6] = _("Body");
+$KeyPos[7] = _("Mail Content");
+$KeyPos[8] = _("Attachment");
+$KeyPos[9] = _("Last Relay IP");
+$KeyPos[10] = _("Sender IP");
+
+$KeyMatchType[0] = _("String Include");
+$KeyMatchType[1] = _("Regular Express Match");
+$KeyMatchType[6] = _("Single IP Match");
+$KeyMatchType[7] = _("IP Seg Match");
+$KeyMatchType[8] = _("IP/Mask Match");
+$KeyMatchType[9] = _("String Exact Match");
+
+$SizePos[1] = _("Mail Content");
+$SizePos[2] = _("Header");
+$SizePos[3] = _("Body");
+$SizePos[4] = _("Attachment Size");
+$SizePos[5] = _("Attachment Counts");
+$SizePos[150] = _("To,CC,Bcc Total");
+
+$FileType[1] = array(_("ZIP File"),"");
+$FileType[2] = array(_("Audio File"),"");
+$FileType[3] = array(_("Image File"),"");
+$FileType[4] = array(_("Text File"),"");
+$FileType[5] = array(_("Exe File"),"");
+$FileType[6] = array(_("Other File"),"");
+
+$Actions[0] = _("Pass");
+$Actions[1] = _("Reject");
+$Actions[2] = _("Drop");
+$Actions[3] = _("Quarantine");
+$Actions[4] = _("Strip Attachment");
+$Actions[5] = _("Delay");
+$Actions[6] = _("NOOP");
+$Actions[7] = _("Accept");
+$Actions[8] = _("Add Receiptor");
+$Actions[9] = _("Del Receiptor");
+$Actions[10] = _("Replace Receiptor");
+$Actions[11] = _("Add Header");
+$Actions[12] = _("Del Header");
+$Actions[13] = _("Replace Header");
+
 
 ?>
