@@ -355,9 +355,20 @@ sub ZombieFile_clean
 		, '/home/ssh/alert'	=>	'+7'
 	};
 
+	my @workfiles = ( '/home/NoSPAM/spool/ns-queue.debug '
+			, '/var/log/NoSPAM.debug'
+			, '/var/log/NoSPAM.fatal'
+			, '/var/log/NoSPAM.stderr'
+			, '/var/log/NoSPAM.stdout'
+	);
+
 	foreach my $workdir ( keys %$workdirs ){
 		my $mtime = $workdirs->{$workdir};
 		`find $workdir -path $workdir/* -mtime $mtime -exec rm -rf {} \\; >/dev/null 2>&1`;
+	}
+
+	foreach my $workfile ( @workfiles ){
+		open ( FD, ">$workfile" ) && close FD;
 	}
 
 	`find /var/log -path "/var/log/*.*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;

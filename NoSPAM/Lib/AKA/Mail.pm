@@ -94,9 +94,6 @@ sub new
 
 	$self->check_conffile_update();
 
-	# 设置引擎运行的结果数据缺省值
-	$self->init_engine_info();
-
 	return $self;
 
 }
@@ -175,7 +172,7 @@ sub server
 		}elsif ( 0==$pid ){ # child
 			close $server;
 
-$self->{zlog}->debug ( "pid $$ process $client");
+#$self->{zlog}->debug ( "pid $$ process $client");
 			$self->net_process($client);
 			shutdown ( $client, 2 );
 			close $client;
@@ -279,12 +276,19 @@ sub net_process_ex
 {
 	my $self = shift;
 
+	# 重新初始化；
+	$self->{mail_info} = {};
+	        
+open ( ZZZ, ">>/tmp/zzz.log" );
 	$self->recv_mail_info_ex();
+
+use Data::Dumper;
 
 $self->{zlog}->debug ( "after recv_mail_info_ex" );
 	$self->process ( $self->{mail_info} );
 $self->{zlog}->debug ( "after process" );
-
+print ZZZ Dumper($self->{mail_info} );
+close ZZZ;
 	$self->send_mail_info_ex();
 $self->{zlog}->debug ( "after send_mail_info_ex" );
 }
@@ -299,9 +303,8 @@ sub send_mail_info_ex
 	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
 
 #print "after process, before send\n";
-$self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
-	. "smtp_info: [" . $smtp_info . "]\n"
-	. "exit_code: [" . $exit_code . "]" );
+$self->{zlog}->debug( "send_mail_info smtp_code: [$smtp_code],"
+	. "smtp_info: [$smtp_info], exit_code:[$exit_code]" );
 
 
 	if ( $self->{license_ok} ){
@@ -450,6 +453,9 @@ sub process
 	$mail_info->{aka}->{start_time} = $self->{start_time};
 	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
 
+	# 设置引擎运行的结果数据缺省值
+	$self->init_engine_info();
+
 	# 获取文件尺寸和标题等基本信息
 	$self->get_mail_base_info;
 
@@ -554,6 +560,8 @@ sub process
 sub init_engine_info
 {
 	my $self = shift;
+
+	$self->{mail_info}->{aka}->{engine} = undef;
 
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 			result	=>0,
@@ -694,15 +702,22 @@ sub qmail_requeue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
-		open(STDIN,"<$msg")|| exit -1; # return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
-		#open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
+		#$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
+		unless ( open(STDIN,"<$msg") ){
+			$self->{zlog}->fatal ( "mail_requeue reopen stdin for msg $msg failure!" );
+			exit -1;
+		}
 
-		open (STDOUT, "<&EOUT") ||  exit -1; #return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
-		#open (STDOUT, "<&EOUT") || return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
-		select(STDIN);$|=1;
+		unless ( open (STDOUT, "<&EOUT") ){
+			$self->{zlog}->fatal ( "mail_requeue reopen stdout to pipe!" );
+			exit -1;
+		}
 
+		#select(STDIN);$|=1;
+
+$self->{zlog}->debug ( "write_queue before" );
 		$self->write_queue();
+$self->{zlog}->debug ( "write_queue over" );
 
 		#This child is finished - exit
 		exit;
@@ -726,10 +741,9 @@ sub qmail_requeue {
 		close EIN  || return $self->close_smtp (451, "Write error to envelope pipe. (#4.3.0) - $!");
 
 		$envelope =~ s/\0/\\0/g;
-		#$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
+		$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
 
 	}
-#$self->{zlog}->debug ( "here" );
 
 	# We should now have queued the message.  Let's find out the exit status
 	# of qmail-queue.
@@ -903,7 +917,8 @@ sub cleanup {
 
 	$self->{content}->clean;
 
-	chdir("/home/NoSPAM/spool/");
+	#XXX 无用？
+	#chdir("/home/NoSPAM/spool/");
 
 	#rmdir($ENV{'TMPDIR'});
 	unlink( $self->{mail_info}->{aka}->{emlfilename} );
@@ -1213,7 +1228,8 @@ sub spam_engine
 							action	=>	$action,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])) - $dns_query_time,
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])) 
+									- ($dns_query_time||0),
 						dns_query_time => $dns_query_time||0
 	};
 

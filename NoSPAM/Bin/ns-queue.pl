@@ -179,7 +179,7 @@ sub debug {
 
 sub grab_envelope_hdrs {
   select(STDOUT); $|=1;
-  open(SOUT,"<&1")||&error_condition("cannot dup fd 0 - $!");
+  open(SOUT,"<&1")||&error_condition("cannot dup fd 1 - $!");
   $_ = <SOUT>;
   close(SOUT);
   unless ( defined $_ && $_ ne "F\0T\0\0") {
