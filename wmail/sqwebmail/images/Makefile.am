@@ -6,6 +6,7 @@
 CLEANFILES=filelist
 
 IMAGES = address.gif \
+	attachsign.gif \
         cpass.gif \
         draft.gif \
         folderclosed.gif \
