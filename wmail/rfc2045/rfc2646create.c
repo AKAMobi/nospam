@@ -116,8 +116,18 @@ static int wordwrap_sent(const char *buf, size_t cnt,
 				break;
 			continue;
 		}
-
 		j=i+rfcptr->linesize;
+
+                // by lfan
+		{
+			size_t k;
+			for(k = j-1; k >= i; --k)
+				if( buf[k] >= 0 )
+					break;
+			if( (j-1-k)%2 == 1 ) // half char!
+				j++;
+		}
+
 		rc=wordwrap_line(buf, j, i, rfcptr);
 		if (rc || (rc=(*rfcptr->handler)(" \n", 2, rfcptr->voidarg)))
 			break;
