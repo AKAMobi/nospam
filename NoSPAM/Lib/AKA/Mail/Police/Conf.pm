@@ -179,7 +179,7 @@ sub rebirth_update
 	$updatedb->{rule_update}->{rule_sum}->{last_rule_id} = $last_rule_id;
 
 	my $xs = get_filterdb_xml_simple();
-	my $xml = $xs->XMLout( $updatedb );
+	my $xml = $xs->XMLout( $updatedb, NoAttr=>1 );
 	
 	$updatedb_file = $self->{define}->{updatedb};
 	open ( FD, ">$updatedb_file" . ".new" ) or $self->{zlog}->log ( "pf: open updatedb file [$updatedb_file} for writing error." );

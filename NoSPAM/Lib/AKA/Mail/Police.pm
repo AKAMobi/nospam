@@ -8,6 +8,7 @@
 
 use AKA::Mail::Police::Conf;
 use AKA::Mail::Police::Log;
+use AKA::Mail::Police::Filter;
 
 package AKA::Mail::Police;
 
