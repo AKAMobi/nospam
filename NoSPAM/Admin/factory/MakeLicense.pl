@@ -6,7 +6,17 @@ die "pls provide prodno\n" unless $prodno ;
 $License = <<_LICENSE_;
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
-LicenseHTML=<b>客户试用体验(非卖)版 2004-3</b>
+
+LicenseHTML=<b>客户试用体验(非销售)版</b>
+ForSell=No
+ExpireDate=2004-12-31
+
+FactoryName=
+
+DynamicEngineEnabled=No/Yes
+ContentEngineEnabled= No/Yes
+SpamEngineEnabled= No/Yes
+
 _LICENSE_
 
 
