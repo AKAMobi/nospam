@@ -68,7 +68,7 @@ sub get_action
 	}
 
 
-	$self->{zlog}->debug ( "pf: return action [$action] param [$param]" );
+	$self->{zlog}->debug ( "pf: return action [$action] param [$param] for " . $mail_info->{head}->{from} .  ":" . $mail_info->{head}->{server_ip} . "=>" . $mail_info->{head}->{to} );
 
 	if ( 1==$action ){ 
 		$param ||= 'This message was rejected';
