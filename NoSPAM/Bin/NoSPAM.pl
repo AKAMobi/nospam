@@ -9,6 +9,7 @@
 #
 # Copyright 2004. All rights reserved.
 #
+# FIXME 现在函数的返回值很混乱，一部分函数返回0位正常（成功），一部分函数返回1为正常（成功）
 
 
 use strict;
@@ -547,28 +548,28 @@ sub reset_Network
 
 	$ret = &rebuild_default_bridge;
 	$zlog->fatal( "reset_Network rebuild_default_bridge failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	$err = 10 if ( $ret );
 
 	$ret = &netfilter_reset;
 	$zlog->fatal( "reset_Network netfilter_reset failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	$err = 20 if ( $ret );
 
 	$ret = &network_reset_all;
 	$zlog->fatal( "reset_Network network_reset_all failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	$err = 30 if ( $ret );
 
 	$ret = &ProtectDomain_reset;
 	$zlog->fatal( "start_System ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	$err = 40 if ( $ret );
 
 	$ret = &_file_update_service_localname();
 	$zlog->fatal ( "file_update_all: file_update_service_localname err # $ret !" ) if $ret;
-	$err = 1 if ( $ret );
+	$err = 50 if ( $ret );
 
 
 	$ret = &reset_ConnPerIP;
 	$zlog->fatal( "start_System reset_ConnPerIP failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
+	$err = 60 if ( $ret );
 
 	return $ret;
 }
@@ -1684,4 +1685,3 @@ sub netfilter_reset
 
 	return $err;
 }
-
