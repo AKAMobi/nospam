@@ -21,6 +21,8 @@ named 无法出国问题
 
 2004-05-08
 smtp_proxy 的完善
+lilo降级
+网卡缺省down
 
 check rule  match err ( old err , find it out )
 In,Out都打tag的合理性论证
@@ -28,6 +30,4 @@ VLAN LVS
 
 网景
 完成CLI
-lilo降级
-网卡缺省down
 
