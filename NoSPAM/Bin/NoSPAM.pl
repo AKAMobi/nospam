@@ -141,6 +141,8 @@ my $action_map = {
 		,'reboot' => [\&reboot, ""]
 		,'shutdown' => [\&shutdown, ""]
 
+		,'QuarantineGetInfo' => [\&QuarantineGetInfo , "<email address> <password>"]
+
 		,'heartbeat_siwei' => [\&heartbeat_siwei, " : TAP watchdog heartbeat"]
 
 		,'ZombieFile_clean' => [\&ZombieFile_clean, " : clean orphen files"]
@@ -738,6 +740,89 @@ sub shutdown
 sub clean_Log
 {
 	return `cat /dev/null > /var/log/NoSPAM.csv`;
+}
+
+sub QuarantineGetInfo 
+{
+	my $email = shift @param;
+	my $passwd = shift @param;
+
+	$email && $passwd || return -1;
+
+	my ($smtp_ip,$user_raw,$user_domain) = &get_remote_smtp_ip($email) ;
+	$smtp_ip && $user_raw && $user_domain || return -1;
+
+	use Net::SMTP_auth;
+
+	my $smtp = Net::SMTP_auth->new($smtp_ip);
+
+	if ( $smtp->auth('LOGIN', $email, $passwd) || $smtp->auth('LOGIN', $user_raw, $passwd) ){
+		print "/home/NoSPAM/Quarantine/$user_domain/$user_raw";
+		return 0;
+	}else{
+		print "Auth with [$email]:[$passwd]\@$smtp_ip fail!\n";
+		return -1;
+	}
+
+	sub get_remote_smtp_ip
+	{
+		my $user = shift;
+
+		my $user_raw;
+		my $user_domain = "";
+		if ( $user =~ /^([^\@]+)\@(.+)$/ ){
+			$user_raw = $1;
+			$user_domain = $2;
+		}elsif ( $user =~ /^([^\%]+)\%(.+)$/ ){
+			$user_raw = $1;
+			$user_domain = $2;
+		}elsif ( $user =~ /^([^\&]+)\&(.+)$/ ){
+			$user_raw = $1;
+			$user_domain = $2;
+		}elsif ( $user =~ /^([^\!]+)\!(.+)$/ ){
+			$user_raw = $1;
+			$user_domain = $2;
+		}
+
+		unless ( length($user_domain) ){ # 如果用户输入的是 zixia 而不是 zixia@zixia.net 2004-05-08 by zixia
+			my $default_domain_file = '/var/qmail/control/me';
+			if ( -s $default_domain_file ){
+				open ( FD, "<$default_domain_file" );
+				$user_domain = <FD>;
+				close FD;
+				chomp $user_domain;
+			}
+		}
+
+		my $line;
+		my @lines;
+		my $ip = "";
+		my $domain = "";
+
+		if ( open( FD, "</var/qmail/control/smtproutes") ){
+			@lines = <FD>;
+			close FD;
+		}
+
+		foreach $line ( @lines ){
+			chomp $line;
+
+			if ( $line=~/^([^:]+):(\d+\.\d+\.\d+\.\d+)/ ){
+				($domain,$ip) = ($1,$2);
+			}else{
+				next;
+			}
+
+			if ( $user_domain && ($domain eq $user_domain) ){
+				if ( ! $ip ){
+					next;
+				}
+				return ($ip,$user_raw,$user_domain);
+			}
+		}
+		return (undef,$user_raw,$user_domain);
+	}
+
 }
 
 sub get_DynamicEngineDBKey
