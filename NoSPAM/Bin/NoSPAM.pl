@@ -103,6 +103,7 @@ my $action_map = {
 		, 'VirtualDomain_del' => [\&VirtualDomain_del, ' <MailDomain1> ... : del virtual mail domain' ]
 
 		, 'GA_reset' => [\&GA_reset, ' : update GA conf files' ]
+		, 'SA_update' => [\&SA_update, ' : update SA local.cf file' ]
 
 		, 'ProtectDomain_add' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
 		, 'ProtectDomain_del' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
@@ -428,6 +429,20 @@ _POD_
 	&SystemEngine_reset;
 
 	return $err;
+}
+
+sub SA_update
+{
+	use AKA::Mail::SA;
+	my $SA = new AKA::Mail::SA( undef, 0 );
+
+	unless ( open (FD, ">/etc/mail/spamassassin/local.cf") ){
+		$zlog->debug("NoSPAM Util::SA_update open local.cf failed ");
+		return 10;
+	}
+	print FD $SA->get_local_cf_content();
+	close FD;
+	return 0;
 }
 
 sub MailBaseSetting_reset
