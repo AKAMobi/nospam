@@ -241,7 +241,7 @@ if(!$readonly){
 }
 ?>
 <div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;">‘ÿ»Î÷–£¨«Î…‘∫Ú°≠°≠</div>
-<iframe id="infoFrame" name="infoFrame" frameborder="no" style="display: none"></iframe>
+<iframe id="infoFrame" name="infoFrame" style="display: none" src="dummy.htm"></iframe>
 <?
 if(!$bContentFilter){
 ?>

@@ -37,9 +37,9 @@ function loadPage()
 </head>
 <body onload="loadPage()">
 <table class="RuleTB">
-<tr class="RuleTBH">
+<tr style="background-color: #000000; color: #FFFFFF; font-size: 14px;">
 	<th width="35">±àºÅ</th>
-    <th width="100"><?=$head[0]?></th>
+    <th><?=$head[0]?></th>
     <th><?=$head[1]?></th>
     <th><?=$head[2]?></th>
     <th><?=$head[3]?></th>
@@ -63,21 +63,21 @@ if(count($output) > 0){
 		$values = explode(",",$line);
 ?>
 <tr class="<?=$className?>">
-	<td with="30"><?=$start?></td>
-	<td><?=date("Y-m-d H:i:s",intval($values[0]))?></td>
-	<td><?=$dir[intval($values[1])]?></td>
-	<td><?=$values[2]?></td>
+	<td><?=$start?></td>
+	<td nowrap><?=date("Y-m-d H:i:s",intval($values[0]))?></td>
+	<td nowrap><?=$dir[intval($values[1])]?></td>
+	<td nowrap><?=$values[2]?></td>
 	<td><?=$values[3]?></td>
 	<td><?=$values[4]?></td>
 	<td><?=$values[5]?></td>
-	<td><?=$vSpam[intval($values[6])]?></td>
-	<td><?=$values[7]?></td>
-	<td><?=$rAction[intval($values[8])]?></td>
-	<td><?=$values[9]?></td>
-	<td><?=$Actions[intval($values[10])]?></td>
-	<td><?=$values[11]?></td>
-	<td><?=$dynamic[intval($values[12])]?></td>
-	<td><?=$values[13]?></td>
+	<td nowrap><?=$vSpam[intval($values[6])]?></td>
+	<td nowrap><?=$values[7]?></td>
+	<td nowrap><?=$rAction[intval($values[8])]?></td>
+	<td nowrap><?=$values[9]?></td>
+	<td nowrap><?=$Actions[intval($values[10])]?></td>
+	<td nowrap><?=$values[11]?></td>
+	<td nowrap><?=$dynamic[intval($values[12])]?></td>
+	<td nowrap><?=$values[13]?></td>
 </tr>
 <?
 		$i++;$start++;
