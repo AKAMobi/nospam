@@ -10,5 +10,6 @@ if ( !defined("CONST_DEFINED") ){
 	define("Category","/home/NoSPAM/etc/category");
 	define("WI","/home/NoSPAM/bin/wi");
 	define("PAGENUM",10);
+	define("ARCHIVEDIR","/home/vpopmail/domains/localhost.localdomain/archive");
 }
 ?>
