@@ -843,7 +843,7 @@ sub UpdateRule
 
 	my $AMC = new AKA::Mail::Content;
 
-	my $rule_num = $AMC->{conf}->check_n_update() ;
+	my $rule_num = $AMC->{content_conf}->check_n_update() ;
 
 	$AMC->{zlog}->debug ( "check_n_update: [" . $rule_num . "] rules\n" );
 	print ( "check_n_update: [" . $rule_num . "] rules\n" );
