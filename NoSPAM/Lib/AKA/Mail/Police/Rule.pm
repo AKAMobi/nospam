@@ -47,7 +47,7 @@ sub get_match_rule
 	my $rule_id = check_all_rule( $self, $mail_info );
 
 	if ( $rule_id ){
-		$self->{zlog}->log_match($rule_info, $mail_info), 
+		#$self->{zlog}->log_match($rule_info, $mail_info), 
 		return $self->{filterdb}->{$rule_id};
 	}
 	return undef;

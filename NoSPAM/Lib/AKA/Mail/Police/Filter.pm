@@ -153,15 +153,26 @@ sub get_action
 	
 	}	
 
-	if ( $action != 1 && $action != 2 && $action != 3 ){
-		$self->{parser}->print ( \*STDOUT );
-	}
 
-	$self->{parser}->clean();
 
 	($action, $param)
 }
 
+sub print
+{
+	my $self = shift;
+	my $action = shift;
+	if ( $action != 1 && $action != 2 && $action != 3 ){
+		$self->{parser}->print ( \*STDOUT );
+	}
+}
+
+sub clean
+{
+	my $self = shift;
+
+	$self->{parser}->clean();
+}
 
 #sub DESTROY
 #{
