@@ -228,7 +228,7 @@ sub check_expiredate($$)
 	$month -= 1;
 	
 #$self->{zlog}->debug ( "$second,$minute,$hour,$date,$month,$year" );
-	my $expire_time = POSIX::mktime( $second,$minute,$hour,$date,$month,$year );
+	my $expire_time = POSIX::mktime( $second||0,$minute||0,$hour||0,$date,$month,$year );
 	my $now_time = time;
 
 #$self->{zlog}->debug ( "License::check_expiredate now [$now_time] expire_time [$expire_time]" );
