@@ -28,11 +28,10 @@ sub new
 	return $self;
 }
 
-sub test_spam
-{
-	my ( $self, $fromaddr, $fromip ) = @_;
-	# TODO: finish it
-}
+#sub test_spam
+#{
+#	my ( $self, $fromaddr, $fromip ) = @_;
+#}
 
 # cache dns resolver;
 sub get_dns_resolver
