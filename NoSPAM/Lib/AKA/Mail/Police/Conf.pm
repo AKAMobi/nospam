@@ -96,6 +96,7 @@ sub get_user_filter_db
 	if ( !-f $filterdb_file ) {
 		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
 		print WDB <<_SPAMXML_ ;
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <rule-add-modify>
 	<rule rule_id="" />
 </rule-add-modify> 
@@ -119,6 +120,7 @@ sub get_filter_db
 	if ( !-f $filterdb_file ) {
 		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
 		print WDB <<_SPAMXML_ ;
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <rule-add-modify>
 	<rule rule_id="" />
 </rule-add-modify> 
@@ -254,6 +256,7 @@ sub load_filter_db
 	if ( !-f $filterdb_file ) {
 		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
 		print WDB <<_SPAMXML_ ;
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <rule-add-modify>
 	<rule rule_id="" />
 </rule-add-modify> 
