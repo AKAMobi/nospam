@@ -129,7 +129,7 @@ $headers['Subject'] = $title;
 
 $mime = new Mail_mime;
 
-$mime->setTXTBody($content);
+$mime->setTXTBody(str_replace("\r","",$content));
 	
 $attachdir="/tmp/wmail/".$_SESSION['AdminID'];
 @mkdir("/tmp/wmail");
@@ -173,10 +173,11 @@ $mail_name=time().".12345.".DOMAIN;
 $iscopy=true;
 $linkpath='';
 	for( $i = 0 ; $i < $mail_count ; $i++)	{
-			list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
-			$user_maildir= VPOPMAILHOME . 'domains/' . DOMAIN . '/' . $user_account . "/Maildir/new/";
+			list( $user_account, $xxx, $xxx, $xxx, $user_name, $user_maildir, $user_quota )  = explode( ':', $user_list[$i] );
+			$user_maildir= $user_maildir. "/Maildir/new/";
 			$user_mailname= $user_maildir.$mail_name; 
-			if ($isSendAll) {
+			if ($isSendAll) {	
+				echo "·¢ËÍ¸ø".$user_account;
 				if ($iscopy) {
 					@copy($attachdir . "/.mail", $user_mailname);
 					$linkpath=$user_mailname;
