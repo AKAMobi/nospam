@@ -16,6 +16,7 @@ if($_GET["db"] == "police" && $bGAView)
 else
 	$config = new RuleDB(UserDB);
 $rule = $config->get_rule_by_id($rule_id);
+$category_id = $rule->get_attribute("category_id");
 $keywords = $rule->get_elements_by_tagname("rule_keyword");
 $sizes = $rule->get_elements_by_tagname("size");
 $attachments = $rule->get_elements_by_tagname("attachment");
@@ -29,7 +30,7 @@ $action = $config->get_action_rule($rule_id);
 	<td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
 </tr>
 <tr>
-	<td>类　　别：<?=$Category[$rule->get_attribute("category_id")]?></td>
+	<td>类　　别：<?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
 	<td>编号类型：<?=$rule->get_attribute("id_type")?></td>
 </tr>
 <tr>

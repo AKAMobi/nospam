@@ -239,7 +239,7 @@ if($sizescount > 0){
 ?>
 <fieldset style="border-style: double; width: 90%">
 <legend><input type="checkbox" name="AttachmentDel<?=$i?>" value="YES" />第<?=$i?>条</legend>
-可以不选<input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" />限制文件名：<input type="text" name="FileName<?=$i?>" value="<?=$attachment->get_attribute("filename")?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
+可以不选<input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" />限制文件名：<input type="text" name="FileName<?=$i?>" value="<?=utf8_decode($attachment->get_attribute("filename"))?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
 可以不选<input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / >限制文件类型：<select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype")) echo "disabled"; ?>/>
 <?
 			for($j=1;$j<=6;$j++){
@@ -281,7 +281,7 @@ if($attachmentscount > 0){
 ?>
 </select>
 动作参数：
-<input type="text" name="ActionParam" value="<?=$action->get_attribute("action_param")?>" />
+<input type="text" name="ActionParam" value="<?=utf8_decode($action->get_attribute("action_param"))?>" />
 <br>
 <input type="button" value="提交" onclick="submitForm('save')"/>
 <input type="button" value="重置" onclick="confirmReset()" />

@@ -41,6 +41,7 @@ foreach($rules as $rule){
 	$sizes = $rule->get_elements_by_tagname("size");
 	$attachments = $rule->get_elements_by_tagname("attachment");
 	$action = $config->get_action_rule($rule->get_attribute("rule_id"));
+	$category_id = $rule->get_attribute("category_id");
 	$keywordscount = count($keywords);
 	$sizescount = count($sizes);
 	$attachmentscount = count($attachments);
@@ -53,7 +54,7 @@ foreach($rules as $rule){
 		<td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
 	</tr>
 	<tr>
-		<td>类别：<?=$Category[$rule->get_attribute("category_id")]?></td>
+		<td>类别：<?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
 		<td>编号类型：<?=$rule->get_attribute("id_type")?></td>
 	</tr>
 	<tr>

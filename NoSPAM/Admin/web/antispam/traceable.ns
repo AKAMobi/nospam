@@ -40,8 +40,8 @@ var bStop, s1Value, s2Value;
 if(!$bTrace){
 ?>
 bStop = true;
-s1Value = form1.slider1.defaultValue; 
-s2Value = form1.slider2.defaultValue;
+s1Value = <?=$iTraceMaybeSpamMask?>; 
+s2Value = <?=$iTraceSpamMask?>;
 <?
 }
 ?>

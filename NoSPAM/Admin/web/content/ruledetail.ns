@@ -20,6 +20,7 @@ $config = new RuleDB(PoliceDB);
 
 $rule = $config->get_rule_by_id($rule_id);
 if(!$rule) die("错误的规则编号");
+$category_id = $rule->get_attribute("category_id")
 $action = $config->get_action_rule($rule->get_attribute("rule_id"));
 $keywords = $rule->get_elements_by_tagname("rule_keyword");
 $sizes = $rule->get_elements_by_tagname("size");
@@ -36,7 +37,7 @@ $attachmentscount = count($attachments);
         <td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
     </tr>
     <tr>
-        <td>类别：<?=$Category[$rule->get_attribute("category_id")]?></td>
+        <td>类别：<?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
         <td>编号类型：<?=$rule->get_attribute("id_type")?></td>
     </tr>
     <tr>
