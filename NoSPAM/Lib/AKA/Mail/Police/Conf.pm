@@ -36,8 +36,12 @@ sub new
 
 	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
 
+	$self->{define}->{mspid} = "300001";
 	$self->{define}->{home} = "/home/ssh/";
 	$self->{define}->{tmpdir} = "/tmp/";
+
+	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
+	$self->{define}->{updatedb} = $self->{define}->{home} . "/Update/Update.Xml";
 
 	$self->{define}->{verify_binary} = $self->{define}->{home} . "/bin/GAverify";
 	$self->{define}->{sign_binary} = $self->{define}->{home} . "/bin/GAsign";
@@ -47,7 +51,6 @@ sub new
 	$self->{define}->{msp_pub_key} = $self->{define}->{home} . "/key/msp_verify_key";
 	$self->{define}->{msp_pri_key} = $self->{define}->{home} . "/key/msp_sign_key";
 
-	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 
 
 	$self->{rule_add_modify} = undef;
@@ -108,10 +111,14 @@ sub merge_new_rule
 
 	my $filterdb = &get_filter_db;
 
-	for my $rule_id ( keys %{$rule_add_modify} ){
+	my $lastest_rule_id;
+
+	for my $rule_id ( sort { $rule_add_modify->{$a}->{update_time} cmp 
+					$rule_add_modify->{$b}->{update_time} keys %{$rule_add_modify} ){
 		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
 		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
 #push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
+		$lastest_rule_id = $rule_id;
 	}
 
 	for my $rule_id ( keys %{$rule_del} ){
@@ -146,7 +153,46 @@ sub merge_new_rule
 	$self->{zlog}->log( "renaming [$new_filterdb_file] to [$filterdb_file]..." );
 	rename ( $new_filterdb_file, $filterdb_file ) or die "can't rename [$new_filterdb_file] to [$filterdb_file]";
 
+	my $rule_count;
+	$rule_count = keys %{$filterdb->{rule-add-modify}->{rule}}
+	$self->rebirth_update( $rule_count, $last_rule_id );
+
 	return 1;
+}
+sub rebirth_update
+{
+	my $self = shift;
+
+	my ( $rule_count, $last_rule_id )  = @_;
+
+	my $updatedb = {};
+
+	$updatedb->{rule_update}->{rule_sum}->{updatetime} = $self->{zlog}->get_time_stamp();
+	$updatedb->{rule_update}->{rule_sum}->{count} = $rule_count;
+	$updatedb->{rule_update}->{rule_sum}->{last_rule_time} = $self->{zlog}->get_time_stamp();
+	$updatedb->{rule_update}->{rule_sum}->{last_rule_id} = $last_rule_id;
+
+	my $xs = get_filterdb_xml_simple();
+	my $xml = $xs->XMLout( $updatedb );
+	
+	$updatedb_file = $self->{define}->{updatedb};
+	open ( FD, ">$updatedb_file" . ".new" ) or $self->{zlog}->log ( "pf: open updatedb file [$updatedb_file} for writing error." );
+	print FD $xml;
+	close ( FD );
+
+	my $bakfile = $updatedb_file . "-" . `date +%Y-%m-%d-%H-%M-%s`;
+	chomp $bakfile;
+
+	$self->{zlog}->log( "renaming [$updatedb_file] to [$bakfile]..." );
+	rename ( $updatedb_file, $bakfile ) or warn "backup file failed!";
+
+	$self->{zlog}->log( "renaming [$updatedb_file" . ".new] to [$updatedb_file]..." );
+	rename ( $updatedb_file . ".new" , $updatedb_file ) or die "can't rename [$updatedb_file" . ".new] to [$updatedb_file]";
+
+	my $sign = $self->{parent}->{verify} || new AKA::Mail::Police::Verify;
+	if ( ! $sign->sign ( $updatedb_file ) ){
+		$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
+	}
 }
 
 sub get_filterdb_xml_simple

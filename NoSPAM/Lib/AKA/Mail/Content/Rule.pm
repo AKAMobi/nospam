@@ -359,7 +359,7 @@ sub check_single_keyword_rule
 	}elsif ( 9==$match_key ){ #9客户端IP为指定值或在指定范围内
 		return check_ip_range( $self, $mail_info->{head}->{server_ip}, $match_keyword );
 	}elsif ( 10==$match_key ){ #10源客户端IP（邮件中标识的起始的IP地址）为指定值或在指定范围内
-		return check_ip_range( $self, $mail_info->{head}->{client_ip}, $match_keyword );
+		return check_ip_range( $self, $mail_info->{head}->{sender_ip}, $match_keyword );
 	}
 	
 	$self->{zlog}->log ( "error: check_single_keyword_rule find unknown key value [$match_key]." );

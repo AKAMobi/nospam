@@ -110,11 +110,17 @@ sub print
 	$self->{entity}->print($fh);
 
 	# 只能 print 一次
-	$self->{entity}->purge;
-	$self->{mime_parser}->filer->purge;
-
+	clean ( $self );
 	undef $self->{mail_info};
 	undef $self->{entity};
+}
+
+sub clean
+{
+	my $self = shift;
+
+	$self->{entity}->purge;
+	$self->{mime_parser}->filer->purge;
 }
 
 sub get_head_info
