@@ -771,7 +771,7 @@ sub reset_ConnPerIP
 		return 20;
 	}
 	
-	if ( system("$iptables -I ConnPerIP -p tcp --syn --dport 25 -m connlimit --connlimit-above $ParalConn -j REJECT") ){
+	if ( system("$iptables -I ConnPerIP -i eth1 -p tcp --syn --dport 25 -m connlimit --connlimit-above $ParalConn -j REJECT") ){
 		return 21;
 	}
 
