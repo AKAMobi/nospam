@@ -279,6 +279,12 @@ sub net_process_ex
 	# 重新初始化；
 	$self->{mail_info} = {};
 	        
+    # reset SIGCHLD to SIG_DFL, so that we can use system(), open ("foo|"),
+    # etc. etc. and get their exit statuses correctly.  This is the child
+    # process now, so this won't affect SIGCHLD in the parent, which still
+    # needs SIG_IGN to avoid leaving zombies.
+    $SIG{CHLD} = 'DEFAULT';
+
 open ( ZZZ, ">>/tmp/zzz.log" );
 	$self->recv_mail_info_ex();
 
@@ -692,7 +698,8 @@ sub qmail_requeue {
 	select(EIN);$|=1;
 
 	local $SIG{PIPE} = 'IGNORE';
-	local $SIG{CHLD} = 'IGNORE';
+#XXX preFork problem?
+#	local $SIG{CHLD} = 'IGNORE';
 
 	my $pid = fork;
 
