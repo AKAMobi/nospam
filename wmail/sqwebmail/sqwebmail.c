@@ -2434,7 +2434,7 @@ time_t	timeouthard=TIMEOUTHARD;
 		{
 		const char *p=cgi("password");
 		const char *mailboxid;
-		const char *u2=cgi("logindomain");
+		const char *u2=cgi("domain");
 		char	*ubuf=malloc(strlen(u)+strlen(u2)+2);
 		int can_changepwd;
 
