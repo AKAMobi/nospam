@@ -23,14 +23,14 @@ if ( !defined("CONST_DEFINED") ){
 	define("DEFAULTLOGINMAXRETRYCOUNTDIFFID",15);
 	define("UPGRADELOG","/home/NoSPAM/var/upgrade/log");
 	define("UPGRADEINFODIR","/home/NoSPAM/var/upgrade");
-    define("QUARANTINEINFOSUFFIX","info"); //add by XiaoyingHu Jul 30,2004
-    define("QUARANTINEFILEPREFIX","emlfile.gw.nospam.");
-    //define("QUARANTINESQLFILEPATH" , '/tmp/nospam.sqlite');
-    define("QUARANTINESQLFILEPATH" , '/home/NoSPAM/var/sqlite/nospam.sqlite');
-    define("QUARANTINEWHITELISTTABLE", 'UserWhiteList_TB');
-    define("QUARANTINE_WHILE_LIST", 1);
-    define("QUARANTINE_BLACK_LIST", 2);
-    define("QUARANTINE_ALL_LIST",   0);
+	define("QUARANTINEINFOSUFFIX","info"); //add by XiaoyingHu Jul 30,2004
+	define("QUARANTINEFILEPREFIX","emlfile.gw.nospam.");
+	//define("QUARANTINESQLFILEPATH" , '/tmp/nospam.sqlite');
+	define("QUARANTINESQLFILEPATH" , '/home/NoSPAM/var/sqlite/nospam.sqlite');
+	define("QUARANTINEWHITELISTTABLE", 'UserWhiteList_TB');
+	define("QUARANTINE_WHILE_LIST", 1);
+	define("QUARANTINE_BLACK_LIST", 2);
+	define("QUARANTINE_ALL_LIST",   0);
 	define ("QUARANTINE_WHITELIST_MAX", 100);
 }
 ?>

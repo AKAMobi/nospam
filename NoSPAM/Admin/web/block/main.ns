@@ -3,15 +3,14 @@ require_once ('funcs.ns');
 
 if ($currentUser->init_maillist ()!==0)
     exit ('System Error!');
-
 $process = 0;
 $jobList = array ();
 $doAction = intval ($_POST['do_action']);
 if ($doAction==1) {
     $file = trim ($_POST['file']);
     if ($file) {
-        if (!file_exists ($currentUser->get_file ($fileName)))
-            html_error (array ('参数错误!'), 0, 1, 1);
+        if (!file_exists ($currentUser->get_file ($file)))
+            html_error (array ('参数错误!'.$currentUser->get_file($file)), 0, 1, 1);
         $process = 1;
         $jobList[] = array ('ACT'=>'D', 'FILE'=>$file);
     }
@@ -50,7 +49,6 @@ else
     ;
 
 if ($process) {
-
     $ret = $currentUser->process ($jobList, $result);
 
     if ($ret!=0) 
