@@ -1,5 +1,5 @@
 
-package Police::Conf::Update;
+package AKA::Mail::Police::Conf::Update;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -24,8 +24,8 @@ sub new
 
 	$self->{conf} = $conf;
 
-	$self->{zlog} = $conf->{zlog} || new Police::Log($self);
-	$self->{verify} = $conf->{verify} || new Police::Verify($self);
+	$self->{zlog} = $conf->{zlog} || new AKA::Mail::Police::Log($self);
+	$self->{verify} = $conf->{verify} || new AKA::Mail::Police::Verify($self);
 
 	$self->{conf}{rule_add_modify} = undef;
 	$self->{conf}{rule_del} = undef;

@@ -1,5 +1,5 @@
 
-package Police::Verify;
+package AKA::Mail::Police::Verify;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -24,8 +24,8 @@ sub new
 
 	$self->{police} = $police;
 
-	$self->{zlog} = $police->{zlog} || new Police::Log($self);
-	$self->{conf} = $police->{conf} || new Police::Conf($self);
+	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
+	$self->{conf} = $police->{conf} || new AKA::Mail::Police::Conf($self);
 
 	return $self;
 }
@@ -43,6 +43,26 @@ sub verify_key
 	}
 
 	`$verify_binary $verify_opts $file`;
+	if ( 0==$? ){
+		return 1;
+	}
+
+	return 0;
+}
+
+sub sign_key
+{
+	my ($self, $file) = @_;
+	my $sign_binary = $self->{conf}->{define}->{sign_binary};
+	my $sign_opts = " " . $self->{conf}->{define}->{msp_sign_key};
+
+
+	if ( ! -f $sign_binary ){
+		warn "cannot find sign_binary: \"$sign_binary\"\n";
+		return 0;
+	}
+
+	`$sign_binary $sign_opts $file`;
 	if ( 0==$? ){
 		return 1;
 	}

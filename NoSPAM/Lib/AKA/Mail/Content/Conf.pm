@@ -1,5 +1,5 @@
 
-package Police::Conf;
+package AKA::Mail::Police::Conf;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -12,7 +12,7 @@ package Police::Conf;
 # 改变$转义、缩进
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
-use Police::Conf::Update;
+use AKA::Mail::Police::Conf::Update;
 
 use XML::Simple;
 
@@ -27,7 +27,7 @@ sub new
 
 	$self->{police} = $police;
 
-	$self->{zlog} = $police->{zlog} || new Police::Log();
+	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
 
 	$self->{define}->{home} = "/home/ssh/";
 
@@ -53,7 +53,7 @@ sub check_n_update
 {
 	my $self = shift;
 
-	$self->{update} ||= new Police::Conf::Update($self);
+	$self->{update} ||= new AKA::Mail::Police::Conf::Update($self);
 
 	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
 	if ( $newfilenum > 0 ){
@@ -149,7 +149,28 @@ sub get_filterdb_xml_simple
 }
 
 
+sub load_filter_db
+{
+	my $self = shift;
 
+	my $filterdb_file = $self->{define}->{filterdb};
+
+	if ( !-f $filterdb_file ) {
+		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
+		print WDB <<_SPAMXML_ ;
+<rule-add-modify>
+	<rule rule_id="" />
+</rule-add-modify> 
+_SPAMXML_
+			close ( WDB );
+	}
+
+	my $xs = get_filterdb_xml_simple();
+
+	my $filterdb = $xs->XMLin( $filterdb_file );
+
+	return $filterdb;
+}
 
 
 sub DESTROY
@@ -157,6 +178,7 @@ sub DESTROY
 	my $self = shift;
 
 	delete $self->{police};
+
 }
 
 1;

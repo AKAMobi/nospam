@@ -1,7 +1,7 @@
 # File : MyLog.pm
 #
 
-package Police::Log;
+package AKA::Mail::Police::Log;
 
 BEGIN
 {

@@ -1,12 +1,15 @@
 # File : MyLog.pm
 #
 
-package AKA::Mail::Police::Log;
+use AKA::Mail::Police::Conf;
+use AKA::Mail::Police::Log;
 
-BEGIN
-{
-	open MYLOG, ">>/tmp/mylog.log";
-}
+package AKA::Mail::Police;
+
+#BEGIN
+#{
+#	open MYLOG, ">>/tmp/mylog.log";
+#}
 
 sub new
 {
@@ -30,38 +33,26 @@ sub new
 	#my $number = shift || 5;
 
 # Put these arguments inside class members
-	#$self->{'number'} = 5;
+	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
+	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
 
 # Return $self so the user can use it.
 	return $self;
 
 }
 
-sub log
-{
-	my ($slef,$what) = @_;
-
-# Strip the string of newline characters
-	$what =~ s/\n//g;
-
-# The MYLOG filehandle is already open by virtue of the BEGIN
-# block.
-	print MYLOG $what, "\n";
-}
-
-
-sub DESTROY
-{
-    my $self = shift;
+#sub DESTROY
+#{
+#    my $self = shift;
 
     #print "DESTROYed.\n";
-}
+#}
 
 
-END
-{
-	close(MYLOG);
-}
+#END
+#{
+#	close(MYLOG);
+#}
 
 1;
 
