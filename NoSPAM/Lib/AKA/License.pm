@@ -139,8 +139,10 @@ sub get_IDE_serial
 	close ( HDAFD );
 
 	# reference to /usr/include/linux/hdreg.h : struct hd_driveid 
-	@id = (unpack ( "S10 C20", $id ))[10...29];
-	$id = join ( "", @id );
+	#@id = (unpack ( "S10 C20", $id ))[10...29];
+	#$id = join ( "", @id );
+
+	($id) = (unpack ( "S10H40", $id ))[10...29];
 
 	return $id;
 }
