@@ -120,7 +120,7 @@ sub check_all_rule_backend
 	my ($which_db,$mail_info) = @_;
 
 	my $has_rule;
-	my $match_logic;
+	my ($rule_logic,$attach_logic,$size_logic,$keyword_logic);
 	# 规则检查顺序：以rule由小到大为序，依次检查
 	foreach my $rule_id ( sort keys %{$self->{$which_db}} ){
 		next if ( ! $rule_id );
@@ -129,28 +129,53 @@ sub check_all_rule_backend
 		# AND / OR / NOT
 		# attachment & size & keyword is not controled by match_logic, it always use 'AND'
 		# only sub rule ( ie, sub size rule ) should use match logic.
-		$match_logic = $self->{$which_db}->{$rule_id}->{match_logic} || 'AND';
+		$rule_logic = $self->{$which_db}->{$rule_id}->{rule_logic} || 'AND';
+		$attach_logic = $self->{$which_db}->{$rule_id}->{attach_logic} || 'AND';
+		$size_logic = $self->{$which_db}->{$rule_id}->{size_logic} || 'AND';
+		$keyword_logic = $self->{$which_db}->{$rule_id}->{keyword_logic} || 'AND';
 
 		$has_rule = 0;
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
 			# 如果有相关的 rule，则必须匹配才可能符合
 			# 不匹配则 next
-			next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			if ( 'OR' eq $rule_logic ){
+				return $rule_id if $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
+			}elsif ( 'NOT' eq $rule_logic ){
+				next until ! $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
+			}else{
+				next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
+			}
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{size} ){
-			next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
+			if ( 'OR' eq $rule_logic ){
+				return $rule_id if $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
+			}elsif ( 'NOT' eq $rule_logic ){
+				next until ! $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
+			}else{
+				next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
+			}
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{rule_keyword} ){
-			next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
+			if ( 'OR' eq $rule_logic ){
+				return $rule_id if $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
+			}elsif ( 'NOT' eq $rule_logic ){
+				next until ! $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
+			}else{
+				next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
+			}
+#$self->{zlog}->debug ( "RULE: logic: MATCH check keyword rule " . $rule_id  . ' of logic ' . $keyword_logic );  
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
 			#$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
-			# 'OR' already returned;
 			# 'NOT' and 'AND' return here.
-			return $rule_id;
+			if ( $rule_logic eq 'OR' ){
+				return undef;
+			}else{ #'NOT' 'AND'
+				return $rule_id;
+			}
 		}
 	}	
 	return undef;
@@ -188,10 +213,10 @@ sub check_attachment_rule
 
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
-	}elsif ( 'OR' eq $match_logic ){
-		# if 'NOR' match, it should already return , so here is no match
-		return 0;
-	}else{ # 'AND'
+#	}elsif ( 'OR' eq $match_logic ){
+#		# if 'NOR' match, it should already return , so here is no match
+#		return 0;
+	}else{ # 'AND' 'OR' is same if there's only one match rule
 		return check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
 	}
 }
@@ -223,10 +248,10 @@ sub check_size_rule
 	}
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_size_rule ( $self, $size_rule, $mail_info );
-	}elsif ( 'OR' eq $match_logic ){
-		# if 'NOR' match, it should already return , so here is no match
-		return 0;
-	}else{ #'AND'
+#	}elsif ( 'OR' eq $match_logic ){
+#		# if 'NOR' match, it should already return , so here is no match
+#		return 0;
+	}else{ #'AND' 'OR' is same if there's only one match rule
 		return check_single_size_rule ( $self, $size_rule, $mail_info );
 	}
 }
@@ -240,14 +265,18 @@ sub check_keyword_rule
 
 	return if ( ! $keyword_rule );
 
-#XXX
+#$self->{zlog}->debug ( "RULE: ENTER: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 	if ( 'ARRAY' eq ref $keyword_rule ){
 		#多条
 		foreach my $sub_keyword_rule ( @{$keyword_rule} ){
 			if ( 'OR' eq $match_logic ){
+#$self->{zlog}->debug ( "RULE: logic: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 				return 1 if ( check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
+#$self->{zlog}->debug ( "RULE: logic: not MATCH check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 			}elsif ( 'NOT' eq $match_logic ){
+#$self->{zlog}->debug ( "RULE: logic: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 				return 0 if ( check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
+#$self->{zlog}->debug ( "RULE: logic: not MATCH check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 			}else{# AND, is the default 
 				return 0 if ( ! check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
 			}
@@ -261,10 +290,10 @@ sub check_keyword_rule
 #$self->{zlog}->debug ( "RULE: logic: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_keyword_rule( $self, $keyword_rule, $mail_info );
-	}elsif ( 'OR' eq $match_logic ){
-		# if 'NOR' match, it should already return , so here is no match
-		return 0;
-	}else{ #'AND'
+#	}elsif ( 'OR' eq $match_logic ){
+#		# if 'NOR' match, it should already return , so here is no match
+#		return 0;
+	}else{ #'AND' 'OR' is same if there's only one match rule
 		return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
 	}
 }
