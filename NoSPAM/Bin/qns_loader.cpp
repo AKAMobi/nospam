@@ -28,7 +28,7 @@ using namespace boost::filesystem;
 #define EML_DIR "/home/NoSPAM/spool/working"
 #define EML_PREFIX "emlfile.gw.nospam"
 
-std::ofstream zlog("/var/log/cpp.debug");
+std::ofstream zlog("/var/log/cpp.debug", ios::out | ios::app );
 
 class qmail_hdrs
 {
@@ -67,16 +67,16 @@ class qmail_hdrs
 
 		void dump()
 		{
-			printf ("qmail_hdrs: p=%s, len=%d\n", hdrs, len );
-			cout << "[" ;
+			zlog << "qmail_hdrs: p=" << hdrs << ", len=" <<  len << endl;
+			zlog << "[" ;
 			for ( size_t i=0; i<len; i++ ){
 				if ( 0==hdrs[i] ){
-					cout << "\\0";
+					zlog << "\\0";
 				}else{
-					cout << hdrs[i];
+					zlog << hdrs[i];
 				}
 			}
-			cout << "]" << endl;
+			zlog << "]" << endl;
 		}
 
 
@@ -135,7 +135,13 @@ string dump_stdin_to_file()
 
 	TEMP_FAILURE_RETRY( close ( fd ) );
 
-	TEMP_FAILURE_RETRY ( rename ( tmp_emlfile, new_emlfile ) );
+	zlog << "rename " << tmp_emlfile << " to " << new_emlfile << endl;
+	if ( -1==TEMP_FAILURE_RETRY ( link ( tmp_emlfile, new_emlfile ) ) ){
+		qns_err ( "443 qns_loader can't link file.", 150 );
+	}
+	if ( -1==TEMP_FAILURE_RETRY ( unlink ( tmp_emlfile ) ) ){
+		zlog << "qns_loader can't unlink file." << endl;
+	}
 
 	return string(new_emlfile);
 }
@@ -147,6 +153,7 @@ int net_process( string &result,
 {
 	iosockinet io (sockbuf::sock_stream);
 
+	zlog << "try connect..." << endl;
 	try {
 		io->connect ("127.0.0.1", "40307", "tcp");
 	} catch ( ... ) {
@@ -161,7 +168,7 @@ int net_process( string &result,
 	io << tcpremoteinfo << endl;
 	io << emlfile << endl;
 
-	//hdrs->dump();
+	hdrs->dump();
 	io.write ( hdrs->hdrs, hdrs->len );
 	io << endl;
 
@@ -265,6 +272,8 @@ int main ()
 	ret = net_process( result, relayclient, tcpremoteip, tcpremoteinfo, emlfile, hdrs );
 	//hdrs = new qmail_hdrs ( "Fzixia@zixia.net\0Tzixia@vmware.zixia.net\0\0", 42);
 	//ret = net_process( result, "127.0.0.2", "192.168.0.1", "", "/tmp/zixia.eml", hdrs );
+
+	zlog << "net_process ret " << ret << ", result: " << result << endl;
 
 	if ( -1==ret ){
 		cerr << result << "\r\n";
