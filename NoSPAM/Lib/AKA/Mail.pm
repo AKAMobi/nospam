@@ -15,7 +15,7 @@ use AKA::Mail::AntiVirus;
 use AKA::Mail::Spam;
 use AKA::Mail::Dynamic;
 use AKA::Mail::Archive;
-use AKA::Mail::Police;
+use AKA::Mail::Content;
 use AKA::License;
 
 sub new
@@ -34,7 +34,7 @@ sub new
 	$self->{zlog} = new AKA::Mail::Log;
 	#$self->{spam} = new AKA::Mail::Spam;
 	#$self->{dynamic} = new AKA::Mail::Dynamic;
-	#$self->{police} = new AKA::Mail::Police;
+	#$self->{content} = new AKA::Mail::Content;
 
 	return $self;
 
@@ -174,17 +174,17 @@ sub content_engine_fd
 
 	my ($input_fd,$output_fd) = @_;
 
-	$self->{police} ||= new AKA::Mail::Police;
+	$self->{content} ||= new AKA::Mail::Content;
 
-	($action,$param) = $self->{police}->get_action( $input_fd );
+	($action,$param) = $self->{content}->get_action( $input_fd );
 
-	print $output_fd "X-Police-Status: $action:($param) OK\n";
+	#print $output_fd "X-Content-Status: $action:($param) OK\n";
 
-	$self->{police}->print($action, $output_fd);
+	$self->{content}->print($action, $output_fd);
 
-	$self->{police}->clean;
+	$self->{content}->clean;
 	
-	undef $self->{police};
+	undef $self->{content};
 }
 
 # input : in_fd
@@ -195,22 +195,20 @@ sub content_engine_mime
 
 	my $input_fd = shift;
 
-	$self->{police} ||= new AKA::Mail::Police;
+	$self->{content} ||= new AKA::Mail::Content;
 
-	my ($action,$param,$ruleid) = $self->{police}->get_action( $input_fd );
+	my ($action,$param,$ruleid) = $self->{content}->get_action( $input_fd );
 
-	#print "X-Police-Status: $action:($param) OK\n";
-	
         if ( $action == 1 || $action == 2 || $action == 3 ){
 		return ( $action,$param, $ruleid, "" );
 	}
 
-	my $mime_data = $self->{police}->{filter}->{parser}->{entity}->stringify;
-	#my $subject = $self->{police}->{filter}->{parser}->{mail_info}->{head}->{subject};
+	my $mime_data = $self->{content}->{filter}->{parser}->{entity}->stringify;
+	#my $subject = $self->{content}->{filter}->{parser}->{mail_info}->{head}->{subject};
 
-	$self->{police}->clean;
+	$self->{content}->clean;
 
-	undef $self->{police};
+	undef $self->{content};
 
 	return ( $action,$param, $ruleid, $mime_data );
 }

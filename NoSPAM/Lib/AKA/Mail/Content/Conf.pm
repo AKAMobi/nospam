@@ -32,11 +32,11 @@ sub new
 
 	bless $self, $class;
 
-	my ($police) = @_;
+	my ($content) = @_;
 
-	$self->{police} = $police;
+	$self->{content} = $content;
 
-	$self->{zlog} = $police->{zlog};
+	$self->{zlog} = $content->{zlog};
 
 	$self->{define}->{mspid} = "300001";
 	$self->{define}->{home} = "/home/ssh/";
@@ -225,7 +225,7 @@ sub rebirth_update
 	$self->{zlog}->log( "renaming [$updatedb_file" . ".new] to [$updatedb_file]..." );
 	rename ( $updatedb_file . ".new" , $updatedb_file ) or die "can't rename [$updatedb_file" . ".new] to [$updatedb_file]";
 
-	my $sign = $self->{police}->{verify} || new AKA::Mail::Content::Verify($self);
+	my $sign = $self->{content}->{verify} || new AKA::Mail::Content::Verify($self);
 	if ( ! $sign->sign_key ( $updatedb_file ) ){
 		$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
 	}
@@ -276,7 +276,7 @@ sub DESTROY
 {
 	my $self = shift;
 
-	delete $self->{police};
+	delete $self->{content};
 
 }
 

@@ -58,7 +58,7 @@ sub get_action
 	my ( $action, $param, $rule_id );
 
 	if ( $rule_info ){
-		# only log police rule
+		# only log GA rule
 		$self->log_match($rule_info, $mail_info) if ( $is_user_rule );
 		$action = $rule_info->{rule_action}->{action};
 		$param = $rule_info->{rule_action}->{action_param};
