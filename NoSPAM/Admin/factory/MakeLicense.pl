@@ -16,7 +16,7 @@ my $hw_lic_enc = $AL->encode($hw_lic);
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-7-10
+ExpireDate=2004-10-10
 Version=2
 
 FactoryName=Suns Security Technology Co., Ltd.

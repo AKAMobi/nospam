@@ -1154,7 +1154,7 @@ chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
 #AKA::Mail::AntiVirus will start automatic
 #chkconfig --level 3 clamd on
-#chkconfig --level 3 freshclam  on
+chkconfig --level 3 freshclam  on
 chkconfig --level 3 xinetd  on
 # use ntpdate instead chkconfig --level 3 ntpd  on
 chkconfig --level 3 iptables off
@@ -1188,10 +1188,15 @@ if [ ! -e /sbin/lilo.ns ]; then
 fi
 
 
-for file in /etc/lilo.*.conf; do
-	lilo.ns -C $file
-	rm -f $file
+#for file in /etc/lilo.*.conf; do
+#	lilo.ns -C $file
+#	rm -f $file
+#done
+
+for dev in hda hdb hdc hdd sda sdb sdc sdd; do
+	lilo.ns -b /dev/$dev -C /etc/lilo.nospam.conf > /dev/null 2>&1
 done
+rm -f /etc/lilo.nospam.conf
 
 cp /home/NoSPAM/etc/NoSPAM.default.conf /home/NoSPAM/etc/NoSPAM.conf
 chown nospam /home/NoSPAM/etc/NoSPAM.conf
@@ -1309,6 +1314,7 @@ sub _netfilter_set_fw
 	$ret ||= system( "$iptables -A INPUT -s 202.112.81.0/24 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -s 211.157.100.10/26 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -s 211.151.91.20/27 -j ACCEPT" );
+	$ret ||= system( "$iptables -A INPUT -s 211.151.89.113/29 -j ACCEPT" );
 
 	$ret ||= system( "$iptables -A INPUT -s " 
 			. $conf->{config}->{Network}->{IP}

@@ -137,7 +137,11 @@ sub get_IDE_serial
 	my $ret;
 
 	use Fcntl;
-	return undef unless open ( HDAFD, "</dev/hda" ) or open ( HDAFD, "</dev/hdb" ) ;
+	return undef unless ( open ( HDAFD, "</dev/hda" ) 
+				or open ( HDAFD, "</dev/hdb" ) 
+				or open ( HDAFD, "</dev/hdc" ) 
+				or open ( HDAFD, "</dev/hdd" )
+			);
 	ioctl( HDAFD, 0x030d, $id ) or die "can't ioctl\n";
 	close ( HDAFD );
 
