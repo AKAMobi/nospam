@@ -184,14 +184,14 @@ sub is_user_whitelist
 		# in white list;
 		if ( $count > 0 ){
 			$sth->finish;
-			$self->{zlog}->debug( "DB::is_user_whitelist $user\@$domain treate $sender as [$type] list." );
+			#$self->{zlog}->debug( "DB::is_user_whitelist $user\@$domain treate $sender as [$type] list." );
 			return 1;
 		}
 	}
 
 	# not in white list
 	$sth->finish;
-	$self->{zlog}->debug( "DB::is_user_whitelist $user\@$domain NOT treate $sender as [$type] list." );
+	#$self->{zlog}->debug( "DB::is_user_whitelist $user\@$domain NOT treate $sender as [$type] list." );
 	return 0;
 }
 

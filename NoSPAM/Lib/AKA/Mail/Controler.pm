@@ -741,6 +741,7 @@ sub send_email_file_by_inject {
 }
 
 # TODO finish this function
+# 2004-10-29 zixia finish what?
 sub send_mail_file_by_queue {
 	my $self = shift;
 
@@ -765,7 +766,7 @@ sub send_mail_file_by_queue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		# Net::Server::PreFork 将 STDIN/STDOUT 映射成了socket的索引，这里需要重新将两个文件描述符独立出来，然后才可以reopen
+		# Net::Server::PreFork 将 STDIN/STDOUT 映射成了同一个socket的索引，这里需要重新将两个文件描述符独立出来，然后才可以reopen
 		open(DUMMYIN, '</dev/null') || die "Can't close STDIN [$!]";
 		open(DUMMYOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
 		*STDIN = *DUMMYIN;

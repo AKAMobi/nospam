@@ -73,7 +73,12 @@ sub process
 			};
 		return $mail_info;
 	}
-	my ( $rule_info, $mail_info_detail) = $self->get_rule ( \*MAIL );
+
+	my ( $rule_info, $mail_info_detail);
+	eval { # Parser will fatal error when some mail is unformed
+		( $rule_info, $mail_info_detail) = $self->get_rule ( \*MAIL );
+	};
+
 	close MAIL;
 
 	# update our mail_info

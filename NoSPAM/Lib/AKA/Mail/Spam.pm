@@ -153,7 +153,7 @@ sub is_traceable
 		if ( !$strict_traceable ){
 			foreach ( @ptr_domain ){
 				if ( /$from_domain/ ){
-$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip ptr $_ include $from_domain" );
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip ptr $_ include $from_domain" );
 					$strict_traceable = 1;
 					$traceable = 1;
 					last;
@@ -220,7 +220,7 @@ sub get_ptr_from_ip
 
 	if ($query) {
 		foreach my $rr (grep { $_->type eq 'PTR' } $query->answer) {
-$self->{zlog}->debug ("Spam get ptr of $ip : " . $rr->ptrdname);
+#$self->{zlog}->debug ("Spam get ptr of $ip : " . $rr->ptrdname);
 			push (@PTRs, $rr->ptrdname);
 		}
 	} else {
