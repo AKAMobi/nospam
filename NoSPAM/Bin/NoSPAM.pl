@@ -616,7 +616,28 @@ sub reset_Network
 	$zlog->fatal( "start_System reset_ConnPerIP failed with ret: $ret !" ) if ( $ret );
 	$err = 60 if ( $ret );
 
+	$ret = &_update_DNS;
+	$zlog->fatal( "start_System update_DNS failed with ret: $ret !" ) if ( $ret );
+	$err = 60 if ( $ret );
+
 	return $ret;
+}
+
+sub _update_DNS
+{
+	my $DNSServer1 = $conf->{config}->{System}->{DNSServer1};
+	my $DNSServer2 = $conf->{config}->{System}->{DNSServer2};
+
+	open ( FD, ">/etc/resolv.conf" );
+	unless ( $DNSServer1 && $DNSServer2 ){
+		print FD "nameserver 127.0.0.1\n";
+	}else{
+		print FD "nameserver $DNSServer1\n" if $DNSServer1;
+		print FD "nameserver $DNSServer2\n" if $DNSServer2;
+	}
+	close FD;
+
+	return 0;
 }
 
 sub reset_ConnPerIP
@@ -836,7 +857,7 @@ sub QuarantineUserListEmpty
 
 sub QuarantineUserListExport
 {
-	se AKA::Mail::DB;
+	use AKA::Mail::DB;
 	my $AMD = new AKA::Mail::DB;
 	$AMD->user_email_list();
 	return 0;
@@ -1469,7 +1490,12 @@ unlink /root/post_install
 
 	eval 'use AKA::Mail::Status; my $AMS=new AKA::Mail::Status; $AMS->create_rrd_soft;';
 	if ( $@ ){
-		print NSOUT "rrd: $@\n";
+		print NSOUT "RRD file init error: $@\n";
+	}
+
+	eval 'use AKA::Mail::DB; my $db=new AKA::Mail::DB; $db->create_table(1);';
+	if ( $@ ){
+		print NSOUT "SQLite file init error: $@\n";
 	}
 
 	exit;
