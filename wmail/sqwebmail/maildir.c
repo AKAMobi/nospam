@@ -2420,7 +2420,8 @@ int	rc=0;
 	if (strcmp(foldername, INBOX) == 0 ||
 		strcmp(foldername, SENT) == 0 ||
 		strcmp(foldername, TRASH) == 0 ||
-		strcmp(foldername, DRAFTS) == 0)	return (-1);
+		strcmp(foldername, DRAFTS) == 0 || 
+		strcmp(foldername, SPAM) == 0)	return (-1);
 
 	dir=xlate_mdir(foldername);
 	tmp=alloc_filename(dir, "tmp", "");
@@ -2448,6 +2449,31 @@ int	rc=0;
 	free(dir);
 	return (rc);
 }
+
+int maildir_deleteall(const char *foldername)
+{
+char	*dir, *tmp, *new, *cur;
+int	rc=0;
+
+	if (
+		(strcmp(foldername, TRASH) != 0) && 
+		(strcmp(foldername, SPAM) != 0)  
+	   )	return (-1);
+
+	dir=xlate_mdir(foldername);
+	tmp=alloc_filename(dir, "tmp", "");
+	cur=alloc_filename(dir, "cur", "");
+	new=alloc_filename(dir, "new", "");
+
+	rmdirtmp(cur);
+
+	free(tmp);
+	free(new);
+	free(cur);
+	free(dir);
+	return (rc);
+}
+
 
 int maildir_rename_wrapper(const char *from, const char *to)
 {

@@ -55,6 +55,7 @@ extern void maildir_readfolders(char ***);
 extern void maildir_freefolders(char ***);
 extern int maildir_create(const char *);
 extern int maildir_delete(const char *, int);
+extern int maildir_deleteall(const char *); /* add by roy 2004.1.1 */
 extern int maildir_rename_wrapper(const char *, const char *);
 
 extern int maildir_createmsg(const char *, const char *, char **);

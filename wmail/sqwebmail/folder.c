@@ -230,6 +230,9 @@ char    *dir1=xlate_mdir(dir);
 		rc=group_movedel( dir, &groupdel );
 		maildir_savefoldermsgs(dir);
 	}
+	else if (*cgi("cmddelall")) {
+		maildir_deleteall(dir);
+	}
 	else if (*cgi("cmdmove"))
 	{
 		rc=group_movedel( dir, &groupmove );
@@ -3600,6 +3603,11 @@ void folder_showtransfer()
 	folder_spam=getarg("SPAM");
 
 	printf("<INPUT TYPE=HIDDEN NAME=pos VALUE=%s> ", cgi("pos"));
+	/* add by roy 2003.1.1 */
+	if (
+		strcmp(sqwebmail_folder, TRASH) == 0 || 
+		strcmp(sqwebmail_folder, SPAM) == 0
+	) printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddelall VALUE=\"È«²¿É¾³ý\"");
 	printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddel VALUE=\"%s\"> ",
 		strcmp(sqwebmail_folder, TRASH) == 0
 		? purgelab:deletelab );
