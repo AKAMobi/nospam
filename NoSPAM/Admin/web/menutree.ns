@@ -166,7 +166,7 @@ if($ContentEngine > 0){
 	var f = new WebFXTreeItem('邮件审计引擎','help/archive.htm','main');
 	tree.add(f);
 	f.add(new WebFXTreeItem('基本设置','archive/archiveengine.ns','main'));
-	f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
+	//f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
 	f.add(new WebFXTreeItem('选择性审计','archive/archivetype.ns','main'));
 <?
 	}
