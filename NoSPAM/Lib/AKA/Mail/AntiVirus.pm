@@ -7,6 +7,7 @@
 
 
 package AKA::Mail::AntiVirus;
+use Locale::TextDomain ('engine.nospam.cn');
 
 #use AKA::Mail;
 use AKA::Mail::Log;

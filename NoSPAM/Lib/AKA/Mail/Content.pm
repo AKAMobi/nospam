@@ -7,6 +7,8 @@
 
 package AKA::Mail::Content;
 
+use Locale::TextDomain ('engine.nospam.cn');
+
 use AKA::Mail::Log;
 use AKA::Mail::Content::Conf;
 use AKA::Mail::Content::Rule;

@@ -9,7 +9,7 @@
 package AKA::Mail;
 use strict;
 
-use Locale::TextDomain qw(engine.nospam.aka.cn);
+use Locale::TextDomain ('engine.nospam.cn');
 
 use MIME::Base64; 
 use MIME::QuotedPrint; 
@@ -1718,7 +1718,7 @@ sub check_license_file
 		return (0,__("License error ") . "#3");
 	}
 
-	if ( length($hardware_license) ){
+	if ( defined $hardware_license && length($hardware_license) ){
 		my ($hwok,$hwinfo) = $self->{license}->check_hardware ( $hardware_license );
 		unless ( $hwok ){
 			#$self->{zlog}->debug ( "AKA::License::check_license_file hardware err [$hwinfo]!" );
