@@ -4,8 +4,10 @@ use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-&test_black_ip;
+&test_dynamic_dump;
+#&test_black_ip;
 #&test_traceable;
+exit;
 ############################
 sub test_mail_engine_content
 {
@@ -42,6 +44,21 @@ sub test_mail_engine_spam
 	print "spam: $is_spam, reason: $reason\n" ;
 }
 
+sub test_dynamic_clean
+{
+	use AKA::Mail::Dynamic;
+	my $AMD = new AKA::Mail::Dynamic;
+
+	$AMD->clean() or die "can't clean";
+}
+
+sub test_dynamic_dump
+{
+	use AKA::Mail::Dynamic;
+	my $AMD = new AKA::Mail::Dynamic;
+
+	$AMD->dump or die "can't dump";
+}
 sub test_dynamic_from
 {
 	use AKA::Mail::Dynamic;
@@ -135,8 +152,8 @@ sub test_black_ip
 
 sub test_traceable
 {
-	$ip = "202.205.99.1";
+	$ip = "211.157.100.10";
 
-	$traceable = $S->is_traceable($ip, "zixia.net");
-	print "$traceable\n";
+	$traceable = $S->is_traceable($ip, "aka.cn");
+	print "traceable: $traceable\n";
 }

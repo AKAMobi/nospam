@@ -39,6 +39,17 @@ sub new
 	return $self;
 }
 
+sub clean
+{
+	my $self = shift;
+
+	$self->attach;
+
+	$self->{ipch}->remove;
+	#IPC::Shareable->clean_up_all;
+	#IPC::Shareable->clean_up;
+}
+
 sub dump
 {
 	my $self = shift;
