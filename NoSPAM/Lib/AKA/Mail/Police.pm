@@ -20,48 +20,30 @@ package AKA::Mail::Police;
 
 sub new
 {
-# Retrieve the package's string.
-# It is not necessarily Foo, because this constructor may be
-# called from a class that inherits Foo.
 	my $class = shift;
 
-# $self is the the object. Let's initialize it to an empty hash
-# reference.
 	my $self = {};
 
-# Associate $self with the class $class. This is probably the most
-# important step.
 	bless $self, $class;
 
-# Now we can retrieve the other arguments passed to the 
-# construtor.
+	my $parent = shift;
 
-	#my $name = shift || "Fooish";
-	#my $number = shift || 5;
+	$self->{parent} = $parent;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self);
+	$self->{conf} = new AKA::Mail::Police::Conf($self);
+	$self->{verify} = new AKA::Mail::Police::Verify($self);
+	$self->{filter} = new AKA::Mail::Police::Filter($self);
 
-# Put these arguments inside class members
-	$self->{zlog} ||= new AKA::Mail::Log($self);
-	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
-	$self->{verify} ||= new AKA::Mail::Police::Verify($self);
-	$self->{filter} ||= new AKA::Mail::Police::Filter($self);
-
-# Return $self so the user can use it.
 	return $self;
 
 }
 
-#sub DESTROY
-#{
-#    my $self = shift;
+sub get_action
+{
+	$self = shift;
 
-    #print "DESTROYed.\n";
-#}
-
-
-#END
-#{
-#	close(MYLOG);
-#}
+	return $self->{filter}->get_action( @_ );
+}
 
 1;
 
