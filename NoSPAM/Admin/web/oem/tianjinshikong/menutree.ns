@@ -652,7 +652,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.html">ϵͳ״̬</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.ns">ϵͳ״̬</A>
 		</TD>
 	</TR>
 	<TR>

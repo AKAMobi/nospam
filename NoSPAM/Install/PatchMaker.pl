@@ -8,7 +8,7 @@ use strict;
 my $NSVER='2.0-4.26';
 my $ISOVER='2.0RC5';
 
-my $PATCHVER='1';
+my $PATCHVER='2';
 
 #
 # ÖÆ×÷Patch£º

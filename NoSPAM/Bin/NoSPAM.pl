@@ -1101,7 +1101,8 @@ cd -
 grep -v devpts /etc/fstab > /etc/fstab.new
 mv -f /etc/fstab.new /etc/fstab
 
-chkconfig --level 3 named on
+# use supervise to monite named
+chkconfig --level 3 named off
 chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
 #AKA::Mail::AntiVirus will start automatic

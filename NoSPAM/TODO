@@ -5,12 +5,23 @@ DONE qns_loader io instead of ns-queue;
 DONE use env to judge ins-queue or ns-queue
 
 2004-04-27
-DONEfix netmask bug of ifconfig call
+DONE fix netmask bug of ifconfig call
 DONE make ns-qeue daemon
 
-完成CLI
-VLAN LVS
-网景
-check rule  match err ( old err , find it out )
+2004-05-03
+DONE 增加virus的弹回
+
+2004-05-05
+make server mode work
+qmai-remote concur 并发 120 的硬编码 506 now
+
+2004-05-06
+解决启明星辰的SMTPS问题
 named 无法出国问题
-增加virus的弹回
+
+check rule  match err ( old err , find it out )
+In,Out都打tag的合理性论证
+VLAN LVS
+
+网景
+完成CLI

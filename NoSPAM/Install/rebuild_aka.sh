@@ -23,7 +23,7 @@ mkdir -p aka/var/qmail/bin
 #
 # Perl Modules
 #
-########3
+########
 echo "Deleting old file..."
 rm -fvr aka/usr/lib/perl5/site_perl/5.8.0/AKA/
 
@@ -77,6 +77,7 @@ chown root aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod +s aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod -R o+r aka/* 
 
-echo "Cleaning cvs rubbish"
+echo "Cleaning cvs,test rubbish"
 find aka -type f -name ".#*" -exec rm -fv {} \;
+find aka -type f -name "*.pl" -exec rm -fv {} \;
 
