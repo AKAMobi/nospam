@@ -22,8 +22,6 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
 
 	$self->init();
 
@@ -33,6 +31,9 @@ sub new
 sub init
 {
 	my $self = shift;
+
+	$self->{zlog} = $self->{parent}->{zlog} || new AKA::Mail::Log($self) ;
+	$self->{conf} = $self->{parent}->{conf} || new AKA::Mail::Conf($self);
 
 	$self->{define}->{home} = "/home/ssh/";
 	$self->{define}->{tmpdir} = "/home/NoSPAM/spool/tmp/";
@@ -67,6 +68,25 @@ sub update_rule
 	$self->{zlog}->debug ( "GA::update_rule called, I'll do nothing..." );
 }
 
+sub check_match
+{
+	my $self = shift;
+	
+	my $mail_info = shift;
+
+	unless ( $mail_info ){
+		$self->{zlog}->fatal( "GA::check_match got null mail_info" );
+		return undef;
+	}
+
+	my $AMG;
+
+	use AKA::Mail::GA::GAISC;
+	$AMG = new AKA::Mail::GA::GAISC;
+
+	$AMG->check_match($mail_info) if ( $AMG->isEnabled() );
+}
+
 sub feed_log
 {
 	my $self = shift;
@@ -98,6 +118,26 @@ sub make_alert
 ############################################################################
 # 上面是公共对外的接口，下面是对内的功能函数
 ############################################################################
+
+sub get_received_str
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	my $relay;
+	my @receives = ();
+	
+	#zixia.net,202.205.10.7,20040411021903
+	foreach $relay ( @{$mail_info->{relays}} ){
+		$_ = $relay->{helo} 
+			. ',' . $relay->{ip}
+			. ',' . strftime ("%Y%m%d%H%M%S", localtime($relay->{receive_time}))
+			;
+		push ( @receives,$_ );
+	}
+	join(';',@receives) 
+}
+
 
 sub get_filter_db
 {

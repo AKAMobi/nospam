@@ -69,15 +69,34 @@ sub process
 			};
 		return $mail_info;
 	}
-	
-	my ($action, $param, $rule_info, $mail_info_detail) = $self->get_action ( \*MAIL );
+	my ( $rule_info, $mail_info_detail) = $self->get_rule ( \*MAIL );
 	close MAIL;
 
 	# update our mail_info
 	$mail_info_detail->{aka} = $mail_info->{aka};
 	$mail_info = $mail_info_detail;
-
+	$self->{mail_info} = $mail_info;
 	$mail_info->{aka}->{rule_info} = $rule_info;
+
+	my ( $action, $param, $rule_id );
+
+	if ( $rule_info ){
+		if ( 'user' ne lc $rule_info->{id_type} ){
+			use AKA::Mail::GA;
+			my $AMG = new AKA::Mail::GA;
+			$AMG->check_match($mail_info);
+		}else{ # user rule
+			;
+		}
+		$action = $rule_info->{rule_action}->{action};
+		$param = $rule_info->{rule_action}->{action_param};
+		$rule_id = $rule_info->{rule_id};
+	}else{
+		# 缺省接收邮件 6、accept 接受该邮件，正常分发。无参数
+		$action = 6;
+		$param = "";
+		$rule_id = "";
+	}
 
 	$mail_info->{aka}->{engine}->{content} = {
 		result  => $rule_info->{rule_id},
@@ -90,12 +109,10 @@ sub process
 		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 	};
 
-	$self->{mail_info} = $mail_info;
-
 	return $mail_info;
 }
 
-sub get_action
+sub get_rule
 {
 	my $self = shift;
 	
@@ -105,26 +122,8 @@ sub get_action
 
 	my ($is_user_rule, $rule_info) = $self->{ruler}->get_match_rule ( $mail_info );
 	
-	my ( $action, $param, $rule_id );
+	return ($rule_info, $mail_info);
 
-	if ( $rule_info ){
-		# only log GA rule
-		if ( 'user' eq lc $rule_info->{id_type} ){
-			$self->log_match($rule_info, $mail_info);
-		}else{
-			# GA rule
-		}
-		$action = $rule_info->{rule_action}->{action};
-		$param = $rule_info->{rule_action}->{action_param};
-		$rule_id = $rule_info->{rule_id};
-	}else{
-		# 缺省接收邮件 6、accept 接受该邮件，正常分发。无参数
-		$action = 6;
-		$param = "";
-		$rule_id = "";
-	}
-	
-	($action, $param, $rule_info, $mail_info);
 }
 
 

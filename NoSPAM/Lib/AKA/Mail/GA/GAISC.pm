@@ -5,7 +5,7 @@ package AKA::Mail::GA::GAISC;
 use strict;
 
 use vars qw(@ISA);
-use AKA::Mail::GA;
+#use AKA::Mail::GA;
 @ISA=qw(AKA::Mail::GA);
 
 use AKA::Mail::Conf;
@@ -35,12 +35,19 @@ use constant CATE_LOGDATA_RESULT	=> '0000000097';
 use constant CATE_MAILRULE_NOTIFY	=> '0000000096';
 use constant CATE_MAILRULE_RESULT	=> '0000000004';
 
-# XXX where's 95??
 use constant CATE_LOGRULE_NOTIFY	=> '0000000094';
 use constant CATE_LOGRULE_RESULT	=> '0000000006';
 
 use constant CATE_PING			=> '0000000095';
 use constant CATE_PONG			=> '0000000005';
+
+# AKA Ext TODO
+#use constant CATE_UL_ALERT		=> '0000000149';
+#use constant CATE_UL_LOG_OK		=> '0000000151';
+
+#use constant CATE_UL_LOG		=> '0000000148';
+#use constant CATE_UL_LOG_OK		=> '0000000152';
+
 
 # Data meaning
 use constant DATA_SUCC			=> '0000000001';
@@ -72,6 +79,20 @@ sub new
 	$self->init();
 
 	return $self;
+}
+
+sub check_match
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	$self->make_log( $mail_info );
+
+	my $rule_info = $mail_info->{rule_info};
+	
+	if ( 1==$rule_info->{alarmlevel} ){
+		$self->feed_alert( $self->make_alert($mail_info) );
+	}
 }
 
 sub test
@@ -140,6 +161,84 @@ sub update_rule
 	# GAISC update rule is passiveness
 }
 
+sub mail_info_to_file
+{
+	my $self = shift;
+
+	my $mail_info = shift;
+	my $type = shift;
+
+	$type = uc $type;
+	unless ( $type eq 'ALT' || $type eq 'LOG' ){
+		$self->{zlog}->fatal ( "GA::GAISC::mail_info_to_file got type [$type] err." );
+		return undef;
+	}
+
+	my $dirname = { 'ALT' => 'alert', 'LOG' => 'log' };
+	srand $$;
+
+	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . int(rand*9999) . '.' . $type;
+
+	my $mimedata;
+	if ( open ( FD, '<' . $mail_info->{aka}->{emlfilename} ) ){
+		$mimedata = join('', <FD>);
+		close ( FD );
+	}
+
+	unless ( open ( FD, ">$filename" ) ){
+		$self->{zlog}->fatal ( "GA::GAISC::mail_info_to_file can't write file [$filename]" );
+		return undef;
+	} 
+	print FD "GAISC.$type.Rule=" . $mail_info->{rule_info}->{rule_id} . '0x0D0x0A';
+	print FD "GAISC.$type.Time=". $self->{zlog}->get_time_stamp . '0x0D0x0A';
+	print FD "GAISC.$type.From=". $mail_info->{head}->{from} . '0x0D0x0A';
+	print FD "GAISC.$type.To=". $mail_info->{head}->{to} . '0x0D0x0A';
+	print FD "GAISC.$type.Cc=". $mail_info->{head}->{cc} . '0x0D0x0A';
+	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . '0x0D0x0A';
+	print FD "GAISC.$type.Received=". $self->get_received_str($mail_info) . '0x0D0x0A';
+	print FD "GAISC.$type.Length=" . length($mail_info->{body_text}) . '0x0D0x0A';
+	print FD "GAISC.$type.Content=". $mail_info->{body_text} . '0x0D0x0A';
+	print FD "GAISC.$type.SelfLength=" . (-s $mail_info->{aka}->{emlfilename}||0) . '0x0D0x0A';
+	print FD "GAISC.$type.SelfMai=0x0D0x0A" . $mimedata . '0x0D0x0A';
+
+	my $atta_num = 0;
+	foreach my $atta_file ( keys %{$mail_info->{body}} ){
+		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
+		$atta_num++;
+		print FD "GAISC.$type.AttachName$atta_num=" 
+			. $atta_file . '0x0D0x0A';
+		print FD "GAISC.$type.AttachType$atta_num="
+			. $mail_info->{body}->{$atta_file}->{type} 
+				. '/' . $mail_info->{body}->{$atta_file}->{subtype}
+			. '0x0D0x0A';
+		print FD "GAISC.$type.AttachLength$atta_num="
+			. $mail_info->{body}->{$atta_file}->{size} . '0x0D0x0A';
+		print FD "GAISC.$type.AttachCount$atta_num="
+			. $mail_info->{body}->{$atta_file}->{content} . '0x0D0x0A';
+	}
+	print FD "GAISC.$type.AttachCount=". $atta_num . '0x0D0x0A';
+	close FD;
+
+	return $filename;
+}
+
+sub make_log
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	return $self->mail_info_to_file( $mail_info, 'LOG' );
+}
+
+sub make_alert
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	return $self->mail_info_to_file( $mail_info, 'ALT' );
+}
+
+
 sub feed_log
 {
 	# TODO get all logfile match the given condition.
@@ -148,22 +247,18 @@ sub feed_log
 sub feed_alert
 {
 	# TODO get all logfile match the given condition.
-}
-
-sub make_log
-{
 	my $self = shift;
 
-	# TODO copy file to ssh/log, and return filepathname
+	my @alertfiles = @_;
+
+	unless ( @alertfiles ){
+		$self->{zlog}->fatal ( "GA::GAISC::feed_alert got no alert file param" );
+		return;
+	}
+
+	$self->GAISC_get_alt_result ( @alertfiles );
+	unlink @alertfiles;
 }
-
-sub make_alert
-{
-	my $self = shift;
-
-	# TODO gen alert file, and return filepathname
-}
-
 
 sub GAISC_server
 {
@@ -366,6 +461,21 @@ sub GAISC_get_alt_result
 
 	my @alt_files = @_;
 
+	unless ( @alt_files ){
+		$self->{zlog}->fatal ( "GA::GAISC::GAISC_get_alt_result get no alt_files" );
+		return;
+	}
+
+	my $ftp = $self->_connect_ftp();
+	my $err = 1 unless $ftp;
+
+	$self->ftp_put_file( $ftp, '/' 
+		. $self->{GAISC}->{FTPDir} . '/alert/' . $self->{GAISC}->{GatewayIdentifier} . '/'
+		, @alt_files ) unless $err;
+
+	$ftp->quit unless $err;
+
+
 	my $pkg = { data_cate => CATE_ALTDATA_NOTIFY,
 			data => join(',',@alt_files) . ','
 		};
@@ -441,6 +551,8 @@ sub GAISC_resp_rule_update
 	$self->{files} = ();
 	$self->ftp_get_file( $ftp, '/' . $self->{GAISC}->{FTPDir} . '/rule/', $ruledir, @rule_files ) unless $err;
 
+	$ftp->quit;
+
 	my ($rule_add_modify, $rule_del) = $self->parse_rule_to_filterdb( @{$self->{files}} );
 
 	if ( $self->merge_new_rule ( $rule_add_modify, $rule_del ) ){
@@ -455,6 +567,7 @@ sub GAISC_resp_rule_update
 	$self->_send_pkg( $socket, $pkg );
 
 	unlink @{$self->{files}} if ( 'ARRAY' eq ref $self->{files} );
+	$self->{files} = ();
 
 	return 1;
 }
@@ -545,7 +658,7 @@ sub _pkg2filter
 
 	my $val;
 	while ( ($_,$val) = each ( %{$pkg} ) ){
-		#print "$_, $val\n";
+		print "$_, $val\n";
 		if ( /^ruleid$/ ){
 			$ruleid = $val;
 		}elsif( /^time$/ ){
@@ -566,10 +679,10 @@ sub _pkg2filter
 			#	$rule_info->{rule_keyword}->{keyword}
 			#}
 		}elsif( /^rulekeytype$/ ){
-			for ( my $n=0; $n<length($val); $n++ ){
-				if ( '1' eq substr($val,$n,1) ){
-					$rule_info->{rule_keyword}->{key} = $keyword_keymap->{$val};
-					if ( 11==($n+1) ){	# IP match
+			for ( my $pos=1; $pos<=length($val); $pos++ ){
+				if ( '1' eq substr($val,$pos-1,1) ){
+					$rule_info->{rule_keyword}->{key} = $keyword_keymap->{$pos};
+					if ( 11==$pos ){	# IP match
 						$rule_info->{rule_keyword}->{type} = 6;
 					}else{
 						$rule_info->{rule_keyword}->{type} = 0;
@@ -614,6 +727,18 @@ sub _pkg2filter
 	($ruleid, $rule_info);
 }
 
+sub get_file_list
+{
+	my $self = shift;
+	my $path = shift || '/home/ssh/log/';
+	my $ext = shift || 'log';
+	
+	opendir ( LOG_DIR, $path ) ;
+	my @logfiles = grep { /\.$ext/ && -f "$path/$_" } readdir(LOG_DIR);
+	closedir ( LOG_DIR );
+
+	@logfiles;
+}
 
 sub GAISC_resp_log_update
 {
@@ -637,6 +762,16 @@ sub GAISC_resp_log_update
 			
 
 	$self->{zlog}->debug ( Dumper($log_req) );
+	my @logfiles = $self->get_file_list( '/home/ssh/log/', 'log' );
+
+	my $ftp = $self->_connect_ftp();
+	my $err = 1 unless $ftp;
+
+	$self->ftp_put_file( $ftp, '/' . $self->{GAISC}->{FTPDir} . '/log/' 
+			. $self->{GAISC}->{SystemIdentifier}, @logfiles ) unless $err;
+
+	$ftp->quit;
+
 
 	$pkg = {	data_cate	=> CATE_LOGRULE_RESULT,
 			data		=> DATA_SUCC
