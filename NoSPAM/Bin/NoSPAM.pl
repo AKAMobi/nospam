@@ -83,6 +83,7 @@ my $licenseconf = $conf->{licconf}; #&get_licenseconf;
 
 # I18N
 my $language  = $licenseconf->{Language} || 'zh_CN';
+#print $language, "\n";
 setlocale (LC_MESSAGES, $language);
 
 my $zlog = new AKA::Mail::Log;
