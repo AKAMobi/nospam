@@ -32,6 +32,50 @@ if ($_POST['action']=='send') {
 </HTML>
 <?php
 
+function get_mimetype($name)
+{
+	$dot = strrchr($name, '.');
+	if ($dot == $name)
+		return "text/plain; charset=gb2312";
+	if (strcasecmp($dot, ".html") == 0 || strcasecmp($dot, ".htm") == 0)
+		return "text/html; charset=gb2312";
+	if (strcasecmp($dot, ".jpg") == 0 || strcasecmp($dot, ".jpeg") == 0)
+		return "image/jpeg";
+	if (strcasecmp($dot, ".gif") == 0)
+		return "image/gif";
+	if (strcasecmp($dot, ".png") == 0)
+		return "image/png";
+	if (strcasecmp($dot, ".pcx") == 0)
+		return "image/pcx";
+	if (strcasecmp($dot, ".css") == 0)
+		return "text/css";
+	if (strcasecmp($dot, ".au") == 0)
+		return "audio/basic";
+	if (strcasecmp($dot, ".wav") == 0)
+		return "audio/wav";
+	if (strcasecmp($dot, ".avi") == 0)
+		return "video/x-msvideo";
+	if (strcasecmp($dot, ".mov") == 0 || strcasecmp($dot, ".qt") == 0)
+		return "video/quicktime";
+	if (strcasecmp($dot, ".mpeg") == 0 || strcasecmp($dot, ".mpe") == 0)
+		return "video/mpeg";
+	if (strcasecmp($dot, ".vrml") == 0 || strcasecmp($dot, ".wrl") == 0)
+		return "model/vrml";
+	if (strcasecmp($dot, ".midi") == 0 || strcasecmp($dot, ".mid") == 0)
+		return "audio/midi";
+	if (strcasecmp($dot, ".mp3") == 0)
+		return "audio/mpeg";
+	if (strcasecmp($dot, ".pac") == 0)
+		return "application/x-ns-proxy-autoconfig";
+	if (strcasecmp($dot, ".txt") == 0)
+		return "text/plain; charset=gb2312";
+	if (strcasecmp($dot, ".xht") == 0 || strcasecmp($dot, ".xhtml") == 0)
+		return "application/xhtml+xml";
+	if (strcasecmp($dot, ".xml") == 0)
+		return "text/xml";
+	return "application/octet-stream";
+}
+
 function sendGroup($sendGroups, $isSendAll, $mailbox,$title, $content) {
 	$passwd_file = VPOPMAILHOME . 'domains/' . DOMAIN . '/vpasswd';
 
@@ -74,12 +118,49 @@ function sendGroup($sendGroups, $isSendAll, $mailbox,$title, $content) {
 	$user_list = file( $passwd_file );
     $mail_count=count($user_list);
 
+define('MAIL_MIME_CRLF',"\n",TRUE);
 
+require 'Mail.php';
+require 'Mail/mime.php';
+
+$headers['From'] = $mailbox;
+$headers['Subject'] = $title;
+
+$mime = new Mail_mime;
+
+$mime->setTXTBody($content);
+	
+$attachdir="/tmp/wmail".$_SESSION['AdminID'];
+@mkdir("/tmp/wmail");
+@mkdir($attachdir);
+
+$fp1=@fopen($attachdir . "/.index","r");
+if ($fp1!=FALSE) {
+	while (!feof($fp1)) {
+		$buf=fgets($fp1);
+		$file=substr($buf,0,strpos($buf,' '));
+		if ($file=="")
+			continue;
+		$name=strstr($buf,' ');
+		$name=substr($name,1);		
+		@unlink($attachdir . "/" . $file);
+		$mime->addAttachment($file, get_mimetype($file),$name);
+	}
+	fclose($fp1);
+	@unlink($attachdir . "/.index");
+}
+
+// get MIME formatted message headers and body
+$body = $mime->get(array('text_charset'=>'GB2312'));
+$header = $mime->headers($headers);
+
+$message =& Mail::factory('sendmail');
 
 	for( $i = 0 ; $i < $mail_count ; $i++)	{
 			list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
 			if ($isSendAll) {
-				mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
+				$message->send($user_account.'@'.DOMAIN, $header, $body);
+//				mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
 				continue;
 			}
 			for ($t=0; $t<count($userinfo_list); $t++){
@@ -91,8 +172,9 @@ function sendGroup($sendGroups, $isSendAll, $mailbox,$title, $content) {
 				$groups=explode(',',trim($userinfo_list[$t]['group']));
 				foreach ($sendgrouplist as $sendgroup) {
 					if (in_array($sendgroup,$groups)) {
+						$message->send($user_account.'@'.DOMAIN, $header, $body);
 						
-						mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
+					//	mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
 						break;
 					}
 				}
@@ -200,6 +282,24 @@ function showMenu(){
 </tr>
 </table>
 <input type="button" value="发送群体信件" onclick="doSend();">
+<script language="JavaScript">
+<!--
+   function GoAttachWindow(){     
+	
+   	var hWnd = window.open("uploadAttach.php","_blank","width=600,height=300,scrollbars=yes");  
+
+	if ((document.window != null) && (!hWnd.opener))  
+
+		   hWnd.opener = document.window;  
+
+	hWnd.focus();  
+
+   	return false;  
+
+   }  
+-->
+</script>
+<input type="button" value="添加附件" onclick="GoAttachWindow()");
 </form>
 <?php
 }
