@@ -6,7 +6,7 @@ if($_POST["submit"]){
 	$spamconf->setParam("TagHead","N");
 	$spamconf->setParam("TagSubject","N");
 	$spamconf->setParam("TagReason","N");
-	if(sizeof($tagpos) > 0){
+	if(count($tagpos) > 0){
 		foreach($tagpos as $pos)
 			$spamconf->setParam($pos,"Y");
 	}

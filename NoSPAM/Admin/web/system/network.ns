@@ -10,12 +10,21 @@ else
 if($_POST["Submit"]=="修改"){
 	switch($mode){
 		case "Server":
+		if(!checkipaddr($_POST["GatewayIP"],false)) die("IP地址".$_POST["GatewayIP"]."有误！");
+		if(!is_numeric($_POST["NetMask"]) || intval($_POST["NetMask"])>32 || intval($_POST["NetMask"]<=0)) die("掩码".$_POST["NetMask"]."有误！");
+		if(!checkipaddr($_POST["ServerGateway"],false)) die("IP地址".$_POST["ServerGateway"]."有误！");
+		
 		$spamconf->setParam("MailServerHostname",$_POST["ServerName"]);
 		$spamconf->setParam("MailGatewayIP",$_POST["GatewayIP"]);
 		$spamconf->setParam("MailServerNetMask",$_POST["NetMask"]);
 		$spamconf->setParam("MailServerGateway",$_POST["ServerGateway"]);
 		break;
 		case "Gateway":
+		if(!checkipaddr($_POST["ServerIP"],false)) die("IP地址".$_POST["ServerIP"]."有误！");
+		if(!is_numeric($_POST["NetMask"]) || intval($_POST["NetMask"])>32 || intval($_POST["NetMask"]<=0)) die("掩码".$_POST["NetMask"]."有误！");
+		if(!checkipaddr($_POST["ServerGateway"],false)) die("IP地址".$_POST["ServerGateway"]."有误！");
+		if(!checkipaddr($_POST["MailGateway"],false)) die("IP地址".$_POST["MailGateway"]."有误！");
+
 		$spamconf->setParam("MailServerHostname",$_POST["ServerName"]);
 		$spamconf->setParam("MailServerIP",$_POST["ServerIP"]);
 		$spamconf->setParam("MailServerGateway",$_POST["ServerGateway"]);

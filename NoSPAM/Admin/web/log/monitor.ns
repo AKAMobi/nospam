@@ -1,0 +1,78 @@
+<?
+require_once("../inc/include.ns");
+
+if(!$_GET["interval"] || !$_GET["line"])
+	die("错误！");
+
+//时间,邮件方向,发件人IP,发件人地址,收件人地址,主题,垃圾度,垃圾原因,垃圾处理动作描述,动作类型,动作参数动态限制,动态描述
+if(($ret=wi("get_LogHead",$result))==0)
+	$head = explode(",",$result[0]);
+else
+	die("错误代码：$ret");
+
+$num = $_GET["line"];
+$cmd = "/usr/bin/tail -n $num ".LOGFILE;
+exec($cmd,$output);
+
+$dir = array("外到内","内到外");
+$vSpam = array("正常邮件","疑似垃圾","垃圾邮件","黑名单");
+$rAction = array("通过","丢弃");
+$dynamic = array("正常","超限");
+?>
+<html>
+<head>
+<meta http-equiv="refresh" content="<?=$_GET["interval"]?>">
+<script language="javascript">
+function loadPage()
+{
+	parent.document.all.oStatic.style.display = "none";
+	parent.document.all.oMonitor.style.display = "";
+	parent.document.all.oMonitor.innerHTML = document.body.innerHTML;
+}
+</script>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body onload="loadPage()">
+<table class="RuleTB">
+<tr class="RuleTBH">
+	<th>编号</th>
+<?
+foreach($head as $value){
+?>
+	<th><?=$value?></th>
+<?
+}
+?>
+</tr>
+<?
+if(count($output) > 0){
+	$i = 1;
+	foreach($output as $line){
+		$className = $i%2? "RuleTB2":"RuleTB1";
+		$values = explode(",",$line);
+?>
+<tr class="<?=$className?>">
+	<td><?=$i?></td>
+	<td><?=$values[0]?></td>
+	<td><?=$dir[intval($values[1])]?></td>
+	<td><?=$values[2]?></td>
+	<td><?=$values[3]?></td>
+	<td><?=$values[4]?></td>
+	<td><?=$values[5]?></td>
+	<td><?=$vSpam[intval($values[6])]?></td>
+	<td><?=$values[7]?></td>
+	<td><?=$rAction[intval($values[8])]?></td>
+	<td><?=$values[9]?></td>
+	<td><?=$Actions[intval($values[10])]?></td>
+	<td><?=$values[11]?></td>
+	<td><?=$dynamic[intval($values[12])]?></td>
+	<td><?=$values[13]?></td>
+</tr>
+<?
+		$i++;
+	}
+}
+?>
+</table>
+</body>
+</html>

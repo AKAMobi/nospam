@@ -1,8 +1,8 @@
 <?
 require_once("../inc/include.ns");
 
-if( wi("get_Serial",$result)==0 ){
-	$serial = trim($result[0]);
+if( wi("check_License",$result)==0 ){
+	$serial = trim(implode("",$result));
 }else{
 	die("获取序列号时出现错误！");
 }

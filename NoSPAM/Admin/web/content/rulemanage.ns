@@ -18,7 +18,7 @@ if(!$order)
 	$order = "unsorted";
 if(!$page || $page < 1)
 	$page = 1;
-if(!$pagenum)
+if(!$pagenum || $pagenum < 1)
 	$pagenum = PAGENUM;
 
 $readonly = false;
@@ -163,7 +163,7 @@ if(count($rules) > 0){
 	<? if(!$readonly){ ?><td style="cursor: default"><input type="checkbox" name="id[]" value="<?=$rule_id?>" /></td><? } ?>
 	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=$rule_id?></td>
 	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
-	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
+	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
 	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=FormatTime($rule->get_attribute("create_time"))?></td>
 	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=count($rule->get_elements_by_tagname("rule_keyword"))?></td>
 	<td onclick="location.href='<?=$url?>?id=<?=$rule_id?>'"><?=count($rule->get_elements_by_tagname("size"))?></td>

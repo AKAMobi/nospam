@@ -53,8 +53,8 @@ if(file_exists(Category)){
 	$categories = explode("\n",$content);
 	if(strlen($content) > 0){
 		foreach($categories as $category){
-			list($id,$name) = explode("\t",$category);
-			$Category[$id] = $name;
+			list($id,$name,$note) = explode("\t",$category);
+			$Category[$id] = array($name,$note);
 		}
 	}
 }

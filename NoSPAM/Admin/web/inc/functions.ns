@@ -48,15 +48,15 @@ function checkmailaddr($addr)
 	return true;
 }
 
-function checkipaddr($str)
+function checkipaddr($str,$flag)
 {
-	if(strpos($str,"/")){
+	if(strpos($str,"/") && $flag){
 		$tmp = explode("/",$str);
 		list($ip,$mask) = $tmp;
 		if(!is_numeric($mask) || intval($mask) < 0 || intval($mask) > 32)
 			return false;
 		$temp = explode(".",$ip);
-		if(sizeof($temp)!=4)
+		if(count($temp)!=4)
 			return false;
 		foreach($temp as $tempp){
 			if(!is_numeric($tempp) || intval($tempp) > 255 )
@@ -64,7 +64,7 @@ function checkipaddr($str)
 		}
 	}else{
 		$temp = explode(".",$str);
-		if(sizeof($temp)!=4)
+		if(count($temp)!=4)
 			return false;
 		foreach($temp as $tempp){
 			if(!is_numeric($tempp) || intval($tempp) > 255 )

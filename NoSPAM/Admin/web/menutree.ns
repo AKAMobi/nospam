@@ -59,12 +59,12 @@ if($ServerMode == "Server"){
 	c.add(new WebFXTreeItem('引擎开关','antispam/spamengine.ns','main'));
 	var c1 = new WebFXTreeItem('垃圾识别');
 	c.add(c1);
-	c1.add(new WebFXTreeItem('IP白名单','antispam/ipwhitelist.ns','main'));
-	c1.add(new WebFXTreeItem('邮件域名白名单','antispam/domainwhitelist.ns','main'));
-	c1.add(new WebFXTreeItem('邮件帐号白名单','antispam/emailwhitelist.ns','main'));
-	c1.add(new WebFXTreeItem('IP黑名单','antispam/ipblacklist.ns','main'));
-	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/domainblacklist.ns','main'));
-	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/emailblacklist.ns','main'));
+	c1.add(new WebFXTreeItem('IP白名单','antispam/list.ns?option=WhiteIP','main'));
+	c1.add(new WebFXTreeItem('邮件域名白名单','antispam/list.ns?option=WhiteDomain','main'));
+	c1.add(new WebFXTreeItem('邮件帐号白名单','antispam/list.ns?option=WhiteFrom','main'));
+	c1.add(new WebFXTreeItem('IP黑名单','antispam/list.ns?option=BlackIP','main'));
+	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
+	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
 	c1.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
 	var c2 = new WebFXTreeItem('垃圾处理');
 	c.add(c2);
@@ -87,6 +87,7 @@ if($ServerMode == "Server"){
 	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
 	tree.add(g);
 	g.add(new WebFXTreeItem('流量监控','log/traffic.htm','main'));
+	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
 	g.add(new WebFXTreeItem('日志清空删除','log/logflush.ns','main'));
 

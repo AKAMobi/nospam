@@ -7,7 +7,7 @@ if($_POST["Traceable"]){
 		$spamconf->setParam("TraceSpamMask",intval(intval($_POST["TraceSpamMask"])/8));
 		$spamconf->setParam("TraceMaybeSpamMask",intval(intval($_POST["TraceMaybeSpamMask"])/8));
 		$sType = "HAND";
-		if(sizeof($_POST["options"]) > 0){
+		if(count($_POST["options"]) > 0){
 			foreach($_POST["options"] as $option)
 				$sType .= ",".$option;
 		}

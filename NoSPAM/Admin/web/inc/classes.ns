@@ -227,23 +227,43 @@ class NoSPAMConf extends ConfFile
 
 	function getList($sList)
 	{
+		$ret = array();
 		$str = ConfFile::getParam($sList);
-		return str_replace(",","\n",trim($str));
-	}
-
-	function setList($sList,$sParam)
-	{
-		$sParam = str_replace(" ","",trim($sParam));
-		$sParam = str_replace("　","",$sParam);
-		$sParam = str_replace("\r","",$sParam);
-		$sParam = str_replace("\n",",",$sParam);
-		if($sList=="WhiteIPList" || $sList=="BlackIPList"){
-			$IPArray = explode(",",$sParam);
-			foreach($IPArray as $ip){
-				if(!checkipaddr($ip))
-					die("IP地址".$ip."格式有误");
+		if(trim($str) == "")
+			return $ret;
+		$temp = explode(",",$str);
+		if(count($temp) > 0){
+			$i = 0;
+			foreach($temp as $value){
+				list($key,$note) = explode("#",$value);
+				$ret[$key]=$note;
 			}
 		}
+		return $ret;
+	}
+
+	function setList($sList,$aParam)
+	{
+		$temp = array();
+		$i = 0;
+		if($sList=="WhiteIPList" || $sList=="BlackIPList"){
+			if(count($aParam) > 0){
+				foreach($aParam as $key=>$note){
+					if(!checkipaddr($key,true))
+						die("IP地址".$key."格式有误");
+					$temp[$i] = trim($key)."#".trim(str_replace(",","，",$note));
+					$i++;
+				}
+			}
+		}else{
+			if(count($aParam) > 0){
+				foreach($aParam as $key=>$note){
+					$temp[$i] = trim($key)."#".trim(str_replace(",","，",$note));
+					$i++;
+				}
+			}
+		}
+		$sParam = trim(implode(",",$temp));
 		ConfFile::setParam($sList,$sParam);
 	}
 }

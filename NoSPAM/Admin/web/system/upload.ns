@@ -19,16 +19,16 @@ switch($_GET["file"])
 	die("错误");
 }
 
-if($filename != LICENSE){
-	$fp = fopen($file["tmp_name"],"r+");
-	$str = fread($fp,filesize($file["tmp_name"]));
-	$str = str_replace("\r\n","\n",$str);
-	fwrite($fp,$str);
-	fclose($fp);
-}
-
 if(!move_uploaded_file($file["tmp_name"],$filename."new"))
 	die("上载文件失败！");
+
+if($_GET["file"] != "license"){
+	$fp = fopen($filename."new","r+");
+	$str = fread($fp,filesize($filename."new"));
+	fclose($fp);
+	$str = str_replace("\r\n","\n",$str);
+	savetofile($str,$filename."new");
+}
 
 rename($filename."new",$filename);
 echo "上载成功！";
