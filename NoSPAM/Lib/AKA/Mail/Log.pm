@@ -125,7 +125,10 @@ sub log_csv {
 	my $aka = $mail_info->{aka};
 	my $engine = $mail_info->{aka}->{engine};
 
-	my $esc_subject = $mail_info->{aka}->{subject} || '';
+	my $esc_subject = $mail_info->{head}->{subject} || $mail_info->{aka}->{subject} || '';
+
+#$self->debug ( "subject: [$esc_subject]" );
+
 	$esc_subject =~ s/,/_/g;
 	$esc_subject = ' ' . $esc_subject . ' ';
 	my $recips = $aka->{recips};
@@ -142,8 +145,8 @@ sub log_csv {
 						length($aka->{TCPREMOTEINFO})
 					) ?'1':'0' 
 				)
-			. ',' . $aka->{TCPREMOTEIP} . ',' . $aka->{returnpath} 
-				. ',' . $recips . ',' . $esc_subject
+			. ',' . $aka->{TCPREMOTEIP} . ', ' . $aka->{returnpath} 
+				. ' , ' . $recips . ' ,' . $esc_subject
 
 			. ',' . $aka->{size} 
 
