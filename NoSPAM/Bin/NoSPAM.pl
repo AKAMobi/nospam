@@ -502,6 +502,9 @@ sub MailBaseSetting_reset
 	my $mailserver = $conf->{config}->{MailServer};
 	my $AMC = new AKA::Mail::Controler;
 
+#use Data::Dumper;
+#print Dumper($mailserver);
+#exit;
 	#服务器名
 	$AMC->set_control_file( 'me', $mailserver->{MailHostName} 
 					|| $conf->{config}->{Network}->{Hostname} 
@@ -526,10 +529,10 @@ sub MailBaseSetting_reset
 	$AMC->set_control_file( 'databytes', $mailserver->{DataBytes} || '10485760');
 
 	#邮件队列投递超时
-	$AMC->set_control_file( 'queuelifetime', $mailserver->{QueueLifeTime} || '172800' );
+	$AMC->set_control_file( 'queuelifetime', $mailserver->{QueueLifetime} || '68400' );
 
 	#本地并发投递数
-	$AMC->set_control_file( 'concurrencylocal', $mailserver->{ConcurrencyLocal} );
+	$AMC->set_control_file( 'concurrencylocal', $mailserver->{ConcurrencyLocal} || '10' );
 
 	#远程并发投递数
 	$AMC->set_control_file( 'concurrencyremote', $mailserver->{ConcurrencyRemote} || '200' );
