@@ -135,6 +135,7 @@ sub cut_comma_to_array_ref
 	my @ret;
 	foreach ( split(',', $conf_line) ){
 		next if ( !defined $_ || !length($_) );
+		#strip comments from list
 		s/#.*//;
 		push ( @ret, $_ );
 	}

@@ -40,7 +40,7 @@ my @param = @ARGV;
 
 my $conf = new AKA::Mail::Conf;
 
-my $intconf = &get_intconf;
+my $intconf = $conf->{intconf};
 my $licenseconf = &get_licenseconf;
 my $zlog = new AKA::Mail::Log;
 my $iputil = new AKA::IPUtil;
@@ -72,6 +72,8 @@ my $action_map = {
 			,'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"]
 			,'reboot' => [\&reboot, ""]
 			,'shutdown' => [\&shutdown, ""]
+
+			,'post_install' => [\&post_install, ""]
 		};
 
 #use Data::Dumper;
@@ -1108,3 +1110,20 @@ sub get_LogSimpleAnaylize
 
 	return 0;
 }
+
+sub post_install
+{
+	eval {
+		use AKA::Mail::GW;
+	}; if ( $@ ) {
+		$zlog->fatal( "Can't load GW Module" );
+		return 1;
+	}
+	my $fake_parent;
+	$fake_parent->{zlog} = $zlog;
+	$fake_parent->{conf} = $conf;
+
+	my $AMG = new AKA::Mail::GW( $fake_parent );
+	return $AMG->post_install ( @param );
+}
+
