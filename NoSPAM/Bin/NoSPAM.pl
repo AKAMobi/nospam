@@ -98,6 +98,8 @@ my $action_map = {
 		, 'VirtualDomain_add' => [\&VirtualDomain_add, ' <MailDomain1> ... : add virtual mail domain' ]
 		, 'VirtualDomain_del' => [\&VirtualDomain_del, ' <MailDomain1> ... : del virtual mail domain' ]
 
+		, 'GA_reset' => [\&GA_reset, ' : update GA conf files' ]
+
 		, 'ProtectDomain_add' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
 		, 'ProtectDomain_del' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
 		, 'ProtectDomain_reset' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
@@ -182,6 +184,32 @@ _USAGE_
 			print NSOUT "\n";
 		}
 	print NSOUT "\n";
+}
+
+sub GA_reset
+{
+	use Config::Tiny;
+
+	my $gaisc_conffile = "/home/NoSPAM/etc/GAISC.conf";
+
+        my $C = Config::Tiny->read( $gaisc_conffile );
+
+        $C->{_}->{GatewayIdentifier} = $conf->{config}->{GAInterface}->{GAISC_ID};
+        $C->{_}->{LocalIP} = $conf->{config}->{GAInterface}->{GAISC_LocalIP};
+        $C->{_}->{LocalPort} = $conf->{config}->{GAInterface}->{GAISC_LocalPort};
+        $C->{_}->{ServerIP} = $conf->{config}->{GAInterface}->{GAISC_IP};
+        $C->{_}->{ServerPort} = $conf->{config}->{GAInterface}->{GAISC_Port};
+        $C->{_}->{SystemIdentifier} = $conf->{config}->{GAInterface}->{GAISC_MailIdentifier};
+	
+
+	`svc -t /service/gad`;
+	`killall -9 ga-daemon`;
+
+        if ( $C->write($gaisc_conffile) ){
+		return 0;
+	}else{
+		return 1;
+	}
 }
 
 sub System_patch
