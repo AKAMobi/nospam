@@ -481,7 +481,7 @@ if(!$Category[$_POST["category_id"]])
 <br>
 类型：
 <select name="KeyMatchType<?=$ii?>">
-<option value="0">字符串模糊匹配<option value="1">正规表达式匹配<option value="6">单个IP地址匹配<option value="7">连续IP地址匹配<option value="8">IP/MASK匹配<option value="9">字符串精确匹配</select>
+<option value="0">字符串模糊匹配<option value="1">正则表达式匹配<option value="6">单个IP地址匹配<option value="7">连续IP地址匹配<option value="8">IP/MASK匹配<option value="9">字符串精确匹配</select>
 过滤内容：<input type="text" name="Keyword<?=$ii?>" value="" /><br>
 <br>
 </fieldset>
