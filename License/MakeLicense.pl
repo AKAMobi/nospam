@@ -1,12 +1,59 @@
 #!/usr/bin/perl -w
 
-   use Digest::MD5  qw(md5 md5_hex md5_base64);
+# K12 wMail License Generator
 
-        #print md5($ARGV[0]), "\n";
-        print md5_hex($ARGV[0]), "\n";
-        print md5_base64($ARGV[0]), "\n";
+use POSIX qw(strftime);
+use Digest::MD5 qw(md5_base64 md5_hex);
+use strict;
 
-use AKA::License;
-my $AL = new AKA::License;
-my $hd_serial = $AL->get_IDE_serial;
-print "hd_serial: \n" . $hd_serial . "\n";
+my $prodno = $ARGV[0];
+die "pls provide prodno\n" unless $prodno ;
+
+my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
+
+
+my $License = <<_LICENSE_;
+ForSell=No
+GenerateDate=$now
+
+FactoryName=K12
+ProductName=WebMail
+ProductSN=$prodno
+
+_LICENSE_
+
+print make_license( $License, $prodno ), "\n";
+
+sub make_license
+{
+
+        my ( $license_orig, $prodno ) = @_;
+
+        my ( $license_data, $license_checksum );
+
+        $license_data = &get_valid_license( $prodno );
+
+        my $license_ret = $license_orig . "\nProductLicense=$license_data";
+
+        $license_checksum = &get_checksum($license_ret);
+
+        $license_ret .= "\nProductLicenseExt=$license_checksum";
+
+        return $license_ret;
+}
+
+sub get_valid_license
+{
+	my $prod_no = shift;
+
+	my $license_orig = "zixia" . $prod_no . "K12" . $prod_no . "wMail";
+	return md5_hex ( $license_orig );
+}
+
+sub get_checksum
+{
+	my $license_dat = shift;
+	
+	my $license_dat_orig = "zixia" . $license_dat . "K12" . $license_dat . "wMail";
+	return md5_base64( $license_dat_orig );
+}

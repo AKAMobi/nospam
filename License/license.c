@@ -107,6 +107,7 @@ unsigned char * get_prodno ( unsigned char* prodno )
 
 	md5_hex( serial_orig, prodno );
 
+	return prodno;
 }
 
 /*
@@ -114,8 +115,8 @@ unsigned char * get_prodno ( unsigned char* prodno )
  */
 unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* license_ex )
 {
-	unsigned char license_ex_orig[1024] = "";
-	unsigned char result[128] = "";
+	unsigned char license_ex_orig[40960] = "";
+	//unsigned char result[128] = "";
 
 
 	strcat ( license_ex_orig, "zixia" );
@@ -137,7 +138,7 @@ unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* lice
 unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 {
 	unsigned char license_orig[1024] = "";
-	unsigned char result[128] = "";
+	//unsigned char result[128] = "";
 
 
 	strcat ( license_orig, "zixia" );
@@ -149,6 +150,42 @@ unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 	md5_hex( license_orig, license );
 
 	return license;
+}
+
+/*
+ * 检查 license 是否为 本地prodno 的license
+ */
+int check_license_match ( unsigned char* license )
+{
+	unsigned char right_license[1024+1], prodno[1024+1];
+
+	get_prodno( prodno );
+	get_license( prodno, right_license );
+
+	if ( 0==strcmp(right_license,license) ) // match
+		return 0;
+
+	// not match
+	return -1;
+
+}
+
+
+/*
+ * 检查 license_ex 校验和是否成功
+ */
+int check_license_ex_match ( unsigned char* license_file, unsigned char* license_ex )
+{
+	unsigned char right_license_ex[1024+1];
+
+	get_license_ex( license_file, right_license_ex );
+
+	if ( 0==strcmp(right_license_ex,license_ex) ) // match
+		return 0;
+
+	// not match
+	return -1;
+
 }
 
 /*
@@ -201,9 +238,16 @@ int check_license_file ( const char* filepath )
 	ProductLicenseExt[strlen(ProductLicenseExt)-1] = 0;
 	license_file[strlen(license_file)-1] = 0;
 
-	printf ( "LicenseDat: [%s]\n\n", license_file );
-	printf ( "ProductLicense: [%s]\n", ProductLicense );
-	printf ( "ProductLicenseExt: [%s]\n", ProductLicenseExt );
+	//printf ( "LicenseDat: [%s]\n\n", license_file );
+	//printf ( "ProductLicense: [%s]\n", ProductLicense );
+	//printf ( "ProductLicenseExt: [%s]\n", ProductLicenseExt );
+
+	if ( -1==check_license_match(ProductLicense) )
+		return -1;
+
+
+	if ( -1==check_license_ex_match(license_file,ProductLicenseExt) )
+		return -1;
 
 	return 0;
 }

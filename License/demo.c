@@ -14,7 +14,7 @@ main (argc, argv)
 	get_prodno ( prodno );
 	printf ( "prodno: %s\n", prodno );
 
-	printf ( "license is valid? %s\n", 0==check_license_file ( "/home/NoSPAM/etc/License.dat" )?"VALID":"INVALID" );
+	printf ( "license is valid? %s\n", 0==check_license_file ( "License.dat" )?"VALID":"INVALID" );
 }
 
 
