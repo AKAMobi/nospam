@@ -883,8 +883,13 @@ class EmailUser {
             return -1;
         }
         for ($i = 0 ; $i < sizeof ($jobList); $i ++) {
+/*
 		// by zixia 2004-07-31 : ugly hack, need to be fixed
             $cmd = ($i+1) . "," . $_SESSION['sCurrentUser'][PATH] . '/emlfile.gw.nospam.' . $jobList[$i]['FILE'] . "," . $jobList[$i]['ACT'] . "\n";
+*/
+	    // edit by windinsn, Jul 30
+	    // don't use session variables
+	    $cmd = sprintf ("%d,%s,%s",$i+1,$this->get_file ($jobList[$i]['FILE']),$jobList[$i]['ACT']);
             fputs ($pipe, $cmd, strlen ($cmd));
         }
         pclose ($pipe);

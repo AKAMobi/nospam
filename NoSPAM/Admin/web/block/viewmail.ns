@@ -124,7 +124,7 @@ function get_mail_body ($struct, &$content, &$find, &$useHtml) {
         if (strcasecmp ($obj->ctype_primary, 'multipart')==0) {
             if (strcasecmp ($obj->ctype_secondary, 'alternative')==0)
                 $useHtml = 1;
-            get_mail_body ($obj->parts, $content, $useHtml, $find);
+            get_mail_body ($obj->parts, $content, $find, $useHtml);
             if ($find) break;
         }
         elseif (strcasecmp ($obj->disposition, 'attachment')==0) {
