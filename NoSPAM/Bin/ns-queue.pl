@@ -130,6 +130,10 @@ eval {
 
   &AKA_engine_run;
 
+  unless ( defined $mail_info ){
+	&error_condition ( "451 引擎尚未启动或发生内部错误，请联系管理员。", 150 );
+  }
+
   if ( length($mail_info->{aka}->{resp}->{smtp_code}) ){
 	my $smtp_code = $mail_info->{aka}->{resp}->{smtp_code};
 	my $smtp_info = $mail_info->{aka}->{resp}->{smtp_info};

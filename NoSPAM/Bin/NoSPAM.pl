@@ -219,7 +219,7 @@ sub System_patch
 	my $patch_file=$param[0] or return err_msg ("请指定升级包文件名。");
 	-f $patch_file or return err_msg ("无法访问升级包文件。");
 
-	my $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
+	our $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
 	mkdir $upgrade_dir or return err_msg ("无法建立升级目录。");;
 	`mv $patch_file $upgrade_dir`;
 	chdir $upgrade_dir;
@@ -784,16 +784,19 @@ sub get_LogSimpleAnaylize
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
 
 	open ( FD, "</var/log/NoSPAM.csv" ) or return 10;
+#print NSOUT time, "\n";
 	while ( <FD> ){
+		$timestamp = unpack ('A10', $_);
+		next if ( $timestamp < $start_time || $timestamp > $end_time );
+
 		( $timestamp, $direction
 		  , $ip, $from, $to, $subject, $size
 		  , $virus, $virus_name, $virus_action
 		  , $spam, $spam_reason, $spam_action
 		  , $rule, $rule_action, $rule_param
 		  , $dynamic, $dynamic_reason 
-		) = split (/,/, $_);
+		) = split ',';
 
-		next if ( $timestamp < $start_time || $timestamp > $end_time );
 
 		$total_num+=1;
 
@@ -810,6 +813,7 @@ sub get_LogSimpleAnaylize
 		$rule_top{$rule} += 1 if ( $rule );
 	}
 	close FD;
+#print NSOUT time, "\n";
 
 
 	sub get_top_n
@@ -843,6 +847,7 @@ sub get_LogSimpleAnaylize
 	print "IP_TOP: " . join ( ',', @{$ip_tops_ref} ) . "\n";
 	print "RULE_TOP: " . join ( ',', @{$rule_tops_ref} ) . "\n";
 
+#print NSOUT time, "\n";
 	return 0;
 }
 
