@@ -16,21 +16,17 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>系统引擎分析图</H1><BR>
-<!-- Begin `Daily' Graph (5 Minute -->
-<HR>
-
-<DIV><h2>邮件分类图</h2></DIV>
+<DIV><h2>邮件分类分析</h2></DIV>
 <DIV><A HREF="mail_type.ns"><IMG BORDER=1 ALT="Mail Type Graph" SRC="mail_type-day.gif"></A>
 <BR>
 
 </DIV>
-<DIV><h2>邮件尺寸图</h2></DIV>
+<DIV><h2>邮件尺寸分析</h2></DIV>
 <DIV><A HREF="mail_size.ns"><IMG BORDER=1 ALT="Mail Size Graph" SRC="mail_size-day.gif"></A>
 <BR>
 </DIV>
 
-<DIV><h2>引擎运行状态图</h2></DIV>
+<DIV><h2>引擎运行状态分析</h2></DIV>
 <DIV><A HREF="mail_engine.ns"><IMG BORDER=1 ALT="Mail Engine Graph" SRC="mail_engine-day.gif"></A>
 <BR>
 </DIV>

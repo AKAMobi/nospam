@@ -195,6 +195,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	  gs.add( new WebFXTreeItem('磁盘负载','status/hdio.html','main') );
 	  gs.add( new WebFXTreeItem('磁盘空间','status/hdfree.html','main') );
 	var ga = new WebFXTreeItem('引擎分析','status/analyze.ns','main');
+	g.add(ga);
 	  ga.add( new WebFXTreeItem('邮件分类','status/mail_type.ns','main') );
 	  ga.add( new WebFXTreeItem('邮件尺寸','status/mail_size.ns','main') );
 	  ga.add( new WebFXTreeItem('引擎运行','status/mail_engine.ns','main') );
