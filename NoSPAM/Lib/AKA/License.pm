@@ -93,7 +93,7 @@ sub get_MAC_serial
 
 	my @lines;
 
-	if ( open ( FD, "/sbin/ip li li|grep ether|" ) ){
+	if ( open ( FD, "/sbin/ip li li|grep ether|awk '{print \$2}'|sort|uniq" ) ){
 		@lines = <FD>;
 		foreach ( @lines ){
 			if ( /ether (..:..:..:..:..:..)/ ){
