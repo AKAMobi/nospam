@@ -39,7 +39,7 @@ sub new
 
 	# FIXME: $a = $b || $c not work??
 	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/tmp/";
-	$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
+	#$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
 
 	$self->{mime_parser}->output_dir($tmpdir);
 	$self->{mime_parser}->output_prefix("AKA-MailFilter-$$");
@@ -205,7 +205,7 @@ sub get_body_info
 
         if ($body = $blob->bodyhandle) {
                 if (defined $disposition && $disposition =~ /attachment/) {
-                        $self->{zlog}->debug ("    Atachment: " . $body->path );
+                        #$self->{zlog}->debug ("    Atachment: " . $body->path );
                 }
                 $path = $body->path;
 

@@ -63,7 +63,7 @@ sub is_traceable
 		$self->{zlog}->fatal ( "Spam::is_traceable can't get smtp_ip & domain info." );
 		return 0;
 	}
-	$self->{zlog}->debug ( "Spam::is_traceable smtp ip: $smtp_ip from_domain $from_domain");
+	#$self->{zlog}->debug ( "Spam::is_traceable smtp ip: $smtp_ip from_domain $from_domain");
 	
 	my $res = $self->get_dns_resolver;
 	if ( ! $res ){
@@ -75,17 +75,17 @@ sub is_traceable
 
 	my @mx_n_a ;
 	
-	if ( grep(/^MX$/i,@TraceType) ){
+	if ( grep(/^Mail$/i,@TraceType) ){
 		push ( @mx_n_a, $self->get_mx_from_domain( $from_domain, $res ) );
 	}
 
-	if ( grep(/^A$/i,@TraceType) ){
+	if ( grep(/^IP$/i,@TraceType) ){
 		push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
 	}
 
 	# TODO: add HAND support
 
-	$self->{zlog}->debug ( "Spam::is_traceable mx & a list: " . join( ",", @mx_n_a) . " TraceType; " . join(',',@TraceType) );
+	#$self->{zlog}->debug ( "Spam::is_traceable mx & a list: " . join( ",", @mx_n_a) . " TraceType; " . join(',',@TraceType) );
 
 	#my $client_net;
 	#$client_net = &ip_to_net_compare( $smtp_ip );
@@ -98,9 +98,7 @@ sub is_traceable
 	my $strict_traceable_mask = $self->{conf}->{config}->{TraceMaybeSpamMask};
 
 	foreach my $mx_a_ip ( @mx_n_a ){
-		$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
-
-		#&ip_to_net_compare ( $mx_a_ip );
+		#$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
 
 		if ( $traceable && $strict_traceable ){
 			last;
@@ -185,7 +183,7 @@ sub is_black_ip
 	my $found = 0;
 	if ( defined $BlackIPList ){
 		foreach ( @{$BlackIPList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_?" );
 			if ( $self->{iputil}->is_ip_in_range($ip,"$_") ){
 				$found = 1;
 				$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_!" );

@@ -76,7 +76,7 @@ sub check_all_rule
 	my $has_rule;
 	foreach my $rule_id ( keys %{$self->{filterdb}} ){
 		next if ( ! $rule_id );
-		$self->{zlog}->debug ( "pf: checking rule id: $rule_id..." );
+		#$self->{zlog}->debug ( "pf: checking rule id: $rule_id..." );
 
 		$has_rule = 0;
 		if ( $self->{filterdb}->{$rule_id}->{attachment} ){

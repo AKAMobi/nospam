@@ -67,7 +67,7 @@ sub read_rule {
 	my $path;
 	$path = $self->{conf}->{define}->{home} . "/rule/";
 
-	$self->{zlog}->log ("using \"$path\" for check rule");
+	$self->{zlog}->debug ("using \"$path\" for check rule");
 
 	my $xs = get_update_xml_simple($self);
 #_get_xml_simple($self) or die "can't load xml simple";
@@ -76,9 +76,9 @@ sub read_rule {
 	if (-d $path) {
 
 		foreach my $file ($self->get_rule_files_in_dir ($path)) {
-			$self->{zlog}->log( "found new spam rule file \"$file\", processing..." );
+			$self->{zlog}->debug( "found new spam rule file \"$file\", processing..." );
 			if ( ! $self->{verify}->verify_key( $file ) ){
-				$self->{zlog}->log( "cannot verify \"$file\": $?\n"); 
+				$self->{zlog}->fatal( "cannot verify \"$file\": $?\n"); 
 				next;
 			}
 
@@ -149,7 +149,7 @@ sub clean
 	my $self = shift;
 
 	foreach my $file ( @{$self->{files}} ){
-		$self->{zlog}->log( "cleaning update file: [$file] & [$file sig]" );
+		$self->{zlog}->debug( "cleaning update file: [$file] & [$file sig]" );
 		unlink $file;
 		unlink "$file\.sig";
 	}

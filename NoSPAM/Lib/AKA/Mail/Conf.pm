@@ -35,7 +35,7 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{define}->{home} = "/home/NoSPAM/";
-	$self->{define}->{conffile} = $self->{define}->{home} . "/etc/gw.conf";
+	$self->{define}->{conffile} = $self->{define}->{home} . "/etc/NoSPAM.conf";
 
 	$self->{zlog} = $parent->{zlog};
 

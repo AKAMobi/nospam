@@ -56,8 +56,9 @@ sub is_ip_in_range
 
 	my ( $ip_long, $start_long, $end_long );
 
+	#$self->{zlog}->debug ( "AKA::IPUtil: check_ip_range ( $ip, $ip_range )" );
 	if ( !defined $ip_range ){ 
-		$self->{zlog}->debug ( "AKA::IPUtil: check_ip_range no range found!" );
+		$self->{zlog}->fatal ( "AKA::IPUtil: check_ip_range no range found!" );
 		return 0;
 	}
 
