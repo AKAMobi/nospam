@@ -17,7 +17,7 @@ switch($_GET["action"]){
 
 switch($_GET["option"]){
 	case "From":
-	$sKey = $Keys[2];
+	$sKey = $Keys[0];
 	$sOption = "From";
 	break;
 	case "Subject":
@@ -25,7 +25,7 @@ switch($_GET["option"]){
 	$sOption = "Subject";
 	break;
 	case "IP":
-	$sKey = $Keys[0];
+	$sKey = $Keys[2];
 	$sOption = "IP";
 	break;
 	default:
