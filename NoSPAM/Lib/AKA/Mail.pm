@@ -699,7 +699,7 @@ sub qmail_requeue {
 
 	local $SIG{PIPE} = 'IGNORE';
 #XXX preFork problem?
-#	local $SIG{CHLD} = 'IGNORE';
+	local $SIG{CHLD} = 'DEFAULT';
 
 	my $pid = fork;
 
@@ -708,6 +708,14 @@ sub qmail_requeue {
 	} elsif ($pid == 0) {
 		# In child.  Mutilate our file handles.
 		close EIN; 
+
+		# Net::Server::PreFork 将 STDIN/STDOUT 映射成了socket的索引，这里需要重新将两个文件描述符独立出来，然后才可以reopen
+		open(DUMMYIN, '</dev/null') || die "Can't close STDIN [$!]";
+		open(DUMMYOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
+		*STDIN = *DUMMYIN;
+		*STDOUT = *DUMMYOUT;
+		open ( STDIN, "<&=0" ) or die "open <&=0";
+		open ( STDOUT, ">&=1" ) or die "open >&=1";
 
 		#$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
 		unless ( open(STDIN,"<$msg") ){
@@ -720,11 +728,12 @@ sub qmail_requeue {
 			exit -1;
 		}
 
-		#select(STDIN);$|=1;
+		select(STDIN);$|=1;
 
-$self->{zlog}->debug ( "write_queue before" );
+#print STDERR ": STDIN no: " . fileno(STDIN) . " STDOUT no: " . fileno(STDOUT) . "\n";
+#$self->{zlog}->debug ( "write_queue before" );
 		$self->write_queue();
-$self->{zlog}->debug ( "write_queue over" );
+#$self->{zlog}->debug ( "write_queue over" );
 
 		#This child is finished - exit
 		exit;
