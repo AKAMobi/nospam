@@ -57,7 +57,8 @@ $ns_start_time = [gettimeofday];
 
 my ( $engine_netio_time );
 my ( $engine_load_time, $engine_check_license_time, $engine_run_time );
-my ( $engine_spam_run_time, $engine_dynamic_run_time, $engine_content_run_time, $engine_archive_run_time );
+my ( $engine_antivirus_run_time, $engine_spam_run_time, $engine_dynamic_run_time, 
+	$engine_content_run_time, $engine_archive_run_time );
 
 
 delete @ENV{qw(IFS CDPATH ENV BASH_ENV QMAILMFTFILE QMAILINJECT)};
@@ -68,6 +69,9 @@ use Sys::Syslog qw(:DEFAULT setlogsock);
 setlogsock('unix');
 
 my $VERSION="2.00";
+
+# hash for all engine return data;
+my $AKA_virus_result = {};
 
 my ( $AKA_is_spam, $AKA_is_refuse_spam, $AKA_spam_reason ) = (0,0,'');
 my ( $AKA_is_overrun, $AKA_overrun_reason ) = ( 0, '' );
@@ -807,7 +811,21 @@ sub AKA_mail_engine {
   	$cmdline_recip=~/^([0-9a-z\.\_\-\=\+\@]+)$/i;
   	$cmdline_recip=tolower($1);
 
+	#
+	# AntiVirus Engine
+	#
+  	$start_time=[gettimeofday];
+	$AKA_virus_result =$AM->antivirus_engine( {	emlfilename => "$scandir/$wmaildir/new/$file_id" });
+  	$engine_antivirus_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
+  	&debug("AKA_antivirus_engine $$: in $engine_antivirus_run_time secs ["
+			. $AKA_virus_result->{Result} 
+			. ',' . $AKA_virus_result->{Reason}
+			. ',' . $AKA_virus_result->{Action}
+			. ']' );
 
+	# 如果是病毒并且我们要拒绝，则不运行其他引擎；
+	goto noSPAM_log if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 );
+	
 	#
 	# SPAM Engine
 	#
@@ -863,33 +881,48 @@ sub AKA_mail_engine {
   	$engine_archive_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
   	&debug("AKA_archive_engine $$: in $engine_archive_run_time secs");
 
+NOSPAM_LOG:
+	&noSPAM_log;
 
-	my $esc_subject = $decoded_subject;
-	$esc_subject=~s/,/_/g;
-	$esc_subject=~s/[\r|\n]+//g;
+	sub noSPAM_log {
+		my $esc_subject = $decoded_subject;
+		$esc_subject=~s/,/_/g;
+		$esc_subject=~s/[\r|\n]+//g;
 
-	# prevent half chinese character upset csv comma.
-	$esc_subject = ' ' . $esc_subject . ' ';
+# prevent half chinese character upset csv comma.
+		$esc_subject = ' ' . $esc_subject . ' ';
 
-	use Fcntl ':flock';
-	if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
-        	flock(LFD,LOCK_EX);
-        	seek(LFD, 0, 2);
-		#print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
-		print LFD time
-			# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-			. ',' . ($ins_queue?'1':'0') 
-			. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
-			. ",$AKA_is_spam,$AKA_spam_reason," . ($AKA_is_spam?$AKA_is_refuse_spam:'0')
-			. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
-			. ",$AKA_is_overrun, $AKA_overrun_reason\n";
-        	flock(LFD,LOCK_UN);
-		close(LFD);
-	}else{
-		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+		use Fcntl ':flock';
+		if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
+			flock(LFD,LOCK_EX);
+			seek(LFD, 0, 2);
+#print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
+			print LFD time
+# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
+				. ',' . ($ins_queue?'1':'0') 
+				. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
+				. ",$AKA_is_spam,$AKA_spam_reason," . ($AKA_is_spam?$AKA_is_refuse_spam:'0')
+
+				. ',' . $AKA_virus_result->{Result}
+					. ',' . $AKA_virus_result->{Reason} 
+					. ',' . $AKA_virus_result->{Action}
+
+				. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
+				. ",$AKA_is_overrun, $AKA_overrun_reason\n";
+			flock(LFD,LOCK_UN);
+			close(LFD);
+		}else{
+			&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+		}
 	}
 	
 	######################## action #################################3
+
+	# XXX we now drop virus
+	if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 ){
+		&cleanup;
+		exit ( 0 );
+	}
 
 	# ret code should be 31: mail server permanently rejected message (#5.3.0)";
 	if ( $AKA_is_spam && $AKA_is_refuse_spam){
