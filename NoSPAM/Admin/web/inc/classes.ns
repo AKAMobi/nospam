@@ -740,6 +740,8 @@ class EmailUser {
     
     function init_maillist () {
         $this->fullMailList = array ();
+        $this->mailCnt = 0;
+        $this->totalSize = 0;
         if (!is_dir ($this->path))
             return 0;
         if (!($dh = opendir ($this->path))) return 0;
