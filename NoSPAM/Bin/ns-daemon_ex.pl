@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w 
+#!/usr/bin/perl -w -I/home/NoSPAM
 
 ###----------------------------------------###
 ###     noSPAM server class                ###
@@ -8,6 +8,12 @@ package noSPAM;
 use vars qw(@ISA);
 use strict;
 
+# I18N
+use POSIX qw(setlocale);
+use Locale::Messages qw (LC_MESSAGES bind_textdomain_codeset);
+use Locale::TextDomain ('engine.nospam.cn');
+bind_textdomain_codeset ('engine.nospam.cn' => 'GBK');
+
 use Net::Server::PreFork;
 @ISA = qw(Net::Server::PreFork);
 
@@ -15,6 +21,13 @@ use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use AKA::Mail;
 
 my $AM = new AKA::Mail;
+
+setlocale (LC_MESSAGES, $AM->get_language());
+# Debug 
+#print $AM->get_language, "\n";
+#my $AL = new AKA::License;
+#print $AL->check_expiredate('2004-06-15');
+#exit;
 
 ### run the server
 noSPAM->run(); #	port => '127.0.0.1:40307' 
@@ -34,7 +47,7 @@ sub configure_hook {
 #$self->{server}->{setsid} = 0;        # daemonize
 
 	$self->{server}->{min_servers} = 2;
-	$self->{server}->{max_servers} = 50;
+	$self->{server}->{max_servers} = 30;
 
 	$self->{server}->{min_spare_servers} = 1;
 	$self->{server}->{max_spare_servers} = 2;
@@ -43,7 +56,7 @@ sub configure_hook {
 
 	$self->{server}->{log_level} = 4;
 
-	$self->{server}->{serialize} = 'semaphore';
+	$self->{server}->{serialize} = undef; # use default: flock
 
 	open(STDIN, '</dev/null') || die "Can't close STDIN [$!]";
 	open(STDOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
@@ -68,7 +81,6 @@ sub process_request {
 		# 5 minute timeout
 		# /av/dns/spamassassin(rbl,urirbl,dcc,razor,pyzor etc.)
 		$old_alarm = alarm( 300 );
-
 		$AM->net_process_ex;
 	}; if ($@) {
 		$AM->{zlog}->fatal ( "Mail::net_process_ex call TIMEOUT [$@]" );
@@ -82,7 +94,7 @@ sub process_request {
 			$AM->{zlog}->fatal ( "Mail::send_mail_info_ex call TIMEOUT [$@]" );
 		}
 	}
-	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
+	$SIG{ALRM} = $old_alarm_sig || 'DEFAULT';
 	alarm $old_alarm;
 
 	# 如果配置文件更新，则退出，supervixse会重起daemon

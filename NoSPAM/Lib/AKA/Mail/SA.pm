@@ -13,17 +13,6 @@ use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use Mail::SpamAssassin;
 
-use lib '/usr/lib/perl5/site_perl/5.8.0';                   # substituted at 'make' time
-
-#BEGIN {    # added by jm for use inside the distro
-#  if ( -e '../blib/lib/Mail/SpamAssassin.pm' ) {
-#    unshift ( @INC, '../blib/lib' );
-#  }
-#  else {
-#    unshift ( @INC, '../lib' );
-#  }
-#}
-
 sub new
 {
 	my $class = shift;
@@ -57,7 +46,7 @@ sub init
     			rules_filename       => 0,
     			site_rules_filename  => 0,
     			local_tests_only     => 0,
-    			debug                => 6,
+    			debug                => 0,
     			paranoid             => 0,
     			home_dir_for_helpers => '/home/NoSPAM/sa',
     			PREFIX          => '/usr/',
@@ -278,7 +267,7 @@ sub get_local_cf_content
 
 	$local_cf_content = "";
 	while ( ($key,$val)=each %{$local_cf_hash} ){
-		$local_cf_content .= "$key $val\n";
+		$local_cf_content .= "$key $val\n" if ( defined $val && length($val) );
 	}
 
 	foreach ( split(/,/,$factory_score) ){

@@ -151,22 +151,15 @@ sub get_archive_files
 
 	my @file_list = ();
 
-        if ( opendir( DIRNEW, $self->{define}->{archivedir} . "/new/") ){
-        	foreach (readdir(DIRNEW)) {
-                	next if (/^\.{1,2}$/);
-                	push(@file_list, $self->{define}->{archivedir} . "/new/$_");
-		}
-        }
-	closedir( DIRNEW );
-
-	if ( opendir( DIRCUR, $self->{define}->{archivedir} . "/cur/") ){
-		foreach (readdir(DIRCUR)) {
-        		next if (/^\.{1,2}$/);
-                	push(@file_list, $self->{define}->{archivedir} . "/cur/$_");
-		}
-        }
-	closedir( DIRCUR );
-
+	foreach $dir ( qw(new cur .Trash/new .Trash/cur) ){
+        	if ( opendir( DIR, $self->{define}->{archivedir} . "/$dir/") ){
+       		 	foreach (readdir(DIR)) {
+       		         	next if (/^\.{1,2}$/);
+       		         	push(@file_list, $self->{define}->{archivedir} . "/$dir/$_");
+			}
+        	}
+		closedir( DIR );
+	}
 	return \@file_list;
 }
 1;

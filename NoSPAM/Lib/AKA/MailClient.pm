@@ -1,4 +1,7 @@
-#!/usr/bin/perl -w
+# Ed Li 2004-06-13
+# 已经被 C++ qns_loader.cpp 取代
+# 本文件已被废弃
+#
 
 package AKA::MailClient;
 

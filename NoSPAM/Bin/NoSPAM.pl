@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl -w -I/home/NoSPAM
 
 #
 # 邮件网关管理接口
@@ -12,9 +12,14 @@
 # FIXME 现在函数的返回值很混乱，一部分函数返回0位正常（成功），一部分函数返回1为正常（成功）
 
 
+
 use strict;
 
-use POSIX qw(strftime);
+use POSIX qw(strftime setlocale);
+
+use Locale::Messages qw (LC_MESSAGES bind_textdomain_codeset);
+use Locale::TextDomain ('engine.nospam.cn');
+bind_textdomain_codeset ('engine.nospam.cn' => 'GBK');
 
 use AKA::Mail;
 use AKA::Mail::Conf;
@@ -31,7 +36,6 @@ use AKA::Mail::Archive;
 open (NSOUT, ">&=2");
 close (STDERR);
 open (STDERR, ">>/var/log/NoSPAM.stderr") or die "can't reopen STDERR";
-
 
 
 (my $prog=$0) =~ s/^.*\///g;
@@ -76,6 +80,12 @@ my $conf = new AKA::Mail::Conf;
 
 my $intconf = $conf->{intconf};
 my $licenseconf = $conf->{licconf}; #&get_licenseconf;
+
+# I18N
+my $language  = $licenseconf->{Language} || 'zh_CN';
+#print $language, "\n";
+setlocale (LC_MESSAGES, $language);
+
 my $zlog = new AKA::Mail::Log;
 my $iputil = new AKA::IPUtil;
 
@@ -121,7 +131,6 @@ my $action_map = {
 		,'get_Serial' => [\&get_Serial, ""]
 		,'check_License' => [\&check_License, ""]
 
-		,'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"]
 		,'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"]
 		,'get_LogSimpleAnaylize' => [\&get_LogSimpleAnaylize, "startTime endTime"]
 
@@ -222,15 +231,15 @@ sub System_patch
 	use Digest::MD5 qw(md5_base64);
 
 	our $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
-	mkdir $upgrade_dir or return err_msg ("无法建立升级目录。");;
+	mkdir $upgrade_dir or return err_msg (__"Can't create directory for upgrade");
 
-	my $patch_file=$param[0] or return err_msg ("请指定升级包文件名。");
-	-f $patch_file or return err_msg ("无法访问升级包文件。");
+	my $patch_file=$param[0] or return err_msg (__"Please specify upgrade package name.");
+	-f $patch_file or return err_msg (__"Can't read upgrade package file");
 
 	`mv $patch_file $upgrade_dir`;
 	chdir $upgrade_dir;
 
-	return err_msg ("无法分析升级包。") unless ( $patch_file=~m#([^/]+).no$# );
+	return err_msg (__"Can't analyze upgrade package") unless ( $patch_file=~m#([^/]+).no$# );
 	$patch_file=$1;
 
 	my ($PNSVERSION,$PATCH_DATE,$PATCH_VER);
@@ -239,7 +248,7 @@ sub System_patch
 		$PATCH_DATE="$6-$7";
 		$PATCH_VER=$8;
 	}else{
-		return err_msg("升级包格式错误#1！");
+		return err_msg( __"Upgrade package filename error.");
 	}
 
 	my $NSVERSION=`head /home/NoSPAM/etc/VERSION`;
@@ -248,11 +257,11 @@ sub System_patch
 	chomp $NSPVERSION;
 
 	if ( $NSVERSION ne $PNSVERSION ){
-		return err_msg( "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。");
+		return err_msg (__"Upgrade package version mismatch with current system.");
 	}
 
 	if ( $PATCH_VER lt $NSPVERSION ){
-		return err_msg( "当前系统已经使用过比当前升级包版本高的升级包，无法降级。");
+		return err_msg (__"System version higher then current upgrade package, can't downgrade.");
 	}
 
 
@@ -260,23 +269,23 @@ sub System_patch
 
 	my $SUM=`head SUM`;
 	chomp $SUM;
-	open ( FD, "/usr/bin/md5sum $upgrade_dir/$patch_file.ns|" ) or return err_msg("系统内部错误#1。");
+	open ( FD, "/usr/bin/md5sum $upgrade_dir/$patch_file.ns|" ) or return err_msg(__("System internal error") . '#1');
 	my $md5sum = <FD>;
 	close FD;
 	chomp $md5sum;
 	if ( $md5sum=~/^(\S+)\s+/ ){
 		$md5sum = $1;
 	}else{
-		return err_msg("系统内部错误#2。");
+		return err_msg(__("System internal error") . "#2");
 	}
 
 	my $checksum = md5_base64( 'okboy' . $md5sum . 'zixia' . $md5sum . '@2004-03-07' );
 	if ( $checksum ne $SUM ){
-		return err_msg ( "升级包格式错误#3" );
+		return err_msg ( __"Upgrade package checksum error");
 	}
 
 
-	chdir '/' or return err_msg ("系统内部错误#3。");
+	chdir '/' or return err_msg(__("System internal error") . "#3");
 	`unzip -p -P zixia\@noSPAM_OKBoy_GNULinux! $upgrade_dir/$patch_file.ns | tar x >> /var/log/NoSPAM.stdout 2>/var/log/NoSPAM.stderr`;
 
 
@@ -307,7 +316,7 @@ sub System_patch
 
 	`rm -fr $upgrade_dir`;
 
-	print "$patch_file 升级完成。";
+	print "$patch_file " . __("upgrade successful.");
 
 	if ( $REBOOT ){
 		return 1;
@@ -335,11 +344,11 @@ sub System_patch
 
 		my $record_dir = '/home/NoSPAM/var/upgrade/';
 
-		open ( FD, ">>$record_dir/log" ) or return err_msg ("无法记录升级信息");
+		open ( FD, ">>$record_dir/log" ) or return err_msg (__"Can't record upgrade log");
 		print FD "$now,$patch_gen_time,$pkgname,$patch_ver,$isover\n" ;
 		close ( FD );
 
-		open ( FD, ">$record_dir/$pkgname.info" ) or  return err_msg ("无法记录升级包信息");
+		open ( FD, ">$record_dir/$pkgname.info" ) or  return err_msg (__"Can't record upgrade package information");
 		print FD "$patch_info";
 		close FD;
 	}
@@ -428,7 +437,16 @@ _POD_
 	&MailBaseSetting_reset;
 	&SystemEngine_reset;
 
+	&PerformanceTune;
+	&SA_update;
+	# 检查 locale list/Razor register等一次性的工作，在rc.local中
+
 	return $err;
+}
+
+sub PerformanceTune
+{
+	system ('/sbin/hdparm -m 16 -p -W 1 -u 1 -c 3 -d 1 -X 66 /dev/hda > /dev/null 2>&1');
 }
 
 sub SA_update
@@ -667,19 +685,6 @@ sub set_GW_Mode
 	return 0;
 }
 
-sub get_LogHead
-{
-	print "时间,邮件方向"
-		. ",发件人IP,发件人地址,收件人地址,主题,尺寸"
-		. ",病毒,病毒名,病毒动作"
-		. ",垃圾度,垃圾原因,垃圾动作"
-		. ",规则,动作类型,动作参数"
-		. ",动态限制,动态描述"
-		. ",审计,审计描述"
-		;
-	return 0;
-}
-
 sub get_Serial
 {
 
@@ -704,7 +709,7 @@ sub check_License
 	}
 # INVALID license!
 	system ( $cmd_smtpd_down );
-	print ($LicenseHTML || "<h1>当前许可证无效或已经过期！</h1>");
+	print ($LicenseHTML || "<h1>" . __("License is not valide or expired.") . "</h1>");
 	return -1;
 }
 
@@ -741,9 +746,9 @@ sub get_DynamicEngineDBKey
 	my $AMD = new AKA::Mail::Dynamic;
 
 	my %CName = ( 
-			'From' => '用户重复'
-			,'Subject' => '邮件重复'
-			,'IP' => '连接频率'
+			'From' => __"User flood"
+			,'Subject' => __"Mail flood"
+			,'IP' => __"Connection flood"
 		    );
 
 	my @EName = $AMD->get_dynamic_info_ns_name;
@@ -1478,7 +1483,7 @@ sub _file_update_hosts
 		$host_map{$IP} = $Hostname;
 	}else{
 		#$host_map{'10.4.3.7'} = 'factory.gw.nospam.aka.cn';
-		$host_map{ $intconf->{MailGatewayInternalIP}||'10.4.3.7' } = 'factory.gw.nospam.aka.cn';
+		$host_map{ $intconf->{MailGatewayInternalIP}||'10.4.3.7' } = 'factory.gw.nospam.cn';
 	}
 
 
@@ -1507,7 +1512,7 @@ sub _file_update_hosts
 	}
 
 	#最后设置网关主机名称：
-	$ret = system( $hostname_binary, $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.aka.cn' );
+	$ret = system( $hostname_binary, $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.cn' );
 	if ( $ret ){
 		$zlog->fatal("NoSPAM Util::file_update_hosts  set hostname failed # $ret !" );
 		$err = 1;
@@ -1521,7 +1526,7 @@ sub _file_update_service_localname
 	# get all ip which we should relay it, on port 26.
 	my $ret = 0; 
 
-	my $content = $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.aka.cn';
+	my $content = $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.cn';
 
 	$ret = write_file($content, '/service/smtpd/env/LOCALNAME');
 	$ret ||= write_file($content, '/service/ismtpd/env/LOCALNAME');

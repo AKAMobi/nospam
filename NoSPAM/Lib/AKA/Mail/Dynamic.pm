@@ -7,6 +7,7 @@
 
 
 package AKA::Mail::Dynamic;
+use Locale::TextDomain ('engine.nospam.cn');
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 
@@ -102,7 +103,7 @@ sub is_overrun_rate_per_subject
 
 	if ( ! $subject ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_subject can't get address." );
-		return (0,'无参数');
+		return (0,__("need param"));
 	}
 	
 	my ( $num, $sec, $deny_sec );
@@ -112,7 +113,7 @@ sub is_overrun_rate_per_subject
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return (0,'引擎未配置') if ( !defined $num || !defined $sec );
+	return (0,__("not set")) if ( !defined $num || !defined $sec );
 
 	# is  overrun?
 	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec, $deny_sec );
@@ -127,7 +128,7 @@ sub is_overrun_rate_per_mailfrom
 
 	if ( ! $mail_from ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_mailfrom can't get address." );
-		return (0,'无参数');
+		return (0,__("need param"));
 	}
 	
 	my ( $num, $sec, $deny_sec );
@@ -138,7 +139,7 @@ sub is_overrun_rate_per_mailfrom
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 
 	# 0 or undef means no limit
-	return (0,'引擎未配置') if ( !defined $num || !defined $sec );
+	return (0,__("not set")) if ( !defined $num || !defined $sec );
 	
 	# is overrun?
 	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec, $deny_sec );
@@ -153,7 +154,7 @@ sub is_overrun_rate_per_ip
 
 	if ( ! $ip ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_ip can't get ip." );
-		return (0,'无参数');
+		return (0,__("need param"));
 	}
 	
 	my ( $num, $sec, $deny_sec );
@@ -163,7 +164,7 @@ sub is_overrun_rate_per_ip
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return (0,'引擎未配置') if ( ! defined $num || ! defined $sec );
+	return (0,__("not set")) if ( ! defined $num || ! defined $sec );
 
 	# is overrun?
 	return $self->is_overrun_rate_per_XXX ( 'IP', $ip, $num, $sec, $deny_sec );
@@ -176,17 +177,19 @@ sub is_overrun_rate_per_XXX
 	my $self = shift;
 
 	my ( $namespace, $key, $num, $sec, $deny_sec ) = @_;
-	$deny_sec ||= $self->{define}->{DefaultDenyTime};
+	# by Ed 2004-06-14 允许用户不 deny 
+	#$deny_sec ||= $self->{define}->{DefaultDenyTime};
+	$deny_sec ||= 0;
 
 	# 0 means unlimited
-	return (0,'通过') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
+	return (0,__("passed")) if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	# zero means UNLIMITED
 	#return (0,'无限制') if ( 0==$num || 0==$sec );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );
-		return (0,'参数不足');
+		return (0,__("need param"));
 	}
 
 
@@ -195,7 +198,7 @@ sub is_overrun_rate_per_XXX
 
 	if ( ! $self->attach ){
 		$self->{zlog}->fatal ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't attach" );
-		return (0,'加载失败');
+		return (0,__("db failure"));
 	}
 
 	# protect our timer
@@ -304,9 +307,9 @@ sub check_quota_exceed_ex
 
 	my ( $namespace_obj, $key, $num, $sec, $deny_sec ) = @_;;
 
-	if ( ! $namespace_obj || ! $key || ! $num || ! $sec || ! $deny_sec){
+	if ( ! $namespace_obj || ! $key || ! $num || ! $sec || !defined($deny_sec) ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::check_quota_exceed can't get params: [" . join("",@_) . "]" );
-		return (0,'参数不足 ');
+		return (0,__("need param"));
 	}
 
 	my $ns_obj_who = $namespace_obj->{$key};
@@ -325,7 +328,7 @@ sub check_quota_exceed_ex
 			}
 
 			$wait_time = int($wait_time/60);
-			return (1, "发送超限，还需$wait_time分钟解封");
+			return (1, __x(" overrun deny {wait_time} minutes.", wait_time=>$wait_time));
 		}else{
 			delete $ns_obj_who->{_DENY_TO_};
 		}
@@ -345,11 +348,11 @@ sub check_quota_exceed_ex
         if ( $num_counter > $num ) {
 		# limit OVERRUN! EXCEED!
 		$ns_obj_who->{_DENY_TO_} = time+$deny_sec;
-		return (1,'发送超限');;
+		return (1,__(" overrun"));
         }
 
 	# we still have quota!
-	return (0,'通过');
+	return (0,__(" passed"));
 }
 
 

@@ -8,10 +8,12 @@
 
 package AKA::License;
 
+use Locale::TextDomain qw(engine.nospam.cn);#,'/home/NoSPAM/LocaleData');
+
 use AKA::Mail::Log;
 
 use Digest::MD5 qw(md5_base64 md5_hex);
-use POSIX qw ( mktime );
+use POSIX qw (mktime);
 
 sub new
 {
@@ -162,9 +164,9 @@ sub check_hardware
 	}
 
 	
-	return (0,'处理器不符合要求') if ( exists $hl->{CPU} && ($self->get_CPU_bogomips > $hl->{CPU})  );
+	return (0,__"CPU is not licensed") if ( exists $hl->{CPU} && ($self->get_CPU_bogomips > $hl->{CPU})  );
 
-	return (1,'硬件系统正确');
+	return (1,__"Hareward system OK");
 }
 
 sub get_CPU_bogomips
@@ -233,11 +235,12 @@ sub check_expiredate($$)
 
 #$self->{zlog}->debug ( "License::check_expiredate now [$now_time] expire_time [$expire_time]" );
 
-	return ( 0, '许可证已经过期！' ) if ( $expire_time < $now_time );
+	return ( 0, __"License expired" ) if ( $expire_time < $now_time );
 
 	my $days_left = int(($expire_time-$now_time)/86400)+1;
 
-	return ( 1, "<b><font color='red'>许可证将在$days_left天后过期！</font></b>") if ( $days_left < 30 );
+	return ( 1, "<b><font color='red'>" . __x("License will expired after {days_left} days.", days_left=>$days_left) . "</font></b>") if ( $days_left < 30 );
+	#return ( 1, "<b><font color='red'>" . __("License will expired after ") . $days_left . __(" days, please upload valid license.") . "</font></b>") if ( $days_left < 30 );
 
 	return ( 1,undef );
 }

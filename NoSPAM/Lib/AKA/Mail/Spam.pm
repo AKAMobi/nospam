@@ -7,6 +7,8 @@
 
 
 package AKA::Mail::Spam;
+use Locale::TextDomain ('engine.nospam.cn');
+
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::IPUtil;
@@ -106,7 +108,7 @@ sub is_traceable
 		}
 
 		if ( grep(/^Domain$/i,@TraceType) ){
-$self->{zlog}->debug ( "Mail::Spam::is_traceable in Domain" );
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable in Domain" );
 			push ( @ptr_domain, $self->get_ptr_from_ip( $smtp_ip, $res ) );
 		}
 
@@ -218,7 +220,7 @@ sub get_ptr_from_ip
 
 	if ($query) {
 		foreach my $rr (grep { $_->type eq 'PTR' } $query->answer) {
-$self->{zlog}->debug ("Spam get ptr of $ip : $rr->ptrdname");
+$self->{zlog}->debug ("Spam get ptr of $ip : " . $rr->ptrdname);
 			push (@PTRs, $rr->ptrdname);
 		}
 	} else {
@@ -418,8 +420,8 @@ sub spam_checker
 	if ( $from_addr=~/\@(\S+)/ ){
 		$email_domain = $1;
 	}else{
-		$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr]." );
-		return (0, '退信');
+		#$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr], return str: [" . __("bounced mail") . "]" );
+		return (0, __("bounced mail"),0);
 	}
 
 	# 0: 非垃圾 
@@ -430,23 +432,23 @@ sub spam_checker
 
 
 	if ( &is_white_ip($self,$smtp_ip) ){
-		$reason = "IP白名单";
+		$reason = __("IP White List");
 		$is_spam = 0;
 	}elsif ( &is_white_domain($self,$email_domain) ){
-		$reason = "域名白名单";
+		$reason = __("Domain White List");
 		$is_spam = 0;
 	}elsif ( &is_white_addr( $self,$from_addr ) ){
-		$reason = "地址白名单";
+		$reason = __("Sender White List");
 		$is_spam = 0;
 	}elsif ( &is_black_ip($self,$smtp_ip) ){
-		$reason = "IP黑名单";
+		$reason = __("IP Black List");
 		$is_spam = 3;
 	}elsif ( &is_black_domain($self,$email_domain) ) {
-		$reason = "域名黑名单";
+		$reason = __("Domain Black List");
 		$is_spam = 3;
 	}elsif ( &is_black_addr($self,$from_addr) ){
 		$is_spam = 3;
-		$reason = "地址黑名单";
+		$reason = __("Sender Black List");
 	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{Traceable} ){
 		# 只有启用了可追查性检查时才判断
 #use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
@@ -459,9 +461,9 @@ sub spam_checker
 		# traceable:1 = maybe spam:1
 		# un-traceable:0 = SPAM:2
 		$is_spam = 2-$traceable;
-		$reason = "可追查性检查";
+		$reason = __("Traceable check");
 	}else{
-		$reason = "无匹配";
+		$reason = __("OFF");
 	}
 
 	
