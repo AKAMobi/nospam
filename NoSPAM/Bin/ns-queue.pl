@@ -883,6 +883,8 @@ sub AKA_mail_engine {
   	$start_time=[gettimeofday];
 	if ( 1==$ins_queue ){
 	 	( $AKA_is_overrun, $AKA_overrun_reason ) = (0, '本地用户');
+	}elsif ( 2==$ins_queue ){
+	 	( $AKA_is_overrun, $AKA_overrun_reason ) = (0, '认证用户');
 	}else{
 # now disable receiver_num check;
 #		for ( 1...$AKA_email_receiver_num ){
@@ -1116,7 +1118,7 @@ sub check_license
 	if ( $n > 3 ){
         	if ( ! $AM->check_license_file ){
 			&debug ( "!!!!!!!!!!!!!noSPAM System need a valid license, please contact the factory.!!!!!!!!!!!" );
- 			&error_condition ( "553 对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。(#5.7.1)", 150 );
+ 			&error_condition ( "553 对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。", 150 );
         	}
 	}
 }
