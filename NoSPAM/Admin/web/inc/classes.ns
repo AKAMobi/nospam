@@ -401,7 +401,7 @@ class License
 	function Language()
 	{
 		if (!array_key_exists('Language',$this->params))
-			return "en_US";
+			return "zh_CN";
 
 		return $this->params["Language"];
 	}

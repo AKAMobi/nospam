@@ -63,6 +63,13 @@ $MaxUser = 0;
 $MaxDomain = 0;
 $MaxQuota = 0;
 $GAInterface = 0;
+
+# I18N
+$gettext_domain = 'web.nospam.cn';
+bindtextdomain ($gettext_domain, "/home/NoSPAM/LocaleData");
+textdomain ($gettext_domain); 
+setlocale(LC_ALL, 'zh_CN');
+
 if(file_exists(LICENSE)){
 	$license = new License;
 	$Switchable = $license->Switchable();
@@ -86,16 +93,13 @@ if(file_exists(LICENSE)){
 	$GAInterface = $license->getGAInterface();
 
 	$ProductName = $license->getProductName();
-}
 
 #
 # I18N here
 #
-$locale = setlocale(LC_ALL, $license->Language());
+	setlocale(LC_ALL, $license->Language());
 
-$gettext_domain = 'web.nospam.cn';
-bindtextdomain ($gettext_domain, "/home/NoSPAM/LocaleData");
-textdomain ($gettext_domain); 
+}
 
 
 $ServerMode = $Switchable? $spamconf->getParam("ServerGateway","System"):$intServerGateway;
