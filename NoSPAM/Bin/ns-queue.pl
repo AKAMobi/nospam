@@ -274,33 +274,8 @@ sub grab_envelope_hdrs {
   select(STDOUT); $|=1;
   
   open(SOUT,"<&1")||&error_condition("cannot dup fd 0 - $!");
-  while (<SOUT>) {
-    $mail_info->{aka}->{fd1} = $_;
-    ($env_returnpath,$env_recips) = split(/\0/,$_,2);
-    if ( ($returnpath=$env_returnpath) =~ s/^F(.*)$// ) {
-      $returnpath=$1;
-      ($recips=$env_recips) =~ s/^T//;
-      $recips =~ /^(.*)\0+$/;
-      $recips=$1;
-      $recips =~ s/\0+$//g;
-      #Keep a note of the NULL-separated addresses
-      $trecips=$recips;
-      $one_recip=$trecips if ($trecips !~ /\0T/);
-      $recips =~ s/\0T/\,/g;
-    }
-    #only meant to be one line!
-    last;
-  }
-  close(SOUT)||&error_condition("cannot close fd 1 - $!");
-  if ( ($env_returnpath eq "" && $env_recips eq "") || ($returnpath eq "" && $recips eq "") ) {
-    #At the very least this is supposed to be $env_returnpath='F' - so
-    #qmail-smtpd must be officially dropping the incoming message for
-    #some (valid) reason (including the other end dropping the connection).
-    &debug("g_e_h: no sender and no recips.");
-    &cleanup;
-    exit;
-  }
-  &debug("g_e_h: return-path is \"$returnpath\", recips is \"$recips\"");
+  $mail_info->{aka}->{fd1} = <SOUT>;
+  close(SOUT);
 }
 
 
@@ -353,7 +328,6 @@ sub qmail_parent_check {
   if ($ppid == 1)  {
     &debug("q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too...");
     close(LOG);
-    &cleanup;
     #Exit with temp error anyway - just to be real anal...
     exit 111; 
   }
