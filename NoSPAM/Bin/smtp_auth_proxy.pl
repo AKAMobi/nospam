@@ -36,18 +36,22 @@ if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) ){
 
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
-if ( ! $smtp->auth('LOGIN', $user, $pass) ){
-	unless ( length($user_raw) ) {
-		&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
-		exit 20;
-	}
+if ( grep (/LOGIN/, $smtp->auth_types ()) ){
+	if ( ! $smtp->auth('LOGIN', $user, $pass) ){
+		unless ( length($user_raw) ) {
+			&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
+			exit 20;
+		}
 
-	if ( ! $smtp->auth('LOGIN', $user_raw, $pass) ){
-		&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
-		exit 20;
+		if ( ! $smtp->auth('LOGIN', $user_raw, $pass) ){
+			&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
+			exit 20;
+		}
+		# we have user_raw succeed now!
+		# it is a authed user.
 	}
-	# we have user_raw succeed now!
-	# it is a authed user.
+}else{ # 系统不支持 ESMTP，打开OpenRelay
+	&zlog ($logit, "server $REMOTE_SMTP not support ESMTP LOGIN method." );
 }
 
 &zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.");
