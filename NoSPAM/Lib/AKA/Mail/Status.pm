@@ -11,6 +11,8 @@ use strict;
 use RRDs;
 use POSIX qw(strftime);
 
+use AKA::Mail::Conf;
+
 sub new
 {
 	my $class = shift;
@@ -19,8 +21,13 @@ sub new
 
 	bless $self, $class;
 
+	$self->{conf} = new AKA::Mail::Conf;
+
+	$self->{define}->{hostname} = $self->{conf}->{config}->{Network}->{Hostname};
+
 	$self->{define}->{rrdpath} = '/home/NoSPAM/var/rrd/';
 	$self->{define}->{gifpath} = "/home/NoSPAM/admin/status/";
+
 	return $self;
 }
 
@@ -329,7 +336,7 @@ sub rrdgraph_size
 	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
 
 	RRDs::graph ("$giffile", 
-			"--title=Size Status",  
+			"--title=" . $self->{define}->{hostname} . " Size Status",
 			"--vertical-label=Number per Minute", 
 			"--start=$start_time",      
 			"--end=$end_time",        
@@ -546,7 +553,7 @@ sub rrdgraph_dns
 #print "rrdfile: $rrdfile, giffile: $giffile, now: $now, start_time: $start_time, end_time: $end_time, vrules: [" . join(',', @vrules) . "]\n" ;
 
 	RRDs::graph ("$giffile", 
-			"--title=DNS Status",  
+			"--title=" . $self->{define}->{hostname} . " DNS Status",  
 			"--vertical-label=Query per Minute", 
 			"--start=$start_time",      
 			"--end=$end_time",        
@@ -700,7 +707,7 @@ sub rrdgraph_traffic
 	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
 
 	RRDs::graph ("$giffile", 
-			"--title=Traffic Status",  
+			"--title=" . $self->{define}->{hostname} . " Traffic Status",  
 			"--vertical-label=Bits per Second", 
 			"--start=$start_time",      
 			"--end=$end_time",        
@@ -830,7 +837,7 @@ sub rrdgraph_engine
 	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
 
 	RRDs::graph ("$giffile", 
-			"--title=Engine Status",  
+			"--title=" . $self->{define}->{hostname} . " Engine Status",  
 			"--vertical-label=Time per Mail(ms)", 
 			"--start=$start_time",      
 			"--end=$end_time",        
@@ -1020,7 +1027,7 @@ sub rrdgraph_type
 	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
 
 	RRDs::graph ("$giffile",
-			"--title=Send/Receive Status",  
+			"--title=" . $self->{define}->{hostname} . " Send/Receive Status",  
 			"--vertical-label=Number per Minute", 
 			"--start=$start_time",      
 			"--end=$end_time",        
