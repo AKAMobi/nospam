@@ -61,6 +61,10 @@ sub new
 	#$self->{'number'} = 5;
 
 # Return $self so the user can use it.
+
+	# PreFork 模式下统计 cputime 需要作差
+	$self->{last_cputime} ||= 0;
+
 	return $self;
 
 }
@@ -195,7 +199,7 @@ sub log_csv {
 			. ',' . $aka->{size} 
 			. ',' . ( int(1000*tv_interval($mail_info->{aka}->{start_time}, [gettimeofday])) 
 				  - ($engine->{spam}->{dns_query_time}||0) )
-			. ',' . int(1000*$cputime)
+			. ',' . int(1000*($cputime - $self->{last_cputime}))
 
 			. ',' . $engine->{antivirus}->{result}
 				. ',' . $engine->{antivirus}->{runtime}
@@ -226,6 +230,8 @@ sub log_csv {
 
 		flock(LFD,LOCK_UN);
 		close(LFD);
+		$self->{last_cputime} = $cputime;
+
 	}else{
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
