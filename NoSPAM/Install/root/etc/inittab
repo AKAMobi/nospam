@@ -20,6 +20,9 @@ id:3:initdefault:
 # System initialization.
 si::sysinit:/etc/rc.d/rc.sysinit
 
+# Serial Console
+S0:2345:respawn:/sbin/agetty -L 115200 ttyS0
+
 SV:2345:respawn:/usr/bin/svscan-start /service
 SX:S016:wait:/usr/bin/svscan-stopall /service
 l0:0:wait:/etc/rc.d/rc 0
