@@ -334,9 +334,9 @@ function save()
 	$TotalDomain = count($vDomains);
 	if ( $TotalDomain> 0){
 		foreach ($vDomains as $value){
-			$TotalUser += intval($Section["VirtualDomain_{$value}_MaxUser"]);
 			if ( $bModify && $value==$domain )
 				continue; //如果是修改，则不计算当前domain的quota到totalquota
+			$TotalUser += intval($Section["VirtualDomain_{$value}_MaxUser"]);
 			$TotalQuota += intval($Section["VirtualDomain_{$value}_Quota"]);
 		}
 	}

@@ -74,7 +74,7 @@ function hidedetail()
 <body>
 <form method="POST">
 <input type="hidden" name="action" value="del" />
-<table class="RuleTB">
+<table class="RuleTB" width="100%">
 <caption>自定义文件类型</caption>
 <tr class="RuleTBH">
 <?
