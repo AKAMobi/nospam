@@ -170,12 +170,20 @@ fwrite($fp2, $body);
 fclose($fp2);
 
 $mail_name=time().".12345.".DOMAIN;
+$iscopy=true;
+$linkpath='';
 	for( $i = 0 ; $i < $mail_count ; $i++)	{
 			list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
 			$user_maildir= VPOPMAILHOME . 'domains/' . DOMAIN . '/' . $user_account . "/Maildir/new/";
 			$user_mailname= $user_maildir.$mail_name; 
 			if ($isSendAll) {
-				@copy($attachdir . "/.mail", $user_mailname);
+				if ($iscopy) {
+					@copy($attachdir . "/.mail", $user_mailname);
+					$linkpath=$user_mailname;
+					$iscopy=false;
+				} else {
+					@link($linkpath, $user_mailname);
+				}
 				continue;
 			}
 			for ($t=0; $t<count($userinfo_list); $t++){
@@ -187,8 +195,13 @@ $mail_name=time().".12345.".DOMAIN;
 				$groups=explode(',',trim($userinfo_list[$t]['group']));
 				foreach ($sendgrouplist as $sendgroup) {
 					if (in_array($sendgroup,$groups)) {
-						@copy($attachdir . "/.mail", $user_mailname);
-						
+						if ($iscopy) {
+							@copy($attachdir . "/.mail", $user_mailname);
+							$linkpath=$user_mailname;
+							$iscopy=false;
+						} else {
+							@link($linkpath, $user_mailname);
+						}
 						break;
 					}
 				}
