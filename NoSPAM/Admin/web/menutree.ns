@@ -165,6 +165,17 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 <?
 }
 
+if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
+?>
+	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
+	tree.add(m);
+	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
+	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
+<?
+}
+
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
@@ -196,16 +207,6 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	g.add(new WebFXTreeItem('操作日志审计','log/audit.ns','main'));
 <?php
 	}	
-}
-if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
-?>
-	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
-	tree.add(m);
-	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
-	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
-	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
-	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
-<?
 }
 ?>
 	var h = new WebFXTreeItem('退出系统','logout.ns','_top');

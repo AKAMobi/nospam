@@ -26,22 +26,22 @@ $ArchiveAdmin = $spamconf->getParam("ArchiveAdmin","ArchiveEngine");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>归档地址</title>
+<title>审计地址</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
 <form name="form1" method="post" action="">
-  归档地址：
+  审计地址：
     <input name="ArchiveAdmin" type="text" id="ArchiveAdmin" value="<?=$ArchiveAdmin?>">
-  所有的归档邮件都将被发送到这个邮箱。<br>
+  所有的审计邮件都将被发送到这个邮箱。<br>
   <input type="submit" name="submit" value="提交">
 </form>
 <?
 if(!$bArchive){
 ?>
 <script>
-alert("注意：归档引擎未启动");
+alert("注意：审计引擎未启动");
 </script>
 <?
 }
