@@ -136,12 +136,12 @@ string dump_stdin_to_file()
 	TEMP_FAILURE_RETRY( close ( fd ) );
 
 	zlog << "rename " << tmp_emlfile << " to " << new_emlfile << endl;
-	if ( -1==TEMP_FAILURE_RETRY ( link ( tmp_emlfile, new_emlfile ) ) ){
-		qns_err ( "443 qns_loader can't link file.", 150 );
+	if ( -1==TEMP_FAILURE_RETRY ( rename ( tmp_emlfile, new_emlfile ) ) ){
+		qns_err ( "443 qns_loader can't rename file.", 150 );
 	}
-	if ( -1==TEMP_FAILURE_RETRY ( unlink ( tmp_emlfile ) ) ){
+	/*if ( -1==TEMP_FAILURE_RETRY ( unlink ( tmp_emlfile ) ) ){
 		zlog << "qns_loader can't unlink file." << endl;
-	}
+	}*/
 
 	return string(new_emlfile);
 }
