@@ -225,7 +225,7 @@ $logstr .= "emlfilename: [$_]\n";
 $logstr .= "fd1: $_\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
 
-$self->{zlog}->log ( $logstr );
+#$self->{zlog}->log ( $logstr );
 
 	$self->{mail_info};
 }
