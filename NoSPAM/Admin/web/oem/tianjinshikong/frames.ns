@@ -19,7 +19,7 @@ if (!isset($AdminID)){
 	<frame src="top.ns" name="top" scrolling="NO" noresize>
 	<frameset cols="220,*" frameborder="NO" border="0" framespacing="0">
   		<frame src="menutree.ns" name="menu" scrolling="NO" noresize>
-  		<frame src="intro.ns" name="_right">
+  		<frame src="intro.ns" name="main">
 	</frameset>
 </frameset>
 <noframes><body>
