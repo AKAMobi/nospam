@@ -44,7 +44,7 @@ sub quarantine
 
 	my $old_umask = umask 0022;
 	my ($filename, $infoname);
-$self->{zlog}->debug ( "Quarantine::quarantine get mailfrom: [$mailfrom] mailto: [$mailto]" );
+#$self->{zlog}->debug ( "Quarantine::quarantine get mailfrom: [$mailfrom] mailto: [$mailto]" );
 	$mailfile =~ m#([^/]+)$#;
 	$filename = $1;
 	$infoname = "$1.info";
