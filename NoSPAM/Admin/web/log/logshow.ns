@@ -61,6 +61,7 @@ function switchMonitor()
 		document.all.submit.disabled=true;
 		document.all.oDynamic.src="";
 		document.all.oMonitor.style.display="none";
+		document.all.oMonitor.innerHTML="";
 		document.all.oStatic.style.display="";
 	}else{
 		bMonitor = true;

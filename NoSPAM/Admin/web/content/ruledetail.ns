@@ -37,7 +37,7 @@ $attachmentscount = count($attachments);
         <td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
     </tr>
     <tr>
-        <td>类别：<?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
+        <td>类别：<?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
         <td>编号类型：<?=$rule->get_attribute("id_type")?></td>
     </tr>
     <tr>

@@ -54,7 +54,7 @@ foreach($rules as $rule){
 		<td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
 	</tr>
 	<tr>
-		<td>类别：<?=$Category[$category_id]?$Category[$category_id]:$category_id?></td>
+		<td>类别：<?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
 		<td>编号类型：<?=$rule->get_attribute("id_type")?></td>
 	</tr>
 	<tr>
@@ -122,7 +122,7 @@ foreach($rules as $rule){
 ?>
 		<fieldset style="border-style: double; width: 90%">
 		<legend>第<?=$i?>条</legend>
-		限制文件名：<? if(!$attachment->has_attribute("filename")) echo "无"; else echo $attachment->get_attribute("filename");?>
+		限制文件名：<? if(!$attachment->has_attribute("filename")) echo "无"; else echo utf8_decode($attachment->get_attribute("filename"));?>
 		限制文件类型：<? if(!$attachment->has_attribute("filetype")) echo "无";else echo $attachment->get_attribute("filetype");?>
 		<br>
 		尺寸要求：<?=$attachment->get_attribute("sizevalue")?>
@@ -136,7 +136,7 @@ foreach($rules as $rule){
 	</fieldset>
 	<br>
 	动作：<?=$Actions[$action->get_attribute("action")]?>
-	动作参数：<? if($action->get_attribute("action_param")==null) echo "无"; else echo $action->get_attribute("action_param"); ?>
+	动作参数：<? if($action->get_attribute("action_param")==null) echo "无"; else echo utf8_decode($action->get_attribute("action_param")); ?>
 </td></tr>
 </table>
 <br>
