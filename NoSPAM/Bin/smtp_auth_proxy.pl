@@ -66,6 +66,8 @@ sub get_remote_smtp_ip
 	my $user_domain = "";
 	if ( $user =~ /^[^\@]+\@(.+)$/ ){
 		$user_domain = $1;
+	}elsif ( $user =~ /^[^\%]+\%(.+)$/ ){
+		$user_domain = $1;
 	}
 
 	my $line;
