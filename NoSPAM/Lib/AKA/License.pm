@@ -78,7 +78,32 @@ sub get_prodno
 	$id = &get_SCSI_serial;
 	$IDserial .= $id if ( $id );
 
+	$id = &get_MAC_serial;
+	$IDserial .= $id if ( $id );
+
 	return md5_hex( 'okboy' . $IDserial . 'zixia' . $IDserial . '@2004-03-07' );
+}
+
+sub get_MAC_serial
+{
+	my $self = shift;
+
+	my $id = '';
+
+	my @lines;
+
+	if ( open ( FD, "/sbin/ip li li|grep ether|" ) ){
+		@lines = <FD>;
+		foreach ( @lines ){
+			if ( /ether (..:..:..:..:..:..)/ ){
+				$id .= $1;
+			}
+		}
+	}
+
+	$id =~ s/[:\s\n\r]*//g;
+
+	return $id;
 }
 
 sub get_SCSI_serial

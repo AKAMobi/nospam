@@ -26,8 +26,14 @@ my $shutdown_binary = "/sbin/shutdown";
 my $date_binary = "/bin/date";
 my $clock_binary = "/sbin/clock";
 
+my $action;
+
 (my $prog=$0) =~ s/^.*\///g;
-my $action = shift @ARGV;
+$prog=~/NoSPAM_(.+)/;
+$action = $1 if defined $1;
+
+$action ||= shift @ARGV;
+
 my @param = @ARGV;
 
 
