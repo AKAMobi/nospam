@@ -7,6 +7,7 @@ chmod o+t service/*
 chmod o+t service/*/log
 
 chown qmaill service/*/log/{main,status}
+chown nospam service/nsd/log/{main,status}
 
 chmod +x service/*/run
 
