@@ -35,6 +35,7 @@ my $action_map = { 'reset_Network' => [\&reset_Network, ""],
 			'get_Serial' => [\&get_Serial, ""],
 			'check_License' => [\&check_License, ""],
 			'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"],
+			'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"],
 			'reboot' => [\&reboot, ""],
 			'shutdown' => [\&shutdown, ""]
 		};
@@ -89,7 +90,7 @@ sub get_licenseconf
 
 	my $license_file = $conf->{define}->{licensefile};
 
-	open ( LCFD, "<$license_file" ) or die "NoSPAM Util can't open license file\n";
+	open ( LCFD, "<$license_file" ) or return undef;
 
 	my ( $key,$val );
 	while (<LCFD>){
@@ -501,5 +502,10 @@ sub shutdown
 {
 	$zlog->debug("NoSPAM Util::reset_DateTime");
 	return system ( "$shutdown_binary now" );
+}
+
+sub clean_Log
+{
+	return `cat /dev/null > /var/log/NoSPAM.csv`;
 }
 
