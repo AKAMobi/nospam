@@ -77,6 +77,9 @@ sub start_System
 {
 	my $ret;
 
+	# update hostname to provent dns query
+	&reset_Network_update_hostname;
+
 	$ret = &reset_Network;
 	$ret ||= &reset_ConnPerIP;
 	
@@ -279,9 +282,6 @@ sub reset_Network_up_eth
 
 	my $ret;
 
-	#邮件主机名称：NoSPAM.conf::MailServerHostname
-	$ret = system( $hostname_binary, $conf->{config}->{MailServerHostname} );
-	return -10 if ( $ret );
 
 	if ( 'Server' eq $mode ){
 		#服务器IP：NoSPAM.conf::MailGatewayIP
@@ -393,6 +393,8 @@ sub reset_Network_update_hostname
 {
 	my $mode = shift;
 
+	my $ret;
+
 	my %host_map;
 	open ( FD, "</etc/hosts" ) or die "can't open hosts";
 	while ( <FD> ){
@@ -428,6 +430,10 @@ sub reset_Network_update_hostname
 		$content .= "\n";
 	}
 	return 20 unless write_file ( $content, "/etc/hosts" );
+
+	#邮件主机名称：NoSPAM.conf::MailServerHostname
+	$ret = system( $hostname_binary, $conf->{config}->{MailServerHostname} );
+	return -10 if ( $ret );
 
 	return 0;
 }
