@@ -67,7 +67,7 @@ use strict 'vars', 'subs';
 use Sys::Syslog qw(:DEFAULT setlogsock);
 setlogsock('unix');
 
-my $VERSION="1.20";
+my $VERSION="2.00";
 
 my ( $AKA_is_spam, $AKA_is_refuse_spam, $AKA_spam_reason ) = (0,0,'');
 my ( $AKA_is_overrun, $AKA_overrun_reason ) = ( 0, '' );
@@ -115,27 +115,17 @@ my $vmaildir='quarantine';
 #Name of file in $scandir where debugging output goes
 my $debuglog="ns-queue.debug";
 
-#Name of file where quarantine reports go (for long-term storage)
-my $quarantinelog="quarantine.log";
-
 #If you want to log via file/syslog information of all Email
 # that passes through your system (from/to/subj/size/attachments)
 my $log_details="mailstats.csv";
 
 
-my $SNEAKY_WINDOWS_EXTENSIONS="exe|com|pps|w[pm][szd]|vcf|nws|cmd|bat|pif|sc[rt]|dll|ocx|do[ct]|xl[swt]|p[po]t|rtf|vb[se]?|hta|p[lm]|sh[bs]|hlp|chm|eml|ws[cfh]|ad[ep]|jse?|md[abew]|ms[ip]|reg|as[dfx]|cil";
-my $VALID_WINDOWS_EXTENSIONS="sav|htm|html|pst|ost|txt|gif|jpeg|mpeg|jpg|png|mny|wav|tif|$SNEAKY_WINDOWS_EXTENSIONS";
-
 $ENV{'PATH'}='/bin:/usr/bin';
 
 #Generate nice random filename
-my $hostname='emlfile.gw.nospam.aka.cn';
+my $hostname='gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
-
-
-my $MAX_NUM_HDRS=140;
-my $QE_LEN=16; 
 
 #Maximum amount of time we allow Q-S to run before returning
 # a temp failure. This is so remote SMTP servers don't get confused
@@ -180,34 +170,19 @@ $prog $ins_queue
   exit;
 }
 
+if ($opt_z) {
+  &clean_zombie_file;
+  exit 0;
+}
 
 umask(0022);
 
-if (! -d "$scandir") {
-  mkdir("$scandir",0700) || &error_condition("cannot create $scandir - $!");
+
+# XXX
+my $file_id = $ENV{'AKA_FILE_ID'};
+unless ( -f "$scandir/$wmaildir/tmp/$file_id" ){
+    &error_condition("443 ns can't get file.", 150);
 }
-chdir($scandir);
-
-if (! -d "$scandir/tmp") {
-  mkdir("$scandir/tmp",0700) || &error_condition("cannot create $scandir/tmp - $!");
-}
-
-if (! -d "$wmaildir") {
-  mkdir("$wmaildir",0700) || &error_condition("cannot create $wmaildir - $!");
-}
-
-if (! -d "$wmaildir/tmp") {
-  mkdir("$wmaildir/tmp",0700) || &error_condition("cannot create $wmaildir/tmp - $!");
-}
-if (! -d "$wmaildir/new") {
-  mkdir("$wmaildir/new",0700) || &error_condition("cannot create $wmaildir/new - $!");
-}
-
-
-
-
-
-my $file_id = &uniq_id();
 
 #For security reasons, tighten the follow vars...
 $ENV{'SHELL'} = '/bin/sh' if exists $ENV{SHELL};
@@ -225,11 +200,6 @@ if ($DEBUG ) {
   open(LOG,">>$scandir/$debuglog");
   select(LOG);$|=1;
   &debug("+++ starting debugging for process $$ by uid=$uid at $nowtime");
-}
-
-if ($opt_z) {
-  &clean_zombie_file;
-  exit 0;
 }
 
 my ($smtp_sender,$remote_smtp_ip);
@@ -334,11 +304,6 @@ exit 0;
 # Error handling
 ############################################################################
 
-#Generate uniq identifiers
-sub uniq_id {
-  return "$hostname." . time . '.' . $$;
-}
-
 
 # Fail with the given message and a temporary failure code.
 sub error_condition {
@@ -370,21 +335,17 @@ sub debug {
 
 sub working_copy {
   my ($hdr,$last_hdr,$value,$num_of_headers,$last_header,$last_value,$attachment_filename);
-  select(STDIN); $|=1;
   
   &debug("w_c: mkdir $ENV{'TMPDIR'}");
   mkdir("$ENV{'TMPDIR'}",0700)||&error_condition("$file_id exists - try again later...");
   chdir("$ENV{'TMPDIR'}")||&error_condition("cannot chdir to $ENV{'TMPDIR'}/");
-  if (-f "$scandir/$wmaildir/tmp/$file_id" || -f "$scandir/$wmaildir/new/$file_id") {
-    &error_condition("$file_id exists, try again later");
-  }
-  &debug("w_c: start dumping incoming msg into $scandir/$wmaildir/tmp/$file_id [",&deltatime,"]");
-  open(TMPFILE,">$scandir/$wmaildir/tmp/$file_id")||&error_condition("cannot write to $scandir/$wmaildir/tmp/$file_id - $!");
+
+  open(TMPFILE,"<$scandir/$wmaildir/tmp/$file_id")||&error_condition("cannot read from $scandir/$wmaildir/tmp/$file_id - $!");
   
   my $still_headers=1;
   my $begin_content='';
   my $still_attachment='';
-  while (<STDIN>) {
+  while (<TMPFILE>) {
    if ( $still_headers ){
 	if ( /^Subject: ([^\n]+)/i) {
 #&debug( "SUBJECT $_" );
@@ -407,7 +368,8 @@ sub working_copy {
 	}
 	$still_headers = 0 if (/^(\r|\r\n|\n)$/);
    }
-   print TMPFILE ;
+	# we only precess mail header here.
+	last;
   }
   close(TMPFILE)||&error_condition("cannot close $scandir/$wmaildir/tmp/$file_id - $!");
 
