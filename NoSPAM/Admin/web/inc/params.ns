@@ -22,6 +22,7 @@ $SizePos[2] = "信头";
 $SizePos[3] = "信体";
 $SizePos[4] = "附件大小";
 $SizePos[5] = "附件个数";
+$SizePos[150] = "TO,CC,BCC收件人总数";
 
 $FileType[1] = "压缩文件";
 $FileType[2] = "声音文件";
