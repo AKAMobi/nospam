@@ -607,20 +607,22 @@ sub get_LogSimpleAnaylize
 	return 10 unless ( $start_time && $end_time );
 
 	my ( $timestamp, $direction
-			, $ip, $from, $to, $subject
+			, $ip, $from, $to, $subject, $size
+			, $virus, $virus_name, $virus_action
 			, $spam, $spam_reason, $spam_action
 			, $rule, $rule_action, $rule_param
 			, $dynamic, $dynamic_reason 
 	   );
 
-	my ( $total_num, $maybe_spam_num, $spam_num ) = ( 0,0,0 );
+	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num ) = ( 0,0,0, 0 );
 	my ( %from_top, %ip_top, %rule_top );
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
 
 	open ( FD, "</var/log/NoSPAM.csv" ) or return 10;
 	while ( <FD> ){
 		( $timestamp, $direction
-		  , $ip, $from, $to, $subject
+		  , $ip, $from, $to, $subject, $size
+		  , $virus, $virus_name, $virus_action
 		  , $spam, $spam_reason, $spam_action
 		  , $rule, $rule_action, $rule_param
 		  , $dynamic, $dynamic_reason 
@@ -632,6 +634,7 @@ sub get_LogSimpleAnaylize
 		$spam ||= 0;
 		$maybe_spam_num +=1 if ( 1==$spam );
 		$spam_num+=1 if ( 1<$spam );
+		$virus_num+=1 if ( 0<$virus );
 
 		$from_top{$from} += 1 if ( $from );
 		$ip_top{$ip} += 1 if ( $ip );
@@ -665,6 +668,7 @@ sub get_LogSimpleAnaylize
 	print "TOTAL: $total_num\n";
 	print "MAYBE: $maybe_spam_num\n";
 	print "SPAM: $spam_num\n";
+	print "VIRUS: $virus_num\n";
 
 	print "FROM_TOP: " . join ( ',', @{$from_tops_ref} ) . "\n" ;
 	print "IP_TOP: " . join ( ',', @{$ip_tops_ref} ) . "\n";
