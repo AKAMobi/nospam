@@ -55,3 +55,4 @@ rename "ns-$NSVER.i386.rpm.zip", "ns-$NSVER.i386.rpm";
 chdir '..';
 print "Clean tmp files...\n";
 `rm -fr tmp`;
+
