@@ -1203,7 +1203,7 @@ unlink /root/post_install
 		`echo $VERSION > /home/NoSPAM/etc/VERSION`;
 	}
 
-	eval 'use AKA::Mail::Status; my $AMS=new AKA::Mail::Status; $AMS->create_rrd;';
+	eval 'use AKA::Mail::Status; my $AMS=new AKA::Mail::Status; $AMS->create_rrd_soft;';
 	if ( $@ ){
 		print NSOUT "rrd: $@\n";
 	}

@@ -168,6 +168,19 @@ sub get_year_param
 	return ($start_time,$end_time, @vrules);
 }
 
+sub create_rrd_soft
+{
+	my $self = shift;
+
+	my $rrdpath = $self->{define}->{rrdpath};
+	#$self->create_rrd unless ( -e "$rrdpath/dns.rrd" );
+	if ( ! -e "$rrdpath/dns.rrd" ){
+		#print "RRD not exist\n";
+		$self->create_rrd;
+	}else{
+		#print "RRD exist\n";
+	}
+}
 
 sub create_rrd
 {
