@@ -5,10 +5,10 @@ $ENV{'PATH'} = '/bin:/sbin:/usr/bin:/usr/sbin';
 delete @ENV{'IFS', 'CDPATH', 'ENV', 'BASH_ENV'};
 
 close ( STDERR );
-open (STDERR, ">/var/log/NoSPAM.stderr");
+open (STDERR, ">>/var/log/NoSPAM.stderr");
 
 close ( STDOUT );
-open (STDOUT, ">/var/log/NoSPAM.stdout");
+open (STDOUT, ">>/var/log/NoSPAM.stdout");
 
 my $AM = new AKA::Mail;
 
