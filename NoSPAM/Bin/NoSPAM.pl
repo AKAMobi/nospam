@@ -437,6 +437,8 @@ _POD_
 	&MailBaseSetting_reset;
 	&SystemEngine_reset;
 
+	# 检查 locale list/Razor register等一次性的工作，在rc.local中
+
 	return $err;
 }
 
