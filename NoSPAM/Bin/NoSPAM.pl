@@ -38,6 +38,7 @@ my @param = @ARGV;
 
 
 my $conf = new AKA::Mail::Conf;
+
 my $intconf = &get_intconf;
 my $licenseconf = &get_licenseconf;
 my $zlog = new AKA::Mail::Log;
@@ -564,7 +565,45 @@ sub reset_Network_update_qmail_control
 	$ret = &reset_Network_update_rcpthosts($mode);
 	return 20 if ( $ret );
 
+	$ret = &reset_Network_update_ismtp_relay($mode);
+	return 30 if ( $ret );
+
 	return 0;
+}
+
+sub reset_Network_update_ismtp_relay
+{
+	my $mode = shift;
+
+	my $ret; 
+
+	my $IP = $conf->{config}->{MailServerIP} ;
+
+	return 0 unless $IP;
+	
+	return 10 unless open FD, "</service/ismtpd/tcp";
+
+	my @relays = <FD>;
+	close FD;
+
+	my %relay_hash;
+
+	my ($relay_ip, $relay_setting);
+	foreach ( @relays ){
+		($relay_ip, $relay_setting) = split (/:/,$_,2);
+		$relay_hash{$relay_ip} = $relay_setting if ( $relay_ip && $relay_setting );
+	}
+	
+	$relay_hash{$IP} = "allow,RELAYCLIENT=\"\"";
+
+	my $content = '';
+	$content .= "$_:$relay_hash{$_}\n" foreach keys %relay_hash;
+
+	$ret = write_file($content, '/service/ismtpd/tcp');
+
+	return 20 if ( $ret );
+
+	return `cd /service/ismtpd;make`;
 }
 
 sub reset_Network_update_rcpthosts
@@ -724,7 +763,7 @@ sub reset_Network
 	# 是管理一台，还是管理一个网段
 	# 注意！是完全不一样的！
 	# XXX TODO
-	my $MailServerGroup = 'N';
+	my $MailServerGroup = $conf->{config}->{MailServerGroup} || 'N';
 
 	my $ret = 0;
 
