@@ -2,7 +2,8 @@
 session_start(); 
 
 function getDomain(){
-	return substr($_SERVER['SERVER_NAME'],5);
+#	return substr($_SERVER['SERVER_NAME'],5);
+	return "anti-spam.mail.aka.cn";
 }
 
 define( 'DOMAIN', getDomain() );

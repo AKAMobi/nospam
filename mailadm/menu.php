@@ -506,6 +506,7 @@ fT= gFld("<b>邮件系统管理</b>", "");
 ?>
 	insDoc(fT, gLnk(0,"添加管理员账号","addAdmin.php"));
   aux1 = insFld(fT, gFld("反垃圾邮件",""));
+		insDoc(aux1,gLnk(0,"SMTP转发设置","controlSmtproute.php"));
 		insDoc(aux1,gLnk(0,"AS-SMTP设置","controlMFCheck.php"));
 		insDoc(aux1,gLnk(0,"IP黑名单","controlBlackIP.php"));
 		insDoc(aux1,gLnk(0,"IP白名单","controlWhiteIP.php"));
