@@ -678,5 +678,47 @@ sub get_mail_from_queue
         return \@lines;
 }
 
+# zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
+# TODO finish this function
+sub send_email_file {
+	my($to, $email_file, $sign )=@_;
+
+	if ( !$to || !length($to) ){
+		&debug("e_s: sending email no to: [$to] specified.");
+		return;
+	}
+
+	if ( ! open(EML, "<$email_file") ){
+		&debug("e_s: sending email file to $to open $email_file error.");
+# not this function's duty: unlink ( $email_file );
+		return;
+	}
+
+	open(SM,"|$qmailinject -h -f ''")||&error_condition("s_e_f: cannot open $qmailinject for sending quarantine report - $!");
+	&debug("e_s: sending email file via: $qmailinject to address ($to)");
+
+	my $in_header = 1;
+	while ( <EML> ){
+		if ( $in_header ){
+			if (/^(\r|\r\n|\n)$/) {
+				$in_header = 0;
+			}elsif (/^To: \S+/){
+				$_ = "To: $to\n";
+			}elsif ( /^CC: /i || /^BCC: /i ){
+# only send to archiver! -_-b
+				next;
+			}
+		}
+		print SM;
+	}
+	print SM "\n$sign";
+
+
+	close(SM);
+	close(EML);
+
+}
+
+
 1;
 

@@ -11,6 +11,7 @@ package AKA::Mail::Log;
 
 #use XML::Simple;
 use POSIX qw(strftime);
+use Fcntl ':flock';
 
 my $can_log = 1;
 my $can_debug = 1;
@@ -109,13 +110,50 @@ sub get_time_stamp
 	strftime "%Y%m%d%H%M%S", localtime;
 }
 
-sub DESTROY
-{
-    my $self = shift;
+sub log_csv {
+	my $self = shift;
 
-    #print "DESTROYed.\n";
+	my $mail_info = shift;
+
+	my $aka = $mail_info->{aka};
+	my $engine = $mail_info->{aka}->{engine};
+
+	my $esc_subject = $mail_info->{aka}->{subject};
+	$esc_subject =~ s/,/_/g;
+	$subject = ' ' . $esc_subject . ' ';
+
+	if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
+		flock(LFD,LOCK_EX);
+		seek(LFD, 0, 2);
+#print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
+		print LFD time
+# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
+			. ',' . ((defined $aka->{RELAYCLIENT})?'1':'0') 
+			. ',' . $aka->{TCPREMOTEIP} . ',' . $aka->{returnpath} 
+				. ',' . $aka->{recips} . ',' . $esc_subject
+
+			. ',' . $engine->{spam}->{result} 
+				. ',' . $engine->{spam}->{desc} 
+				. ',' . $engine->{spam}->{action}
+
+			. ',' . $engine->{antivirus}->{result}
+				. ',' . $engine->{antivirus}->{desc} 
+				. ',' . $engine->{antivirus}->{action} 
+
+			. ',' . $engine->{content}->{result} 
+				. ',' . $engine->{content}->{action}
+				. ',' . $engine->{content}->{desc}
+				
+			. ',' . $engine->{dynamic}->{result} 
+				. ',' . $engine->{dynamic}->{desc} 
+			. "\n";
+
+		flock(LFD,LOCK_UN);
+		close(LFD);
+	}else{
+		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+	}
 }
-
 
 END
 {
