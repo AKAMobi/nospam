@@ -65,7 +65,7 @@ function closeTips(obj)
 <table border="0">
 <tr>
 	<td>
-系统版本号：<?=trim(`cat /home/NoSPAM/etc/VERSION`).".".trim(`cat /home/NoSPAM/etc/PATCHVERSION`)?><br>
+系统版本号：<?=trim(`cat /home/NoSPAM/etc/VERSION`).".".trim(`cat /home/NoSPAM/etc/PATCHVERSION`)?><p>
 	</td>
 </tr>
 <tr>
@@ -109,8 +109,8 @@ if (count($aUpgradeLog) > 0){
 </tr>
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
 <tr>
-	<td>
-上载升级包：<br>
+	<td><br>
+<p>上载升级包：</p>
 <form action="?action=upload" method="post" enctype="multipart/form-data">
   <input type="file" name="upgradepkg">
   <input type="submit" name="Submit" value="上载">
@@ -169,15 +169,14 @@ function upgrade()
 	echo "<br>";
 	
 	switch ($ret){
-		case -1:
-		echo "升级失败！";
-		break;
 		case 0:
 		echo "升级成功！";
 		break;
 		case 1:
 		echo "升级成功，重新启动系统后生效";
 		break;
+		default:
+		echo "升级失败！";
 	}
 }
 ?>
