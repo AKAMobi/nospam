@@ -12,7 +12,7 @@ require_once("inc/include.ns");
 <body leftmargin="0" topmargin="0">
 <table width="103%" height="80" border="0" cellpadding="0" cellspacing="0">
   <tr> 
-    <td width="315" height="80" align="left" valign="bottom"><img src="images/a1top_01.jpg" width="315" height="62"></td>
+    <td width="315" height="80" align="left" valign="bottom"><img src="images/<?=_("a1top_01_en.jpg")?>" width="315" height="62"></td>
     <td width="1">&nbsp;</td>
     <td align="right" valign="bottom"> 
       <table width="375" height="22" border="0" cellpadding="0" cellspacing="0">
