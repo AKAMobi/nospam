@@ -842,7 +842,7 @@ sub get_LogSimpleAnaylize
 			, $dynamic, $dynamic_reason 
 	   );
 
-	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num ) = ( 0,0,0,0,0 );
+	my ( $total_num, $maybe_spam_num, $spam_num, $virus_num, $overrun_num ) = ( 0,0,0,0,0,0 );
 	my ( %from_top, %ip_top, %rule_top );
 	my ( $from_tops_ref, $ip_tops_ref, $rule_tops_ref );
 
@@ -864,10 +864,11 @@ sub get_LogSimpleAnaylize
 
 		$total_num+=1;
 
-		$virus_num+=1 if ( 0<$virus );
-
-		unless ( $virus ){
-			$spam ||= 0;
+		if ( $dynamic ){
+			$overrun_num++;
+		}elsif ( $virus ){
+			$virus_num++;
+		}elsif ( $spam ){
 			$maybe_spam_num +=1 if ( 1==$spam );
 			$spam_num+=1 if ( 1<$spam );
 		}
@@ -906,6 +907,7 @@ sub get_LogSimpleAnaylize
 	print "MAYBE: $maybe_spam_num\n";
 	print "SPAM: $spam_num\n";
 	print "VIRUS: $virus_num\n";
+	print "OVERRUN: $overrun_num\n";
 
 	print "FROM_TOP: " . join ( ',', @{$from_tops_ref} ) . "\n" ;
 	print "IP_TOP: " . join ( ',', @{$ip_tops_ref} ) . "\n";
