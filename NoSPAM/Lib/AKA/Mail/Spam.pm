@@ -105,7 +105,7 @@ sub is_traceable
 
 		if ( !$strict_traceable ){
 			if ( $self->{iputil}->is_ip_in_range($mx_a_ip,"$smtp_ip/$strict_traceable_mask") ){
-				$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is strict traceable at $mx_a_ip of $from_domain, mask $strict_traceable_mask" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is strict traceable at $mx_a_ip of $from_domain, mask $strict_traceable_mask" );
 				$strict_traceable = 1;
 				$traceable = 1;
 				last;
@@ -114,7 +114,7 @@ sub is_traceable
 
 		if ( !$traceable ){
 			if ( $self->{iputil}->is_ip_in_range($mx_a_ip,"$smtp_ip/$traceable_mask") ){
-				$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is traceable at $mx_a_ip of $from_domain, mask $traceable_mask" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is traceable at $mx_a_ip of $from_domain, mask $traceable_mask" );
 				$traceable = 1;
 			} 
 		}
@@ -194,7 +194,7 @@ sub is_black_ip
 			#$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_?" );
 			if ( $self->{iputil}->is_ip_in_range($ip,"$_") ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_!" );
+			#	$self->{zlog}->debug ( "Mail::Spam::is_black_ip $ip in $_!" );
 				last;
 			}
 		}
@@ -214,10 +214,10 @@ sub is_white_ip
 	my $found = 0;
 	if ( defined $WhiteIPList ){
 		foreach ( @{$WhiteIPList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_white_ip $ip in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_white_ip $ip in $_?" );
 			if ( $self->{iputil}->is_ip_in_range($ip,"$_") ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_white_ip $ip in $_!" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_white_ip $ip in $_!" );
 				last;
 			}
 		}
@@ -236,10 +236,10 @@ sub is_black_domain
 	my $found = 0;
 	if ( defined $BlackDomainList ){
 		foreach ( @{$BlackDomainList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_black_domain $domain in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_black_domain $domain in $_?" );
 			if ( $domain=~/$_$/ ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_black_domain $domain in $_!" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_black_domain $domain in $_!" );
 				last;
 			}
 		}
@@ -259,10 +259,10 @@ sub is_white_domain
 	my $found = 0;
 	if ( defined $WhiteDomainList ){
 		foreach ( @{$WhiteDomainList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_white_domain $domain in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_white_domain $domain in $_?" );
 			if ( $domain=~/$_$/ ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_white_domain $domain in $_!" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_white_domain $domain in $_!" );
 				last;
 			}
 		}
@@ -284,10 +284,10 @@ sub is_white_addr
 	my $found = 0;
 	if ( defined $WhiteFromList ){
 		foreach ( @{$WhiteFromList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_white_addr $addr in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_white_addr $addr in $_?" );
 			if ( $addr=~/^$_$/ ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_white_addr $addr in $_!" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_white_addr $addr in $_!" );
 				last;
 			}
 		}
@@ -308,10 +308,10 @@ sub is_black_addr
 	my $found = 0;
 	if ( defined $BlackFromList ){
 		foreach ( @{$BlackFromList} ){
-			$self->{zlog}->debug ( "Mail::Spam::is_black_addr $addr in $_?" );
+			#$self->{zlog}->debug ( "Mail::Spam::is_black_addr $addr in $_?" );
 			if ( $addr=~/^$_$/ ){
 				$found = 1;
-				$self->{zlog}->debug ( "Mail::Spam::is_black_addr $addr in $_!" );
+				#$self->{zlog}->debug ( "Mail::Spam::is_black_addr $addr in $_!" );
 				last;
 			}
 		}
@@ -384,7 +384,7 @@ sub spam_checker
 	}
 
 	
-	$self->{zlog}->debug ( "Spam::spam_checker checking $smtp_ip <=> $from_addr spam result [$is_spam because $reason]" );
+	#$self->{zlog}->debug ( "Spam::spam_checker checking $smtp_ip <=> $from_addr spam result [$is_spam because $reason]" );
 
 	return ($is_spam, $reason);
 }

@@ -48,7 +48,7 @@ sub get_match_rule
 	my $rule_id = check_GA_rule( $self, $mail_info );
 
 	if ( $rule_id ){
-		$self->{zlog}->debug( "pf: GA rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
+		#$self->{zlog}->debug( "pf: GA rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
 		# we should let other know which type of rule we matched.
 		# 0 for user rule, >0 for police.
 		my $rule_info = $self->{filterdb}->{$rule_id};
@@ -60,7 +60,7 @@ sub get_match_rule
 	$rule_id = $self->check_user_rule( $mail_info );
 
 	if ( $rule_id ){
-		$self->{zlog}->debug( "pf: user rule id $rule_id info: \n" . Dumper($self->{user_filterdb}->{$rule_id}) ), 
+		#$self->{zlog}->debug( "pf: user rule id $rule_id info: \n" . Dumper($self->{user_filterdb}->{$rule_id}) ), 
 		# we should let other know which type of rule we matched.
 		# 0 for user rule, > 0 for police.
 		return (0,$self->{user_filterdb}->{$rule_id});

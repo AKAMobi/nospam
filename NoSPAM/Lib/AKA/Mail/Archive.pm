@@ -10,6 +10,7 @@ package AKA::Mail::Archive;
 
 
 use AKA::Mail::Conf;
+use AKA::Mail::Log;
 use AKA::Mail::Controler;
 use AKA::Mail::Police::Parser;
 
@@ -32,6 +33,7 @@ sub new
 
 	$self->{parent} = $parent;
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;
 	
 	$self->{define}->{archivedir} = "/home/vpopmail/domains/localhost.localdomain/archive/Maildir/";
 
@@ -43,6 +45,7 @@ sub archive
 	my $self = shift;
 	my $eml_file = shift;
 
+$self->{zlog}->debug ( "archive $eml_file" );
 	$eml_file || return 0;
 
 	#$self->{controler} ||= new AKA::Mail::Controler;
@@ -60,6 +63,7 @@ sub archive
 
 	close ( FDW );
 	close ( FDR );
+	`chown nospam $archive_dir/new/$eml_file`;
 
 	return 1;
 }

@@ -918,7 +918,7 @@ sub AKA_mail_engine {
 			. ',' . ($ins_queue?'1':'0') 
 			. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
 			. ",$AKA_is_spam,$AKA_spam_reason,$AKA_is_refuse_spam"
-			. "," . ($pf_desc?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
+			. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
 			. ",$AKA_is_overrun, $AKA_overrun_reason\n";
         	flock(LFD,LOCK_UN);
 		close(LFD);

@@ -65,7 +65,7 @@ sub archive_engine
 
 	my $AMA = new AKA::Mail::Archive($self);
 
-	return $AMA->archive($eml);
+	return $AMA->archive($emlfile);
 }
 
 # return ( spam_level, reason );
