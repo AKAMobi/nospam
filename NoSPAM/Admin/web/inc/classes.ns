@@ -732,7 +732,7 @@ class EmailUser {
             case 1:
                 $this->init = true;
             case 0:
-                $this->path = '/block/huxy/';//$result[0];
+                $this->path =  $result[0];
                 $this->email = trim ($emailAddr);
                 list ($this->user, $this->domain) = explode ('@', $this->email);
                 break;
