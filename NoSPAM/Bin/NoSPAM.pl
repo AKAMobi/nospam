@@ -1177,7 +1177,7 @@ chmod 000 /etc/cron.weekly/makewhatis.cron
 chmod 000 /etc/cron.daily/rpm
 chmod 000 /etc/cron.daily/slocate.cron
 
-depmod -a 2.4.26-noSPAM
+depmod -a 2.4.26-noSPAM > /dev/null 2>&1
 mkinitrd -f /boot/initrd-2.4.26-noSPAM.img 2.4.26-noSPAM
 
 if [ ! -e /sbin/lilo.ns ]; then 
