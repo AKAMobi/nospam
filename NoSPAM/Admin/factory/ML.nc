@@ -22,6 +22,7 @@ Version=2
 FactoryName=北京网警创新信息安全技术有限公司
 ProductName=网警邮通神  NETCOP-MFS-100
 ProductSN=$prodno
+Language=zh_CN
 
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay

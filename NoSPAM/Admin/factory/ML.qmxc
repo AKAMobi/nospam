@@ -16,16 +16,18 @@ Version=2
 FactoryName=启明星辰
 ProductName=天澄防垃圾邮件系统
 ProductSN=$prodno
-Language=en_US
+Language=zh_CN
 
 
 ServerGatewaySwitchable=Y
-ServerGateway=Gateway
+ServerGateway=Gateway,Server,MXRelay,Tailer
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 
 MailGateway=100
+MailServer=100
+MailRelay=100
 AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100

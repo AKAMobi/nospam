@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-18 03:53+0800\n"
+"POT-Creation-Date: 2004-06-23 10:31+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -208,7 +208,7 @@ msgstr "永久弹回"
 
 #: ../Admin/web/antispam/treatment.ns:59
 #: ../Admin/web/antispam/treatment.ns:112
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:140
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:144
 #: ../Admin/web/log/monitor.ns:29 ../Admin/web/log/logshow.ns:53
 #: ../Admin/web/antivirus/treatment.ns:56
 #: ../Admin/web/antivirus/treatment.ns:107
@@ -1508,27 +1508,27 @@ msgstr "可以不选"
 msgid "Some Data Format is incorrect"
 msgstr "有不符合格式的数据项"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:139
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:143
 msgid "Reject"
 msgstr "拒绝"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:141
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:145
 msgid "Quarantine"
 msgstr "隔离"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:142
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:146
 msgid "Strip Attachment"
 msgstr "剥离附件"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:143
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:147
 msgid "Delay"
 msgstr "延迟处理"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:144
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:148
 msgid "NOOP"
 msgstr "无操作"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:145
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:149
 msgid "Accept"
 msgstr "接受"
 
@@ -1544,7 +1544,7 @@ msgstr "替换收件人"
 msgid "Replace Recipient"
 msgstr "替换收件人"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:149
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:153
 msgid "Add Header"
 msgstr "增加信头记录"
 
@@ -1552,7 +1552,7 @@ msgstr "增加信头记录"
 msgid "Delete Header"
 msgstr "删除信头记录"
 
-#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:151
+#: ../Admin/web/content/rulemodify.ns:1027 ../Admin/web/inc/params.ns:155
 msgid "Replace Header"
 msgstr "替换信头记录"
 
@@ -1767,7 +1767,7 @@ msgstr "主题白名单"
 #: ../Admin/web/dynamic/sendratepersubject.ns:76
 #: ../Admin/web/dynamic/sendratepersubject.ns:77
 #: ../Admin/web/dynamic/sendratepersubject.ns:80
-#: ../Admin/web/inc/params.ns:106
+#: ../Admin/web/inc/params.ns:110
 msgid "Subject"
 msgstr "主题"
 
@@ -1816,123 +1816,123 @@ msgstr "加入IP黑名单"
 msgid "Login Failure"
 msgstr "登录失败"
 
-#: ../Admin/web/inc/params.ns:107 ../Admin/web/log/showstat.ns:86
+#: ../Admin/web/inc/params.ns:111 ../Admin/web/log/showstat.ns:86
 #: ../Admin/web/gateway/mailqueue.ns:111
 msgid "Mail From"
 msgstr "发件人"
 
-#: ../Admin/web/inc/params.ns:108 ../Admin/web/gateway/mailqueue.ns:112
+#: ../Admin/web/inc/params.ns:112 ../Admin/web/gateway/mailqueue.ns:112
 msgid "To"
 msgstr "收件人"
 
-#: ../Admin/web/inc/params.ns:109
+#: ../Admin/web/inc/params.ns:113
 msgid "CC"
 msgstr "抄送人"
 
-#: ../Admin/web/inc/params.ns:110 ../Admin/web/inc/params.ns:125
+#: ../Admin/web/inc/params.ns:114 ../Admin/web/inc/params.ns:129
 msgid "Header"
 msgstr "信头"
 
-#: ../Admin/web/inc/params.ns:111 ../Admin/web/inc/params.ns:126
+#: ../Admin/web/inc/params.ns:115 ../Admin/web/inc/params.ns:130
 msgid "Body"
 msgstr "信体"
 
-#: ../Admin/web/inc/params.ns:112 ../Admin/web/inc/params.ns:124
+#: ../Admin/web/inc/params.ns:116 ../Admin/web/inc/params.ns:128
 #: ../Admin/web/server/mailcontent.ns:25
 #: ../Admin/web/gateway/mailcontent.ns:31
 msgid "Mail Content"
 msgstr "全文"
 
-#: ../Admin/web/inc/params.ns:113
+#: ../Admin/web/inc/params.ns:117
 msgid "Attachment"
 msgstr "附件"
 
-#: ../Admin/web/inc/params.ns:114
+#: ../Admin/web/inc/params.ns:118
 msgid "Last Relay IP"
 msgstr "客户端IP"
 
-#: ../Admin/web/inc/params.ns:115
+#: ../Admin/web/inc/params.ns:119
 msgid "Sender IP"
 msgstr "源客户端IP"
 
-#: ../Admin/web/inc/params.ns:117
+#: ../Admin/web/inc/params.ns:121
 msgid "String Include"
 msgstr "字符串模糊匹配"
 
-#: ../Admin/web/inc/params.ns:118
+#: ../Admin/web/inc/params.ns:122
 msgid "Regular Express Match"
 msgstr "正则表达式匹配"
 
-#: ../Admin/web/inc/params.ns:119
+#: ../Admin/web/inc/params.ns:123
 msgid "Single IP Match"
 msgstr "单个IP地址匹配"
 
-#: ../Admin/web/inc/params.ns:120
+#: ../Admin/web/inc/params.ns:124
 msgid "IP Seg Match"
 msgstr "连续IP地址匹配"
 
-#: ../Admin/web/inc/params.ns:121
+#: ../Admin/web/inc/params.ns:125
 msgid "IP/Mask Match"
 msgstr "IP/MASK匹配"
 
-#: ../Admin/web/inc/params.ns:122
+#: ../Admin/web/inc/params.ns:126
 msgid "String Exact Match"
 msgstr "字符串精确匹配"
 
-#: ../Admin/web/inc/params.ns:127
+#: ../Admin/web/inc/params.ns:131
 msgid "Attachment Size"
 msgstr "附件大小"
 
-#: ../Admin/web/inc/params.ns:128
+#: ../Admin/web/inc/params.ns:132
 msgid "Attachment Counts"
 msgstr "附件个数"
 
-#: ../Admin/web/inc/params.ns:129
+#: ../Admin/web/inc/params.ns:133
 msgid "To,CC,Bcc Total"
 msgstr "TO,CC,BCC收件人总数"
 
-#: ../Admin/web/inc/params.ns:131
+#: ../Admin/web/inc/params.ns:135
 msgid "ZIP File"
 msgstr "压缩文件"
 
-#: ../Admin/web/inc/params.ns:132
+#: ../Admin/web/inc/params.ns:136
 msgid "Audio File"
 msgstr "声音文件"
 
-#: ../Admin/web/inc/params.ns:133
+#: ../Admin/web/inc/params.ns:137
 msgid "Image File"
 msgstr "图片文件"
 
-#: ../Admin/web/inc/params.ns:134
+#: ../Admin/web/inc/params.ns:138
 msgid "Text File"
 msgstr "文本类型"
 
-#: ../Admin/web/inc/params.ns:135
+#: ../Admin/web/inc/params.ns:139
 msgid "Exe File"
 msgstr "可执行文件"
 
-#: ../Admin/web/inc/params.ns:136
+#: ../Admin/web/inc/params.ns:140
 msgid "Other File"
 msgstr "其他类型"
 
-#: ../Admin/web/inc/params.ns:138 ../Admin/web/log/monitor.ns:29
+#: ../Admin/web/inc/params.ns:142 ../Admin/web/log/monitor.ns:29
 #: ../Admin/web/log/logshow.ns:53
 msgid "Pass"
 msgstr "通过"
 
-#: ../Admin/web/inc/params.ns:146
+#: ../Admin/web/inc/params.ns:150
 msgid "Add Receiptor"
 msgstr "添加收件人"
 
-#: ../Admin/web/inc/params.ns:147
+#: ../Admin/web/inc/params.ns:151
 msgid "Del Receiptor"
 msgstr "删除收件人"
 
-#: ../Admin/web/inc/params.ns:148
+#: ../Admin/web/inc/params.ns:152
 msgid "Replace Receiptor"
 msgstr "替换收件人"
 
-#: ../Admin/web/inc/params.ns:150
+#: ../Admin/web/inc/params.ns:154
 msgid "Del Header"
 msgstr "删除信头记录"
 
@@ -2063,9 +2063,9 @@ msgstr "时间"
 #: ../Admin/web/log/audit.ns:74 ../Admin/web/user/showadminlist.ns:620
 #: ../Admin/web/user/showadminlist.ns:621 ../Admin/web/server/mailserver.ns:63
 #: ../Admin/web/server/mailserver.ns:176 ../Admin/web/server/mailserver.ns:224
-#: ../Admin/web/oem/qimingxingchen/logon.ns:16
-#: ../Admin/web/oem/qimingxingchen/logon.ns:62
 #: ../Admin/web/oem/qimingxingchen/top.ns:21
+#: ../Admin/web/oem/qimingxingchen/logon.ns:21
+#: ../Admin/web/oem/qimingxingchen/logon.ns:67
 msgid "Admin"
 msgstr "管理员"
 
@@ -2495,40 +2495,40 @@ msgid "SerialNo & License"
 msgstr "序列号和许可证"
 
 #: ../Admin/web/system/serialno.ns:26
-#: ../Admin/web/oem/qimingxingchen/intro.ns:34
+#: ../Admin/web/oem/qimingxingchen/intro.ns:34 ../Admin/web/intro.ns:23
 msgid ""
 "This Product has not get valid License, Please contact with your product "
 "provider."
 msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
 
 #: ../Admin/web/system/serialno.ns:38
-#: ../Admin/web/oem/qimingxingchen/intro.ns:41 ../Admin/web/intro.ns:31
+#: ../Admin/web/oem/qimingxingchen/intro.ns:41 ../Admin/web/intro.ns:30
 msgid "This Product License is OK! "
 msgstr "本设备 License 许可正确！"
 
 #: ../Admin/web/system/serialno.ns:40
-#: ../Admin/web/oem/qimingxingchen/intro.ns:43 ../Admin/web/intro.ns:33
+#: ../Admin/web/oem/qimingxingchen/intro.ns:43 ../Admin/web/intro.ns:32
 msgid "The License is not match your product Version!"
 msgstr "License版本错误！"
 
 #: ../Admin/web/system/serialno.ns:43
-#: ../Admin/web/oem/qimingxingchen/intro.ns:47 ../Admin/web/intro.ns:37
+#: ../Admin/web/oem/qimingxingchen/intro.ns:47 ../Admin/web/intro.ns:36
 msgid "Manufacturer: "
 msgstr "发行厂商："
 
 #: ../Admin/web/system/serialno.ns:44
-#: ../Admin/web/oem/qimingxingchen/intro.ns:48 ../Admin/web/intro.ns:38
+#: ../Admin/web/oem/qimingxingchen/intro.ns:48 ../Admin/web/intro.ns:37
 msgid "License Expire: "
 msgstr "许可证过期时间："
 
 #: ../Admin/web/system/serialno.ns:46
 #: ../Admin/web/oem/qimingxingchen/intro.ns:49
-#: ../Admin/web/oem/qimingxingchen/top.ns:21 ../Admin/web/intro.ns:39
+#: ../Admin/web/oem/qimingxingchen/top.ns:21 ../Admin/web/intro.ns:38
 msgid "Product Release"
 msgstr "正式销售版"
 
 #: ../Admin/web/system/serialno.ns:46
-#: ../Admin/web/oem/qimingxingchen/intro.ns:49 ../Admin/web/intro.ns:39
+#: ../Admin/web/oem/qimingxingchen/intro.ns:49 ../Admin/web/intro.ns:38
 msgid "Demo Release"
 msgstr "非正式销售版"
 
@@ -2833,8 +2833,8 @@ msgstr "请使用小写英文字母及数字起帐号名，必须使用英文字母开头。"
 #: ../Admin/web/server/showuserlist.ns:533
 #: ../Admin/web/server/showuserlist.ns:575
 #: ../Admin/web/server/showuserlist.ns:628
-#: ../Admin/web/oem/qimingxingchen/logon.ns:18
-#: ../Admin/web/oem/qimingxingchen/logon.ns:67
+#: ../Admin/web/oem/qimingxingchen/logon.ns:23
+#: ../Admin/web/oem/qimingxingchen/logon.ns:72
 msgid "Password"
 msgstr "口令"
 
@@ -3401,7 +3401,7 @@ msgstr "错误：未找到用户信息，账号为："
 msgid "Please"
 msgstr "请正常"
 
-#: ../Admin/web/frames.ns:4 ../Admin/web/oem/qimingxingchen/logon.ns:75
+#: ../Admin/web/frames.ns:4 ../Admin/web/oem/qimingxingchen/logon.ns:80
 #: ../Admin/web/login.ns:5 ../Admin/web/login.ns:75
 msgid "Login"
 msgstr "登录"
@@ -3551,14 +3551,6 @@ msgstr "许可证已经失效"
 msgid "VenusTech AntiSpam System"
 msgstr "天澄反邮件垃圾系统 管理系统"
 
-#: ../Admin/web/oem/qimingxingchen/logon.ns:10
-msgid "Input"
-msgstr "请您首先输入"
-
-#: ../Admin/web/oem/qimingxingchen/logon.ns:79
-msgid "Cancel"
-msgstr "取消"
-
 #: ../Admin/web/oem/qimingxingchen/menutree.ns:8
 msgid "System Menu"
 msgstr "系统菜单"
@@ -3679,9 +3671,13 @@ msgstr "客户试用体验（非销售）版"
 msgid " Expired"
 msgstr "过期"
 
-#: ../Admin/web/intro.ns:9
-msgid "Introduction"
-msgstr "介绍"
+#: ../Admin/web/oem/qimingxingchen/logon.ns:15
+msgid "Input"
+msgstr "请您首先输入"
+
+#: ../Admin/web/oem/qimingxingchen/logon.ns:84
+msgid "Cancel"
+msgstr "取消"
 
 #: ../Admin/web/login.ns:15
 msgid "Due to login attempts exceed maximum times, current IP:"
@@ -3702,6 +3698,10 @@ msgstr "该账号登陆权限被禁止"
 #: ../Admin/web/login.ns:68
 msgid "This User can not Login from this IP"
 msgstr "该账号不能从此IP地址登录"
+
+#: ../Admin/web/intro.ns:9
+msgid "Introduction"
+msgstr "介绍"
 
 #~ msgid "Continuous IP Match"
 #~ msgstr "连续IP匹配"

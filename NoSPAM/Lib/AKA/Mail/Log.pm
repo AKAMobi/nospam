@@ -242,7 +242,7 @@ sub log_csv {
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
-		print LFD "\n" . &get_log_time . "==================================================\n"
+		print LFD "\n" . &get_log_time . " ==================================================\n"
 			. "TCPREMOTEIP: " . $aka->{TCPREMOTEIP} . "\n" . "Envelope-From: " . $aka->{returnpath} . "\n"
 				. "Recips: " . $recips . "\nSubject: " . $esc_subject . "\n"
 

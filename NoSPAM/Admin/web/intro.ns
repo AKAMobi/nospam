@@ -19,18 +19,17 @@ if( ($ret=wi("get_Serial",$result))==0 ){
 	echo _("Get Serial No Error! ErrNo: ")."$ret<br>";
 }
 if(!file_exists(LICENSE)){
-?>
-echo "<p>"._("This Product has not get valid License, Please contact with your product provider.")."</p>";
-<?
+	header("Refresh: 0;URL=/admin/system/serialno.ns");
+	echo "<p>"._("This Product has not get valid License, Please contact with your product provider.")."</p>";
 }else{
 	$result = "";
 	if(($ret=wi("check_License License.dat",$result))==0){	
 		$LicenseInfo = trim(implode("",$result));
 		echo $LicenseInfo;
 		if($Version == NOSPAM_VERSION){
-echo "<p>"._("This Product License is OK! ")."</p>";
+			echo "<p>"._("This Product License is OK! ")."</p>";
 		}else{
-echo "<p>"._("The License is not match your product Version!")."</p>";
+			echo "<p>"._("The License is not match your product Version!")."</p>";
 		}
 ?>
 <p>
@@ -40,8 +39,8 @@ echo "<p>"._("The License is not match your product Version!")."</p>";
 </p>
 <?
 	}else{
-		echo "<h2>"._("The License has expired")."</h2>";
 		header("Refresh: 0;URL=/admin/system/serialno.ns");
+		echo "<h2>"._("The License has expired")."</h2>";
 	}
 }
 ?>

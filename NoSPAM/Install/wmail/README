@@ -1,2 +1,6 @@
 install wmail as normal, then copy /home/wmail here.
 
+2004-06-22 Ed Li
+wMail模版放在root包中，wmail包中不包括模版
+index.html的跳转要符合cgi-bin目录的名字
+
