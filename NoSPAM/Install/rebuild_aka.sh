@@ -54,12 +54,13 @@ find aka/usr/lib/perl5/site_perl/5.8.0/AKA | grep pm$ | grep -v CVS | grep -v Lo
 #
 ########3
 echo "Deleting old file..."
-rm -fvr aka/home/NoSPAM/bin/{NoSPAM,ns-daemon,smtp_auth_proxy,UpdateRule,UploadLog}
+rm -fvr aka/home/NoSPAM/bin/{NoSPAM,ns-daemon,ns-daemon_exsmtp_auth_proxy,UpdateRule,UploadLog}
 rm -fvr aka/root/post_install
 
 echo "Copying source files..."
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/home/NoSPAM/bin/NoSPAM.pl
 cpperl ${SOURCEHOME}/Bin/ns-daemon.pl aka/home/NoSPAM/bin/ns-daemon.pl
+cpperl ${SOURCEHOME}/Bin/ns-daemon_ex.pl aka/home/NoSPAM/bin/ns-daemon_ex.pl
 cpperl ${SOURCEHOME}/Bin/ga-daemon.pl aka/home/NoSPAM/bin/ga-daemon.pl
 cpperl ${SOURCEHOME}/Bin/smtp_auth_proxy.pl aka/home/NoSPAM/bin/smtp_auth_proxy.pl
 cpperl ${SOURCEHOME}/Bin/rrdgraph.pl aka/home/NoSPAM/bin/rrdgraph.pl
@@ -68,8 +69,9 @@ chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
 chmod 755 aka/root/*.pl
 
-cpperl ${SOURCEHOME}/Bin/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
-chmod 755 aka/var/qmail/bin/ns-queue.pl
+# 2004-05-23 qns_loaer.cpp Ìæ»»µô qns_loader.c & ns-queue.pl
+#cpperl ${SOURCEHOME}/Bin/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
+#chmod 755 aka/var/qmail/bin/ns-queue.pl
 
 #rm -f aka/var/qmail/bin/ins-queue
 #ln -s ns-queue aka/var/qmail/bin/ins-queue
@@ -80,8 +82,11 @@ ${SOURCEHOME}/Admin/factory/encrypt aka/root/*.pl
 ${SOURCEHOME}/Admin/factory/encrypt aka/var/qmail/bin/*.pl
 
 echo "Compiling qns_loader & wi  source"
-gcc -O2 -o aka/home/NoSPAM/bin/qns_loader ${SOURCEHOME}/Bin/qns_loader.c -D_GNU_SOURCE
-gcc -o aka/home/NoSPAM/bin/wi ${SOURCEHOME}/Bin/wi.c
+cd ${SOURCEHOME}/Bin
+make qns_loader
+make wi
+cd -
+cp ${SOURCEHOME}/Bin/{wi,qns_loader} aka/home/NoSPAM/bin/
 
 echo "Changing qns_loader & wi permission"
 chown root aka/home/NoSPAM/bin/{qns_loader,wi}

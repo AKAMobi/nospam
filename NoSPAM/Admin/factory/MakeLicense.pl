@@ -16,7 +16,7 @@ my $hw_lic_enc = $AL->encode($hw_lic);
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-6-10
+ExpireDate=2004-9-10
 Version=2
 
 FactoryName=AKA IT

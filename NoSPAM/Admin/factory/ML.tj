@@ -10,11 +10,11 @@ my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-8-1
+ExpireDate=2004-12-31
 Version=2
 
 FactoryName=天津时空
-ProductName=NETCOP-MFS-100
+ProductName=时空反邮件垃圾系统
 ProductSN=$prodno
 
 ServerGatewaySwitchable=N
@@ -29,7 +29,8 @@ AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100
 ContentEngine=100
-
+ArchiveEngine=100
+GAInterface=100
 
 MailServerMaxUser=1000
 MailServerMaxDomain=10

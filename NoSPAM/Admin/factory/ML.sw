@@ -20,7 +20,7 @@ ProductSN=$prodno
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
 
-LicenseHTML=<b>广州客户试用体验(非销售)版</b>
+LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 MailGateway=100
 DynamicEngine=100
