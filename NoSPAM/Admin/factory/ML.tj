@@ -18,7 +18,7 @@ ProductName=时空反邮件垃圾系统
 ProductSN=$prodno
 
 ServerGatewaySwitchable=N
-ServerGateway=Gateway,Server,MXRelay,Tailer
+ServerGateway=Gateway,Server,MXRelay
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 

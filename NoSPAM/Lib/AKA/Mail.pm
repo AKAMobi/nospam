@@ -1232,6 +1232,8 @@ sub spam_engine
 
 	}
 	elsif ( (!length($client_smtp_ip)) || (!length($returnpath)) ){
+		# A blank MAIL FROM: is typically used for error mail, 
+		# and error mail typically would not be sent to multiple recipients.
 		$is_spam = RESULT_SPAM_MAYBE;
 		$reason = '邮件格式伪造';
 	}

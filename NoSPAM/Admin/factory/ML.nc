@@ -16,7 +16,7 @@ my $hw_lic_enc = $AL->encode($hw_lic);
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-7-30
+ExpireDate=2004-9-30
 Version=2
 
 FactoryName=北京网警创新信息安全技术有限公司

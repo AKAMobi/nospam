@@ -19,8 +19,8 @@ GenerateDate=$now
 ExpireDate=2004-9-10
 Version=2
 
-FactoryName=AKA IT
-ProductName=noSPAM
+FactoryName=Debug Security Technology Co., Ltd.
+ProductName=noSPAM AntiSPAM System V2
 ProductSN=$prodno
 
 ServerGatewaySwitchable=Y
