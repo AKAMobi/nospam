@@ -97,7 +97,7 @@ sub process_request {
 	$SIG{ALRM} = $old_alarm_sig || 'DEFAULT';
 	alarm $old_alarm;
 
-	# 如果配置文件更新，则退出，supervixse会重起daemon
+	# 如果配置文件更新，则退出，supervise会重起daemon
 	if ( $AM->check_conffile_update() ){
 		$self->server_close();
 	}

@@ -40,6 +40,7 @@ sub new
 	$self->{define}->{intconffile} = $self->{define}->{home} . "/etc/NoSPAM.intconf";
 	$self->{define}->{licensefile} = $self->{define}->{home} . "/etc/License.dat";
 	$self->{define}->{upgrade_log} = $self->{define}->{home} . "/var/upgrade/log";
+	$self->{define}->{quarantine_dir} = '/home/NoSPAM/Quarantine';
 
 	#$self->{zlog} = $parent->{zlog};
 

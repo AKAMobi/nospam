@@ -122,6 +122,12 @@ sub user_email_list($)
 	$sth->finish;
 }
 
+sub user_email_clean($)
+{
+	my $self = shift;
+
+	$self->{dbh}->do ( "delete from UserEmail_TB" );
+}
 # 判断用户email是否存在
 sub user_email_exist($$)
 {
@@ -135,3 +141,5 @@ sub user_email_exist($$)
 	$sth->finish;
 	return $count;
 }
+
+1;

@@ -278,27 +278,27 @@ sub recv_mail_info_ex
 {
 	my $self = shift;
 
-my $logstr;
+#my $logstr;
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
-$logstr .= "RELAYCLIENT: [$_]\n";
+#$logstr .= "RELAYCLIENT: [$_]\n";
 	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
-$logstr .= "TCPREMOTEIP: [$_]\n";
+#$logstr .= "TCPREMOTEIP: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
-$logstr .= "TCPREMOTEINFO: [$_]\n";
+#$logstr .= "TCPREMOTEINFO: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
-$logstr .= "emlfilename: [$_]\n";
+#$logstr .= "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
 	$self->{mail_info}->{aka}->{fd1} = $_;
-s/\0/\\0/g;
-$logstr .= "fd1: $_\n";
+#s/\0/\\0/g;
+#$logstr .= "fd1: $_\n";
 
 #$self->{zlog}->debug ( $logstr );
 
@@ -364,27 +364,27 @@ sub recv_mail_info
 	my $self = shift;
 	my $socket = shift;
 
-my $logstr;
+#my $logstr;
 	$_ = <$socket>; s/\r|\r\n|\n//g;
-$logstr .= "RELAYCLIENT: [$_]\n";
+#$logstr .= "RELAYCLIENT: [$_]\n";
 	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
 
 	$_ = <$socket>; s/\r|\r\n|\n//g;
-$logstr .= "TCPREMOTEIP: [$_]\n";
+#$logstr .= "TCPREMOTEIP: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
 
 	$_ = <$socket>; s/\r|\r\n|\n//g;
-$logstr .= "TCPREMOTEINFO: [$_]\n";
+#$logstr .= "TCPREMOTEINFO: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
 
 	$_ = <$socket>; s/\r|\r\n|\n//g;
-$logstr .= "emlfilename: [$_]\n";
+#$logstr .= "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <$socket>; s/\r|\r\n|\n//g;
 	$self->{mail_info}->{aka}->{fd1} = $_;
-s/\0/\\0/g;
-$logstr .= "fd1: $_\n";
+#s/\0/\\0/g;
+#$logstr .= "fd1: $_\n";
 
 #$self->{zlog}->log ( $logstr );
 
@@ -461,9 +461,9 @@ sub send_mail_info
 	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
 
 #print "after process, before send\n";
-$self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
-	. "smtp_info: [" . $smtp_info . "]\n"
-	. "exit_code: [" . $exit_code . "]" );
+#$self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
+#	. "smtp_info: [" . $smtp_info . "]\n"
+#	. "exit_code: [" . $exit_code . "]" );
 
 
 	if ( $self->{license_ok} ){
@@ -475,6 +475,22 @@ $self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
 		print $socket __"Sorry, System had no valid license now, It still can't work.\n";
 		print $socket "150\n";
 	}
+}
+
+
+# 初始化数据库
+sub init_database($)
+{
+	my $self = shift;
+	
+	if ( defined $self->{database} ){
+		#	ping
+		# 不是很熟悉ping的用法
+		# 而且SQLite是文件型的，暂时 unimpl.
+	}else{
+		$self->{database} = new AKA::Mail::DB($self);
+	}
+	return $self->{database};
 }
 
 sub process
@@ -489,6 +505,8 @@ sub process
 
 	$self->{mail_info} = $mail_info;
 
+	# XXX DB init here: 这个这个循环会被重复执行，循环中没有其他fork，可以在第一次循环的时候初始化数据库。
+	$self->init_database();
 
 	$mail_info->{aka}->{start_time} = $self->{start_time};
 	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
@@ -496,7 +514,7 @@ sub process
 	# 设置引擎运行的结果数据缺省值
 	$self->init_engine_info();
 
-	# 获取文件尺寸和标题等基本信息
+	# 获取文件尺寸和标题，发件人收件人(envelop)等基本信息
 	$self->get_mail_base_info;
 
 	# 如果License过期，则直接将信件投递
