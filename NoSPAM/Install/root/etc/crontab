@@ -11,7 +11,8 @@ HOME=/
 
 */10 * * * * root (~nospam/bin/NoSPAM UpdateRule >> /var/log/police.cron 2>&1)
 */10 * * * * root (~ssh/bin/UploadLog >> /var/log/police.cron 2>&1)
-0 4 * * * root (~nospam/bin/NoSPAM ZombieFile_clean > /dev/null 2>&1)
+# 根据实际数据，凌晨1点 网络(系统)负载降到全天负载的一半一下
+0 1 * * * root (~nospam/bin/NoSPAM ZombieFile_clean > /dev/null 2>&1)
 0 4 * * * root (cat /dev/null > /var/log/police.cron)
 
 0 4 * * * root (rm -f /var/log/*.{1,2,3,4}* > /dev/null 2>&1)
