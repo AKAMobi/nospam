@@ -62,7 +62,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/serialno.ns">&nbsp;&nbsp;&nbsp;&nbsp;本设备序列号</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">本设备序列号</A>
 		</TD>
 	</TR>
 	<TR>
@@ -70,7 +70,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/upgrade.ns">&nbsp;&nbsp;&nbsp;&nbsp;升级更新</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/upgrade.ns">升级更新</A>
 		</TD>
 	</TR>
 	<TR>
@@ -79,7 +79,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	<?if($Switchable){?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/gatewaymode.ns">&nbsp;&nbsp;&nbsp;&nbsp;运行模式</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/gatewaymode.ns">运行模式</A>
 		</TD>
 	</TR>
 	<?}?>
@@ -88,7 +88,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/network.ns">&nbsp;&nbsp;&nbsp;&nbsp;网络设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/network.ns">网络设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -96,7 +96,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/basesettings.ns">&nbsp;&nbsp;&nbsp;&nbsp;SMTP参数</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/basesettings.ns">SMTP参数</A>
 		</TD>
 	</TR>
 	<TR>
@@ -104,7 +104,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/configmanage.ns">&nbsp;&nbsp;&nbsp;&nbsp;配置管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/configmanage.ns">配置管理</A>
 		</TD>
 	</TR>
 	<TR>
@@ -112,7 +112,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/systemtime.ns">&nbsp;&nbsp;&nbsp;&nbsp;系统时间</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/systemtime.ns">系统时间</A>
 		</TD>
 	</TR>
 	<TR>
@@ -120,7 +120,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="system/reboot.ns">&nbsp;&nbsp;&nbsp;&nbsp;系统重启关机</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/reboot.ns">系统重启关机</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -143,7 +143,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="user/showadminlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;管理员列表</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/showadminlist.ns">管理员列表</A>
 		</TD>
 	</TR>
 	<TR>
@@ -151,7 +151,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="user/loginblacklist.ns">&nbsp;&nbsp;&nbsp;&nbsp;登录限制设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/loginblacklist.ns">登录限制设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -160,7 +160,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 <?}?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="user/changePasswd.ns">&nbsp;&nbsp;&nbsp;&nbsp;修改自己的密码</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
 		</TD>
 	</TR>
 	<TR>
@@ -168,7 +168,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="user/changeIPlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;修改IP限制列表</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changeIPlist.ns">修改IP限制列表</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -191,7 +191,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="gateway/protectdomain.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件域保护设定</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
 		</TD>
 	</TR>
 	<TR>
@@ -199,7 +199,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="gateway/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -225,7 +225,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="gateway/protectdomain.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件域保护设定</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
 		</TD>
 	</TR>
 	<TR>
@@ -233,7 +233,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="gateway/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -259,7 +259,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/mailserver.ns">&nbsp;&nbsp;&nbsp;&nbsp;独立服务器设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">独立服务器设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -267,7 +267,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
 		</TD>
 	</TR>
 	<TR>
@@ -275,7 +275,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/showuserlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/showuserlist.ns">用户管理</A>
 		</TD>
 	</TR>
 	<TR>
@@ -283,7 +283,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/searchUser.ns">&nbsp;&nbsp;&nbsp;&nbsp;查找用户</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/searchUser.ns">查找用户</A>
 		</TD>
 	</TR>
 	<TR>
@@ -291,7 +291,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/groupsControl.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户组管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/groupsControl.ns">用户组管理</A>
 		</TD>
 	</TR>
 	<TR>
@@ -299,7 +299,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="server/sendGroupMails.ns">&nbsp;&nbsp;&nbsp;&nbsp;群发邮件</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/sendGroupMails.ns">群发邮件</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -325,7 +325,7 @@ if($DynamicEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/dynengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -333,7 +333,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/connperip.ns">&nbsp;&nbsp;&nbsp;&nbsp;同时连接数</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connperip.ns">同时连接数</A>
 		</TD>
 	</TR>
 	<TR>
@@ -341,7 +341,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/sendrateperfrom.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户重复限制</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendrateperfrom.ns">用户重复限制</A>
 		</TD>
 	</TR>
 	<TR>
@@ -349,7 +349,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/sendratepersubject.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件重复限制</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendratepersubject.ns">邮件重复限制</A>
 		</TD>
 	</TR>
 	<TR>
@@ -357,7 +357,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/connrateperip.ns">&nbsp;&nbsp;&nbsp;&nbsp;连接频率</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connrateperip.ns">连接频率</A>
 		</TD>
 	</TR>
 	<TR>
@@ -365,7 +365,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="dynamic/realtime.ns">&nbsp;&nbsp;&nbsp;&nbsp;实时管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/realtime.ns">实时管理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -390,7 +390,7 @@ if($DynamicEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="antivirus/virusengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -398,7 +398,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antivirus/recognize.ns">&nbsp;&nbsp;&nbsp;&nbsp;病毒识别</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/recognize.ns">病毒识别</A>
 		</TD>
 	</TR>
 	<TR>
@@ -406,7 +406,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antivirus/treatment.ns">&nbsp;&nbsp;&nbsp;&nbsp;病毒处理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/treatment.ns">病毒处理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -431,7 +431,7 @@ if($SpamEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/spamengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -439,7 +439,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=WhiteIP">&nbsp;&nbsp;&nbsp;&nbsp;IP白名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteIP">IP白名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -447,7 +447,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=WhiteDomain">&nbsp;&nbsp;&nbsp;&nbsp;邮件域名白名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteDomain">邮件域名白名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -455,7 +455,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=WhiteFrom">&nbsp;&nbsp;&nbsp;&nbsp;邮件帐号白名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteFrom">邮件帐号白名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -463,7 +463,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=BlackIP">&nbsp;&nbsp;&nbsp;&nbsp;IP黑名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackIP">IP黑名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -471,7 +471,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=BlackDomain">&nbsp;&nbsp;&nbsp;&nbsp;邮件域名黑名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackDomain">邮件域名黑名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -479,7 +479,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/list.ns?option=BlackFrom">&nbsp;&nbsp;&nbsp;&nbsp;邮件帐号黑名单</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackFrom">邮件帐号黑名单</A>
 		</TD>
 	</TR>
 	<TR>
@@ -487,7 +487,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/traceable.ns">&nbsp;&nbsp;&nbsp;&nbsp;可追查性检查</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/traceable.ns">可追查性检查</A>
 		</TD>
 	</TR>
 	<TR>
@@ -495,7 +495,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="antispam/treatment.ns">&nbsp;&nbsp;&nbsp;&nbsp;垃圾处理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">垃圾处理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -521,7 +521,7 @@ if($ContentEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="content/contentengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -529,7 +529,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="content/rulemanage.ns">&nbsp;&nbsp;&nbsp;&nbsp;规则管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/rulemanage.ns">规则管理</A>
 		</TD>
 	</TR>
 	<TR>
@@ -537,7 +537,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="content/category.ns">&nbsp;&nbsp;&nbsp;&nbsp;类别管理</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/category.ns">类别管理</A>
 		</TD>
 	</TR>
 	<TR>
@@ -545,7 +545,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="content/ruleprint.ns">&nbsp;&nbsp;&nbsp;&nbsp;列印规则</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/ruleprint.ns">列印规则</A>
 		</TD>
 	</TR>
 	<TR>
@@ -553,7 +553,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="content/filetypes.ns">&nbsp;&nbsp;&nbsp;&nbsp;文件类型</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/filetypes.ns">文件类型</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -577,7 +577,7 @@ if($ContentEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="archive/archiveengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -585,7 +585,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="archive/archivetype.ns">&nbsp;&nbsp;&nbsp;&nbsp;选择性审计</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archivetype.ns">选择性审计</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -609,7 +609,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="interactive/interengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -617,7 +617,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="interactive/bigmail.ns">&nbsp;&nbsp;&nbsp;&nbsp;超大邮件提醒</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/bigmail.ns">超大邮件提醒</A>
 		</TD>
 	</TR>
 	<TR>
@@ -625,7 +625,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="interactive/exmail.ns">&nbsp;&nbsp;&nbsp;&nbsp;过量邮件提醒</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/exmail.ns">过量邮件提醒</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -652,7 +652,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="status/status.html">&nbsp;&nbsp;&nbsp;&nbsp;系统状态</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.html">系统状态</A>
 		</TD>
 	</TR>
 	<TR>
@@ -660,7 +660,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="log/logshow.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志显示</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logshow.ns">日志显示</A>
 		</TD>
 	</TR>
 	<TR>
@@ -668,7 +668,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="log/logstat.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志统计</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logstat.ns">日志统计</A>
 		</TD>
 	</TR>
 	<TR>
@@ -676,7 +676,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="log/logexport.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志导出统计</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logexport.ns">日志导出统计</A>
 		</TD>
 	</TR>
 	<TR>
@@ -687,7 +687,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="log/logflush.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志清空删除</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logflush.ns">日志清空删除</A>
 		</TD>
 	</TR>
 	<TR>
@@ -700,7 +700,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		<A target="main" href="log/audit.ns">&nbsp;&nbsp;&nbsp;&nbsp;操作日志审计</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/audit.ns">操作日志审计</A>
 		</TD>
 	</TR>
 <?
@@ -726,7 +726,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
 		<TD align="left">
-		<A target="main" href="gasupervise/basesettings.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">基本设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -734,7 +734,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="gasupervise/msp.ns">&nbsp;&nbsp;&nbsp;&nbsp;MSP设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/msp.ns">MSP设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -742,7 +742,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="gasupervise/gaisc.ns">&nbsp;&nbsp;&nbsp;&nbsp;GAISC设置</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISC设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -750,7 +750,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<TR>
 		<TD align="left">
-		<A target="main" href="gasupervise/export.ns">&nbsp;&nbsp;&nbsp;&nbsp;四部委交换格式</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/export.ns">四部委交换格式</A>
 		</TD>
 	</TR>
 	</TABLE>
