@@ -14,6 +14,8 @@ package Police::Conf;
 #$Data::Dumper::Indent = 1;
 use Police::Conf::Update;
 
+use XML::Simple;
+
 sub new
 {
 	my $class = shift;
@@ -37,7 +39,7 @@ sub new
 	$self->{define}->{msp_pub_key} = $self->{define}->{home} . "/key/msp_verify_key";
 	$self->{define}->{msp_pri_key} = $self->{define}->{home} . "/key/msp_sign_key";
 
-	$self->{define}->{spamdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
+	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 
 	$self->{rule_add_modify} = undef;
 	$self->{rule_del} = undef;
@@ -73,62 +75,82 @@ sub merge_new_rule
 		return 0;
 	}
 
-	$self->{xs} || get_xml_simple($self);
+	my $filterdb_file = $self->{define}->{filterdb};
 
-	my $spamdb_file = $self->{define}->{spamdb};
-
-	if ( !-f $spamdb_file ) {
-		open ( WDB, ">$spamdb_file" ) or die "can't open $spamdb_file for writing";
-		print WDB "<rule><rule_id></rule_id></rule>";
-		close ( WDB );
+	if ( !-f $filterdb_file ) {
+		open ( WDB, ">$filterdb_file" ) or die "can't open $filterdb_file for writing";
+		print WDB <<_SPAMXML_ ;
+<rule-add-modify>
+	<rule rule_id="" />
+</rule-add-modify> 
+_SPAMXML_
+			close ( WDB );
 	}
 
-	my $spamdb = $self->{xs}->XMLin( $spamdb_file, ForceArray=>'rule', 
-							KeyAttr=> {rule=>'rule_id'} );
+	my $xs = get_filterdb_xml_simple();
+
+	my $filterdb = $xs->XMLin( $filterdb_file );
 
 	for my $rule_id ( keys %{$rule_del} ){
-		$self->{zlog}->log ( "deleting rule id: [$rule_id] from spamdb" );
-		delete $spamdb->{$rule_id} if defined $spamdb->{$rule_id};
+		$self->{zlog}->log ( "deleting rule id: [$rule_id] from filterdb" );
+		delete $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} if defined $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id};
 	}
+	use Data::Dumper;
+# 改变$转义、缩进
+	$Data::Dumper::Useperl = 1;
+	$Data::Dumper::Indent = 1;
+	print Dumper($filterdb);
 
+
+	my $hasrule = 0;
 	for my $rule_id ( keys %{$rule_add_modify} ){
-		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to spamdb" );
-		$spamdb->{$rule_id} = $rule_add_modify->{$rule_id};
+		$hasrule = 1;
+		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
+		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
+#push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
 	}
 
-	$new_spamdb = $self->{xs}->XMLout($spamdb, ForceArray=>'rule',
-							KeyAttr=> {rule=>'rule_id'} );
-						
+	if ( $hasrule ){
+		delete $filterdb->{'rule-add-modify'}->{'rule'}->{""};
+	}
 
-	$new_spamdb_file = $spamdb_file . ".new";
+	$new_filterdb = $xs->XMLout($filterdb);
 
-	open ( WDB, ">$new_spamdb_file" ) or die "can't open [$new_spamdb_file] for writting";
-	print WDB $new_spamdb;
+
+	$new_filterdb_file = $filterdb_file . ".new";
+
+	open ( WDB, ">$new_filterdb_file" ) or die "can't open [$new_filterdb_file] for writting";
+	print WDB $new_filterdb;
 	close ( WDB );
 
-	$self->{zlog}->log( "renaming [$new_spamdb_file] to [$spamdb_filel]..." );
-	rename ( $new_spamdb_file, $spamdb_file ) or die "can't rename [$new_spamdb_file] to [$spamdb_file]";
+
+	my $bakfile = $filterdb_file . "-" . `date +%Y-%m-%d-%H-%M-%s`;
+
+	$self->{zlog}->log( "renaming [$filterdb_file] to [$bakfile]..." );
+	rename ( $filterdb_file, $bakfile ) or warn "backup file failed!";
+
+	$self->{zlog}->log( "renaming [$new_filterdb_file] to [$filterdb_file]..." );
+	rename ( $new_filterdb_file, $filterdb_file ) or die "can't rename [$new_filterdb_file] to [$filterdb_file]";
 
 	return 1;
 }
 
-sub get_xml_simple
+sub get_filterdb_xml_simple
 {
 	my ($self) = @_;
 
-	return $self->{xs} if defined ( $self->{xs} );
-
-	use XML::Simple;
-
 	my @parseropts;
 	push ( @parseropts, ProtocolEncoding => 'ISO-8859-1' );
-	$self->{xs} = new XML::Simple(KeepRoot => 1, 
-			parseropts => \@parseropts , 
-			KeyAttr => {rule=>'rule_id', 
-			'rule-del'=>'rule_id'}, 
-			ForceArray => ['rule', 
-			'rule-del']);
+
+	$xs = new XML::Simple( KeepRoot => 1,
+			NormaliseSpace => 1,
+			parseropts => \@parseropts,
+			KeyAttr => {rule=>'rule_id'},
+			ForceArray => ['rule']);
+
 }
+
+
 
 
 

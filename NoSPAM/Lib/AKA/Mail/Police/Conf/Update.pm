@@ -27,8 +27,6 @@ sub new
 	$self->{zlog} = $conf->{zlog} || new Police::Log($self);
 	$self->{verify} = $conf->{verify} || new Police::Verify($self);
 
-	#$self->{xs} = get_xml_simple();
-
 	$self->{conf}{rule_add_modify} = undef;
 	$self->{conf}{rule_del} = undef;
 
@@ -64,20 +62,18 @@ sub read_rule {
 
 	$self->{conf}->{zlog}->log ("using \"$path\" for check rule");
 
-	$self->{conf}->{xs} ||= $self->{conf}->get_xml_simple( $self->{conf} );
+	my $xs = get_update_xml_simple($self);
 #_get_xml_simple($self) or die "can't load xml simple";
 
 	my $newfilenum = 0;
 	if (-d $path) {
-
-		$self->{conf}->{xs} or $self->{conf}->get_xml_simple();
 
 		foreach my $file ($self->get_rule_files_in_dir ($path)) {
 			$newfilenum++;
 			$self->{zlog}->log( "found new spam rule file \"$file\", processing..." );
 
 			$self->{verify}->verify_key( $file ) or warn "cannot verify \"$file\": $?\n", next;
-			$ruleref = $self->{conf}->{xs}->XMLin($file) or warn "cannot xml simple \"$file\": $!\n", next;
+			$ruleref = $xs->XMLin($file) or warn "cannot xml simple \"$file\": $!\n", next;
 
 			add_rule( $self, $ruleref );
 			push ( @{$self->{files}}, $file );
@@ -147,6 +143,24 @@ sub clean
 		unlink "$file\.sig";
 	}
 }
+
+sub get_update_xml_simple
+{
+	my ($self) = @_;
+
+	use XML::Simple;
+
+	my @parseropts;
+	push ( @parseropts, ProtocolEncoding => 'ISO-8859-1' );
+	return new XML::Simple(KeepRoot => 1, 
+			NormaliseSpace => 1,
+			parseropts => \@parseropts , 
+			KeyAttr => {rule=>'rule_id', 
+			'rule-del'=>'rule_id'}, 
+			ForceArray => ['rule', 
+			'rule-del']);
+}
+
 
 #sub DESTROY
 #{
