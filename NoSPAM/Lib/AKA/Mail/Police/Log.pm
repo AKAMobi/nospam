@@ -17,7 +17,7 @@ use POSIX qw(strftime);
 BEGIN
 {
 	my $can_log = 1;
-	open MYLOG, ">>/tmp/mylog.log" or $can_log = 0;
+	open MYLOG, ">>/var/log/police" or $can_log = 0;
 }
 
 sub new

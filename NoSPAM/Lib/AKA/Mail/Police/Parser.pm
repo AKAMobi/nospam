@@ -92,7 +92,8 @@ sub get_mail_info
 	}
         
 	foreach my $filename ( %{$self->{mail_info}->{body}} ){
-		if ( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  ){
+		if ( ( ! defined $self->{mail_info}->{body}->{$filename}->{nofilename} ) ||
+			( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  ) ){
 			$self->{mail_info}->{attachment} = 1;
 			last;
 		}
@@ -174,6 +175,8 @@ sub get_body_info
 {
         my ($self, $blob, $load_binary) = @_;
 
+	$load_binary ||= 0;
+
 	my ($path,$filename,$size,$type,$subtype);
 
 
@@ -215,12 +218,15 @@ sub get_body_info
 			$self->{mail_info}->{body}->{$filename}->{nofilename} = 0;
 		}
 
+		$type ||= "text";
+		$subtype ||= "plain";
+
 		$self->{mail_info}->{body}->{$filename}->{path} = $path;
 		$self->{mail_info}->{body}->{$filename}->{type} = $type;
 		$self->{mail_info}->{body}->{$filename}->{subtype} = $subtype;
 		
 		if ( $type eq "text" && $subtype eq "plain") {
-			$_ = load_file ( $self,$path, $size );
+			$_ = load_file ( $self, $path, $size );
 			$self->{mail_info}->{body}->{$filename}->{content} = $_;
 			$self->{mail_info}->{body_text} .= $_;
 		} elsif ( 1 == $load_binary ){
