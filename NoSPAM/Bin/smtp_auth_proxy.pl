@@ -1,7 +1,9 @@
 #!/usr/bin/perl -w
 use Net::SMTP_auth;
 
-my $REMOTE_SMTP = '211.151.91.4';
+my $REMOTE_SMTP = $ARGV[0];
+my $logit = $ARGV[1];
+$logit = 0 if ( $logit ne "log" );
 
 my ($user, $pass, $challenge) = &get_info();
 
@@ -18,18 +20,18 @@ my $remote_ip = $ENV{'TCPREMOTEIP'};
 
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
-open ( WFD, ">>/var/log/chkpw.log" );
+open ( WFD, ">>/var/log/chkpw.log" ) if ( $logit );
 
 my $now = `date +"%Y-%m-%d %H:%M:%S"`;
 chomp $now;
 
 if ( $smtp->auth('LOGIN', $user, $pass) ){
-	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip succ.\n" ;
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip succ.\n" if ( $logit );
         exit 0;
 }else{
-	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip failed.\n" ;
+	print WFD "$now $user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip failed.\n" if ( $logit );
 }
-close ( WFD );
+close ( WFD ) if ( $logit );
 
 exit 20;
 
@@ -45,9 +47,11 @@ sub get_info
 	if ( $buf =~ /\0/ ){
 		($user,$pass,$challenge) = split ( /\0/, $buf );
 	}else{
-		open ( WFD, ">>/var/log/chkpw.log" );
-		print WFD "error: $n, $buf\n";
-		close ( WFD );
+		if ( $logit ){
+			open ( WFD, ">>/var/log/chkpw.log" );
+			print WFD "error: $n, $buf\n";
+			close ( WFD );
+		}
 	}
 
 	($user,$pass,$challenge);
