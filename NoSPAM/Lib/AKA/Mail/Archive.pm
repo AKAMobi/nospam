@@ -127,7 +127,7 @@ sub print_archive_zip
 	binmode(STDOUT);
 
 	foreach ( @file_list ){
-		m#(\d{8,})#;
+		m#(\d{8,}\.\d+)#;
 		$member = $zip->addString( $self->get_exchange_data($_), "$1.log" );
 		$member->desiredCompressionMethod( COMPRESSION_DEFLATED );
 		$member->desiredCompressionLevel( COMPRESSION_LEVEL_FASTEST );

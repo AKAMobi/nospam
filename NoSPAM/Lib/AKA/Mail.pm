@@ -63,9 +63,9 @@ sub archive_engine
 	return 0 unless ( $is_spam || $is_matchrule );
 	return 0 unless ( $emlfile && -f $emlfile );
 
-	my $AMA = new AKA::Mail::Archive($self);
+	$self->{archive} ||= new AKA::Mail::Archive($self);
 
-	return $AMA->archive($emlfile);
+	return $self->{archive}->archive($emlfile);
 }
 
 # return ( spam_level, reason );

@@ -4,14 +4,17 @@ $prodno = $ARGV[0];
 die "pls provide prodno\n" unless $prodno ;
 
 $License = <<_LICENSE_;
+ForSell=No
+ExpireDate=2004-12-31
+Version=1
+
+FactoryName=
+
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
-ForSell=No
-ExpireDate=2004-12-31
 
-FactoryName=
 
 DynamicEngineEnabled=Yes
 ContentEngineEnabled=Yes
