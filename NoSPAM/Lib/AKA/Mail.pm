@@ -110,10 +110,10 @@ sub server
 			) || sleep 1 && die "Could not create INET socket: $! $@\n";
 
 	my $client;
-	my $pid;
+	my $pid
 
 	$self->{zlog}->debug ( "Mail::server start to listen" );
-	#local $SIG{CHLD} = \&REAPER;
+	#local $SIG{CHLD} = \&{$self->reaper};
 	local $SIG{CHLD} = 'IGNORE';
 	while ( $client = $server->accept() ){
 		if (!$client) {
@@ -143,27 +143,26 @@ sub server
 			$self->{zlog}->fatal ( "Mail::server fork return < 0? [$pid]" );
 		}
 	}
-
-	sub REAPER {
-		my $pid;
-
-		$pid = waitpid(-1, &WNOHANG);
-
-		if ($pid == -1) {
-			# no child waiting.  Ignore it.
-		} elsif (WIFEXITED($?)) {
-			print "Process $pid exited.\n";
-		} else {
-			print "False alarm on $pid.\n";
-		}
-		$SIG{CHLD} = \&REAPER;          # in case of unreliable signals
-	}
-
-
-	sub restart {
-		
-	}
 }
+
+sub reaper {
+	my $self = shift;
+
+	my $pid;
+
+	$pid = waitpid(-1, &WNOHANG);
+
+	if ($pid == -1) {
+# no child waiting.  Ignore it.
+	} elsif (WIFEXITED($?)) {
+		print "Process $pid exited.\n";
+	} else {
+		print "False alarm on $pid.\n";
+	}
+	$SIG{CHLD} = \&reaper;          # in case of unreliable signals
+}
+
+
 
 sub check_conffile_update
 {
