@@ -48,7 +48,7 @@ sub new
 	# 清除过期记录的时间间隔，秒为单位
 	$self->{define}->{clean_interval} = 600;
 	# 缺省超限封禁时间：1Hour
-	$self->{define}->{DefaultDenyTime} = 3600;
+	$self->{define}->{DefaultDenyTime} = 600;
 
 	$self->{dynamic_info} = {};
 
@@ -257,7 +257,9 @@ sub refresh_info
                 }
 
                 $val_count = keys %{$namespace_obj->{$key}};
-                if ( 2>$val_count &&
+                if ( 0==$val_count ){
+                        delete $namespace_obj->{$key};
+		}elsif (1==$val_count &&
 				defined $namespace_obj->{$key}->{_DENY_TO_} 
 			) {
                         delete $namespace_obj->{$key};
