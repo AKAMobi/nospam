@@ -106,6 +106,7 @@ if(file_exists(LICENSE)){
 	$bContentEngineEnabled = $license->isContentEngineEnabled();
 	$bSpamEngineEnabled = $license->isSpamEngineEnabled();
 	$sFactoryName = $license->get_FactoryName();
+	$sProductName = $license->get_ProductName();
 	$sExpire = $license->ExpireDate();
 	$bForSell = $license->isForSell();
 	$Version = $license->getVersion();

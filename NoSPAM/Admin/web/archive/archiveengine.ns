@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if($_POST["ArchiveEngine"]){
-	$spamconf->setParam("ArchiveEngine",$_POST["ArchiveEngine"]);
+	$spamconf->setParam("ArchiveEngine",$_POST["ArchiveEngine"], "ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
 		echo "ÐÞ¸Ä³É¹¦£¡";

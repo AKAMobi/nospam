@@ -10,7 +10,7 @@ require_once("inc/include.ns");
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<p><?php echo $ProductName; ?> AntiSPAM System V1.0</p>
+<p><?php echo $sProductName; ?> AntiSPAM System V2</p>
 <?
 if( ($ret=wi("get_Serial",$result))==0 ){
 	$serial = trim(implode("",$result));

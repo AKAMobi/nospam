@@ -127,16 +127,19 @@ if($bContentEngineEnabled){
 	d.add(new WebFXTreeItem('类别管理','content/category.ns','main'));
 	d.add(new WebFXTreeItem('列印规则','content/ruleprint.ns','main'));
 	d.add(new WebFXTreeItem('文件类型','content/filetypes.ns','main'));
+
+	var f = new WebFXTreeItem('邮件审计引擎','help/archive.htm','main');
+	tree.add(f);
+	f.add(new WebFXTreeItem('引擎开关','archive/archiveengine.ns','main'));
+	f.add(new WebFXTreeItem('审计数据交换','archive/archiveexport.ns','main'));
+	f.add(new WebFXTreeItem('归档地址','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('选择归档','archive/archivetype.ns','main'));
+
+
+
 <?php
 	}
 }
-/*
-	var f = new WebFXTreeItem('邮件归档引擎','help/archive.htm','main');
-	tree.add(f);
-	f.add(new WebFXTreeItem('引擎开关','archive/archiveengine.ns','main'));
-	f.add(new WebFXTreeItem('归档地址','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('选择归档','archive/archivetype.ns','main'));
-*/
 if(adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
 	var i = new WebFXTreeItem('智能交互引擎','help/interengine.htm','main');

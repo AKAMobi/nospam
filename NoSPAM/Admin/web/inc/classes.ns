@@ -425,6 +425,14 @@ class License
 	{
 		return $this->params["FactoryName"];
 	}
+
+	function get_ProductName()
+	{
+             	if ( array_key_exists( "ProductName", $this->params ) ){
+                     return $this->params["ProductName"];
+		}
+		return "noSPAM";
+	}
 	
 	function isDynamicEngineEnabled()
 	{
