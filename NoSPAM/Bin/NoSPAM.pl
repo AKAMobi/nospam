@@ -18,11 +18,21 @@ open (NSOUT, ">&=2");
 close (STDERR);
 open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
+
+
+(my $prog=$0) =~ s/^.*\///g;
+
 #
 # we run post_install and exit if this is a post_install script.
 #
-exit &post_install if ( $0 eq 'post_install' );
+exit &post_install if ( $prog eq 'post_install' );
 
+$prog=~/NoSPAM_(.+)/;
+my $action = $1 if defined $1;
+
+$action ||= shift @ARGV;
+
+my @param = @ARGV;
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -34,16 +44,6 @@ my $reboot_binary = "/sbin/reboot";
 my $shutdown_binary = "/sbin/shutdown";
 my $date_binary = "/bin/date";
 my $clock_binary = "/sbin/clock";
-
-my $action;
-
-(my $prog=$0) =~ s/^.*\///g;
-$prog=~/NoSPAM_(.+)/;
-$action = $1 if defined $1;
-
-$action ||= shift @ARGV;
-
-my @param = @ARGV;
 
 
 my $conf = new AKA::Mail::Conf;
@@ -123,7 +123,10 @@ sub post_install
 {
 
 	my $NSVER = shift @ARGV;
-	$NSVER or die "err param!\n";
+	if ( ! defined $NSVER ){
+		print NSOUT "err param!\n";
+		return -1;
+	}
 
 	my $OEM = shift @ARGV || 'aka';
 
@@ -138,14 +141,14 @@ cd /
 unzip -p -P zixia@noSPAM_OKBoy_GNULinux! /mnt/cdrom/RedHat/RPMS/${PKGNAME} | tar x 
 
 for file in /etc/lilo.*.conf; do
-lilo -C $file
-rm -f $file
+	lilo -C $file
+	rm -f $file
 done
 
 cd /home/NoSPAM/admin/
-mv index.${OEMNAME}.ns index.ns
-mv images/Logo_${OEMNAME}.gif images/Logo.gif
-rm -f index.*.ns images/Logo_*.gif
+	mv -f index.${OEMNAME}.ns index.ns
+	mv -f images/Logo_${OEMNAME}.gif images/Logo.gif
+	rm -f index.*.ns images/Logo_*.gif
 cd -
 
 chkconfig --level 3 named on
