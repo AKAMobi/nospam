@@ -125,13 +125,22 @@ sub server
 	}
 =cut
 
-	my $server = new IO::Socket::INET( LocalAddr => '127.0.0.1',
-					LocalPort => '40307',
-					Proto => 'tcp',
-					Type => SOCK_STREAM,
-					ReuseAddr => 1,
-					Listen => SOMAXCONN
-			) || sleep 1 && die "Could not create INET socket: $! $@\n";
+#	my $server = new IO::Socket::INET( LocalAddr => '127.0.0.1',
+#					LocalPort => '40307',
+#					Proto => 'tcp',
+#					Type => SOCK_STREAM,
+#					ReuseAddr => 1,
+#					Listen => SOMAXCONN
+#			) || sleep 1 && die "Could not create INET socket: $! $@\n";
+
+	my $server = new IO::Socket::UNIX( Type => 'SOCK_STREAM'
+					, Local => '/home/NoSPAM/.ns'
+					, Type => SOCK_STREAM
+					, Listen => SOMAXCONN
+			) || sleep 1 && die "Could not create UNIX socket: $! $@\n";
+
+
+
 
 	my $client;
 	my $pid;
