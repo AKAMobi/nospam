@@ -518,17 +518,17 @@ sub process
 	$self->{mail_info}->{aka}->{engine}->{dynamic}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 	$last_cputime = $user+$system+$cuser+$csystem;
 
+	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{content}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 #$self->{zlog}->debug ( "before spam: [" . $last_cputime . "]" );
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
 	($user,$system,$cuser,$csystem) = times;
 #$self->{zlog}->debug ( "after spam: [" . ($user+$system+$cuser+$csystem) . "]" );
 	$self->{mail_info}->{aka}->{engine}->{spam}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 #$self->{zlog}->debug ( "store spam: [" . $self->{mail_info}->{aka}->{engine}->{spam}->{cputime} . "]" );
-	$last_cputime = $user+$system+$cuser+$csystem;
-
-	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
-	($user,$system,$cuser,$csystem) = times;
-	$self->{mail_info}->{aka}->{engine}->{content}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 	$last_cputime = $user+$system+$cuser+$csystem;
 
 	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
