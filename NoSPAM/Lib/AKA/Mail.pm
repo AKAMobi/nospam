@@ -1281,7 +1281,7 @@ sub spam_engine
 			( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 		}
 		
-		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
+		if ( !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
 			my $result = $self->get_sa_result();
 			if ( defined $result ){
