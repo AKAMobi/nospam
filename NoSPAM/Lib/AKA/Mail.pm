@@ -146,11 +146,10 @@ sub server
 		$self->{start_time} = [gettimeofday];
 
 #XXX
-$self->net_process($client);
-shutdown ( $client, 2 );
-close $client;
-sleep 3;
-next;
+#$self->net_process($client);
+#shutdown ( $client, 2 );
+#close $client;
+#next;
 		if (!$client) {
 		# this can happen when interrupted by SIGCHLD on Solaris,
 		# perl 5.8.0, and some other platforms with -m.
@@ -176,6 +175,7 @@ next;
 		}elsif ( 0==$pid ){ # child
 			close $server;
 
+$self->{zlog}->debug ( "pid $$ process $client");
 			$self->net_process($client);
 			shutdown ( $client, 2 );
 			close $client;
