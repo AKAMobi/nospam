@@ -88,6 +88,8 @@ sub get_remote_smtp_ip
                 $user_domain = $1;
         }elsif ( $user =~ /^[^\&]+\&(.+)$/ ){
                 $user_domain = $1;
+        }elsif ( $user =~ /^[^\!]+\!(.+)$/ ){
+                $user_domain = $1;
         }
 
         my $line;
