@@ -61,7 +61,7 @@ sub new
 	$self->{filetype}->{text} = [ 'txt' ];
 	$self->{filetype_num}->{text} = 4;
 
-	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat' ];
+	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat', 'pif' ];
 	$self->{filetype_num}->{exe} = 5;
 
 
