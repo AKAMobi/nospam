@@ -34,7 +34,7 @@ sub configure_hook {
 #$self->{server}->{setsid} = 0;        # daemonize
 
 	$self->{server}->{min_servers} = 2;
-	$self->{server}->{max_servers} = 100;
+	$self->{server}->{max_servers} = 30;
 
 	$self->{server}->{min_spare_servers} = 2;
 	$self->{server}->{max_spare_servers} = 10;
