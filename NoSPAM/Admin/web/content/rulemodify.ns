@@ -192,11 +192,11 @@ if(!$Category[$category_id])
 匹配位置：
 <select name="SizePos<?=$i?>">
 <?
-			for($j=1;$j<=5;$j++){
-				echo "<option value=\"".$j."\"";
-				if($j == $size->get_attribute("key"))
+			foreach($SizePos as $key=>$value){
+				echo "<option value=\"".$key."\"";
+				if($key == $size->get_attribute("key"))
 					echo " selected";
-				echo ">".$SizePos[$j];
+				echo ">".$value;
 			}
 ?>
 </select>
@@ -516,11 +516,11 @@ if(!$Category[$_POST["category_id"]])
 匹配位置：
 <select name="SizePos<?=$ii?>">
 <?
-            for($j=1;$j<=5;$j++){
-                echo "<option value=\"".$j."\"";
-                if($j == $_POST["SizePos".$i])
+            foreach($SizePos as $key=>$value){
+                echo "<option value=\"".$key."\"";
+                if($key == $_POST["SizePos".$i])
                     echo " selected";
-                echo ">".$SizePos[$j];
+                echo ">".$value;
             }
 ?>
 </select>
@@ -535,7 +535,10 @@ if(!$Category[$_POST["category_id"]])
 <legend><input type="checkbox" name="SizeDel<?=$ii?>" value="YES" />第<?=$ii?>条</legend>
 匹配位置：
 <select name="SizePos<?=$ii?>">
-<option value="1">全文<option value="2">信头<option value="3">信体<option value="4">附件大小<option value="5">附件个数</select>
+<option value="1">全文<option value="2">信头<option value="3">信体<option value="4">附件大小
+<option value="5">附件个数
+<option value="150">TO,CC,BCC收件人总数
+</select>
 尺寸要求：<input type="text" name="SizeValue<?=$ii?>" value="" /><br>
 </fieldset>
 <?
@@ -663,14 +666,14 @@ function checkParams()
 	||  !is_numeric($tmp[1]) || strlen($tmp[1]) != 3
 	||  !is_numeric($tmp[2]) || strlen($tmp[2]) != 6
 	||  !is_numeric($tmp[3]) || strlen($tmp[3]) != 6 )
-		return false;*/
+		return false;
 
 	//category_id
 	if( !is_numeric($_POST["category_id"]) )
 		return false;
 
 	//create_time
-/*	if(strlen($_POST["create_time"]) != 14)
+	if(strlen($_POST["create_time"]) != 14)
 		return false;
 	if(!ereg("([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})",$_POST["create_time"],$tmp))
 		return false;
@@ -679,7 +682,7 @@ function checkParams()
 	||  (intval($tmp[4]) > 23 ) 
 	||  (intval($tmp[5]) > 59 )  
 	||  (intval($tmp[6]) > 59 ) )
-		return false; */
+		return false; 
 		
 	//AlarmLevel
 	if( !is_numeric($_POST["alarmlevel"]) || intval($_POST["alarmlevel"]) < 1 || intval($_POST["alarmlevel"]) > 4 )
@@ -691,11 +694,11 @@ function checkParams()
 
 	//Action
 	if( !is_numeric($_POST["Action"]) || intval($_POST["Action"]) < 1 || intval($_POST["Action"]) > 13 )
-        return false;
+        return false;*/
 
 	//Keyword
 	for($i = 1; $i <= $_POST["KeywordNum"]; $i++){
-		if(!is_numeric($_POST["KeyPos".$i]) || intval($_POST["KeyPos".$i]) < 1 || intval($_POST["KeyPos".$i]) > 10 )
+/*		if(!is_numeric($_POST["KeyPos".$i]) || intval($_POST["KeyPos".$i]) < 1 || intval($_POST["KeyPos".$i]) > 10 )
 			return false;
 		if($_POST["Decode".$i]!="0" && $_POST["Decode".$i]!="1")
 			return false;
@@ -707,7 +710,7 @@ function checkParams()
 		&& $_POST["KeyMatchType".$i]!="7"
 		&& $_POST["KeyMatchType".$i]!="8"
 		&& $_POST["KeyMatchType".$i]!="9")
-			return false;
+			return false;*/
 
 		if( intval($_POST["KeyPos".$i]) == 9 || intval($_POST["KeyPos".$i]) == 10 ){
 			$keyword = $_POST["Keyword".$i];
@@ -756,8 +759,8 @@ function checkParams()
 
 	//Size
 	for($i = 1; $i <= $_POST["SizeNum"]; $i++){
-		if(!is_numeric($_POST["SizePos".$i]) || intval($_POST["SizePos".$i]) < 1 || intval($_POST["SizePos".$i]) > 5 )
-			return false;
+/*		if(!is_numeric($_POST["SizePos".$i]) || intval($_POST["SizePos".$i]) < 1 || intval($_POST["SizePos".$i]) > 5  )
+			return false;*/
 		$tmp = explode("-",$_POST["SizeValue".$i]);
 		if(count($tmp) != 2)
 			return false;
@@ -770,9 +773,9 @@ function checkParams()
 
 	//Attachment
 	for($i = 1; $i <= $_POST["AttachmentNum"]; $i++){
-		if($_POST["FileType".$i])
+/*		if($_POST["FileType".$i])
 			if(!is_numeric($_POST["FileType".$i]) || intval($_POST["FileType".$i]) < 1 || intval($_POST["FileType".$i]) > 6)
-				return false;
+				return false;*/
 		$tmp = explode("-",$_POST["AttachSize".$i]);
         if(count($tmp) != 2)
             return false;
