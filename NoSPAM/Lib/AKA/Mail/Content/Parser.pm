@@ -225,6 +225,10 @@ sub get_head_info
 	# get all to+cc+bcc
 	$self->{mail_info}->{head}->{to_cc_bcc_num} = $num_receivers;
 
+	# get addtional receivers, such as Apparently-To,  For forwarded messages, Resent-To, Resent-Cc, Resent-Bcc.
+	$self->{mail_info}->{head}->{to_cc_bcc_num} += $self->get_additional_receiver_num( $head );
+
+
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};
 
@@ -246,6 +250,26 @@ sub get_head_info
 
 		push (@{$self->{mail_info}->{relays}}, $relay) if ( $relay );
 	}
+}
+
+# get addtional receivers, such as Apparently-To,  For forwarded messages, Resent-To, Resent-Cc, Resent-Bcc.
+sub get_additional_receiver_num
+{
+	my $self = shift;
+
+	my $receivers;
+	my $num = 0;
+
+	my @headers = ( 'Apparently-To', 'Resent-To', 'Resent-Cc', 'Resent-Bcc' );
+
+	foreach my $header ( @headers ){
+		$receivers = $head->get($header) || '';
+		$num += scalar (@_=
+					split(/,/,$receivers)
+				);
+	}
+
+	return $num;
 }
 
 sub get_body_info
