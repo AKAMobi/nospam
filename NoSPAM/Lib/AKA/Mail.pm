@@ -1,9 +1,13 @@
 #
+# Copyright (c) 2002 北京阿卡信息技术有限公司
+# $Id$
+#
 # 邮件网关引擎总管
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
 # Date: 2004-03-07
+#
 
 
 package AKA::Mail;
