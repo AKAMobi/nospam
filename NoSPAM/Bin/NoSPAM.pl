@@ -373,7 +373,8 @@ sub start_System
 
 	# Check License;
 	my $AM = new AKA::Mail;
-	if ( ! $AM->check_license_file ){
+	my ($lic_ok,$lic_html) = $AM->check_license_file ;
+	unless ( $lic_ok ){
 		print NSOUT <<_POD_;
 
 ******************************************************************************
@@ -516,9 +517,9 @@ sub reset_Network
 
 	# Check License;
 	my $AM = new AKA::Mail;
-	if ( ! $AM->check_license_file ){
-		return 250;
-	}
+
+	my ($lic_ok,$lic_html) = $AM->check_license_file ;
+	return 250 unless $lic_ok;
 
 	my $ret = 0;
 	my $err = 0;
