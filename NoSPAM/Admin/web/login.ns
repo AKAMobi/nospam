@@ -5,7 +5,7 @@ require_once('inc/vpopadm.inc.ns');
 
 if ((!isset($_REQUEST['adminID'])) || (!isset($_REQUEST['password'])) ){
 ?>
-	<p>请正常<A HREF="index.ns">登录</a>！</p>
+	<p>请正常<A HREF="/admin/">登录</a>！</p>
 <?php
 	exit();
 }
@@ -17,13 +17,13 @@ $result=isPasswordRight($id,$passwd);
 
 
 if ( ($result==ERR_FORMAT_PASSWORD) || ($result==ERR_WRONGPASSWORD) ){
-	errorReturn("密码错误,请重新输入","index.ns");
+	errorReturn("密码错误,请重新输入","/admin/");
 }
 
 $isSYSOPFirstLogin=false;
 if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 	if ($id!=SYSOPID) {
-		errorReturn("无此管理员账号,请重新输入","index.ns");
+		errorReturn("无此管理员账号,请重新输入","/admin/");
 	} else {
 		$isSYSOPFirstLogin=true;
 	}
@@ -39,7 +39,7 @@ if ($isSYSOPFirstLogin){
 	} else {
 		$result=getAdminInfo($id);
 		if ($result['$returnCode']!=OK){
-			errorReturn("无此管理员账号,请重新输入","index.ns");
+			errorReturn("无此管理员账号,请重新输入","/admin/");
 		}else {
 			$_SESSION['Privilidge']=$result['privilidge'];
 		}
