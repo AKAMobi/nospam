@@ -63,6 +63,11 @@ sub dynamic_engine
 
 	my ( $subject, $mailfrom ) = @_;
 
+	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine} ){
+		return (0, "动态限制引擎未启动" );
+	}
+
+
 	if ( ! $subject || ! $mailfrom ){
 		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
 		return (0, "动态限制引擎参数不足" );
@@ -80,14 +85,28 @@ sub dynamic_engine
 
 }
 
+sub is_content_engine_enabled
+{	
+	if ( 'Y' eq uc $self->{conf}->{config}->{ContentFilterEngine} ){
+		return 1;
+	}
+	return 0;
+}
+
 # return ( action, param );
 sub content_engine
 {
 	my $self = shift;
 
-	my $input_fd = shift;
+	my ($input_fd,$output_fd) = @_;
 
-	return $self->{police}->get_action( <$input_fd> );
+	($action,$param) = $self->{police}->get_action( $input_fd );
+
+	print "X-Police-Status: $action:($param) OK\n";
+
+	$self->{police}->print($action, $output_fd);
+
+	$self->{police}->clean;
 }
 
 

@@ -45,6 +45,22 @@ sub get_action
 	return $self->{filter}->get_action( @_ );
 }
 
+sub print
+{
+	$self = shift;
+
+	return $self->{filter}->print(@_)
+}
+
+
+sub clean
+{
+	$self = shift;
+
+	return $self->{filter}->clean;
+}
+
+
 1;
 
 

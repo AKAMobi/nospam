@@ -139,8 +139,8 @@ if(!$readonly){
 <table class="RuleTB">
 <tr class="RuleTBH" style="cursor: hand">
 	<? if(!$readonly) { ?><th style="cursor: default"></th><? } ?>
-	<th onclick="sortTable('rule_id')">规则号：<br>rule_id<?=$Flag["rule_id"]?></th>
-	<th onclick="sortTable('rule_comment')">规则说明：<br>rule_comment<?=$Flag["rule_comment"]?></th>
+	<th onclick="sortTable('rule_id')">规则号<?=$Flag["rule_id"]?></th>
+	<th onclick="sortTable('rule_comment')">规则说明<?=$Flag["rule_comment"]?></th>
 	<th onclick="sortTable('category_id')">类别<?=$Flag["category_id"]?></th>
 	<th onclick="sortTable('create_time')">创建时间<?=$Flag["create_time"]?></th>
 	<th onclick="sortTable('rule_keyword')">关键字规则数<?=$Flag["rule_keyword"]?></th>

@@ -4,9 +4,39 @@ use AKA::Mail::Spam;
 
 $S = new AKA::Mail::Spam;
 
-&test_dynamic_from;
+&test_mail_engine_content;
 #&test_traceable;
 ############################
+sub test_mail_engine_content
+{
+	use AKA::Mail;
+
+	my $AM = new AKA::Mail;
+
+	$AM->content_engine( \*STDIN, \*STDOUT );
+}
+
+
+sub test_mail_engine_dynamic
+{
+	use AKA::Mail;
+
+	my $AM = new AKA::Mail;
+
+	my ( $n, $reason ) = $AM->dynamic_engine( "This is a subject", "zixia\@zixia.net" );
+	print "spam: $n, reason: $reason\n" ;
+}
+
+sub test_mail_engine_spam
+{
+	use AKA::Mail;
+
+	my $AM = new AKA::Mail;
+
+	my ( $is_spam, $reason ) = $AM->spam_engine( "102.205.10.10", "zixia\@zixia.net" );
+	print "spam: $is_spam, reason: $reason\n" ;
+}
+
 sub test_dynamic_from
 {
 	use AKA::Mail::Dynamic;

@@ -45,12 +45,16 @@ my $action_map = { 'reset_Network' => [\&reset_Network, ""],
 #exit 0;
 
 # do the action now!
+
 if ( ! defined $action ){
 	&usage;
 	exit -1;
 }elsif( defined $action_map->{$action}[0] ){
-	exit &{$action_map->{$action}[0]};
 	$zlog->debug("NoSPAM Util:: $action @param");
+	my $lock = &get_lock( "/home/NoSPAM/var/run/lock/$action" );
+	my $ret = &{$action_map->{$action}[0]};
+	&release_lock($lock);
+	exit $ret;
 }else{
 	$zlog->fatal( "NoSPAM System Util unsuport action: $action" );
 	exit 0;
@@ -345,6 +349,40 @@ sub reset_Network_set_sysctl
 
 	return 0;
 }
+
+sub reset_Network_update_hostname
+{
+	my $mode = shift;
+}
+
+sub reset_Network_update_smtproutes
+{
+	my $mode = shift;
+}
+
+sub get_lock
+{
+	my $filename = shift;
+
+	if ( !open( LOCKFD, ">$filename.lock" ) ){
+		return 0;
+	}
+
+	use Fcntl ':flock'; # import LOCK_* constants
+
+    	if ( !flock(LOCKFD,LOCK_EX) ){
+		return 0;
+	}
+
+	return \*LOCKFD;
+}
+
+sub release_lock
+{
+	my $lockfd = shift;
+	flock($lockfd,LOCK_UN);
+}
+
 #
 #
 #
@@ -379,13 +417,11 @@ sub reset_Network
 		return -1;
 	}
 
-=pod
 	if ( &reset_Network_update_hostname($mode) ||
-			&reset_Network_update_smtproutes($mode) ||
+			&reset_Network_update_smtproutes($mode) ){
 		$zlog->fatal( "NoSPAM Util::reset_Network update hosts & smtproute file failure!" );
-		return -1;
+		return -2;
 	}
-=cut
 
 	return 0;
 }
@@ -415,20 +451,37 @@ sub get_Serial
 {
 	
 	$zlog->debug("NoSPAM Util::get_Serial ");
-	print "This is Serial\n";
+	my $AL = new AKA::License;
+	print $AL->get_prodno, "\n";
 	return 0;
 }
 
 sub check_License
 {
 	$zlog->debug("NoSPAM Util::check_License ");
+	use AKA::License;
+
+	my $AL = new AKA::License;
+
+	if ( $AL->check_license_file ){
+		# VALID license!
+		return 0;
+	}
+	# INVALID license!
 	return -1;
 }
 
 sub reset_DateTime
 {
 	$zlog->debug("NoSPAM Util::reset_DateTime $param[0]");
-	return system("$date_binary $param[0]") || system("clock_binary -w");
+
+	if ( system("$date_binary $param[0]") ){
+		return -1;
+	}
+	if ( system("clock_binary -w") ){
+		return -2;;
+	}
+	return 0;
 }
 
 sub reboot
