@@ -77,16 +77,7 @@ sub catch_virus
 
   	my $start_time=[gettimeofday];
   	
-	if ( 'Y' ne $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
-		return ( { 	result 	=> 0,
-				desc	=> 'ÒıÇæÎ´Æô¶¯',
-				action 	=> 0, 
 
-				enabled	=> 0,
-				runned	=> 1,
-				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
-			} );
-	}
 
 
 	my $result;

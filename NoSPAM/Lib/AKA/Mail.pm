@@ -835,22 +835,88 @@ sub archive_engine
 
 	my $emlfile = $self->{mail_info}->{aka}->{emlfile};
 	my $is_spam = $self->{mail_info}->{aka}->{engine}->{spam}->{result};
-
-	#TODO 根据rule其他参数决定是否archive
+	my $is_virus = $self->{mail_info}->{aka}->{engine}->{antivirus}->{result};
+	my $is_overrun = $self->{mail_info}->{aka}->{engine}->{dynamic}->{result};
 	my $is_matchrule = $self->{mail_info}->{aka}->{engine}->{content}->{result};
+	my $recips = $self->{mail_info}->{aka}->{recips};
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine}->{ArchiveEngine} ){
+		$self->{mail_info}->{aka}->{engine}->{archive} = {	
+			result	=>0,
+			desc	=>'未启用',
+			action	=>ACTION_PASS,
+               		enabled => 0,
+               		runned  => 1,
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
 		return;
 	}
 
-	return unless ( $is_spam || $is_matchrule );
-	return unless ( $emlfile && -f $emlfile );
+	my @archivetype = $self->{conf}->{config}->{ArchiveEngine}->{ArchiveType};
+	unless ( $#archivetype ){
+		$self->{mail_info}->{aka}->{engine}->{archive} = {	
+			result	=>0,
+			desc	=>'未设置',
+			action	=>ACTION_PASS,
+               		enabled => 0,
+               		runned  => 1,
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
+		return;
+	}
+
+
+
+	my $archive_address = $self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress};
+	my $need_archive = 0;
+	if ( ! grep('All',@archivetype) ){
+		#选择性归档：全部/特定地址/垃圾/非垃圾/匹配了规则的 Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
+		$need_archive=1 if ( !$need_archive && grep('Spam',@archivetype) && $is_spam );
+		$need_archive=1 if ( !$need_archive && grep('NotSpam',@archivetype) && (!$is_spam) );
+
+		$need_archive=1 if ( !$need_archive && grep('Virus',@archivetype) && $is_Virus );
+		$need_archive=1 if ( !$need_archive && grep('NotVirus',@archivetype) && (!$is_Virus) );
+
+		$need_archive=1 if ( !$need_archive && grep('Excessive',@archivetype) && ($is_overrun) );
+		$need_archive=1 if ( !$need_archive && grep('NotExcessive',@archivetype) && (!$is_overrun) );
+
+		$need_archive=1 if ( !$need_archive && grep('MatchRule',@archivetype) && ($is_matchrule) );
+		$need_archive=1 if ( !$need_archive && grep('NotMatchRule',@archivetype) && (!$is_matchrule) );
+
+		
+		$need_archive=1 if ( !$need_archive && grep('Address',@archivetype)
+					&& length($archive_address) && grep($archive_address,split(/,/,$recips)) );
+	}
+
+	unless ( $need_archive ){
+		$self->{mail_info}->{aka}->{engine}->{archive} = {	
+			result	=>0,
+			desc	=>'未符合条件',
+			action	=>ACTION_PASS,
+               		enabled => 0,
+               		runned  => 1,
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
+		return;
+	}
+
+	unless ( $emlfile && -f $emlfile ){
+		$self->{mail_info}->{aka}->{engine}->{archive} = {	
+			result	=>0,
+			desc	=>'内部错误',
+			action	=>ACTION_PASS,
+               		enabled => 0,
+               		runned  => 1,
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
+		return;
+	}
 
 	$self->{archive}->archive($emlfile);
 
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>1,
-			desc	=>'等待审计',
+			desc	=>'提交审计',
 			action	=>ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
@@ -1183,8 +1249,8 @@ sub content_engine_is_enabled
 
 
 	if ( $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
-		if ( $self->{mail_info}->{aka}->{size} > $self->{conf}->{intconf}->{ContentEngineMaxMailSize} );
-		$self->{mail_info}->{aka}->{engine}->{content} = {
+		if ( $self->{mail_info}->{aka}->{size} > $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
+			$self->{mail_info}->{aka}->{engine}->{content} = {
                			result  => 0,
                                 desc    => '尺寸超过配置最大值',
                         	action  => 0,
@@ -1192,8 +1258,9 @@ sub content_engine_is_enabled
                                	enabled => 1,
                         	runned  => 1,
                               	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
-		};
-		return 0;
+			};
+			return 0;
+		}
 	}
 
 	return 1;

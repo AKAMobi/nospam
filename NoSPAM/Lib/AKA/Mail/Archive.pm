@@ -18,9 +18,6 @@ use Archive::Zip qw(:CONSTANTS :ERROR_CODES);
 
 use POSIX qw(strftime);
 
-#use XML::Simple;
-#use POSIX qw(strftime);
-
 sub new
 {
 	my $class = shift;

@@ -162,6 +162,9 @@ sub init_config
 	#
 	$config->{ArchiveEngine}->{ArchiveEngine} ||= "N";
 	$config->{ArchiveEngine}->{ArchiveType} ||= "None";
+	$config->{ArchiveEngine}->{ArchiveAddress} = $self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{ArchiveAddress} 
+							);
 
 	#
 	# MailServer
