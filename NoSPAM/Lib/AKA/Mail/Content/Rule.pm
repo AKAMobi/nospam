@@ -182,7 +182,7 @@ sub check_all_rule_backend
 #$self->{zlog}->debug ( "RULE: logic: MATCH check keyword rule " . $rule_id  . ' of logic ' . $keyword_logic );  
 		}
 		if ( $has_rule ){
-			$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
+			#$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
 			# 'NOT' and 'AND' return here.
 			if ( $rule_logic eq 'OR' ){
 				return undef;
@@ -191,7 +191,7 @@ sub check_all_rule_backend
 			}
 		}
 	}	
-$self->{zlog}->debug ( "pf: checking user rule id: $rule_id finaly no match..." );
+#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id finaly no match..." );
 	return undef;
 }
 
