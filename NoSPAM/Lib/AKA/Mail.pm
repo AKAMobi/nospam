@@ -1395,7 +1395,7 @@ sub check_license_file
 	my $LicenseHTML;
 
 	if ( ! open( LFD, "<$licensefile" ) ){
-		#$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
+		$self->{zlog}->debug ( "AKA::License::check_license_file no [$licensefile]" );
 		# No license
 		return (0, "本设备尚无可用许可证");
 	}
@@ -1432,7 +1432,7 @@ sub check_license_file
 
 	unless ( defined $license_content && defined $license_checksum && 
 			length($license_content) && length($license_checksum) ){
-		$self->{zlog}->fatal ( "AKA::License::check_license_file can't get enough information from [$licensefile]" );
+		$self->{zlog}->debug ( "AKA::License::check_license_file can't get enough information from [$licensefile]" );
 		return (0,"许可证错误#1");
 	}
 
@@ -1442,21 +1442,29 @@ sub check_license_file
 
 	if ( $cmp_str ne $license_data ){
 		#print "license_data $license_data ne $cmpstr\n";
+		$self->{zlog}->debug ( "AKA::License::check_license_file licese check failed!" );
 		return (0,"许可证错误#2");
 	}
 	if( !$self->{license}->is_valid_checksum( $license_content, $license_checksum ) ){
 		#print "checksum $license_checksum not valid for [$license_content]\n";
+		$self->{zlog}->debug ( "AKA::License::check_license_file not valid!" );
 		return (0,"许可证错误#3");
 	}
 
 	if ( length($hardware_license) ){
 		my ($hwok,$hwinfo) = $self->{license}->check_hardware ( $hardware_license );
-		return ($hwok,$hwinfo) unless ( $hwok );
+		unless ( $hwok ){
+			$self->{zlog}->debug ( "AKA::License::check_license_file hardware err [$hwinfo]!" );
+			return ($hwok,$hwinfo) 
+		}
 	}
 
 	if ( length($expire_date) ){
 		my ($dateok, $dateinfo) = $self->{license}->check_expiredate ( $expire_date );
-		return ($dateok,$dateinfo) unless ( $dateok );
+		unless ( $dateok ){
+			$self->{zlog}->debug ( "AKA::License::check_license_file expire err [$dateinfo]!" );
+			return ($dateok,$dateinfo) 
+		}
 		$LicenseHTML .= $dateinfo if ( $dateinfo );
 	}
 

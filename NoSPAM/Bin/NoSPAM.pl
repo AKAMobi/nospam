@@ -374,10 +374,10 @@ sub start_System
 	# Check License;
 	my $AM = new AKA::Mail;
 	if ( ! $AM->check_license_file ){
-		print <<_POD_;
+		print NSOUT <<_POD_;
 
 ******************************************************************************
-** noSPAM AntiSPAM system need a VALID LICENSE, Please get a license first. **
+** noSPAM AntiSPAM system need a VALID LICENSE, Please get a license ASAP.  **
 ******************************************************************************
 
 _POD_
