@@ -169,7 +169,8 @@ if(adminPerm(PERM_ADMIN_LOG)){
 	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
 	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
 	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
-	  gs.add( new WebFXTreeItem('磁盘IO','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('磁盘负载','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('磁盘空间','status/hdfree.html','main') );
 	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
 	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
