@@ -354,9 +354,11 @@ sub check_size_value
 	if ( defined $match_size && $match_size =~ /(\d+)\-(\d+)/ ){
 		$size_low = $1;
 		$size_high = $2;
-	}elsif ( defined $match_filesize ){
-		$self->{zlog}->fatal ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
-		return 0;
+#	}elsif ( defined $match_filesize ){
+#		$self->{zlog}->fatal ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
+#		return 0;
+	}elsif ( $match_size=~/(\d+)/ ){	# 如果是只有一个数字，则匹配 +- 30%
+		return ( $size>($1*0.7) && $size<($1*1.3) );
 	}
 
 
@@ -516,6 +518,8 @@ sub check_single_keyword_rule
 	# XXX fix it, or find out reason.
 	if ( ! length($mail_info->{body_text}) ){
 		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type mail_info has no body_text" );
+use Data::Dumper;
+$self->{zlog}->fatal ( Dumper($mail_info) );
 		#$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
 	}
 	if ( 1==$match_key ){ #1主题包含关键字

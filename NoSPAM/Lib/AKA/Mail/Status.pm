@@ -562,51 +562,60 @@ sub rrdgraph_dns
 			#"--base=1024",     
 
 #			($ds->{success},$ds->{referral},$ds->{nxrrset},$ds->{nxdomain},$ds->{recursion},$ds->{failure});
+
+
 			"DEF:dns_success_raw=$rrdfile:dns_success:AVERAGE", 
-			"CDEF:dns_success_pm=dns_success_raw,60,*",
+			"CDEF:max_dns_query=30000,dns_success_raw,UN,0,dns_success_raw,dns_success_raw,-,IF,+",
+
+			"CDEF:dns_success_raw_ok=dns_success_raw,max_dns_query,GT,UNKN,dns_success_raw,IF",
+			"CDEF:dns_success_pm=dns_success_raw_ok,60,*",
 			"CDEF:dns_success_prev1=PREV(dns_success_pm)",
 			"CDEF:dns_success_prev2=PREV(dns_success_prev1)",
 			"CDEF:dns_success_prev3=PREV(dns_success_prev2)",
 			"CDEF:dns_success=dns_success_prev1,dns_success_prev2,dns_success_prev3,+,+,3,/",
 
 			"DEF:dns_recursion_raw=$rrdfile:dns_recursion:AVERAGE", 
-			"CDEF:dns_recursion_pm=dns_recursion_raw,60,*",
+			"CDEF:dns_recursion_raw_ok=dns_recursion_raw,max_dns_query,GT,UNKN,dns_recursion_raw,IF",
+			"CDEF:dns_recursion_pm=dns_recursion_raw_ok,60,*",
 			"CDEF:dns_recursion_prev1=PREV(dns_recursion_pm)",
 			"CDEF:dns_recursion_prev2=PREV(dns_recursion_prev1)",
 			"CDEF:dns_recursion_prev3=PREV(dns_recursion_prev2)",
 			"CDEF:dns_recursion=dns_success,dns_recursion_prev1,dns_recursion_prev2,dns_recursion_prev3,+,+,3,/,+",
 
-
 			"DEF:dns_referral_raw=$rrdfile:dns_referral:AVERAGE", 
-			"CDEF:dns_referral_pm=dns_referral_raw,60,*",
+			"CDEF:dns_referral_raw_ok=dns_referral_raw,max_dns_query,GT,UNKN,dns_referral_raw,IF",
+			"CDEF:dns_referral_pm=dns_referral_raw_ok,60,*",
 			"CDEF:dns_referral_prev1=PREV(dns_referral_pm)",
 			"CDEF:dns_referral_prev2=PREV(dns_referral_prev1)",
 			"CDEF:dns_referral_prev3=PREV(dns_referral_prev2)",
 			"CDEF:dns_referral=dns_referral_prev1,dns_referral_prev2,dns_referral_prev3,+,+,3,/",
 
 			"DEF:dns_nxrrset_raw=$rrdfile:dns_nxrrset:AVERAGE", 
-			"CDEF:dns_nxrrset_pm=dns_nxrrset_raw,60,*",
+			"CDEF:dns_nxrrset_raw_ok=dns_nxrrset_raw,max_dns_query,GT,UNKN,dns_nxrrset_raw,IF",
+			"CDEF:dns_nxrrset_pm=dns_nxrrset_raw_ok,60,*",
 			"CDEF:dns_nxrrset_prev1=PREV(dns_nxrrset_pm)",
 			"CDEF:dns_nxrrset_prev2=PREV(dns_nxrrset_prev1)",
 			"CDEF:dns_nxrrset_prev3=PREV(dns_nxrrset_prev2)",
 			"CDEF:dns_nxrrset=0,dns_nxrrset_prev1,dns_nxrrset_prev2,dns_nxrrset_prev3,+,+,3,/,-",
 
 			"DEF:dns_nxdomain_raw=$rrdfile:dns_nxdomain:AVERAGE", 
-			"CDEF:dns_nxdomain_pm=dns_nxdomain_raw,60,*",
+			"CDEF:dns_nxdomain_raw_ok=dns_nxdomain_raw,max_dns_query,GT,UNKN,dns_nxdomain_raw,IF",
+			"CDEF:dns_nxdomain_pm=dns_nxdomain_raw_ok,60,*",
 			"CDEF:dns_nxdomain_prev1=PREV(dns_nxdomain_pm)",
 			"CDEF:dns_nxdomain_prev2=PREV(dns_nxdomain_prev1)",
 			"CDEF:dns_nxdomain_prev3=PREV(dns_nxdomain_prev2)",
 			"CDEF:dns_nxdomain=dns_nxrrset,dns_nxdomain_prev1,dns_nxdomain_prev2,dns_nxdomain_prev3,+,+,3,/,-",
 
 			"DEF:dns_failure_raw=$rrdfile:dns_failure:AVERAGE", 
-			"CDEF:dns_failure_pm=dns_failure_raw,60,*",
+			"CDEF:dns_failure_raw_ok=dns_failure_raw,max_dns_query,GT,UNKN,dns_failure_raw,IF",
+			"CDEF:dns_failure_pm=dns_failure_raw_ok,60,*",
 			"CDEF:dns_failure_prev1=PREV(dns_failure_pm)",
 			"CDEF:dns_failure_prev2=PREV(dns_failure_prev1)",
 			"CDEF:dns_failure_prev3=PREV(dns_failure_prev2)",
 			"CDEF:dns_failure=dns_nxdomain,dns_failure_prev1,dns_failure_prev2,dns_failure_prev3,+,+,3,/,-",
 
 
-			"CDEF:dns_all_raw=dns_success_raw,dns_referral_raw,dns_nxrrset_raw,dns_nxdomain_raw,dns_recursion_raw,dns_failure_raw,+,+,+,+,+", 
+			"CDEF:dns_all_raw=dns_success_raw_ok,dns_referral_raw_ok,dns_nxrrset_raw_ok,dns_nxdomain_raw_ok,dns_recursion_raw_ok,dns_failure_raw_ok,+,+,+,+,+", 
 			"CDEF:dns_all_pm=dns_all_raw,60,*",
 			"CDEF:dns_all_prev1=PREV(dns_all_pm)",
 			"CDEF:dns_all_prev2=PREV(dns_all_prev1)",
