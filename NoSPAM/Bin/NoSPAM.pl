@@ -295,7 +295,14 @@ sub rebuild_default_bridge
 	$ret ||= system ( "$brctl_binary addif nospam eth1" );
 	$ret ||= system ( "$ifconfig_binary nospam 192.168.0.150 netmask 255.255.255.0 up" );
 	my $intGWIP = $intconf->{MailGatewayInternalIP}||'10.4.3.7' ;
-	$ret ||= system ( "$ifconfig_binary nospam:0 " .  $intGWIP . " netmask 255.255.255.255 broadcast " . $intGWIP . " up" );
+	my $intBitmask = $intconf->{MailGatewayInternalMask}||32;
+
+	use AKA::IPUtil;
+	my $AI = new AKA::IPUtil;
+	my $intNetmask = $AI->bitmask2netmask ( $intBitmask );
+	my $intBroadcast = $AI->ipbitmask2broadcast ( $intGWIP, $intBitmask );
+
+	$ret ||= system ( "$ifconfig_binary nospam:0 " .  $intGWIP . " netmask " . $intNetmask . " broadcast " . $intBroadcast . " up" );
 
 	return $ret;
 }
@@ -732,7 +739,7 @@ sub UploadLog
 		print "Transfering $files\n";
 		unlink @log_files;
 	}
-	exit 0;
+	return 0;
 
 ################
 	sub get_log_files_in_dir {
@@ -968,19 +975,25 @@ sub network_reset_all
 sub _network_set_ip
 {
 	my $ip = $conf->{config}->{Network}->{IP};
-	my $mask = $conf->{config}->{Network}->{Netmask};
+	my $bitmask = $conf->{config}->{Network}->{Netmask};
 	my $gw = $conf->{config}->{Network}->{Gateway};
 
 	my $ret = 0;
 	my $err = 0;
 
-	if ( !defined $ip || !defined $mask ){
-		$zlog->fatal( "_network_set_ip ip [$ip] mask [$mask] is null?" );
+	if ( !defined $ip || !defined $bitmask ){
+		$zlog->fatal( "_network_set_ip ip [$ip] mask [$bitmask] is null?" );
 		return ERR_PARAM_LACK;
 	}
 
-	$ret = system ( "$ifconfig_binary nospam $ip/$mask up" );
-	$zlog->fatal( "_network_set_ip [$ip] [$mask] failed with ret: $ret !" ) if ( $ret );
+	use AKA::IPUtil;
+	my $AI = new AKA::IPUtil;
+
+	my $netmask = $AI->bitmask2netmask ( $bitmask ) || '255.255.255.0';
+	my $broadcast = $AI->ipbitmask2broadcast ( $ip, $bitmask ) || $ip;
+	$ret = system ( "$ifconfig_binary nospam $ip netmask $netmask broadcast $broadcast up" );
+	#print ( "$ifconfig_binary nospam $ip netmask $netmask broadcast $broadcast up\n" );
+	$zlog->fatal( "_network_set_ip [$ip] [$netmask] failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
 	if ( defined $gw ){
