@@ -132,7 +132,7 @@ sub server
 		if ( $pid > 0 ){ #parent
 			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
 			if ( $self->check_conffile_update() ){
-				sleep 1;
+				close $server;
 				exit;
 			}
 			; # goto accept
@@ -340,6 +340,7 @@ sub process
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
 	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
 	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
+	$self->archive_engine()		unless $self->{mail_info}->{aka}->{drop};
 	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
 	
 
@@ -856,8 +857,11 @@ sub archive_engine
 		return;
 	}
 
-	my @archivetype = $self->{conf}->{config}->{ArchiveEngine}->{ArchiveType};
-	unless ( $#archivetype ){
+	my @archivetype = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveType}};
+foreach ( @archivetype ){
+	$self->{zlog}->debug( "archivetype: $_" );
+}
+	unless ( @archivetype ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
 			desc	=>'未设置',
