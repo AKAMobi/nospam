@@ -4,7 +4,7 @@ if($MailServer <= 0)
 	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 if (!adminPerm(PERM_ADMIN_SERVER) ){
-	echo "<br>"._("You have not permission to operate this page")."<br>";
+	echo "<br>"._("You have no permission to access this page")."<br>";
 } else {
 $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
@@ -116,7 +116,7 @@ function modifyGroup($oldgroupname,$newgroupname){
 		$groupname=trim($groupinfo[1]);
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
-				echo _("User Group Name").": $newgroupname"._(" has existed")."<br>"._("User Group Modify Fail")."<br>";
+				echo _("User Group Name").": $newgroupname"._(" already exists")."<br>"._("User Group Modify Fail")."<br>";
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
 			   	fclose($h_groupdefine_profile);
@@ -232,7 +232,7 @@ function addGroup($newgroupname){
 		$groupname=trim($groupinfo[1]);
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
-				echo _("User Group Name").": $newgroupname"._(" has existed")."<br>"._("User Group Add Fail")."<br>";
+				echo _("User Group Name").": $newgroupname"._(" already exists")."<br>"._("User Group Add Fail")."<br>";
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
 			   	fclose($h_groupdefine_profile);

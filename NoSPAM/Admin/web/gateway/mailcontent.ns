@@ -9,7 +9,7 @@ if($MailGateway <= 0 && $MailRelay <= 0 )
 	die(_("Sorry, This Product has no Gateway Mode License"));
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $id = $_GET["id"];
 

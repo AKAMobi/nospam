@@ -14,7 +14,7 @@ require_once("../inc/include.ns");
 function changeIPList() {
 
 	if (!adminPerm(PERM_ADMIN_BASIC) ){
-	echo "<br>"._("You have not permission to operate this page")."<br>";
+	echo "<br>"._("You have no permission to access this page")."<br>";
 		return false;
 	}
 

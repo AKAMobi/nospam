@@ -5,7 +5,7 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $action = $_POST["action"];
 if(!$action)
@@ -61,7 +61,7 @@ function showdetail(str)
 	document.all.oDetail.style.top = y-10;
 	document.all.oDetail.style.left = x+15;
 	document.all.oDetail.style.display = "";	
-	document.all.oDetail.innerHTML = "<b><?=_("All Ext List")?>: </b><br>"+str;
+	document.all.oDetail.innerHTML = "<b><?=_("All Extenstion List")?>: </b><br>"+str;
 }
 
 function hidedetail()
@@ -79,7 +79,7 @@ function hidedetail()
 <tr class="RuleTBH">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Select")."</th>"; }
-	echo "<th>"._("Description")."</th><th>"._("Attachment Ext")."</th>";
+	echo "<th>"._("Description")."</th><th>"._("Attachment Extention")."</th>";
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Edit")."</th>"; }
 ?>
 </tr>
@@ -210,7 +210,7 @@ function del()
 	global $FileType;
 	$ids = $_REQUEST["id"];
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if(is_array($ids)){
 		if(count($ids) > 0)
@@ -228,7 +228,7 @@ function savefile()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	ksort($FileType,SORT_NUMERIC);
 	$str = $MaxTypeID."\n";
@@ -245,7 +245,7 @@ function add()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	$id = $MaxTypeID+1;
 	if($id < 150)
 		$id = 150;
@@ -263,7 +263,7 @@ function add()
 		<td align="left"><input type="text" name="name"></td>
 	</tr>
 	<tr>
-		<th scope="row"><?=_("Attachment Ext")?>: </th>
+		<th scope="row"><?=_("Attachment Extention")?>: </th>
 		<td align="left"><TEXTAREA name="note" cols="10" rows="10"></TEXTAREA></td>
 	</tr>
 	<tr>
@@ -282,7 +282,7 @@ function modify()
 {
 	global $FileType;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	
 	$id = $_GET["id"];
 	if(!array_key_exists($id,$FileType))
@@ -302,7 +302,7 @@ function modify()
 		<td align="left"><input type="text" name="name" value="<?=$FileType[$id][0]?>"></td>
 	</tr>
 	<tr>
-		<th scope="row"><?=_("Attachment Ext")?>: </th>
+		<th scope="row"><?=_("Attachment Extention")?>: </th>
 		<td align="left">
 			<TEXTAREA name="note" cols="10" rows="10"><?=str_replace(",","\n",$FileType[$id][1])?></TEXTAREA>
 		</td>
@@ -323,7 +323,7 @@ function save()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
@@ -332,7 +332,7 @@ function save()
 		die(_("Group Number Must be Numeric !"));
 	if($_POST["type"]!="modify"){
 		if(array_key_exists($id,$FileType))
-			die(_("This Group Number has existed !"));
+			die(_("This Group Number already exists !"));
 		$MaxTypeID++;
 	}
 

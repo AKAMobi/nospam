@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 ?>
 <html>
 <head>
@@ -162,7 +162,7 @@ function showStat()
 	eTime.setDate(document.all.eDate.value);
 	eTime.setHours(document.all.eHour.value);
 	if(sTime.valueOf() > eTime.valueOf()){
-		alert("<?=_("Start Time can not later than End Time")?>");
+		alert("<?=_("Start Time cannot be later than End Time")?>");
 		return;
 	}
 	document.all.statFrame.src = "showstat.ns?s="+(sTime.valueOf()/1000)+"&e="+(eTime.valueOf()/1000);

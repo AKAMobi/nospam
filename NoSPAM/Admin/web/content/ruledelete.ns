@@ -5,7 +5,7 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $rule_ids = $_POST["id"];
 if(count($rule_ids) > 0){

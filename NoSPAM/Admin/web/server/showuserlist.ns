@@ -5,7 +5,7 @@ if($MailServer <= 0)
 	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 if (!adminPerm(PERM_ADMIN_SERVER) ){
-	echo "<br>"._("You have not permission to operate this page")."<br>";
+	echo "<br>"._("You have no permission to access this page")."<br>";
 	return false;
 }
 
@@ -296,7 +296,7 @@ st.onsort = function () {
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 ?>
@@ -373,7 +373,7 @@ function add()
 function modify()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 	
@@ -517,7 +517,7 @@ function doModify(){
 function save()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 	
@@ -740,7 +740,7 @@ function save()
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 

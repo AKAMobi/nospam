@@ -2,11 +2,11 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["Submit"] == _("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		
 	$spamconf->setParam("MailHostName",$_POST['MailHostName'],"MailServer");
 	if ($_POST['HeloHostSwitch'] == "Default"){
@@ -84,7 +84,7 @@ if($_POST["Submit"] == _("Modify")){
 	$spamconf->save();
 	
 	if(($ret=wi("MailBaseSetting_reset",$result)) == 0){
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	}else{
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
@@ -151,7 +151,7 @@ if($_POST["Submit"] == _("Modify")){
 <tr class="TableBody1">
 	<td scope="row"> <?=_("Mail Max Size")?>: </td>
 	<td>
-		<input name="DataBytesSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=true;form1.DataUnit.disabled=true;"><?=_("0 is No Limit")?>
+		<input name="DataBytesSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=true;form1.DataUnit.disabled=true;"><?=_("0 means No Limit")?>
 		<input name="DataBytesSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=false;form1.DataUnit.disabled=false;">
 		<input name="DataBytes" type="text" value="<?=$spamconf->getParam("DataBytes","MailServer")?>"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " disabled";?>>
 		<select name="DataUnit"	type="text"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " disabled";?>>
@@ -167,7 +167,7 @@ if($_POST["Submit"] == _("Modify")){
 		<input name="QueueLifeTimeSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=false;form1.QueueLifeUnit.disabled=false;">
 		<input name="QueueLifeTime" type="text" value="<?=$spamconf->getParam("QueueLifeTime","MailServer")?>"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
 		<select name="QueueLifeUnit" type="text"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
-			<option value="1" selected><?=_("Seconds")?>
+			<option value="1" selected><?=_("Second(s)")?>
 			<option value="3600"><?=_("Hours")?>
 			<option value="86400"><?=_("Days")?>
 		</select>

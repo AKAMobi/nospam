@@ -5,7 +5,7 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT) || !adminPerm(PERM_ADMIN_WRITE))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_GET["action"] == "add"){
 	if(!$_POST["formAction"])
@@ -17,7 +17,7 @@ if($_GET["action"] == "add"){
 		if(!$rule_id) die(_("Please Input Rule Number"));
 
 		$config = new RuleDB(UserDB);
-		if($config->get_rule_by_id($rule_id)) die(_("This Rule Number has existed"));
+		if($config->get_rule_by_id($rule_id)) die(_("This Rule Number Already Exists"));
 		if($_POST["formAction"] == "save")
 			save();
 		else
@@ -111,14 +111,14 @@ if(!$Category[$category_id])
 ?>
 			  </select>
 	</td>
-	<td><?/*?><?=_("Policy Type")?>: <select name="id_type">
+	<td><?/*?><?=_("Number Type")?>: <select name="id_type">
 					<option value="asc"<? if($rule->get_attribute("id_type") == "asc") echo " selected"; ?>>ASC
 					<option value="msp"<? if($rule->get_attribute("id_type") == "msp") echo " selected"; ?>>MSP
 	 			  </select><?*/?>
 	</td>
 </tr>
 <tr>
-	<td><?=_("Create Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?><input type="hidden" name="create_time" value="<?=$rule->get_attribute("create_time")?>" /></td>
+	<td><?=_("Creatation Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?><input type="hidden" name="create_time" value="<?=$rule->get_attribute("create_time")?>" /></td>
 	<td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
 <tr>
@@ -267,8 +267,8 @@ if($sizescount > 0){
 ?>
 <fieldset style="border-style: double; width: 90%">
 <legend><input type="checkbox" name="AttachmentDel<?=$i?>" value="YES" /><?=_("No.").$i?></legend>
-<?=_("Option")?><input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$i?>" value="<?=utf8_decode($attachment->get_attribute("filename"))?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
-<?=_("Option")?><input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype") || !array_key_exists($attachment->has_attribute("filetype"),$FileType)) echo "disabled"; ?>/>
+<?=_("Optional")?><input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$i?>" value="<?=utf8_decode($attachment->get_attribute("filename"))?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
+<?=_("Optional")?><input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype") || !array_key_exists($attachment->has_attribute("filetype"),$FileType)) echo "disabled"; ?>/>
 <?
 			$blank = true;
 			foreach($FileType as $key=>$value){
@@ -425,14 +425,14 @@ if(!$Category[$_POST["category_id"]])
 ?>
               </select>
     </td>
-    <td><?/*?><?=_("Policy Type")?>: <select name="id_type">
+    <td><?/*?><?=_("Number Type")?>: <select name="id_type">
                     <option value="asc"<? if($_POST["id_type"] == "asc") echo " selected"; ?>>ASC
                     <option value="msp"<? if($_POST["id_type"] == "msp") echo " selected"; ?>>MSP
                   </select><?*/?>
     </td>
 </tr>
 <tr>
-    <td><?=_("Create Time")?>: <?=FormatTime($_POST["create_time"])?><input type="hidden" name="create_time" value="<?=$_POST["create_time"]?>" /></td>
+    <td><?=_("Creatation Time")?>: <?=FormatTime($_POST["create_time"])?><input type="hidden" name="create_time" value="<?=$_POST["create_time"]?>" /></td>
     <td><?=_("Update Time")?>: <?=date("Y-m-d H:i:s");?></td>
 </tr>
 <tr>
@@ -636,8 +636,8 @@ if($sizescount > 0){
 ?>
 <fieldset style="border-style: double; width: 90%">
 <legend><input type="checkbox" name="AttachmentDel<?=$ii?>" value="YES" /><?=_("No.").$ii?></legend>
-<?=_("Option")?><input type="checkbox"<? if($_POST["FileName".$i]) echo " checked";?> onclick="changeState(FileName<?=$ii?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$ii?>" value="<?=$_POST["FileName".$i]?>" <? if(!$_POST["FileName".$i]) echo "disabled"; ?>/>
-<?=_("Option")?><input type="checkbox"<? if($_POST["FileType".$i]) echo " checked";?> onclick="changeState(FileType<?=$ii?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$ii?>" <? if(!$_POST["FileType".$i]) echo "disabled"; ?>/>
+<?=_("Optional")?><input type="checkbox"<? if($_POST["FileName".$i]) echo " checked";?> onclick="changeState(FileName<?=$ii?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$ii?>" value="<?=$_POST["FileName".$i]?>" <? if(!$_POST["FileName".$i]) echo "disabled"; ?>/>
+<?=_("Optional")?><input type="checkbox"<? if($_POST["FileType".$i]) echo " checked";?> onclick="changeState(FileType<?=$ii?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$ii?>" <? if(!$_POST["FileType".$i]) echo "disabled"; ?>/>
 <?
 			$blank = true;
 			foreach($FileType as $key=>$value){
@@ -661,8 +661,8 @@ if($sizescount > 0){
 ?>
 <fieldset style="border-style: double; width: 90%">
 <legend><input type="checkbox" name="AttachmentDel<?=$ii?>" value="YES" /><?=_("No.").$ii?> </legend>
-<?=_("Option")?><input type="checkbox" onclick="changeState(FileName<?=$ii?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$ii?>" value="" disabled/>
-<?=_("Option")?><input type="checkbox" onclick="changeState(FileType<?=$ii?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$ii?>" disabled/>
+<?=_("Optional")?><input type="checkbox" onclick="changeState(FileName<?=$ii?>)" /><?=_("Filename Must be")?>: <input type="text" name="FileName<?=$ii?>" value="" disabled/>
+<?=_("Optional")?><input type="checkbox" onclick="changeState(FileType<?=$ii?>)" / ><?=_("File Ext Must be")?>: <select name="FileType<?=$ii?>" disabled/>
 <?
 			$blank = true;
 			foreach($FileType as $key=>$value){
@@ -983,7 +983,7 @@ if(count($Category) > 0){
     </td>
 </tr>
 <tr>
-    <td><?=_("Create Time")?>: <?=date("Y-m-d H:i:s",$time)?><input type="hidden" name="create_time" value="<?=date("YmdHis",$time)?>" /></td>
+    <td><?=_("Creatation Time")?>: <?=date("Y-m-d H:i:s",$time)?><input type="hidden" name="create_time" value="<?=date("YmdHis",$time)?>" /></td>
     <td><?=_("Update Time")?>: <?=date("Y-m-d H:i:s",$time)?></td>
 </tr>
 <tr>
@@ -1024,7 +1024,7 @@ if(count($Category) > 0){
 </div><br>
 </fieldset>
 <?=_("Action")?>: <select name="Action">
-<option value="1"><?=_("Reject")?><option value="2"><?=_("Drop")?><option value="3"><?=_("Quarantine")?><option value="4"><?=_("Strip Attachment")?><option value="5"><?=_("Delay")?><option value="6"><?=_("NOOP")?><option value="7"><?=_("Accept")?><option value="8"><?=_("Add Receiptor")?><option value="9"><?=_("Del Receiptor")?><option value="10"><?=_("Replace Receiptor")?><option value="11"><?=_("Add Header")?><option value="12"><?=_("Del Header")?><option value="13"><?=_("Replace Header")?>              
+<option value="1"><?=_("Reject")?><option value="2"><?=_("Drop")?><option value="3"><?=_("Quarantine")?><option value="4"><?=_("Strip Attachment")?><option value="5"><?=_("Delay")?><option value="6"><?=_("NOOP")?><option value="7"><?=_("Accept")?><option value="8"><?=_("Add Recipient")?><option value="9"><?=_("Delete Recipient")?><option value="10"><?=_("Replace Recipient")?><option value="11"><?=_("Add Header")?><option value="12"><?=_("Delete Header")?><option value="13"><?=_("Replace Header")?>              
 </select>           
 <?=_("Action Parameter")?>:       
 <input type="text" name="ActionParam" value="" />

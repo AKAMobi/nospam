@@ -37,11 +37,11 @@ function savetofile($str, $file)
 		}else{
 			fclose($fp1);
 			unlink($file.".new");
-			die(_("Can not write file, Disk Full?"));
+			die(_("Cannot write file, Disk Full?"));
 		}
 		flock($fp, LOCK_UN);
 	}else{
-		echo _("Can not lock file !");
+		echo _("Cannot lock file !");
 	}
 	fclose($fp);
 }
@@ -145,11 +145,11 @@ function LogAction($func, $action, $option, $oldValue = "", $newValue = "")
 	if( flock($fp, LOCK_EX) ){
 		$fp1 = fopen(ACTIONLOG,"a");
 		if(fwrite($fp1,$str) != strlen($str))
-			echo (_("Can not write file, Disk Full?"));
+			echo (_("Cannot write file, Disk Full?"));
 		fclose($fp1);
 		flock($fp, LOCK_UN);
 	}else{
-		echo _("Can not lock file !");
+		echo _("Cannot lock file !");
 	}
 	fclose($fp);
 }

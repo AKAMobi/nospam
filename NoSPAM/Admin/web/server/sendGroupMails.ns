@@ -5,7 +5,7 @@ if($MailServer <= 0)
 	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 if (!adminPerm(PERM_ADMIN_SERVER) ){
-	echo "<br>"._("You have not permission to modify system config")."<br>";
+	echo "<br>"._("You have no permission to modify system configuration")."<br>";
 } else {
 
 $adminInfo = getAdminInfo(getAdminID());

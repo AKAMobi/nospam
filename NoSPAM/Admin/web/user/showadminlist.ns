@@ -2,7 +2,7 @@
 require_once('../inc/include.ns');
 
 	if (!adminPerm(PERM_ADMIN_ADMIN) ){
-	echo "<br>"._("You have not permission to operate this page")."<br>";
+	echo "<br>"._("You have no permission to access this page")."<br>";
 		return false;
 	}
 
@@ -128,7 +128,7 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 		if(havePerm($priviledge,PERM_ADMIN_LOG))
 			$sPrivilege .= _("Log")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_AUDIT))
-			$sPrivilege .= _("Op Log")."<br>";
+			$sPrivilege .= _("Operation Log Management")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_GASUP))
 			$sPrivilege .= _("Auto-Download Policy");
 	}
@@ -229,7 +229,7 @@ st.onsort = function () {
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 	global $ServerMode;
@@ -272,7 +272,7 @@ function add()
         <tr> <td><?=_("Interactive")?></td> <td><input type="checkbox" name="Interactive"></td> </tr>
         <tr> <td><?=_("Audit")?></td> <td><input type="checkbox" name="Archive"></td> </tr>
         <tr> <td><?=_("Log")?></td> <td><input type="checkbox" name="Log"></td> </tr>
-        <tr> <td><?=_("Op Log")?></td> <td><input type="checkbox" name="Audit"></td> </tr>
+        <tr> <td><?=_("Operation Log Management")?></td> <td><input type="checkbox" name="Audit"></td> </tr>
 <?if(strstr($ServerMode,"Server")){?>
         <tr> <td><?=_("Standalone Server")?></td> <td><input type="checkbox" name="Server" onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td> </tr>
 <?}?>
@@ -331,7 +331,7 @@ function add()
 function modify()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 	global $ServerMode;
@@ -389,7 +389,7 @@ function modify()
         <tr> <td><?=_("Interactive")?></td> <td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?>></td> </tr>
         <tr> <td><?=_("Audit")?></td> <td><input type="checkbox" name="Archive"<?if(havePerm($oPriviledge,PERM_ADMIN_ARCHIVE)) echo " checked";?>></td> </tr>
         <tr> <td><?=_("Log")?></td> <td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?>></td> </tr>
-        <tr> <td><?=_("Op Log")?></td> <td><input type="checkbox" name="Audit"<?if(havePerm($oPriviledge,PERM_ADMIN_AUDIT)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Operation Log Management")?></td> <td><input type="checkbox" name="Audit"<?if(havePerm($oPriviledge,PERM_ADMIN_AUDIT)) echo " checked";?>></td> </tr>
 <?if(strstr($ServerMode,"Server")){?>
         <tr> <td><?=_("Standalone Server")?></td> <td><input type="checkbox" name="Server"<?if(havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " checked";?> onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td> </tr>
 <?}?>
@@ -448,7 +448,7 @@ function modify()
 function save()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 
@@ -612,7 +612,7 @@ function save()
 		errorReturn(_("Mail Domain List can not has character ':' "),$_SERVER['REQUEST_URI']);
 	}
 	if (!$bModify && $result==ERR_IDEXIST) {
-		errorReturn(_("Error: This Admin ID has existed !"),$_SERVER['PHP_SELF']);
+		errorReturn(_("Error: This Admin ID already exists !"),$_SERVER['PHP_SELF']);
 	}
 
 	$success = $bModify? _("Modify"):_("Add");
@@ -627,7 +627,7 @@ function save()
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return -1;
 	}
 	$id = $_REQUEST["id"];

@@ -44,7 +44,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 
 	a.add(new WebFXTreeItem('<?=_("Network Setting")?>','system/network.ns','main'));
 	a.add(new WebFXTreeItem('<?=_("SMTP Parameters")?>','system/basesettings.ns','main'));
-	a.add(new WebFXTreeItem('<?=_("Config & Policy")?>','system/configmanage.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("Configuration Management")?>','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('<?=_("System Clock")?>','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('<?=_("Reboot & Shutdown")?>','system/reboot.ns','main'));
 
@@ -179,8 +179,8 @@ if($ContentEngine > 0){
 	var f = new WebFXTreeItem('<?=_("Audit")?>');
 	tree.add(f);
 	f.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','archive/archiveengine.ns','main'));
-	//f.add(new WebFXTreeItem('<?=_("Archive Address")?>','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('<?=_("Select Archive")?>','archive/archivetype.ns','main'));
+	//f.add(new WebFXTreeItem('<?=_("Audit Address")?>','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('<?=_("Selected Archive")?>','archive/archivetype.ns','main'));
 <?
 	}
 
@@ -230,7 +230,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	}
 	if(adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	g.add(new WebFXTreeItem('<?=_("Op Log")?>','log/audit.ns','main'));
+	g.add(new WebFXTreeItem('<?=_("Operation Log Management")?>','log/audit.ns','main'));
 <?php
 	}	
 }

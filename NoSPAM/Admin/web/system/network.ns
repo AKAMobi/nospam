@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $ServerGateway = $spamconf->getParam("ServerGateway","System");
 if($Switchable)
@@ -12,7 +12,7 @@ else
 
 if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if(!checkipaddr($_POST["IP"],false)) die("IP ".$_POST["IP"]._(" Error"));
 	if(!is_numeric($_POST["Netmask"]) || intval($_POST["Netmask"])>32 || intval($_POST["Netmask"]<=0)) die("Mask ".$_POST["Netmask"]._(" Error"));
@@ -24,7 +24,7 @@ if($_POST["Submit"]==_("Modify")){
 	$spamconf->setParam("Gateway",$_POST["Gateway"],"Network");
 	$spamconf->save();
 	if(($ret=wi("reset_Network",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["RefuseSpam"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	$spamconf->setParam("RefuseSpam",$_POST["RefuseSpam"],"SpamEngine");
 	$tagpos = $_POST["tagpos"];
 	$spamconf->setParam("TagHead","N","SpamEngine");
@@ -23,7 +23,7 @@ if($_POST["RefuseSpam"]){
 	$spamconf->setParam("MaybeSpamTag",$_POST["MaybeSpamTag"],"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -66,12 +66,12 @@ if($_POST["RefuseSpam"]){
   <p> <?=_("Spam Subject Tag Text: ")?>
     <input name="SpamTag" type="text" id="SpamTag" value="<?=$SpamTag?>">
   <?=_("Recommend: ")._("[Spam]")?><br>
-  <?=_("Like Spam Subject Tag Text: ")?>
+  <?=_("Likely Spam Subject Tag Text: ")?>
     <input name="MaybeSpamTag" type="text" id="MaybeSpamTag" value="<?=$MaybeSpamTag?>">
-  <?=_("Recommend: ")._("[Like Spam]")?>
+  <?=_("Recommend: ")._("[Likely Spam]")?>
   <p>
     <input type="reset" name="reset" value="<?=_("Default")?>">
-	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Like Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
+	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Likely Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
     <input type="submit" name="submit" value="<?=_("Modify")?>">
 </p>
 </form>
@@ -117,7 +117,7 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?> disabled><?=_("Tag Reason on header")?>
 </p>
   <p> <?=_("Spam Subject Tag Text: ")?> <?=$SpamTag?><br>
-  <?=_("Like Spam Subject Tag Text: ")?> <?=$MaybeSpamTag?>
+  <?=_("Likely Spam Subject Tag Text: ")?> <?=$MaybeSpamTag?>
     </p>
 <?
 		if(!$bAntiSpam){

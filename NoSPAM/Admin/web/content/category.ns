@@ -5,7 +5,7 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $action = $_POST["action"];
 if(!$action)
@@ -62,7 +62,7 @@ function show()
 <tr class="TableTitleLink">
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Select")."</th>"; }
-	echo "<th>"._("No.")."</th><th>"._("GroupName")."</th><th>"._("Note")."</th>";
+	echo "<th>"._("No.")."</th><th>"._("Group Name")."</th><th>"._("Note")."</th>";
 	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Edit")."</th>"; }
 ?>
 </tr>
@@ -175,7 +175,7 @@ function del()
 	global $Category;
 	$ids = $_REQUEST["id"];
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if(is_array($ids)){
 		if(count($ids) > 0)
@@ -193,7 +193,7 @@ function savefile()
 {
 	global $Category;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	ksort($Category,SORT_NUMERIC);
 	$str = "";
@@ -208,7 +208,7 @@ function savefile()
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 ?>
 <html>
 <body>
@@ -222,7 +222,7 @@ function add()
 		<td align="left"><input type="text" size="10" maxlength="8" name="id"></td>
 	</tr>
 	<tr>
-		<th scope="row"><?=_("GroupName")?>: </th>
+		<th scope="row"><?=_("Group Name")?>: </th>
 		<td align="left"><input type="text" name="name"></td>
 	</tr>
 	<tr>
@@ -245,7 +245,7 @@ function modify()
 {
 	global $Category;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	
 	$id = $_GET["id"];
 	if(!array_key_exists($id,$Category))
@@ -264,7 +264,7 @@ function modify()
 		<td align="left"><input type="hidden" size="10" maxlength="8" name="id" value="<?=$id?>"><?=$id?></td>
 	</tr>
 	<tr>
-		<th scope="row"><?=_("GroupName")?>: </th>
+		<th scope="row"><?=_("Group Name")?>: </th>
 		<td align="left"><input type="text" name="name" value="<?=$Category[$id][0]?>"></td>
 	</tr>
 	<tr>
@@ -287,7 +287,7 @@ function save()
 {
 	global $Category;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
@@ -296,7 +296,7 @@ function save()
 		die(_("Group Number Must be Numeric !"));
 	if($_POST["type"]!="modify"){
 		if(array_key_exists($id,$Category))
-			die(_("This Group Number has existed !"));
+			die(_("This Group Number already exists !"));
 	}
 
 	$Category[$id] = array($name,$note);	

@@ -27,7 +27,7 @@ header("Refresh: 0;URL=/admin/");
 <br>
 <br>
 <div align="center">
-<?=_("Logout Success. Please Close This Browser Window") ?>
+<?=_("Logout Successfully. Please Close This Browser Window") ?>
 </div>
 </body>
 </html>

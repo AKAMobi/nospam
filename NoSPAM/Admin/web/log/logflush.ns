@@ -2,13 +2,13 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG) || !adminPerm(PERM_ADMIN_WRITE))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["action"]=="flush"){
 	if(($ret=wi("clean_Log",$result))==0)
-		echo _("Op Success");
+		echo _("Operations Succeed");
 	else
-		echo _("Op Fail, ErrNo: ").$ret;
+		echo _("Operations Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -19,7 +19,7 @@ if($_POST["action"]=="flush"){
 <script language="javascript">
 function test()
 {
-	if(confirm("<?=_("This Op will be Flush Log, Continue?")?>"))
+	if(confirm("<?=_("This will flush all logs, Continue?")?>"))
 		form1.submit();
 }
 </script>

@@ -5,7 +5,7 @@ if($MailGateway <= 0 && $MailRelay <= 0 && $MailServer <=0 )
 	die(_("Sorry, This Product has no Gateway Mode License"));
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $bWritable = (bool)adminPerm(PERM_ADMIN_WRITE);
 
@@ -107,7 +107,7 @@ function jump()
 <?}?>
 		<td><?=_("No.")?></td>
 		<td><?=_("Mail ID")?></td>
-		<td><?=_("Send Time")?></td>
+		<td><?=_("Sent Time")?></td>
 		<td><?=_("Mail From")?></td>
 		<td><?=_("To")?></td>
 		<td><?=_("Size")?></td>
@@ -162,7 +162,7 @@ if(count($queue) > 0){
 <?if($bWritable){?>
 				<input type="button" value="<?=_("Select All")?>" onclick="selectAll()">
 				<input type="button" value="<?=_("Inverse Select")?>" onclick="inverseSelect()">
-				<input type="button" value="<?=_("Flush Queue")?>" onclick="if(confirm('<?=_("Note: This Op will clear all undeliver mails, Continue?")?>')){location.href='<?=$_SERVER['PHP_SELF']?>?action=flush';}">
+				<input type="button" value="<?=_("Flush Queue")?>" onclick="if(confirm('<?=_("Note: This will delete all undeliverd mails permamently, Continue?")?>')){location.href='<?=$_SERVER['PHP_SELF']?>?action=flush';}">
 				<input type="submit" value="<?=_("Delete")?>">
 <?}?>
 			</td>
@@ -233,7 +233,7 @@ function del()
 	global $bWritable;
 	
 	if(!$bWritable){
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		return;
 	}
 	
@@ -259,7 +259,7 @@ function dellall()
 	global $bWritable;
 	
 	if(!$bWritable){
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		return;
 	}
 

@@ -4,7 +4,7 @@ if($ArchiveEngine <= 0)
 	die(_("Sorry, This Product has no Archive Engine License"));
 
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["Submit"] == _("Modify")){
 	if($_POST["ArchiveSwitch"]=="All"){
@@ -30,7 +30,7 @@ if($_POST["Submit"] == _("Modify")){
 	$spamconf->setParam("ArchiveType",$type,"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -41,7 +41,7 @@ if($_POST["Submit"] == _("Modify")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Select Archive")?></title>
+<title><?=_("Selected Archive")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 function change(bFlag)
@@ -90,7 +90,7 @@ function flush()
     <br>
     <label>
     <input type="radio" onclick="change(false)" name="ArchiveSwitch" value="Custom"<? if(!in_array("All",$type)) echo" checked"; ?>>
-    <?=_("Selected Archive")?></label>
+    <?=_("Selected Audit")?></label>
     <br>
     <hr>
     <p>
@@ -109,7 +109,7 @@ function flush()
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content Matched")?><br>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content not Matched")?><br>
 <!--blockquote>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include User Define Rules")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include User Defined Rules")?><br>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="GARule" <?if(in_array("GARule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include Auto-Download Rules")?><br>
 </blockquote-->
     </p>
@@ -126,7 +126,7 @@ function flush()
 if(!$bArchive){
 ?>
 <script>
-alert("<?=_("ALERT: Archive Engine is OFF")?>");
+alert("<?=_("ALERT: Audit Engine is OFF")?>");
 </script>
 <?
 }

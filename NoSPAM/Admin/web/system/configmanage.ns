@@ -2,20 +2,20 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Config & Policy")?></title>
+<title><?=_("Configuration Management")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
 <table width="100%"  border="0">
   <tr>
-    <th scope="col" width="50%"><?=_("System Config")?></th>
+    <th scope="col" width="50%"><?=_("System Configuration File Upload/Download")?></th>
     <th scope="col" width="50%"><?=_("Content Filter Policy")?></th>
   </tr>
   <tr>

@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_GET["action"]){
 	if($_GET["action"]=="download"){
@@ -15,7 +15,7 @@ if($_GET["action"]){
 		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
         	else    
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
@@ -25,19 +25,19 @@ if($_GET["action"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Archive Data Management")?></title>
+<title><?=_("Audit Data Management")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
-<?=_("Current Archive Size")?>: <?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><p>
+<?=_("Current Audit Mail Size")?>: <?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><p>
 <input type="button" value="<?=_("Download")?>" onclick="window.open('archiveexport.ns?action=download','_blank')">
 <input type="button" value="<?=_("Clear")?>" onclick="document.location.href='archiveexport.ns?action=clean';">
 <?
 if(!$bArchive){
 ?>
 <script>
-alert("<?=_("ALERT: Archive Engine is OFF")?>");
+alert("<?=_("ALERT: Audit Engine is OFF")?>");
 </script>
 <?
 }

@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 switch($_GET["option"]){
 	case "WhiteIP":
@@ -224,7 +224,7 @@ function del()
 	global $spamconf,$List,$sList;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	
 	$key = $_REQUEST["key"];
 	if(is_array($key)){
@@ -249,7 +249,7 @@ function add()
 	global $title,$column;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 ?>
 <html>
 <body>
@@ -277,7 +277,7 @@ function modify()
 	global $List,$title,$column;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 ?>
 <html>
 <body>
@@ -307,7 +307,7 @@ function save()
 	global $List,$sList,$spamconf,$column,$sOption;
 
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	switch($_POST['type']){
 		case 'switch':
@@ -324,7 +324,7 @@ function save()
 		break;
 		default:
 		if(array_key_exists($_POST['key'],$List)){
-			echo _("Same ").$column._(" has existed")."!";
+			echo _("Same ").$column._(" already exists")."!";
 			exit(-1);
 		}
 	}

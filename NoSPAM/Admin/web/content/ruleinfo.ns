@@ -5,11 +5,11 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $rule_id = $_GET["id"];
 
-if(!$rule_id) die(_("Error, Please input rule ID"));
+if(!$rule_id) die(_("Error, Please input rule_id"));
 
 $bPolice = false;
 
@@ -35,10 +35,10 @@ $action = $config->get_action_rule($rule_id);
 </tr>
 <tr>
 	<td><?=_("Group")?>: <?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
-	<td><?if($bPolice){?><?=_("Policy Type")?>: <?=$rule->get_attribute("id_type")?><?}?></td>
+	<td><?if($bPolice){?><?=_("Number Type")?>: <?=$rule->get_attribute("id_type")?><?}?></td>
 </tr>
 <tr>
-	<td><?=_("Create Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?></td>
+	<td><?=_("Creatation Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?></td>
 	<td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
 <tr>

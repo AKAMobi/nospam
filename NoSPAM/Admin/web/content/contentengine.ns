@@ -5,11 +5,11 @@ if($ContentEngine <= 0)
 	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	if(isset($_POST["ContentFilterEngine"])){
 		$spamconf->setParam("ContentFilterEngine",$_POST["ContentFilterEngine"],"ContentEngine");
 	}else{
@@ -20,7 +20,7 @@ if($_POST["Submit"]==_("Modify")){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_ContentEngine",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

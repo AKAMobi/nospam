@@ -5,7 +5,7 @@ if($ArchiveEngine <= 0)
 	die(_("Sorry, This Product has no Archive Engine License"));
 
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["ArchiveAdmin"]){
 	$addr = trim($_POST["ArchiveAdmin"]);
@@ -16,7 +16,7 @@ if($_POST["ArchiveAdmin"]){
 		die(_("Email Address Error"));
 
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -26,22 +26,22 @@ $ArchiveAdmin = $spamconf->getParam("ArchiveAdmin","ArchiveEngine");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Archive Address")?></title>
+<title><?=_("Audit Address")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
 <form name="form1" method="post" action="">
-  <?=_("Archive Address")?>: 
+  <?=_("Audit Address")?>: 
     <input name="ArchiveAdmin" type="text" id="ArchiveAdmin" value="<?=$ArchiveAdmin?>">
-  <?=_("All Archive Email will be sent to this Address.")?><br>
+  <?=_("All Audit Email will be sent to this Address.")?><br>
   <input type="submit" name="submit" value="<?=_("Submit")?>">
 </form>
 <?
 if(!$bArchive){
 ?>
 <script>
-alert("<?=_("ALERT: Archive Engine is OFF")?>");
+alert("<?=_("ALERT: Audit Engine is OFF")?>");
 </script>
 <?
 }

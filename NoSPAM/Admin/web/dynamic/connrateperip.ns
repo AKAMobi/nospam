@@ -6,11 +6,11 @@ if($DynamicEngine <= 0)
 	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Seconds"]) || !is_numeric($_POST["Block"]))
 		die(_("Must Input a Number"));
 	if(intval($_POST["Counts"])==0 || intval($_POST["Seconds"])==0){
@@ -24,7 +24,7 @@ if($_POST["submit"]==_("Submit")){
 	$spamconf->setParam("ConnRatePerIP",$ConnRatePerIP,"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ConnRatePerIP",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -44,20 +44,20 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
 <?=_("SMTP Connect Frequency per IP")?>: <br>
-<?=_("in")?> <input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Seconds")?><br>
-<?=_("SMTP Connect no more than")?><input type="text" size="2" name="Counts" value="<?=$Counts?>"><?=_("times")?><br>
-<?=_("or will be Block")?><input type="text" size="2" name="Block" value="<?=$Block?>"><?=_("Seconds")?><br>
-(<?=_("0 is No Limit").", "._("But you'd better no more then 1800 seconds.")?>)
+<?=_("in")?> <input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Second(s)")?><br>
+<?=_("SMTP Connections no more than")?><input type="text" size="2" name="Counts" value="<?=$Counts?>"><?=_("times")?><br>
+<?=_("or will be blocked")?><input type="text" size="2" name="Block" value="<?=$Block?>"><?=_("Second(s)")?><br>
+(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
 <input type="submit" name="submit" value="<?=_("Submit")?>">
 </form>
 <?
 }else{
 ?>
 <?=_("SMTP Connect Frequency per IP")?>: <br>
-<?=_("in")?> <font color="Red"><?=$Seconds?></font> <?=_("Seconds")?><br>
-<?=_("SMTP Connect no more than")?> <font color="Red"><?=$Counts?></font> <?=_("times")?><br>
-<?=_("or will be Block")?> <font color="Red"><?=$Block?></font> <?=_("Seconds")?><br>
-(<?=_("0 is No Limit").", "._("But you'd better no more then 1800 seconds.")?>)
+<?=_("in")?> <font color="Red"><?=$Seconds?></font> <?=_("Second(s)")?><br>
+<?=_("SMTP Connections no more than")?> <font color="Red"><?=$Counts?></font> <?=_("times")?><br>
+<?=_("or will be blocked")?> <font color="Red"><?=$Block?></font> <?=_("Second(s)")?><br>
+(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
 <?
 }
 

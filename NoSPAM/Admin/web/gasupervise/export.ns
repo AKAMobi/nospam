@@ -5,7 +5,7 @@ if ($GAInterface <= 0)
 	die(_("Sorry, This Product has no Policy Auto-Download Engine License"));
 
 if(!adminPerm(PERM_ADMIN_GASUP))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_GET["action"]){
 	if($_GET["action"]=="download"){
@@ -18,7 +18,7 @@ if($_GET["action"]){
 		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
         	else    
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}

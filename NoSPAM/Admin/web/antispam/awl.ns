@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["AWLEnabled"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if($_POST["AWLEnabled"]=="Y"){
 		$spamconf->setParam("AWLEnabled","Y","SpamEngine");
@@ -19,7 +19,7 @@ if($_POST["AWLEnabled"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -50,7 +50,7 @@ function change(bState)
 
 <body>
 <form name="form1" method="post">
-  <p><?=_("Intelligent Noise Reduce System: ")?><br>
+  <p><?=_("Intelligent Noise Reduction System: ")?><br>
     <label>
     <input id="idAWLEnabledY" type="radio" name="AWLEnabled" value="Y"<? if($bAWLEnabled) echo " checked" ?> onclick="change(false)">
   <?=_("On")?></label><br>

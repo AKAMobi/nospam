@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 ?>
 <html>

@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if(!adminPerm(PERM_ADMIN_WRITE))
-	die(_("You have not permission to modify system config"));
+	die(_("You have no permission to modify system configuration"));
 
 switch($_GET["file"])
 {

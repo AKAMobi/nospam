@@ -5,13 +5,13 @@ if($DynamicEngine <= 0)
 	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if(wi("get_DynamicEngineDBKey",$tmpKeys)!=0)
-	die(_("Can not connect Engine Database"));
+	die(_("Cannot connect to Engine Database"));
 
 if(count($tmpKeys) == 0)
-	die(_("System has no Data currently"));
+	die(_("System has no data currently"));
 
 switch($_GET["action"]){
 	case "del":
@@ -112,7 +112,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 function flush()
 {
-	if(confirm(<?=_("Overrun Limit Database will be Clear, Continue?")?>)){
+	if(confirm(<?=_("Overrun Limit Database will be cleared, Continue?")?>)){
 		location.href="<?=$_SERVER['PHP_SELF']."?option=$sOption"?>&name=<?=$column?>&action=flush";
 	}
 }
@@ -355,7 +355,7 @@ for($i = 10; $i <= 50; $i+=10){
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	$Option = $_GET['option'];
 	$key = $_REQUEST["key"];
 	if(is_array($key)){
@@ -388,7 +388,7 @@ function del()
 function flushdb()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	
 	$Option = $_GET['option'];
 	$name = $_GET['name'];

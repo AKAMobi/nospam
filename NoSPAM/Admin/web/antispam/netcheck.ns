@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if($_POST["DCCEnabled"]=="Y"){
 		$spamconf->setParam("DCCEnabled","Y","SpamEngine");
@@ -39,7 +39,7 @@ if($_POST["isSubmit"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -61,7 +61,7 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Network Diag and Monitor")?></title>
+<title><?=_("Network Diagnosis and Monitor")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -106,7 +106,7 @@ function Razor_change(bState)
 
 <body>
 <form name="form1" method="post"> 
-  <p><?=_("Analyze Server")?> 1: <br>
+  <p><?=_("Analysis Server")?> 1: <br>
     <label>
     <input id="idDCCEnabledY" type="radio" name="DCCEnabled" value="Y"<? if($bDCCEnabled) echo " checked" ?> onclick="DCCchange(false)">
   <?=_("On")?></label><br>
@@ -122,7 +122,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p><?=_("Analyze Server")?> 2: <br>
+  <p><?=_("Analysis Server")?> 2: <br>
     <label>
     <input id="idPyzorEnabledY" type="radio" name="PyzorEnabled" value="Y"<? if($bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(false)">
   <?=_("On")?></label><br>
@@ -136,7 +136,7 @@ function Razor_change(bState)
   <p>
 
 <hr width=400 align=left>
-  <p><?=_("Analyze Server")?> 3: <br>
+  <p><?=_("Analysis Server")?> 3: <br>
     <label>
     <input id="idRazorEnabledY" type="radio" name="RazorEnabled" value="Y"<? if($bRazorEnabled) echo " checked" ?> onclick="Razor_change(false)">
   <?=_("On")?></label><br>

@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $s = $_GET["s"];
 $e = $_GET["e"];
@@ -72,10 +72,10 @@ arsort($TopRule,SORT_NUMERIC);
 <p><?=$sTime?>-<?=$eTime?>:
 <p>
 <?=_("Total Mails")?>: <?=$Total?><br>
-<?=_("Friendly Mails")?>: <?=$Total-$Virus-$Maybe-$SPAM?><p>
+<?=_("Normal Mails")?>: <?=$Total-$Virus-$Maybe-$SPAM?><p>
 
 <?=_("Virus Mails")?>: <?=$Virus?><br>
-<?=_("Like Spam Mails")?>: <?=$Maybe?><br>
+<?=_("Likely Spam Mails")?>: <?=$Maybe?><br>
 <?=_("Spam Mails")?>: <?=$SPAM?>
 </p>
 <p>

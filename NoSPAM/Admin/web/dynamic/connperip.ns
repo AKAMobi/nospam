@@ -6,16 +6,16 @@ if($DynamicEngine <= 0)
 	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	if(!is_numeric($_POST["ConnPerIP"])) die(_("Must Input a Number"));
 	$spamconf->setParam("ConnPerIP",$_POST["ConnPerIP"],"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ConnPerIP",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -35,7 +35,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <form name="form1" method="post" action="">
   <p><?=_("Concurrent SMTP Connect per IP")?>: 
     <input name="ConnPerIP" type="text" size="2" id="ConnPerIP" value="<?=$spamconf->getParam("ConnPerIP","DynamicEngine")?>">
- (<?=_("0 is No Limit")?>)
+ (<?=_("0 means No Limit")?>)
  	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
 </p>
   <p>
@@ -46,8 +46,8 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 }else{
 ?>
   <p><?=_("Concurrent SMTP Connect per IP")?>: 
-    &nbsp;<font color="Red"><?=$spamconf->getParam("ConnPerIP","DynamicEngine")?></font>&nbsp;<?=_("Seconds")?>
- (<?=_("0 is No Limit")?>)
+    &nbsp;<font color="Red"><?=$spamconf->getParam("ConnPerIP","DynamicEngine")?></font>&nbsp;<?=_("Second(s)")?>
+ (<?=_("0 means No Limit")?>)
  	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
 </p>
 <?

@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $result=_("Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,Description");
 	$head = explode(",",$result);
@@ -15,7 +15,7 @@ else
 */
 
 if(!file_exists(LOGFILE))
-	die(_("Error: File do not existed !"));
+	die(_("Error: File does not exist!"));
 
 $grep = "/bin/grep";
 $tail = "/usr/bin/tail";
@@ -48,7 +48,7 @@ if($pos < $total/2){
 }
 
 $dir = array(_("Inward"),_("Outward"));
-$vSpam = array(_("NonSpam"),_("Like Spam"),_("Spam"),_("Blacklist"));
+$vSpam = array(_("NonSpam"),_("Likely Spam"),_("Spam"),_("Blacklist"));
 $vVirus = array(_("NonVirus"),_("Virus"));
 $rAction = array(_("Pass"),_("Drop"));
 $dynamic = array(_("NonOverrun"),_("Overrun"));
@@ -309,7 +309,7 @@ for($i=10;$i<=60;$i+=10){
 <div id="oMonitor" name="oMonitor" style="display: none"></div>
 <p>
 <input type="checkbox" onclick="switchMonitor()"><?=_("Realtime Monitor")?><br>
-<?=_("Page Refresh Time")?>: <input type="text" size="2" maxlength="3" d="oInterval" name="oInterval" disabled><?=_("Seconds")?>&nbsp;&nbsp;
+<?=_("Page Refresh Time")?>: <input type="text" size="2" maxlength="3" d="oInterval" name="oInterval" disabled><?=_("Second(s)")?>&nbsp;&nbsp;
 <?=_("Display Last")?><select name="oLine" id="oLine" disabled><option value="5">5<option value="10">10<option value="20">20<option value="40">40<option value="80">80</select><?=_("Lines")?><br>
 <input type="button" value="<?=_("Submit")?>" id="submit" name="submit" onclick="enableMonitor()" disabled>
 </p>

@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["action"]){
 	if(($ret=wi($_POST["action"],$result))==0){
@@ -12,7 +12,7 @@ if($_POST["action"]){
 			echo _("System is SHUTDOWN......");
 	}
 	else
-		echo _("Op Fail, ErrNo: ").$ret;
+		echo _("Operations Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

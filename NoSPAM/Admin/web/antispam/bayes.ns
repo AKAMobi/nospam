@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["BayesEnabled"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if($_POST["BayesEnabled"]=="Y"){
 		$spamconf->setParam("BayesEnabled","Y","SpamEngine");
@@ -25,7 +25,7 @@ if($_POST["BayesEnabled"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -82,7 +82,7 @@ function change(bState)
     <input id="idBayesN" name="BayesEnabled" type="radio" value="N"<? if(!$bBayes) echo " checked" ?> onclick="change(true)">
   <?=_("Off")?></label>
     <p>
-  <p><?=_("Self-Study: ")?>
+  <p><?=_("Self-Learning: ")?>
     <label>
     <input id="idAutoLearnY" type="radio" name="AutoLearn" value="Y" <? if($bAutoLearn) echo " checked" ?> <? if(!$bBayes) echo " disabled "; ?> >
   <?=_("On")?></label> 
@@ -90,11 +90,11 @@ function change(bState)
     <input id="idAutoLearnN" name="AutoLearn" type="radio" value="N" <? if(!$bAutoLearn) echo " checked" ?> <? if(!$bBayes) echo " disabled "; ?> >
   <?=_("Off")?></label><br>
  
-    <?=_("Highest Score Self-Study as NonSpam: ")?><input name="NonSpamMinScore" type="input" id="idNonSpamMinScore" value="<?=$iNonSpamScore?>" <? if(!$bBayes) echo " disabled";?> > <?=_("Recommend: ")?>0.1<br>
-    <?=_("Lowest Score Self-Study as Spam: ")?><input name="SpamMinScore" type="input" id="idSpamMinScore" value="<?=$iSpamScore?>" <? if(!$bBayes) echo " disabled"; ?> > <?=_("Recommend: ")?>20
+    <?=_("Highest Score of Self-Learning as NonSpam: ")?><input name="NonSpamMinScore" type="input" id="idNonSpamMinScore" value="<?=$iNonSpamScore?>" <? if(!$bBayes) echo " disabled";?> > <?=_("Recommend: ")?>0.1<br>
+    <?=_("Lowest Score of Self-Learning as Spam: ")?><input name="SpamMinScore" type="input" id="idSpamMinScore" value="<?=$iSpamScore?>" <? if(!$bBayes) echo " disabled"; ?> > <?=_("Recommend: ")?>20
   <p>
 
-    <?=_("Min Knowledge that Bayes Filter can work: ")?><br>
+    <?=_("Minimum Knowledge Needed for Bayes Filter to work: ")?><br>
 	<?=_("Min Spam Knowledge: ")?><input name="MinSpamKlg" type="input" id="idMinKlgSpam" value="<?=$iMinKnowledgeSpam?>"<? if(!$bBayes) echo " disabled";?>> <?=_("Recommend: ")?>400<br>
 	<?=_("Min NonSpam Knowledge: ")?><input name="MinNonSpamKlg" type="input" id="idMinKlgNonSpam" value="<?=$iMinKnowledgeNonSpam?>"<? if(!$bBayes) echo " disabled"; ?>> <?=_("Recommend: ")?>400<br>
   <p>

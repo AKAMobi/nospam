@@ -54,7 +54,7 @@ class XMLConfig
 	function save()
 	{
 		if(!adminPerm(PERM_ADMIN_WRITE)){
-			echo _("You have not permission to modify system config");
+			echo _("You have no permission to modify system configuration");
 			return;
 		}
 		
@@ -257,11 +257,11 @@ class ConfFile
 				$this->params[$section] = array();
 			$oldValue = $this->params[$section][$key];
 			$this->params[$section][$key] = $value;
-			LogAction(_("Config File"),_("Modify"),"(".$section.")".$key,$oldValue,$value);
+			LogAction(_("Configuration File"),_("Modify"),"(".$section.")".$key,$oldValue,$value);
 		}else{
 			$oldValue = $this->params[$key];
 			$this->params[$key] = $value;
-			LogAction(_("Config File"),_("Modify"),$key,$oldValue,$value);
+			LogAction(_("Configuration File"),_("Modify"),$key,$oldValue,$value);
 		}
 	}
 	
@@ -269,10 +269,10 @@ class ConfFile
 	{
 		if($this->bSection){
 			unset($this->params[$section][$key]);
-			LogAction(_("Config File"),_("Delete"),"(".$section.")".$key);
+			LogAction(_("Configuration File"),_("Delete"),"(".$section.")".$key);
 		}else{
 			unset($this->params[$key]);
-			LogAction(_("Config File"),_("Delete"),$key);
+			LogAction(_("Configuration File"),_("Delete"),$key);
 		}
 	}
 	
@@ -290,7 +290,7 @@ class ConfFile
 	function save()
 	{
 		if(!adminPerm(PERM_ADMIN_WRITE)){
-			echo _("You have not permission to modify system config");
+			echo _("You have no permission to modify system configuration");
 			return;
 		}
 		
@@ -572,7 +572,7 @@ class LoginBlackList
 			return false;
 		}
 
-		LogAction(_("Admin Login"),_("User in BlackList try to Login"),$sIP);
+		LogAction(_("Admin Login"),_("Users in BlackList is trying to Login"),$sIP);
 		return true;
 	}
 	
@@ -589,7 +589,7 @@ class LoginBlackList
 		
 		$this->aBlockList[$sIP] = time() + 60 * $iDenyTimeAfterMaxLogin;
 		$this->saveBlockList();
-		LogAction(_("Admin Login"),_("Add IP Blocklist"),$sIP);
+		LogAction(_("Admin Login"),_("Add to IP Blocklist"),$sIP);
 	}
 	
 	function saveBlockList()
@@ -625,7 +625,7 @@ class LoginBlackList
 			}
 		}
 
-		LogAction(_("Admin Login"),_("Login Fail"),$sID);
+		LogAction(_("Admin Login"),_("Login Failure"),$sID);
 
 		if ($bBlock){
 			$this->addBlockList($sIP);

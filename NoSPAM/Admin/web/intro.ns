@@ -40,7 +40,7 @@ echo "<p>"._("The License is not match your product Version!")."</p>";
 </p>
 <?
 	}else{
-		echo "<h2>"._("The License has Expired")."</h2>";
+		echo "<h2>"._("The License has expired")."</h2>";
 		header("Refresh: 0;URL=/admin/system/serialno.ns");
 	}
 }

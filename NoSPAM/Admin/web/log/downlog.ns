@@ -2,12 +2,12 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 $file = LOGFILE;
 
 if(!file_exists($file))
-	die(_("Error: File do not existed !"));
+	die(_("Error: File does not exist!"));
 
 header("Cache-control: private");
 header("Content-type: application/text");

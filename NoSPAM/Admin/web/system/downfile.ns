@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 switch($_GET["file"]){
 	case "config":
@@ -19,7 +19,7 @@ switch($_GET["file"]){
 }
 
 if(!file_exists($file))
-	die(_("Error: File do not existed !"));
+	die(_("Error: File does not exist!"));
 
 header("Cache-control: private");
 header("Content-type: application/text");

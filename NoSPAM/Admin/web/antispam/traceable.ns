@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["Traceable"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if($_POST["Traceable"]=="Y"){
 		$spamconf->setParam("Traceable","Y","SpamEngine");
@@ -26,7 +26,7 @@ if($_POST["Traceable"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_Traceable",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -114,7 +114,7 @@ function formReset()
   <p>
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-  <td><?=_("Like Spam")?>:</td>
+  <td><?=_("Likely Spam")?>:</td>
   <td align="right"><?=_("Spam")?></td>
   <td><div class="slider" id="slider-1" tabIndex="1">
   	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>"/>
@@ -130,7 +130,7 @@ function formReset()
   <td align="left"><?=_("NonSpam")?></td>
   </tr>
   </table>
-  <p><?=_("Note: From Left to Right is Spam, Like Spam, NonSpam")?></p>
+  <p><?=_("Note: From Left to Right is Spam, Likely Spam, NonSpam")?></p>
  <script>
  var s1 = new Slider(document.getElementById("slider-1"), document.getElementById("slider1"));
  var s2 = new Slider(document.getElementById("slider-2"), document.getElementById("slider2")); 
@@ -210,7 +210,7 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
   <p>
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-  <td><?=_("Like Spam")?>:</td>
+  <td><?=_("Likely Spam")?>:</td>
   <td><div class="slider" id="slider-1" tabIndex="1">
   	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>" disabled/>
   </div></td>

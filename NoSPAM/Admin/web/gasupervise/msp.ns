@@ -5,18 +5,18 @@ if ($GAInterface <= 0)
 	die(_("Sorry, This Product has no Policy Auto-Download Engine License"));
 
 if (!adminPerm(PERM_ADMIN_GASUP))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if ($_POST["Submit"] == _("Modify")){
 	if (!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 	$spamconf->setParam("MSP_IP",$_POST['MSP_IP'],"GAInterface");
 	$spamconf->setParam("MSP_Port",$_POST['MSP_Port'],"GAInterface");
 	$spamconf->setParam("MSP_ID",$_POST['MSP_ID'],"GAInterface");
 	$spamconf->save();
 	
 	if (($ret = wi("GA_reset",$result)) == 0){
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	} else {
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}

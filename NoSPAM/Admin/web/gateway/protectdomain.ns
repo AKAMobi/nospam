@@ -5,7 +5,7 @@ if($MailGateway <= 0 && $MailRelay <= 0 )
 	die(_("Sorry, This Product has no Gateway Mode License"));
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 switch($_GET["action"]){
 	case "add":
@@ -165,7 +165,7 @@ st.onsort = function () {
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo _("You have not permission to modify system config");
+		echo _("You have no permission to modify system configuration");
 		return;
 	}
 ?>
@@ -207,7 +207,7 @@ function add()
 function modify()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		return;
 	}
 
@@ -262,7 +262,7 @@ function modify()
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		return;
 	}
 
@@ -299,7 +299,7 @@ function del()
 function save()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 		return;
 	}
 
@@ -312,7 +312,7 @@ function save()
 	if (!checkipaddr($IP,false))
 		die(_("IP Format Error"));
 	if (!is_numeric($Port) || intval($Port) < 1 || intval($Port) > 65535)
-		die(_("Port Must between 1-65535 !"));
+		die(_("Port Must between 1 and 65535 !"));
 	
 	if(!$bModify){
 		if( $spamconf->hasParam("ProtectDomain_{$Domain}_IPPort","MailServer") ){

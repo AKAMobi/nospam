@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die(_("Sorry, This Product has not AntiSpam Engine License"));
+	die(_("Sorry, This Product has no AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die(_("You have not permission to operate this page"));
+	die(_("You have no permission to access this page"));
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die(_("You have not permission to modify system config"));
+		die(_("You have no permission to modify system configuration"));
 
 	if($_POST["RBLDisabled"]=="N"){
 		$spamconf->setParam("RBLDisabled","N","SpamEngine");
@@ -19,7 +19,7 @@ if($_POST["isSubmit"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Config Modify Success! ");
+		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
@@ -58,7 +58,7 @@ function change(bState)
     <input id="idRBLDisabledY" type="radio" name="RBLDisabled" value="Y"<? if($bRBLDisabled) echo " checked" ?> onclick="change(true)">
   <?=_("Off")?></label>
     <p>
-    RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Seconds")?> <?=_("Recommend: ")?>15 <?=_("Seconds")?><br>
+    RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Second(s)")?> <?=_("Recommend: ")?>15 <?=_("Second(s)")?><br>
 
     <input type="reset" name="reset" value="<?=_("Reset")?>">
     <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
@@ -67,9 +67,9 @@ function change(bState)
 <p><?=_("Current Embeded RBL: ")?></p>
 <ol>
 <li><?=_("SURBL Spam URI Realtime Blocklist")?></li>
-	<br><?=_("URI Black List, Check if URI in Email included in Blocklist.")?>
+	<br><?=_("URI Black List, Check if URI in Email is included in the Blocklist.")?>
 <li><?=_("HABEAS")?> </li>
-	<br><?=_("AntiSpam via Head Tag Auth.")?>
+	<br><?=_("AntiSpam via Head Tag Authorization")?>
 <li><?=_("NJABL Not Just Another Bogus List")?></li>
 <li><?=_("SORBS Spam and Open Relay Blocking System")?></li>
 <li><?=_("Spamhaus XBL+SBL")?> </li>
