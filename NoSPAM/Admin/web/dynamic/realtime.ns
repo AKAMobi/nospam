@@ -31,8 +31,11 @@ switch($_GET["option"]){
 
 list($Key,$column) = explode(",",$sKey);
 
+/*echo "get_DynamicEngineDBData $Key";*/
 if(($ret = wi("get_DynamicEngineDBData $Key",$Data))!=0)
-	die("´íÎó´úÂë£º$ret");
+{ ; } /*	die("´íÎó´úÂë£º$ret");*/
+
+//$Data = explode("\n",$str);
 
 $iSize = count($Data);
 $pagenum = $_GET["pagenum"];
