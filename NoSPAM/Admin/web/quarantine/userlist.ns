@@ -48,7 +48,7 @@ if($_POST["act"]){
                                 echo $result;
                         }
                         else {
-                            echo _("Config Modify Fail, ErrNo: ").$ret;
+                            echo _("Config Commit Fail, ErrNo: ").$ret;
                         }
                         break;
                     case UPLOAD_ERR_INI_SIZE:
@@ -92,7 +92,7 @@ if($_POST["act"]){
             if(($ret=wi("QuarantineUpdate",$result))==0)
         		echo _("Modification Success! ");
         	else
-        		echo _("Config Modify Fail, ErrNo: ").$ret;
+        		echo _("Config Commit Fail, ErrNo: ").$ret;
             
     }
 }
@@ -173,7 +173,7 @@ function displaySettings(userListType)
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
     </select></label></p>
-    <input type="button" name="isSubmit"   onclick="dosubmit('modify')"  value="<?=_("Modify")?>">
+    <input type="button" name="isCommit"   onclick="dosubmit('modify')"  value="<?=_("Commit")?>">
   </p>
 </form>
 </body>
@@ -238,7 +238,7 @@ function displaySettings(userListType)
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
     </select></label></p>
-    <input type="button" name="isSubmit"  disabled  value="<?=_("Modify")?>">
+    <input type="button" name="isCommit"  disabled  value="<?=_("Commit")?>">
   </p>
 </form>
 </body>

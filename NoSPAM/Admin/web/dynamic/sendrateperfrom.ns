@@ -8,7 +8,7 @@ if($DynamicEngine <= 0)
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
 	die(_("You have no permission to access this page"));
 
-if($_POST["submit"]==_("Submit")){
+if($_POST["submit"]==_("Commit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Seconds"]) || !is_numeric($_POST["Block"]))
@@ -26,7 +26,7 @@ if($_POST["submit"]==_("Submit")){
 	if(($ret=wi("reset_SendRatePerFrom",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	list($Counts,$Seconds,$Block) = explode("/",$spamconf->getParam("SendRatePerFrom","DynamicEngine"));
 ?>
@@ -47,8 +47,8 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?=_("in")?><input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Second(s)")?><br>
 <?=_("One Sender should send no more than")?><input size="2" type="text" name="Counts" value="<?=$Counts?>"><?=_("Mails")?><br>
 <?=_("or will be blocked")?><input size="2" type="text" name="Block" value="<?=$Block?>"><?=_("Second(s)")?><br>
-(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
- <input type="submit" name="submit" value="<?=_("Submit")?>">
+(<?=_("0 means No Limit").", "._("Suggest time-set is no more than 1800 seconds.")?>)
+ <input type="submit" name="submit" value="<?=_("Commit")?>">
 </form>
 <?
 }else{
@@ -57,27 +57,27 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?=_("in")?> <font color="Red"><?=$Seconds?></font> <?=_("Second(s)")?><br>
 <?=_("One Sender should send no more than")?> <font color="Red"><?=$Counts?></font> <?=_("Mails")?><br>
 <?=_("or will be blocked")?> <font color="Red"><?=$Block?></font> <?=_("Second(s)")?><br>
-(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
+(<?=_("0 means No Limit").", "._("Suggest time-set is no more than 1800 seconds.")?>)
 <?
 }
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteFromList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
 	SaveData("WhiteFromList","DynamicEngine",_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 
 if(!$bDynamic){

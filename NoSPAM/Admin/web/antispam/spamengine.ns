@@ -7,7 +7,7 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["isSubmit"]){
+if($_POST["isCommit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
@@ -25,7 +25,7 @@ if($_POST["isSubmit"]){
 	if(($ret=wi("reset_SpamEngine",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	$bSmartEngine = ($spamconf->getParam("SmartEngine","SpamEngine")=="Y")? true:false;
 	$bTraceEngine = ($spamconf->getParam("TraceEngine","SpamEngine")=="Y")? true:false;
@@ -94,9 +94,9 @@ function change(bState)
     <br>
     <?=_("Direction")?>: 
     <input type="checkbox" id="idTraceProtectDirectionOut" name="TraceProtectDirection[]" value="Out"<?if(strstr($sTraceProtectDirection,"Out")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    <?=_("Outward")?>: 
+    <?=_("Outgoing")?>: 
     <input type="checkbox" id="idTraceProtectDirectionIn" name="TraceProtectDirection[]" value="In"<?if(strstr($sTraceProtectDirection,"In")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    <?=_("Inward")?>: 
+    <?=_("Incoming")?>: 
     <p>
  
 <p>
@@ -123,16 +123,16 @@ function change(bState)
 		if(!$bAntiSpam) echo " disabled"
 	?>
     >
-    <?=_("Outward")?>: 
+    <?=_("Outgoing")?>: 
     <input type="checkbox" id="idSmartProtectDirectionIn" name="SmartProtectDirection[]" value="In"
 	<?
 		if(strstr($sSmartProtectDirection,"In")) echo " checked";
 		if(!$bAntiSpam) echo " disabled"
 	?> 
     >
-    <?=_("Inward")?>: 
+    <?=_("Incoming")?>: 
     <br>
-    <input type="submit" name="isSubmit" value="<?=_("Modify")?>">
+    <input type="submit" name="isCommit" value="<?=_("Commit")?>">
 </form>
 
 </body>

@@ -99,7 +99,7 @@ function change(bState)
 	<?=_("Min NonSpam Knowledge: ")?><input name="MinNonSpamKlg" type="input" id="idMinKlgNonSpam" value="<?=$iMinKnowledgeNonSpam?>"<? if(!$bBayes) echo " disabled"; ?>> <?=_("Recommend: ")?>400<br>
   <p>
     <input type="reset" name="reset" value=<?=_("Reset")?>>
-    <input type="submit" name="submit" value=<?=_("Submit")?>>
+    <input type="submit" name="submit" value=<?=_("Commit")?>>
   </p>
 </form>
 <?

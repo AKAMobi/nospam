@@ -47,7 +47,7 @@ if($pos < $total/2){
 	exec("$tail -n ".($total-$pos+$pagenum)." ".LOGFILE." | $grep -m $pagenum ,",$lines);
 }
 
-$dir = array(_("Inward"),_("Outward"));
+$dir = array(_("Incoming"),_("Outgoing"));
 $vSpam = array(_("NonSpam"),_("Likely Spam"),_("Spam"),_("Blacklist"));
 $vVirus = array(_("NonVirus"),_("Virus"));
 $rAction = array(_("Pass"),_("Drop"));

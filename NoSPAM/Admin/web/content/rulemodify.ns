@@ -316,7 +316,7 @@ if($attachmentscount > 0){
 <?=_("Action Parameter")?>: 
 <input type="text" name="ActionParam" value="<?=utf8_decode($action->get_attribute("action_param"))?>" />
 <br>
-<input type="button" value="<?=_("Submit")?>" onclick="submitForm('save')"/>
+<input type="button" value="<?=_("Commit")?>" onclick="submitForm('save')"/>
 <input type="button" value="<?=_("Reset")?>" onclick="confirmReset()" />
 </form>
 <?
@@ -705,7 +705,7 @@ if($attachmentscount > 0){
 <?=_("Action Parameter")?>:       
 <input type="text" name="ActionParam" value="<?=$_POST["ActionParam"]?>" />
 <br>
-<input type="button" value="<?=_("Submit")?>" onclick="submitForm('save')"/>
+<input type="button" value="<?=_("Commit")?>" onclick="submitForm('save')"/>
 <input type="button" value="<?=_("Reset")?>" onclick="confirmReset()" />
 </form>
 <?
@@ -1029,7 +1029,7 @@ if(count($Category) > 0){
 <?=_("Action Parameter")?>:       
 <input type="text" name="ActionParam" value="" />
 <br>
-<input type="button" value="<?=_("Submit")?>" onclick="submitForm('save')"/>
+<input type="button" value="<?=_("Commit")?>" onclick="submitForm('save')"/>
 <input type="button" value="<?=_("Reset")?>" onclick="confirmReset()" />
 </form>
 <?

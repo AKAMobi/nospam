@@ -42,9 +42,9 @@ if( wi("get_Serial",$result)==0 ){
 <?
 	}
 	}else{
-		echo "<p>" . _("This Product has not get valid License, Please contact with your product provider.") . "</p>";
+		echo "<p>" . _("This Product has not get valid License, Please contact factory.") . "</p>";
 		$LicenseInfo = trim(implode("",$result));
-		echo "<p>"._(" Error").": ".$LicenseInfo." #".$ret._()."<p>";
+		echo "<p>"._(" Error").": ".$LicenseInfo." #".$ret."<p>";
 	}
 
 ?>
@@ -52,7 +52,7 @@ if( wi("get_Serial",$result)==0 ){
 <?=_("Upload License")?>:
 <form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
   <input type="file" name="license">
-  <input type="submit" name="Submit" value="<?=_("Submit")?>">
+  <input type="submit" name="Commit" value="<?=_("Commit")?>">
 </form>
 
 </body>

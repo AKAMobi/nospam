@@ -7,7 +7,7 @@ if($ContentEngine <= 0)
 if(!adminPerm(PERM_ADMIN_CONTENT))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Submit"]==_("Modify")){
+if($_POST["Commit"]==_("Commit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	if(isset($_POST["ContentFilterEngine"])){
@@ -22,7 +22,7 @@ if($_POST["Submit"]==_("Modify")){
 	if(($ret=wi("reset_ContentEngine",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	$sDirection = $spamconf->getParam("ProtectDirection","ContentEngine");
 	if(adminPerm(PERM_ADMIN_WRITE)){
@@ -40,11 +40,11 @@ function change(bState)
 	if(bState){
 		form2.oDir1.disabled = true;
 		form2.oDir2.disabled = true;
-		form2.idSubmit.disabled = true;
+		form2.idCommit.disabled = true;
 	}else{
 		form2.oDir1.disabled = false;
 		form2.oDir2.disabled = false;
-		form2.idSubmit.disabled = false;
+		form2.idCommit.disabled = false;
 	}
 }
 -->
@@ -64,18 +64,18 @@ function change(bState)
     <input type="radio" name="ContentFilterEngine" value="N"<? if(!$bContentFilter) echo " checked"; ?> onclick="change(true)">
     <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Submit" value="<?=_("Modify")?>">
+    <input type="submit" name="Commit" value="<?=_("Commit")?>">
   </p>
 </form>
 <form name="form2" method="post" action="">
   <p><?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bContentFilter) echo " disabled"?>>
-    <?=_("Outward")?>
+    <?=_("Outgoing")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bContentFilter) echo " disabled"?>>
-    <?=_("Inward")?>
+    <?=_("Incoming")?>
     <br>
-    <input type="submit" id="idSubmit" name="Submit" value="<?=_("Modify")?>"<?if(!$bContentFilter) echo " disabled"?>>
+    <input type="submit" id="idCommit" name="Commit" value="<?=_("Commit")?>"<?if(!$bContentFilter) echo " disabled"?>>
   </p>
 </form>
 </body>
@@ -103,10 +103,10 @@ function change(bState)
   </p>
   <p><?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";?> disabled>
-    <?=_("Outward")?>
+    <?=_("Outgoing")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";?> disabled>
-    <?=_("Inward")?>
+    <?=_("Incoming")?>
   </p>
 </body>
 </html>

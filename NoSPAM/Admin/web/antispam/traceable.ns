@@ -167,7 +167,7 @@ function formReset()
   <p>
     <input type="reset" name="reset" value="<?=_("Reset")?>">
 	<input type="button" value="<?=_("Recommend")?>" onclick="change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
-    <input type="submit" name="submit" value="<?=_("Submit")?>">
+    <input type="submit" name="submit" value="<?=_("Commit")?>">
   </p>
 </form>
 <?

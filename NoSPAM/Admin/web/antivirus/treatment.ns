@@ -6,7 +6,7 @@ if($AntiVirusEngine <= 0)
 if(!adminPerm(PERM_ADMIN_VIRUS))
 	die(_("You have no permission to access this page"));
 
-if($_POST["Submit"]==_("Modify")){
+if($_POST["Commit"]==_("Commit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	$spamconf->setParam("VirusAction",$_POST["VirusAction"],"AntiVirusEngine");
@@ -23,7 +23,7 @@ if($_POST["Submit"]==_("Modify")){
 	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	$VirusAction = $spamconf->getParam("VirusAction","AntiVirusEngine");
 	$cTagHead = $spamconf->getParam("TagHead","AntiVirusEngine");
@@ -73,9 +73,9 @@ if($_POST["Submit"]==_("Modify")){
     <input name="VirusTag" type="text" id="VirusTag" value="<?=$VirusTag?>">
   <?=_("Recommend")?>: <?=_("[Virus]")?> <br>
   <p>
-    <input type="reset" name="reset" value="<?=_("Default")?>">
+    <input type="reset" name="reset" value="<?=_("Last")?>">
 	<input type="button" value="<?=_("Recommend")?>" onclick="form1.VirusTag.value='<?=_("[Virus]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
-    <input type="submit" name="Submit" value="<?=_("Modify")?>">
+    <input type="submit" name="Commit" value="<?=_("Commit")?>">
 </p>
 </form>
 <?

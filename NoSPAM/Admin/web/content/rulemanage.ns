@@ -129,7 +129,7 @@ function sortTable(sKey)
 </select><br>
 <form action="<?=$url?><?if($bPolice) echo "?db=police";?>" method="POST">
 <?=_("No.")?>:
-<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Submit")?>" />
+<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Commit")?>" />
 </form>
 <?
 if(!$readonly){

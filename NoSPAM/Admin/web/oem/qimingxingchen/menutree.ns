@@ -37,7 +37,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	var a = new WebFXTreeItem('<?=_("System Management")?>');
 	tree.add(a);
 	a.add(new WebFXTreeItem('<?=_("SerialNo & License")?>','system/serialno.ns', 'main'));
-	a.add(new WebFXTreeItem('<?=_("Upgrade")?>','system/upgrade.ns', 'main'));
+	a.add(new WebFXTreeItem('<?=_("Update")?>','system/upgrade.ns', 'main'));
 <?if($Switchable){?>
 	a.add(new WebFXTreeItem('<?=_("System Mode")?>','system/gatewaymode.ns','main'));
 <?}?>
@@ -54,7 +54,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
 	b.add(new WebFXTreeItem('<?=_("Admin List")?>','user/showadminlist.ns','main'));
-	b.add(new WebFXTreeItem('<?=_("Login Restrict")?>','user/loginblacklist.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Login Restriction")?>','user/loginblacklist.ns','main'));
 <?
 }
 ?>
@@ -95,10 +95,10 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	k.add(new WebFXTreeItem('<?=_("Mail Queue Monitor")?>','gateway/mailqueue.ns','main'));
 	var k2 = new WebFXTreeItem('<?=_("User Management")?>');
 	k.add(k2);
-	k2.add(new WebFXTreeItem('<?=_("User Management")?>','server/showuserlist.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("User List")?>','server/showuserlist.ns','main'));
 	k2.add(new WebFXTreeItem('<?=_("Search User")?>','server/searchUser.ns','main'));
-	k2.add(new WebFXTreeItem('<?=_("User Group Management")?>','server/groupsControl.ns','main'));
-	k2.add(new WebFXTreeItem('<?=_("Maillist")?>','server/sendGroupMails.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("Group")?>','server/groupsControl.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("Mailing List")?>','server/sendGroupMails.ns','main'));
 <?php
 	}
 }
@@ -139,8 +139,8 @@ if($DynamicEngine > 0){
 	var j = new WebFXTreeItem('<?=_("AntiVirus Engine")?>');
 	tree.add(j);
 	j.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antivirus/virusengine.ns','main'));
-	j.add(new WebFXTreeItem('<?=_("Virus Recognise")?>','antivirus/recognize.ns','main'));
-	j.add(new WebFXTreeItem('<?=_("Virus Deal")?>','antivirus/treatment.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("Virus Identification")?>','antivirus/recognize.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("Virus Processing")?>','antivirus/treatment.ns','main'));
 <?php
 	}
 
@@ -168,7 +168,7 @@ if($SpamEngine > 0){
 	c.add(new WebFXTreeItem('<?=_("Process Center")?>','antispam/netcheck.ns','main'));
 	c.add(new WebFXTreeItem('<?=_("Content Analyze")?>','antispam/sa.ns','main'));
 	c.add(new WebFXTreeItem('<?=_("Noise Reduce System")?>','antispam/awl.ns','main'));
-	c.add(new WebFXTreeItem('<?=_("Spam Treatment")?>','antispam/treatment.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Spam Processing")?>','antispam/treatment.ns','main'));
 
 
 <?php
@@ -219,19 +219,19 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
         g.add(gs);
 	  gs.add( new WebFXTreeItem('<?=_("Internal Traffic")?>','status/internalnet.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("External Traffic")?>','status/externalnet.html','main') );
-	  gs.add( new WebFXTreeItem('<?=_("TCP connect")?>','status/tcp.html','main') );
-	  gs.add( new WebFXTreeItem('<?=_("SMTP connect")?>','status/smtp.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("TCP Connection")?>','status/tcp.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("SMTP Connection")?>','status/smtp.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("CPU Load")?>','status/cpu.html','main') );
 	  gs.add( new WebFXTreeItem('<?=_("Memory Usage")?>','status/mem.html','main') );
-	  gs.add( new WebFXTreeItem('<?=_("HardDisk Traffic")?>','status/hdio.html','main') );
-	  gs.add( new WebFXTreeItem('<?=_("HardDisk Usage")?>','status/hdfree.html','main') );
-	var ga = new WebFXTreeItem('<?=_("Engine Running Status")?>','status/analyze.ns','main');
+	  gs.add( new WebFXTreeItem('<?=_("Hard Disk Load")?>','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("Hard Disk Space")?>','status/hdfree.html','main') );
+	var ga = new WebFXTreeItem('<?=_("Engine Status")?>','status/analyze.ns','main');
 	g.add(ga);
 	  ga.add( new WebFXTreeItem('<?=_("Mail Type Stat.")?>','status/mail_type.ns','main') );
 	  ga.add( new WebFXTreeItem('<?=_("Mail Size Stat.")?>','status/mail_size.ns','main') );
 	  ga.add( new WebFXTreeItem('<?=_("Mail Traffic Stat.")?>','status/mail_traffic.ns','main') );
 	  ga.add( new WebFXTreeItem('<?=_("DNS Status")?>','status/dns.ns','main') );
-	  ga.add( new WebFXTreeItem('<?=_("Engine Running Status")?>','status/mail_engine.ns','main') );
+	  ga.add( new WebFXTreeItem('<?=_("Engine Load Status")?>','status/mail_engine.ns','main') );
 	g.add(new WebFXTreeItem('<?=_("Log Browser")?>','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('<?=_("Log Stat.")?>','log/logstat.ns','main'));
 	g.add(new WebFXTreeItem('<?=_("Log Export")?>','log/logexport.ns','main'));

@@ -177,7 +177,7 @@ function DrawAddTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <body>
 <form method="POST" action="<?=$_SERVER['PHP_SELF']."?action=save"?>">
 <table width="50%" border="1" align="center">
-<caption>Ìí¼Ó<?=$sTitle?></caption>
+<caption><?=_("Add")?> <?=$sTitle?></caption>
 <tr>
 	<th scope="row"><?=$sColumn?>£º</th>
 	<td align="left"><input type="text" name="key"></td>

@@ -12,7 +12,7 @@ if($_POST["Engine"]){
 	if(($ret=wi("SystemEngine_reset",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -38,7 +38,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
     <input type="radio" name="Engine" value="N"<? if(!$bAllEngine) echo" checked"; ?>>
     <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Submit" value="<?=_("Modify")?>">
+    <input type="submit" name="Commit" value="<?=_("Commit")?>">
   </p>
 </form>
 <?

@@ -112,7 +112,7 @@ function jump()
 		<td><?=_("To")?></td>
 		<td><?=_("Size")?></td>
 <?if($bWritable){?>
-		<td><?=_("Op")?></td>
+		<td><?=_("Operation")?></td>
 <?}?>
 	</tr>
 </thead>

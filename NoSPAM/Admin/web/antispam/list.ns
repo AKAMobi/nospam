@@ -11,19 +11,19 @@ switch($_GET["option"]){
 	case "WhiteIP":
 	case "BlackIP":
 	$sOption = "BlockIP";
-	$title = ($_GET["option"]=="WhiteIP")?_("IP WhiteList"):_("IP BlackList");
+	$title = ($_GET["option"]=="WhiteIP")?_("IP Whitelist"):_("IP BlackList");
 	$column = "IP";
 	break;
 	case "WhiteDomain":
 	case "BlackDomain":
 	$sOption = "BlockDomain";
-	$title = ($_GET["option"]=="WhiteDomain")?_("Domain WhiteList"):_("Domain BlackList");
+	$title = ($_GET["option"]=="WhiteDomain")?_("Domain Whitelist"):_("Domain BlackList");
 	$column = _("Email Domain");
 	break;
 	case "WhiteFrom":
 	case "BlackFrom":
 	$sOption = "BlockFrom";
-	$title = ($_GET["option"]=="WhiteFrom")?_("Sender WhiteList"):_("Sender BlackList");
+	$title = ($_GET["option"]=="WhiteFrom")?_("Sender Whitelist"):_("Sender BlackList");
 	$column = _("Email Address");
 	break;
 	default:

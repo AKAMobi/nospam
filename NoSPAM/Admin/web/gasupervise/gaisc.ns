@@ -7,7 +7,7 @@ if ($GAInterface <= 0)
 if (!adminPerm(PERM_ADMIN_GASUP))
 	die(_("You have no permission to access this page"));
 
-if ($_POST["Submit"] == _("Modify")){
+if ($_POST["Commit"] == _("Commit")){
 	if (!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	$spamconf->setParam("GAISC_ID",$_POST['GAISC_ID'],"GAInterface");
@@ -21,7 +21,7 @@ if ($_POST["Submit"] == _("Modify")){
 	if (($ret = wi("GA_reset",$result)) == 0){
 		echo _("Modification Success! ");
 	} else {
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 	}
 } else {
 	$bState = ($spamconf->getParam("GAInterface","GAInterface") == "Y") && adminPerm(PERM_ADMIN_WRITE);
@@ -62,7 +62,7 @@ if ($_POST["Submit"] == _("Modify")){
 </tr>
 </table>
 <br>
-<input type="submit" name="Submit" value="<?=_("Modify")?>"<?if (!$bState) echo " disabled";?>>
+<input type="submit" name="Commit" value="<?=_("Commit")?>"<?if (!$bState) echo " disabled";?>>
 <input type="reset" value="<?=_("Reset")?>"<?if (!$bState) echo " disabled";?>>
 </form>
 </div>

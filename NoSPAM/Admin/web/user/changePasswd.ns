@@ -79,7 +79,7 @@ function changeUserPasswd() {
 
 </tbody>
 </table>
-<INPUT type="submit" value="<?=_("Submit")?>">
+<INPUT type="submit" value="<?=_("Commit")?>">
 </form>
 <?php
 

@@ -35,7 +35,7 @@ $ArchiveAdmin = $spamconf->getParam("ArchiveAdmin","ArchiveEngine");
   <?=_("Audit Address")?>: 
     <input name="ArchiveAdmin" type="text" id="ArchiveAdmin" value="<?=$ArchiveAdmin?>">
   <?=_("All Audit Email will be sent to this Address.")?><br>
-  <input type="submit" name="submit" value="<?=_("Submit")?>">
+  <input type="submit" name="submit" value="<?=_("Commit")?>">
 </form>
 <?
 if(!$bArchive){

@@ -8,7 +8,7 @@ if($InteractiveEngine <= 0)
 if(!adminPerm(PERM_ADMIN_INTERACTIVE))
 	die("您没有访问该网页的权限。");
 
-if($_POST["Submit"]=="修改"){
+if($_POST["Commit"]=="修改"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行修改操作");
 	if($_POST["WarnBigMail"]=="Y"){
@@ -76,7 +76,7 @@ function change()
 <textarea cols="90" rows="20" name="Content"<?if(!$bWarnBigMail) echo " disabled";?>><?=$sContent?></textarea>
 </p>
 <p>
-    <input type="submit" name="Submit" value="修改">
+    <input type="submit" name="Commit" value="修改">
 </p>
 </form>
 <?

@@ -4,7 +4,7 @@ require_once('../inc/include.ns');
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have no permission to access this page"));
 
-if (isset($_POST["Submit"]) && $_POST["Submit"] == _("Upload")){
+if (isset($_POST["Commit"]) && $_POST["Commit"] == _("Upload")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	upgrade();
@@ -112,7 +112,7 @@ if (count($aUpgradeLog) > 0){
 <p><?=_("Upload Upgrade Package")?>:</p>
 <form action="?action=upload" method="post" enctype="multipart/form-data">
   <input type="file" name="upgradepkg">
-  <input type="submit" name="Submit" value="<?=_("Upload")?>">
+  <input type="submit" name="Commit" value="<?=_("Upload")?>">
 </form>
 	</td>
 </tr>

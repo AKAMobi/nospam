@@ -23,7 +23,7 @@ $wc = "/usr/bin/wc";
 $total = intval(exec("$wc -l ".LOGFILE));
 $start = ($total-$num)<0?1:($total-$num+1);
 
-$dir = array(_("Inward"),_("Outward"));
+$dir = array(_("Incoming"),_("Outgoing"));
 $vSpam = array(_("NonSpam"),_("Likely Spam"),_("Spam"),_("Blacklist"));
 $vVirus = array(_("NonVirus"),_("Virus"));
 $rAction = array(_("Pass"),_("Drop"));

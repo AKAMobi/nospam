@@ -10,7 +10,7 @@ if($Switchable)
 else
 	$mode = $intServerGateway;
 
-if($_POST["Submit"]==_("Modify")){
+if($_POST["Commit"]==_("Commit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
@@ -26,7 +26,7 @@ if($_POST["Submit"]==_("Modify")){
 	if(($ret=wi("reset_Network",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -62,7 +62,7 @@ if($_POST["Submit"]==_("Modify")){
     </tr>
   </table>
 
-      <p align=center><input type="submit" name="Submit" value="<?=_("Modify")?>"> <input type="reset" name="reset" value="<?=_("Reset")?>"></p>
+      <p align=center><input type="submit" name="Commit" value="<?=_("Commit")?>"> <input type="reset" name="reset" value="<?=_("Reset")?>"></p>
 </form>
 </body>
 </html>

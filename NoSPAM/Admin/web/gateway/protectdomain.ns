@@ -195,7 +195,7 @@ function add()
 	<td><input type="text" name="Cate"></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" value="<?=_("Submit")?>"></td>
+	<td colspan="2"><input type="submit" value="<?=_("Commit")?>"></td>
 </tr>
 </table>
 </form>
@@ -250,7 +250,7 @@ function modify()
 	<td><input type="text" name="Cate" value="<?=$spamconf->getParam("ProtectDomain_{$domain}_Cate","MailServer")?>"></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="submit" value="<?=_("Submit")?>"></td>
+	<td colspan="2"><input type="submit" value="<?=_("Commit")?>"></td>
 </tr>
 </table>
 </form>

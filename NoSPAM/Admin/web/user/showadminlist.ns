@@ -323,7 +323,7 @@ if($InteractiveEngine > 0 ){
 </tr>
 <?}?>
 <tr align="center" >
-	<td colspan=3><input type=submit name="adduser" value="<?=_("Submit")?>">
+	<td colspan=3><input type=submit name="adduser" value="<?=_("Commit")?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type=reset value="<?=_("Reset")?>">
 	</td>
@@ -436,11 +436,11 @@ function modify()
 <tr>
 	<td align="right"><?=_("Local Mail Domain")?>: </td>
 	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
-	<td>每行一个。</td>
+	<td><?=_("one per line")?></td>
 </tr>
 <?}?>
 <tr align="center" >
-	<td colspan=3><input type=submit name="adduser" value="<?=_("Submit")?>">
+	<td colspan=3><input type=submit name="adduser" value="<?=_("Commit")?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type=reset value="<?=_("Reset")?>">
 	</td>

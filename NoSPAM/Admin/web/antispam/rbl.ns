@@ -7,7 +7,7 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
-if($_POST["isSubmit"]){
+if($_POST["isCommit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
@@ -21,7 +21,7 @@ if($_POST["isSubmit"]){
 	if(($ret=wi("SA_update",$result))==0)
 		echo _("Modification Success! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 	$bRBLDisabled = ($spamconf->getParam("RBLDisabled","SpamEngine")=="Y")? true:false;
 	$iRBLTimeout = $spamconf->getParam("RBLTimeout","SpamEngine");
@@ -61,7 +61,7 @@ function change(bState)
     RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Second(s)")?> <?=_("Recommend: ")?>15 <?=_("Second(s)")?><br>
 
     <input type="reset" name="reset" value="<?=_("Reset")?>">
-    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
+    <input type="submit" name="isCommit" value="<?=_("Commit")?>">
   </p>
 </form>
 <p><?=_("Current Embeded RBL: ")?></p>

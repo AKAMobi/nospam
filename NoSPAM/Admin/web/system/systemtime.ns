@@ -51,7 +51,7 @@ function realtime()
   <?=_("System Clock")?>:
     <input name="SystemTime" type="text" id="SystemTime" value="<?=date("Y-m-d H:i:s")?>">
     <input type="checkbox" name="synch" onclick="realtime()"><?=_("Sync")?><br>
-    <input type="submit" name="Submit" value="<?=_("Submit")?>">
+    <input type="submit" name="Commit" value="<?=_("Commit")?>">
 </form>
 <?
 	}else{
