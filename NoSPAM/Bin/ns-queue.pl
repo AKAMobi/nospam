@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl 
 #
 # File: ns-queue.pl
 # Version: 1.20
@@ -39,10 +39,10 @@
 
 # We close stdout, for hide all warn.
 # 2004-03-12 by Ed
-open (NSOUT, ">&=2");
+open (NSOUT, ">&=2") or die "can't open NSOUT";
 close (STDERR);
 #open (STDERR,">/dev/null");
-open (STDERR,">/tmp/ns-queue.STDERR");
+open (STDERR,">>/tmp/ns-queue.STDERR");
 
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 # 时间记录
@@ -181,11 +181,8 @@ my ($smtp_sender,$remote_smtp_ip,$uid);
 if ($DEBUG ) {
   open(LOG,">>$scandir/$debuglog");
   select(LOG);$|=1;
-  &debug("+++ starting debugging for process $$ by uid=$uid at $nowtime");
+  &debug("+++ starting debugging for process $$ by at $nowtime");
 }
-
-my ($smtp_sender,$remote_smtp_ip);
-
 
 if ($ENV{'TCPREMOTEIP'}) {
   $smtp_sender="via SMTP from $ENV{'TCPREMOTEIP'}";
@@ -225,13 +222,8 @@ eval {
 
   &AKA_engine_run;
   
-  if ( 2==$pf_action ){
-    &debug("pf: discard action 2" );
-    delete $ENV{'TCPREMOTEIP'};
-  } else {
-    &qmail_parent_check;
-    &qmail_requeue($env_returnpath,$env_recips,"$scandir/$wmaildir/new/$file_id"); 
-  }
+  &qmail_parent_check;
+   # &qmail_requeue($env_returnpath,$env_recips,"$scandir/$wmaildir/new/$file_id"); 
   alarm 0;
 };
 
@@ -244,22 +236,6 @@ if ($alarm_status and $alarm_status ne "" ) {
   }
 }
 
-
-&cleanup;
-
-&debug("AKA performance:"
-	#. ' N:' . $ns_start_time
-	. ' MS:' . $mail_size
-	. "\t NS:" . int(1000*tv_interval($ns_start_time, [gettimeofday]))/1000
-	, ' IO:' . $engine_netio_time
-	. ' LD:' . $engine_load_time 
-	. ' CL:' . $engine_check_license_time
-	. ' ER:' . $engine_run_time
-	. ' SP:' . $engine_spam_run_time
-	. ' DY:' . $engine_dynamic_run_time
-	. ' CT:' . $engine_content_run_time
-	. ' secs'
-	);
 exit 0;
 
 ############################################################################
@@ -285,7 +261,6 @@ sub error_condition {
   $nowtime = sprintf "%02d/%02d/%02d %02d:%02d:%02d", $mday, $mon+1, $year+1900, $hour, $min, $sec;
   &debug("error_condition: $V_HEADER-$VERSION: $string");
   close(LOG);
-  &cleanup;
 
   print NSOUT $string, "\r\n";
   exit $errcode;
@@ -355,213 +330,22 @@ sub AKA_engine_run {
 
   $mail_info = $AM->process( $mail_info );
 
+
   use Data::Dumper;
   open ( FD, ">/tmp/zixia.debug" );
   print FD Dumper($mail_info);
   close ( FD );
-  ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag ) = $AM->get_spam_tag_params;
+
+  if ( $mail_info->{aka}->{resp} ){
+	my $smtp_code = $mail_info->{aka}->{resp}->{smtp_code};
+	my $smtp_info = $mail_info->{aka}->{resp}->{smtp_info};
+	my $exit_code = $mail_info->{aka}->{resp}->{exit_code};
+	&error_condition ( "$smtp_code $smtp_info", $exit_code );
+  }
 
   undef $AM;
   chdir("$scandir");
 }
-
-sub qmail_requeue {
-  my($sender,$env_recips,$msg)=@_;
-  my ($temp,$findate);
-
-  &debug("q_r: fork off child into $qmailqueue...");
-  
-  # Create a pipe through which to send the envelope addresses.
-  pipe (EOUT, EIN) or &error_condition("Unable to create a pipe. - $!");
-  select(EOUT);$|=1;
-  select(EIN);$|=1;
-  # Fork qmail-queue.  The qmail-queue child will then open fd 0 as
-  # $message and fd 1 as the reading end of the envelope pipe and exec
-  # qmail-queue.  The parent will read in the addresses and pass them 
-  # through the pipe and then check the exit status.
-
-  $elapsed_time = tv_interval ($start_time, [gettimeofday]);
-  local $SIG{PIPE} = 'IGNORE';
-  my $pid = fork;
-
-  if (not defined $pid) {
-    &error_condition ("Unable to fork. (#4.3.0) - $!");
-  } elsif ($pid == 0) {
-    # In child.  Mutilate our file handles.
-    close EIN; 
-    
-    open(STDIN,"<$msg")|| &error_condition ("Unable to reopen fd 0. (#4.3.0) - $!");
-
-    open (STDOUT, "<&EOUT") ||  &error_condition ("Unable to reopen fd 1. (#4.3.0) - $!");
-    select(STDIN);$|=1;
-    &debug("q_r: xstatus=$xstatus");
-    open (QMQ, "|$qmailqueue")|| &error_condition ("Unable to open pipe to $qmailqueue [$xstatus] (#4.3.0) - $!");
-    ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
-    $elapsed_time = tv_interval ($start_time, [gettimeofday]);
-    $findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
-    $findate .= sprintf "%02d %02d:%02d:%02d +8000", $year+1900, $hour, $min, $sec;
-#    print QMQ "Received: from $returnpath by $hostname by uid $uid with qmail-scanner-$VERSION \n";
-
-    print QMQ "Received: from $returnpath by $hostname by uid $uid with noSPAM-${VERSION} \n";
-    print QMQ " Processed in $elapsed_time secs); $findate\n";
-
-
-    my ($pf_hdr_key,$pf_hdr_done);
-    if (  11<=$pf_action && 13>=$pf_action ){
-	$pf_hdr_done = 0;
-	if ( $pf_param =~ /^([^:]+): /){
-		$pf_hdr_key = $1;
-	}elsif ( 12!=$pf_action ){
-		&debug ( "pf: pf_param: [$pf_param] can't parse to header data when requeue, pf_action: [$pf_action]" );
-	}
-    }else{
-	$pf_hdr_done = 1;
-    }
-
-
-    my $still_headers=1;
-    my $seen_env=0;
-
-
-    while (<STDIN>) {
-      if ($still_headers) {
-        if ( !$pf_hdr_done && (11<=$pf_action || 13>=$pf_action) ){
-		if ( 11==$pf_action ){
-			# 11、addhdr 添加信头纪录。带一个字符串参数，内容为新的信头记录
-			print QMQ "$pf_param\n";
-			$pf_hdr_done = 1;
-		}elsif (12==$pf_action ){
-			# 12、delhdr 删除信头纪录，删除匹配到指定信头规则的信头记录（该动作只允许在信头规则中使用）。无参数
-			if ( /^$pf_hdr_key: / ){
-				#FIXME 如果是折行的header，需要特别处理
-				$pf_hdr_done = 1;
-				next;
-			}
-		}elsif (13==$pf_action ){
-			# 13、chghdr 修改信头纪录，将匹配到指定信头规则的信头记录换成新的信头记录（该动作只允许在信头规则中使用）。
-			# 带一个字符串参数，内容为新的信头记录
-			if ( /^$pf_hdr_key: / ){
-				chomp $pf_param;
-				$_ = $pf_param . "\n";
-				$pf_hdr_done = 1;
-			}
-		}
-	}
-	if (/^Subject: (.+)/i){
-#&debug ("SUBJECT  $1");
-#&debug ("SUBJECT  TagSubject: [$TagSubject] spam: [$AKA_is_spam]");
-		if ( 'Y' eq uc $TagSubject ){
-			if ( 1==$AKA_is_spam ){
-				$_ = "Subject: " . $MaybeSpamTag . " $1\n"; 
-			}elsif ( 2==$AKA_is_spam ){
-				$_ = "Subject: " . $SpamTag . " $1\n"; 
-			}elsif ( 3==$AKA_is_spam ){
-				$_ = "Subject: " . "【黑名单】" . " $1\n"; 
-			}
-		}
-#&debug ("SUBJECT  $_");
-	}
-	if (/^(\r|\r\n|\n)$/){
-		$still_headers=0 ;
-		print QMQ "X-Checker-Version: noSPAM v$VERSION\n";
-
-		if ( 'Y' eq uc $TagReason ){
-			print QMQ "X-Spam-Checker-Result: \n";
-			print QMQ "  S:$AKA_is_spam R:$AKA_spam_reason\n";
-			print QMQ "  D:$AKA_is_overrun P:$AKA_overrun_reason\n";
-			if ( $AKA_content_engine_enable ){
-				print QMQ "  A:$pf_action P:$pf_param I:$pf_desc\n";
-			}
-		}
-
-		if ( $AKA_is_spam && ('Y' eq uc $TagHead) ){
-			print QMQ "X-Spam-Flag: YES\n";
-		}else{
-			print QMQ "X-Spam-Flag: NO\n";
-		}
-	}
-      }
-      print QMQ;
-    }
-    close(QMQ); #||&error_condition("Unable to close pipe to $qmailqueue (#4.3.0) - $!");
-    $xstatus = ( $? >> 8 );
-    if ( $xstatus > 10 && $xstatus < 41 ) {
-      &error_condition("mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
-    } elsif ($xstatus > 0) {
-      &error_condition("Unable to open pipe to $qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
-    }
-    #This child is finished - exit
-    exit;
-  } else {
-    # In parent.
-    close EOUT;
-      
-    # Feed the envelope addresses to qmail-queue.
-    my $envelope = "$sender\0$env_recips";
-    $envelope =~ s/\0/\\0/g;
-    &debug ( "q_r_q: envelope data: [$envelope]" );
-    print EIN "$sender\0$env_recips";
-    close EIN  || &error_condition ("Write error to envelope pipe. (#4.3.0) - $!");
-}
-
-  # We should now have queued the message.  Let's find out the exit status
-  # of qmail-queue.
-  waitpid ($pid, 0);
-  $xstatus =($? >> 8);
-  if ( $xstatus > 10 && $xstatus < 41 ) {
-    &error_condition("mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
-  } elsif ($xstatus > 0) {
-    &error_condition("Unable to close pipe to $qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
-  }
-}
-
-sub cleanup {
-  closelog;
-  chdir("$scandir/");
-
-  rmdir("$ENV{'TMPDIR'}") && unlink("$scandir/$wmaildir/new/$file_id" );
-}
-
-# zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
-sub send_email_file {
-  my($to, $email_file, $sign )=@_;
-
-  if ( !$to || !length($to) ){
-  	&debug("e_s: sending email no to: [$to] specified.");
-	return;
-  }
-
-  if ( ! open(EML, "<$email_file") ){
-  	&debug("e_s: sending email file to $to open $email_file error.");
-	# not this function's duty: unlink ( $email_file );
-	return;
-  }
-	
-  open(SM,"|$qmailinject -h -f ''")||&error_condition("s_e_f: cannot open $qmailinject for sending quarantine report - $!");
-  &debug("e_s: sending email file via: $qmailinject to address ($to)");
-
-  my $in_header = 1;
-  while ( <EML> ){
-	if ( $in_header ){
-      		if (/^(\r|\r\n|\n)$/) {
-			$in_header = 0;
-		}elsif (/^To: \S+/){
-  			$_ = "To: $to\n";
-		}elsif ( /^CC: /i || /^BCC: /i ){
-			# only send to archiver! -_-b
-			next;
-		}
-	}
-	print SM;
-  }
-  print SM "\n$sign";
-
-
-  close(SM);
-  close(EML);
-
-}
-
 
 sub qmail_parent_check {
   my $ppid=getppid;
@@ -574,322 +358,6 @@ sub qmail_parent_check {
     exit 111; 
   }
 }
-
-sub AKA_mail_engine {
-  	my ($cmdline_recip);
-
-  	#Cleanup $one_recip so it's usable from the commandline...
-  	#any char that isn't supported to changed into an '_'
-  	($cmdline_recip=$one_recip)=~s/[^0-9a-z\.\_\-\=\+\@]/_/gi;
-  	$cmdline_recip=~/^([0-9a-z\.\_\-\=\+\@]+)$/i;
-  	$cmdline_recip=tolower($1);
-
-	#
-	# AntiVirus Engine
-	#
-  	$start_time=[gettimeofday];
-	$AKA_virus_result =$AM->antivirus_engine( "$scandir/$wmaildir/new/$file_id" );
-  	$engine_antivirus_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  	&debug("AKA_antivirus_engine $$: in $engine_antivirus_run_time secs ["
-			. $AKA_virus_result->{Result} 
-			. ',' . $AKA_virus_result->{Reason}
-			. ',' . $AKA_virus_result->{Action}
-			. ']' );
-
-	# 如果是病毒并且我们要拒绝，则不运行其他引擎；
-	if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 ){
-		#&debug ( "FOUND virus AND DROP IT!" );
-		($AKA_is_spam, $AKA_spam_reason) = (0,'未作垃圾检查');
-		$AKA_content_engine_enable = 1; $pf_action = 6; $pf_param = ''; $pf_desc = "未作内容检查";
-	 	($AKA_is_overrun, $AKA_overrun_reason ) = (0, '未作动态检查');
-		goto NOSPAM_LOG;
-	}
-	
-	#
-	# SPAM Engine
-	#
-  	$start_time=[gettimeofday];
-	# 如果是内向外发送，不进行可追查性检测
-	if ( $ins_queue ){
-		($AKA_is_spam, $AKA_spam_reason) = (0,'本地用户') if ( 1==$ins_queue );
-		($AKA_is_spam, $AKA_spam_reason) = (0,'认证用户') if ( 2==$ins_queue );
-		$AKA_is_refuse_spam = 0;
-	}else{
-		($AKA_is_spam, $AKA_spam_reason) = &AKA_mail_spam_engine;
-		$AKA_is_refuse_spam = $AM->should_refuse_spam;
-	}
-  	$engine_spam_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  	&debug("AKA_spam_engine $$: in $engine_spam_run_time secs [$AKA_is_spam, $AKA_spam_reason, $AKA_is_refuse_spam]");
-
-	#
-	# Content Engine
-	#
-  	$start_time=[gettimeofday];
-
-  	$AKA_content_engine_enable = $AM->content_engine_is_enabled($mail_size);
-
-	if ( $AKA_content_engine_enable ){
-		# pf_mime_data && pf_action & pf_param & pf_desc(rule_id) is global var, and set in function, no need to return.
-		&AKA_mail_content_engine;
-	}else{
-		$pf_action = 7; $pf_param = ""; $pf_desc = "";
-	}
-  	$engine_content_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  	&debug("AKA_content_engine $$: in $engine_content_run_time secs [$pf_action, $pf_param, $pf_desc]");
-
-
-	#
-	# Dynamic Engine
-	#
-  	$start_time=[gettimeofday];
-	if ( 1==$ins_queue ){
-	 	( $AKA_is_overrun, $AKA_overrun_reason ) = (0, '本地用户');
-	}elsif ( 2==$ins_queue ){
-	 	( $AKA_is_overrun, $AKA_overrun_reason ) = (0, '认证用户');
-	}else{
-	 	( $AKA_is_overrun, $AKA_overrun_reason ) = $AM->dynamic_engine( $decoded_subject, $returnpath, $remote_smtp_ip );
-	}
-  	$engine_dynamic_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  	&debug("AKA_dynamic_engine $$: in $engine_dynamic_run_time secs [$AKA_is_overrun, $AKA_overrun_reason]");
-
-	#
-	# Archive_engine
-	#
-  	$start_time=[gettimeofday];
-	$AKA_is_archived = $AM->archive_engine( "$scandir/$wmaildir/new/$file_id", $AKA_is_spam, $pf_desc );
-  	$engine_archive_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  	&debug("AKA_archive_engine $$: in $engine_archive_run_time secs");
-
-NOSPAM_LOG:
-	#&noSPAM_log;
-
-	#sub noSPAM_log {
-		my $esc_subject = $decoded_subject;
-		$esc_subject=~s/,/_/g;
-		$esc_subject=~s/[\r|\n]+//g;
-
-# prevent half chinese character upset csv comma.
-		$esc_subject = ' ' . $esc_subject . ' ';
-
-		use Fcntl ':flock';
-		if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
-			flock(LFD,LOCK_EX);
-			seek(LFD, 0, 2);
-#print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
-			print LFD time
-# ins-queue is link of ns-queue for internal mail scan, 0 means Ext->Int, 1 means Int->Ext
-				. ',' . ($ins_queue?'1':'0') 
-				. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
-				. ",$AKA_is_spam,$AKA_spam_reason," . ($AKA_is_spam?$AKA_is_refuse_spam:'0')
-
-				. ',' . $AKA_virus_result->{Result}
-					. ',' . $AKA_virus_result->{Reason} 
-					. ',' . ($AKA_virus_result->{Result}?$AKA_virus_result->{Action}:6)
-
-				. "," . ($AKA_content_engine_enable?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
-				. ",$AKA_is_overrun, $AKA_overrun_reason\n";
-			flock(LFD,LOCK_UN);
-			close(LFD);
-		}else{
-			&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
-		}
-	#}
-	
-	######################## action #################################3
-
-	# XXX we now drop virus
-	if ( $AKA_virus_result->{Result}>0 && $AKA_virus_result->{Action}>0 ){
-		&cleanup;
-		exit ( 0 );
-	}
-
-	# ret code should be 31: mail server permanently rejected message (#5.3.0)";
-	if ( $AKA_is_spam && $AKA_is_refuse_spam){
-		&error_condition ( "553 对不起，因为" . $AKA_spam_reason . 
-			"，您的邮件被系统定义为垃圾邮件，详情请咨询邮件管理员。", 150 );
-		&cleanup;
-		exit ( 150 );
-	}
-
-	if ( $AKA_is_overrun ){
-		# XXX 553 to performance reason
-		&error_condition ( "451 对不起，因为" . $AKA_overrun_reason . 
-		#&error_condition ( "553 对不起，因为" . $AKA_overrun_reason . 
-			"，您的邮件被系统定义为拒收邮件，请咨询邮件管理员。", 150 );
-		&cleanup;
-		exit ( 150 );
-	}
-
-	&AKA_mail_content_engine_action;
-
-}
-
-sub AKA_mail_content_engine
-{
-  my ($start_content_engine_time)=[gettimeofday];
-  my ($stop_content_engine_time,$content_engine_time);
-
-  open(PF,"<$scandir/$wmaildir/new/$file_id")||&error_condition("pf1: cannot open $scandir/$wmaildir/new/$file_id - $!");
-  ($pf_action, $pf_param, $pf_desc, $pf_mime_data) = $AM->content_engine_mime(\*PF);
-  close PF ;
-
-  # TODO: no need to write file so early, should be moved to qmail_requeue.
-  # XXX why we rewrite mail file? by zixia 2004-04-12
-  if ( defined $pf_mime_data && length($pf_mime_data) ){
-	open (PF, ">$scandir/$wmaildir/new/$file_id.pf") ||&error_condition("pf2: cannot open $scandir/$wmaildir/new/$file_id.pf - $!");
-	print PF $pf_mime_data;
-	close (PF);
-  	rename ("$scandir/$wmaildir/new/$file_id.pf","$scandir/$wmaildir/new/$file_id");
-  }
-  # 缺省是正常投递
-  $pf_action=7 if (!$pf_action);
-  $pf_param='' if (!$pf_param);
-  $pf_desc='' if (!$pf_desc);
-
-  &debug( "PF: action: $pf_action, param: ($pf_param), desc: $pf_desc" );
-
-  $stop_content_engine_time=[gettimeofday];
-  $content_engine_time = tv_interval ($start_content_engine_time, $stop_content_engine_time);
-  &debug("AKA_mail_content_engine: finished scan of dir \"$ENV{'TMPDIR'}\" in $content_engine_time secs");
-  return 1;
-}
-
-#sub AKA_police_action
-sub AKA_mail_content_engine_action
-{
-  # 采取措施
-  if ( 1==$pf_action ){
-	# 1、reject：弹回、拒绝邮件。带一个字符串参数，内容为拒收邮件时返回的错误信息，
-	# 缺省为'This message was rejected'
-	$pf_param ||= 'This message was rejected';
-	&error_condition ( "553 " . $pf_param . "(#5.7.1)", 150 );
-  }elsif (  2==$pf_action ){
-	# 2、discard 丢弃邮件。无参数
-	# XXX 在 init_scanner 后直接判断
-
-  }elsif (  3==$pf_action ){
-	# 3、quarantine 隔离邮件。带一个字符串参数，内容为隔离邮件的存放目录，
-	# 缺省为'/var/spool/uncmgw/Quarantines'
-	#$quarantine_event = "Police Quarantine policy";
-	if ( $pf_param=~m#^/var/spool/uncmgw/# ){
-		if (! -d "$pf_param") {
-  			`mkdir -p /$pf_param`;
-		}
-		`mv -f $scandir/$wmaildir/new/$file_id /$pf_param/`;
-	}else{
-		&debug ( "pf: action 3 quarantine dir must be default now, but pf_param is: [$pf_param]" );
-	}
-	# drop after quarantine;
-	$pf_action = 2;
-  }elsif (  4==$pf_action ){
-	# 4、strip 剥离邮件中的附件。带一个字符串参数，内容为替换被剥除附件的文本信息内容，
-	# 缺省为'邮件附件中包含有不安全文件\$file，已经被剥离！'
-	#TODO
-
-  }elsif (  5==$pf_action ){
-	# 5、 delay 给邮件处理操作加延时(秒)。带一个整数参数，内容为添加延时的秒数
-	#TODO
-	if ( $pf_param=~/(\d+)/ ){
-		my $sec = $1;
-		sleep ( $sec>120?120:$sec );
-	}
-  }elsif (  6==$pf_action ){
-	# 6、 null 不做任何操作。无参数
-  }elsif (  7==$pf_action ){
-	# 7、accept 接受该邮件，正常分发。无参数
-  }elsif (  8==$pf_action ){
-	# 8、addrcpt 添加其他收件人。带一个字符串参数，内容为添加的收件人邮件地址
-	if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
-		&debug("pf_a: addrcpt param is: [$pf_param] invalid email address.");
-		return;
-	}
-	$env_recips = "T$pf_param\0" . $env_recips;
-  }elsif (  9==$pf_action ){
-	# 9、delrcpt 删除指定收件人（该动作只允许在信封收件人的信头规则中使用）。无参数
-	if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
-		&debug("pf_a: delrcpt param is: [$pf_param] invalid email address.");
-		return;
-	}
-	# one recip, or first 
-	$env_recips =~ s/T$pf_param\0//;
-
-	if ( 3>length($env_recips) ){
-		# only one recip, should be droped after delrcpt
-		$pf_action = 2;
-		undef $env_recips;
-	}#else{
-#XXX 即使是一个地址，结尾也是两个\0?
-		#原来有多个，被删除剩下一个，结尾会多了一个 \0
-#		my @recips = split(/T/,$env_recips);
-#		if ( 1==@recips ){
-#			$env_recips=~s#\0\0$#\0#;
-#		}
-#	}
-  }elsif (  10==$pf_action ){
-	# 10、chgrcpt 改变指定的收件人为新的收件人（该动作只允许在信封收件人的信头规则中使用）。带一个字符串参数，内容为新的收件人邮件地址
-	if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
-		&debug("pf_a: chgrcpt param is: [$pf_param] invalid email address.");
-		return;
-	}
-	# either one recip or more recips, need two NULL terminater.
-	$env_recips = "T$pf_param\0\0";
-  }elsif (  11==$pf_action ){
-	# XXX 11,12,13 action do at qmail_rqueuen.
-	# 11、addhdr 添加信头纪录。带一个字符串参数，内容为新的信头记录
-  }elsif (  12==$pf_action ){
-	# 12、delhdr 删除信头纪录，删除匹配到指定信头规则的信头记录（该动作只允许在信头规则中使用）。无参数
-  }elsif (  13==$pf_action ){
-	# 13、chghdr 修改信头纪录，将匹配到指定信头规则的信头记录换成新的信头记录（该动作只允许在信头规则中使用）。
-	# 带一个字符串参数，内容为新的信头记录
-
-  }
-
-}
-
-sub AKA_mail_spam_engine
-{
-	my ( $smtp_ip, $email_domain );
-
-# ?ì2aSPAMè??ú￡?
-#       2?êy ( smtp_ip, from_addr )
-#       ·μ?? ( is_spam, reason )
-#               is_spam: 0: NOT spam
-#                        1: Maybe Spam
-#                        2: SPAM
-#                        3: Black List
-
-  	my ($start_spam_engine_time)=[gettimeofday];
-
-	&debug ("AKA-Spam: entered AKA_mail_spam_engine." );
-
-	if ( ! $remote_smtp_ip ){
-		&debug ( "AKA_mail_spam_engine: can't get remote_smtp_ip." );
-		&error_condition( "553 IP information temporary unusable. (#4.3.0)", 150 );
-	}
-	
-	# allow localhost free relay
-	return (0, "本地IP") if $remote_smtp_ip eq '127.0.0.1';
-
-	my $is_spam = 0;
-	my $reason;
-
-	my ( $is_spam, $reason );
-
-	if ( defined $returnpath && length($returnpath) ){
-		( $is_spam, $reason ) = $AM->spam_engine($remote_smtp_ip, $returnpath);
-		&debug ( "AKA_mail_spam_engine: is_spam: $is_spam, reason: $reason, smtp_ip: $remote_smtp_ip, mail_from: $returnpath" );
-	} else {
-		&debug ( "AKA_mail_spam_engine can't get returnpath from email_domain, assume it is SPAM!!" );
-		($is_spam,$reason) = (1, "邮件信息残缺不全");
-	}
-
-  	my $stop_spam_engine_time=[gettimeofday];
-  	my $spam_engine_time = tv_interval ($start_spam_engine_time, $stop_spam_engine_time);
-  	&debug("AKA_mail_spam_engine: finished in $spam_engine_time secs");
-
-	return ($is_spam, $reason);
-}
-
 sub check_license
 {
 #	my $n = rand;
