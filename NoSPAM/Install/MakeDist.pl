@@ -40,9 +40,15 @@ print "Cleaning CVS & README info...\n";
 chdir 'tmp';
 unlink 'README';
 
+print "Modifying file owner & mode...\n";
+`chown -R nospam home/NoSPAM/{etc,spool,var} home/vpopmail/domains var/qmail/control`;
+`chown -R ssh home/ssh`;
+`chmod -R o+rx home/{NoSPAM,ssh,vpopmail,wmail} var/qmail/control`;
+
 print "Tar to NoSPAM prepare package...\n";
-`tar czvf ../Dist/ns-prep-$NSVER.i386.rpm root/post_install usr/lib/perl5/site_perl/5.8.0/AKA/Loader.pm usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/auto/AKA/Loader/Loader.so`;
+`tar czvf ../Dist/ns-prep-$NSVER.i386.rpm root/post_install usr/lib`;
 unlink 'root/post_install';
+`rm -fr usr/lib`;
 
 print "Tar to NoSPAM...\n";
 `tar cvf ../Dist/ns-$NSVER.i386.rpm *`;

@@ -1,0 +1,3 @@
+一些备注
+
+clamav 需要修改 rpm ，change clamav groupadd to 48, useradd to id 48, and  rpmbuild --without milter

@@ -38,7 +38,7 @@ echo "Copying source files..."
 cp -fv ${SOURCEHOME}/{NoSPAM.pl,smtp_auth_proxy.pl} aka/home/NoSPAM/bin
 cp -fv ${SOURCEHOME}/ContentFilter/{UpdateRule.pl,UploadLog.pl} aka/home/NoSPAM/bin
 cp -fv ${SOURCEHOME}/post_install.pl aka/root
-cp -fv ${SOURCEHOME}/qmail-scanner-1.20/mini-ns-queue.pl aka/var/qmail/bin/ns-queue.pl
+cp -fv ${SOURCEHOME}/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
 rm -f aka/var/qmail/bin/ins-queue
 ln -s ns-queue aka/var/qmail/bin/ins-queue
 
@@ -58,5 +58,6 @@ gcc -o aka/home/NoSPAM/bin/wi ${SOURCEHOME}/wi.c
 echo "Changing qns_loader & wi permission"
 chown root aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod +s aka/home/NoSPAM/bin/{qns_loader,wi}
+chmod -R o+r aka/* 
 
 
