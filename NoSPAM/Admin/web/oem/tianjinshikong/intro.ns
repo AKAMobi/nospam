@@ -34,7 +34,7 @@ if(!file_exists(LICENSE)){
 ?>
 <p>
 <?=_("Manufacturer: ").$sFactoryName?><br>
-<?=_("License Expire: ").$sExpire?><br>
+<?=_("License Expires: ").$sExpire?><br>
 <?= $bForSell? _("Product Release"):_("Demo Release")?>
 </p>
 <?

@@ -21,7 +21,7 @@ if($_POST["Submit"]==_("Modify")){
 	$spamconf->setParam("VirusTag",$_POST["VirusTag"],"AntiVirusEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

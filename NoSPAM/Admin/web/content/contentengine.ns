@@ -20,7 +20,7 @@ if($_POST["Submit"]==_("Modify")){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_ContentEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

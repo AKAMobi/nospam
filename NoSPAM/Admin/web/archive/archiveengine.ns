@@ -10,7 +10,7 @@ if($_POST["ArchiveEngine"]){
 	$spamconf->setParam("ArchiveEngine",$_POST["ArchiveEngine"],"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

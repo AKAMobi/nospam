@@ -34,7 +34,7 @@ if( wi("get_Serial",$result)==0 ){
 		}
 		echo "<p>";
 		echo _("Manufacturer: ").$sFactoryName."<br>";
-		echo _("License Expire: ").$sExpire."<br>";
+		echo _("License Expires: ").$sExpire."<br>";
 ?>
 <?= $bForSell? _("Product Release"):_("Demo Release")?><br>
 <?if($_GET["dul"] == "Yes"){?>
@@ -49,8 +49,9 @@ if( wi("get_Serial",$result)==0 ){
 	}
 
 ?>
-<?=_("Upload License")?>:
+<p>
 <form action="upload.ns?file=license" method="post" enctype="multipart/form-data" name="form1">
+<?=_("Upload License")?>:
   <input type="file" name="license">
   <input type="submit" name="Submit" value="<?=_("Submit")?>">
 </form>

@@ -19,7 +19,7 @@ if($_POST["isSubmit"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

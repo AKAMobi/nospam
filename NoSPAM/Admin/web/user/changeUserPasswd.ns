@@ -90,7 +90,7 @@ if (!isset($_REQUEST['id'])){
 	<td><input type=password name="passwd1"></td>
 </tr>
 <tr>
-	<td><?=_("New Password again")?></td>
+	<td><?=_("Confirm New Password")?></td>
 	<td><input type=password name="passwd2"></td>
 </tr>
 

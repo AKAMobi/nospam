@@ -94,7 +94,7 @@ function switchDnsSettings () {
     </tr>
     <tr class="TableBody2">
       <td scope="row"> Mask: </td>
-      <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>"><?=_("Do not use x.x.x.x format, Please use Mask length")?></td>
+      <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>"><?=_("Do not use x.x.x.x format. Please use mask length")?></td>
     </tr>
     <tr class="TableBody1">
       <td scope="row"> <?=_("Default Gateway")?>: </td>
@@ -137,7 +137,7 @@ function switchDnsSettings () {
   <?=_("Network Setting")?>
     </caption>
     <tr>
-      <th scope="row"> Hostname: </th>
+      <th scope="row"> Host Name: </th>
       <td class="TableBody1"><?=$spamconf->getParam("Hostname","Network")?></td>
     </tr>
     <tr>

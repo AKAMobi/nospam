@@ -123,7 +123,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 }
 ?>
 	<td><?=_("No.")?></td>
-	<td><?=_("UserName")?></td>
+	<td><?=_("Username")?></td>
 	<td><?=_("RealName")?></td>
 	<td><?=_("Unit")?></td>
 	<td><?=_("Department")?></td>
@@ -315,16 +315,16 @@ function add()
 <td colspan="2" class=title><b><?=_("New User")?></b></td>
 </tr>
 <tr>
-	<td><?=_("UserName")?>: <input type=text name="user_id"></td>
-	<td><?=_("UserName must use digit and lower-case Latin character, and start with character.")?></td>
+	<td><?=_("Username")?>: <input type=text name="user_id"></td>
+	<td><?=_("Username must use digits and lower-case latin charactesr, and start with characters.")?></td>
 </tr>
 <tr>
 	<td><?=_("Password")?>: <input type=password name="passwd1"></td>
-	<td><?=_("Password must use digit and Latin character.")?></td>
+	<td><?=_("Password must use digits and latin characters.")?></td>
 </tr>
 <tr>
 	<td><?=_("Password Again")?>: <input type=password name="passwd2"></td>
-	<td><?=_("Input Password again, and must identical with first input.")?></td>
+	<td><?=_("Input Password again, and must be identical with the first input.")?></td>
 </tr>
 <tr>
 	<td><?=_("RealName")?>: <input type=text name="user_name"></td>

@@ -61,7 +61,7 @@ function changeUserPasswd() {
 	if ($result!=OK) {
 		errorReturn(_("Other Error, need DEBUG"), $_SERVER['PHP_SELF']);
 	}
-		echo _("Password Modify Success!");
+		echo _("Password Modify succeeded!");
 		return true;
 	} 
 	
@@ -76,7 +76,7 @@ function changeUserPasswd() {
 </tr>
 <tr> <td><?=_("Old Password")?></td> <td><input type=password name="passwd"></td> </tr>
 <tr> <td><?=_("New Password")?></td> <td><input type=password name="passwd1"></td> </tr>
-<tr> <td><?=_("New Password again")?></td> <td><input type=password name="passwd2"></td> </tr>
+<tr> <td><?=_("Confirm New Password")?></td> <td><input type=password name="passwd2"></td> </tr>
 
 </tbody>
 </table>

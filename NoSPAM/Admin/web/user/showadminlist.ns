@@ -51,7 +51,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 	<td><?=_("Admin Name")?></td>
 	<td><?=_("Note")?></td>
-	<td><?=_("IP Restrict")?></td>
+	<td><?=_("IP Restriction")?></td>
 	<td><?=_("Rights")?></td>
 	<td><?=_("Local Mail Domain")?></td>
 <?
@@ -76,7 +76,7 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 	$iplist = trim($adminList[$i]['ip']);
 	$domain = trim($adminList[$i]['domain']);
 	if($iplist=="" || $iplist=="+" || $iplist=="-")
-		$iplist=_("No Restrict");
+		$iplist=_("No Restriction");
 	else{
 		switch($iplist[0]){
 			case "+";
@@ -86,7 +86,7 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 			$iplist=_("Deny")."<br>".str_replace(",","<br>",substr($iplist,1));
 			break;
 			default:
-			$iplist=_("No Restrict");
+			$iplist=_("No Restriction");
 		}
 	}
 	if($domain == "")
@@ -103,8 +103,8 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 			$sadminID.="("._("Login Deny").")";
 		}
 		if(!havePerm($priviledge,PERM_ADMIN_WRITE)){
-			$sPrivilege .= "<b>"._("Readonly Admin")."</b><br>";
-			$sadminID.="("._("Readonly").")";
+			$sPrivilege .= "<b>"._("Read Only Admin")."</b><br>";
+			$sadminID.="("._("Read Only").")";
 		}
 		if(havePerm($priviledge,PERM_ADMIN_ADMIN))
 			$sPrivilege .= _("Administrator")."<br>";
@@ -252,15 +252,15 @@ function add()
 <tr>
 	<td align="right"><?=_("New Admin Username")?>: </td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
 	</td>
-	<td><?=_("UserName must use digit and lower-case Latin character, and start with character.")?></td>
+	<td><?=_("Username must use digits and lower-case latin characters, and start with characters.")?></td>
 </tr>
 <tr>
 	<td align="right"><?=_("Password")?>: </td><td><input type=password name="passwd1"></td>
-	<td><?=_("Password must use digit and Latin character.")?></td>
+	<td><?=_("Password must use digits and latin characters.")?></td>
 </tr>
 <tr>
 	<td align="right"><?=_("Password Again")?>: </td><td><input type=password name="passwd2"></td>
-	<td><?=_("Input Password again, and must identical with first input.")?></td>
+	<td><?=_("Input Password again, and must be identical with the first input.")?></td>
 </tr>
 <tr>
 	<td align="right" ><?=_("Rights")?>: </td><td colspan=2>
@@ -292,7 +292,7 @@ if($InteractiveEngine > 0 ){
 </tr>
 <tr>
 	<td></td>
- 	<td><?=_("Readonly")?></td>
+ 	<td><?=_("Read Only")?></td>
  	<td><input type="checkbox" name="DenyWrite"></td>
 </tr>
 <tr>
@@ -305,11 +305,11 @@ if($InteractiveEngine > 0 ){
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr>
-	<td align="right"><?=_("IP Restrict")?>: </td><td><TEXTAREA name="iplist" cols="20" rows="10" disabled></TEXTAREA></td>
+	<td align="right"><?=_("IP Restriction")?>: </td><td><TEXTAREA name="iplist" cols="20" rows="10" disabled></TEXTAREA></td>
 	<td>
 		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"><?=_("Permit")?>
 		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"><?=_("Deny")?>
-		<input type="radio" value="PASS" name="iprule" checked  onclick="form1.iplist.disabled=true;"><?=_("No Restrict")?>
+		<input type="radio" value="PASS" name="iprule" checked  onclick="form1.iplist.disabled=true;"><?=_("No Restriction")?>
 	</td>
 </tr>
 <tr>
@@ -376,15 +376,15 @@ function modify()
 <tr>
 	<td align="right"><?=_("Admin Account")?>: </td><td><input type=hidden name="user_id" value="<? echo $_REQUEST['id'] ?>"><? echo $_REQUEST['id'] ?>
 	</td>
-	<td><?=_("UserName must use digit and lower-case Latin character, and start with character.")?></td>
+	<td><?=_("Username must use digits and lower-case latin characters, and start with characters.")?></td>
 </tr>
 <tr>
 	<td align="right"><?=_("Password")?>: </td><td><input type=password name="passwd1"></td>
-	<td><?=_("Password must use digit and Latin character.")?></td>
+	<td><?=_("Password must use digits and latin characters.")?></td>
 </tr>
 <tr>
 	<td align="right"><?=_("Password Again")?>: </td><td><input type=password name="passwd2"></td>
-	<td><?=_("Leave empty if Preserve").", "._("Input Password again, and must identical with first input.")?></td>
+	<td><?=_("Leave empty if Preserve").", "._("Input Password again, and must be identical with the first input.")?></td>
 </tr>
 <tr>
 	<td align="right" ><?=_("Rights")?>: </td><td colspan=2>
@@ -409,7 +409,7 @@ function modify()
 </tr>
 <tr>
 	<td></td>
-   	<td><?=_("Readonly")?></td>
+   	<td><?=_("Read Only")?></td>
    	<td><input type="checkbox" name="DenyWrite"<?if(!havePerm($oPriviledge,PERM_ADMIN_WRITE)) echo " checked";?>></td>
 </tr>
 <tr>
@@ -422,11 +422,11 @@ function modify()
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr>
-	<td align="right"><?=_("IP Restrict")?>: </td><td><TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA></td>
+	<td align="right"><?=_("IP Restriction")?>: </td><td><TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA></td>
 	<td>
 		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>><?=_("Permit")?>
 		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>><?=_("Deny")?>
-		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>><?=_("No Restrict")?>
+		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>><?=_("No Restriction")?>
 	</td>
 </tr>
 <tr>

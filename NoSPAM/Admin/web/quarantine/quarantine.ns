@@ -28,7 +28,7 @@ if($_POST["Submit"]==_("Modify")){
     $spamconf->setParam("TimeOutAction",$QuarantineTimeOutAction,"QuarantineEngine");
     $spamconf->save();
     if(($ret=wi("QuarantineUpdate",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
     

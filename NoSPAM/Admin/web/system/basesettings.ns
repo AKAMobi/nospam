@@ -47,16 +47,16 @@ if($_POST["Submit"] == _("Modify")){
 			die(_("Mail Max Size")._(" must be number"));
 		$spamconf->setParam("DataBytes",intval($_POST['DataBytes'])*intval($_POST['DataUnit']),"MailServer");
 	}
-	if ($_POST['QueueLifeTimeSwitch'] == "Default"){
-		$spamconf->delParam("QueueLifeTime","MailServer");
+	if ($_POST['QueueLifetimeSwitch'] == "Default"){
+		$spamconf->delParam("QueueLifetime","MailServer");
 	}else{
-		if (!is_numeric($_POST['QueueLifeTime']))
-			die(_("Queue LifeTime")._(" must be number"));
+		if (!is_numeric($_POST['QueueLifetime']))
+			die(_("Queue Lifetime")._(" must be number"));
 		
-		if ((intval($_POST['QueueLifeTime'])*intval($_POST['QueueLifeUnit'])) > (7 * 86400) || intval($_POST['QueueLifeTime']) < 0)
-			die(_("Queue LifeTime must > 0s and < 7days"));
+		if ((intval($_POST['QueueLifetime'])*intval($_POST['QueueLifeUnit'])) > (7 * 86400) || intval($_POST['QueueLifetime']) < 0)
+			die(_("Queue Lifetime must > 0s and < 7days"));
 		
-		$spamconf->setParam("QueueLifeTime",intval($_POST['QueueLifeTime'])*intval($_POST['QueueLifeUnit']),"MailServer");
+		$spamconf->setParam("QueueLifetime",intval($_POST['QueueLifetime'])*intval($_POST['QueueLifeUnit']),"MailServer");
 	}
 	if ($_POST['ConcurrencyLocalSwitch'] == "Default"){
 		$spamconf->delParam("ConcurrencyLocal","MailServer");
@@ -84,7 +84,7 @@ if($_POST["Submit"] == _("Modify")){
 	$spamconf->save();
 	
 	if(($ret=wi("MailBaseSetting_reset",$result)) == 0){
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	}else{
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
@@ -163,12 +163,12 @@ if($_POST["Submit"] == _("Modify")){
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> <?=_("Queue LifeTime")?>: </td>
+	<td scope="row"> <?=_("Queue Lifetime")?>: </td>
 	<td>
-		<input name="QueueLifeTimeSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=true;form1.QueueLifeUnit.disabled=true;"><?=_("Default")?>: 7<?=_("Days")?>
-		<input name="QueueLifeTimeSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=false;form1.QueueLifeUnit.disabled=false;">
-		<input name="QueueLifeTime" type="text" value="<?=$spamconf->getParam("QueueLifeTime","MailServer")?>"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
-		<select name="QueueLifeUnit" type="text"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
+		<input name="QueueLifetimeSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("QueueLifetime","MailServer")) echo " checked";?> onclick="form1.QueueLifetime.disabled=true;form1.QueueLifeUnit.disabled=true;"><?=_("Default")?>: 7<?=_("Days")?>
+		<input name="QueueLifetimeSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("QueueLifetime","MailServer")) echo " checked";?> onclick="form1.QueueLifetime.disabled=false;form1.QueueLifeUnit.disabled=false;">
+		<input name="QueueLifetime" type="text" value="<?=$spamconf->getParam("QueueLifetime","MailServer")?>"<?if (!$spamconf->hasParam("QueueLifetime","MailServer")) echo " disabled";?>>
+		<select name="QueueLifeUnit" type="text"<?if (!$spamconf->hasParam("QueueLifetime","MailServer")) echo " disabled";?>>
 			<option value="1" selected><?=_("Second(s)")?>
 			<option value="3600"><?=_("Hours")?>
 			<option value="86400"><?=_("Days")?>
@@ -227,8 +227,8 @@ if($_POST["Submit"] == _("Modify")){
 	<td><?=$spamconf->getParam("DataBytes","MailServer")?>Bytes</td>
 </tr>
 <tr>
-	<th scope="row"> <?=_("Queue LifeTime")?>: </th>
-	<td><?=$spamconf->getParam("QueueLifeTime","MailServer")?></td>
+	<th scope="row"> <?=_("Queue Lifetime")?>: </th>
+	<td><?=$spamconf->getParam("QueueLifetime","MailServer")?></td>
 </tr>
 <tr>
 	<th scope="row"> <?=_("Local Deliver Concurrency")?>: </th>

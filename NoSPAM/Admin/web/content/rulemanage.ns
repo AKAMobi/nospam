@@ -124,7 +124,7 @@ function sortTable(sKey)
 <center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("Rules Management")?></font></center>
 <?=_("Policy Select")?>:
 <select name="DBSelect" onchange="changeDB()">
-<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>><?=_("Auto-Download Policy(Readonly)")?><? } ?>
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>><?=_("Auto-Download Policy(Read Only)")?><? } ?>
 <option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>><?=_("User Policy")?>
 
 </select><br>

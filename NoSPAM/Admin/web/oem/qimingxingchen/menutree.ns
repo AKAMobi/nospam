@@ -37,7 +37,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	var a = new WebFXTreeItem('<?=_("System Management")?>');
 	tree.add(a);
 	a.add(new WebFXTreeItem('<?=_("SerialNo & License")?>','system/serialno.ns', 'main'));
-	a.add(new WebFXTreeItem('<?=_("Update")?>','system/upgrade.ns', 'main'));
+	a.add(new WebFXTreeItem('<?=_("Upgrade")?>','system/upgrade.ns', 'main'));
 <?if($Switchable){?>
 	a.add(new WebFXTreeItem('<?=_("System Mode")?>','system/gatewaymode.ns','main'));
 <?}?>

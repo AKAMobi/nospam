@@ -15,7 +15,7 @@ if($_POST["submit"]==_("Submit")){
 	$spamconf->setParam("ConnPerIP",$_POST["ConnPerIP"],"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ConnPerIP",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification succeeded! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

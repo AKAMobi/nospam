@@ -16,7 +16,7 @@ if($_POST["Submit"] == _("Modify")){
 	$spamconf->setParam("IPMaxLoginRetry",$_POST['IPMaxLoginRetry'],"System");
 	$spamconf->setParam("DenyTimeAfterMaxLogin",$_POST['DenyTimeAfterMaxLogin'],"System");
 	$spamconf->save();
-	echo _("Modification Success! ");
+	echo _("Modification succeeded! ");
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -33,8 +33,8 @@ if($_POST["Submit"] == _("Modify")){
 <div align="center">
 <form name="form1" method="post" action="">
 <table border="1">
-<tr> <td><?=_("Retries in 5 minutes for same person: ")?></td> <td align="left"><input type="text" name="UserMaxLoginRetry" value="<?=$spamconf->getParam("UserMaxLoginRetry","System")?>"></td> </tr>
-<tr> <td><?=_("Retries in 5 minutes for same IP: ")?></td> <td align="left"><input type="text" name="IPMaxLoginRetry" value="<?=$spamconf->getParam("IPMaxLoginRetry","System")?>"></td> </tr>
+<tr> <td><?=_("Maximum retries in 5 minutes for the same user:")?></td> <td align="left"><input type="text" name="UserMaxLoginRetry" value="<?=$spamconf->getParam("UserMaxLoginRetry","System")?>"></td> </tr>
+<tr> <td><?=_("Maximum retries in 5 minutes for the same IP")?></td> <td align="left"><input type="text" name="IPMaxLoginRetry" value="<?=$spamconf->getParam("IPMaxLoginRetry","System")?>"></td> </tr>
 <tr> <td><?=_("Block Time: ")?></td> <td align="left"><input type="text" name="DenyTimeAfterMaxLogin" value="<?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")?>"><?=_("Minutes")?></td> </tr>
 <tr> <td colspan="2"> <input type="submit" name="Submit" value="<?=_("Modify")?>"> </td> </tr>
 </table>
