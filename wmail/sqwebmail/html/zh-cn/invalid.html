@@ -10,14 +10,14 @@
 <!--
 function init()
 {
-	document.logon.user.focus();
+	document.logon.username.focus();
 }
 
 var alertinput = "请输入:\n\n";	
 
 function login() {
 	var mesg = "";
-	if(document.logon.user.value == "") mesg += "用户\n";
+	if(document.logon.username.value == "") mesg += "用户\n";
 	if(document.logon.password.value == "") mesg += "密码\n";
 	if(mesg != ""){
 		mesg = alertinput + mesg;
