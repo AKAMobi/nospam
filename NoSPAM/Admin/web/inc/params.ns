@@ -68,7 +68,7 @@ $GAInterface = 0;
 $gettext_domain = 'web.nospam.cn';
 bindtextdomain ($gettext_domain, "/home/NoSPAM/LocaleData");
 textdomain ($gettext_domain); 
-setlocale(LC_ALL, 'zh_CN');
+setlocale(LC_ALL, 'en_US');
 
 if(file_exists(LICENSE)){
 	$license = new License;
