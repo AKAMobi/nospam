@@ -113,6 +113,11 @@ IMAGES = address.gif \
         unread.gif \
         vertline.gif \
         write.gif \
+	sendok1.gif \
+	sendok2.gif \
+	sendok3.gif \
+	sendok4.gif \
+	sendok5.gif \
 	sqwebmail.css
 
 

@@ -1,3 +1,7 @@
+2003-05-15	Fan Lin <lfan@lfan.net>
+	newmsg.c sqwebmail.c sendok.html sendok*.gif
+			添加发信成功界面
+
 2003-05-08      Fan Lin <lfan@lfan.net>
 	rfc2646create.c folder.c
 			发信中文乱码得bug和显示标题得半个字符问题
