@@ -261,7 +261,7 @@ sub mail_info_to_file
 		my $mimedata;
 		print FD "GAISC.$type.SelfMai=\r\n";
 		if ( open ( RFD, '<' . $mail_info->{aka}->{emlfilename} ) ){
-			print while ( <RFD> );
+			print FD while ( <RFD> );
 			close ( RFD );
 		}
  		print FD "\r\n";
@@ -763,8 +763,8 @@ sub parse_logreq_to_filterdb
 		}
 	}
 
-	$self->{zlog}->debug ( Dumper($log_req) );
-	$self->{zlog}->debug ( Dumper($rule_info) );
+	#$self->{zlog}->debug ( Dumper($log_req) );
+	#$self->{zlog}->debug ( Dumper($rule_info) );
 
 	return ( $rule_info, $log_req->{start_time}, $log_req->{end_time}, $log_req->{ip} );
 }
@@ -856,7 +856,7 @@ sub _pkg2filter
 
 	my $val;
 	while ( ($_,$val) = each ( %{$pkg} ) ){
-		print "$_, $val\n";
+		#print "$_, $val\n";
 		if ( /^ruleid$/ ){
 			$ruleid = $val;
 		}elsif( /^time$/ ){
@@ -1012,7 +1012,8 @@ sub GAISC_resp_log_update
 
 
 	$self->GAISC_get_log_result( @log_files ) if ( @log_files );
-	#unlink @log_files;
+#print Dumper ( @log_files );
+	unlink @log_files;
 
 	return 1;
 }
