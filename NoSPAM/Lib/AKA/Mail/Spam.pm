@@ -168,6 +168,15 @@ sub get_mx_from_domain
 	} else {
 		@MXs = ();
 	}
+
+	# AKA traceable mx data center:
+	# for those mx ip not in DNS mx list, we put it into our dns database:
+	# for example: 211.151.91.27 is not in zixia.net mx list, so we 
+	#	put it into dns: zixia.net.mx.conf.nospam.aka.cn
+	my @aka_As = $self->get_a_from_domain( "$domain.mx.conf.nospam.aka.cn", $res );
+	push ( @MXs, @aka_As ) if ( @aka_As );
+#print STDERR "check $domain.mx.conf.nospam.aka.cn $res @aka_As\n";
+	
 	return @MXs;
 }
 

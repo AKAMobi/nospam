@@ -9,7 +9,7 @@ $S = new AKA::Mail::Spam;
 ############################
 sub test_spam_checker
 {
-	$ip = "202.205.10.10";
+	$ip = "211.151.91.27";
 	$addr = "zixia\@zixia.net";
 
 	my ($is_spam, $reason) = $S->spam_checker($ip, $addr);
