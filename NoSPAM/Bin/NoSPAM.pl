@@ -375,13 +375,16 @@ sub start_System
 	my $AM = new AKA::Mail;
 	my ($lic_ok,$lic_html) = $AM->check_license_file ;
 	unless ( $lic_ok ){
-		print STDOUT <<_POD_;
+		if ( open ( CON, ">/dev/console" ) ){
+			print CON <<_POD_;
 
 ******************************************************************************
 ** noSPAM AntiSPAM system need a VALID LICENSE, Please get a license ASAP.  **
 ******************************************************************************
 
 _POD_
+			close CON;
+		}
 		return 0;
 		#return 250;
 	}
@@ -450,15 +453,15 @@ sub rebuild_default_bridge
 	my $ret = 0;
 
 	# delete it
-	system ( "$ifconfig_binary nospam down" );
-	system ( "$brctl_binary delbr nospam" );
+	system ( "$ifconfig_binary nospam down > /dev/null 2>&1" );
+	system ( "$brctl_binary delbr nospam > /dev/null 2>&1" );
 
 	# build it
 	$ret ||= system ( "$ifconfig_binary eth0 0.0.0.0 up" );
 	$ret ||= system ( "$ifconfig_binary eth1 0.0.0.0 up" );
 	$ret ||= system ( "$brctl_binary addbr nospam" );
-	$ret ||= system ( "$brctl_binary addif nospam eth0" );
-	$ret ||= system ( "$brctl_binary addif nospam eth1" );
+	$ret ||= system ( "$brctl_binary addif nospam eth0 > /dev/null 2>&1" );
+	$ret ||= system ( "$brctl_binary addif nospam eth1 > /dev/null 2>&1" );
 	$ret ||= system ( "$ifconfig_binary nospam 192.168.0.150 netmask 255.255.255.0 up" );
 	my $intGWIP = $intconf->{MailGatewayInternalIP}||'10.4.3.7' ;
 	my $intBitmask = $intconf->{MailGatewayInternalMask}||32;
@@ -1106,8 +1109,8 @@ chkconfig --level 3 named off
 chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
 #AKA::Mail::AntiVirus will start automatic
-chkconfig --level 3 clamd on
-chkconfig --level 3 freshclam  on
+#chkconfig --level 3 clamd on
+#chkconfig --level 3 freshclam  on
 chkconfig --level 3 xinetd  on
 # use ntpdate instead chkconfig --level 3 ntpd  on
 chkconfig --level 3 iptables off
