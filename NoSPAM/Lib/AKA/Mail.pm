@@ -93,6 +93,7 @@ sub new
 	$self->{conffile_list}->{license} = $self->{conf}->{define}->{licensefile};	# License.dat
 	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};	# PoliceDB.xml
 	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};	# UserFilterDB.xml
+	$self->{conffile_list}->{upgrade_log} = $self->{conf}->{define}->{upgrade_log};	# upgrade log
 
 	$self->check_conffile_update();
 
@@ -133,8 +134,9 @@ sub server
 		if ( $pid > 0 ){ #parent
 			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
 			if ( $self->check_conffile_update() ){
+				shutdown ( $server, 2 );
 				close $server;
-				kill 9, $$;
+				#kill 9, $$;
 				exit;
 			}
 			; # goto accept
@@ -255,7 +257,7 @@ sub net_process
 		#$self->cleanup;
 		return;
 	}
-	$SIG{ALRM} = $old_alarm_sig;
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
 	alarm $old_alarm;
 #print "after eval recv, before process\n";
 
@@ -295,9 +297,9 @@ sub send_mail_info
 	my $socket = shift;
 
 	my ($smtp_code,$smtp_info,$exit_code);
-	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code};
-	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info};
-	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code};
+	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code} ||'';
+	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info} ||'';
+	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'';
 
 #print "after process, before send\n";
 #$self->{zlog}->debug( "net_process after process smtp_code: [" . $smtp_code . "]\n"
@@ -738,7 +740,7 @@ sub cleanup {
 
 	chdir("/home/NoSPAM/spool/");
 
-	rmdir("$ENV{'TMPDIR'}");
+	#rmdir($ENV{'TMPDIR'});
 	unlink( $self->{mail_info}->{aka}->{emlfilename} );
 }
 
@@ -1098,12 +1100,11 @@ sub dynamic_engine
 	# 判断动态
 	#
 	# we check what we has seen
-	if ( ! $subject || ! $mailfrom || ! $ip ){
-		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
-		# we should check what we can check.
+	#if ( ! $subject || ! $mailfrom || ! $ip ){
+		#$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
 
 	#	($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
-	}
+	#}
 
 	if ( $mailfrom ){
 		# 检查白名单

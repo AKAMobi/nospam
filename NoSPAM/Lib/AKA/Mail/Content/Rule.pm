@@ -36,6 +36,9 @@ sub new
 	#$self->{conf} = $parent->{conf} || new AKA::Mail::Conf($self) ;
 	$self->{content_conf} = $parent->{content_conf} || new AKA::Mail::Content::Conf($self) ;
 
+	$self->load_user_filter_db;
+	$self->load_GA_filter_db;
+
 	return $self;
 }
 

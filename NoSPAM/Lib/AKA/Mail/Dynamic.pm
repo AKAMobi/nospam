@@ -251,6 +251,7 @@ sub refresh_info
 #print STDERR "refresh_bad_ip: check $key\n";
                 foreach $secmic ( keys %{$namespace_obj->{$key}} ){
 #print STDERR "refresh_bad_ip: check $key $secmic\n";
+			next if ( $secmic eq '_DENY_TO_' );
                         if ( $secmic =~ /^(\d+)\.(\d+)$/ ){
                                 if ( time - $1 > $sec ){
                                         delete $namespace_obj->{$key}->{$secmic} ;

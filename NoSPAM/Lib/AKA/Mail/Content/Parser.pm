@@ -163,13 +163,14 @@ sub clean
 	undef $self->{mail_info};
 	undef $self->{entity};
 
-	if ( $self->{entity} ){
-		$self->{entity}->purge;
-	}
-
 	if ( $self->{mime_parser} ){
 		$self->{mime_parser}->filer->purge;
 	}
+
+#	if ( $self->{entity} ){
+#		$self->{entity}->purge;
+#	}
+
 }
 
 sub get_head_info
