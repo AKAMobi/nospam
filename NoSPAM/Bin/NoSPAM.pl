@@ -269,7 +269,14 @@ sub reset_Network_set_netfilter
 		' -j ACCEPT' );
 	return -61 if ( $ret );
 
-	$ret = system( "$iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 25 -j DNAT --to " .
+	#print( "$iptables -t nat -A PREROUTING -i eth1 -p tcp " .
+	#	"-d " . $conf->{config}->{MailServerIP} .
+	#	"--dport 25 -j DNAT --to " .
+	#	$intconf->{MailGatewayInternalIP} . ":25" );
+
+	$ret = system( "$iptables -t nat -A PREROUTING -i eth1 -p tcp " .
+		" -d " . $conf->{config}->{MailServerIP} .
+		" --dport 25 -j DNAT --to " .
 		$intconf->{MailGatewayInternalIP} . ":25" );
 	return -70 if ( $ret );
 
@@ -332,7 +339,7 @@ sub reset_Network_set_arp_backend
 	return 0;
 }
 
-sub reset_Network_set_arp
+sub reset_Network_set_arp_single_mailsrv
 {
 	my $ret;
 
@@ -360,7 +367,66 @@ sub reset_Network_set_arp
 	return 0;
 }
 
+sub reset_Network_set_arp
+{
+	my $ret;
+
+	my $MailServerIP = $conf->{config}->{MailServerIP};
+	my $MailServerNetMask = $conf->{config}->{MailServerNetMask};
+	my $MailServerGateway = $conf->{config}->{MailServerGateway};
+
+	my $NetB;
+	($NetB = $MailServerIP) =~ s/\d+$//;
+
+	my $local_net_ip;
+	#first, we arp internal net: eth0
+	foreach ( 1 ... 255 ){
+		$local_net_ip = $NetB . $_;
+		#next if ( $local_net_ip eq $MailServerIP );
+       		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
+
+		$ret = &reset_Network_set_arp_backend( 'eth1', $local_net_ip, $MailServerIP );
+		return -1 if ( $ret );
+	}
+
+	#second, we arp external net: eth1
+	$ret = &reset_Network_set_arp_backend( 'eth0', $MailServerGateway, $MailServerIP );
+	return -2 if ( $ret );
+
+	return 0;
+}
 sub reset_Network_set_route
+{
+	my $ret;
+	#出口网关：NoSPAM.conf::MailServerGateway
+	$ret = system( $ip_binary, "route", "replace", "default", "via", $conf->{config}->{MailServerGateway}, "dev", "eth1" );
+	return -1 if ( $ret );
+
+	my $MailServerIP = $conf->{config}->{MailServerIP};
+	my $MailServerNetMask = $conf->{config}->{MailServerNetMask};
+
+	my $NetB;
+	($NetB = $MailServerIP) =~ s/\d+$//;
+
+	my $MailServerGateway = $conf->{config}->{MailServerGateway};
+
+	my $local_net_ip;
+	foreach ( 1 ... 255 ){
+		$local_net_ip = $NetB . $_;
+		next if ( $local_net_ip eq $MailServerGateway );
+       		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
+
+		$ret = system( $ip_binary, "route", "add", 
+			$local_net_ip.'/32',
+			"dev", "eth0" );
+
+		return -1 if ( $ret );
+	}
+	return 0;
+}
+
+
+sub reset_Network_set_route_single_mailsrv
 {
 	my $ret;
 	#出口网关：NoSPAM.conf::MailServerGateway
@@ -411,6 +477,7 @@ sub reset_Network_update_hostname
 	my $IP = $conf->{config}->{MailGatewayIP} ;
 
 	if ( $Hostname && $IP ){
+		$zlog->debug("NoSPAM Util::reset_Network_update_hostname IP:[$IP] or Hostname[$Hostname]");
 		$host_map{$IP} = $Hostname;
 	}else{
 		$zlog->fatal("NoSPAM Util::reset_Network_update_hostname IP:[$IP] or Hostname[$Hostname] is null");
@@ -428,8 +495,10 @@ sub reset_Network_update_hostname
 		}
 
 		$content .= "\n";
-	}
-	return 20 unless write_file ( $content, "/etc/hosts" );
+	} 
+#print "before write hosts file: /etc/hosts\n$content";
+	$ret = write_file ( $content, "/etc/hosts" );
+	return 20 if $ret;
 
 	#邮件主机名称：NoSPAM.conf::MailServerHostname
 	$ret = system( $hostname_binary, $conf->{config}->{MailServerHostname} );
@@ -444,9 +513,11 @@ sub reset_Network_update_qmail_control
 
 	my $ret;
 
+#print "qc: 1\n";
 	$ret = &reset_Network_update_smtproutes($mode) ;
 	return 10 if ( $ret );
 
+#print "qc: 2\n";
 	$ret = &reset_Network_update_rcpthosts($mode);
 	return 20 if ( $ret );
 
@@ -486,12 +557,18 @@ sub reset_Network_update_smtproutes
 sub write_file
 {
 	my ( $content, $filename ) = @_;
+#return unless ( $filename eq "/etc/hosts" );
+#print "in wirte file: $filename 1\n";
 
 	return 10 unless ( $content && $filename );
+#print "in wirte file: $filename 2\n";
 
 	my $lockfd;
-	return 20 unless $lockfd = &get_lock ( "$filename" ) ;
+	$lockfd = &get_lock ( "$filename" ) ;
+#print "in wirte file: $filename 2.5, lockfd: $lockfd\n";
+	return 20 unless $lockfd;
 
+#print "in wirte file: $filename 3\n";
 	return 30 unless open ( LFD, ">$filename.new" );
 
 	print LFD $content;
@@ -504,14 +581,17 @@ sub write_file
 
 	return 50 unless release_lock( $lockfd );
 
-	return rename ( "$filename.new", $filename );
-	
+	return 0 if rename ( "$filename.new", $filename );
+
+	return 60;
 }
 
 sub reset_Network_update_smtproutes_gateway
 {
 	my $Domain = $conf->{config}->{MailServerHostname} ;
 	my $IP = $conf->{config}->{MailServerIP} ;
+
+	my $ret=0;
 
 	# get real email domain 
 	$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
@@ -523,21 +603,19 @@ sub reset_Network_update_smtproutes_gateway
 	my @smtproutes = <FD>;
 	close ( FD );
 
-	my ($eIP,$eDomain );
-	my %smtproute;
-	foreach ( @smtproutes ){
-		chomp;
-		($eIP,$eDomain) = split ( /:/, $_, 2 );
-		$smtproute{$eIP} = $eDomain;
-	}
-
-	$smtproute{$IP} = $Domain;
-
 	my $content = '';
-	while ( ($IP,$Domain)=each %smtproute ){
-		$content .= "$Domain:$IP\n";
+	my $exist = 0;
+	foreach ( @smtproutes ){
+		if (/"^$Domain:$IP"/ ){
+			$exist = 1;
+		}
+		$content .= "$_" 
 	}
-	return 30 unless write_file( $content, "/var/qmail/control/smtproutes" );
+
+	$content .= "$Domain:$IP\n" unless ( $exist );
+
+	$ret = write_file( $content, "/var/qmail/control/smtproutes" );
+	return 30 if $ret;
 
 	return 0;
 }
@@ -548,21 +626,25 @@ sub get_lock
 
 	#$filename = $1 if ( $filename=~m#([^/]+)$# );
 
-	if ( !open( LOCKFD, "$filename.lock" ) ){
+	if ( !open( LOCKFD, ">$filename.lock" ) ){
+		$zlog->debug("NoSPAM Util::get_lock can't get lock of $filename.lock");
 		return 0;
 	}
 
+#print "lock $filename 1\n";
 	use Fcntl ':flock'; # import LOCK_* constants
 
+#print "lock $filename 2\n";
     	if ( !flock(LOCKFD,LOCK_EX) ){
 		return 0;
 	}
-
+#print "lock $filename 3\n";
 	return \*LOCKFD;
 }
 
 sub release_lock
 {
+#print "not release lock\n";
 	my $lockfd = shift;
 	return flock($lockfd,LOCK_UN);
 }
@@ -597,22 +679,23 @@ sub reset_Network
 	&reset_Network_down_eth;
 	&reset_Network_clean_netfilter;
 
+	my $ret = 0;
 
 	# Start up network settings.
-	if ( 	&reset_Network_set_sysctl ||
-			&reset_Network_up_eth($mode) ||
-			&reset_Network_set_arp($mode) ||
-			&reset_Network_set_route($mode) ||
-			&reset_Network_set_netfilter($mode) ){
+	$ret ||= 10 if ( &reset_Network_set_sysctl );
+	$ret ||= 20 if ( &reset_Network_up_eth($mode) );
+	$ret ||= 30 if ( &reset_Network_set_arp($mode) );
+	$ret ||= 40 if ( &reset_Network_set_route($mode) );
+	$ret ||= 50 if ( &reset_Network_set_netfilter($mode) );
+
+	$ret ||= 60 if ( &reset_Network_update_hostname($mode) );
+	$ret ||= 70 if ( &reset_Network_update_qmail_control($mode) );
+
+	if ( $ret ){
 		$zlog->fatal( "NoSPAM Util::reset_Network set network params failure!" );
-		return -1;
+		return $ret;
 	}
 
-	if ( &reset_Network_update_hostname($mode) ||
-			&reset_Network_update_qmail_control($mode) ){
-		$zlog->fatal( "NoSPAM Util::reset_Network update hosts & smtproute file failure!" );
-		return -2;
-	}
 
 	return 0;
 }
