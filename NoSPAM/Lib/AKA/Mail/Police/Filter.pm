@@ -11,6 +11,8 @@ use AKA::Mail::Police::Log;
 use AKA::Mail::Police::Conf;
 use AKA::Mail::Police::Rule;
 use AKA::Mail::Police::Parser;
+
+use MIME::Base64;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -38,7 +40,7 @@ sub new
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
 	$self->{parser} = $parent->{parser} || new AKA::Mail::Police::Parser($self);
 	$self->{ruler} = $parent->{ruler} || new AKA::Mail::Police::Rule($self);
-	$self->{verify} = $parent->{verify} || new AKA::Mail::Police::Rule($self);
+	$self->{verify} = $parent->{verify} || new AKA::Mail::Police::Verify($self);
 
 	return $self;
 }
@@ -56,7 +58,7 @@ sub get_action
 	my ( $action, $param );
 
 	if ( $rule_info ){
-		$self->{zlog}->log_match($rule_info, $mail_info), 
+		$self->log_match($rule_info, $mail_info), 
 		$action = $rule_info->{rule_action}->{action};
 		$param = $rule_info->{rule_action}->{action_param};
 	}else{
@@ -157,6 +159,67 @@ sub get_action
 
 	($action, $param)
 }
+
+sub log_match
+{
+	my $self = shift;
+	my ( $rule_info, $mail_info ) = @_;
+
+	my $serialno = rand;
+	$serialno = $serialno * 9999;
+	$serialno = int ( $serialno );
+
+	my $logfile = $self->{conf}->{define}->{home} . "/log/" . $self->{conf}->{define}->{mspid} . "." . $self->{zlog}->get_time_stamp() . "." . $serialno . ".log";
+	my $emlfile = $self->{conf}->{define}->{home} . "/log/" . $self->{conf}->{define}->{mspid} . "." . $self->{zlog}->get_time_stamp() . "." . $serialno . ".eml";
+
+	my ( $head_data, $body_data );
+	$head_data = $self->{parser}->{entity}->stringify_header;
+	$body_data = $self->{parser}->{entity}->stringify_body;
+
+	my $logdata = {};
+
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'time'} = $self->{zlog}->get_time_stamp();
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'rule_id'} = $rule_info->{rule_id};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'category_id'} = $rule_nifo->{category_id};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'client_ip'} = $mail_info->{head}->{sender_ip};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'ip_zone'} = 0; #XXX
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'size'} = $mail_info->{head_size} + $mail_info->{body_size}; #FIXME
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'body_size'} = $mail_info->{body_size};
+
+	$emlfile =~ m#/([^/]+)$#;
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_file'} = $1 || $emlfile;
+
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'condition'} = $rule_info->{rule_action}->{action_param};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'action'} = $rule_info->{rule_action}->{action};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'sender'} = $mail_info->{head}->{from};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'subject'} = $mail_info->{head}->{subject};
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_header'} = &encode_base64( $head_data );
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_content'} = &encode_base64( $body_data );
+
+	open ( FD, ">$emlfile" ) or $self->{zlog}->log ( "pf: open $emlfile for writing error" );
+	print FD $head_data;
+	print FD "\n";
+	print FD $body_data;
+	close ( FD );
+	
+
+	my $xs = $self->{conf}->get_filterdb_xml_simple();
+	my $xml = $xs->XMLout( $logdata, NoAttr=>1 );
+
+	open ( FD, ">$logfile" ) or $self->{zlog}->log ( "pf: open $logfile for writing error" );
+	print FD $xml;
+	close ( FD );
+	
+	if ( ! $self->{verify}->sign_key($emlfile) ){
+		$self->{zlog}->log ( "pf: error for sign file [$emlfile]" );
+		unlink $emlfile;
+	}
+	if ( ! $self->{verify}->sign_key($logfile) ){
+		$self->{zlog}->log ( "pf: error for sign file [$logfile]" );
+		unlink $logfile;
+	}
+}
+
 
 sub print
 {

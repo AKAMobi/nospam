@@ -73,12 +73,27 @@ sub check_all_rule
 
 	$self->load_filter_db();
 
+	my $has_rule;
 	foreach my $rule_id ( keys %{$self->{filterdb}} ){
 		next if ( ! $rule_id );
 		$self->{zlog}->log ( "pf: checking rule id: $rule_id..." );
-		if ( check_attachment_rule ( $self, $rule_id, $mail_info ) &&
-				check_size_rule ( $self, $rule_id, $mail_info ) &&
-				check_keyword_rule ( $self, $rule_id, $mail_info ) ){
+
+		$has_rule = 0;
+		if ( $self->{filterdb}->{$rule_id}->{attachment} ){
+			# 如果有相关的 rule，则必须匹配才可能符合
+			# 不匹配则 next
+			next until check_attachment_rule ( $self, $rule_id, $mail_info );
+			$has_rule = 1;
+		}
+		if ( $self->{filterdb}->{$rule_id}->{size} ){
+			next until check_size_rule ( $self, $rule_id, $mail_info ) ;
+			$has_rule = 1;
+		}
+		if ( $self->{filterdb}->{$rule_id}->{rule_keyword} ){
+			next until check_keyword_rule ( $self, $rule_id, $mail_info );
+			$has_rule = 1;
+		}
+		if ( $has_rule ){
 			$self->{zlog}->log ( "pf: rule id $rule_id MATCH!" );
 			return $rule_id;
 		}
@@ -95,6 +110,9 @@ sub check_attachment_rule
 	if ( ! $mail_info->{attachment} ) { return 0; }
 
 	my $attachment_rule = $self->{filterdb}->{$rule_id}->{attachment};
+
+	# 如果没有规则，则认为匹配成功
+	return 1 if ( ! $attachment_rule );
 
 	if ( 'HASH' ne ref $attachment_rule ){
 		#多条
@@ -116,6 +134,8 @@ sub check_size_rule
 
 	my $size_rule = $self->{filterdb}->{$rule_id}->{size};
 
+	return if ( ! $size_rule );
+
 	if ( 'HASH' ne ref $size_rule ){
 		#多条
 		foreach my $sub_size_rule ( @{$size_rule} ){
@@ -135,9 +155,10 @@ sub check_keyword_rule
 
 	my $keyword_rule = $self->{filterdb}->{$rule_id}->{rule_keyword};
 
+	return if ( ! $keyword_rule );
+
 #XXX
-eval { 
-	if ( -1 != $#$keyword_rule ){
+	if ( 'ARRAY' eq ref $keyword_rule ){
 		#多条
 		foreach my $sub_keyword_rule ( @{$keyword_rule} ){
 			if ( ! check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) ){
@@ -146,9 +167,8 @@ eval {
 		}
 		return 1;
 	}
-};
-	return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
 
+	return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
 }
 
 sub check_single_attachment_rule

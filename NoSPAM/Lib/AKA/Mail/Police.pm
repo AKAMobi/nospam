@@ -41,6 +41,7 @@ sub new
 	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
 	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
 	$self->{verify} ||= new AKA::Mail::Police::Verify($self);
+	$self->{filter} ||= new AKA::Mail::Police::Filter($self);
 
 # Return $self so the user can use it.
 	return $self;

@@ -87,11 +87,15 @@ sub get_mail_info
         
 	$partnum = @Parts;
         
-	foreach my $blob (@Parts) {
-		&get_body_info( $self,$blob );
+	if ( $partnum > 0 ){
+		foreach my $blob (@Parts) {
+			&get_body_info( $self,$blob );
+		}
+	}else{
+		&get_body_info( $self, $entity );	
 	}
-        
-	foreach my $filename ( %{$self->{mail_info}->{body}} ){
+     	   
+	foreach my $filename ( keys %{$self->{mail_info}->{body}} ){
 		if ( ( ! defined $self->{mail_info}->{body}->{$filename}->{nofilename} ) ||
 			( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  ) ){
 			$self->{mail_info}->{attachment} = 1;
