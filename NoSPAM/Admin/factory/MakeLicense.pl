@@ -10,13 +10,13 @@ $AL = new AKA::License;
 
 my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 
-my $hw_lic = "CPU=4000;RAM=1025000";
+my $hw_lic = "CPU=6000;RAM=1025000";
 my $hw_lic_enc = $AL->encode($hw_lic);
 
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-5-30
+ExpireDate=2004-6-10
 Version=2
 
 FactoryName=AKA IT
