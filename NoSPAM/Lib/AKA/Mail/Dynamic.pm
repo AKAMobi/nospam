@@ -47,6 +47,9 @@ sub new
 	$self->{define}->{SyncCacheSize} = '100K';
 	# 清除过期记录的时间间隔，秒为单位
 	$self->{define}->{clean_interval} = 600;
+	# 封禁最长时间：一天
+	$self->{define}->{max_deny_time} = 86400;
+	# 封禁最长时间：一天
 	# 缺省超限封禁时间：1Hour
 	$self->{define}->{DefaultDenyTime} = 600;
 
@@ -213,8 +216,9 @@ sub is_overrun_rate_per_XXX
 	}
 
 
-	# 将数据保存起来备查
-	$namespace_obj = $self->add_dynamic_info( $namespace_obj, $key );
+	# 将数据保存起来备查 
+	# $namespace_obj 传递的 is reference, so modify in add_Dynamic_info function will effect in this namespace
+	$self->add_dynamic_info( $namespace_obj, $key );
 
 	# 检查是否超过限额
 	my ($overrun,$reason) = $self->check_quota_exceed_ex( $namespace_obj, $key, $num, $sec, $deny_sec );
@@ -286,7 +290,8 @@ sub add_dynamic_info
 
 	$namespace_obj->{$key}->{$seconds . '.' . $microseconds} = 1;
 
-	return $namespace_obj;
+	# no need to return this, because this is a reference, and the modify of it should effect the parent function.
+	#return $namespace_obj;
 #print STDERR "add_bad_ip: $namespace, $key\n";
 }
 
@@ -310,7 +315,13 @@ sub check_quota_exceed_ex
 			# change to minute
 			$wait_time = int($wait_time/60);
 			# 由于超额，还没到被解封时间，仍然返回OVERRUN，并且增加封禁时间
-			$ns_obj_who->{_DENY_TO_} += $deny_sec;
+
+			if ( $wait_time > $self->{define}->{max_deny_time} ){
+				$ns_obj_who->{_DENY_TO_} = time + $self->{define}->{max_deny_time}
+			}else{
+				$ns_obj_who->{_DENY_TO_} += $deny_sec;
+			}
+
 			return (1, "发送超限，还需$wait_time分钟解封");
 		}else{
 			delete $ns_obj_who->{_DENY_TO_};
