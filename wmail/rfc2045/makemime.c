@@ -693,21 +693,25 @@ struct rfc2045_encode_info encode_info;
 		const char nameStr[]="name";
 		int len;
 
+		/* by lfan, replace rfc2231 with rfc2047 according to outlook
 		rfc2231_attrCreate(nameStr, m->contentname, chset,
 				   NULL,
 				   &len,
 				   "");
 
 		s=malloc(len);
+		*/
 
+		s = rfc2047_encode_str( m->contentname, chset );
 		if (s)
 		{
+			/*
 			rfc2231_attrCreate(nameStr, m->contentname, chset,
 					   s,
 					   &len,
 					   "");
-
-			fprintf(m->outputfp, "; %s", s);
+			*/
+			fprintf(m->outputfp, "; name=\"%s\"", s);
 			free(s);
 		}
 	}

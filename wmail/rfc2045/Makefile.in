@@ -120,7 +120,7 @@ reformime_LDADD = librfc2045.a ../rfc822/librfc822.a @UNICODE_LIB@ \
 reformime_DEPENDENCIES = $(reformime_LDADD)
 
 makemime_SOURCES = makemime.c
-makemime_LDADD = librfc2045.a ../numlib/libnumlib.a
+makemime_LDADD = librfc2045.a ../numlib/libnumlib.a ../rfc822/librfc822.a
 makemime_DEPENDENCIES = $(makemime_LDADD)
 
 headercheck_SOURCES = headercheck.c
