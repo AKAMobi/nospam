@@ -157,11 +157,11 @@ function LogAction($func, $action, $option, $oldValue = "", $newValue = "")
 function ConvertSize($iSize)
 {
 	if ($iSize > 1024*1024*1024)
-		return intval($iSize/(1024*1024*1024))."GB";
+		return (intval(100*$iSize/(1024*1024*1024))/100)."GB";
 	if ($iSize > 1024*1024)
-		return intval($iSize/(1024*1024))."MB";
+		return (intval(100*$iSize/(1024*1024))/100)."MB";
 	if ($iSize > 1024)
-		return intval($iSize/1024)."KB";
+		return (intval(100*$iSize/1024)/100)."KB";
 	return $iSize."Bytes";
 }
 ?>
