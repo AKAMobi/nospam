@@ -756,15 +756,15 @@ class EmailUser {
         switch ($type) {
             case QUARANTINE_WHILE_LIST:
                 $this->listType = QUARANTINE_WHILE_LIST;
-                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE User = '%s' AND Domain = '%s' AND Type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
                 break;
             case QUARANTINE_BLACK_LIST:
                 $this->listType = QUARANTINE_BLACK_LIST;
-                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE User = '%s' AND Domain = '%s' AND Type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
                 break;
             default:
                 $this->listType = QUARANTINE_ALL_LIST;
-                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain));
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE User = '%s' AND Domain = '%s' ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain));
         }
         if (!$this->db->query ($sql)) {
             $this->quitDb ();
@@ -789,17 +789,17 @@ class EmailUser {
         switch ($this->listType) {
             case QUARANTINE_WHILE_LIST:
             case QUARANTINE_BLACK_LIST:
-                $sql = sprintf ("SELECT * FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType, $start, $num);
+                $sql = sprintf ("SELECT * FROM %s WHERE User = '%s' AND Domain = '%s' AND Type = %d LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType, $start, $num);
                 break;
             default:
-                $sql = sprintf ("SELECT * FROM %s WHERE user = '%s' AND domain = '%s' LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $start, $num);
+                $sql = sprintf ("SELECT * FROM %s WHERE User = '%s' AND Domain = '%s' LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $start, $num);
         }
         if (!$this->db->query ($sql)) {
             return -1;
         }
         while ($buf = sqlite_fetch_array ($this->db->result, 1)) {
-            $id = intval ($buf['autoid']);
-            $this->whiteList[$id]=new WhiteListItem ($id, $buf['email'], $buf['type']);
+            $id = intval ($buf['AutoID']);
+            $this->whiteList[$id]=new WhiteListItem ($id, $buf['Email'], $buf['Type']);
         }
         $this->db->free ();
         return 0;
@@ -808,7 +808,7 @@ class EmailUser {
     function delItemFromList ($id) {
         $id = intval ($id);
         if (!$id) return;
-        $sql = sprintf ("DELETE FROM %s WHERE user = '%s' AND domain = '%s' AND autoid = %d ;",
+        $sql = sprintf ("DELETE FROM %s WHERE User = '%s' AND Domain = '%s' AND AutoID = %d ;",
                         $this->listTable,
                         db_escape_string ($this->user),
                         db_escape_string ($this->domain),
@@ -826,7 +826,9 @@ class EmailUser {
             return -1;
         if (!checkmailaddr($email))
             return -2;
-        $sql = sprintf ("SELECT MAX(autoid) as MAXID FROM %s ;", $this->listTable);
+        
+	/* by zixia 2004-09-04 使用sqlite auto increment功能自动生成新id.
+	$sql = sprintf ("SELECT MAX(autoid) as MAXID FROM %s ;", $this->listTable);
         if (!$this->db->query ($sql)) {
             return -3;
         }
@@ -836,9 +838,10 @@ class EmailUser {
         if ($id == 0)
             return -4;
         $id ++;
-        $sql = sprintf ("INSERT INTO %s ". /*( autoid , user , domain , email , type )*/ " VALUES ( '%d' , '%s' , '%s' , '%s' , '%d' );" ,
+        */
+	
+	$sql = sprintf ("INSERT INTO %s (User , Domain , Email , Type ) VALUES ( '%s' , '%s' , '%s' , '%d' )" ,
                     $this->listTable,
-                    $id,
                     db_escape_string ($this->user),
                     db_escape_string ($this->domain),
                     db_escape_string ($email),

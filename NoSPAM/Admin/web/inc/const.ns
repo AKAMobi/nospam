@@ -25,8 +25,9 @@ if ( !defined("CONST_DEFINED") ){
 	define("UPGRADEINFODIR","/home/NoSPAM/var/upgrade");
     define("QUARANTINEINFOSUFFIX","info"); //add by XiaoyingHu Jul 30,2004
     define("QUARANTINEFILEPREFIX","emlfile.gw.nospam.");
-    define("QUARANTINESQLFILEPATH" , '/home/NoSPAM/NoSPAM.Quarantine.db');
-    define("QUARANTINEWHITELISTTABLE", 'USERWHITELIST');
+    //define("QUARANTINESQLFILEPATH" , '/tmp/nospam.sqlite');
+    define("QUARANTINESQLFILEPATH" , '/home/NoSPAM/var/sqlite/nospam.sqlite');
+    define("QUARANTINEWHITELISTTABLE", 'UserWhiteList_TB');
     define("QUARANTINE_WHILE_LIST", 1);
     define("QUARANTINE_BLACK_LIST", 2);
     define("QUARANTINE_ALL_LIST",   0);
