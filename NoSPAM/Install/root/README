@@ -1,4 +1,0 @@
-一些备注
-
-每个目录下都有 post_proc.sh，如果有就是需要执行这个来进行一些权限设置；
-clamav 需要修改 rpm ，change clamav groupadd to 48, useradd to id 48, and  rpmbuild --without milter
