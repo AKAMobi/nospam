@@ -24,7 +24,7 @@ if($_POST["submit"]==_("Submit")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Concurrent SMTP Connect per IP")?></title>
+<title><?=_("Maximum concurrent SMTP connections per IP")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -34,10 +34,10 @@ if($_POST["submit"]==_("Submit")){
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
-  <p><?=_("Concurrent SMTP Connect per IP")?>: 
+  <p><?=_("Maximum concurrent SMTP connections per IP")?>: 
     <input name="ConnPerIP" type="text" size="2" id="ConnPerIP" value="<?=$spamconf->getParam("ConnPerIP","DynamicEngine")?>">
  (<?=_("0 means No Limit")?>)
- 	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
+ 	<br><?=_("Note: Maximum concurrent SMTP connections per IP only functions on inward traffic.")?>
 </p>
   <p>
     <input type="submit" name="submit" value="<?=_("Submit")?>">
@@ -46,17 +46,17 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?
 }else{
 ?>
-  <p><?=_("Concurrent SMTP Connect per IP")?>: 
+  <p><?=_("Maximum concurrent SMTP connections per IP")?>: 
     &nbsp;<font color="Red"><?=$spamconf->getParam("ConnPerIP","DynamicEngine")?></font>&nbsp;<?=_("Second(s)")?>
  (<?=_("0 means No Limit")?>)
- 	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
+ 	<br><?=_("Note: Maximum concurrent SMTP connections per IP only functions on inward traffic.")?>
 </p>
 <?
 }
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteIPConcurList","DynamicEngine",_("IP Whitelist"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteIPConcurList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
@@ -64,10 +64,10 @@ switch($_GET["action"]){
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 		exit(-1);
 	}
-	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP Whitelist"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteIPConcurList","DynamicEngine",_("IP Whitelist"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
 	SaveData("WhiteIPConcurList","DynamicEngine","IP",(bool)adminPerm(PERM_ADMIN_WRITE));
@@ -75,10 +75,10 @@ switch($_GET["action"]){
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 		exit(-1);
 	}
-	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP Whitelist"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP Whitelist"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 	
 if(!$bDynamic){

@@ -42,7 +42,7 @@ if($_POST["Submit"]==_("Modify")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("QuarantineEngine")?></title>
+<title><?=_("Quarantine Engine")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function doSwitchTime() {
@@ -59,7 +59,7 @@ function doSwitchTime() {
 </script>
 </head>
 <body onload="doSwitchTime" >
-<center><font size="+3"><?=_("QuarantineEngine")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("QuarantineEngine")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
   <p> <?=_("QuarantineEngine Settings")?>:<br>
     <label>
@@ -74,7 +74,7 @@ function doSwitchTime() {
     </label>
     <br />
     <label>
-    <?=_("Quarantine time out action")?>
+    <?=_("Action after timeout")?>
     <select name="QuarantineTimeOutAction">
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'selected'; ?>><?=_("Drop")?></option>
     <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option>
@@ -125,7 +125,7 @@ function doSwitchTime() {
     </label>
     <br />
     <label>
-    <?=_("Quarantine time out action")?>
+    <?=_("Action after timeout")?>
     <select name="QuarantineTimeOutAction" disabled >
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'checked'; ?>><?=_("Drop")?></option>
     <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option>

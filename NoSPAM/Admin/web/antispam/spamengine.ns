@@ -36,7 +36,7 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Engines Switches")?></title>
+<title><?=_("Engines Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -71,7 +71,7 @@ function change(bState)
 </head>
 
 <body>
-<center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
     <p><b><?=_("AntiSpam Engine")?></b>: 
     <input type="radio" name="SpamEngine" value="Y"<? if($bAntiSpam) echo" checked"; ?> onclick="change(false)">

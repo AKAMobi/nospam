@@ -59,7 +59,7 @@ function change(bState)
     <input id="idRBLDisabledY" type="radio" name="RBLDisabled" value="Y"<? if($bRBLDisabled) echo " checked" ?> onclick="change(true)">
   <?=_("Off")?></label>
     <p>
-    RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Second(s)")?> <?=_("Recommend: ")?>15 <?=_("Second(s)")?><br>
+    RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Second(s)")?> <?=_("Recommend: ")?>15 <?=_("Seconds")?><br>
 
     <input type="reset" name="reset" value="<?=_("Reset")?>">
     <input type="submit" name="isSubmit" value="<?=_("Submit")?>">

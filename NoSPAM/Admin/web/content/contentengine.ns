@@ -54,7 +54,7 @@ function change(bState)
 </head>
 
 <body>
-<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("Content Filter Engine")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
   <p> <?=_("Engine Switch")?>:<br>
     <label>

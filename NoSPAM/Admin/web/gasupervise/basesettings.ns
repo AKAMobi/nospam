@@ -29,7 +29,7 @@ if ($_POST["Submit"] == _("Submit")){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
-<title><?=_("SwitchBoard")?></title>
+<title><?=_("Switch Board")?></title>
 <script>
 function change(bState)
 {
@@ -43,7 +43,7 @@ function change(bState)
 </script>
 </head>
 <body>
-<center><font size="+3"><?=_("Auto-Download Policy")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("Auto-Download Policy")?>-<?=_("Switch Board")?></font></center>
 <div align="center">
 <form method="POST" name="form1">
 <lable>

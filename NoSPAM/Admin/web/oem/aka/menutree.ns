@@ -107,7 +107,7 @@ if ($QuarantineEngine > 0) {
 ?>
 	var qu = new WebFXTreeItem('<?=_("Quarantine Engine")?>');
 	tree.add(qu);
-	qu.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','quarantine/quarantine.ns','main'));
+	qu.add(new WebFXTreeItem('<?=_("Switch Board")?>','quarantine/quarantine.ns','main'));
 	qu.add(new WebFXTreeItem('<?=_("Quarantine User DB")?>','quarantine/userlist.ns','main'));
 
 <?

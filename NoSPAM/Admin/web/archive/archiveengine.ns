@@ -24,7 +24,7 @@ if($_POST["ArchiveEngine"]){
 </head>
 
 <body>
-<center><font size="+3"><?=_("Mail Audit Engine")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("Mail Audit Engine")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
   <p>
     <label>

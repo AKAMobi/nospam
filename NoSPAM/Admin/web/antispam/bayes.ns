@@ -75,7 +75,7 @@ function change(bState)
 <body>
 <center><font size="+3"><?=_("AntiSpam Engine")?>-<?=_("Bayes Filter")?></font></center>
 <form name="form1" method="post">
-  <p><?=_("Bayes Switch: ")?><br>
+  <p><?=_("Bayes Filter Switch: ")?><br>
     <label>
     <input id="idBayesY" type="radio" name="BayesEnabled" value="Y"<? if($bBayes) echo " checked" ?> onclick="change(false)">
   <?=_("On")?></label><br>

@@ -110,7 +110,7 @@ if ($QuarantineEngine > 0) {
 ?>
 	var qu = new WebFXTreeItem('<?=_("Quarantine Engine")?>');
 	tree.add(qu);
-	qu.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','quarantine/quarantine.ns','main'));
+	qu.add(new WebFXTreeItem('<?=_("Switch Board")?>','quarantine/quarantine.ns','main'));
 	qu.add(new WebFXTreeItem('<?=_("Quarantine User DB")?>','quarantine/userlist.ns','main'));
 
 <?
@@ -124,7 +124,7 @@ if($DynamicEngine > 0){
 ?>
 	var e = new WebFXTreeItem('<?=_("Overrun Limit Engine")?>');
 	tree.add(e);
-	e.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','dynamic/dynengine.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("Switch Board")?>','dynamic/dynengine.ns','main'));
 	e.add(new WebFXTreeItem('<?=_("SMTP per IP")?>','dynamic/connperip.ns','main'));
 	e.add(new WebFXTreeItem('<?=_("Mails per Sender")?>','dynamic/sendrateperfrom.ns','main'));
 	e.add(new WebFXTreeItem('<?=_("Mails per Subject")?>','dynamic/sendratepersubject.ns','main'));
@@ -138,7 +138,7 @@ if($DynamicEngine > 0){
 ?>
 	var j = new WebFXTreeItem('<?=_("AntiVirus Engine")?>');
 	tree.add(j);
-	j.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antivirus/virusengine.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("Switch Board")?>','antivirus/virusengine.ns','main'));
 	j.add(new WebFXTreeItem('<?=_("Virus Identification")?>','antivirus/recognize.ns','main'));
 	j.add(new WebFXTreeItem('<?=_("Virus Processing")?>','antivirus/treatment.ns','main'));
 <?php
@@ -150,10 +150,10 @@ if($SpamEngine > 0){
 
 	var c = new WebFXTreeItem('<?=_("AntiSpam Engine")?>');
 	tree.add(c);
-	c.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antispam/spamengine.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Switch Board")?>','antispam/spamengine.ns','main'));
 	c.add(new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>','antispam/list.ns','main'));
 
-	c.add(new WebFXTreeItem('<?=_("Traceable Check")?>','antispam/traceable.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Traceability Analysis")?>','antispam/traceable.ns','main'));
 
 	//var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
 	//c.add(c3);
@@ -174,7 +174,7 @@ if($ContentEngine > 0){
 ?>
 	var d = new WebFXTreeItem('<?=_("Content Filter Engine")?>');
 	tree.add(d);
-	d.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','content/contentengine.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Switch Board")?>','content/contentengine.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rule Management")?>','content/rulemanage.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rule Group")?>','content/category.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rule List")?>','content/ruleprint.ns','main'));
@@ -186,7 +186,7 @@ if($ContentEngine > 0){
 ?>
 	var f = new WebFXTreeItem('<?=_("Mail Audit Engine")?>');
 	tree.add(f);
-	f.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','archive/archiveengine.ns','main'));
+	f.add(new WebFXTreeItem('<?=_("Switch Board")?>','archive/archiveengine.ns','main'));
 	//f.add(new WebFXTreeItem('<?=_("Audit Address")?>','archive/archiveaddress.ns','main'));
 	f.add(new WebFXTreeItem('<?=_("Selected Archive")?>','archive/archivetype.ns','main'));
 <?
@@ -196,7 +196,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
 	var i = new WebFXTreeItem('<?=_("Interactive")?>');
 	tree.add(i);
-	i.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','interactive/interengine.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("Switch Board")?>','interactive/interengine.ns','main'));
 	i.add(new WebFXTreeItem('<?=_("Too Huge Mail")?>超大邮件提醒','interactive/bigmail.ns','main'));
 	i.add(new WebFXTreeItem('<?=_("Too Many Mails")?>过量邮件提醒','interactive/exmail.ns','main'));
 <?
@@ -247,7 +247,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
 	var m = new WebFXTreeItem('<?=_("Auto-Download Policy")?>');
 	tree.add(m);
-	m.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('<?=_("Switch Board")?>','gasupervise/basesettings.ns','main'));
 	m.add(new WebFXTreeItem('MSP','gasupervise/msp.ns','main'));
 	m.add(new WebFXTreeItem('<?=_("Exchange Format")?>','gasupervise/export.ns','main'));
 <?

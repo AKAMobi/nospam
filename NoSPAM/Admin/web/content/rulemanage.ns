@@ -129,7 +129,7 @@ function sortTable(sKey)
 
 </select><br>
 <form action="<?=$url?><?if($bPolice) echo "?db=police";?>" method="POST">
-<?=_("No.")?>:
+<?=_("Rule Number")?>:
 <input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Submit")?>" />
 </form>
 <?
@@ -145,14 +145,14 @@ if(!$readonly){
 <table width="100%" class="RuleTB" width="100%">
 <tr class="TableTitleLink" style="cursor: hand">
 	<? if(!$readonly) { ?><th style="cursor: default"></th><? } ?>
-	<th onclick="sortTable('rule_id')"><?=_("No.")?>: <?=$Flag["rule_id"]?></th>
-	<th onclick="sortTable('rule_comment')"><?=_("Description")?>: <?=$Flag["rule_comment"]?></th>
-	<th onclick="sortTable('category_id')"><?=_("Group")?>: <?=$Flag["category_id"]?></th>
-	<th onclick="sortTable('create_time')"><?=_("Creatation Time")?>: <?=$Flag["create_time"]?></th>
-	<th onclick="sortTable('rule_keyword')"><?=_("Keyword and IP rules")?>: <?=$Flag["rule_keyword"]?></th>
-	<th onclick="sortTable('size')"><?=_("Numeric rules")?>: <?=$Flag["size"]?></th>
-	<th onclick="sortTable('attachment')"><?=_("Attachment rules")?>: <?=$Flag["attachment"]?></th>
-	<th onclick="sortTable('action')"><?=_("Action")?>: <?=$Flag["action"]?></th>
+	<th onclick="sortTable('rule_id')"><?=_("Rule Number")?><?=$Flag["rule_id"]?></th>
+	<th onclick="sortTable('rule_comment')"><?=_("Description")?><?=$Flag["rule_comment"]?></th>
+	<th onclick="sortTable('category_id')"><?=_("Group")?><?=$Flag["category_id"]?></th>
+	<th onclick="sortTable('create_time')"><?=_("Creatation Time")?><?=$Flag["create_time"]?></th>
+	<th onclick="sortTable('rule_keyword')"><?=_("Keyword and IP rules")?><?=$Flag["rule_keyword"]?></th>
+	<th onclick="sortTable('size')"><?=_("Numeric rules")?><?=$Flag["size"]?></th>
+	<th onclick="sortTable('attachment')"><?=_("Attachment rules")?><?=$Flag["attachment"]?></th>
+	<th onclick="sortTable('action')"><?=_("Action")?><?=$Flag["action"]?></th>
 </tr>
 <?
 if(count($rules) > 0){

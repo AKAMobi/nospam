@@ -112,7 +112,7 @@ function formReset()
     <br>
 -->
    <input name="Traceable" type="hidden" value="Y">
-    <?=_("Traceable Options")?>: 
+    <?=_("Options for Traceability Analysis")?>: 
     <input name="options[]" type="checkbox" id="option3" value="Domain"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Domain")!==false) echo " checked"; ?>><?=_("Domain")?>
     <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Mail")!==false) echo " checked"; ?>><?=_("Mail")?>
     <input name="options[]" type="checkbox" id="option2" value="IP"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"IP")!==false) echo " checked"; ?>>IP </p>
@@ -208,7 +208,7 @@ alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
     <input name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> disabled>
   <?=_("Off")?></label>
     <br>
-    <?=_("Traceable Options")?>: 
+    <?=_("Options for Traceability Analysis")?>: 
     <input name="options[]" type="checkbox" id="option1" value="Domain"<? if(strpos($sType,"Domain")!==false) echo " checked"; ?> disabled><?=_("Domain")?>
     <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(strpos($sType,"Mail")!==false) echo " checked"; ?> disabled><?=_("Mail")?>
     <input name="options[]" type="checkbox" id="option2" value="IP"<? if(strpos($sType,"IP")!==false) echo " checked"; ?> disabled>IP </p>

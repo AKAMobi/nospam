@@ -157,10 +157,10 @@ function displaySettings(userListType)
 </script>
 </head>
 <body onload="displaySettings(userListType)">
-<center><font size="+3"><?=_("QuarantineEngine")?>-<?=_("Quarantine User DB")?></font></center>
+<center><font size="+3"><?=_("Quarantine Engine")?>-<?=_("Quarantine User DB")?></font></center>
 <form name="form1" id="form1" method="post" action="" ENCTYPE="multipart/form-data">
 <input type="hidden" name="act" id="act" value="modify" />
-  <p> <?=_("QuarantineEngineUserList")?>:<br>
+  <p> <?=_("Quarantine Engine User List")?>:<br>
     <label>
     <input type="radio" name="CheckUserList" value="Disabled" onclick="displaySettings('Disabled')" <?php if (!strcmp ($quarantineEnginCheckUserList, 'Disabled')) echo 'checked'; ?>><?=_("Disabled")?>
     <input type="radio" name="CheckUserList" value="LDAP" onclick="displaySettings('LDAP')" <?php if (!strcmp ($quarantineEnginCheckUserList, 'LDAP')) echo 'checked'; ?>><?=_("LDAP")?>
@@ -169,7 +169,7 @@ function displaySettings(userListType)
     </p>
     <span id="hiddenSpan"></span>  
     
-    <p><label><?=_("When the address that incurrent mail will forword to is not exist");?>:<select name="NoSuchUserAction" >
+    <p><label><?=_("Action if the receiver of an inward email does not exist in the Quarantine Engine User List");?>:<select name="NoSuchUserAction" >
     <option value="F" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'F')) echo 'selected'; ?> ><?=_("Forward");?></option>
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>
@@ -234,7 +234,7 @@ function displaySettings(userListType)
     </p>
     <span id="hiddenSpan"></span>  
     
-    <p><label><?=_("When the address that incurrent mail will forword to is not exist");?>:<select name="NoSuchUserAction" disabled>
+    <p><label><?=_("Action if the receiver of an inward email does not exist in the Quarantine Engine User List");?>:<select name="NoSuchUserAction" disabled>
     <option value="F" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'F')) echo 'selected'; ?> ><?=_("Forward");?></option>
     <option value="D" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'D')) echo 'selected'; ?> ><?=_("Drop");?></option>
     <option value="R" <?php if (!strcmp ($quarantineEngineNoSuchUserAction, 'R')) echo 'selected'; ?> ><?=_("Reject");?></option>

@@ -115,7 +115,7 @@ function flush()
 </blockquote-->
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Send to a given Email Address")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Send to the following email addresses")?><br>
     <TEXTAREA name="ArchiveAddress" cols="20" rows="10"<?if(!in_array("Address",$type)) echo " disabled";?>><?=str_replace(",","\n",$addr)?></TEXTAREA>
     </p>
     <input type="submit" name="Submit" value="<?=_("Modify")?>">

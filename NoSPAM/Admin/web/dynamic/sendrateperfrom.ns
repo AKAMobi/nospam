@@ -45,10 +45,10 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
 <?=_("Mails per Sender")?>: <br>
-<?=_("in")?><input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Second(s)")?><br>
-<?=_("One Sender should send no more than")?><input size="2" type="text" name="Counts" value="<?=$Counts?>"><?=_("Mails")?><br>
-<?=_("or will be blocked")?><input size="2" type="text" name="Block" value="<?=$Block?>"><?=_("Second(s)")?><br>
-(<?=_("0 means No Limit").", "._("Suggestion time-set is no more than 1800 seconds.")?>)
+<?=_("In")?><input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("second(s)")?><br>
+<?=_("one sender should send no more than")?><input size="2" type="text" name="Counts" value="<?=$Counts?>"><?=_("mails")?><br>
+<?=_("or will be blocked")?><input size="2" type="text" name="Block" value="<?=$Block?>"><?=_("second(s)")?><br>
+(<?=_("0 means No Limit").", "._("No more than 1800 seconds of blocking time is suggested.")?>)
  <input type="submit" name="submit" value="<?=_("Submit")?>">
 </form>
 <?
@@ -64,21 +64,21 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteFromList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
 	SaveData("WhiteFromList","DynamicEngine",_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteFromList","DynamicEngine",_("Sender WhiteList"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteFromList","DynamicEngine",_("Sender Whitelist"),_("Email Address"),(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 
 if(!$bDynamic){

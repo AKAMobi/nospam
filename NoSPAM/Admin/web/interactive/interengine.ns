@@ -27,7 +27,7 @@ if($_POST["Submit"]=="修改"){
 </head>
 
 <body>
-<center><font size="+3"><?=_("Interactive")?>-<?=_("SwitchBoard")?></font></center>
+<center><font size="+3"><?=_("Interactive")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
   <p>
   	引擎开关：<br>
