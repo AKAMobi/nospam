@@ -13,9 +13,9 @@ ExpireDate=2004-12-31
 
 FactoryName=
 
-DynamicEngineEnabled=No/Yes
-ContentEngineEnabled= No/Yes
-SpamEngineEnabled= No/Yes
+DynamicEngineEnabled=Yes
+ContentEngineEnabled=Yes
+SpamEngineEnabled=Yes
 
 _LICENSE_
 
