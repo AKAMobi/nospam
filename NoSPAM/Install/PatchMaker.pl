@@ -5,10 +5,10 @@ use Digest::MD5 qw(md5_base64 md5_hex);
 
 use strict;
 
-my $NSVER='2.0-4.23';
-my $ISOVER='2.0RC5';
+my $NSVER='2.0-4.27';
+my $ISOVER='2.0RC6';
 
-my $PATCHVER='05';
+my $PATCHVER='11';
 
 #
 # ÖÆ×÷Patch£º

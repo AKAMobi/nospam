@@ -4,6 +4,13 @@ DONE ebtables redirect mac to 10.4.3.7 so I can dnat to 10.4.3.7
 DONE qns_loader io instead of ns-queue;
 DONE use env to judge ins-queue or ns-queue
 
-make ns-qeue daemon
+2004-04-27
+DONEfix netmask bug of ifconfig call
+DONE make ns-qeue daemon
+
+完成CLI
+VLAN LVS
+网景
 check rule  match err ( old err , find it out )
-fix netmask bug of ifconfig call
+named 无法出国问题
+增加virus的弹回

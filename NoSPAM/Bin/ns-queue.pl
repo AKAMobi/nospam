@@ -67,7 +67,7 @@ my $hostname='gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
 
-my $MAXTIME=20;
+my $MAXTIME=30;
 
 #Want debugging? Enable this and read $scandir/qmail-queue.log
 my $DEBUG='1';
@@ -81,7 +81,7 @@ my $mail_info;
 
 # 判断是否由内向外发的mail
 if ( defined $ENV{RELAYCLIENT} ){
-	$mail_info->{aka}->{RELAYCLIENT} = $ENV{RELAYCLIENT};
+	$mail_info->{aka}->{RELAYCLIENT} = 1; #$ENV{RELAYCLIENT};
 }elsif (defined $ENV{TCPREMOTEINFO}){
 	# 如果经过身份认证，则 TCPREMOTEINFO 内存的是用户名
 	$mail_info->{aka}->{TCPREMOTEINFO} = $ENV{TCPREMOTEINFO};

@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+use AKA::Mail::GA;
 use AKA::Mail::GA::GAISC;
 
 $ENV{'PATH'} = '/bin:/sbin:/usr/bin:/usr/sbin';

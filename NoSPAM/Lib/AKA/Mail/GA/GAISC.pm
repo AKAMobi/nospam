@@ -196,12 +196,21 @@ sub mail_info_to_file
 #$self->{zlog}->debug ( Dumper($mail_info) );
 	my $dirname = { 'ALT' => 'alert', 'LOG' => 'log' };
 
-	srand $$;
-      	my $serialno = rand;
-        $serialno = sprintf ( "%04d", int($serialno * 9999) );
+	#srand $serialno;
+        #$serialno = sprintf ( "%04d", int($serialno * 9999) );
         #$serialno = int ( $serialno );
 
-	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . $serialno . '.' . lc($type);
+	my $emltime = $self->{zlog}->get_time_stamp;;
+	$emltime=$1 if ( $mail_info->{aka}->{emlfilename}=~/(\d{14})/ );
+
+      	my $serialno = 0;
+	my $filename;
+	do {
+		$filename = sprintf ( "%s/%s/%s%04d.%s", '/home/ssh/', $dirname->{$type}
+				, $emltime, $serialno,lc($type) );
+		$serialno++;
+	} while( -e $filename && $serialno<=9999 );
+
 #$self->{zlog}->debug ( "mail_info_to_file: $filename" );
 
 	unless ( open ( FD, ">$filename" ) ){
@@ -216,31 +225,31 @@ sub mail_info_to_file
 
 	my $from = $self->get_addr_str_from_mail_str($mail_info->{head}->{from});
 
-	print FD "GAISC.$type.From=". $from . "\r\n"
-		if ( defined $selector{'from'} );
-
-	if ( defined $selector{'to'} ){
-		my $to = $self->get_addr_str_from_mail_str($mail_info->{head}->{to});
-		print FD "GAISC.$type.To=" . $to;
-		if ( $to ){
-			print FD ",\r\n";
-		}else{
-			print FD "\r\n";
-		}
+	print FD "GAISC.$type.From=";
+	if ( defined $selector{'from'} ){
+		print FD $from;
 	}
+	print FD "\r\n";
 
-	if ( defined $selector{'cc'} ){
-		my $cc = $self->get_addr_str_from_mail_str($mail_info->{head}->{cc});
-		print FD "GAISC.$type.Cc=". $cc;
-		if ( $cc ){
-			print FD ",\r\n";
-		}else{
-			print FD "\r\n";
-		}
+	my $to = $self->get_addr_str_from_mail_str($mail_info->{head}->{to});
+	print FD "GAISC.$type.To=";
+	if ( defined $selector{'to'} && $to){
+		print FD $to;
 	}
+	print FD "\r\n";
 
-	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . "\r\n"
-		if ( defined $selector{'subject'} );
+	print FD "GAISC.$type.Cc=";
+	my $cc = $self->get_addr_str_from_mail_str($mail_info->{head}->{cc});
+	if ( defined $selector{'cc'} && $cc ){
+		print FD $cc;
+	}
+	print FD "\r\n";
+
+	print FD "GAISC.$type.Subject=";
+	if ( defined $selector{'subject'} ){
+		print FD $mail_info->{head}->{subject};
+	}
+	print FD "\r\n";
 
 	my $receive_str = $self->get_received_str($mail_info);
 	print FD "GAISC.$type.Received=". $receive_str;
@@ -252,31 +261,34 @@ sub mail_info_to_file
 
 	print FD "GAISC.$type.Length=" . length($mail_info->{body_text}) . "\r\n";
 
-	print FD "GAISC.$type.Content=". $mail_info->{body_text} . "\r\n"
-		if ( defined $selector{'content'} );
+	print FD "GAISC.$type.Content=\r\n";
+	if ( defined $selector{'content'} ){
+		print FD $mail_info->{body_text} . "\r\n";
+	}else{
+		print FD "\r\n";
+	}
 
 	print FD "GAISC.$type.SelfLength=" . (-s $mail_info->{aka}->{emlfilename}||0) . "\r\n";
 
+	print FD "GAISC.$type.SelfMai=\r\n";
 	if ( defined $selector{'content'} ){
-		my $mimedata;
-		print FD "GAISC.$type.SelfMai=\r\n";
 		if ( open ( RFD, '<' . $mail_info->{aka}->{emlfilename} ) ){
 			print FD while ( <RFD> );
 			close ( RFD );
 		}
  		print FD "\r\n";
-
 	}
 
 	my $atta_num = 0;
-	foreach my $atta_file ( keys %{$mail_info->{body}} ){
+	my $atta_file;
+	foreach $atta_file ( keys %{$mail_info->{body}} ){
 		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
 		$atta_num++;
 	}
 	print FD "GAISC.$type.AttachCount=". $atta_num . "\r\n";
 
 	$atta_num = 0;
-	foreach my $atta_file ( keys %{$mail_info->{body}} ){
+	foreach $atta_file ( keys %{$mail_info->{body}} ){
 		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
 		$atta_num++;
 		print FD "GAISC.$type.AttachName$atta_num=" 
@@ -288,9 +300,9 @@ sub mail_info_to_file
 		print FD "GAISC.$type.AttachLength$atta_num="
 			. $mail_info->{body}->{$atta_file}->{size} . "\r\n";
 
+		print FD "GAISC.$type.AttachCount$atta_num=\r\n";
 		if ( defined $selector{'atta_content'} ){
-			print FD "GAISC.$type.AttachCount$atta_num="
-				. $mail_info->{body}->{$atta_file}->{content} . "\r\n";
+			print FD $mail_info->{body}->{$atta_file}->{content} . "\r\n";
 		}
 	}
 	close FD;
@@ -1003,7 +1015,7 @@ sub GAISC_resp_log_update
 		}
 
 		# only check if we have rule
-$self->{zlog}->debug( Dumper($rule_info) );
+#$self->{zlog}->debug( Dumper($rule_info) );
 		if ( defined $rule_info->{size}->{sizevalue} 
 				|| length($rule_info->{rule_keyword}->{keyword}) 
 				|| $rule_info->{attachment} ){

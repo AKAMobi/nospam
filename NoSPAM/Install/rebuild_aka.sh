@@ -49,6 +49,7 @@ rm -fvr aka/root/post_install
 echo "Copying source files..."
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/home/NoSPAM/bin/NoSPAM.pl
 cpperl ${SOURCEHOME}/Bin/ns-daemon.pl aka/home/NoSPAM/bin/ns-daemon.pl
+cpperl ${SOURCEHOME}/Bin/ga-daemon.pl aka/home/NoSPAM/bin/ga-daemon.pl
 cpperl ${SOURCEHOME}/Bin/smtp_auth_proxy.pl aka/home/NoSPAM/bin/smtp_auth_proxy.pl
 chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
