@@ -10,5 +10,6 @@ chown qmaill service/*/log/{main,status}
 chown nospam service/nsd/log/{main,status}
 
 chmod +x service/*/run
+chmod +x etc/cron.hourly/*
 
 ln -s /home/NoSPAM/bin/NoSPAM etc/rc.d/rc3.d/S11NoSPAM_start_System
