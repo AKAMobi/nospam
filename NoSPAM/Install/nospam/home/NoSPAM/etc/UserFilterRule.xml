@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rule-add-modify>
+  <rule rule_id=""/>
+  <rule rule_id="1000-100-100000-100000" rule_comment="À¬»øÓÊ¼þ" category_id="1" id_type="asc" create_time="20040316100921" update_time="20040316101024" alarmlevel="1">
+    <rule_action action="6" action_param="ÍøÉÏ×¬Ç®À¬»øÓÊ¼þ"/>
+    <rule_keyword keyword="ÍøÉÏ×¬Ç®" key="1" decode="0" type="0" case_sensitive="0"/>
+  </rule>
+  <rule rule_id="2000-100-100000-100000" rule_comment="´óÓÊ¼þ" category_id="2" id_type="asc" create_time="20040316101030" update_time="20040316101120" alarmlevel="1">
+    <rule_action action="6" action_param="ÓÊ¼þ&gt;1MB!"/>
+    <size key="1" sizevalue="1024000-0"/>
+  </rule>
+  <rule rule_id="2000-100-100000-90000" rule_comment="&gt;512KB" category_id="2" id_type="asc" create_time="20040316101146" update_time="20040316101248" alarmlevel="1">
+    <rule_action action="6" action_param="&gt;512KB!"/>
+    <size key="1" sizevalue="512000-0"/>
+  </rule>
+  <rule rule_id="2000-100-100000-80000" rule_comment="&gt;256KB" category_id="2" id_type="asc" create_time="20040316101259" update_time="20040316101504" alarmlevel="1">
+    <rule_action action="6" action_param="&gt;256KB!"/>
+    <size key="1" sizevalue="256000-0"/>
+  </rule>
+  <rule rule_id="2000-100-100000-70000" rule_comment="&gt;64KB" category_id="2" id_type="asc" create_time="20040316101338" update_time="20040316101417" alarmlevel="1">
+    <rule_action action="6" action_param="64KB-128KB"/>
+    <size key="1" sizevalue="64000-128000"/>
+  </rule>
+  <rule rule_id="2000-100-100000-600000" rule_comment="20KB-40KB" category_id="2" id_type="asc" create_time="20040316101422" update_time="20040316101457" alarmlevel="1">
+    <rule_action action="6" action_param="20KB-40KB!"/>
+    <size key="1" sizevalue="20000-40000"/>
+  </rule>
+  <rule rule_id="3000-100-100000-100000" rule_comment="ÕþÖÎÃû´Ê¹ýÂË" category_id="3" id_type="asc" create_time="20040316101511" update_time="20040316101642" alarmlevel="1">
+    <rule_action action="6" action_param="·¢ÏÖ·Ç·¨¼¯»á£¡"/>
+    <rule_keyword keyword="·Ç·¨¼¯»á" key="1" decode="0" type="0" case_sensitive="0"/>
+  </rule>
+  <rule rule_id="4000-100-100000-100000" rule_comment="¹ýÂË·¨ÂÖ¹¦" category_id="4" id_type="asc" create_time="20040316101915" update_time="20040316102008" alarmlevel="1">
+    <rule_action action="6" action_param="·¢ÏÖ·¨ÂÖ¹¦£¡"/>
+    <rule_keyword keyword="·¨.*ÂÖ.*¹¦" key="7" decode="1" type="1" case_sensitive="0"/>
+  </rule>
+  <rule rule_id="4000-100-100000-100001" rule_comment="¹ýÂË·¨ÂÖ´ó·¨" category_id="1" id_type="asc" create_time="20040316102014" update_time="20040316102050" alarmlevel="1">
+    <rule_action action="6" action_param="·¢ÏÖ·¨ÂÖ´ó·¨£¡"/>
+    <rule_keyword keyword="·¨.*ÂÖ.*´ó.*·¨" key="7" decode="1" type="1" case_sensitive="0"/>
+  </rule>
+<rule rule_id="5000-100-100000-100000" rule_comment="ÓÊ¼þ¸½¼þ²»°²È«" category_id="5" id_type="asc" create_time="20040316102142" update_time="20040316102250" alarmlevel="1"><rule_action action="6" action_param="·¢ÏÖ¸½¼þ°üº¬¿ÉÖ´ÐÐ³ÌÐò!"/><attachment sizevalue="0-1024000" filetype="5"/></rule></rule-add-modify>
