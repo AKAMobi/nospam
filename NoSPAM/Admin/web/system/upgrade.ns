@@ -76,7 +76,7 @@ function closeTips(obj)
 			<tr>
 				<td>序号</td>
 				<td>安装日期</td>
-				<td>发行日期</td>
+				<td>发布日期</td>
 				<td>升级包</td>
 				<td>升级号</td>
 				<td>适用版本</td>
