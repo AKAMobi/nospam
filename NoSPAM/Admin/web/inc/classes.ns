@@ -713,7 +713,7 @@ class EmailUser {
             case 1:
                 $this->init = true;
             case 0:
-                $this->path = $result[0];
+                $this->path = '/block/huxy/';//$result[0];
                 $this->email = trim ($emailAddr);
                 list ($this->user, $this->domain) = explode ('@', $this->email);
                 break;
@@ -850,8 +850,10 @@ class EmailUser {
             if ($i > $end)   break;
             if (!$this->get_quarantine_info ($this->get_file ($mailArr['INFO']), $qInfo))
                 continue;
+            /*
             if (!$this->get_mail_info ($this->get_file ($mailArr['FILE']), $mInfo))
                 continue;
+            */
             $this->mailList[] = array (
                             'REASON' => $qInfo['REASON'],
                             'TYPE'   => $qInfo['TYPE'],
@@ -861,8 +863,8 @@ class EmailUser {
                             'INFO'   => $mailArr['INFO'],
                             'FROM'   => $qInfo['FROM'],
                             'TO'     => $qInfo['TO'], //is a array
-                            'SUBJECT'=> $mInfo['SUBJECT'],
-                            'SIZE'   => $mInfo['SIZE']
+                            'SUBJECT'=> $qInfo['SUBJECT'],
+                            'SIZE'   => $qInfo['SIZE']
                             );
             $i ++;
         }
@@ -936,8 +938,7 @@ class PageTool {
     }
     
     function gen_url ($url, $parmas) {
-        return '/';
-        //return $url . (strstr ($url, '?')?'&':'?') . $parmas;
+        return $url . (strstr ($url, '?')?'&':'?') . $parmas;
     }
     
     function page_list ($url, $etemNum) {
@@ -948,7 +949,7 @@ class PageTool {
         if ($this->pageNo-$pre > 1) 
             echo '<a href="'.$this->gen_url ($url, 'pn=1&ps='.$this->pageSize).'">&lt;&lt;</a>&nbsp;'.
                  '<a href="'.$this->gen_url ($url, 'pn='.($this->pageNo-$pre-1).'&ps='.$this->pageSize).'">&lt;</a>&nbsp;';
-        for ($i=$this->pageNo-$pre; $i < $this->pageNo; $i ++) 
+        for ($i=max(1,$this->pageNo-$pre); $i < $this->pageNo; $i ++) 
             echo '<a href="'.$this->gen_url ($url, 'pn='.$i.'&ps='.$this->pageSize).'">'.$i.'</a>&nbsp;';
         echo $this->pageNo . '&nbsp;';
         for ($i=$this->pageNo+1; $i <= $this->pageNo+$next; $i ++)
