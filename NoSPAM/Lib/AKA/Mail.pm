@@ -867,7 +867,11 @@ sub antivirus_engine
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
 
 
-	$self->{mail_info}->{aka}->{drop} ||= $self->{mail_info}->{aka}->{engine}->{antivirus}->{action};
+	if ( (ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}
+			|| (ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{antivirus}->{action}){
+		$self->{mail_info}->{aka}->{drop} = 1;
+#$self->{zlog}->debug ( "antivirus action drop set [" . $self->{mail_info}->{aka}->{drop} . "]" );
+	}
 	#$self->{mail_info}->{aka}->{drop_info} ||= '553 ÓÊ¼ş°üº¬²¡¶¾ ' . $self->{mail_info}->{aka}->{engine}->{antivirus}->{desc};
 }
 
@@ -1023,7 +1027,8 @@ sub spam_engine
 							action	=>ACTION_PASS,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
+						dns_query_time => 0
 		};
 		return;
 
@@ -1037,12 +1042,13 @@ sub spam_engine
 								action	=> ACTION_PASS,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
+						dns_query_time => 0
 		};
 		return;
 	}
 
-	my ( $is_spam, $reason ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 
 	my $action = ACTION_PASS;
 	if ( $is_spam ) {
@@ -1062,10 +1068,14 @@ sub spam_engine
 							action	=>	$action,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])) - $dns_query_time,
+						dns_query_time => $dns_query_time||0
 	};
 
-	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{spam}->{action};
+	if ( (ACTION_REJECT)==$self->{mail_info}->{aka}->{engine}->{spam}->{action}
+			|| (ACTION_DISCARD)==$self->{mail_info}->{aka}->{engine}->{spam}->{action}){
+		$self->{mail_info}->{aka}->{drop} = 1;
+	}
 
 	return;
 }

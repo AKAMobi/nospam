@@ -122,18 +122,19 @@ sub catch_virus
 	my $is_virus = (defined $1)?0:1;
 	my $virus_name = $2 if $is_virus;
 
-	my $action = AKA::Mail::ACTION_PASS;
+	my $action = 0; #(AKA::Mail::ACTION_PASS);
 
+#$self->{zlog}->debug ( "antivirus: action: [" . $action . "]" );
 	if ( $is_virus ){
 		if ( 'Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
-			$action = AKA::Mail::ACTION_REJECT; # 1¡¢reject£º
+			$action = 1; #(AKA::Mail::ACTION_REJECT); # 1¡¢reject£º
 		}elsif ( 'D' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus} ){
-			$action = AKA::Mail::ACTION_DISCARD; # 2¡¢discard
+			$action = 2; #(AKA::Mail::ACTION_DISCARD); # 2¡¢discard
 		}else{ # 'N'
-			$action = AKA::Mail::ACTION_NULL;
+			$action = 6; # (AKA::Mail::ACTION_NULL);
 		}
 	}else{
-		$action = AKA::Mail::ACTION_ACCEPT;
+		$action = 7; #(AKA::Mail::ACTION_ACCEPT);
 	}
 
 	return ( {	result	=> $is_virus,
