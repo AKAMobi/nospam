@@ -145,7 +145,7 @@ if ($alarm_status and $alarm_status ne "" ) {
   if ($alarm_status eq "Maximum time exceeded. Something cannot handle this message.") {
     &error_condition("553 ALARM: taking longer than $MAXTIME secs. Requeuing...", 150);
   } else {
-    &error_condition("553 Requeuing: $alarm_status", 150);
+    &error_condition("553 ALARM: taking longer than $MAXTIME secs. Requeuing...", 150);
   }
 }
 

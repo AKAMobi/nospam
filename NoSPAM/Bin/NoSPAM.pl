@@ -296,7 +296,7 @@ sub System_patch
 		print FD $patch_ver;
 		close FD;
 
-		my $record_dir = '/home/NoSPAM/var/log/upgrade/';
+		my $record_dir = '/home/NoSPAM/var/upgrade/';
 
 		open ( FD, ">>$record_dir/log" ) or return err_msg ("无法记录升级信息");
 		print FD "$now,$patch_gen_time,$pkgname,$patch_ver,$isover\n" ;

@@ -162,6 +162,7 @@ st.onsort = function () {
 <?
 function upgrade()
 {
+	echo "<html><head><link rel='stylesheet' type='text/css' href='../css/style.css'></head><body>";
 	$pkgFile = $_FILES['upgradepkg'];
 	rename($pkgFile['tmp_name'],"/var/tmp/".$pkgFile['name']);
 	$ret = wi("System_patch "."/var/tmp/".$pkgFile['name'], $result);
@@ -178,5 +179,6 @@ function upgrade()
 		default:
 		echo "Éý¼¶Ê§°Ü£¡";
 	}
+	echo "</body></html>";
 }
 ?>
