@@ -180,6 +180,9 @@ sub check_attachment_rule
 				return 0 if ( ! check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) );
 			}
 		}
+		# if OR success, it has already returned, so here is NO-MATCH OR
+		return 0 if ( 'OR' eq $match_logic );
+		# AND / NOT will return if it not match, so here is MATCH
 		return 1;
 	}
 
@@ -213,6 +216,9 @@ sub check_size_rule
 				return 0 if ( ! check_single_size_rule ( $self, $sub_size_rule, $mail_info ) );
 			}
 		}
+		# if OR success, it has already returned, so here is NO-MATCH OR
+		return 0 if ( 'OR' eq $match_logic );
+		# AND / NOT will return if it not match, so here is MATCH
 		return 1;
 	}
 	if ( 'NOT' eq $match_logic ){
@@ -246,9 +252,13 @@ sub check_keyword_rule
 				return 0 if ( ! check_single_keyword_rule ( $self, $sub_keyword_rule, $mail_info ) );
 			}
 		}
+		# if OR success, it has already returned, so here is NO-MATCH OR
+		return 0 if ( 'OR' eq $match_logic );
+		# AND / NOT will return if it not match, so here is MATCH
 		return 1;
 	}
 
+#$self->{zlog}->debug ( "RULE: logic: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_keyword_rule( $self, $keyword_rule, $mail_info );
 	}elsif ( 'OR' eq $match_logic ){
