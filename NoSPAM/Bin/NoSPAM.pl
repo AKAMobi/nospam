@@ -26,9 +26,10 @@ use AKA::Mail::Archive;
 # to disable any debug information to appear. 
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
-open (NSOUT, ">&=2");
-close (STDERR);
-open (STDERR, ">/dev/null") or die "can't reopen STDERR";
+# XXX
+#open (NSOUT, ">&=2");
+#close (STDERR);
+#open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
 
 
@@ -83,6 +84,8 @@ my $action_map = {
 		, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item1> <Item2> ... : Del a item of a NameSpace from AMD' ]
 		, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
 
+		, 'reset_DynamicEngine_IPConcur' => [\&reset_ConnPerIP, ' : reset IP Concur conn' ]
+		
 		, 'Archive_get_exchangedata' => [\&Archive_get_exchangedata, ' : get from archive, print GA format' ]
 		, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
 
@@ -94,9 +97,11 @@ my $action_map = {
 		, 'VirtualDomain_add' => [\&VirtualDomain_add, ' <MailDomain1> ... : add virtual mail domain' ]
 		, 'VirtualDomain_del' => [\&VirtualDomain_del, ' <MailDomain1> ... : del virtual mail domain' ]
 
-		, 'ProtectDomain_add' => [\&VirtualDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
-		, 'ProtectDomain_del' => [\&VirtualDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
-		, 'ProtectDomain_reset' => [\&VirtualDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
+		, 'ProtectDomain_add' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
+		, 'ProtectDomain_del' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
+		, 'ProtectDomain_reset' => [\&ProtectDomain_reset, ' : reset ProtectDomain ( mail control file & netfilter )' ]
+
+		, 'MailBaseSetting_reset' => [\&MailBaseSetting_reset, ' : update conf set to qmail control' ]
 
 		,'reset_Network' => [\&reset_Network, ""]
 		,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
@@ -213,7 +218,49 @@ _POD_
 	$zlog->fatal( "start_System ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
+	&MailBaseSetting_reset;
+
 	return $err;
+}
+
+sub MailBaseSetting_reset
+{
+	my $ret = 0;
+
+	my $mailserver = $conf->{config}->{MailServer};
+	my $AMC = new AKA::Mail::Controler;
+
+	#服务器名
+	$AMC->set_control_file( 'me', $mailserver->{MailHostName} || 'factory.gw.nospam.aka.cn' );
+
+	#SMTP HELO主机名
+	$AMC->set_control_file( 'helohost', $mailserver->{HeloHost} );
+
+	#SMTP 问候语
+	$AMC->set_control_file( 'smtpgreeting', $mailserver->{SmtpGreeting} || 'noSPAM AntiSPAM' );
+	
+	#SMTP 连接超时
+	$AMC->set_control_file( 'timeoutconnect', $mailserver->{TimeoutConnect} );
+
+	#SMTP 发送邮件超时
+	$AMC->set_control_file( 'timeoutremote', $mailserver->{TimeoutRemote} );
+
+	#SMTP 接收邮件超时
+	$AMC->set_control_file( 'timeoutsmtpd', $mailserver->{TimeoutSmtpd} );
+
+	#最大邮件尺寸
+	$AMC->set_control_file( 'databytes', $mailserver->{DataBytes} || '10485760');
+
+	#邮件队列投递超时
+	$AMC->set_control_file( 'queuelifetime', $mailserver->{QueueLifeTime} || '172800' );
+
+	#本地并发投递数
+	$AMC->set_control_file( 'concurrencylocal', $mailserver->{ConcurrencyLocal} );
+
+	#远程并发投递数
+	$AMC->set_control_file( 'concurrencyRemote', $mailserver->{ConcurrencyRemote} || '200' );
+
+	return 0;
 }
 
 sub rebuild_default_bridge
@@ -247,7 +294,7 @@ sub VirtualDomain_add
 
 	foreach my $domain ( @param ){
 		$ret = system ( "$vadddomain_binary $domain -r12 > /dev/null 2>&1" );
-		$zlog->fatal( "VirtualDomain_add failed with domain [ $domain ] with ret $ret ." );
+		$zlog->fatal( "VirtualDomain_add failed with domain [ $domain ] with ret $ret ." ) if $ret;
 	}
 
 	return 0;
@@ -264,7 +311,7 @@ sub VirtualDomain_del
 
 	foreach my $domain ( @param ){
 		system ( "$vdeldomain_binary $domain > /dev/null 2>&1" );
-		$zlog->fatal( "VirtualDomain_del failed with domain [ $domain ] with ret $ret ." );
+		$zlog->fatal( "VirtualDomain_del failed with domain [ $domain ] with ret $ret ." ) if $ret;
 	}
 
 	return 0;
@@ -298,26 +345,18 @@ sub reset_Network
 	$zlog->fatal( "reset_Network network_reset_all failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
 
-	$ret = &ProtectDomain_reset;
-	$zlog->fatal( "reset_Network ProtectDomain_reset failed with ret: $ret !" ) if ( $ret );
-	$err = 1 if ( $ret );
-
 	return $ret;
 }
 
 sub reset_ConnPerIP
 {
-	my $ParalConn = $conf->{config}->{ConnPerIP} || 0;
-
-	$zlog->debug("NoSPAM Util::reset_ConnPerIP to $ParalConn");
+	my $ParalConn = $conf->{config}->{DynamicEngine}->{ConnPerIP} || 0;
 
 	my $ret = 0;
 	my $err = 0;
 
 # delete link to input
-	if ( system("$iptables -D INPUT -j ConnPerIP>/dev/null 2>&1") ) {
-# It's ok.
-	}
+	system("$iptables -D INPUT -p tcp -j ConnPerIP>/dev/null 2>&1");
 
 # 0 means no limit
 	return if ( 0==$ParalConn );
@@ -329,7 +368,7 @@ sub reset_ConnPerIP
 		}
 	}
 
-	if ( system("$iptables -A INPUT -j ConnPerIP") ) {
+	if ( system("$iptables -I INPUT -p tcp -j ConnPerIP") ) {
 		return 20;
 	}
 
@@ -339,7 +378,7 @@ sub reset_ConnPerIP
 		push ( @whiteIPs, $conf->{config}->{MailServer}->{ProtectDomain}->{$_}->{IP} );
 	}
 
-	push ( @whiteIPs, $conf->{config}->{DynamicEngine}->{WhiteIPConcurList} ); 
+	push ( @whiteIPs, @{$conf->{config}->{DynamicEngine}->{WhiteIPConcurList}} ); 
 
 	foreach ( @whiteIPs ){
 		$ret = system("$iptables -A ConnPerIP -p tcp -s $_ -j RETURN");
@@ -1010,15 +1049,15 @@ sub ProtectDomain_reset
 
 	
 	$ret = &_file_update_rcpthosts ( keys %{$Domain_IP} );
-	$zlog->fatal ( "file_update_all: _file_update_rcpthosts err # $ret !" );
+	$zlog->fatal ( "file_update_all: _file_update_rcpthosts err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
 	$ret = &_file_update_smtproutes ( $Domain_IP, $Domain_Port );
-	$zlog->fatal ( "file_update_all: _file_update_smtproutes err # $ret !" );
+	$zlog->fatal ( "file_update_all: _file_update_smtproutes err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
 	$ret = &_network_reset_smtp_dnat( $Domain_IP, $Domain_Port );
-	$zlog->fatal ( "file_update_all: _network_set_smtp_dnat err # $ret !" );
+	$zlog->fatal ( "file_update_all: _network_set_smtp_dnat err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
 	return $err;
@@ -1071,7 +1110,7 @@ sub _network_reset_smtp_dnat
 				. " --dport 25 -j DNAT --to " 
 				. $GWIP . ":26" );
 			$err = 1 if $ret;
-			$zlog->fatal ( "_network_set_smtp_dnat failed to system ip [$ip] port [$port] to gwip [$GWIP : 26 ] with ret $ret" ) if $ret;;
+			$zlog->fatal ( "_network_set_smtp_dnat failed to system ip [$ip] port [$port] to gwip [$GWIP : 26 ] with ret $ret" ) if $ret;
 		}
 
 		# record what we had done.
