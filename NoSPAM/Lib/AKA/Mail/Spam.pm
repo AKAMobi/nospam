@@ -449,7 +449,7 @@ sub spam_checker
 	}elsif ( &is_black_addr($self,$from_addr) ){
 		$is_spam = 3;
 		$reason = __("Sender BlackList");
-	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{Traceable} ){
+	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} ){
 		# 只有启用了可追查性检查时才判断
 #use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 #my $start_time = [gettimeofday];

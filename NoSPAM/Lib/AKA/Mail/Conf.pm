@@ -105,7 +105,7 @@ sub init_config
 	#
 	# Spam
 	#
-	$config->{SpamEngine}->{Traceable} ||= "N";
+	$config->{SpamEngine}->{TraceEngine} ||= "N";
 	my @default_trace_type = ('Mail','IP');
 	$config->{SpamEngine}->{TraceType} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{TraceType} ) || \@default_trace_type;
 	$config->{SpamEngine}->{TraceSpamMask} ||= "16";
