@@ -8,9 +8,11 @@
 
 package AKA::Mail::Police::Log;
 
+
 BEGIN
 {
-	open MYLOG, ">>/tmp/mylog.log";
+	my $can_log = 1;
+	open MYLOG, ">>/tmp/mylog.log" or $can_log = 0;
 }
 
 sub new
@@ -51,7 +53,9 @@ sub log
 
 # The MYLOG filehandle is already open by virtue of the BEGIN
 # block.
-	print MYLOG $what, "\n";
+	if ( $can_log ){
+		print MYLOG $what, "\n";
+	}
 }
 
 

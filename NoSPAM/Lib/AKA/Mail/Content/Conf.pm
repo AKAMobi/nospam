@@ -49,6 +49,7 @@ sub new
 
 	$self->{define}->{filterdb} = $self->{define}->{home} . "/etc/PoliceDB.xml";
 
+
 	$self->{rule_add_modify} = undef;
 	$self->{rule_del} = undef;
 
@@ -75,13 +76,9 @@ sub check_n_update
 	return $newfilenum;
 }
 
-sub merge_new_rule
+sub get_filter_db
 {
-	my ($self, $rule_add_modify, $rule_del) = @_;
-	if ( !$rule_add_modify && !$rule_del ){
-		$self->{zlog}->log( "rule_add_modify & rule_del all empty?" );
-		return 0;
-	}
+	my $self = shift;
 
 	my $filterdb_file = $self->{define}->{filterdb};
 
@@ -97,8 +94,19 @@ _SPAMXML_
 
 	my $xs = get_filterdb_xml_simple();
 
-	my $filterdb = $xs->XMLin( $filterdb_file );
+	return $xs->XMLin( $filterdb_file );
+}
 
+
+sub merge_new_rule
+{
+	my ($self, $rule_add_modify, $rule_del) = @_;
+	if ( !$rule_add_modify && !$rule_del ){
+		$self->{zlog}->log( "rule_add_modify & rule_del all empty?" );
+		return 0;
+	}
+
+	my $filterdb = &get_filter_db;
 
 	for my $rule_id ( keys %{$rule_add_modify} ){
 		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );

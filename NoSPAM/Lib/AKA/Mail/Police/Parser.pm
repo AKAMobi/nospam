@@ -29,21 +29,42 @@ sub new
 
 	bless $self, $class;
 
-	my ($police) = @_;
+	my ($parent) = @_;
 
-	$self->{police} = $police;
+	$self->{parent} = $parent;
 
-	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self) ;
-	$self->{conf} = $police->{conf} || new AKA::Mail::Police::Conf($self) ;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Police::Log($self) ;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
 	$self->{mime_parser} ||= new MIME::Parser;
 
 	# FIXME: $a = $b || $c not work??
 	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/tmp/";
-	$self->{zlog}->log ( "setting outputdir to $tmppath" );
-	$self->{mime_parser}->output_dir($tmppath);
+	$self->{zlog}->log ( "setting outputdir to $tmpdir" );
+
+	$self->{mime_parser}->output_dir($tmpdir);
 	$self->{mime_parser}->output_prefix("AKA-MailFilter-$$");
 
 	$self->{prefix} = "AKA-MailFilter-$$";
+
+
+	# 文件类型
+	$self->{filetype}->{compress} = [ 'zip','rar',
+					  'tgz', 'gz','bzip2' ];
+	$self->{filetype_num}->{compress} = 1;
+
+	$self->{filetype}->{sound} = [ 'mp3', 'wav', 'wmv' ];
+	$self->{filetype_num}->{sound} = 2;
+
+	$self->{filetype}->{picture} = [ 'jpg', 'jpeg', 'gif', 'pcx' ];
+	$self->{filetype_num}->{picture} = 3;
+
+	$self->{filetype}->{text} = [ 'txt' ];
+	$self->{filetype_num}->{text} = 4;
+
+	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat' ];
+	$self->{filetype_num}->{exe} = 5;
+
+
 
 	return $self;
 }
@@ -70,6 +91,12 @@ sub get_mail_info
 		&get_body_info( $self,$blob );
 	}
         
+	foreach my $filename ( %{$self->{mail_info}->{body}} ){
+		if ( 0 == $self->{mail_info}->{body}->{$filename}->{nofilename}  )
+			$self->{mail_info}->{attachment} = 1;
+			last;
+		}
+	}
 
 	return $self->{mail_info};
 }
@@ -163,14 +190,19 @@ sub get_body_info
                 $path = $body->path;
 
                 $filename = $head->recommended_filename ;
+                $size = ($path ? (-s $path) : 0);
+
                 if ( !defined $filename ){
                         $filename = $path;
 			$prefix = $self->{prefix} || "AKA-MailFilter-$$";
 
                         $filename =~ s/^.*\/$prefix\-//g;
 			$self->{mail_info}->{body}->{$filename}->{nofilename} = 1;
-                }
-                $size = ($path ? (-s $path) : 0);
+                }else{
+			$self->{mail_info}->{attachment_size} += $size;
+			$self->{mail_info}->{attachment_num}++;
+			$self->{mail_info}->{body}->{$filename}->{nofilename} = 0;
+		}
 
 		$self->{mail_info}->{body}->{$filename}->{path} = $path;
 		$self->{mail_info}->{body}->{$filename}->{type} = $type;
@@ -187,14 +219,40 @@ sub get_body_info
 
 		$self->{mail_info}->{body}->{$filename}->{size} = $size;
 
+		#FIXME: 获取编码的body size
 		$self->{mail_info}->{body_size} += $size;
 			
+		# 获取文件类型
+		$self->{mail_info}->{body}->{$filename}->{typeclass} = get_attachment_type( $filename );
+
         } else {  
                 foreach my $part ($blob->parts) {
                         &get_body_info( $self,$part );
                 }
         }
 
+}
+
+sub get_attachment_type
+{
+	my $self = shift;
+	
+	my $filename = shift;
+
+	my $i;
+	my $filetype_num;
+
+	foreach my $filetype ( keys %{$self->{filetype_num}} ){
+		$filetype_num = $self->{filetype_num}->{$filetype};
+		for ( $i=0; $self->{filetype}->{filetype}->[$i]; $i++ ){
+			if ( $filename =~ /$_$/ ){
+				return $filetype_num;
+			}
+		}
+	}
+			
+	# 其他类型文件
+	return 6;
 }
 
 sub load_file
