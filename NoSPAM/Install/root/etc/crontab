@@ -21,7 +21,7 @@ HOME=/
 0 4 * * * (cat /dev/null > /var/log/NoSPAM)
 0 4 * * * (cat /dev/null > /var/log/clamav/clamd.log)
 0 4 * * * (cat /dev/null > /home/NoSPAM/spool/ns-queue.debug)
-01 01 * * *  (umask 0077; /usr/bin/openssl genrsa -out /var/qmail/control/rsa512.new 512 > /dev/null 2>&1 && chown qmaild.qmail /var/qmail/control/rsa512.new && /bin/mv -f /var/qmail/control/rsa512.new /var/qmail/control/rsa512.pem)
+01 01 * * *  (umask 0077; /usr/bin/openssl genrsa -out /var/qmail/control/rsa512.new 512 > /dev/null 2>&1 && chown qmaild.qmail /var/qmail/control/rsa512.new>/dev/null 2>&1 && /bin/mv -f /var/qmail/control/rsa512.new /var/qmail/control/rsa512.pem>/dev/null 2>&1)
 
-0-59/5 * * * * root /usr/bin/mrtg /etc/mrtg/mrtg.cfg
+0-59/5 * * * * root /usr/bin/mrtg /etc/mrtg/mrtg.cfg > /dev/null 2>&1
 0-59/5 * * * * root /home/NoSPAM/bin/rrdgraph > /dev/null 2>&1

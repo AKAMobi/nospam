@@ -14,5 +14,5 @@ sh -c '
         ${CONCURRENCY+"-c$CONCURRENCY"} \
         -x/service/ismtpd/tcp.cdb \
         -- "${IP-0}" "${PORT-25}" \
-    /var/qmail/bin/qmail-smtpd NoSPAM /home/NoSPAM/bin/smtp_auth_proxy /home/vpopmail/bin/vchkpw /bin/true
+    /var/qmail/bin/qmail-smtpd NoSPAM /home/NoSPAM/bin/smtp_auth_proxy ph /home/vpopmail/bin/vchkpw /bin/true
 '
