@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-18 02:03+0800\n"
+"POT-Creation-Date: 2004-09-19 07:31+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -339,7 +339,7 @@ msgid "Key"
 msgstr ""
 
 msgid "Type"
-msgstr "类别"
+msgstr "类型"
 
 msgid "Note"
 msgstr "备注"
@@ -980,6 +980,18 @@ msgstr "替换收件人"
 
 msgid "Del Header"
 msgstr "删除信头记录"
+
+# msgid "Quarantine Mail"
+# msgstr "隔离邮件"
+msgid "SQLite Database File is not exist"
+msgstr "数据库文件不存在"
+
+#, fuzzy
+msgid "Jump to"
+msgstr "跳转到"
+
+msgid "Item number"
+msgstr "条目数"
 
 msgid "Error: File does not exist!"
 msgstr "错误！文件不存在！"
@@ -1752,30 +1764,6 @@ msgstr "目前尚无用户组定义！"
 msgid "Current User Group List: "
 msgstr "当前用户组列表："
 
-msgid "Sorry, This Product has no Gateway Mode License"
-msgstr "对不起，本系统没有透明网关模式License"
-
-msgid "Error when fetch mail content, ErrNo: "
-msgstr "获取邮件内容时发生错误，错误代码："
-
-msgid "View Mails unDecoded"
-msgstr "察看未解码邮件"
-
-msgid "View Mails Decoded"
-msgstr "察看解码邮件"
-
-msgid "Incept"
-msgstr "收件人"
-
-msgid "Cc"
-msgstr "抄收"
-
-msgid "Date"
-msgstr "日期"
-
-msgid "Attachments"
-msgstr "附件"
-
 msgid "Search User"
 msgstr "查找用户"
 
@@ -1807,7 +1795,7 @@ msgid "User Quota"
 msgstr "用户限额"
 
 msgid "Display"
-msgstr "对外显示"
+msgstr "显示"
 
 msgid "Maillist Group"
 msgstr "用户组"
@@ -1961,6 +1949,27 @@ msgstr "添加成功"
 
 msgid "Add Fail, ErrNo: "
 msgstr "添加失败，错误代码："
+
+msgid "Sorry, This Product has no Gateway Mode License"
+msgstr "对不起，本系统没有透明网关模式License"
+
+msgid "Error when fetch mail content, ErrNo: "
+msgstr "获取邮件内容时发生错误，错误代码："
+
+msgid "View Mails unDecoded"
+msgstr "察看未解码邮件"
+
+msgid "View Mails Decoded"
+msgstr "察看解码邮件"
+
+msgid "Cc"
+msgstr "抄收"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Attachments"
+msgstr "附件"
 
 msgid "Please"
 msgstr "请正常"
@@ -2166,35 +2175,105 @@ msgstr "退出系统"
 msgid "Introduction"
 msgstr "介绍"
 
+msgid "System error"
+msgstr "系统错误"
+
+msgid "Parameter error"
+msgstr "参数错误"
+
+# msgid "Black list"
+# msgstr "黑名单"
+# msgid "White list"
+# msgstr "白名单"
+#, php-format
+msgid "Deal with"
+msgstr "正在处理的邮件"
+
+msgid "Succeeded"
+msgstr "成功"
+
+msgid "Failed"
+msgstr "失败"
+
+msgid "Return to mainpage"
+msgstr "返回主界面"
+
 msgid "Quarantine Mail"
 msgstr "隔离邮件"
 
-msgid "System Error"
-msgstr "系统错误"
+msgid "Lack of filename"
+msgstr "缺少文件名"
 
-msgid "Database query error!"
-msgstr ""
+msgid "Lack of file parameter"
+msgstr "缺少文件参数"
 
-msgid "Unkown list type!"
-msgstr ""
+msgid "Please login"
+msgstr "请先登录"
 
-msgid "Invalid email address!"
-msgstr "非法邮件地址!"
+msgid "Please re-login"
+msgstr "请重新登录"
 
-msgid "Email already in the list!"
-msgstr "邮件地址已经存在"
+msgid "Login as"
+msgstr "登录用户"
 
-msgid "You have max white/black user list: "
-msgstr "已达到最大黑白名单上限："
+msgid "Current quarantine emails"
+msgstr "当前隔离邮件"
 
-msgid "Add success!"
-msgstr "添加成功"
+msgid "Total number"
+msgstr "总数"
 
-msgid "error!"
-msgstr "错误"
+msgid "mails"
+msgstr "封"
 
-msgid "Can't get user's white/black list!"
-msgstr "无法获取用户黑白名单！"
+msgid "Used space"
+msgstr "占用空间"
+
+msgid "Return"
+msgstr "返回"
+
+msgid "EMail account: "
+msgstr "邮件帐户: "
+
+msgid "quarantine function enabled."
+msgstr "的隔离功能已激活。"
+
+msgid "Process emails"
+msgstr "处理邮件"
+
+msgid "White/Black list management"
+msgstr "管理黑白名单"
+
+msgid "Num"
+msgstr "编号"
+
+msgid "Quarantine reason"
+msgstr "隔离原因"
+
+msgid "Quarantine time"
+msgstr "隔离时间"
+
+msgid "Incept"
+msgstr "收件人"
+
+# msgid "Sender"
+# msgstr "发件人"
+# msgid "Subject"
+# msgstr "主题"
+# msgid "Size"
+# msgstr "尺寸"
+msgid "View"
+msgstr "查看"
+
+msgid "Tag"
+msgstr "标记通过"
+
+msgid "Forward"
+msgstr "通过"
+
+# msgid "Action"
+# msgstr "动作"
+msgid "Add to list"
+msgstr "添加到黑白名单"
 
 msgid "Black list"
 msgstr "黑名单"
@@ -2202,11 +2281,63 @@ msgstr "黑名单"
 msgid "White list"
 msgstr "IP白名单"
 
+msgid "View mail source"
+msgstr "查看未解码邮件"
+
+msgid "View decoded mail"
+msgstr "查看解码邮件"
+
+# msgid "Return"
+# msgstr "返回"
+msgid "Email address error"
+msgstr "邮件地址错误"
+
+msgid "Password needed"
+msgstr "请输入密码"
+
+msgid "Email or password error"
+msgstr "用户名或密码错误"
+
+# msgid "Login"
+# msgstr "登录"
+msgid "Email address"
+msgstr "邮件地址"
+
+msgid "Email password"
+msgstr "邮箱密码"
+
+msgid "System Error"
+msgstr "系统错误"
+
+# msgid "Cc"
+# msgstr "抄送"
+# msgid "Date"
+# msgstr "日期"
+# msgid "Attachment"
+# msgstr "附件"
+msgid "Database query error"
+msgstr "无法查询数据库"
+
+msgid "Unkown list type"
+msgstr "无效的黑白名单参数"
+
+msgid "Invalid email address"
+msgstr "Email地址错误"
+
+msgid "Email already in the list!"
+msgstr "邮件地址已经存在"
+
+msgid "You have max white/black user list: "
+msgstr "已达到最大黑白名单上限："
+
+msgid "Add succeeded"
+msgstr "添加成功"
+
+msgid "Can't get user's white/black list"
+msgstr "无法读取用户的黑白名单"
+
 msgid "All list"
 msgstr "全部名单"
-
-msgid "Return"
-msgstr "返回"
 
 msgid "Quarantine email white list"
 msgstr "隔离邮件白名单"
@@ -2226,8 +2357,16 @@ msgstr "邮件"
 msgid "Unknown"
 msgstr "未知"
 
-msgid "Add email to list: "
-msgstr "添加邮件在地址到列表："
+# msgid "Quarantine email white list"
+# msgstr "用户隔离白名单"
+# msgid "Quarantine email black list"
+# msgstr "用户隔离黑名单"
+# msgid "Quarantine email white/black list"
+# msgstr "用户隔离黑白名单"
+# msgid "Type"
+# msgstr "类型"
+msgid "Add email to list"
+msgstr "添加到"
 
 msgid "Sorry, This Product has no Quarantine Filter Engine License"
 msgstr "对不起，本系统没有隔离引擎License"
@@ -2310,9 +2449,6 @@ msgstr "隔离用户列表"
 msgid "When the address that incurrent mail will forword to is not exist"
 msgstr "收件人不在隔离用户数据库中时的系统动作"
 
-msgid "Forward"
-msgstr "通过"
-
 msgid "Unkonwn quarantine time out action"
 msgstr ""
 
@@ -2330,9 +2466,6 @@ msgstr "天"
 
 msgid "Quarantine time out action"
 msgstr "隔离队列超时动作"
-
-msgid "Tag"
-msgstr "标记通过"
 
 msgid "Due to login attempts exceed maximum times, current IP:"
 msgstr "由于到达最大错误登录次数，当前IP："
@@ -2354,6 +2487,31 @@ msgstr "成功"
 
 msgid "Logout Succeed. Please Close This Browser Window"
 msgstr "已成功退出。请关闭此窗口"
+
+#~ msgid "Invalid email address!"
+#~ msgstr "非法邮件地址!"
+
+#~ msgid "Add success!"
+#~ msgstr "添加成功"
+
+#~ msgid "error!"
+#~ msgstr "错误"
+
+#~ msgid "Can't get user's white/black list!"
+#~ msgstr "无法获取用户黑白名单！"
+
+#~ msgid "Add email to list: "
+#~ msgstr "添加邮件在地址到列表："
+
+# msgid "Logout"
+# msgstr "注销"
+# msgid "Error"
+# msgstr "错误"
+#~ msgid "We suggest"
+#~ msgstr "我们建议"
+
+#~ msgid "Incept "
+#~ msgstr "收件人"
 
 #~ msgid "Number Rule"
 #~ msgstr "数值规则"
