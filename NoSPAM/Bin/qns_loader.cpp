@@ -14,7 +14,7 @@
 #include <string>
 #include <fstream>
 
-#include <socket++/sockinet.h>
+//#include <socket++/sockinet.h>
 #include <socket++/sockunix.h>
 
 #include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
