@@ -33,6 +33,7 @@ $FileType[4] = array("文本类型","");
 $FileType[5] = array("可执行文件","");
 $FileType[6] = array("其他类型","");
 
+$Actions[0] = "通过";
 $Actions[1] = "拒绝";
 $Actions[2] = "丢弃";
 $Actions[3] = "隔离";

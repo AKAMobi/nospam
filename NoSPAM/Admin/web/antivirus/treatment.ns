@@ -45,11 +45,15 @@ if($_POST["Submit"]=="修改"){
   <p>转发设置：<br>
     <label>
     <input type="radio" name="RefuseVirus" value="N"<? if($RefuseVirus=="N") echo " checked"; ?>>
-    允许病毒邮件通过</label>
+    通过病毒邮件</label>
     <br>
     <label>
     <input type="radio" name="RefuseVirus" value="Y"<? if($RefuseVirus=="Y") echo " checked"; ?>>
-    直接丢弃病毒邮件</label>
+    弹回病毒邮件</label>
+    <label>
+    <br>
+    <input type="radio" name="RefuseVirus" value="D"<? if($RefuseVirus=="D") echo " checked"; ?>>
+    丢弃病毒邮件</label>
     <br>
   </p>
   <p>
