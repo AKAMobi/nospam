@@ -256,6 +256,7 @@ sub get_head_info
 sub get_additional_receiver_num
 {
 	my $self = shift;
+	my $head = shift;
 
 	my $receivers;
 	my $num = 0;
