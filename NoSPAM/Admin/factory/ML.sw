@@ -13,32 +13,19 @@ GenerateDate=$now
 ExpireDate=2004-8-1
 Version=2
 
-FactoryName=AKA IT
-ProductName=noSPAM
+FactoryName=思维世纪
+ProductName=iXRay
 ProductSN=$prodno
 
-ServerGatewaySwitchable=Y
-ServerGateway=Gateway,Server,MXRelay,Tailer
+ServerGatewaySwitchable=N
+ServerGateway=Gateway
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 MailGateway=100
-MailServer=100
-MailRelay=100
-AntiVirusEngine=100
 DynamicEngine=100
 SpamEngine=100
 ContentEngine=100
-ArchiveEngine=100
-InteractiveEngine=100
-GAInterface=100
-
-
-#独立服务器的License限制；
-MailServerMaxUser=1000
-MailServerMaxDomain=10
-MailServerMaxQuota=30000000
-
 _LICENSE_
 
 
