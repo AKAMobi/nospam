@@ -143,7 +143,7 @@ a:hover {  color: #FF0000; text-decoration: none}
 .title01 { font-family: "ºÚÌå"; font-size: 16px; color: #770260 ; letter-spacing: 5px}
 </style>
 
-<body bgcolor="#FFFFFF"  background="/images/rback.gif">
+<body bgcolor="#FFFFFF"  >
 <?php
 if ($action=="add") {
 	switch ($errno) {
@@ -236,6 +236,7 @@ function clickclose() {
           </tr>
           <tr> 
             <td colspan="2" height="25" class="form01"> 
+			  <input type="hidden" name="MAX_FILE_SIZE" value="10240">
               <input type="file" name="attachfile" size="20" value class="form02">
             </td>
           </tr>
