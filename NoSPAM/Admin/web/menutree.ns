@@ -138,7 +138,7 @@ if($SpamEngine > 0){
 	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
 	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
 	c1.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
-	c1.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
+	c.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
 <?php
 	}
 }
