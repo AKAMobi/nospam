@@ -166,7 +166,7 @@ function upgrade()
 	rename($pkgFile['tmp_name'],"/var/tmp/".$pkgFile['name']);
 	$ret = wi("System_patch "."/var/tmp/".$pkgFile['name'], $result);
 	
-	echo "<br>";
+	echo "<p>" . $result[0] . "<p>";
 	
 	switch ($ret){
 		case 0:
