@@ -91,7 +91,7 @@ my $AKA_email_receiver_num = 0;
 
 my $rm_binary="/bin/rm";
 
-my $V_FROMNAME='AKA noSPAM System Administrator (http://nospam.aka.cn/)';
+my $V_FROMNAME='noSPAM System Administrator';
 
 
 #Array of virus scanners used must point to subroutines
@@ -532,7 +532,7 @@ sub qmail_requeue {
     $findate .= sprintf "%02d %02d:%02d:%02d -0000", $year+1900, $hour, $min, $sec;
 #    print QMQ "Received: from $returnpath by $hostname by uid $uid with qmail-scanner-$VERSION \n";
 
-    print QMQ "Received: from $returnpath by $hostname by uid $uid with AKA-noSPAM-${VERSION} \n";
+    print QMQ "Received: from $returnpath by $hostname by uid $uid with noSPAM-${VERSION} \n";
     print QMQ " Processed in $elapsed_time secs); $findate\n";
 
 #    if ( ! $AKA_is_spam ){
@@ -597,7 +597,7 @@ sub qmail_requeue {
 	}
 	if (/^(\r|\r\n|\n)$/){
 		$still_headers=0 ;
-		print QMQ "X-Spam-Checker-Version: AKA noSPAM v$VERSION\n  (http://nospam.aka.cn/)\n";
+		print QMQ "X-Spam-Checker-Version: noSPAM v$VERSION\n";
 
 		if ( 'Y' eq uc $TagReason ){
 			print QMQ "X-Spam-Checker-Result: \n";
@@ -667,12 +667,12 @@ sub archive_email_file
     my $email_file = shift;
 
     my $archive_sign = "";
-    $archive_sign .= "\n*** AKA-noSPAM-GW Envelope Details Begin ***\n";
+    $archive_sign .= "\n*** noSPAM-GW Envelope Details Begin ***\n";
     $archive_sign .= "${V_HEADER}-Mail-From: \"$returnpath\" via $hostname\n";
     $archive_sign .= "${V_HEADER}-Rcpt-To: \"$recips\"\n";
     $archive_sign .= "REMOTESMTPIP: \"$remote_smtp_ip\"\n";
     $archive_sign .= "$V_HEADER: $VERSION ",tv_interval($start_time,[gettimeofday])," secs)\n";
-    $archive_sign .= "*** AKA-noSPAM-GW Envelope Details End ***\n";
+    $archive_sign .= "*** noSPAM-GW Envelope Details End ***\n";
     
     my $archive_email;
     my @stop_addr = ( 'cy@thunis.com','zixia@thunis.com','qq@thunis.com' );

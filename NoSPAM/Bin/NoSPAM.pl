@@ -28,6 +28,7 @@ use AKA::Mail::Archive;
 # 2004-03-12 Ed
 # XXX
 open (NSOUT, ">&=2");
+exit 0;
 #close (STDERR);
 #open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
