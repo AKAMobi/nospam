@@ -1,5 +1,13 @@
-V2.0RC5 (4-24 )
 
+V2.0RC5 (4-26 )
+
+字符串精确匹配必须完全匹配 模糊匹配只要包含即可 只有正则匹配才匹配正则表达式 (By zixia) 
+使用ntpdate同步系统（使用time.windows.com） (By zixia) 
+增加系统升级包接口 (By zixia) 
+增加SMTP并发连接图 (By zixia) 
+完成审计综合条件逻辑判断 (By zixia) 
+修正选择审计的判断错误 (By zixia) 
+增加审计的日志信息输出 (By zixia) 
 BUG BUG! 修正系统无法启用邮件限制 (By zixia) 
 尝试关闭主控台的警告信息；
 增加NoSPAM.intconf到文件更新检查列表；
