@@ -58,8 +58,8 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 <?
 }
 ?>
-	b.add(new WebFXTreeItem('<?=_("Change Password")?>','user/changePasswd.ns','main'));
-	b.add(new WebFXTreeItem('<?=_("IP Restrict")?>','user/changeIPlist.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Changing Password")?>','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("IP Restriction")?>','user/changeIPlist.ns','main'));
 <?
 }
 ?>
@@ -71,8 +71,8 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 ?>
 	var l = new WebFXTreeItem('<?=_("Bridge Mode")?>');
 	tree.add(l);
-	l.add(new WebFXTreeItem('<?=_("Protect Mail Domain")?>','gateway/protectdomain.ns','main'));
-	l.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
+	l.add(new WebFXTreeItem('<?=_("Mail Domain Protection")?>','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('<?=_("Mail Queue Monitor")?>','gateway/mailqueue.ns','main'));
 <?php
 	}
 }
@@ -81,8 +81,8 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 ?>
 	var n = new WebFXTreeItem('<?=_("MX Relay Mode")?>');
 	tree.add(n);
-	n.add(new WebFXTreeItem('<?=_("Protect Mail Domain")?>','gateway/protectdomain.ns','main'));
-	n.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
+	n.add(new WebFXTreeItem('<?=_("Mail Domain Protection")?>','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('<?=_("Mail Queue Monitor")?>','gateway/mailqueue.ns','main'));
 <?
 	}
 }
@@ -92,7 +92,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	var k = new WebFXTreeItem('<?=_("Standalone Server Mode")?>');
 	tree.add(k);
 	k.add(new WebFXTreeItem('<?=_("Mail Server Setting")?>','server/mailserver.ns','main'));
-	k.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
+	k.add(new WebFXTreeItem('<?=_("Mail Queue Monitor")?>','gateway/mailqueue.ns','main'));
 	var k2 = new WebFXTreeItem('<?=_("User Management")?>');
 	k.add(k2);
 	k2.add(new WebFXTreeItem('<?=_("User Management")?>','server/showuserlist.ns','main'));
@@ -176,7 +176,7 @@ if($ContentEngine > 0){
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	var f = new WebFXTreeItem('<?=_("Audit")?>');
+	var f = new WebFXTreeItem('<?=_("Mail Audit Engine")?>');
 	tree.add(f);
 	f.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','archive/archiveengine.ns','main'));
 	//f.add(new WebFXTreeItem('<?=_("Audit Address")?>','archive/archiveaddress.ns','main'));

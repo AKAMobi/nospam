@@ -13,7 +13,8 @@ self.parent.location=document.location.href;
 <title><?=_("VenusTech AntiSpam System")?></title>
 </head>
 
-<frameset rows="134,*,75" cols="*" framespacing="NO" frameborder="0" border="0">
+<!--frameset rows="134,*,75" cols="*" framespacing="NO" frameborder="0" border="0"-->
+<frameset rows="80,*,55" cols="*" framespacing="NO" frameborder="0" border="0">
 	<frame src="top.ns" name="topFrame" scrolling="NO" noresize >
 	<frameset cols="200,*" frameborder="NO" border="0" framespacing="0">
   		<frame src="menutree.ns" name="menu" scrolling="YES" noresize>
