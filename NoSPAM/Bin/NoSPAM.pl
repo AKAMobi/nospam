@@ -953,7 +953,7 @@ sub del_DynamicEngineKeyItem
 
 	my $AMD = new AKA::Mail::Dynamic;
 
-	foreach $item ( @param ){
+	foreach my $item ( @param ){
 		return 10 unless $AMD->del_dynamic_info_ns_item ($ns,$item);
 	}
 
