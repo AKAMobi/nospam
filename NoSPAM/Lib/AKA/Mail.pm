@@ -794,7 +794,25 @@ sub antivirus_engine
 
 	}
 
+	#
+	# 抽样检查
+	#
+	if ( 'Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{SampleCheck} ){
+		if ( $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} < int(rand(98)+1) ){
+			# 不需要采样
+			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
+					result  => 0,
+					desc	=>'采样抽签未中',
+					action  => 0,
 
+					enabled => 1,
+					runned  => 1,
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return;
+		
+		}
+	}
 
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = 
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
