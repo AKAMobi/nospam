@@ -15,7 +15,7 @@ if ( $tty =~ m#([^/^\r^\n]+)$# ){
 	exit -1;
 }
 
-if ( 'tty1' ne $tty && 'tty2' ne $tty && 'tty3' ne $tty && 'tty4' ne tty ){
+if ( 'ttyS0' ne $tty && 'tty1' ne $tty && 'tty2' ne $tty && 'tty3' ne $tty && 'tty4' ne $tty ){
 	print STDOUT "Permission denied.\n";
 	sleep 5;
 	exit -1;
