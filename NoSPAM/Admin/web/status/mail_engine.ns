@@ -16,7 +16,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>邮件引擎运行时间分析图</H1><BR>
+<H1>邮件引擎运行时间</H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 Real Time: 实际运行时间<br>
 CPU Time: 占用CPU时间<br>
