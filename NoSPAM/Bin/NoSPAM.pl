@@ -216,11 +216,12 @@ sub System_patch
 {
 	use Digest::MD5 qw(md5_base64);
 
+	our $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
+	mkdir $upgrade_dir or return err_msg ("无法建立升级目录。");;
+
 	my $patch_file=$param[0] or return err_msg ("请指定升级包文件名。");
 	-f $patch_file or return err_msg ("无法访问升级包文件。");
 
-	our $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
-	mkdir $upgrade_dir or return err_msg ("无法建立升级目录。");;
 	`mv $patch_file $upgrade_dir`;
 	chdir $upgrade_dir;
 
@@ -309,7 +310,7 @@ sub System_patch
 	{
 		my $msg = shift;
 
-		`rm -fr $upgrade_dir`;
+		`rm -fr $upgrade_dir` if ( length($upgrade_dir) );
 
 		print $msg, "\n";
 		return -1;

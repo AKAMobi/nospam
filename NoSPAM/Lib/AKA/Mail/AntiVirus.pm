@@ -109,16 +109,20 @@ sub catch_virus
 			});
 	}
 
-	$result =~ m#^$file: (.+)#;
-	# get rid of filename
-	$result = $1;
+	my ($is_virus,$virus_name,$action) = (0,undef,0);
+	$action = 0; #(AKA::Mail::ACTION_PASS);
 
-	# get result
-	$result =~ m#(OK)|(.+) FOUND#;
-	my $is_virus = (defined $1)?0:1;
-	my $virus_name = $2 if $is_virus;
+	if ( length($result) ){
+		$result =~ m#^$file: (.+)#;
+		# get rid of filename
+		$result = $1;
 
-	my $action = 0; #(AKA::Mail::ACTION_PASS);
+		# get result
+		$result =~ m#(OK)|(.+) FOUND#;
+		$is_virus = (defined $1)?0:1;
+		$virus_name = $2 if $is_virus;
+	}
+
 
 #$self->{zlog}->debug ( "antivirus: action: [" . $action . "]" );
 	if ( $is_virus ){

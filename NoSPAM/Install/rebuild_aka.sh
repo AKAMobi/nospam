@@ -5,7 +5,7 @@ cpperl()
 {
 	echo "cpperl $1 to $2..."
 	echo '#!/usr/bin/perl -X' > $2;
-	echo 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
+	# 这个导致 ns-queue 没有输出了？echo 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
 }
