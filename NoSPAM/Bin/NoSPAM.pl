@@ -1892,6 +1892,8 @@ sub _file_update_smtp_relay
 	}
 
 	my $content = join("\n",@relays);
+	$content .= "\n"; # add a trail \n to data.
+
 	$ret = write_file($content, '/service/ismtpd/tcp');
 	$ret = write_file($content, '/service/smtpd/tcp');
 
