@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-18 20:35+0800\n"
+"POT-Creation-Date: 2004-07-18 21:02+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -1214,57 +1214,6 @@ msgstr ""
 msgid "Error: The Upgrade package is not existed!"
 msgstr "错误：该升级包信息文件不存在！"
 
-msgid "SMTP Connect Timeout"
-msgstr "SMTP 连接超时"
-
-msgid " must be number"
-msgstr "必须为数字"
-
-msgid "SMTP Remote Deliver Timeout"
-msgstr "SMTP 发送邮件超时"
-
-msgid "SMTP Receive Timeout"
-msgstr "SMTP 接收邮件超时"
-
-msgid "Mail Max Size"
-msgstr "最大邮件尺寸"
-
-msgid "Queue LifeTime"
-msgstr "邮件队列投递超时"
-
-msgid "Queue LifeTime must > 0s and < 7days"
-msgstr "邮件队列投递超时必须大于0秒小于7天"
-
-msgid "Local Deliver Concurrency"
-msgstr "本地并发投递数"
-
-msgid "Local Deliver Concurrency must between 0-50"
-msgstr "本地并发投递数不能小于0或大于50"
-
-msgid "Remote Deliver Concurrency"
-msgstr "远程并发投递数"
-
-msgid "Remote Deliver Concurrency must between 0-500"
-msgstr "远程并发投递数不能小于0或大于500"
-
-msgid "SMTP Parameters"
-msgstr "SMTP基本参数"
-
-msgid "Mail HostName"
-msgstr "服务器名"
-
-msgid "SMTP HELO Name"
-msgstr "SMTP HELO主机名"
-
-msgid "SMTP Greeting"
-msgstr "SMTP 问候语"
-
-msgid "Days"
-msgstr "天"
-
-msgid "Hours"
-msgstr "小时"
-
 msgid "System Main Engine Switch"
 msgstr "系统总引擎开关"
 
@@ -1329,6 +1278,63 @@ msgstr "非正式销售版"
 
 msgid "Download License"
 msgstr "许可证下载"
+
+msgid "SMTP Connect Timeout"
+msgstr "SMTP 连接超时"
+
+msgid " must be number"
+msgstr "必须为数字"
+
+msgid "SMTP Remote Deliver Timeout"
+msgstr "SMTP 发送邮件超时"
+
+msgid "SMTP Receive Timeout"
+msgstr "SMTP 接收邮件超时"
+
+msgid "Mail Max Size"
+msgstr "最大邮件尺寸"
+
+msgid "Queue LifeTime"
+msgstr "邮件队列投递超时"
+
+msgid "Queue LifeTime must > 0s and < 7days"
+msgstr "邮件队列投递超时必须大于0秒小于7天"
+
+msgid "Local Delivery Concurrency"
+msgstr "本地并发投递数"
+
+msgid "Local Delivery Concurrency must between 0-50"
+msgstr "本地并发投递数不能小于0或大于50"
+
+msgid "Remote Delivery Concurrency"
+msgstr "远程并发投递数"
+
+msgid "Remote Delivery Concurrency must between 0-500"
+msgstr "远程并发投递数不能小于0或大于500"
+
+msgid "SMTP Parameters"
+msgstr "SMTP基本参数"
+
+msgid "Mail HostName"
+msgstr "服务器名"
+
+msgid "SMTP HELO Name"
+msgstr "SMTP HELO主机名"
+
+msgid "SMTP Greeting"
+msgstr "SMTP 问候语"
+
+msgid "Days"
+msgstr "天"
+
+msgid "Hours"
+msgstr "小时"
+
+msgid "Local Deliver Concurrency"
+msgstr "本地并发投递数"
+
+msgid "Remote Deliver Concurrency"
+msgstr "远程并发投递数"
 
 msgid "Change Admin Passwd"
 msgstr "修改口令"
@@ -1896,6 +1902,21 @@ msgstr "许可证已经失效"
 msgid "VenusTech AntiSpam System"
 msgstr "天澄反邮件垃圾系统 管理系统"
 
+msgid "a1top_01_en.jpg"
+msgstr "a1top_01.jpg"
+
+msgid "Customer Evaluation (Non-Sales)Edition"
+msgstr "客户试用体验（非销售）版"
+
+msgid " Expired"
+msgstr "过期"
+
+msgid "Input"
+msgstr "请您首先输入"
+
+msgid "Cancel"
+msgstr "取消"
+
 msgid "System Menu"
 msgstr "系统菜单"
 
@@ -1926,11 +1947,17 @@ msgstr "独立服务器设置"
 msgid "User Management"
 msgstr "用户管理"
 
+msgid "Overrun Limit Engine"
+msgstr "动态限制引擎"
+
 msgid "SMTP per IP"
 msgstr "同时连接数"
 
 msgid "SMTP Frequency"
 msgstr "连接频率"
+
+msgid "AntiVirus Engine"
+msgstr "病毒识别引擎"
 
 msgid "Virus Recognise"
 msgstr "病毒识别"
@@ -1952,6 +1979,9 @@ msgstr "智能内容分析"
 
 msgid "Noise Reduce System"
 msgstr "降噪"
+
+msgid "Content Filter Engine"
+msgstr "内容过滤引擎"
 
 msgid "Rules Management"
 msgstr "规则管理"
@@ -1979,21 +2009,6 @@ msgstr "外网流量图"
 
 msgid "Log Stat."
 msgstr "日志统计"
-
-msgid "a1top_01_en.jpg"
-msgstr "a1top_01.jpg"
-
-msgid "Customer Evaluation (Non-Sales)Edition"
-msgstr "客户试用体验（非销售）版"
-
-msgid " Expired"
-msgstr "过期"
-
-msgid "Input"
-msgstr "请您首先输入"
-
-msgid "Cancel"
-msgstr "取消"
 
 msgid "Introduction"
 msgstr "介绍"
@@ -2064,9 +2079,6 @@ msgstr "该账号不能从此IP地址登录"
 #~ "Config had saved, but This Product has no valid License, Please contact "
 #~ "with your product provider."
 #~ msgstr "配置已保存，但是系统目前尚无可用License，请联系销售商。"
-
-#~ msgid "AntiVirus Engine"
-#~ msgstr "病毒识别引擎"
 
 #~ msgid "Intelligent Noise Reduce System"
 #~ msgstr "智能降噪系统"

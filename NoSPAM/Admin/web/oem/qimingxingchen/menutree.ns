@@ -108,7 +108,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-	var e = new WebFXTreeItem('<?=_("Overrun Limit")?>');
+	var e = new WebFXTreeItem('<?=_("Overrun Limit Engine")?>');
 	tree.add(e);
 	e.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','dynamic/dynengine.ns','main'));
 	e.add(new WebFXTreeItem('<?=_("SMTP per IP")?>','dynamic/connperip.ns','main'));
@@ -122,7 +122,7 @@ if($DynamicEngine > 0){
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	var j = new WebFXTreeItem('<?=_("AntiVirus")?>');
+	var j = new WebFXTreeItem('<?=_("AntiVirus Engine")?>');
 	tree.add(j);
 	j.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antivirus/virusengine.ns','main'));
 	j.add(new WebFXTreeItem('<?=_("Virus Recognise")?>','antivirus/recognize.ns','main'));
@@ -134,7 +134,7 @@ if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
 
-	var c = new WebFXTreeItem('<?=_("AntiSpam")?>');
+	var c = new WebFXTreeItem('<?=_("AntiSpam Engine")?>');
 	tree.add(c);
 	c.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antispam/spamengine.ns','main'));
 	var c1 = new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>');
@@ -164,7 +164,7 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-	var d = new WebFXTreeItem('<?=_("Content Filter")?>');
+	var d = new WebFXTreeItem('<?=_("Content Filter Engine")?>');
 	tree.add(d);
 	d.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','content/contentengine.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rules Management")?>','content/rulemanage.ns','main'));

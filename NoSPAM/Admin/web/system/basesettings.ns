@@ -62,10 +62,10 @@ if($_POST["Submit"] == _("Modify")){
 		$spamconf->delParam("ConcurrencyLocal","MailServer");
 	}else{
 		if (!is_numeric($_POST['ConcurrencyLocal']))
-			die(_("Local Deliver Concurrency")._(" must be number"));
+			die(_("Local Delivery Concurrency")._(" must be number"));
 		
 		if (intval($_POST['ConcurrencyLocal']) > 50 || intval($_POST['ConcurrencyLocal']) < 0)
-			die(_("Local Deliver Concurrency must between 0-50"));
+			die(_("Local Delivery Concurrency must between 0-50"));
 			
 		$spamconf->setParam("ConcurrencyLocal",$_POST['ConcurrencyLocal'],"MailServer");
 	}
@@ -73,10 +73,10 @@ if($_POST["Submit"] == _("Modify")){
 		$spamconf->delParam("ConcurrencyRemote","MailServer");
 	}else{
 		if (!is_numeric($_POST['ConcurrencyRemote']))
-			die(_("Remote Deliver Concurrency")._(" must be number"));
+			die(_("Remote Delivery Concurrency")._(" must be number"));
 		
 		if (intval($_POST['ConcurrencyRemote']) > 500 || intval($_POST['ConcurrencyRemote']) < 0)
-			die(_("Remote Deliver Concurrency must between 0-500"));
+			die(_("Remote Delivery Concurrency must between 0-500"));
 
 		$spamconf->setParam("ConcurrencyRemote",$_POST['ConcurrencyRemote'],"MailServer");
 	}
@@ -174,7 +174,7 @@ if($_POST["Submit"] == _("Modify")){
 	</td>
 </tr>
 <tr class="TableBody1">
-	<td scope="row"> <?=_("Local Deliver Concurrency")?>: </td>
+	<td scope="row"> <?=_("Local Delivery Concurrency")?>: </td>
 	<td>
 		<input name="ConcurrencyLocalSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=true"><?=_("Default")?>: 10
 		<input name="ConcurrencyLocalSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=false">
@@ -182,7 +182,7 @@ if($_POST["Submit"] == _("Modify")){
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> <?=_("Remote Deliver Concurrency")?>: </td>
+	<td scope="row"> <?=_("Remote Delivery Concurrency")?>: </td>
 	<td>
 		<input name="ConcurrencyRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=true"><?=_("Default")?>: 20
 		<input name="ConcurrencyRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=false">
