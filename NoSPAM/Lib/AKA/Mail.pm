@@ -648,7 +648,7 @@ sub quarantine_engine
 			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 		} );
 		return;
-	}elsif( 'DB' eq $userlistdb ){
+	}elsif( 'File' eq $userlistdb ){
 		my $q_users = $self->{user}->is_user_exist(@emails);
 		if ( !defined $q_users  ){
 $self->{zlog}->debug( "User [" . join (',',@emails) . "] not exist." );
@@ -705,7 +705,7 @@ $self->{zlog}->debug( "User [" . join (',',@emails) . "] exist." );
 			} );
 		}
 	}else{
-		$self->{zlog}->fatal ( "AKA::Mail::quaratine_check_user unsupport CheckUserList" );
+		$self->{zlog}->fatal ( "AKA::Mail::quaratine_check_user unsupport CheckUserList [$userlistdb]" );
 	}
 
 	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( 
