@@ -1,12 +1,14 @@
 #!/usr/bin/perl -w
 
-use strict;
 use POSIX qw(strftime);
 
 use AKA::Mail;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::IPUtil;
+use AKA::Mail::Archive;
+
+use strict;
 
 # We close stderr, for hide all warn.
 # to disable any debug information to appear. 
@@ -15,6 +17,7 @@ use AKA::IPUtil;
 open (NSOUT, ">&=2");
 close (STDERR);
 open (STDERR, ">/dev/null") or die "can't reopen STDERR";
+
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -55,6 +58,9 @@ my $action_map = {
 			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item1> <Item2> ... : Del a item of a NameSpace from AMD' ]
 			, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
 
+			, 'Archive_get_exchangedata' => [\&Archive_get_exchangedata, ' : get from archive, print GA format' ]
+			, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
+
 			,'reset_Network' => [\&reset_Network, ""]
 			,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
 			,'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""]
@@ -73,7 +79,6 @@ my $action_map = {
 			,'reboot' => [\&reboot, ""]
 			,'shutdown' => [\&shutdown, ""]
 
-			,'post_install' => [\&post_install, "<SecurityNO>"]
 		};
 
 #use Data::Dumper;
@@ -1103,19 +1108,19 @@ sub get_LogSimpleAnaylize
 	return 0;
 }
 
-sub post_install
+sub Archive_get_exchangedata
 {
-	eval {
-		use AKA::Mail::GW;
-	}; if ( $@ ) {
-		$zlog->fatal( "Can't load GW Module" );
-		return 1;
-	}
-	my $fake_parent;
-	$fake_parent->{zlog} = $zlog;
-	$fake_parent->{conf} = $conf;
+	my $AMA = new AKA::Mail::Archive;
+	$AMA->print_archive_zip;
 
-	my $AMG = new AKA::Mail::GW( $fake_parent );
-	return $AMG->post_install ( @param );
+	return 0;
+}
+
+sub Archive_clean_all
+{
+	my $AMA = new AKA::Mail::Archive;
+	$AMA->clean_archive_files;
+
+	return 0;
 }
 
