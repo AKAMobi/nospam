@@ -204,7 +204,7 @@ sub log_match
 	
 
 	my $xs = $self->{conf}->get_filterdb_xml_simple();
-	my $xml = $xs->XMLout( $logdata, NoAttr=>0 );
+	my $xml = $xs->XMLout( $logdata, XMLDecl=>'<?xml version="1.0" encoding="ISO-8859-1"?>',NoAttr=>0 );
 
 	open ( FD, ">$logfile" ) or $self->{zlog}->log ( "pf: open $logfile for writing error" );
 	print FD $xml;
