@@ -1111,12 +1111,14 @@ sub _network_reset_smtp_dnat
 	return 0 unless $domain_ip;
 
 	# we use static internal ip here
-	my $GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
-	#my $GWIP = $conf->{config}->{Network}->{IP};
-	#if ( !defined $GWIP ){
-	#	$zlog->fatal ( "GW has no IP???" );
-	#	$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
-	#}
+	# by zixia 2004-04-22 this ip will show in mail header, better to use ip
+	#my $GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
+	my $GWIP = $conf->{config}->{Network}->{IP};
+	if ( !defined $GWIP ){
+		$zlog->fatal ( "GW has no IP???" );
+		# we try internal ip first, then hardcode it.
+		$GWIP = $intconf->{MailGatewayInternalIP} || '10.4.3.7';
+	}
 
 	my $ret = 0;
 	my $err = 0;
@@ -1184,7 +1186,7 @@ sub _file_update_hosts
 	
 	# gw hostname
 	my ($IP,$Hostname) = ( $conf->{config}->{Network}->{IP}, $conf->{config}->{Network}->{Hostname} );
-	if ( $IP && $Hostname ){
+	if ( defined $IP && defined $Hostname ){
 		$host_map{$IP} = $Hostname;
 	}else{
 		#$host_map{'10.4.3.7'} = 'factory.gw.nospam.aka.cn';
