@@ -1,0 +1,173 @@
+<?
+require_once("../inc/include.ns");
+
+if($SpamEngine <= 0)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+
+if(!adminPerm(PERM_ADMIN_SPAM))
+	die("您没有访问该网页的权限。");
+
+if($_POST["isSubmit"]){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+
+	if($_POST["DCCEnabled"]=="Y"){
+		$spamconf->setParam("DCCEnabled","Y","SpamEngine");
+		$spamconf->setParam("DCCTimeout",$_POST["DCCTimeout"],"SpamEngine");
+		$spamconf->setParam("DCCBodyMax",$_POST["DCCBodyMax"],"SpamEngine");
+		$spamconf->setParam("DCCFuz1Max",$_POST["DCCFuz1Max"],"SpamEngine");
+		$spamconf->setParam("DCCFuz2Max",$_POST["DCCFuz2Max"],"SpamEngine");
+	}else{
+		$spamconf->setParam("DCCEnabled","N","SpamEngine");
+	}
+
+	if($_POST["PyzorEnabled"]=="Y"){
+		$spamconf->setParam("PyzorEnabled","Y","SpamEngine");
+		$spamconf->setParam("PyzorTimeout",$_POST["PyzorTimeout"],"SpamEngine");
+		$spamconf->setParam("PyzorMax",$_POST["PyzorMax"],"SpamEngine");
+	}else{
+		$spamconf->setParam("PyzorEnabled","N","SpamEngine");
+	}
+
+	if($_POST["RazorEnabled"]=="Y"){
+		$spamconf->setParam("RazorEnabled","Y","SpamEngine");
+		$spamconf->setParam("RazorTimeout",$_POST["RazorTimeout"],"SpamEngine");
+	}else{
+		$spamconf->setParam("RazorEnabled","N","SpamEngine");
+	}
+
+	$spamconf->save();
+
+	if(($ret=wi("SA_update",$result))==0)
+		echo "修改成功！";
+	else
+		echo "修改失败，错误代码：".$ret;
+}else{
+	$bDCCEnabled = ($spamconf->getParam("DCCEnabled","SpamEngine")=="Y")? true:false;
+	$iDCCTimeout = $spamconf->getParam("DCCTimeout","SpamEngine");
+	$iDCCBodyMax = $spamconf->getParam("DCCBodyMax","SpamEngine");
+	$iDCCFuz1Max = $spamconf->getParam("DCCFuz1Max","SpamEngine");
+	$iDCCFuz2Max = $spamconf->getParam("DCCFuz2Max","SpamEngine");
+
+	$bPyzorEnabled = ($spamconf->getParam("PyzorEnabled","SpamEngine")=="Y")? true:false;
+	$iPyzorTimeout = $spamconf->getParam("PyzorTimeout","SpamEngine");
+	$iPyzorMax = $spamconf->getParam("PyzorMax","SpamEngine");
+
+	$bRazorEnabled = ($spamconf->getParam("RazorEnabled","SpamEngine")=="Y")? true:false;
+	$iRazorTimeout = $spamconf->getParam("RazorTimeout","SpamEngine");
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>网络校验和监测</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+<!--
+function DCCchange(bState)
+{
+	if(bState){
+		form1.idDCCTimeout.disabled = true;
+		form1.idDCCBodyMax.disabled = true;
+		form1.idDCCFuz1Max.disabled = true;
+		form1.idDCCFuz2Max.disabled = true;
+	}else{
+		form1.idDCCTimeout.disabled = false;
+		form1.idDCCBodyMax.disabled = false;
+		form1.idDCCFuz1Max.disabled = false;
+		form1.idDCCFuz2Max.disabled = false;
+	}
+}
+
+function Pyzor_change(bState)
+{
+	if(bState){
+		form1.idPyzorTimeout.disabled = true;
+		form1.idPyzorMax.disabled = true;
+	}else{
+		form1.idPyzorTimeout.disabled = false;
+		form1.idPyzorMax.disabled = false;
+	}
+}
+function Razor_change(bState)
+{
+	if(bState){
+		form1.idRazorTimeout.disabled = true;
+	}else{
+		form1.idRazorTimeout.disabled = false;
+	}
+}
+-->
+</script>
+
+
+</head>
+
+<body>
+<form name="form1" method="post"> 
+  <p>集中分析方案A<br>
+    <label>
+    <input id="idDCCEnabledY" type="radio" name="DCCEnabled" value="Y"<? if($bDCCEnabled) echo " checked" ?> onclick="DCCchange(false)">
+  开启</label><br>
+    <label>
+    <input id="idDCCEnabledN" name="DCCEnabled" type="radio" value="N"<? if(!$bDCCEnabled) echo " checked" ?> onclick="DCCchange(true)">
+  关闭</label>
+    <p>
+
+    网络超时：<input name="DCCTimeout" type="input" id="idDCCTimeout" value="<?=$iDCCTimeout?>" <? if(!$bDCCEnabled) echo " disabled"; ?>><br>
+    垃圾邮件体最少出现次数：<input name="DCCBodyMax" type="input" id="idDCCBodyMax" value="<?=$iDCCBodyMax?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+    垃圾邮件特征1最少出现次数：<input name="DCCFuz1Max" type="input" id="idDCCFuz1Max" value="<?=$iDCCFuz1Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+    垃圾邮件特征2最少出现次数：<input name="DCCFuz2Max" type="input" id="idDCCFuz2Max" value="<?=$iDCCFuz2Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+  <p>
+
+<hr width=400 align=left>
+  <p>集中分析方案B：<br>
+    <label>
+    <input id="idPyzorEnabledY" type="radio" name="PyzorEnabled" value="Y"<? if($bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(false)">
+  开启</label><br>
+    <label>
+    <input id="idPyzorEnabledN" name="PyzorEnabled" type="radio" value="N"<? if(!$bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(true)">
+  关闭</label>
+    <p>
+
+    网络超时：<input name="PyzorTimeout" type="input" id="idPyzorTimeout" value="<?=$iPyzorTimeout?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
+    垃圾邮件最少出现次数：<input name="PyzorMax" type="input" id="idPyzorMax" value="<?=$iPyzorMax?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
+  <p>
+
+<hr width=400 align=left>
+  <p>集中分析方案C：<br>
+    <label>
+    <input id="idRazorEnabledY" type="radio" name="RazorEnabled" value="Y"<? if($bRazorEnabled) echo " checked" ?> onclick="Razor_change(false)">
+  开启</label><br>
+    <label>
+    <input id="idRazorEnabledN" name="RazorEnabled" type="radio" value="N"<? if(!$bRazorEnabled) echo " checked" ?> onclick="Razor_change(true)">
+  关闭</label>
+    <p>
+
+    网络超时：<input name="RazorTimeout" type="input" id="idRazorTimeout" value="<?=$iRazorTimeout?>"<? if(!$bRazorEnabled) echo " disabled";?>><br>
+  <p>
+
+<hr width=400 align=left>
+
+
+  <p>
+    <input type="reset" name="reset" value="恢复">
+	<input type="button" value="推荐值" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
+    <input type="submit" name="isSubmit" value="提交">
+  </p>
+</form>
+<?
+		if(!$bAntiSpam){
+?>
+<script>
+alert("注意：反垃圾引擎未启动");
+</script>
+<?
+		}
+?>
+</body>
+</html>
+<?
+}
+?>
