@@ -44,6 +44,7 @@ my $reboot_binary = "/sbin/reboot";
 my $shutdown_binary = "/sbin/shutdown";
 my $date_binary = "/bin/date";
 my $clock_binary = "/sbin/clock";
+my $sync_binary = "/bin/sync";
 
 
 my $conf = new AKA::Mail::Conf;
@@ -980,13 +981,13 @@ sub reset_DateTime
 sub reboot
 {
 	$zlog->debug("NoSPAM Util::reboot");
-	return system ( "$reboot_binary" );
+	return system ( "$sync_binary; $reboot_binary" );
 }
 
 sub shutdown
 {
 	$zlog->debug("NoSPAM Util::shutdown");
-	return system ( "$shutdown_binary -h now" );
+	return system ( "$sync_binary; $shutdown_binary -h now" );
 }
 
 sub clean_Log

@@ -959,6 +959,7 @@ sub AKA_mail_content_engine
   close PF ;
 
   # TODO: no need to write file so early, should be moved to qmail_requeue.
+  # XXX why we rewrite mail file? by zixia 2004-04-12
   if ( defined $pf_mime_data && length($pf_mime_data) ){
 	open (PF, ">$scandir/$wmaildir/new/$file_id.pf") ||&error_condition("pf2: cannot open $scandir/$wmaildir/new/$file_id.pf - $!");
 	print PF $pf_mime_data;
