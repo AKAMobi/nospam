@@ -56,7 +56,7 @@ $ns_start_time = [gettimeofday];
 
 my ( $engine_netio_time );
 my ( $engine_load_time, $engine_check_license_time, $engine_run_time );
-my ( $engine_spam_run_time, $engine_dynamic_run_time, $engine_content_run_time );
+my ( $engine_spam_run_time, $engine_dynamic_run_time, $engine_content_run_time, $engine_archive_run_time );
 
 
 delete @ENV{qw(IFS CDPATH ENV BASH_ENV QMAILMFTFILE QMAILINJECT)};
@@ -70,6 +70,7 @@ my $VERSION="1.20";
 
 my ( $AKA_is_spam, $AKA_is_refuse_spam, $AKA_spam_reason ) = (0,0,'');
 my ( $AKA_is_overrun, $AKA_overrun_reason ) = ( 0, '' );
+my ( $AKA_is_archived ) = ( 0 );
 my ( $decoded_subject, $mail_size ) = ( '', 0 );
 # AKA::Mail
 my $AM; 
@@ -871,7 +872,7 @@ sub AKA_mail_engine {
 		# pf_mime_data && pf_action & pf_param & pf_desc(rule_id) is global var, and set in function, no need to return.
 		&AKA_mail_content_engine;
 	}else{
-		$pf_action = 7; $pf_param = ""; $pf_desc = "邮件过大或引擎未启动";
+		$pf_action = 7; $pf_param = ""; $pf_desc = "";
 	}
   	$engine_content_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
   	&debug("AKA_content_engine $$: in $engine_content_run_time secs [$pf_action, $pf_param, $pf_desc]");
@@ -886,16 +887,19 @@ sub AKA_mail_engine {
 	}elsif ( 2==$ins_queue ){
 	 	( $AKA_is_overrun, $AKA_overrun_reason ) = (0, '认证用户');
 	}else{
-# now disable receiver_num check;
-#		for ( 1...$AKA_email_receiver_num ){
-#&debug("DYNAMIC: $decoded_subject, $returnpath, $remote_smtp_ip" );
-		 	( $AKA_is_overrun, $AKA_overrun_reason ) = $AM->dynamic_engine( $decoded_subject, $returnpath, $remote_smtp_ip );
-#		}
+	 	( $AKA_is_overrun, $AKA_overrun_reason ) = $AM->dynamic_engine( $decoded_subject, $returnpath, $remote_smtp_ip );
 	}
   	$engine_dynamic_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
   	&debug("AKA_dynamic_engine $$: in $engine_dynamic_run_time secs [$AKA_is_overrun, $AKA_overrun_reason]");
 
-	#TODO archive_engine
+	#
+	# Archive_engine
+	#
+  	$start_time=[gettimeofday];
+	$AKA_is_archived = $AM->archive_engine( "$scandir/$wmaildir/new/$file_id", $AKA_is_spam, $pf_desc );
+  	$engine_archive_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
+  	&debug("AKA_archive_engine $$: in $engine_archive_run_time secs");
+
 
 	my $esc_subject = $decoded_subject;
 	$esc_subject=~s/,/_/g;
@@ -914,7 +918,7 @@ sub AKA_mail_engine {
 			. ',' . ($ins_queue?'1':'0') 
 			. ",$remote_smtp_ip,$returnpath,$one_recip, $esc_subject "
 			. ",$AKA_is_spam,$AKA_spam_reason,$AKA_is_refuse_spam"
-			. ",$pf_desc,$pf_action,$pf_param"
+			. "," . ($pf_desc?$pf_desc:"邮件过大或引擎未启动") . ",$pf_action,$pf_param"
 			. ",$AKA_is_overrun, $AKA_overrun_reason\n";
         	flock(LFD,LOCK_UN);
 		close(LFD);
