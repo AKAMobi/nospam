@@ -46,7 +46,7 @@ print "Modifying file owner & mode...\n";
 `chmod -R o+rx home/{NoSPAM,ssh,vpopmail,wmail} var/qmail/control`;
 
 print "Tar to NoSPAM prepare package...\n";
-`tar czvf ../Dist/ns-prep-$NSVER.i386.rpm root/post_install usr/lib`;
+`tar czvf ../Dist/ks-$NSVER.i386.rpm root/post_install usr/lib`;
 unlink 'root/post_install';
 `rm -fr usr/lib`;
 
