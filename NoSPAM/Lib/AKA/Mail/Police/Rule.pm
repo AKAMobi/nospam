@@ -127,39 +127,23 @@ sub check_all_rule_backend
 		#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 
 		# AND / OR / NOT
+		# attachment & size & keyword is not controled by match_logic, it always use 'AND'
+		# only sub rule ( ie, sub size rule ) should use match logic.
 		$match_logic = $self->{$which_db}->{$rule_id}->{match_logic} || 'AND';
 
 		$has_rule = 0;
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
 			# 如果有相关的 rule，则必须匹配才可能符合
 			# 不匹配则 next
-			if ( 'OR' eq $match_logic ){
-				return $rule_id if $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}elsif ( 'NOT' eq $match_logic ){
-				next until ! $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}else{ # AND, is the default 
-				next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}
+			next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $match_logic );
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{size} ){
-			if ( 'OR' eq $match_logic ){
-				return $rule_id if $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
-			}elsif ( 'NOT' eq $match_logic ){
-				next until ! $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
-			}else{# AND, is the default 
-				next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
-			}
+			next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $match_logic ) ;
 			$has_rule = 1;
 		}
 		if ( $self->{$which_db}->{$rule_id}->{rule_keyword} ){
-			if ( 'OR' eq $match_logic ){
-				return $rule_id if $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}elsif ( 'NOT' eq $match_logic ){
-				next until ! $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}else{# AND, is the default 
-				next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
-			}
+			next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $match_logic );
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
@@ -199,7 +183,14 @@ sub check_attachment_rule
 		return 1;
 	}
 
-	return check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
+	if ( 'NOT' eq $match_logic ){
+		return ! check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
+	}elsif ( 'NOR' eq $match_logic ){
+		# if 'NOR' match, it should already return , so here is no match
+		return 0;
+	}else{ # 'AND'
+		return check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
+	}
 }
 
 sub check_size_rule
@@ -224,7 +215,14 @@ sub check_size_rule
 		}
 		return 1;
 	}
-	return check_single_size_rule ( $self, $size_rule, $mail_info );
+	if ( 'NOT' eq $match_logic ){
+		return ! check_single_size_rule ( $self, $size_rule, $mail_info );
+	}elsif ( 'NOR' eq $match_logic ){
+		# if 'NOR' match, it should already return , so here is no match
+		return 0;
+	}else{ #'AND'
+		return check_single_size_rule ( $self, $size_rule, $mail_info );
+	}
 }
 
 sub check_keyword_rule
@@ -251,7 +249,14 @@ sub check_keyword_rule
 		return 1;
 	}
 
-	return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
+	if ( 'NOT' eq $match_logic ){
+		return ! check_single_keyword_rule( $self, $keyword_rule, $mail_info );
+	}elsif ( 'NOR' eq $match_logic ){
+		# if 'NOR' match, it should already return , so here is no match
+		return 0;
+	}else{ #'AND'
+		return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
+	}
 }
 
 sub check_single_attachment_rule
