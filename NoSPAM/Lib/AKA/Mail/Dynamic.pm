@@ -39,9 +39,9 @@ sub new
 	# 在内存中记录的邮件信息保留最长时间
 	$self->{define}->{max_time} = 3600;
 
-	$self->{define}->{SendRatePerSubject} = $self->{conf}->{config}->{SendRatePerSubject} || '0/0';
-	$self->{define}->{SendRatePerFrom} = $self->{conf}->{config}->{SendRatePerFrom} || '0/0';
-	$self->{define}->{ConnRatePerIP} = $self->{conf}->{config}->{ConnRatePerIP} || '0/0';
+	$self->{define}->{SendRatePerSubject} = $self->{conf}->{config}->{DynamicEngine}->{SendRatePerSubject} || '0/0/0';
+	$self->{define}->{SendRatePerFrom} = $self->{conf}->{config}->{DynamicEngine}->{SendRatePerFrom} || '0/0/0';
+	$self->{define}->{ConnRatePerIP} = $self->{conf}->{config}->{DynamicEngine}->{ConnRatePerIP} || '0/0/0';
 
 	$self->{define}->{DBMFILE} = "/home/NoSPAM/var/run/Dynamic.dbm";
 	$self->{define}->{SyncCacheSize} = '100K';

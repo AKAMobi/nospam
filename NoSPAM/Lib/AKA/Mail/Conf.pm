@@ -43,9 +43,25 @@ sub new
 
 	$self->init_config;
 	$self->init_intconf;
+	$self->init_licconf;
 
 	return $self;
 }
+
+
+sub init_licconf
+{
+	my $self = shift;
+
+        my $licconf;
+        
+	use Config::Tiny;
+	my $C = Config::Tiny->read( $self->{define}->{licensefile} );
+
+	$licconf = $C->{_};
+                        
+        $self->{licconf} = $licconf;
+}                       
 
 
 sub init_intconf
@@ -59,7 +75,7 @@ sub init_intconf
 
 	$intconf = $C->{_};
                         
-        $intconf->{GAViewable} ||= 'Y';
+        $intconf->{GAViewable} ||= 'N';
         $intconf->{UserLogUpload} ||= 'N';
         $intconf->{MailGatewayInternalIP} ||= '10.4.3.7';
         $intconf->{MailGatewayInternalMask} ||= 32;
@@ -74,56 +90,106 @@ sub init_config
 #	return $self->{config} if ( $self->{config} );
 
 	use Config::Tiny;
-	my $C = Config::Tiny->read( $self->{define}->{conffile} );
+	my $config = Config::Tiny->read( $self->{define}->{conffile} );
 
-	my $config = $C->{_};
+	#
+	# System
+	#
+	$config->{System}->{ServerGateway} ||= "Gateway";
 
-	$config->{ServerGateway} ||= "Gateway";
+	#
+	# Spam
+	#
+	$config->{SpamEngine}->{Traceable} ||= "N";
+	my @default_trace_type = ('Mail','IP');
+	$config->{SpamEngine}->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} ) || \@default_trace_type;
+	$config->{SpamEngine}->{TraceSpamMask} ||= "16";
+	$config->{SpamEngine}->TraceMaybeSpamMask} ||= "22";
 
-	$config->{Traceable} ||= "N";
-	my @default_trace_type = ('MX','A');
-	$config->{TraceType} = cut_comma_to_array_ref( $self,$config->{TraceType} ) || \@default_trace_type;
-	$config->{TraceSpamMask} ||= "16";
-	$config->{TraceMaybeSpamMask} ||= "22";
+	$config->{SpamEngine}->{BlockFrom} ||= "N";
+	$config->{SpamEngine}->{BlackFromList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{BlackFromList} );
+	$config->{SpamEngine}->{WhiteFromList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{WhiteFromList} );
 
-	$config->{BlockFrom} ||= "N";
-	$config->{BlackFromList} = cut_comma_to_array_ref( $self,$config->{BlackFromList} );
-	$config->{WhiteFromList} = cut_comma_to_array_ref( $self,$config->{WhiteFromList} );
+	$config->{SpamEngine}->{BlockDomain} ||= "N";
+	$config->{SpamEngine}->{BlackDomainList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{BlackDomainList} );
+	$config->{SpamEngine}->{WhiteDomainList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{WhiteDomainList} );
 
-	$config->{BlockDomain} ||= "N";
-	$config->{BlackDomainList} = cut_comma_to_array_ref( $self,$config->{BlackDomainList} );
-	$config->{WhiteDomainList} = cut_comma_to_array_ref( $self,$config->{WhiteDomainList} );
+	$config->{SpamEngine}->{BlockIP} ||= "N";
+	$config->{SpamEngine}->{BlackIPList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{BlackIPList} );
+	$config->{SpamEngine}->{WhiteIPList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{WhiteIPList} );
 
-	$config->{BlockIP} ||= "N";
-	$config->{BlackIPList} = cut_comma_to_array_ref( $self,$config->{BlackIPList} );
-	$config->{WhiteIPList} = cut_comma_to_array_ref( $self,$config->{WhiteIPList} );
+	$config->{SpamEngine}->{SpamTag} ||= "¡¾À¬»øÓÊ¼ş¡¿";
+	$config->{SpamEngine}->{MaybeSpamTag} ||= "¡¾ÒÉËÆÀ¬»ø¡¿";
 
-	$config->{ConnPerIP} ||= 0;
-	$config->{ConnRatePerIP} ||= "0/0";
-	$config->{SendRatePerSubject} ||= "0/0";
-	$config->{SendRatePerFrom} ||= "0/0";
+	$config->{SpamEngine}->{RefuseSpam} ||= "N";
 
-	$config->{MailServerHostname} ||= "unknown.gw.nospam.aka.cn";
-	#$config->{MailServerIP} 
-	$config->{MailServerNetMask} ||= "24";
-	#$config->{MailServerGateway}
+	$config->{SpamEngine}->{TagHead} ||= "Y";
+	$config->{SpamEngine}->{TagSubject} ||= "Y";
+	$config->{SpamEngine}->{TagReason} ||= "Y";
 
-	$config->{MailGatewayIP} ||= "10.10.10.10";
+	#
+	# Dynamic
+	#
+	$config->{DynamicEngine}->{ConnPerIP} ||= 0;
+	$config->{DynamicEngine}->{ConnRatePerIP} ||= "0/0/0";
+	$config->{DynamicEngine}->{SendRatePerSubject} ||= "0/0/0";
+	$config->{DynamicEngine}->{SendRatePerFrom} ||= "0/0/0";
 
-	$config->{SpamTag} ||= "¡¾À¬»øÓÊ¼ş¡¿";
-	$config->{MaybeSpamTag} ||= "¡¾ÒÉËÆÀ¬»ø¡¿";
+	#
+	# Network
+	#
+	$config->{Network}->{Hostname} ||= "factory.gw.nospam.aka.cn";
+	$config->{Network}->{NetMask} ||= "24";
 
-	$config->{RefuseSpam} ||= "N";
+	$config->{Network}->{IP} ||= "192.168.0.150";
 
-	$config->{ArchiveAble} ||= "N";
-	$config->{ArchiveAdmin} ||= "archives\@localhost.localdomain";
-	#$config->{ArchiveAddressOnly} 
+	#
+	# Archive
+	#
+	$config->{ArchiveEngine}->{ArchiveEngine} ||= "N";
+	$config->{ArchiveEngine}->{ArchiveType} ||= "None";
 
-	$config->{TagHead} ||= "Y";
-	$config->{TagSubject} ||= "Y";
-	$config->{TagReason} ||= "Y";
+	#
+	# MailServer
+	#
+	$config->{MailServer}->{ProtectDomain} = $self->get_protectd_domain_hash_ref($config);
 
 	$self->{config} = $config;
+}
+
+#ProtectDomain_zixia.net_IPPort=202.205.10.7:25
+#ProtectDomain_zixia.net_Cate=¸öÈËÓò
+sub get_protectd_domain_hash_ref
+{
+	my $self = shift;
+	my $config = shift;
+
+	my $MailServer = $config->{MailServer};
+
+	#
+	# $h->{$domain}->{IP}
+	#		->{Port}
+	#		->{Cate}
+	my $h = {};
+	my ( $key, $val );
+	my $domain;
+	while ( ($key,$val) = each %{$MailServer} ){
+		if ( $key=~/^ProtectDomain_(.+)_IPPort$/ ){
+			$domain = $1;
+			if ( $val =~ /^(\d+\.\d+\.\d+\.\d+)/ ){
+				$h->{$domain}->{IP} = $1;
+			}
+			if ( $val =~ /:(\d+)$/ ){
+				$h->{$domain}->{Port} = $1;
+			}else{
+				$h->{$domain}->{Port} = 25;
+			}
+		}elsif ( /^ProtectDomain_(.+)_Cate$/ ){
+			$h->{$1}->{Cate} = $val;
+		}
+	}
+
+	return $h;
 }
 
 sub cut_comma_to_array_ref

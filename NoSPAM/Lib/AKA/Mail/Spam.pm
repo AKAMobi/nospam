@@ -70,7 +70,7 @@ sub is_traceable
 		return 0;
 	}
 
-	my @TraceType = @{$self->{conf}->{config}->{TraceType}};
+	my @TraceType = @{$self->{conf}->{config}->{SpamEngine}->{TraceType}};
 
 	my @mx_n_a ;
 	
@@ -93,8 +93,8 @@ sub is_traceable
 	my $traceable = 0;
 	my $strict_traceable = 0;
 
-	my $traceable_mask = $self->{conf}->{config}->{TraceSpamMask};
-	my $strict_traceable_mask = $self->{conf}->{config}->{TraceMaybeSpamMask};
+	my $traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceSpamMask};
+	my $strict_traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceMaybeSpamMask};
 
 	foreach my $mx_a_ip ( @mx_n_a ){
 		#$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
@@ -184,9 +184,9 @@ sub is_black_ip
 {
 	my ($self,$ip) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockIP} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockIP} );
 
-	my $BlackIPList = $self->{conf}->{config}->{BlackIPList};
+	my $BlackIPList = $self->{conf}->{config}->{SpamEngine}->{BlackIPList};
 
 	my $found = 0;
 	if ( defined $BlackIPList ){
@@ -207,9 +207,9 @@ sub is_white_ip
 {
 	my ($self,$ip) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockIP} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockIP} );
 
-	my $WhiteIPList = $self->{conf}->{config}->{WhiteIPList};
+	my $WhiteIPList = $self->{conf}->{config}->{SpamEngine}->{WhiteIPList};
 
 	my $found = 0;
 	if ( defined $WhiteIPList ){
@@ -229,9 +229,9 @@ sub is_black_domain
 {
 	my ($self,$domain) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockDomain} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockDomain} );
 
-	my $BlackDomainList = $self->{conf}->{config}->{BlackDomainList};
+	my $BlackDomainList = $self->{conf}->{config}->{SpamEngine}->{BlackDomainList};
 
 	my $found = 0;
 	if ( defined $BlackDomainList ){
@@ -252,9 +252,9 @@ sub is_white_domain
 {
 	my ($self,$domain) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockDomain} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockDomain} );
 
-	my $WhiteDomainList = $self->{conf}->{config}->{WhiteDomainList};
+	my $WhiteDomainList = $self->{conf}->{config}->{SpamEngine}->{WhiteDomainList};
 
 	my $found = 0;
 	if ( defined $WhiteDomainList ){
@@ -277,9 +277,9 @@ sub is_white_addr
 {
 	my ($self,$addr) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockFrom} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockFrom} );
 
-	my $WhiteFromList = $self->{conf}->{config}->{WhiteFromList};
+	my $WhiteFromList = $self->{conf}->{config}->{SpamEngine}->{WhiteFromList};
 
 	my $found = 0;
 	if ( defined $WhiteFromList ){
@@ -301,9 +301,9 @@ sub is_black_addr
 {
 	my ($self,$addr) = @_;
 
-	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{BlockFrom} );
+	return 0 if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{BlockFrom} );
 
-	my $BlackFromList = $self->{conf}->{config}->{BlackFromList};
+	my $BlackFromList = $self->{conf}->{config}->{SpamEngine}->{BlackFromList};
 
 	my $found = 0;
 	if ( defined $BlackFromList ){
@@ -370,7 +370,7 @@ sub spam_checker
 	}elsif ( &is_black_addr($self,$from_addr) ){
 		$is_spam = 3;
 		$reason = "地址黑名单";
-	}elsif ( 'Y' eq uc $self->{conf}->{config}->{Traceable} ){
+	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{Traceable} ){
 		# 只有启用了可追查性检查时才判断
 		my $traceable = &is_traceable( $self, $smtp_ip, $email_domain );
 

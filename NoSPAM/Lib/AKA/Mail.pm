@@ -43,7 +43,7 @@ sub should_refuse_spam
 {
 	my $self = shift;
 
-	return ( 'Y' eq $self->{conf}->{config}->{RefuseSpam} );
+	return ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} );
 }
 
 # return 0 if not archived, otherwise 1;
@@ -56,7 +56,7 @@ sub archive_engine
 	my $is_spam = shift;
 	my $is_matchrule = shift;
 
-	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine} ){
+	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine}->{ArchiveEngine} ){
 		return (0, "审计引擎未启动" );
 	}
 
@@ -80,7 +80,7 @@ sub spam_engine
 		return (0, "反垃圾引擎参数不足" );
 	}
 
-	if ( 'Y' ne uc $self->{conf}->{config}->{NoSPAMEngine} ){
+	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
 		return (0, "反垃圾引擎未启动" );
 	}
 
@@ -101,7 +101,7 @@ sub dynamic_engine
 
 	my ( $is_overrun, $reason );
 
-	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine} ){
+	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
 		return (0, "动态限制引擎未启动" );
 	}
 
@@ -143,7 +143,7 @@ sub content_engine_is_enabled
 	my $self = shift;
 	my $mail_size = shift;
 
-	if ( 'Y' eq uc $self->{conf}->{config}->{ContentFilterEngine} ){
+	if ( 'Y' eq uc $self->{conf}->{config}->{ContentEngine}->{ContentFilterEngine} ){
 		if ( $mail_size && $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
 			return 1 if ( $mail_size < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} )
 		}
@@ -206,11 +206,11 @@ sub get_spam_tag_params
 
 	my ( $SpamTag, $MaybeSpamTag, $TagHead, $TagSubject, $TagReason ) ;
 
-	$SpamTag = $self->{conf}->{config}->{SpamTag};
-	$MaybeSpamTag = $self->{conf}->{config}->{MaybeSpamTag};
-	$TagHead = $self->{conf}->{config}->{TagHead};
-	$TagSubject = $self->{conf}->{config}->{TagSubject};
-	$TagReason = $self->{conf}->{config}->{TagReason};
+	$SpamTag = $self->{conf}->{config}->{SpamEngine}->{SpamTag};
+	$MaybeSpamTag = $self->{conf}->{config}->{SpamEngine}->{MaybeSpamTag};
+	$TagHead = $self->{conf}->{config}->{SpamEngine}->{TagHead};
+	$TagSubject = $self->{conf}->{config}->{SpamEngine}->{TagSubject};
+	$TagReason = $self->{conf}->{config}->{SpamEngine}->{TagReason};
 
 	return ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag );
 }
