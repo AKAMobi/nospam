@@ -27,7 +27,7 @@ use AKA::Mail::Archive;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 # XXX
-#open (NSOUT, ">&=2");
+open (NSOUT, ">&=2");
 #close (STDERR);
 #open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
@@ -760,10 +760,12 @@ sub heartbeat_siwei
 
 sub MailQueue_getList
 {
-	my ($start_num,$end_num) = @param;
+	my ($start_num,$num) = @param;
+
+	$num ||= 30;
 
 	$start_num ||= 1;
-	$end_num ||= $start_num + 30;
+	my $end_num ||= $start_num + $num;
 
        	use AKA::Mail::Controler;
         my $AMC = new AKA::Mail::Controler;
@@ -782,7 +784,7 @@ sub MailQueue_getList
 		$n++;
 #print "st: $start_num , n: $n, en: $end_num\n";
 		next if ( $start_num > $n );
-		last if ( $end_num < $n );
+		last if ( $end_num <= $n );
 
 		$mail->{$_} =~ s/,/£¬/g foreach ( keys %{$mail} );
 
