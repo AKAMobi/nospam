@@ -28,6 +28,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	a.add(new WebFXTreeItem('运行模式','system/gatewaymode.ns','main'));
 <?}?>
 
+	a.add(new WebFXTreeItem('引擎设置','system/engine.ns','main'));
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
 	a.add(new WebFXTreeItem('SMTP参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
