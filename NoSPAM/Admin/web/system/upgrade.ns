@@ -1,0 +1,183 @@
+<?
+require_once('../inc/include.ns');
+
+if(!adminPerm(PERM_ADMIN_SYSTEM))
+	die("您没有访问该网页的权限。");
+
+if (isset($_POST["Submit"]) && $_POST["Submit"] == "上载"){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行此操作");
+
+	upgrade();
+	exit(0);
+}
+
+if (!file_exists(UPGRADELOG)){
+	fclose(fopen(UPGRADELOG,"w"));
+}
+
+$aUpgradeStr = file(UPGRADELOG);
+$aUpgradeLog = array();
+if (count($aUpgradeStr) > 0){
+	foreach($aUpgradeStr as $UpgradeStr){
+		if (trim($UpgradeStr) != ""){
+			list($instTime, $distTime, $pkgName, $upgradeNum, $appliedVer) = explode(",",$UpgradeStr);
+			$aUpgradeLog[$instTime] = array($distTime, $pkgName, $upgradeNum, $appliedVer);
+		}
+	}
+}
+unset($aUpgradeStr);
+ksort($aUpgradeLog, SORT_NUMERIC);
+?>
+<html>
+<head>
+<META http-equiv=content-type content="text/html; charset=gb2312">
+<title>系统升级</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+<script>
+oldbgcolor = "";
+newbgcolor = "#FFFF00";
+function showTips(obj,sPkgName)
+{
+	oldbgcolor = obj.style.backgroundColor;
+	obj.style.backgroundColor = newbgcolor;
+	obj.style.cursor = "hand";
+	x = event.clientX;
+	y = event.clientY;
+	document.all.InfoLayer.style.position = "absolute";
+	document.all.InfoLayer.style.top = y-10;
+	document.all.InfoLayer.style.left = x+15;
+	document.all.InfoLayer.style.display = "";	
+	document.all.infoFrame.src = "pkginfo.ns?pkgname="+sPkgName;
+}
+
+function closeTips(obj)
+{
+	obj.style.backgroundColor = oldbgcolor;
+	document.all.InfoLayer.style.display = "none";
+	document.all.InfoLayer.innerHTML = "载入中，请稍候……";
+}
+</script>
+</head>
+<body>
+<table border="0">
+<tr>
+	<td>
+系统版本号：<?=trim(`cat /home/NoSPAM/etc/VERSION`).".".trim(`cat /home/NoSPAM/etc/PATCHVERSION`)?><br>
+	</td>
+</tr>
+<tr>
+	<td>
+系统更新记录：<br>
+		<table class="sort-table" id="table-1" cellspacing="0">
+		<thead>
+			<tr>
+				<td>序号</td>
+				<td>安装日期</td>
+				<td>发行日期</td>
+				<td>升级包</td>
+				<td>升级号</td>
+				<td>适用版本</td>
+			</tr>
+		</thead>
+<?
+if (count($aUpgradeLog) > 0){
+	$i = 0;
+	foreach ($aUpgradeLog as $instTime=>$aInfo){
+		$i++;
+		$className = $i%2? "RuleTB1":"RuleTB2";
+		list($distTime, $pkgName, $upgradeNum, $appliedVer) = $aInfo;
+?>
+			<tr class="<?=$className?>" onmouseover="showTips(this,'<?=$pkgName?>')" onmouseout="closeTips(this)">
+				<td><?=$i?></td>
+				<td><?=date("Y-m-d H:i:s",$instTime)?></td>
+				<td><?=date("Y-m-d H:i:s",$distTime)?></td>
+				<td><?=$pkgName?></td>
+				<td><?=$upgradeNum?></td>
+				<td><?=$appliedVer?></td>
+			</tr>
+<?
+	}
+}
+?>
+		<tbody>
+		</tbody>
+		</table>
+	</td>
+</tr>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+<tr>
+	<td>
+上载升级包：<br>
+<form action="?action=upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="upgradepkg">
+  <input type="submit" name="Submit" value="上载">
+</form>
+	</td>
+</tr>
+<?}?>
+</table>
+<script>
+var st = new SortableTable(document.getElementById("table-1"),
+		["Number","Date", "Date", "String", "Number", "String"]);
+function addClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var l = p.length;
+	for (var i = 0; i < l; i++) {
+		if (p[i] == sClassName)
+			return;
+	}
+	p[p.length] = sClassName;
+	el.className = p.join(" ");
+
+}
+function removeClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var np = [];
+	var l = p.length;
+	var j = 0;
+	for (var i = 0; i < l; i++) {
+		if (p[i] != sClassName)
+			np[j++] = p[i];
+	}
+	el.className = np.join(" ");
+}
+st.onsort = function () {
+	var rows = st.tBody.rows;
+	var l = rows.length;
+	for (var i = 0; i < l; i++) {
+		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
+		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+	}
+};
+</script>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;">载入中，请稍候……</div>
+<iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
+</body>
+</html>
+<?
+function upgrade()
+{
+	$pkgFile = $_FILES['upgradepkg'];
+	rename($pkgFile['tmp_name'],"/var/tmp/".$pkgFile['name']);
+	$ret = wi("System_patch "."/var/tmp/".$pkgFile['name'], $result);
+	
+	echo "<br>";
+	
+	switch ($ret){
+		case -1:
+		echo "升级失败！";
+		break;
+		case 0:
+		echo "升级成功！";
+		break;
+		case 1:
+		echo "升级成功，重新启动系统后生效";
+		break;
+	}
+}
+?>

@@ -22,6 +22,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	var a = new WebFXTreeItem('系统管理','help/system.htm','main');
 	tree.add(a);
 	a.add(new WebFXTreeItem('本设备序列号','system/serialno.ns', 'main'));
+	a.add(new WebFXTreeItem('升级更新','system/upgrade.ns', 'main'));
 <?if($Switchable){?>
 	a.add(new WebFXTreeItem('运行模式','system/gatewaymode.ns','main'));
 <?}?>

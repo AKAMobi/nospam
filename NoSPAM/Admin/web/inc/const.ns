@@ -21,5 +21,8 @@ if ( !defined("CONST_DEFINED") ){
 	define("LOGINFAILLIST","/home/NoSPAM/etc/loginfail.list");
 	define("DEFAULTLOGINMAXRETRYCOUNTSAMEID",5);
 	define("DEFAULTLOGINMAXRETRYCOUNTDIFFID",15);
+	define("UPGRADELOG","/home/NoSPAM/var/upgrade/log");
+	define("UPGRADEINFODIR","/home/NoSPAM/var/upgrade");
+
 }
 ?>
