@@ -141,6 +141,7 @@ sub server
 			; # goto accept
 		}elsif ( 0==$pid ){ # child
 			close $server;
+
 			$self->net_process($client);
 			shutdown ( $client, 2 );
 			close $client;
@@ -308,9 +309,9 @@ sub send_mail_info
 	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
 
 #print "after process, before send\n";
-#$self->{zlog}->debug( "net_process after process smtp_code: [" . $smtp_code . "]\n"
-#	. "smtp_info: [" . $smtp_info . "]\n"
-#	. "exit_code: [" . $exit_code . "]" );
+$self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
+	. "smtp_info: [" . $smtp_info . "]\n"
+	. "exit_code: [" . $exit_code . "]" );
 
 
 	if ( $self->{license_ok} ){
@@ -587,9 +588,9 @@ sub qmail_requeue {
 		close EIN; 
 
 		#$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
-		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0 for [$msg]. (#4.3.0) - $!");
+		open(STDIN,"<$msg")|| exit -1; # return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
 
-		open (STDOUT, "<&EOUT") ||  return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
+		open (STDOUT, "<&EOUT") ||  exit -1; #return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
 		select(STDIN);$|=1;
 
 		$self->write_queue();
@@ -620,7 +621,7 @@ sub qmail_requeue {
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
-		return $self->close_smtp(451, "Unable to close pipe to qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
+		return $self->close_smtp(451, "Unable to close pipe to mailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
 	}
 }
 
@@ -631,7 +632,7 @@ sub write_queue
 	my $aka = $self->{mail_info}->{aka};
 	my $config = $self->{conf}->{config};
 
-	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue (#4.3.0) - $!");
+	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to mailqueue (#4.3.0) - $!");
 	#open (QMQ, "|/tmp/qq.pl")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
 	my ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
 	my $elapsed_time = tv_interval ( $self->{start_time}, [gettimeofday]);
@@ -750,7 +751,7 @@ sub write_queue
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
-		return $self->close_smtp(451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
+		return $self->close_smtp(451, "Unable to open pipe to mailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
 	}
 }
 
@@ -1503,17 +1504,17 @@ sub get_mail_base_info
 			elsif ( /^From: (.+)/ )
 			{
 				$mail_from = $1;
-				if ( $mail_from=~m#([a-z0-9.-_]\S+?\@\S+\.\S+[a-z0-9])\s*#i )
+				if ( $mail_from=~m#([a-z0-9\.\-_]+\S+?\@\S+\.\S+[a-z0-9])\s*#i )
 				{
 					$mail_from = $1;
 				}else{
 					$mail_from = '';
 				}
 			}
-			elsif ( /^Return-Path (.+)/ )
+			elsif ( /^Return-Path: (.+)/ )
 			{
 				$return_path = $1;
-				if ( $return_path=~m#([a-z0-9.-_]\S+?\@\S+\.\S+[a-z0-9])\s*#i )
+				if ( $return_path=~m#([a-z0-9\.\-_]+\S+?\@\S+\.\S+[a-z0-9])\s*#i )
 				{
 					$return_path = $1;
 				}else{
