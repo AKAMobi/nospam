@@ -37,6 +37,7 @@ sub new
 	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
 
 	$self->{define}->{home} = "/home/ssh/";
+	$self->{define}->{tmpdir} = "/tmp/";
 
 	$self->{define}->{verify_binary} = $self->{define}->{home} . "/bin/GAverify";
 	$self->{define}->{sign_binary} = $self->{define}->{home} . "/bin/GAsign";

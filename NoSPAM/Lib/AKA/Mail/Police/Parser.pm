@@ -33,13 +33,17 @@ sub new
 
 	$self->{police} = $police;
 
-	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self);
-	$self->{conf} = $police->{conf} || new AKA::Mail::Police::Conf($self);
+	$self->{zlog} = $police->{zlog} || new AKA::Mail::Police::Log($self) ;
+	$self->{conf} = $police->{conf} || new AKA::Mail::Police::Conf($self) ;
 	$self->{mime_parser} ||= new MIME::Parser;
 
-	my $tmpdir = $self->{conf}->{tmpdir} || "/tmp";
+	# FIXME: $a = $b || $c not work??
+	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/tmp/";
+	$self->{zlog}->log ( "setting outputdir to $tmppath" );
 	$self->{mime_parser}->output_dir($tmppath);
-	$self->{mime_parser}->output_prefix($$);
+	$self->{mime_parser}->output_prefix("AKA-MailFilter-$$");
+
+	$self->{prefix} = "AKA-MailFilter-$$";
 
 	return $self;
 }
@@ -79,6 +83,7 @@ sub print
 	$self->{entity}->print($fh);
 
 	# 只能 print 一次
+	$self->{entity}->purge;
 	$self->{mime_parser}->filer->purge;
 
 	undef $self->{mail_info};
@@ -96,7 +101,7 @@ sub get_head_info
 
 	my $content = $head->stringify || "";
 	$self->{mail_info}->{head}->{content} = $content;
-	$self->{mail_info}->{head}->{size} = length( $content );
+	$self->{mail_info}->{head_size} = length( $content );
 
 	#FIXME: here make a copy of head instead of make change of original entity;
 	#my $head_decoded = $head;
@@ -106,10 +111,10 @@ sub get_head_info
 	$head->decode;
 	$head->unfold;
 
-	$self->{mail_info}->{haed}->{from} = $head->get('From');
-	$self->{mail_info}->{haed}->{to} = $head->get('To');
-	$self->{mail_info}->{haed}->{cc} = $head->get('CC');
-	$self->{mail_info}->{haed}->{subject} = $head->get('Subject');
+	$self->{mail_info}->{head}->{from} = $head->get('From');
+	$self->{mail_info}->{head}->{to} = $head->get('To');
+	$self->{mail_info}->{head}->{cc} = $head->get('CC');
+	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 
 	# FIXME 正确取得 sender_ip & server_ip
 	my @receiveds = $head->get("Received");
@@ -117,11 +122,11 @@ sub get_head_info
 	for ( @receiveds ){
 		if ( /(\d+\.\d+\.\d+\.\d+)/ ){
 			if ( $server_ip ){
-				$self->{mail_info}->{haed}->{server_ip} = $1;
-				$self->{mail_info}->{haed}->{sender_ip} = $1;
+				$self->{mail_info}->{head}->{server_ip} = $1;
+				$self->{mail_info}->{head}->{sender_ip} = $1;
 				$server_ip = 0;
 			}else{
-				$self->{mail_info}->{haed}->{sender_ip} = $1;
+				$self->{mail_info}->{haad}->{sender_ip} = $1;
 			}
 		}
 	}
@@ -132,6 +137,7 @@ sub get_body_info
         my ($self, $blob, $load_binary) = @_;
 
 	my ($path,$filename,$size,$type,$subtype);
+
 
         ($type, $subtype) = split('/', $blob->head->mime_type);
 
@@ -148,29 +154,40 @@ sub get_body_info
 
         my $body = $blob->bodyhandle;
 
+	my $prefix;
+
         if ($body = $blob->bodyhandle) {
                 if (defined $disposition && $disposition =~ /attachment/) {
                         $self->{zlog}->log ("    Atachment: " . $body->path );
                 }
                 $path = $body->path;
+
                 $filename = $head->recommended_filename ;
                 if ( !defined $filename ){
                         $filename = $path;
-                        $filename =~ s/^.*\/$$\-//g;
+			$prefix = $self->{prefix} || "AKA-MailFilter-$$";
+
+                        $filename =~ s/^.*\/$prefix\-//g;
+			$self->{mail_info}->{body}->{$filename}->{nofilename} = 1;
                 }
-                $size = ($path ? (-s $path) : '???');
-		#print "faint, [$size], [$path], [$filename] [$type / $subtype ]\n";
-		$self->{mail_info}->{body}->{filename} = $filename;
-		$self->{mail_info}->{body}->{path} = $path;
-		$self->{mail_info}->{body}->{size} = $size;
-		$self->{mail_info}->{body}->{type} = $type;
-		$self->{mail_info}->{body}->{subtype} = $subtype;
+                $size = ($path ? (-s $path) : 0);
+
+		$self->{mail_info}->{body}->{$filename}->{path} = $path;
+		$self->{mail_info}->{body}->{$filename}->{type} = $type;
+		$self->{mail_info}->{body}->{$filename}->{subtype} = $subtype;
 		
-		if ( ($type eq "text" && $subtype eq "plain") || 
-				1 == $load_binary ){
-			$self->{mail_info}->{body}->{content} = load_file ( $self,$path, $size );
+		if ( $type eq "text" && $subtype eq "plain") {
+			$_ = load_file ( $self,$path, $size );
+			$self->{mail_info}->{body}->{$filename}->{content} = $_;
+			$self->{mail_info}->{body_text} .= $_;
+		} elsif ( 1 == $load_binary ){
+			$self->{mail_info}->{body}->{$filename}->{content} = load_file ( $self,$path, $size );
 		}
 
+
+		$self->{mail_info}->{body}->{$filename}->{size} = $size;
+
+		$self->{mail_info}->{body_size} += $size;
 			
         } else {  
                 foreach my $part ($blob->parts) {
