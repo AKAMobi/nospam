@@ -1413,7 +1413,11 @@ sub get_dns_ds
 	my $stats_file = '/var/named/named.stats';
 	my $rndc_binary = '/usr/sbin/rndc';
 
-	system ("cat /dev/null>$stats_file;$rndc_binary -c /etc/rndc.conf stats");
+
+	my $cmd = "cat /dev/null>$stats_file;$rndc_binary -c /etc/rndc.conf stats";
+	$cmd .= ";chown named.named $stats_file" unless -e $stats_file;
+	
+	system ( $cmd );
 
 	my ($key,$val);
 	my $ds = {};
