@@ -188,13 +188,21 @@ int net_process( string &result,
 	//iosockinet io (sockbuf::sock_stream);
 	iosockunix io (sockbuf::sock_stream);
 
-
-	try {
-		//io->connect ("127.0.0.1", "40307", "tcp");
-		io->connect (UNIXSOCKETFILE);
-	} catch ( ... ) {
-		qns_err_n_exist ( "443 Engine temporarily unavailable.", 150 );
-		return 150;
+	int retry=0;
+	for(;;) {
+		try {
+			//io->connect ("127.0.0.1", "40307", "tcp");
+			io->connect (UNIXSOCKETFILE);
+			break;
+		} catch ( ... ) {
+			if (retry++<3){
+				sleep(3);
+				continue;
+			}
+			log ( "cant connect to engine" );
+			qns_err_n_exist ( "443 Engine temporarily unavailable.", 150 );
+			return 150;
+		}
 	}
 
 	log ( relayclient + "," + tcpremoteip + "," + tcpremoteinfo + "," + emlfile + "," );
