@@ -141,6 +141,7 @@ my $action_map = {
 		,'reboot' => [\&reboot, ""]
 		,'shutdown' => [\&shutdown, ""]
 
+		,'QuarantineQueuePurge' => [\&QuarantineQueuePurge, " : clean old quarantine emails"]
 		,'QuarantineUserListImport' => [\&QuarantineUserListImport, "<import file> : one email address per line"]
 		,'QuarantineUserListEmpty' => [\&QuarantineUserListEmpty, " : clean email address user db"]
 		,'QuarantineUserListExport' => [\&QuarantineUserListExport, " : one email address per line"]
@@ -395,6 +396,9 @@ sub ZombieFile_clean
 	}
 
 	`find /var/log -path "/var/log/*.*" -name "[a-z]*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+
+	#quarantine queue
+	&QuarantineQueuePurge;
 
 	return 0;
 }
@@ -744,6 +748,14 @@ sub shutdown
 sub clean_Log
 {
 	return `cat /dev/null > /var/log/NoSPAM.csv`;
+}
+
+sub QuarantineQueuePurge
+{
+	my $queue_life_day = ($conf->{config}->{QuarantineEngine}->{TimeOut} || 0) / 86400; # 60*60 * 24
+	$queue_life_day ||= 1;
+
+	`find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day -exec rm -fr {} \\;`;
 }
 
 sub QuarantineProcessMail
