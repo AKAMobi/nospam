@@ -259,7 +259,7 @@ sub get_body_info
 		$self->{mail_info}->{body}->{$filename}->{type} = $type;
 		$self->{mail_info}->{body}->{$filename}->{subtype} = $subtype;
 		
-		if ( $type eq "text" && $subtype eq "plain") {
+		if ( $type eq "text" || $filename=~/\.txt$/ ) { #&& $subtype eq "plain") {
 			$_ = load_file ( $self, $path, $size );
 			$self->{mail_info}->{body}->{$filename}->{content} = $_;
 			$self->{mail_info}->{body_text} .= $_;

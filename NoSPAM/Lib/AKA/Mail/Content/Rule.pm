@@ -454,7 +454,11 @@ sub check_single_keyword_rule
 				return 1;
 			}
 		}
-		return 0;
+		#
+		# FIXME 匹配文件名后，匹配所有的文本类型的附件；
+		#
+		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
+		# return 0;
 	}elsif ( 9==$match_key ){ #9客户端IP为指定值或在指定范围内
 		return check_ip_range( $self, $mail_info->{head}->{server_ip}, $match_keyword );
 	}elsif ( 10==$match_key ){ #10源客户端IP（邮件中标识的起始的IP地址）为指定值或在指定范围内
