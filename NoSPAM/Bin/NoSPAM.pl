@@ -271,6 +271,8 @@ sub reset_Network_set_netfilter
 
 	$ret = system( "$iptables -A INPUT -p tcp --dport 25 -j ACCEPT" );
 	return -30 if ( $ret );
+	$ret = system( "$iptables -A INPUT -i eth0 -p tcp --dport 26 -j ACCEPT" );
+	return -38 if ( $ret );
 	$ret = system( "$iptables -A INPUT -p tcp --dport 80 -j ACCEPT" );
 	return -31 if ( $ret );
 	#$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 110', '-j ACCEPT' );
