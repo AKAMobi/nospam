@@ -189,12 +189,12 @@ sub log_match
 	$emlfile =~ m#/([^/]+)$#;
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_file'} = $1 || $emlfile;
 
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'condition'} = $rule_info->{rule_action}->{action_param};
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'action'} = $rule_info->{rule_action}->{action};
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'sender'} = $mail_info->{head}->{from};
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'subject'} = $mail_info->{head}->{subject};
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_header'} = &encode_base64( $head_data );
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_content'} = &encode_base64( $body_data );
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'condition'} = [ $rule_info->{rule_action}->{action_param} ];
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'action'} = [ $rule_info->{rule_action}->{action} ];
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'sender'} = [ $mail_info->{head}->{from}] ;
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'subject'} = [ $mail_info->{head}->{subject} ];
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_header'} = [ &encode_base64( $head_data ) ];
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_content'} = [ &encode_base64( $body_data ) ];
 
 	open ( FD, ">$emlfile" ) or $self->{zlog}->log ( "pf: open $emlfile for writing error" );
 	print FD $head_data;
@@ -204,7 +204,7 @@ sub log_match
 	
 
 	my $xs = $self->{conf}->get_filterdb_xml_simple();
-	my $xml = $xs->XMLout( $logdata, NoAttr=>1 );
+	my $xml = $xs->XMLout( $logdata, NoAttr=>0 );
 
 	open ( FD, ">$logfile" ) or $self->{zlog}->log ( "pf: open $logfile for writing error" );
 	print FD $xml;

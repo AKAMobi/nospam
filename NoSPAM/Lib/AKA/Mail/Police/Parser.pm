@@ -157,7 +157,9 @@ sub get_head_info
 	$self->{mail_info}->{head}->{from} = $head->get('From');
 	$self->{mail_info}->{head}->{to} = $head->get('To');
 	$self->{mail_info}->{head}->{cc} = $head->get('CC');
+
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
+	chomp $self->{mail_info}->{head}->{subject};
 
 	# FIXME 正确取得 sender_ip & server_ip
 	my @receiveds = $head->get("Received");
