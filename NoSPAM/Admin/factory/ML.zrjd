@@ -8,9 +8,9 @@ die "pls provide prodno\n" unless $prodno ;
 my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 
 $License = <<_LICENSE_;
-ForSell=No
+ForSell=Yes
 GenerateDate=$now
-ExpireDate=2004-09-04
+#ExpireDate=2004-09-04
 Version=2
 
 FactoryName=中软吉大
@@ -20,7 +20,8 @@ ProductSN=$prodno
 ServerGatewaySwitchable=N
 ServerGateway=Gateway,MXRelay
 
-LicenseHTML=<b>客户试用体验(非销售)版</b>
+#LicenseHTML=<b>客户试用体验(非销售)版</b>
+LicenseHTML=<b>正式版</b>
 
 MailGateway=100
 MailRelay=100
