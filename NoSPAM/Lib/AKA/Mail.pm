@@ -645,18 +645,9 @@ sub quarantine_engine
 		return;
 	}elsif( 'DB' eq $userlistdb ){
 		if ( ! $self->{user}->is_user_exist($email) ){
+$self->{zlog}->debug( "User [$email] not exist." );
 			my $nosuchuseraction = uc $self->{conf}->{config}->{QuarantineEngine}->{NoSuchUserAction} ;
-			if ('F' eq $nosuchuseraction){
-				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
-					result 	=> 1,
-					desc	=> __("User does not exist"),
-					action 	=> AKA::Mail::Conf::ACTION_ACCEPT, 
-
-					enabled	=> 1,
-					runned	=> 1,
-					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
-				} );
-			}elsif( 'D' eq $nosuchuseraction){
+			if( 'D' eq $nosuchuseraction){
 				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
 					result 	=> 1,
 					desc	=> __("User does not exist"),
@@ -676,11 +667,26 @@ sub quarantine_engine
 					runned	=> 1,
 					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 				} );
-
 			}else{
-				$self->{zlog}->fatal ( "AKA::Mail::quaratine_engine found unknown NoSucnUserAction" );
+				#
+				# 正常转发
+				#
+				if ('F' ne $nosuchuseraction){
+					$self->{zlog}->fatal ( "AKA::Mail::quaratine_engine found unknown NoSucnUserAction, treat it as F)orward" );
+				}
+
+				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
+					result 	=> 1,
+					desc	=> __("User does not exist"),
+					action 	=> AKA::Mail::Conf::ACTION_ACCEPT, 
+
+					enabled	=> 1,
+					runned	=> 1,
+					runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
+				} );
 			}
 		}else{
+$self->{zlog}->debug( "User [$email] exist." );
 			$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
 				result 	=> 0,
 				desc	=> __("registered user"),
