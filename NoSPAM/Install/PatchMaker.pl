@@ -37,12 +37,14 @@ if ( $NSVER=~/(\d+)\.(\d+)-(\d+)\.(\d+)/ ){
 	die "NSVER: [$NSVER] error!\n";
 }
 
-my $PATCHNAME=sprintf ( "P%s%s",$NSVERSION,$PATCHVERSION );
+my $PATCHNAME=sprintf ( "U%s%s",$NSVERSION,$PATCHVERSION );
 
 print $PATCHNAME, "\n";
 
 chdir $PATCHDIR or die "can't chdir to [$PATCHDIR]\n";
 
+my $now = time;
+`echo $now > TIMESTAMP`;
 
 `chmod +x root/post_patch`;
 print "Tar patch $PATCHVER for $NSVER $ISOVER ...\n";
@@ -69,10 +71,7 @@ open ( FD, ">SUM" ) or die "can't open sum for write!\n";
 print FD $checksum;
 close FD;
 
-my $now = time;
-`echo $now > TIMESTAMP`;
-
 print "adding VER & INFO & SUM & TIMESTAMP ...\n";
-`tar cf $PATCHNAME.no $PATCHNAME.ns SUM VER INFO TIMESTAMP`;
+`tar cf $PATCHNAME.no $PATCHNAME.ns SUM VER INFO`;
 
 print "Build SUCCEED!\n";
