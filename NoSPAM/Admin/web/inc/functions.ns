@@ -153,4 +153,15 @@ function LogAction($func, $action, $option, $oldValue = "", $newValue = "")
 	}
 	fclose($fp);
 }
+
+function ConvertSize($iSize)
+{
+	if ($iSize > 1024*1024*1024)
+		return intval($iSize/(1024*1024*1024))."GB";
+	if ($iSize > 1024*1024)
+		return intval($iSize/(1024*1024))."MB";
+	if ($iSize > 1024)
+		return intval($iSize/1024)."KB";
+	return $iSize."Bytes";
+}
 ?>

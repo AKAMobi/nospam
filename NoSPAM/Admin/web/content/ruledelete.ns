@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if(!$bContentEngineEnabled)
+if($ContentEngine <= 0)
 	die("对不起，本系统没有开启内容过滤引擎功能");
 
 if(!adminPerm(PERM_ADMIN_CONTENT))

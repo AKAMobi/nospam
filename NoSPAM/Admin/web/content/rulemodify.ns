@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if(!$bContentEngineEnabled)
+if($ContentEngine <= 0)
 	die("对不起，本系统没有开启内容过滤引擎功能");
 
 if(!adminPerm(PERM_ADMIN_CONTENT) || !adminPerm(PERM_ADMIN_WRITE))
@@ -67,16 +67,22 @@ $rule_logic = $rule->has_attribute("rule_logic")? $rule->get_attribute("rule_log
 $keyword_logic = $rule->has_attribute("keyword_logic")? $rule->get_attribute("keyword_logic"):"AND";
 $size_logic = $rule->has_attribute("size_logic")? $rule->get_attribute("size_logic"):"AND";
 $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("attach_logic"):"AND";
-$expireTime = $rule->get_attribute("expire_time");
+$bExpire = $rule->has_attribute("expire_time");
+if ($bExpire)
+	$expireTime = $rule->get_attribute("expire_time");
 ?>
 <html>
 <head>
 <script>
+<? if ($bExpire){ ?>
 d = new Date(0);
 d.setFullYear(<?=substr($expireTime,0,4)?>);
 d.setMonth(<?=intval(substr($expireTime,4,2))-1?>);
 d.setDate(<?=substr($expireTime,6,2)?>);
 d.setHours(<?=substr($expireTime,8,2)?>);
+<?} else {?>
+d = new Date();
+<?}?>
 </script>
 <script language="javascript" src="../js/rulemodify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
@@ -116,10 +122,10 @@ if(!$Category[$category_id])
 	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
 <tr>
-	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
-<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
-<select id="expireDate" name="expireDate"></select>日
-<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"<?if (!$bExpire) echo " disabled";?>></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()"<?if (!$bExpire) echo " disabled";?>></select>月
+<select id="expireDate" name="expireDate"<?if (!$bExpire) echo " disabled";?>></select>日
+<select id="expireHour" name="expireHour"<?if (!$bExpire) echo " disabled";?>></select>时<input type="hidden" name="expire_time"<?if (!$bExpire) echo " disabled";?>><input type="checkbox" name="bExpire" onclick="changeExpire()"<?if ($bExpire) echo " checked";?>></td>
 	<td><?/*报警级别：<select name="alarmlevel">
 <?
 					for($j=1;$j<=4;$j++){
@@ -387,7 +393,7 @@ function modify()
 <html>
 <head>
 <script>
-d = new Date(<?=$_POST['expire_time']?>);
+d = new Date(<?=isset($_POST['bExpire'])? $_POST['expire_time']:""?>);
 </script>
 <script language="javascript" src="../js/rulemodify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
@@ -427,10 +433,11 @@ if(!$Category[$_POST["category_id"]])
     <td>更新时间：<?=date("Y-m-d H:i:s");?></td>
 </tr>
 <tr>
-	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
-<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
-<select id="expireDate" name="expireDate"></select>日
-<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td>
+	过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"<?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>月
+<select id="expireDate" name="expireDate" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>日
+<select id="expireHour" name="expireHour" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>时<input type="hidden" name="expire_time" <?if (!isset($_POST['bExpire'])) echo " disabled";?>><input type="checkbox" name="bExpire" onclick="changeExpire()"<?if (isset($_POST['bExpire'])) echo " checked";?>></td>
 	<td><?/*报警级别：<select name="alarmlevel">
 <?
 					for($j=1;$j<=4;$j++){
@@ -876,7 +883,8 @@ function saveParams()
 	else
 		$newrule->set_attribute("create_time",$oldrule->get_attribute("create_time"));
 	$newrule->set_attribute("update_time",date("YmdHis"));
-	$newrule->set_attribute("expire_time",date("YmdHis",intval($_POST['expire_time'])));
+	if (isset($_POST['bExpire']))
+		$newrule->set_attribute("expire_time",date("YmdHis",intval($_POST['expire_time'])));
 	//$newrule->set_attribute("alarmlevel",$_POST["alarmlevel"]);
 	$newrule->set_attribute("alarmlevel",1);
 	//$newrule->set_attribute("realtime_upload",$_POST["realtime_upload"]);
@@ -973,10 +981,10 @@ if(count($Category) > 0){
     <td>更新时间：<?=date("Y-m-d H:i:s",$time)?></td>
 </tr>
 <tr>
-	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
-<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
-<select id="expireDate" name="expireDate"></select>日
-<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()" disabled></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()" disabled></select>月
+<select id="expireDate" name="expireDate" disabled></select>日
+<select id="expireHour" name="expireHour" disabled></select>时<input type="hidden" name="expire_time" disabled><input type="checkbox" name="bExpire" onclick="changeExpire()"></td>
 	<td><?/*报警级别：<select name="alarmlevel">
 <option value="1">1<option value="2">2<option value="3">3<option value="4">4</select>*/?></td>
 </tr>

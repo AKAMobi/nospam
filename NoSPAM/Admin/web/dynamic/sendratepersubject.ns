@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 require_once("flist.inc");
 
-if(!$bDynamicEngineEnabled)
+if($DynamicEngine <= 0)
 	die("对不起，本系统没有开启垃圾邮件引擎功能");
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))

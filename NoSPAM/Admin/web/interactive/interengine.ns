@@ -1,5 +1,7 @@
 <?
 require_once("../inc/include.ns");
+if($InteractiveEngine <= 0)
+	die("对不起，本系统没有开启本功能");
 
 if(!adminPerm(PERM_ADMIN_INTERACTIVE))
 	die("您没有访问该网页的权限。");

@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if(!$bSpamEngineEnabled)
+if($SpamEngine <= 0)
 	die("对不起，本系统没有开启垃圾邮件引擎功能");
 
 if(!adminPerm(PERM_ADMIN_SPAM))

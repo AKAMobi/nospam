@@ -43,7 +43,8 @@ if($pos < $total/2){
 }
 
 $dir = array("外到内","内到外");
-$vSpam = array("正常邮件","疑似垃圾","垃圾邮件","黑名单");
+$vSpam = array("非垃圾","疑似垃圾","垃圾邮件","黑名单");
+$vVirus = array("非病毒","发现病毒");
 $rAction = array("通过","丢弃");
 $dynamic = array("正常","超限");
 ?>
@@ -111,6 +112,7 @@ function enableMonitor()
 	<td><?=$head[14]?></td>
 	<td><?=$head[15]?></td>
 	<td><?=$head[16]?></td>
+	<td><?=$head[17]?></td>
 </tr>
 </thead>
 <tbody>
@@ -129,17 +131,18 @@ if(count($lines)>0){
     <td><?=$values[3]?></td>
     <td><?=$values[4]?></td>
     <td><?=htmlspecialchars(trim($values[5]))?></td>
-    <td><?=$vSpam[intval($values[6])]?></td>
-    <td><?=$values[7]?></td>
-    <td><?=$rAction[intval($values[8])]?></td>
-    <td><?=$values[9]?></td>
-    <td><?=$values[10]?></td>
-    <td><?=$Actions[intval($values[11])]?></td>
-    <td><?=$values[12]?></td>
-    <td><?=$Actions[intval($values[13])]?></td>
-    <td><?=$values[14]?></td>
-    <td><?=$dynamic[intval($values[15])]?></td>
-    <td><?=$values[16]?></td>
+    <td><?=ConvertSize(intval($values[6]))?></td>
+    <td><?=$vVirus[intval($values[7])]?></td>
+    <td><?=$values[8]?></td>
+    <td><?=$rAction[intval($values[9])]?></td>
+    <td><?=$vSpam[$values[10]]?></td>
+    <td><?=$values[11]?></td>
+    <td><?=$rAction[intval($values[12])]?></td>
+    <td><?=$values[13]?></td>
+    <td><?=$Actions[intval($values[14])]?></td>
+    <td><?=$values[15]?></td>
+    <td><?=$dynamic[intval($values[16])]?></td>
+    <td><?=$values[17]?></td>
 </tr>
 <?
 		$start++;$i++;
@@ -150,7 +153,7 @@ if(count($lines)>0){
 </table>
 <script>
 var st = new SortableTable(document.getElementById("table-1"),
-		["Number","Date", "String", "IP", "Email", "Email", "String", "String", "String", "String", "Number", "String", "String", "String", "String", "String", "String", "String"]);
+		["Number","Date", "String", "IP", "Email", "Email", "String", "Size", "String", "String", "String", "Number", "String", "String", "String", "String", "String", "String", "String"]);
 function addClassName(el, sClassName) {
 	var s = el.className;
 	var p = s.split(" ");

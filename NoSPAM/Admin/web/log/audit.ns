@@ -4,6 +4,23 @@ require_once("../inc/include.ns");
 if(!adminPerm(PERM_ADMIN_AUDIT))
 	die("您没有访问该网页的权限。");
 
+switch($_GET["action"])
+{
+	case "dl":
+	if(!file_exists(ACTIONLOG))
+		die("错误！文件不存在！");
+	header("Cache-control: private");
+	header("Content-type: application/text");
+	header("Content-Disposition: attachment; filename=Operation.log");
+	header("Pragma: public");
+	@readfile(ACTIONLOG);
+	exit();
+	case "del":
+	fclose(fopen(ACTIONLOG,"w"));
+	echo "清空成功！";
+	exit();
+}
+
 $grep = "/bin/grep";
 $tail = "/usr/bin/tail";
 $wc = "/usr/bin/wc";
@@ -26,18 +43,12 @@ if(!$page || $page < 1)
 	$page = 1;
 	
 $pos = $pagenum*$page>$total?$total:$pagenum*$page;
-if ($pagenum*$page<$total)
-	$start = ($pos-$pagenum+1)>0? ($pos-$pagenum+1):1;
-else
-	$start = $pagenum+1;
+$start = ($pos-$pagenum+1)>0? ($pos-$pagenum+1):1;
 
 if($pos < $total/2){
 	exec("$grep -m $pos ] ".ACTIONLOG." | $tail -n $pagenum",$lines);
 }else{
-	if ($pagenum*$page<$total)
 		exec("$tail -n ".($total-$pos+$pagenum)." ".ACTIONLOG." | $grep -m $pagenum ]",$lines);
-	else
-		exec("$tail -n ".($total-$pagenum)." ".ACTIONLOG." | $grep -m $pagenum ]",$lines);
 }
 ?>
 <html>
@@ -92,6 +103,8 @@ if (count($lines) > 0){
 <tfoot>
 <tr>
 	<td colspan="9">
+	<input type="button" value="下载" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=dl','_top')">
+	<input type="button" value="清空" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=del'">
 <?
 echo "<a href='javascript:go(1)' title='第一页'><<-</a>&nbsp;";
 if($pages > 10000){

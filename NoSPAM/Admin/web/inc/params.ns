@@ -77,7 +77,6 @@ if(file_exists(FILETYPE)){
 		}
 	}
 }
-
 $intConf = new NoSPAMIntConf;
 
 $bGAView = ($intConf->getParam("GAViewable") == "Y");
@@ -98,9 +97,9 @@ $iDenyTimeAfterMaxLogin = $spamconf->hasParam("DenyTimeAfterMaxLogin","System")?
 
 $Switchable = false;
 $intServerGateway = "Gateway";
-$bDynamicEngineEnabled = false;
-$bContentEngineEnabled = false;
-$bSpamEngineEnabled = false;
+$DynamicEngine = 0;
+$ContentEngine = 0;
+$SpamEngine = 0;
 $sFactoryName = "";
 $sExpire = "";
 $bForSell = false;
@@ -108,13 +107,20 @@ $Version = "";
 $MaxUser = 0;
 $MaxDomain = 0;
 $MaxQuota = 0;
+$GAInterface = 0;
 if(file_exists(LICENSE)){
 	$license = new License;
 	$Switchable = $license->Switchable();
 	$intServerGateway = $license->ServerGateway();
-	$bDynamicEngineEnabled = $license->isDynamicEngineEnabled();
-	$bContentEngineEnabled = $license->isContentEngineEnabled();
-	$bSpamEngineEnabled = $license->isSpamEngineEnabled();
+	$DynamicEngine = $license->DynamicEngine();
+	$ContentEngine = $license->ContentEngine();
+	$SpamEngine = $license->SpamEngine();
+	$MailGateway = $license->MailGateway();
+	$MailServer = $license->MailServer();
+	$MailRelay = $license->MailRelay();
+	$AntiVirusEngine = $license->AntiVirusEngine();
+	$ArchiveEngine = $license->ArchiveEngine();
+	$InteractiveEngine = $license->InteractiveEngine();
 	$sFactoryName = $license->get_FactoryName();
 	$sExpire = $license->ExpireDate();
 	$bForSell = $license->isForSell();
@@ -122,6 +128,7 @@ if(file_exists(LICENSE)){
 	$MaxUser = $license->getMaxUser();
 	$MaxDomain = $license->getMaxDomain();
 	$MaxQuota = $license->getMaxQuota();
+	$GAInterface = $license->getGAInterface();
 }
 
 $ServerMode = $Switchable? $spamconf->getParam("ServerGateway","System"):$intServerGateway;

@@ -21,7 +21,8 @@ $total = intval(exec("$wc -l ".LOGFILE));
 $start = ($total-$num)<0?1:($total-$num+1);
 
 $dir = array("外到内","内到外");
-$vSpam = array("正常邮件","疑似垃圾","垃圾邮件","黑名单");
+$vSpam = array("非垃圾","疑似垃圾","垃圾邮件","黑名单");
+$vVirus = array("非病毒","病毒邮件");
 $rAction = array("通过","丢弃");
 $dynamic = array("正常","超限");
 ?>
@@ -49,17 +50,18 @@ function loadPage()
 	<td><?=$head[3]?></td><!--发件人地址//-->
 	<td><?=$head[4]?></td><!--收件人地址//-->
 	<td><?=$head[5]?></td><!--主题//-->
-	<td><?=$head[6]?></td><!--垃圾度//-->
-	<td><?=$head[7]?></td><!--垃圾原因//-->
-	<td><?=$head[8]?></td><!--垃圾处理//-->
-	<td><?=$head[9]?></td><!--病毒//-->
-	<td><?=$head[10]?></td><!--病毒名//-->
-	<td><?=$head[11]?></td><!--病毒处理//-->
-	<td><?=$head[12]?></td><!--动作描述//-->
-	<td><?=$head[13]?></td><!--动作类型//-->
-	<td><?=$head[14]?></td><!--动作参数//-->
-	<td><?=$head[15]?></td><!--动态限制//-->
-	<td><?=$head[16]?></td><!--动态描述//-->
+	<td><?=$head[6]?></td><!--尺寸//-->
+	<td><?=$head[7]?></td><!--垃圾度//-->
+	<td><?=$head[8]?></td><!--垃圾原因//-->
+	<td><?=$head[9]?></td><!--垃圾处理//-->
+	<td><?=$head[10]?></td><!--病毒//-->
+	<td><?=$head[11]?></td><!--病毒名//-->
+	<td><?=$head[12]?></td><!--病毒处理//-->
+	<td><?=$head[13]?></td><!--动作描述//-->
+	<td><?=$head[14]?></td><!--动作类型//-->
+	<td><?=$head[15]?></td><!--动作参数//-->
+	<td><?=$head[16]?></td><!--动态限制//-->
+	<td><?=$head[17]?></td><!--动态描述//-->
 </tr>
 </tr>
 <?
@@ -75,18 +77,19 @@ if(count($output) > 0){
 	<td nowrap><?=$values[2]?></td>
 	<td><?=$values[3]?></td>
 	<td><?=$values[4]?></td>
-	<td><?=$values[5]?></td>
-	<td nowrap><?=$vSpam[intval($values[6])]?></td>
-	<td nowrap><?=$values[7]?></td>
-	<td nowrap><?=$rAction[intval($values[8])]?></td>
-    <td nowrap><?=$values[9]?></td>
-    <td nowrap><?=$values[10]?></td>
-    <td nowrap><?=$Actions[intval($values[11])]?></td>
-	<td nowrap><?=$values[12]?></td>
-	<td nowrap><?=$Actions[intval($values[13])]?></td>
-	<td nowrap><?=$values[14]?></td>
-	<td nowrap><?=$dynamic[intval($values[15])]?></td>
-	<td nowrap><?=$values[16]?></td>
+	<td><?=htmlspecialchars(trim($values[5]))?></td>
+	<td><?=ConvertSize(intval($values[6]))?></td>
+	<td nowrap><?=$vVirus[intval($values[7])]?></td>
+	<td nowrap><?=$values[8]?></td>
+	<td nowrap><?=$rAction[intval($values[9])]?></td>
+    <td nowrap><?=$vSpam[$values[10]]?></td>
+    <td nowrap><?=$values[11]?></td>
+    <td nowrap><?=$rAction[intval($values[12])]?></td>
+	<td nowrap><?=$values[13]?></td>
+	<td nowrap><?=$Actions[intval($values[14])]?></td>
+	<td nowrap><?=$values[15]?></td>
+	<td nowrap><?=$dynamic[intval($values[16])]?></td>
+	<td nowrap><?=$values[17]?></td>
 </tr>
 <?
 		$start++;

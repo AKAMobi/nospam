@@ -26,53 +26,62 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	a.add(new WebFXTreeItem('网关运行模式','system/gatewaymode.ns','main'));
 <?}?>
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
+	a.add(new WebFXTreeItem('邮件基本参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
-	a.add(new WebFXTreeItem('登录限制设置','system/loginblacklist.ns','main'));
 
 	var b = new WebFXTreeItem('用户管理','help/user.htm','main');
 	tree.add(b);
 	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
 	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
-
 <?
 }
-
-if(strstr($ServerMode,"Server")){
-	if(adminPerm(PERM_ADMIN_SERVER)){
-?>
-	var l = new WebFXTreeItem('服务器管理');
-	tree.add(l);
-	l.add(new WebFXTreeItem('邮件域保护设定','server/protectdomain.ns','main'));
-	l.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
-	l.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
-	l.add(new WebFXTreeItem('基本参数','server/basesettings.ns','main'));
-<?php
-	}
-}
-?>
-<?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
+	b.add(new WebFXTreeItem('登录限制设置','system/loginblacklist.ns','main'));
 	b.add(new WebFXTreeItem('管理员管理','user/showadminlist.ns','main'));
 <?
 }
-if(0 == wi("check_License License.dat",$result)){
 
-if(strstr($ServerMode,"Server")){
-	if(adminPerm(PERM_ADMIN_DOMAIN)){
+if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var k = new WebFXTreeItem('邮件域管理');
-	tree.add(k);
-	k.add(new WebFXTreeItem('用户管理','domain/showuserlist.ns','main'));
-	k.add(new WebFXTreeItem('查找用户','domain/searchUser.ns','main'));
-	k.add(new WebFXTreeItem('用户组管理','domain/groupsControl.ns','main'));
-	k.add(new WebFXTreeItem('群发邮件','domain/sendGroupMails.ns','main'));
+	var l = new WebFXTreeItem('邮件网关管理');
+	tree.add(l);
+	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
 <?php
 	}
 }
-if($bDynamicEngineEnabled){
+
+if($MailServer > 0 && strstr($ServerMode,"Server")){
+	if(adminPerm(PERM_ADMIN_SERVER)){
+?>
+	var k = new WebFXTreeItem('邮件服务器管理');
+	tree.add(k);
+	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
+	k.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
+	var k2 = new WebFXTreeItem('用户管理');
+	k.add(k2);
+	k2.add(new WebFXTreeItem('用户管理','server/showuserlist.ns','main'));
+	k2.add(new WebFXTreeItem('查找用户','server/searchUser.ns','main'));
+	k2.add(new WebFXTreeItem('用户组管理','server/groupsControl.ns','main'));
+	k2.add(new WebFXTreeItem('群发邮件','server/sendGroupMails.ns','main'));
+<?php
+	}
+}
+if($MailRelay > 0 && strstr($ServerMode,"Relay")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
+	var n = new WebFXTreeItem('邮件中转器管理');
+	tree.add(n);
+	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+<?
+	}
+}
+if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
 	var e = new WebFXTreeItem('动态限制引擎','help/dynamic.htm','main');
@@ -87,7 +96,7 @@ if($bDynamicEngineEnabled){
 	}
 }
 
-	if(adminPerm(PERM_ADMIN_VIRUS)){
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
 	var j = new WebFXTreeItem('病毒识别引擎','help/antivirus.htm','main');
 	tree.add(j);
@@ -100,7 +109,7 @@ if($bDynamicEngineEnabled){
 <?php
 	}
 
-if($bSpamEngineEnabled){
+if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
 	var c = new WebFXTreeItem('垃圾邮件引擎','help/antispam.htm','main');
@@ -123,7 +132,7 @@ if($bSpamEngineEnabled){
 	}
 }
 
-if($bContentEngineEnabled){
+if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
 	var d = new WebFXTreeItem('内容过滤引擎','help/content.htm','main');
@@ -136,19 +145,17 @@ if($bContentEngineEnabled){
 <?php
 	}
 }
-
-	if(adminPerm(PERM_ADMIN_ARCHIVE)){
+	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	var f = new WebFXTreeItem('邮件归档引擎','help/archive.htm','main');
+	var f = new WebFXTreeItem('邮件审计引擎','help/archive.htm','main');
 	tree.add(f);
 	f.add(new WebFXTreeItem('基本设置','archive/archiveengine.ns','main'));
-	f.add(new WebFXTreeItem('归档地址','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('审计导出','archive/archiveexport.ns','main'));
-	f.add(new WebFXTreeItem('选择归档','archive/archivetype.ns','main'));
+	f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('选择审计','archive/archivetype.ns','main'));
 <?
 	}
 
-if(adminPerm(PERM_ADMIN_INTERACTIVE)){
+if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
 	var i = new WebFXTreeItem('智能交互引擎','help/interengine.htm','main');
 	tree.add(i);
@@ -157,13 +164,14 @@ if(adminPerm(PERM_ADMIN_INTERACTIVE)){
 	i.add(new WebFXTreeItem('过量邮件提醒','interactive/exmail.ns','main'));
 <?
 }
-}
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
-	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
 	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
 	tree.add(g);
+<?
+	if (adminPerm(PERM_ADMIN_LOG)){
+?>
 	var gs = new WebFXTreeItem('系统状态','status/status.html','main');
         g.add(gs);
 	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
@@ -188,6 +196,16 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	g.add(new WebFXTreeItem('操作日志审计','log/audit.ns','main'));
 <?php
 	}	
+}
+if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
+?>
+	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
+	tree.add(m);
+	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
+	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
+<?
 }
 ?>
 	var h = new WebFXTreeItem('退出系统','logout.ns','_top');

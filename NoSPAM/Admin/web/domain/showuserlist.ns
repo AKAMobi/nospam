@@ -718,9 +718,11 @@ function save()
     if ($bModify){
     	system( VPOPMAILHOME.'bin/vmoduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' > /dev/null', $result );
     	if ($passwd1 != "")
-    		system( VPOPMAILHOME.'bin/vpasswd '.$user_id."@".$currentDomain.' '.$passwd1.' > /dev/null', $result );;
+    		system( VPOPMAILHOME.'bin/vpasswd '.$user_id."@".$currentDomain.' '.$passwd1.' > /dev/null', $result );
+    	LogAction("邮件域用户管理","修改用户信息",$user_id."@".$currentDomain);
     }else{
     	system( VPOPMAILHOME .'bin/vadduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' "'.$passwd1.'" > /dev/null', $result );
+    	LogAction("邮件域用户管理","添加新用户",$user_id."@".$currentDomain);
     }
     
     $profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . USERPROFILE;
@@ -800,6 +802,7 @@ function del()
 			unset($id[$key]);
 			unset($userinfo_list[$user_account]);
 			system( VPOPMAILHOME . "bin/vdeluser " . $user_account . '@' . $currentDomain . ' > /dev/null' , $del_result );
+			LogAction("邮件域用户管理","删除账号",$user_account . '@' . $currentDomain);
 		}
 	}
 

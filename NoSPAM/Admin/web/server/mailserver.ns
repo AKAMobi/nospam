@@ -1,6 +1,11 @@
 <?
 require_once("../inc/include.ns");
 
+if($MailServer <= 0)
+	die("对不起，本系统没有开启本功能");
+
+if (!adminPerm(PERM_ADMIN_SERVER) )
+	die("你无权查看本页");
 switch($_GET["action"]){
 	case "add":
 	add();

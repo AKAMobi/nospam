@@ -112,10 +112,10 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 			$sPrivilege .= "管理员管理<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SYSTEM))
 			$sPrivilege .= "系统管理<br>";
-		if(havePerm($priviledge,PERM_ADMIN_DOMAIN))
-			$sPrivilege .= "邮件域管理<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SERVER))
 			$sPrivilege .= "服务器管理<br>";
+		if(havePerm($priviledge,PERM_ADMIN_GATEWAY))
+			$sPrivilege .= "网关中继管理<br>";
 		if(havePerm($priviledge,PERM_ADMIN_DYNAMIC))
 			$sPrivilege .= "动态限制引擎<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SPAM))
@@ -127,9 +127,13 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 		if(havePerm($priviledge,PERM_ADMIN_INTERACTIVE))
 			$sPrivilege .= "智能交互引擎<br>";
 		if(havePerm($priviledge,PERM_ADMIN_ARCHIVE))
-			$sPrivilege .= "邮件归档引擎<br>";
+			$sPrivilege .= "邮件审计引擎<br>";
 		if(havePerm($priviledge,PERM_ADMIN_LOG))
-			$sPrivilege .= "日志监控";
+			$sPrivilege .= "日志监控<br>";
+		if(havePerm($priviledge,PERM_ADMIN_AUDIT))
+			$sPrivilege .= "操作日志管理<br>";
+		if(havePerm($priviledge,PERM_ADMIN_GASUP))
+			$sPrivilege .= "公安监管配置";
 	}
 ?>
 	<tr valign="middle" class="<?=$className?>">
@@ -291,23 +295,31 @@ function add()
         	<td><input type="checkbox" name="Interactive"></td>
         </tr>
         <tr>
-        	<td>邮件归档引擎</td>
+        	<td>邮件审计引擎</td>
         	<td><input type="checkbox" name="Archive"></td>
         </tr>
         <tr>
         	<td>日志监控</td>
         	<td><input type="checkbox" name="Log"></td>
         </tr>
+        <tr>
+        	<td>操作日志审计</td>
+        	<td><input type="checkbox" name="Audit"></td>
+        </tr>
 <?if(strstr($ServerMode,"Server")){?>
         <tr>
-        	<td>邮件域管理</td>
-        	<td><input type="checkbox" name="Domain" onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
-        </tr>
-        <tr>
         	<td>服务器管理</td>
-        	<td><input type="checkbox" name="Server"></td>
+        	<td><input type="checkbox" name="Server" onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
         </tr>
 <?}?>
+        <tr>
+        	<td>网关中继管理</td>
+        	<td><input type="checkbox" name="Gateway"></td>
+        </tr>
+        <tr>
+        	<td>公安监管配置</td>
+        	<td><input type="checkbox" name="GAInterface"></td>
+        </tr>
         </table>
 	</td>
 </tr>
@@ -439,23 +451,31 @@ function modify()
         	<td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?>></td>
         </tr>
         <tr>
-        	<td>邮件归档引擎</td>
+        	<td>邮件审计引擎</td>
         	<td><input type="checkbox" name="Archive"<?if(havePerm($oPriviledge,PERM_ADMIN_ARCHIVE)) echo " checked";?>></td>
         </tr>
         <tr>
         	<td>日志监控</td>
         	<td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?>></td>
         </tr>
+        <tr>
+        	<td>操作日志审计</td>
+        	<td><input type="checkbox" name="Audit"<?if(havePerm($oPriviledge,PERM_ADMIN_AUDIT)) echo " checked";?>></td>
+        </tr>
 <?if(strstr($ServerMode,"Server")){?>
         <tr>
-        	<td>邮件域管理</td>
-        	<td><input type="checkbox" name="Domain"<?if(havePerm($oPriviledge,PERM_ADMIN_DOMAIN)) echo " checked";?> onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
-        </tr>
-        <tr>
         	<td>服务器管理</td>
-        	<td><input type="checkbox" name="Server"<?if(havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " checked";?>></td>
+        	<td><input type="checkbox" name="Server"<?if(havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " checked";?> onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
         </tr>
 <?}?>
+        <tr>
+        	<td>网关中继管理</td>
+        	<td><input type="checkbox" name="Gateway"<?if(havePerm($oPriviledge,PERM_ADMIN_GATEWAY)) echo " checked";?>></td>
+        </tr>
+        <tr>
+        	<td>公安监管配置</td>
+        	<td><input type="checkbox" name="GAInterface"<?if(havePerm($oPriviledge,PERM_ADMIN_GASUP)) echo " checked";?>></td>
+        </tr>
         </table>
 	</td>
 </tr>
@@ -488,7 +508,7 @@ function modify()
 <?if(strstr($ServerMode,"Server")){?>
 <tr>
 	<td align="right">管理邮件域：</td>
-	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_DOMAIN)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
+	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
 	<td>用逗号","分隔</td>
 </tr>
 <?}?>
@@ -620,8 +640,20 @@ function save()
             $privilidge |=PERM_ADMIN_ARCHIVE;
         }
 
+        if (isset($_POST['Gateway'])) {
+            $privilidge |=PERM_ADMIN_GATEWAY;
+        }
+
         if (isset($_POST['Log'])) {
             $privilidge |=PERM_ADMIN_LOG;
+        }
+
+        if (isset($_POST['Audit'])) {
+            $privilidge |=PERM_ADMIN_AUDIT;
+        }
+
+        if (isset($_POST['GAInterface'])) {
+            $privilidge |=PERM_ADMIN_GASUP;
         }
 
         if (!isset($_POST['DenyWrite'])) {
@@ -633,12 +665,9 @@ function save()
         }
 
         if (strstr($ServerMode,"Server")) {
-        	if (isset($_POST['Domain'])){
-            	$privilidge |=PERM_ADMIN_DOMAIN;
-            	$domainlist = str_replace("\n",",",$_POST["domainlist"]);
-        	}
         	if (isset($_POST['Server'])){
             	$privilidge |=PERM_ADMIN_SERVER;
+            	$domainlist = str_replace("\n",",",str_replace("\r","",trim($_POST["domainlist"])));
         	}
         }
 

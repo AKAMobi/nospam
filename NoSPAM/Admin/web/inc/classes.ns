@@ -253,6 +253,8 @@ class ConfFile
 	function setParam($key,$value,$section = "")
 	{
 		if($this->bSection){
+			if (!array_key_exists($section,$this->params))
+				$this->params[$section] = array();
 			$oldValue = $this->params[$section][$key];
 			$this->params[$section][$key] = $value;
 			LogAction("配置文件","更改","(".$section.")".$key,$oldValue,$value);
@@ -435,19 +437,47 @@ class License
 		return $this->params["FactoryName"];
 	}
 	
-	function isDynamicEngineEnabled()
+	function DynamicEngine()
 	{
-		return ($this->params["DynamicEngineEnabled"]=="Yes");
+		return intval($this->params["DynamicEngine"]);
 	}
 
-	function isContentEngineEnabled()
+	function ContentEngine()
 	{
-		return ($this->params["ContentEngineEnabled"]=="Yes");
+		return intval($this->params["ContentEngine"]);
 	}
 
-	function isSpamEngineEnabled()
+	function SpamEngine()
 	{
-		return ($this->params["SpamEngineEnabled"]=="Yes");
+		return intval($this->params["SpamEngine"]);
+	}
+	function ArchiveEngine()
+	{
+		return intval($this->params["ArchiveEngine"]);
+	}
+
+	function InteractiveEngine()
+	{
+		return intval($this->params["InteractiveEngine"]);
+	}
+
+	function MailGateway()
+	{
+		return intval($this->params["MailGateway"]);
+	}
+	function MailServer()
+	{
+		return intval($this->params["MailServer"]);
+	}
+
+	function MailRelay()
+	{
+		return intval($this->params["MailRelay"]);
+	}
+
+	function AntiVirusEngine()
+	{
+		return intval($this->params["AntiVirusEngine"]);
 	}
 	
 	function getVersion()
@@ -474,6 +504,11 @@ class License
 		if (!array_key_exists('MailServerMaxQuota',$this->params))
 			return 1;
 		return intval($this->params['MailServerMaxQuota']);
+	}
+	
+	function getGAInterface()
+	{
+		return intval($this->params['GAInterface']);
 	}
 }
 

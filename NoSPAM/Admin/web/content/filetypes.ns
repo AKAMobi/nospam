@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if(!$bContentEngineEnabled)
+if($ContentEngine <= 0)
 	die("对不起，本系统没有开启内容过滤引擎功能");
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
@@ -237,12 +237,12 @@ function del()
 
 function savefile()
 {
-	global $FileType;
+	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行修改操作");
 
 	ksort($FileType,SORT_NUMERIC);
-	$str = "";
+	$str = $MaxTypeID."\n";
 	if(count($FileType) > 0){
 		foreach($FileType as $key=>$value){
 			if($key>=150)
@@ -254,10 +254,10 @@ function savefile()
 
 function add()
 {
-	global $FileType;
+	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行修改操作");
-	$id = max(array_keys($FileType))+1;
+	$id = $MaxTypeID+1;
 	if($id < 150)
 		$id = 150;
 ?>
@@ -332,7 +332,7 @@ function modify()
 
 function save()
 {
-	global $FileType;
+	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行修改操作");
 
@@ -344,6 +344,7 @@ function save()
 	if($_POST["type"]!="modify"){
 		if(array_key_exists($id,$FileType))
 			die("相同的分类编号已存在！");
+		$MaxTypeID++;
 	}
 
 	$FileType[$id] = array($name,$note);	

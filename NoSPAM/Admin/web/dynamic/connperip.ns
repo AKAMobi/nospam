@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 require_once("flist.inc");
 
-if(!$bDynamicEngineEnabled)
+if($DynamicEngine <= 0)
 	die("对不起，本系统没有开启垃圾邮件引擎功能");
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
@@ -59,7 +59,7 @@ switch($_GET["action"]){
 	break;
 	case "del":
 	DeleteData("WhiteIPConcurList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
-	if(($ret=wi("reset_".$_GET["option"],$result))!=0){
+	if(($ret=wi("reset_ConnPerIP",$result))!=0){
 		echo "修改失败，错误代码：".$ret;
 		exit(-1);
 	}
@@ -70,7 +70,7 @@ switch($_GET["action"]){
 	break;
 	case "save":
 	SaveData("WhiteIPConcurList","DynamicEngine","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
-	if(($ret=wi("reset_".$_GET["option"],$result))!=0){
+	if(($ret=wi("reset_ConnPerIP",$result))!=0){
 		echo "修改失败，错误代码：".$ret;
 		exit(-1);
 	}

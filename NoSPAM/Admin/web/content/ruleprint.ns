@@ -1,7 +1,7 @@
 <?
 require_once("../inc/include.ns");
 
-if(!$bContentEngineEnabled)
+if($ContentEngine <= 0)
 	die("对不起，本系统没有开启内容过滤引擎功能");
 if(!adminPerm(PERM_ADMIN_CONTENT))
 	die("您没有访问该网页的权限。");
@@ -70,7 +70,7 @@ foreach($rules as $rule){
 		<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 	</tr>
 	<tr>
-		<td>过期时间：<?=FormatTime($rule->get_attribute("expire_time"))?></td>
+		<td>过期时间：<?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"无"?></td>
 		<td><?if($bPolice){?>报警级别：<?=$rule->get_attribute("alarmlevel")?><?}?></td>
 	</tr>
 	<?if ($bPolice){?>
