@@ -151,16 +151,10 @@ if($SpamEngine > 0){
 	var c = new WebFXTreeItem('<?=_("AntiSpam Engine")?>');
 	tree.add(c);
 	c.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antispam/spamengine.ns','main'));
-	var c1 = new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>');
-	c.add(c1);
-	c1.add(new WebFXTreeItem('<?=_("IP Whitelist")?>','antispam/list.ns?option=WhiteIP','main'));
-	c1.add(new WebFXTreeItem('<?=_("Domain Whitelist")?>','antispam/list.ns?option=WhiteDomain','main'));
-	c1.add(new WebFXTreeItem('<?=_("Sender Whitelist")?>','antispam/list.ns?option=WhiteFrom','main'));
-	c1.add(new WebFXTreeItem('<?=_("IP Blacklist")?>','antispam/list.ns?option=BlackIP','main'));
-	c1.add(new WebFXTreeItem('<?=_("Domain Blacklist")?>','antispam/list.ns?option=BlackDomain','main'));
-	c1.add(new WebFXTreeItem('<?=_("Sender Blacklist")?>','antispam/list.ns?option=BlackFrom','main'));
+	c.add(new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>','antispam/list.ns','main'));
+
 	c.add(new WebFXTreeItem('<?=_("Traceable Check")?>','antispam/traceable.ns','main'));
-	
+
 	//var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
 	//c.add(c3);
 	c.add(new WebFXTreeItem('<?=_("Bayes Filter")?>','antispam/bayes.ns','main'));
