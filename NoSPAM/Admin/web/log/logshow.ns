@@ -85,7 +85,7 @@ function enableMonitor()
 {
 	interval = oInterval.value;
 	if(interval=="" || isNaN(interval)){
-		alert(<?=_("Page Refresh Time must be Number")?>);
+		alert("<?=_("Page Refresh Time must be Number")?>");
 		return;
 	}
 	line = document.all.oLine.value;
