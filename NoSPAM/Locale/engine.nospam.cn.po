@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-15 18:09+0800\n"
+"POT-Creation-Date: 2004-06-16 01:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -291,18 +291,18 @@ msgstr "无法记录升级信息"
 msgid "Can't record upgrade package information"
 msgstr "无法记录升级包信息"
 
-#: ../Bin/NoSPAM.pl:711
+#: ../Bin/NoSPAM.pl:712
 msgid "License is not valide or expired."
 msgstr "当前许可证无效或已经过期！"
 
-#: ../Bin/NoSPAM.pl:748
+#: ../Bin/NoSPAM.pl:749
 msgid "User flood"
 msgstr "用户重复"
 
-#: ../Bin/NoSPAM.pl:749
+#: ../Bin/NoSPAM.pl:750
 msgid "Mail flood"
 msgstr "邮件重复"
 
-#: ../Bin/NoSPAM.pl:750
+#: ../Bin/NoSPAM.pl:751
 msgid "Connection flood"
 msgstr "连接频率"
