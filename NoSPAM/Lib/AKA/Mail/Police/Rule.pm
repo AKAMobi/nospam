@@ -185,7 +185,7 @@ sub check_attachment_rule
 
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_attachment_rule ( $self, $attachment_rule, $mail_info );
-	}elsif ( 'NOR' eq $match_logic ){
+	}elsif ( 'OR' eq $match_logic ){
 		# if 'NOR' match, it should already return , so here is no match
 		return 0;
 	}else{ # 'AND'
@@ -217,7 +217,7 @@ sub check_size_rule
 	}
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_size_rule ( $self, $size_rule, $mail_info );
-	}elsif ( 'NOR' eq $match_logic ){
+	}elsif ( 'OR' eq $match_logic ){
 		# if 'NOR' match, it should already return , so here is no match
 		return 0;
 	}else{ #'AND'
@@ -251,7 +251,7 @@ sub check_keyword_rule
 
 	if ( 'NOT' eq $match_logic ){
 		return ! check_single_keyword_rule( $self, $keyword_rule, $mail_info );
-	}elsif ( 'NOR' eq $match_logic ){
+	}elsif ( 'OR' eq $match_logic ){
 		# if 'NOR' match, it should already return , so here is no match
 		return 0;
 	}else{ #'AND'
