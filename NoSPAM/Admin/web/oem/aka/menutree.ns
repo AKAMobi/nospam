@@ -7,500 +7,139 @@ require_once("inc/include.ns");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>系统菜单</title>
+<script src="js/xtree.js"></script>
+<link type="text/css" rel="stylesheet" href="css/xtree.css">
 <link type="text/css" rel="stylesheet" href="css/style.css">
-<SCRIPT language=JavaScript>
-<!--
-function popmenu(ss,ii)
-{
-	os = document.getElementById(ss);
-	oi = document.getElementById(ii);
-	if (os.style.display=="none"){
-		tds = document.body.getElementsByTagName("td");
-		imgs = document.body.getElementsByTagName("img");
-		for (i = 0; i < tds.length; i++){
-			if (tds[i].id.indexOf("Aux") != -1)
-				tds[i].style.display = "none";
-		}
-		for (i = 0; i < imgs.length; i++){
-			if (imgs[i].id.indexOf("img") != -1)
-				imgs[i].src = "images/s1.gif";
-		}
-		os.style.display = "";
-		oi.src = "images/s2.gif";
-	} else {
-		os.style.display = "none";
-		oi.src = "images/s1.gif";
-	}
-}
-//-->
-</SCRIPT>
 </head>
 
-<body leftMargin="0" topMargin="0">
-<table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
-<TR>
-<TD class="mu" height="20">
-	&nbsp;&nbsp;<A title="管理选项" href="javascript:;">管理</A>
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
+<body><!-- bgcolor="#cccccc"-->
+<script>
+if (document.getElementById) {
+	var tree = new WebFXTree('管理选项');
+	tree.setBehavior('classic');
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux1','img1')" height="20">
-	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;系统管理
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux1" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">本设备序列号</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/upgrade.ns">升级更新</A>
-		</TD>
-	</TR>
-	<TR>
-		<TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<?if($Switchable){?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/gatewaymode.ns">运行模式</A>
-		</TD>
-	</TR>
-	<?}?>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/network.ns">网络设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/basesettings.ns">SMTP参数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/configmanage.ns">配置管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/systemtime.ns">系统时间</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/reboot.ns">系统重启关机</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var a = new WebFXTreeItem('系统管理','help/system.htm','main');
+	tree.add(a);
+	a.add(new WebFXTreeItem('本设备序列号','system/serialno.ns', 'main'));
+	a.add(new WebFXTreeItem('升级更新','system/upgrade.ns', 'main'));
+<?if($Switchable){?>
+	a.add(new WebFXTreeItem('运行模式','system/gatewaymode.ns','main'));
 <?}?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux2','img2')" height="20">
-	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;管理员
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux2" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+
+	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
+	a.add(new WebFXTreeItem('SMTP参数','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
+	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
+	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
+
+	var b = new WebFXTreeItem('管理员','help/user.htm','main');
+	tree.add(b);
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/showadminlist.ns">管理员列表</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/loginblacklist.ns">登录限制设置</A>
-		</TD>
-	</TR>
-	<TR>
-		<TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-<?}?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changeIPlist.ns">修改IP限制列表</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	b.add(new WebFXTreeItem('管理员列表','user/showadminlist.ns','main'));
+	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
 <?
+}
+?>
+	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
+<?
+}
+?>
+
+<?
+
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux3','img3')" height="20">
-	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;透明网关模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux3" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var l = new WebFXTreeItem('透明网关模式');
+	tree.add(l);
+	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
 <?php
 	}
 }
+?>
 
+<?
 if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux4','img4')" height="20">
-	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX转发模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux4" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
-<?php
+	var n = new WebFXTreeItem('MX转发模式');
+	tree.add(n);
+	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+<?
 	}
 }
+?>
+
+
+<?
 
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux5','img5')" height="20">
-	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;独立服务器模式
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux5" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">独立服务器设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/showuserlist.ns">用户管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/searchUser.ns">查找用户</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/groupsControl.ns">用户组管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/sendGroupMails.ns">群发邮件</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var k = new WebFXTreeItem('独立服务器模式');
+	tree.add(k);
+	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
+	k.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
+	var k2 = new WebFXTreeItem('用户管理');
+	k.add(k2);
+	k2.add(new WebFXTreeItem('用户管理','server/showuserlist.ns','main'));
+	k2.add(new WebFXTreeItem('查找用户','server/searchUser.ns','main'));
+	k2.add(new WebFXTreeItem('用户组管理','server/groupsControl.ns','main'));
+	k2.add(new WebFXTreeItem('群发邮件','server/sendGroupMails.ns','main'));
 <?php
 	}
 }
+?>
 
+<?
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux6','img6')" height="20">
-	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;动态限制引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux6" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connperip.ns">同时连接数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendrateperfrom.ns">用户重复限制</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendratepersubject.ns">邮件重复限制</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connrateperip.ns">连接频率</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/realtime.ns">实时管理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var e = new WebFXTreeItem('动态限制引擎','help/dynamic.htm','main');
+	tree.add(e);
+	e.add(new WebFXTreeItem('基本设置','dynamic/dynengine.ns','main'));
+	e.add(new WebFXTreeItem('同时连接数','dynamic/connperip.ns','main'));
+	e.add(new WebFXTreeItem('用户重复限制','dynamic/sendrateperfrom.ns','main'));
+	e.add(new WebFXTreeItem('邮件重复限制','dynamic/sendratepersubject.ns','main'));
+	e.add(new WebFXTreeItem('连接频率','dynamic/connrateperip.ns','main'));
+	e.add(new WebFXTreeItem('实时管理','dynamic/realtime.ns','main'));
 <?php
 	}
 }
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux7','img7')" height="20">
-	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;病毒识别引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux7" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/recognize.ns">病毒识别</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/treatment.ns">病毒处理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var j = new WebFXTreeItem('病毒识别引擎','help/antivirus.htm','main');
+	tree.add(j);
+	j.add(new WebFXTreeItem('基本设置','antivirus/virusengine.ns','main'));
+	j.add(new WebFXTreeItem('病毒识别','antivirus/recognize.ns','main'));
+	j.add(new WebFXTreeItem('病毒处理','antivirus/treatment.ns','main'));
 <?php
 	}
 
 if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux8','img8')" height="20">
-	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;垃圾邮件引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux8" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteIP">IP白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteDomain">邮件域名白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteFrom">邮件帐号白名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackIP">IP黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackDomain">邮件域名黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackFrom">邮件帐号黑名单</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/traceable.ns">可追查性检查</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">垃圾处理</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var c = new WebFXTreeItem('垃圾邮件引擎','help/antispam.htm','main');
+	tree.add(c);
+	c.add(new WebFXTreeItem('基本设置','antispam/spamengine.ns','main'));
+	var c1 = new WebFXTreeItem('垃圾识别');
+	c.add(c1);
+	c1.add(new WebFXTreeItem('IP白名单','antispam/list.ns?option=WhiteIP','main'));
+	c1.add(new WebFXTreeItem('邮件域名白名单','antispam/list.ns?option=WhiteDomain','main'));
+	c1.add(new WebFXTreeItem('邮件帐号白名单','antispam/list.ns?option=WhiteFrom','main'));
+	c1.add(new WebFXTreeItem('IP黑名单','antispam/list.ns?option=BlackIP','main'));
+	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
+	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
+	c1.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
+	c.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
 <?php
 	}
 }
@@ -508,262 +147,87 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux9','img9')" height="20">
-	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;内容过滤引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux9" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/rulemanage.ns">规则管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/category.ns">类别管理</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/ruleprint.ns">列印规则</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/filetypes.ns">文件类型</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var d = new WebFXTreeItem('内容过滤引擎','help/content.htm','main');
+	tree.add(d);
+	d.add(new WebFXTreeItem('基本设置','content/contentengine.ns','main'));
+	d.add(new WebFXTreeItem('规则管理','content/rulemanage.ns','main'));
+	d.add(new WebFXTreeItem('类别管理','content/category.ns','main'));
+	d.add(new WebFXTreeItem('列印规则','content/ruleprint.ns','main'));
+	d.add(new WebFXTreeItem('文件类型','content/filetypes.ns','main'));
 <?php
 	}
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux10','img10')" height="20">
-	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;邮件审计引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux10" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archivetype.ns">选择性审计</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var f = new WebFXTreeItem('邮件审计引擎','help/archive.htm','main');
+	tree.add(f);
+	f.add(new WebFXTreeItem('基本设置','archive/archiveengine.ns','main'));
+	//f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('选择性审计','archive/archivetype.ns','main'));
 <?
 	}
 
 if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux11','img11')" height="20">
-	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;智能交互引擎
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux11" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/bigmail.ns">超大邮件提醒</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/exmail.ns">过量邮件提醒</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var i = new WebFXTreeItem('智能交互引擎','help/interengine.htm','main');
+	tree.add(i);
+	i.add(new WebFXTreeItem('基本设置','interactive/interengine.ns','main'));
+	i.add(new WebFXTreeItem('超大邮件提醒','interactive/bigmail.ns','main'));
+	i.add(new WebFXTreeItem('过量邮件提醒','interactive/exmail.ns','main'));
 <?
 }
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-<TR class="TableTitle2" >
-<TD onclick="popmenu('Aux12','img12')" height="20">
-	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;日志监控
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux12" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
+	tree.add(g);
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.html">系统状态</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logshow.ns">日志显示</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logstat.ns">日志统计</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logexport.ns">日志导出统计</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
+	var gs = new WebFXTreeItem('系统状态','status/status.html','main');
+        g.add(gs);
+	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
+	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('TCP连接','status/tcp.html','main') );
+	  gs.add( new WebFXTreeItem('SMTP连接','status/smtp.html','main') );
+	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
+	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
+	  gs.add( new WebFXTreeItem('磁盘负载','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('磁盘空间','status/hdfree.html','main') );
+	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
+	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
+	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
 <?
 		if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logflush.ns">日志清空删除</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
+	g.add(new WebFXTreeItem('日志清空删除','log/logflush.ns','main'));
 <?php
 		}
 	}
 	if(adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/audit.ns">操作日志审计</A>
-		</TD>
-	</TR>
-<?
-	}
+	g.add(new WebFXTreeItem('操作日志审计','log/audit.ns','main'));
+<?php
+	}	
 }
-?>
-	</TABLE>
-</TD>
-</TR>
-<?
+
 if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-<TR class="TableTitle2">
-<TD onclick="popmenu('Aux13','img13')" height="20">
-	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;公安网络监管
-</TD>
-</TR>
-<TR>
-	<TD bgColor="#cccccc" height="2"></TD>
-</TR>
-<TR>
-<TD id="Aux13" style="DISPLAY: none" height="2">
-	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">基本设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/msp.ns">MSP设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISC设置</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/export.ns">四部委交换格式</A>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
-</TR>
+	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
+	tree.add(m);
+	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('GAISC设置','gasupervise/gaisc.ns','main'));
+	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
 <?
 }
 ?>
-<TR>
-<TD height="20">
-	<A target="_top" href="logout.ns">退出系统</A>
-</TD>
-</TR>
-</table>
+
+
+	var h = new WebFXTreeItem('退出系统','logout.ns','_top');
+	tree.add(h);
+	document.write(tree);
+}
+</script>
 </body>
 </html>
