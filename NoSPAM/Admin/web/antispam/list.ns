@@ -276,9 +276,12 @@ function save()
 		unset($List[$_POST['oKey']]);
 		break;
 		default:
-		if(array_key_exists($_POST['key'],$List))
+		if(array_key_exists($_POST['key'],$List)){
 			echo "相同的$column已存在！";
+			//Cow! 你忘记大括号了！
+			// by zixia
 			exit();
+		}
 	}
 
 	$List[$_POST['key']] = $_POST['note'];
