@@ -739,10 +739,10 @@ class EmailUser {
     }
     
     function init_maillist () {
-        if (!is_dir ($this->path))
-            return -1;
-        if (!($dh = opendir ($this->path))) return -2;
         $this->fullMailList = array ();
+        if (!is_dir ($this->path))
+            return 0;
+        if (!($dh = opendir ($this->path))) return 0;
         while (false !== ($file = readdir ($dh))) {
             if (strcmp ($file, '.')==0 || strcmp ($file, '..')==0)
                 continue;
