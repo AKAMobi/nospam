@@ -1414,8 +1414,8 @@ sub get_dns_ds
 	my $rndc_binary = '/usr/sbin/rndc';
 
 
-	my $cmd = "cat /dev/null>$stats_file;$rndc_binary -c /etc/rndc.conf stats";
-	$cmd .= ";chown named.named $stats_file" unless -e $stats_file;
+	my $cmd = "$rndc_binary -c /etc/rndc.conf stats";
+	#$cmd .= ";chown named.named $stats_file" unless -e $stats_file;
 	
 	system ( $cmd );
 
@@ -1429,6 +1429,8 @@ sub get_dns_ds
 		}
 		close FD;
 	}
+
+	open ( FD, ">$stats_file" ) && close ( FD );
 
 	($ds->{success},$ds->{referral},$ds->{nxrrset},$ds->{nxdomain},$ds->{recursion},$ds->{failure});
 }
