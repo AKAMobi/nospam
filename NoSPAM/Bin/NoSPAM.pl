@@ -50,6 +50,7 @@ my $action_map = {
 #print Dumper( $intconf );
 #print &get_GW_Mode(), "\n";
 #exit 0;
+#&reset_Network_update_hostname;
 
 # do the action now!
 
@@ -57,13 +58,13 @@ if ( ! defined $action ){
 	&usage;
 	exit -1;
 }elsif( defined $action_map->{$action}[0] ){
-	$zlog->debug("NoSPAM Util::$action " . join(" ",@param) );
+	$zlog->debug("NoSPAM Util::$action( " . join(",",@param) . " )" );
 	my $lock = &get_lock( "/home/NoSPAM/var/run/lock/$action" );
 	my $ret = &{$action_map->{$action}[0]};
 	&release_lock($lock);
 	exit $ret;
 }else{
-	$zlog->fatal( "NoSPAM System Util unsuport action: $action " . join(' ',@param) );
+	$zlog->fatal( "NoSPAM System Util unsuport action: $action( " . join(',',@param) . " )" );
 	exit 0;
 }
 
@@ -309,6 +310,10 @@ sub reset_Network_up_eth
 		$ret = system( $ip_binary, "link", "set", "eth1", "up" );
 		return -32 if ( $ret );
 	}
+
+	$ret = system ( "ifdown lo && ifup lo" );
+	return -40 if $ret;
+
 	return 0;
 }
 
@@ -321,8 +326,8 @@ sub reset_Network_set_arp_backend
 	$ret = system ( $arp_binary, "-Ds", $src, $dev, "pub" );
 	return -1 if ( $ret );
 
-#	$ret = system ( $arping_binary, " -A -c 1 -I $dev -s $src $dst" );
-#	return -2 if ( $ret );
+	$ret = system ( "$arping_binary -A -c 1 -I $dev -s $src $dst>/dev/null2>&1" );
+	return -2 if ( $ret );
 	
 	return 0;
 }
@@ -396,18 +401,148 @@ sub reset_Network_update_hostname
 			$host_map{$1} = $2;;
 		}
 	}
+	close ( FD );
+
+	$host_map{'127.0.0.1'} = 'localhost.localdomain localhost';
+
+	my $Hostname = $conf->{config}->{MailServerHostname} ;
+	my $IP = $conf->{config}->{MailGatewayIP} ;
+
+	if ( $Hostname && $IP ){
+		$host_map{$IP} = $Hostname;
+	}else{
+		$zlog->fatal("NoSPAM Util::reset_Network_update_hostname IP:[$IP] or Hostname[$Hostname] is null");
+		return 10;
+	}
+
+	my $content = '';
+	while ( ($IP,$Hostname) = each %host_map ){
+		$Hostname =~ s/^\s+//;
+		$Hostname =~ s/\s+$//;
+		$content .= "$IP\t$Hostname" ;
+
+		unless ( $Hostname=~/\s+/ ){
+			$content .= " $1" if ( $Hostname=~/^([^\.]+)\./ );
+		}
+
+		$content .= "\n";
+	}
+	return 20 unless write_file ( $content, "/etc/hosts" );
+
+	return 0;
+}
+
+sub reset_Network_update_qmail_control
+{
+	my $mode = shift;
+
+	my $ret;
+
+	$ret = &reset_Network_update_smtproutes($mode) ;
+	return 10 if ( $ret );
+
+	$ret = &reset_Network_update_rcpthosts($mode);
+	return 20 if ( $ret );
+
+	return 0;
+}
+
+sub reset_Network_update_rcpthosts
+{
+	my $mode = shift;
+
+	my $Domain = $conf->{config}->{MailServerHostname} ;
+	$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
+	
+	return 10 unless open FD, "</var/qmail/control/rcpthosts";
+
+	my @domains = <FD>;
+	close FD;
+
+	push ( @domains, $Domain ) if ( ! grep ( /^$Domain$/, @domains ) );
+	
+	my $content = join('',@domains);
+
+	return write_file($content, '/var/qmail/control/rcpthosts');
 }
 
 sub reset_Network_update_smtproutes
 {
 	my $mode = shift;
+
+	return &reset_Network_update_smtproutes_gateway if ( 'Gateway' eq $mode );
+
+	# TODO server mode
+
+	return 0;
+}
+
+sub write_file
+{
+	my ( $content, $filename ) = @_;
+
+	return 10 unless ( $content && $filename );
+
+	my $lockfd;
+	return 20 unless $lockfd = &get_lock ( "$filename" ) ;
+
+	return 30 unless open ( LFD, ">$filename.new" );
+
+	print LFD $content;
+	
+	unless ( close LFD ){
+		# disk full?
+		unlink "$filename.new";
+		return 40;
+	}
+
+	return 50 unless release_lock( $lockfd );
+
+	return rename ( "$filename.new", $filename );
+	
+}
+
+sub reset_Network_update_smtproutes_gateway
+{
+	my $Domain = $conf->{config}->{MailServerHostname} ;
+	my $IP = $conf->{config}->{MailServerIP} ;
+
+	# get real email domain 
+	$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
+
+	return 10 unless ( $Domain && $IP );
+
+	return 20 unless open ( FD, "</var/qmail/control/smtproutes" ) ;	
+
+	my @smtproutes = <FD>;
+	close ( FD );
+
+	my ($eIP,$eDomain );
+	my %smtproute;
+	foreach ( @smtproutes ){
+		chomp;
+		($eIP,$eDomain) = split ( /:/, $_, 2 );
+		$smtproute{$eIP} = $eDomain;
+	}
+
+	$smtproute{$IP} = $Domain;
+
+	my $content = '';
+	while ( ($IP,$Domain)=each %smtproute ){
+		$content .= "$Domain:$IP\n";
+	}
+	return 30 unless write_file( $content, "/var/qmail/control/smtproutes" );
+
+	return 0;
 }
 
 sub get_lock
 {
 	my $filename = shift;
 
-	if ( !open( LOCKFD, ">$filename.lock" ) ){
+	#$filename = $1 if ( $filename=~m#([^/]+)$# );
+
+	if ( !open( LOCKFD, "$filename.lock" ) ){
 		return 0;
 	}
 
@@ -423,7 +558,7 @@ sub get_lock
 sub release_lock
 {
 	my $lockfd = shift;
-	flock($lockfd,LOCK_UN);
+	return flock($lockfd,LOCK_UN);
 }
 
 #
@@ -468,7 +603,7 @@ sub reset_Network
 	}
 
 	if ( &reset_Network_update_hostname($mode) ||
-			&reset_Network_update_smtproutes($mode) ){
+			&reset_Network_update_qmail_control($mode) ){
 		$zlog->fatal( "NoSPAM Util::reset_Network update hosts & smtproute file failure!" );
 		return -2;
 	}
@@ -483,7 +618,7 @@ sub reset_ConnPerIP
 	$zlog->debug("NoSPAM Util::reset_ConnPerIP to $ParalConn");
 
 	# delete link to input
-	if ( system("$iptables -D INPUT -j ConnPerIP") ) {
+	if ( system("$iptables -D INPUT -j ConnPerIP>/dev/null 2>&1") ) {
 		# It's ok.
 	}
 
