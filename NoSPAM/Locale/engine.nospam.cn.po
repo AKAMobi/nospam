@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-16 01:39+0800\n"
+"POT-Creation-Date: 2004-06-16 01:59+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -106,7 +106,6 @@ msgid "Traceable"
 msgstr "可追查检查"
 
 #: ../Lib/AKA/Mail.pm:1264
-#, fuzzy
 msgid "Auth user"
 msgstr "认证用户"
 
@@ -202,12 +201,10 @@ msgid " overrun deny {wait_time} minutes."
 msgstr "发送超限，还需{wait_time}分钟解封"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:351
-#, fuzzy
 msgid " overrun"
 msgstr "发送超限"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:355
-#, fuzzy
 msgid " passed"
 msgstr "通过"
 
