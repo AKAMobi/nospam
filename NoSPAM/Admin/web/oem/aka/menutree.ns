@@ -184,7 +184,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
-	var gs = new WebFXTreeItem('系统状态','status/status.html','main');
+	var gs = new WebFXTreeItem('系统状态','status/status.ns','main');
         g.add(gs);
 	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
 	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
