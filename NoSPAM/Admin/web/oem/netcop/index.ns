@@ -62,7 +62,7 @@ TD { text-align: left}
 <tr><td height=200></td></tr>
 <tr><td height=50 colspan=3><center>管理员帐号<br><input type="text" name="adminID" VALUE=""></center></td></tr>
 <tr><td height=50 colspan=3><center>密 码<br><input type="password" name="password" VALUE=""></center></td></tr>
-<tr><td height=50><input type="submit" name="login" value="登 录"></td><td width=100></td><td><input type="reset" name="cancel" value="取 消"></td></tr>
+<tr><td height=50><input type="submit" name="submit" value="登 录"></td><td width=100></td><td><input type="reset" name="cancel" value="取 消"></td></tr>
 </table>
 </center>
 </td></tr>

@@ -13,11 +13,19 @@ if (isset($AdminID)) {
 ?>
 <html>
 <head>
+<script language="JavaScript">
+<!--
+if (self.parent.frames.length != 0)
+self.parent.location=document.location.href;
+// -->
+</script>
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>天澄反邮件垃圾系统 管理系统</title>
 </head>
 
-<frameset rows="170,*,100" cols="*" framespacing="NO" frameborder="0" border="0">
+<frameset rows="134,*,75" cols="*" framespacing="NO" frameborder="0" border="0">
 	<frame src="top.ns" name="topFrame" scrolling="NO" noresize >
 	<frame src="logon.ns" name="loginFrame" scrolling="NO" noresize >
 	<frame src="bottom.ns" name="topFrame" scrolling="NO" noresize >
