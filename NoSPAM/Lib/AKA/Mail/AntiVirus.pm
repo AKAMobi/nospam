@@ -98,7 +98,7 @@ sub catch_virus
 #		$self->{zlog}->debug ( "catch_virus use clamscan" ); #, result: [$result]" );
 	}
 
-	if ( $result =~ m#ERROR$# ){
+	if ( !defined $result || $result =~ m#ERROR$# ){
 		$self->{zlog}->fatal ( "AntiVirus return ERROR[$result] for file[$file]" );
 		return ( {	result 	=> 0,
 				desc 	=> 'ÄÚ²¿´íÎó',
