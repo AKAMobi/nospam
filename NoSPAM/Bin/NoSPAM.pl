@@ -317,6 +317,9 @@ sub ZombieFile_clean
 	`find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 	`find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 	`find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+
+	`find /home/vpopmail/domains/localhost.localdomain/archive/Maildir/{new,cur} -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+
 	`rm -f /var/log/*.{1,2,3,4}* > /dev/null 2>&1`;
 	return 0;
 }
