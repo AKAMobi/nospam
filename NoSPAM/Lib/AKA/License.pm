@@ -57,7 +57,8 @@ sub check_license_file
 	my $licensefile = $MC->{define}->{licensefile};
 
 	if ( ! open( LFD, "<$licensefile" ) ){
-		$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
+		#$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
+		# No license
 		return 0;
 	}
 	
@@ -97,7 +98,7 @@ sub check_license_file
 		#print "checksum $license_checksum not valid for [$license_content]\n";
 		return 0;
 	}
-	# not valid
+	# it's valid
 	return 1;
 }
 

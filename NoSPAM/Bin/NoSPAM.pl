@@ -395,6 +395,13 @@ sub reset_Network
 {
 	$zlog->debug("NoSPAM Util::reset_Network ");
 
+	# Check License;
+	use AKA::License;
+	my $AL = new AKA::License;
+	if ( ! $AL->check_license_file ){
+		return 250;
+	}
+
 	my $mode = &get_GW_Mode;
 
 	$mode = 'Gateway' if ( 'Server' ne $mode );
@@ -475,10 +482,10 @@ sub reset_DateTime
 {
 	$zlog->debug("NoSPAM Util::reset_DateTime $param[0]");
 
-	if ( system("$date_binary $param[0]") ){
+	if ( system("$date_binary -s $param[0]") ){
 		return -1;
 	}
-	if ( system("clock_binary -w") ){
+	if ( system("$clock_binary -w") ){
 		return -2;;
 	}
 	return 0;
