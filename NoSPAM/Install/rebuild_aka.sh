@@ -4,7 +4,8 @@
 cpperl()
 {
 	echo "cpperl $1 to $2..."
-	echo "#!/usr/bin/perl -X" > $2;
+	echo '#!/usr/bin/perl -X' > $2;
+	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
 }
 

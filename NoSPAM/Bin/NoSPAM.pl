@@ -223,6 +223,9 @@ sub init_IPC
 
 sub usage
 {
+	# 如果加密过的则不显示usage
+	return if ( defined $AKA_noSPAM_release );
+
 	print NSOUT <<_USAGE_;
 
 $prog <action> [action params ...]
