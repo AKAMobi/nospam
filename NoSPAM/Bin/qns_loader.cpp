@@ -18,17 +18,40 @@
 
 #include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
 #include <boost/filesystem/fstream.hpp>    // ditto
+#include "boost/date_time/posix_time/posix_time.hpp"
 #include <boost/lexical_cast.hpp>
 
-//using namespace boost::lexical_cast;
-using namespace boost::filesystem;
+
+using namespace boost;
+using namespace boost::posix_time;
+using namespace std;
 
 
 #define BUF_LEN 2048
 #define EML_DIR "/home/NoSPAM/spool/working"
 #define EML_PREFIX "emlfile.gw.nospam"
 
-std::ofstream zlog("/var/log/cpp.debug", ios::out | ios::app );
+// Email磁盘文件
+string emlfile;
+ptime start_time(microsec_clock::local_time());
+time_duration io_duration;
+time_duration rpc_duration;
+
+std::ofstream log_file("/home/NoSPAM/spool/ns-queue.debug", ios::out | ios::app );
+
+void log( const string& what )
+{
+
+	//using namespace boost::posix_time;
+	//using namespace boost::gregorian;
+
+	ptime now = microsec_clock::local_time();
+	//ptime now = posix_time::second_clock::universal_time();
+	//time_t t;
+	//posix_time::ptime now = posix_time::from_time_t( time(&t) );
+	log_file << to_simple_string(now) << " " << getpid() << " " << what << "\n";
+}
+
 
 class qmail_hdrs
 {
@@ -67,24 +90,37 @@ class qmail_hdrs
 
 		void dump()
 		{
-			zlog << "qmail_hdrs: p=" << hdrs << ", len=" <<  len << endl;
-			zlog << "[" ;
+			string msg = "[" ;
 			for ( size_t i=0; i<len; i++ ){
 				if ( 0==hdrs[i] ){
-					zlog << "\\0";
+					msg += "\\0";
 				}else{
-					zlog << hdrs[i];
+					msg +=  hdrs[i];
 				}
 			}
-			zlog << "]" << endl;
+			log ( msg + "] size:" + boost::lexical_cast<string>(len) );
 		}
 
 
 };
 
-void qns_err( const char* smtp_msg, int exit_code )
+void qns_err_n_exist( const char* smtp_msg, int exit_code )
 {
-	cerr << smtp_msg << "\r\n";
+	filesystem::remove(emlfile);
+	if ( strlen(smtp_msg) ){
+		cerr << smtp_msg << "\r\n";
+	}
+
+	filesystem::remove(emlfile);
+
+	time_duration ms = microsec_clock::local_time() - start_time;
+	
+	log ( "Process time(ms): ns[" + lexical_cast<string>(rpc_duration.total_milliseconds())
+			+ "] io[" + lexical_cast<string>(io_duration.total_milliseconds()) 
+			+ "] total[" + lexical_cast<string>(ms.total_milliseconds()) 
+			+ "]." 
+	);
+
 	exit(exit_code);
 }
 
@@ -117,31 +153,27 @@ string dump_stdin_to_file()
 	fd = TEMP_FAILURE_RETRY( open(tmp_emlfile,O_WRONLY|O_CREAT, S_IRWXU|S_IROTH ) );
 
 	if ( fd<0 ){
-		qns_err ( "443 qns_loader can't open file.", 150 );
+		qns_err_n_exist ( "443 qns_loader can't open file.", 150 );
 		exit (150);
 	}
 
 	while( (len = (TEMP_FAILURE_RETRY( read(0,buffer,BUF_LEN))) ) ){
 		if( len < 0 ){
-			qns_err ( "443 qns_loader can't read file.", 150 );
+			qns_err_n_exist ( "443 qns_loader can't read file.", 150 );
 			exit (150);
 		}
 		len = TEMP_FAILURE_RETRY ( write ( fd, buffer, len) );
 		if( len < 0 ){
-			qns_err ( "443 qns_loader can't write file.", 150 );
+			qns_err_n_exist ( "443 qns_loader can't write file.", 150 );
 			exit (150);
 		}
 	}
 
 	TEMP_FAILURE_RETRY( close ( fd ) );
 
-	zlog << "rename " << tmp_emlfile << " to " << new_emlfile << endl;
 	if ( -1==TEMP_FAILURE_RETRY ( rename ( tmp_emlfile, new_emlfile ) ) ){
-		qns_err ( "443 qns_loader can't rename file.", 150 );
+		qns_err_n_exist ( "443 qns_loader can't rename file.", 150 );
 	}
-	/*if ( -1==TEMP_FAILURE_RETRY ( unlink ( tmp_emlfile ) ) ){
-		zlog << "qns_loader can't unlink file." << endl;
-	}*/
 
 	return string(new_emlfile);
 }
@@ -153,15 +185,14 @@ int net_process( string &result,
 {
 	iosockinet io (sockbuf::sock_stream);
 
-	zlog << "try connect..." << endl;
 	try {
 		io->connect ("127.0.0.1", "40307", "tcp");
 	} catch ( ... ) {
-		qns_err ( "443 Engine temporarily unavailable.", 150 );
+		qns_err_n_exist ( "443 Engine temporarily unavailable.", 150 );
 		return 150;
 	}
 
-	zlog << relayclient << "," << tcpremoteip << "," << tcpremoteinfo << "," << emlfile << "," << endl;
+	log ( relayclient + "," + tcpremoteip + "," + tcpremoteinfo + "," + emlfile + "," );
 
 	io << relayclient << endl;
 	io << tcpremoteip << endl;
@@ -172,6 +203,8 @@ int net_process( string &result,
 	io.write ( hdrs->hdrs, hdrs->len );
 	io << endl;
 
+	io << flush;
+
 	char smtp_code[4+1], smtp_info[256+1], exit_code[4+1];
 	io.getline( smtp_code, 4 );
 	smtp_code[4] = 0;
@@ -180,10 +213,13 @@ int net_process( string &result,
 	io.getline( exit_code, 4 );
 	exit_code[4] = 0;
 
-	zlog << "smtp_code: [" << smtp_code << "] smtp_info: [" << smtp_info << "] exit_code [" << exit_code << "]" << endl;
-	result = smtp_code;
-	result += " ";
-	result += smtp_info;
+	if ( strlen(smtp_code) || strlen(smtp_info) ){
+		result = smtp_code;
+		result += " ";
+		result += smtp_info;
+	}else{
+		result = "";
+	}
 
 	int ret;
 	try {
@@ -194,7 +230,7 @@ int net_process( string &result,
 		ret = 150;
 	}
 
-	remove ( emlfile );
+	filesystem::remove ( emlfile );
 	return ret;
 }
 
@@ -213,20 +249,23 @@ void qmail_parent_check ()
 	pid_t ppid = getppid();
 
 	if ( 1==ppid )  {
-		zlog << "\n!!!!!!!!!!!!!!!!!!!!!!!!!q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too..." << endl ;
+		log ( "Whoa! parent process is dead! Better die too..." );
 		exit(111); 
 	}
 }
 
 
+
 int main ()
 {
+
 	setuid ( 0 );
 	setgid ( 0 );
 
 	seteuid ( 0 );
 	setegid ( 0 );
 
+	log ( "============ New mail coming ==================" );
 
 	string relayclient,tcpremoteinfo,tcpremoteip;
 
@@ -234,13 +273,12 @@ int main ()
 	char *TCPREMOTEINFO = getenv("TCPREMOTEINFO");
 	char *TCPREMOTEIP = getenv("TCPREMOTEIP");
 
-	string emlfile;
 	qmail_hdrs *hdrs;
 
 	int ret;
 	string result;
 
-	if ( RELAYCLIENT && strlen(RELAYCLIENT) )
+	if ( RELAYCLIENT )
 		//relayclient = RELAYCLIENT;
 		relayclient = "1";
 	if ( TCPREMOTEINFO && strlen (TCPREMOTEINFO) )
@@ -249,41 +287,45 @@ int main ()
 		tcpremoteip = TCPREMOTEIP;
 
 	//	goto LABEL;
-	zlog << tcpremoteinfo << "," << relayclient << endl;
 
+	ptime io_start_time(microsec_clock::local_time());
 	emlfile = dump_stdin_to_file();
-	zlog << "file_id: " << emlfile << endl;
+	io_duration = microsec_clock::local_time() - io_start_time;
 
-	if ( !exists( emlfile ) ){
-		qns_err("443 ns can't get file.", 150);
+	log ( "file_id: " + emlfile );
+
+	if ( !filesystem::exists( emlfile ) ){
+		qns_err_n_exist("443 ns can't get file.", 150);
 	}
 
 	hdrs = grab_envelope_hdrs();
 	if ( !hdrs->valid() ) {
-		zlog << "g_e_h: no sender and no recips." << endl;
+		log ( "g_e_h: no sender and no recips." );
 		//unlink(emlfile.c_str())
-		remove(emlfile);
-		qns_err("443 ns can't get hdr.", 150);
+		filesystem::remove(emlfile);
+		qns_err_n_exist("443 ns can't get hdr.", 150);
 	}
 
 	qmail_parent_check();
 	//LABEL:
 	//hdrs->dump();
+	ptime rpc_start_time(microsec_clock::local_time());
 	ret = net_process( result, relayclient, tcpremoteip, tcpremoteinfo, emlfile, hdrs );
+	rpc_duration = microsec_clock::local_time() - rpc_start_time;
 	//hdrs = new qmail_hdrs ( "Fzixia@zixia.net\0Tzixia@vmware.zixia.net\0\0", 42);
 	//ret = net_process( result, "127.0.0.2", "192.168.0.1", "", "/tmp/zixia.eml", hdrs );
 
-	zlog << "net_process ret " << ret << ", result: " << result << endl;
+	log ( string("net_process ret[") + lexical_cast<string>(ret) + "], result:[" + result + "]" );
 
-	if ( -1==ret ){
-		cerr << result << "\r\n";
-		exit (111);
+	if ( -1==ret ){ // 出现错误
+		qns_err_n_exist ( result.c_str(), 111 );
 	}
-	else if ( 0!=ret ){
-		qns_err ( result.c_str(), ret );
-		exit ( ret );
+	else if ( 0!=ret ){ // 需要有信息返回给smtpd
+		qns_err_n_exist ( result.c_str(), ret );
 	}
-	exit (0);
+
+	//无需信息，投递正常
+	qns_err_n_exist ( "", 0 );
 }
 
 
