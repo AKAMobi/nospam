@@ -20,7 +20,7 @@ ExpireDate=2004-9-10
 Version=2
 
 FactoryName=Suns Security Technology Co., Ltd.
-ProductName=noSPAM AntiSPAM System V2
+ProductName=noSPAM AntiSPAM System
 ProductSN=$prodno
 
 ServerGatewaySwitchable=Y

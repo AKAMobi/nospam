@@ -5,20 +5,9 @@ MailGatewayInternalMask=24
 ContentEngineMaxMailSize=6048576
 SpamAssassinMaxMailSize=131072
 
-[SpamAssassin]
+[SA]
 ## Optional Score Increases
-score=HTML_COMMENT_8BITS        0
-score=UPPERCASE_25_50           0
-score=UPPERCASE_50_75           0
-score=UPPERCASE_75_100  0
-
-score=HEAD_ILLEGAL_CHARS 0
-score=SUBJ_ILLEGAL_CHARS 0
-score=DCC_CHECK 4.000
-score=RAZOR2_CHECK 2.500
-score=BAYES_99 4.300
-score=BAYES_90 3.500
-score=BAYES_80 3.000
+FactoryScore=HTML_COMMENT_8BITS#0,UPPERCASE_25_50#0,UPPERCASE_50_75#0,UPPERCASE_75_100#0,CHINA_HEADER#0,CHINA_URI#0,BODY_8BITS#0,MIME_BASE64_TEXT#0,HEAD_ILLEGAL_CHARS#0,SUBJ_ILLEGAL_CHARS#0,DCC_CHECK#4.000,RAZOR2_CHECK#2.500,BAYES_99#4.300,BAYES_90#3.500,BAYES_80#3.000
 
 # 系统内置，不需修改
 dns_available=yes
@@ -48,7 +37,7 @@ auto_whitelist_path=/home/NoSPAM/sa/auto-whitelist
 auto_whitelist_file_mode=0700
 
 # 系统自动根据配置修改，无用户界面
-trusted_networks=211.151.91.27/24
+#trusted_networks=211.151.91.27/24
 
 # 界面上可以修改
 
