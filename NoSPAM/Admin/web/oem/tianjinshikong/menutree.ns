@@ -7,7 +7,7 @@ require_once("inc/include.ns");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>系统菜单</title>
-<link type="text/css" rel="stylesheet" href="css/menu.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
 <SCRIPT language=JavaScript>
 <!--
 function popmenu(ss,ii)
@@ -34,47 +34,6 @@ function popmenu(ss,ii)
 }
 //-->
 </SCRIPT>
-<STYLE type="text/css">
-A {
-	COLOR: navy; TEXT-DECORATION: none
-}
-A:link {
-	COLOR: navy; TEXT-DECORATION: none
-}
-A:visited {
-	COLOR: navy; TEXT-DECORATION: none
-}
-A:hover {
-	COLOR: crimson; TEXT-DECORATION: none
-}
-A:active {
-	COLOR: orangered; TEXT-DECORATION: none
-}
-P {
-	MARGIN: 2px
-}
-.channel {
-	FONT-SIZE: 10pt; CURSOR: hand
-}
-.n1 {
-	FONT-SIZE: 12px; COLOR: #142479; FONT-STYLE: normal; FONT-FAMILY: "宋体"
-}
-.n2 {
-	FONT-SIZE: 12px; COLOR: #003399; FONT-STYLE: normal; FONT-FAMILY: "宋体"
-}
-.fu {
-	BORDER-RIGHT: #233549 2px solid; BORDER-TOP: #b2d6f6 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #b2d6f6 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #233549 2px solid; BACKGROUND-COLOR: #8ec1ff
-}
-.mu {
-	BORDER-RIGHT: #8e9f88 2px solid; BORDER-TOP: #effee0 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #effee0 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #8e9f88 2px solid; BACKGROUND-COLOR: #e0feda
-}
-.mu2 {
-	BORDER-RIGHT: #5b5743 2px solid; BORDER-TOP: #fffde3 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #fffde3 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #5b5743 2px solid; BACKGROUND-COLOR: #fffbc2
-}
-BODY {
-	MARGIN: 0px 3px
-}
-</STYLE>
 </head>
 
 <body bgColor="#cccccc" leftMargin="0" topMargin="0">
@@ -90,8 +49,8 @@ BODY {
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux1','img1')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux1','img1')" height="20">
 	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;系统管理
 </TD>
 </TR>
@@ -102,16 +61,16 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 <TD id="Aux1" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/serialno.ns">本设备序列号</A>
+		<TD align="left">
+		<A target="main" href="system/serialno.ns">&nbsp;&nbsp;&nbsp;&nbsp;本设备序列号</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/upgrade.ns">升级更新</A>
+		<TD align="left">
+		<A target="main" href="system/upgrade.ns">&nbsp;&nbsp;&nbsp;&nbsp;升级更新</A>
 		</TD>
 	</TR>
 	<TR>
@@ -119,8 +78,8 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<?if($Switchable){?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/gatewaymode.ns">运行模式</A>
+		<TD align="left">
+		<A target="main" href="system/gatewaymode.ns">&nbsp;&nbsp;&nbsp;&nbsp;运行模式</A>
 		</TD>
 	</TR>
 	<?}?>
@@ -128,48 +87,48 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/network.ns">网络设置</A>
+		<TD align="left">
+		<A target="main" href="system/network.ns">&nbsp;&nbsp;&nbsp;&nbsp;网络设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/basesettings.ns">SMTP参数</A>
+		<TD align="left">
+		<A target="main" href="system/basesettings.ns">&nbsp;&nbsp;&nbsp;&nbsp;SMTP参数</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/configmanage.ns">配置管理</A>
+		<TD align="left">
+		<A target="main" href="system/configmanage.ns">&nbsp;&nbsp;&nbsp;&nbsp;配置管理</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/systemtime.ns">系统时间</A>
+		<TD align="left">
+		<A target="main" href="system/systemtime.ns">&nbsp;&nbsp;&nbsp;&nbsp;系统时间</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="system/reboot.ns">系统重启关机</A>
+		<TD align="left">
+		<A target="main" href="system/reboot.ns">&nbsp;&nbsp;&nbsp;&nbsp;系统重启关机</A>
 		</TD>
 	</TR>
 	</TABLE>
 </TD>
 </TR>
 <?}?>
-<TR>
-<TD onclick="popmenu('Aux2','img2')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux2','img2')" height="20">
 	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;管理员
 </TD>
 </TR>
@@ -183,16 +142,16 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="user/showadminlist.ns">管理员列表</A>
+		<TD align="left">
+		<A target="main" href="user/showadminlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;管理员列表</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="user/loginblacklist.ns">登录限制设置</A>
+		<TD align="left">
+		<A target="main" href="user/loginblacklist.ns">&nbsp;&nbsp;&nbsp;&nbsp;登录限制设置</A>
 		</TD>
 	</TR>
 	<TR>
@@ -200,16 +159,16 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	</TR>
 <?}?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
+		<TD align="left">
+		<A target="main" href="user/changePasswd.ns">&nbsp;&nbsp;&nbsp;&nbsp;修改自己的密码</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="user/changeIPlist.ns">修改IP限制列表</A>
+		<TD align="left">
+		<A target="main" href="user/changeIPlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;修改IP限制列表</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -219,8 +178,8 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux3','img3')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux3','img3')" height="20">
 	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;透明网关模式
 </TD>
 </TR>
@@ -231,16 +190,16 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 <TD id="Aux3" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
+		<TD align="left">
+		<A target="main" href="gateway/protectdomain.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件域保护设定</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
+		<TD align="left">
+		<A target="main" href="gateway/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -253,8 +212,8 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux4','img4')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux4','img4')" height="20">
 	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX转发模式
 </TD>
 </TR>
@@ -265,16 +224,16 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 <TD id="Aux4" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
+		<TD align="left">
+		<A target="main" href="gateway/protectdomain.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件域保护设定</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
+		<TD align="left">
+		<A target="main" href="gateway/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -287,8 +246,8 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux5','img5')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux5','img5')" height="20">
 	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;独立服务器模式
 </TD>
 </TR>
@@ -299,48 +258,48 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 <TD id="Aux5" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/mailserver.ns">独立服务器设置</A>
+		<TD align="left">
+		<A target="main" href="server/mailserver.ns">&nbsp;&nbsp;&nbsp;&nbsp;独立服务器设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
+		<TD align="left">
+		<A target="main" href="server/mailqueue.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件队列监管</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/showuserlist.ns">用户管理</A>
+		<TD align="left">
+		<A target="main" href="server/showuserlist.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户管理</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/searchUser.ns">查找用户</A>
+		<TD align="left">
+		<A target="main" href="server/searchUser.ns">&nbsp;&nbsp;&nbsp;&nbsp;查找用户</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/groupsControl.ns">用户组管理</A>
+		<TD align="left">
+		<A target="main" href="server/groupsControl.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户组管理</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="server/sendGroupMails.ns">群发邮件</A>
+		<TD align="left">
+		<A target="main" href="server/sendGroupMails.ns">&nbsp;&nbsp;&nbsp;&nbsp;群发邮件</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -353,8 +312,8 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux6','img6')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux6','img6')" height="20">
 	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;动态限制引擎
 </TD>
 </TR>
@@ -365,48 +324,48 @@ if($DynamicEngine > 0){
 <TD id="Aux6" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/dynengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="dynamic/dynengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/connperip.ns">同时连接数</A>
+		<TD align="left">
+		<A target="main" href="dynamic/connperip.ns">&nbsp;&nbsp;&nbsp;&nbsp;同时连接数</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/sendrateperfrom.ns">用户重复限制</A>
+		<TD align="left">
+		<A target="main" href="dynamic/sendrateperfrom.ns">&nbsp;&nbsp;&nbsp;&nbsp;用户重复限制</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/sendratepersubject.ns">邮件重复限制</A>
+		<TD align="left">
+		<A target="main" href="dynamic/sendratepersubject.ns">&nbsp;&nbsp;&nbsp;&nbsp;邮件重复限制</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/connrateperip.ns">连接频率</A>
+		<TD align="left">
+		<A target="main" href="dynamic/connrateperip.ns">&nbsp;&nbsp;&nbsp;&nbsp;连接频率</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="dynamic/realtime.ns">实时管理</A>
+		<TD align="left">
+		<A target="main" href="dynamic/realtime.ns">&nbsp;&nbsp;&nbsp;&nbsp;实时管理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -418,8 +377,8 @@ if($DynamicEngine > 0){
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux7','img7')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux7','img7')" height="20">
 	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;病毒识别引擎
 </TD>
 </TR>
@@ -430,24 +389,24 @@ if($DynamicEngine > 0){
 <TD id="Aux7" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="antivirus/virusengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="antivirus/virusengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antivirus/recognize.ns">病毒识别</A>
+		<TD align="left">
+		<A target="main" href="antivirus/recognize.ns">&nbsp;&nbsp;&nbsp;&nbsp;病毒识别</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antivirus/treatment.ns">病毒处理</A>
+		<TD align="left">
+		<A target="main" href="antivirus/treatment.ns">&nbsp;&nbsp;&nbsp;&nbsp;病毒处理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -459,8 +418,8 @@ if($DynamicEngine > 0){
 if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux8','img8')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux8','img8')" height="20">
 	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;垃圾邮件引擎
 </TD>
 </TR>
@@ -471,72 +430,72 @@ if($SpamEngine > 0){
 <TD id="Aux8" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/spamengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="antispam/spamengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=WhiteIP">IP白名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=WhiteIP">&nbsp;&nbsp;&nbsp;&nbsp;IP白名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=WhiteDomain">邮件域名白名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=WhiteDomain">&nbsp;&nbsp;&nbsp;&nbsp;邮件域名白名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=WhiteFrom">邮件帐号白名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=WhiteFrom">&nbsp;&nbsp;&nbsp;&nbsp;邮件帐号白名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=BlackIP">IP黑名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=BlackIP">&nbsp;&nbsp;&nbsp;&nbsp;IP黑名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=BlackDomain">邮件域名黑名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=BlackDomain">&nbsp;&nbsp;&nbsp;&nbsp;邮件域名黑名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/list.ns?option=BlackFrom">邮件帐号黑名单</A>
+		<TD align="left">
+		<A target="main" href="antispam/list.ns?option=BlackFrom">&nbsp;&nbsp;&nbsp;&nbsp;邮件帐号黑名单</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/traceable.ns">可追查性检查</A>
+		<TD align="left">
+		<A target="main" href="antispam/traceable.ns">&nbsp;&nbsp;&nbsp;&nbsp;可追查性检查</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/treatment.ns">垃圾处理</A>
+		<TD align="left">
+		<A target="main" href="antispam/treatment.ns">&nbsp;&nbsp;&nbsp;&nbsp;垃圾处理</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -549,8 +508,8 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux9','img9')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux9','img9')" height="20">
 	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;内容过滤引擎
 </TD>
 </TR>
@@ -561,40 +520,40 @@ if($ContentEngine > 0){
 <TD id="Aux9" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="content/contentengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="content/contentengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="content/rulemanage.ns">规则管理</A>
+		<TD align="left">
+		<A target="main" href="content/rulemanage.ns">&nbsp;&nbsp;&nbsp;&nbsp;规则管理</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="content/category.ns">类别管理</A>
+		<TD align="left">
+		<A target="main" href="content/category.ns">&nbsp;&nbsp;&nbsp;&nbsp;类别管理</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="content/ruleprint.ns">列印规则</A>
+		<TD align="left">
+		<A target="main" href="content/ruleprint.ns">&nbsp;&nbsp;&nbsp;&nbsp;列印规则</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="content/filetypes.ns">文件类型</A>
+		<TD align="left">
+		<A target="main" href="content/filetypes.ns">&nbsp;&nbsp;&nbsp;&nbsp;文件类型</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -605,8 +564,8 @@ if($ContentEngine > 0){
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux10','img10')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux10','img10')" height="20">
 	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;邮件审计引擎
 </TD>
 </TR>
@@ -617,16 +576,16 @@ if($ContentEngine > 0){
 <TD id="Aux10" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="archive/archiveengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="archive/archiveengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="archive/archivetype.ns">选择性审计</A>
+		<TD align="left">
+		<A target="main" href="archive/archivetype.ns">&nbsp;&nbsp;&nbsp;&nbsp;选择性审计</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -637,8 +596,8 @@ if($ContentEngine > 0){
 
 if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux11','img11')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux11','img11')" height="20">
 	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;智能交互引擎
 </TD>
 </TR>
@@ -649,24 +608,24 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 <TD id="Aux11" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="interactive/interengine.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="interactive/interengine.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="interactive/bigmail.ns">超大邮件提醒</A>
+		<TD align="left">
+		<A target="main" href="interactive/bigmail.ns">&nbsp;&nbsp;&nbsp;&nbsp;超大邮件提醒</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="interactive/exmail.ns">过量邮件提醒</A>
+		<TD align="left">
+		<A target="main" href="interactive/exmail.ns">&nbsp;&nbsp;&nbsp;&nbsp;过量邮件提醒</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -677,8 +636,8 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux12','img12')" class="mu2" height="20">
+<TR class="TableTitle2" >
+<TD onclick="popmenu('Aux12','img12')" height="20">
 	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;日志监控
 </TD>
 </TR>
@@ -692,32 +651,32 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="status/status.html">系统状态</A>
+		<TD align="left">
+		<A target="main" href="status/status.html">&nbsp;&nbsp;&nbsp;&nbsp;系统状态</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="log/logshow.ns">日志显示</A>
+		<TD align="left">
+		<A target="main" href="log/logshow.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志显示</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="log/logstat.ns">日志统计</A>
+		<TD align="left">
+		<A target="main" href="log/logstat.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志统计</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="log/logexport.ns">日志导出统计</A>
+		<TD align="left">
+		<A target="main" href="log/logexport.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志导出统计</A>
 		</TD>
 	</TR>
 	<TR>
@@ -727,8 +686,8 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 		if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="log/logflush.ns">日志清空删除</A>
+		<TD align="left">
+		<A target="main" href="log/logflush.ns">&nbsp;&nbsp;&nbsp;&nbsp;日志清空删除</A>
 		</TD>
 	</TR>
 	<TR>
@@ -740,8 +699,8 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	if(adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
-		<TD align="center">
-		<A target="main" href="log/audit.ns">操作日志审计</A>
+		<TD align="left">
+		<A target="main" href="log/audit.ns">&nbsp;&nbsp;&nbsp;&nbsp;操作日志审计</A>
 		</TD>
 	</TR>
 <?
@@ -754,8 +713,8 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 <?
 if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-<TR>
-<TD onclick="popmenu('Aux13','img13')" class="mu2" height="20">
+<TR class="TableTitle2">
+<TD onclick="popmenu('Aux13','img13')" height="20">
 	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;公安网络监管
 </TD>
 </TR>
@@ -766,32 +725,32 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 <TD id="Aux13" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
 	<TR>
-		<TD align="center">
-		<A target="main" href="gasupervise/basesettings.ns">基本设置</A>
+		<TD align="left">
+		<A target="main" href="gasupervise/basesettings.ns">&nbsp;&nbsp;&nbsp;&nbsp;基本设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="gasupervise/msp.ns">MSP设置</A>
+		<TD align="left">
+		<A target="main" href="gasupervise/msp.ns">&nbsp;&nbsp;&nbsp;&nbsp;MSP设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="gasupervise/gaisc.ns">GAISC设置</A>
+		<TD align="left">
+		<A target="main" href="gasupervise/gaisc.ns">&nbsp;&nbsp;&nbsp;&nbsp;GAISC设置</A>
 		</TD>
 	</TR>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>
-		<TD align="center">
-		<A target="main" href="gasupervise/export.ns">四部委交换格式</A>
+		<TD align="left">
+		<A target="main" href="gasupervise/export.ns">&nbsp;&nbsp;&nbsp;&nbsp;四部委交换格式</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -801,7 +760,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 }
 ?>
 <TR>
-<TD class="mu2" height="20">
+<TD height="20">
 	<A target="_top" href="logout.ns">退出系统</A>
 </TD>
 </TR>
