@@ -91,28 +91,25 @@ _SPAMXML_
 
 	my $filterdb = $xs->XMLin( $filterdb_file );
 
+
+	for my $rule_id ( keys %{$rule_add_modify} ){
+		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
+		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
+#push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
+	}
+
 	for my $rule_id ( keys %{$rule_del} ){
 		$self->{zlog}->log ( "deleting rule id: [$rule_id] from filterdb" );
 		delete $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} if defined $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id};
 	}
+#	$ keys %{$filterdb->{'rule-add-modify'}->{'rule'}} )
+
 	use Data::Dumper;
 # 改变$转义、缩进
 	$Data::Dumper::Useperl = 1;
 	$Data::Dumper::Indent = 1;
 	print Dumper($filterdb);
 
-
-	my $hasrule = 0;
-	for my $rule_id ( keys %{$rule_add_modify} ){
-		$hasrule = 1;
-		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
-		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
-#push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
-	}
-
-	if ( $hasrule ){
-		delete $filterdb->{'rule-add-modify'}->{'rule'}->{""};
-	}
 
 	$new_filterdb = $xs->XMLout($filterdb);
 
@@ -125,6 +122,7 @@ _SPAMXML_
 
 
 	my $bakfile = $filterdb_file . "-" . `date +%Y-%m-%d-%H-%M-%s`;
+	chomp $bakfile;
 
 	$self->{zlog}->log( "renaming [$filterdb_file] to [$bakfile]..." );
 	rename ( $filterdb_file, $bakfile ) or warn "backup file failed!";
@@ -145,7 +143,7 @@ sub get_filterdb_xml_simple
 	$xs = new XML::Simple( KeepRoot => 1,
 			NormaliseSpace => 1,
 			parseropts => \@parseropts,
-			KeyAttr => {rule=>'rule_id'},
+			KeyAttr => {rule=>'+rule_id'},
 			ForceArray => ['rule']);
 
 }

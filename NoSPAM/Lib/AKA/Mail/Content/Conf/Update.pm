@@ -69,10 +69,14 @@ sub read_rule {
 	if (-d $path) {
 
 		foreach my $file ($self->get_rule_files_in_dir ($path)) {
-			$newfilenum++;
 			$self->{zlog}->log( "found new spam rule file \"$file\", processing..." );
+			if ( ! $self->{verify}->verify_key( $file ) ){
+				$self->{zlog}->log( "cannot verify \"$file\": $?\n"); 
+				next;
+			}
 
-			$self->{verify}->verify_key( $file ) or warn "cannot verify \"$file\": $?\n", next;
+			$newfilenum++;
+
 			$ruleref = $xs->XMLin($file) or warn "cannot xml simple \"$file\": $!\n", next;
 
 			add_rule( $self, $ruleref );
@@ -92,7 +96,7 @@ sub add_rule
 	my ( $rule_add_modify, $rule_del );
 
 	$rule_add_modify = $ruleref->{'asc-msp'}->{'jbl-data'}->{'rule-add-modify'}->{'rule'};
-	$rule_del = $ruleref->{'asc-msp'}->{'jbl-data'}->{'rule-del'};
+	$rule_del = $ruleref->{'asc-msp'}->{'jbl-data'}->{'rule-del'}->{'rule-id'};
 
 	add_rule_add_modify( $self,$rule_add_modify ) if defined($rule_add_modify) ;
 	add_rule_del( $self,$rule_del ) if defined($rule_del) ;
@@ -155,10 +159,8 @@ sub get_update_xml_simple
 	return new XML::Simple(KeepRoot => 1, 
 			NormaliseSpace => 1,
 			parseropts => \@parseropts , 
-			KeyAttr => {rule=>'rule_id', 
-			'rule-del'=>'rule_id'}, 
-			ForceArray => ['rule', 
-			'rule-del']);
+			KeyAttr => {'rule'=>'+rule_id', 'rule-id'=>'+rule_id'}, 
+			ForceArray => ['rule', 'rule-id']);
 }
 
 
