@@ -551,7 +551,7 @@ sub qmail_requeue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
+		#$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
 		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0 for [$msg]. (#4.3.0) - $!");
 
 		open (STDOUT, "<&EOUT") ||  return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
@@ -574,7 +574,7 @@ sub qmail_requeue {
 		close EIN  || return $self->close_smtp (451, "Write error to envelope pipe. (#4.3.0) - $!");
 
 		$envelope =~ s/\0/\\0/g;
-		$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
+		#$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
 
 	}
 
