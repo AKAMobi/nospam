@@ -56,6 +56,7 @@ sub gen_gif
 	my $rrdpath = $self->{define}->{rrdpath};
 	my $gifpath = $self->{define}->{gifpath};
 
+	umask 022;
 	foreach my $name ( keys %$rrdgraph_func ){
 		foreach my $period ( keys %$rrdgraph_param ){
 			my $rrdfile = $rrdpath . $name . '.rrd';
@@ -339,7 +340,7 @@ sub rrdgraph_size
 			"--width=500",        
 			"--upper-limit=20",  
 			"--lower-limit=0",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 
@@ -556,7 +557,7 @@ sub rrdgraph_dns
 			"--width=500",        
 			"--upper-limit=20",  
 			"--lower-limit=-10",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 
@@ -701,7 +702,7 @@ sub rrdgraph_traffic
 			"--width=500",        
 			"--upper-limit=1024",  
 			"--lower-limit=-1024",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			"--base=1024",     
 
@@ -830,7 +831,7 @@ sub rrdgraph_engine
 			"--height=200",        
 			"--width=500",
 			"--interlaced",
-			#"--lazy",
+			"--lazy",
 			#'--imginfo "<IMG SRC="%s" WIDTH="%lu" HEIGHT="%lu" ALT="Demo">"',
 			"--upper-limit=20",  
 			"--lower-limit=-10",   
@@ -1022,7 +1023,7 @@ sub rrdgraph_type
 			"--width=500",        
 			"--upper-limit=20",  
 			"--lower-limit=-10",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 
@@ -1326,7 +1327,7 @@ sub ds2rrd
 
 	my @dns_ds = $self->get_dns_ds();
 
-print "dns_ds: " . join("\t", @dns_ds) . "\n";
+#print "dns_ds: " . join("\t", @dns_ds) . "\n";
 #	print "$rrd_num_virus:$rrd_num_spam:$rrd_num_content";
 #	print ":$rrd_num_overrun:";
 #	print "$rrd_num_archive:" ;

@@ -259,9 +259,11 @@ sub cut_comma_to_array_ref
 {
 	my $self = shift;
 	my $conf_line = shift;
-	return undef if ( !defined $conf_line || !length($conf_line) );
 
 	my @ret;
+
+	return \@ret if ( !defined $conf_line || !length($conf_line) );
+
 	foreach ( split(',', $conf_line) ){
 		next if ( !defined $_ || !length($_) );
 		#strip comments from list

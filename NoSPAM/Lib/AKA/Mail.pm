@@ -217,23 +217,23 @@ sub recv_mail_info
 	my $socket = shift;
 
 my $logstr;
-	$_ = <$socket>; chomp;
+	$_ = <$socket>; s/\r|\r\n|\n//g;
 $logstr .= "RELAYCLIENT: [$_]\n";
 	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
 
-	$_ = <$socket>; chomp;
+	$_ = <$socket>; s/\r|\r\n|\n//g;
 $logstr .= "TCPREMOTEIP: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
 
-	$_ = <$socket>; chomp;
+	$_ = <$socket>; s/\r|\r\n|\n//g;
 $logstr .= "TCPREMOTEINFO: [$_]\n";
 	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
 
-	$_ = <$socket>; chomp;
+	$_ = <$socket>; s/\r|\r\n|\n//g;
 $logstr .= "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
-	$_ = <$socket>; chomp;
+	$_ = <$socket>; s/\r|\r\n|\n//g;
 $logstr .= "fd1: $_\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
 
@@ -1410,7 +1410,7 @@ sub check_license_file
 	
 	while ( <LFD> ){
 		chomp;
-		s/[\r\n]$//;
+		s/[\r\n]+$//;
 		if ( /^ProductLicenseExt=(.+)$/ ){
 			$license_checksum = $1;
 			next;
