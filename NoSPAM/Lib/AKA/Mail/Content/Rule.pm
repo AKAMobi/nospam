@@ -33,7 +33,8 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf($self) ;
+	#$self->{conf} = $parent->{conf} || new AKA::Mail::Conf($self) ;
+	$self->{content_conf} = $parent->{content_conf} || new AKA::Mail::Content::Conf($self) ;
 
 	return $self;
 }
@@ -75,7 +76,7 @@ sub load_user_filter_db
 
 	if ( defined $self->{user_filterdb} ) { return; }
 	
-	$self->{user_filterdb} = $self->{conf}->get_user_filter_db();
+	$self->{user_filterdb} = $self->{content_conf}->get_user_filter_db();
 
 	# 得到以 rule_id 为 key 的表
 	$self->{user_filterdb} = $self->{user_filterdb}->{'rule-add-modify'}->{rule};
@@ -88,7 +89,7 @@ sub load_GA_filter_db
 
 	if ( defined $self->{filterdb} ) { return; }
 	
-	$self->{filterdb} = $self->{conf}->get_filter_db();
+	$self->{filterdb} = $self->{content_conf}->get_filter_db();
 
 	# 得到以 rule_id 为 key 的表
 	$self->{filterdb} = $self->{filterdb}->{'rule-add-modify'}->{rule};

@@ -37,22 +37,22 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf($self) ;
+	$self->{content_conf} = $parent->{content_conf} || new AKA::Mail::Content::Conf($self) ;
 	$self->{mime_parser} ||= new MIME::Parser;
 
 	# FIXME: $a = $b || $c not work??
-	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/home/NoSPAM/spool/tmp/";
+	my $tmpdir = $self->{content_conf}->{define}->{tmpdir} || "/home/NoSPAM/spool/tmp/";
 	#$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
 
 	$self->{mime_parser}->output_dir($tmpdir);
-	$self->{mime_parser}->output_prefix("AMC");
+	$self->{mime_parser}->output_prefix("AMCF");
 
-	$self->{prefix} = "AMC";
+	$self->{prefix} = "AMCF";
 
 
 	# 文件类型
 	$self->{filetype}->{compress} = [ 'zip','rar',
-					  'tgz', 'gz','bzip2' ];
+					  'tgz', 'gz','bz2' ];
 	$self->{filetype_num}->{compress} = 1;
 
 	$self->{filetype}->{sound} = [ 'mp3', 'wav', 'wmv' ];
@@ -64,7 +64,7 @@ sub new
 	$self->{filetype}->{text} = [ 'txt' ];
 	$self->{filetype_num}->{text} = 4;
 
-	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat', 'pif' ];
+	$self->{filetype}->{exe} = [ 'exe', 'com', 'bat', 'pif', 'scr', 'vbs' ];
 	$self->{filetype_num}->{exe} = 5;
 
 	$self->load_user_filetype;
@@ -76,7 +76,7 @@ sub load_user_filetype
 {
 	my $self = shift;
 	
-	my $type_file = $self->{conf}->{define}->{user_filetype}; 
+	my $type_file = $self->{content_conf}->{define}->{user_filetype}; 
 
 	if ( ! open ( FD, "<$type_file" ) ){
 		$self->{zlog}->fatal( "Parser: open user_filetype [ $type_file ] failure!" );
@@ -281,7 +281,7 @@ sub get_body_info
 
                 if ( !defined $filename ){
                         $filename = $path;
-			$prefix = $self->{prefix} || "AMC";
+			$prefix = $self->{prefix} || "AMCF";
 
                         $filename =~ s/^.*\/$prefix\-//g;
 			$self->{mail_info}->{body}->{$filename}->{nofilename} = 1;

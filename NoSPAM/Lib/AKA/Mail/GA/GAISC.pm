@@ -114,9 +114,30 @@ sub GAISC_server
 
 	my $client ;
 
-	while ( 1 ){
+	my $pid;
+
+	use POSIX ":sys_wait_h";
+
+	my $childnum;
+	for ( $childnum=0; $childnum<5; $childnum++ ){
+		$pid=fork();
+		if ( $pid > 0 ){ # parent
+			next if $childnum<5;
+			my $kid;
+			do {
+				$kid = waitpid(-1, WNOHANG);
+			} until $kid > 0;
+		}elsif ( 0==$pid ){ #child
+			last;
+		}else{ # error
+			print "ERR: fork\n";
+		}
+	}
+
+	while ( 0==$pid ){
 
 		$client = $server->accept;
+		print "I'm the $childnum th child\n";
 
 		if (!$client) {
 			# this can happen when interrupted by SIGCHLD on Solaris,

@@ -8,15 +8,43 @@
 
 package AKA::Mail;
 
+use MIME::Base64; 
+use MIME::QuotedPrint; 
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 
+use AKA::License;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
+
 use AKA::Mail::AntiVirus;
 use AKA::Mail::Spam;
-use AKA::Mail::Dynamic;
-use AKA::Mail::Archive;
 use AKA::Mail::Content;
-use AKA::License;
+use AKA::Mail::Dynamic;
+
+use AKA::Mail::Archive;
+
+use constant	{
+	RESULT_SPAM_NOT		=>	0,
+	RESULT_SPAM_MAYBE	=>	1,
+	RESULT_SPAM_MUST	=>	2,
+	RESULT_SPAM_BLACK	=>	3,
+
+	ACTION_PASS		=>	0,
+	ACTION_REJECT		=>	1,
+	ACTION_DISCARD		=>	2,
+	ACTION_QUARANTINE	=>	3,
+	ACTION_STRIP		=>	4,
+	ACTION_DELAY		=>	5,
+	ACTION_NULL		=>	6,
+	ACTION_ACCEPT		=>	7,
+	ACTION_ADDRCPT		=>	8,
+	ACTION_DELRCPT		=>	9,
+	ACTION_CHGRCPT		=>	10,
+	ACTION_ADDHDR		=>	11,
+	ACTION_DELHDR		=>	12,
+	ACTION_CHGHDR		=>	13
+	
+};
 
 sub new
 {
@@ -30,33 +58,69 @@ sub new
 
 	$self->{license} = new AKA::License;
 
-	$self->{conf} = new AKA::Mail::Conf;
-	$self->{zlog} = new AKA::Mail::Log;
-	#$self->{spam} = new AKA::Mail::Spam;
-	#$self->{dynamic} = new AKA::Mail::Dynamic;
-	#$self->{content} = new AKA::Mail::Content;
+	$self->{conf} = new AKA::Mail::Conf($self);
+	$self->{zlog} = new AKA::Mail::Log($self);
+
+	$self->{antivirus} 	= new AKA::Mail::AntiVirus($self);
+	$self->{spam} 		= new AKA::Mail::Spam($self);
+	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
+	$self->{content} 	= new AKA::Mail::Content($self);
+	$self->{archive} 	= new AKA::Mail::Archive($self);
 
 	return $self;
 
 }
 
-sub should_refuse_spam
+sub process
+{
+	my $self = shift;
+	my $mail_info = shift;
+
+	unless ( $mail_info ){
+		$self->{zlog}->fatal ( "Mail::process can't get mail_info" );
+		return undef;
+	}
+
+	$self->{mail_info} = $mail_info;
+
+	# 获取文件尺寸和标题等基本信息
+	$self->get_mail_base_info;
+
+	$self->antivirus_engine() 	unless $self->{mail_info}->{aka}->{drop};
+	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
+	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
+	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
+	
+
+	# Log
+	#$self->log_engine();
+
+
+	# 处理邮件动作
+	#$self->do_action();
+
+	# 清理内容引擎内容
+	$self->{content}->clean;
+
+	return $self->{mail_info};
+}
+
+sub do_action
 {
 	my $self = shift;
 
-	return ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} );
+	die "un implement";
+	# TODO
 }
 
 sub antivirus_engine
 {
 	my $self = shift;
 
-	my $emlfile = shift;
+	$self->{mail_info}->{aka}->{engine}->{antivirus} = 
+		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
 
-	$self->{antivirus} ||= new AKA::Mail::AntiVirus($self);
-
-	return $self->{antivirus}->catch_virus( {		emlfilename => $emlfile
-						});
+	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{antivirus}->{action};
 }
 
 
@@ -82,27 +146,42 @@ sub archive_engine
 	return $self->{archive}->archive($emlfile);
 }
 
-# return ( spam_level, reason );
 sub spam_engine
 {
 	my $self = shift;
 
-	my ( $client_smtp_ip, $returnpath ) = @_;
+	my ( $client_smtp_ip, $returnpath ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
+						$self->{mail_info}->{aka}->{returnpath} );
+
+	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} =  'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine};
 
 	if ( ! $client_smtp_ip || ! $returnpath ){
 		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ ) );
-		return (0, "反垃圾引擎参数不足" );
+
+		$self->{mail_info}->{aka}->{engine}->{spam}->{result} = RESULT_SPAM_NOT;
+		$self->{mail_info}->{aka}->{engine}->{spam}->{desc} = '反垃圾引擎参数不足';
+		$self->{mail_info}->{aka}->{engine}->{spam}->{action} = ACTION_PASS;
+		return;
 	}
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
-		return (0, "反垃圾引擎未启动" );
+		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
+							desc	=>'未启动',
+							action	=>ACTION_PASS };
+		return;
 	}
 
-	$self->{spam} ||= new AKA::Mail::Spam;
 	my ( $is_spam, $reason ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
-	undef $self->{spam};
 
-	return ( $is_spam, $reason );
+	$self->{mail_info}->{aka}->{engine}->{spam}->{result} = $is_spam;
+	$self->{mail_info}->{aka}->{engine}->{spam}->{desc} = $reason;
+	$self->{mail_info}->{aka}->{engine}->{spam}->{action} = (  ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} 
+								   ) && $is_spam
+								) ? ACTION_REJECT : ACTION_PASS ;
+	
+	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{spam}->{action};
+
+	return;
 }
 
 # input: (subject, mailfrom)
@@ -111,46 +190,109 @@ sub dynamic_engine
 {
 	my $self = shift;
 
-	my ( $subject, $mailfrom, $ip ) = @_;
+        my $start_time=[gettimeofday];
+
+	my ( $subject, $mailfrom, $ip ) = (
+		$self->{mail_info}->{aka}->{subject},
+		$self->{mail_info}->{aka}->{returnpath},
+		$self->{mail_info}->{aka}->{TCPREMOTEIP} 
+	);
 
 	my ( $is_overrun, $reason );
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
-		return (0, "动态限制引擎未启动" );
+		$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => 0,
+	                                desc    => '未启动',
+       	                         	action  => 0,
+	
+                                	enabled => 0,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			
+		};
+		return;
 	}
 
-
 	# we check what we has seen
-	#if ( ! $subject || ! $mailfrom || ! $ip ){
-	#	$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
+	if ( ! $subject || ! $mailfrom || ! $ip ){
+		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
 		# we should check what we can check.
 
 	#	($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
-	#}
-
-	$self->{dynamic} ||= new AKA::Mail::Dynamic;
+	}
 
 	if ( $mailfrom ){
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom );
-		return ($is_overrun,'发信人'.$reason) if ( $is_overrun );
+		if ( $is_overrun ){
+			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => $is_overrun,
+	                                desc    => '发信人' . $reason,
+       	                         	action  => 1,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return ;
+		}
 	}
 
 	if ( $subject ){
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_subject( $subject );
-		return ($is_overrun,'邮件'.$reason) if ( $is_overrun );
+		if ( $is_overrun ){
+			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => $is_overrun,
+	                                desc    => '邮件' . $reason,
+       	                         	action  => 1,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return ;
+		}
 	}
 
 	if ( $ip ){
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_ip( $ip );
-		return ($is_overrun,'IP'.$reason) if ( $is_overrun );
+		if ( $is_overrun ){
+			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => $is_overrun,
+	                                desc    => 'IP' . $reason,
+       	                         	action  => 1,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return ;
+		}
 	}
 
-	undef $self->{dynamic};
+	$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+		result  => 0,
+		desc    => '通过动态监测',
+		action  => 0,
 
-	$is_overrun ||= 0;
-	$reason ||="已通过动态监测";
+		enabled => 1,
+		runned  => 1,
+		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+	};
+	return ;
+}
 
-	return ( $is_overrun, $reason );
+sub content_engine
+{
+	my $self = shift;
+
+	return unless ( $self->content_engine_is_enabled() );
+
+	# content parser get all mail information, and return it.
+	$self->{mail_info} = $self->{content}->process( $self->{mail_info} );
+
+
+	return;
 }
 
 sub content_engine_is_enabled
@@ -158,11 +300,35 @@ sub content_engine_is_enabled
 	my $self = shift;
 	my $mail_size = shift;
 
+
+        my $start_time=[gettimeofday];
+
 	if ( 'Y' eq uc $self->{conf}->{config}->{ContentEngine}->{ContentFilterEngine} ){
-		if ( $mail_size && $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
-			return 1 if ( $mail_size < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} )
+		if ( $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
+			return 1 if ( $self->{mail_info}->{aka}->{size} < $self->{conf}->{intconf}->{ContentEngineMaxMailSize} );
+			$self->{mail_info}->{aka}->{engine}->{content} = {
+                			result  => 0,
+	                                desc    => '邮件超过配置最大值',
+       	                         	action  => 0,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return 0;
 		}
 	}
+
+	$self->{mail_info}->{aka}->{engine}->{content} = {
+            		result  => 0,
+                        desc    => '未启动',
+                        action  => 0,
+
+                        enabled => 0,
+                        runned  => 1,
+                        runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
+	
 	return 0;
 }
 
@@ -291,6 +457,34 @@ sub check_license_file
 	return $LicenseHTML;
 }
 
+sub get_mail_base_info
+{
+	my $self = shift;
+
+	open ( MAIL, '<' . $self->{mail_info}->{aka}->{emlfilename} ) or return undef;
+
+	my $still_headers = 0;
+	my $subject;
+	while (<MAIL>) {
+		if ( $still_headers ){
+			if ( /^Subject: ([^\n]+)/i) {
+				$subject = $1 || '';
+				$subject=~s/[\r\n]*$//g;
+				if ($subject=~/^=\?[\w-]+\?B\?(.*)\?=$/) { 
+					$subject = decode_base64($1); 
+				}elsif ($subject=~/^=\?[\w-]+\?Q\?(.*)\?=$/) { 
+					$subject = decode_qp($1); 
+				}
+			}
+			$still_headers = 0 if (/^(\r|\r\n|\n)$/);
+		}
+		last unless $still_headers;
+	}
+	close(MAIL);
+
+	$self->{mail_info}->{aka}->{subject} = $subject;
+	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
+}
 
 1;
 

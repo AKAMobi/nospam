@@ -32,7 +32,8 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog};
-	$self->{conf} = $parent->{conf};
+	#$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
+	$self->{content_conf} = $parent->{content_conf} || new AKA::Mail::Content::Conf;
 
 	return $self;
 }
@@ -40,8 +41,8 @@ sub new
 sub verify_key
 {
 	my ($self, $file) = @_;
-	my $verify_binary = $self->{conf}->{define}->{verify_binary};
-	my $verify_opts = " " . $self->{conf}->{define}->{cen_pub_key};
+	my $verify_binary = $self->{content_conf}->{define}->{verify_binary};
+	my $verify_opts = " " . $self->{content_conf}->{define}->{cen_pub_key};
 
 
 	if ( ! -f $verify_binary ){
@@ -60,8 +61,8 @@ sub verify_key
 sub sign_key
 {
 	my ($self, $file) = @_;
-	my $sign_binary = $self->{conf}->{define}->{sign_binary};
-	my $sign_opts = " " . $self->{conf}->{define}->{msp_pri_key};
+	my $sign_binary = $self->{content_conf}->{define}->{sign_binary};
+	my $sign_opts = " " . $self->{content_conf}->{define}->{msp_pri_key};
 
 
 	if ( ! -e $sign_binary ){
@@ -75,16 +76,6 @@ sub sign_key
 	}
 
 	return 0;
-}
-
-
-
-sub DESTROY
-{
-	my $self = shift;
-
-	delete $self->{zlog};
-	delete $self->{conf};
 }
 
 1;

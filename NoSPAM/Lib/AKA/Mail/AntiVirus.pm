@@ -12,6 +12,7 @@ use AKA::Mail::Log;
 use AKA::Mail::Conf;
 
 use IO::Socket;
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 
 sub new
 {
@@ -72,15 +73,21 @@ sub catch_virus
 
 	my $self = shift;
 
-	my $mail_info = shift;
+	my $file = shift;
+
+  	my $start_time=[gettimeofday];
+  	
 	if ( 'Y' ne $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
-		return ( { 	Result => 0,
-				Reason => '病毒引擎未启动',
-				Action => 0 
+		return ( { 	result 	=> 0,
+				desc	=> '未启动',
+				action 	=> 0, 
+
+				enabled	=> 0,
+				runned	=> 1,
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 			} );
 	}
 
-	my $file = $mail_info->{emlfilename};
 
 	my $result;
 
@@ -89,9 +96,13 @@ sub catch_virus
 		$self->{zlog}->debug ( "catch_virus use clamd" );#, result: [$result]" );
 	}else{
 		# XXX pass virus for performance problem
-		return ( {	Result	=> 0,
-			Reason => '病毒引擎重起中',
-			Action =>  0
+		return ( {	result	=> 0,
+				desc => '重起中',
+				action =>  0,
+
+				enabled	=> 1,
+				runned	=> 1,
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
 			});
 
 		$result = $self->check_file_clamscan( $file );
@@ -100,10 +111,14 @@ sub catch_virus
 
 	if ( $result =~ m#ERROR$# ){
 		$self->{zlog}->fatal ( "AntiVirus return ERROR[$result] for file[$file]" );
-		return ( {	Result => 0,
-				Reason => '病毒引擎内部错误',
-				Action => 0 
-				});
+		return ( {	result 	=> 0,
+				desc 	=> '内部错误',
+				action => 0, 
+
+				enabled	=> 1,
+				runned	=> 1,
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			});
 	}
 
 	$result =~ m#^$file: (.+)#;
@@ -115,11 +130,16 @@ sub catch_virus
 	my $is_virus = (defined $1)?0:1;
 	my $virus_name = $2 if $is_virus;
 
+	return ( {	result	=> $is_virus,
+			desc => $virus_name||'',
+			action =>  ( 	('Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus}
+					) && $is_virus
+				 ) ? 1 : 0 ,
 
-	return ( {	Result	=> $is_virus,
-			Reason => $virus_name||'',
-			Action =>  ('Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus})?1:0 
-			});
+			enabled	=> 1,
+			runned	=> 1,
+			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		});
 
 }
 
