@@ -1090,15 +1090,10 @@ sub post_install
 cd / 
 unzip -p -P zixia@noSPAM_OKBoy_GNULinux! /mnt/cdrom/RedHat/RPMS/${PKGNAME} | tar x 
 
-for file in /etc/lilo.*.conf; do
-	lilo -C $file
-	rm -f $file
-done
-
 cd /home/NoSPAM/admin/
-	mv -f index.${OEMNAME}.ns index.ns
-	mv -f images/Logo_${OEMNAME}.gif images/Logo.gif
-	rm -f index.*.ns images/Logo_*.gif
+	cp -fR oem/aka/* .
+	cp -fR oem/${OEMNAME}/* .
+	rm -fr oem
 cd -
 
 grep -v devpts /etc/fstab > /etc/fstab.new
@@ -1132,6 +1127,19 @@ chmod 000 /etc/cron.daily/makewhatis.cron
 chmod 000 /etc/cron.weekly/makewhatis.cron
 chmod 000 /etc/cron.daily/rpm
 chmod 000 /etc/cron.daily/slocate.cron
+
+depmod -a 2.4.26-noSPAM
+mkinitrd -f /boot/initrd-2.4.26-noSPAM.img 2.4.26-noSPAM
+
+echo \'#!/bin/sh\' > /sbin/lilo.dummy
+chmod +x /sbin/lilo.dummy
+mv /sbin/lilo /sbin/lilo.ns
+mv /sbin/lilo.dummy /sbin/lilo
+
+for file in /etc/lilo.*.conf; do
+	lilo.ns -C $file
+	rm -f $file
+done
 
 unlink /root/post_install
 ';
