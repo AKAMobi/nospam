@@ -86,10 +86,10 @@ sub catch_virus
 
 	if ( $self->is_clamd_up() ){
 		$result = $self->check_file_socket_tcp( $file );
-		$self->{zlog}->debug ( "catch_virus use clamd, result: [$result]" );
+		$self->{zlog}->debug ( "catch_virus use clamd" );#, result: [$result]" );
 	}else{
 		$result = $self->check_file_clamscan( $file );
-		$self->{zlog}->debug ( "catch_virus use clamscan, result: [$result]" );
+		$self->{zlog}->debug ( "catch_virus use clamscan" ); #, result: [$result]" );
 	}
 
 	if ( $result =~ m#ERROR$# ){
@@ -230,7 +230,7 @@ sub set_clamd_up
 sub is_clamd_up
 {
 	my $self = shift;
-	$self->{zlog}->debug ( "is_clamd_up" );
+	#$self->{zlog}->debug ( "is_clamd_up" );
 
 	if ( -f $self->{define}->{status_file} . 'OK' ){
 		$self->{zlog}->debug ( "is_clamd_up find OK" );
@@ -262,14 +262,16 @@ sub restart_clamd
 
 	#return system("killall -9 clamd > /dev/null 2>&1 ; /usr/sbin/clamd >/dev/null 2>&1; sleep 1;");
 
+	$self->set_clamd_down();
+
 	use Fcntl ':flock'; # import LOCK_* constants
 
 	if ( open ( LOCKFD, '>' . $self->{define}->{status_file} . 'lock' )  ){
 		if ( flock(LOCKFD,LOCK_EX|LOCK_NB) ){
-			$self->set_clamd_down();
-			system("/etc/init.d/clamd restart > /dev/null 2>&1; sleep 1;");
-			$self->set_clamd_up();
+			system("/etc/init.d/clamd restart > /dev/null 2>&1;");
+			sleep 1;
 			flock (LOCKFD,LOCK_UN);
+			$self->set_clamd_up();
 		}else{
 			$self->{zlog}->debug ( "researt_clamd: this is another process is restarting..." );
 		}
