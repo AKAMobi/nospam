@@ -14,7 +14,6 @@
 #include	"sqconfig.h"
 #include	"mailinglist.h"
 #include	"cgi/cgi.h"
-#include	"pcp/pcp.h"
 #include	"authlib/authstaticlist.h"
 #include	<stdio.h>
 #include	<string.h>
@@ -64,6 +63,24 @@ extern void output_attrencoded_oknl(const char *);
 extern const char *sqwebmail_mailboxid;
 
 static const char hex[]="0123456789ABCDEF";
+
+// by lfan
+void get_dotqmail_file( char* fpath )
+{
+	struct vqpasswd *mypw;
+	char *user, *domain, *p, *p2;
+	p=login_returnaddr();
+	p2=strdup(p);
+	user=strtok(p2, "@");
+	domain=strtok(0, "@");
+	
+	if ( (mypw = vauth_getpw( user, domain )) != NULL ) {
+		sprintf( fpath, "%s/.qmail", mypw->pw_dir );
+		free(mypw);
+	}
+	if( p2 )
+		free(p2);
+}
 
 static int nybble(char c)
 {
@@ -372,61 +389,71 @@ void pref_setprefs()
 	else if (*cgi("do.changefwd"))
         {
         FILE *fp1, *fp2;
-        char buf[512], fpath[256], folder[80], *p;
+        char buf[512], fpath[256], folder[256], *p;
 
-                if(( p=login_returnaddr() ))
-                {
-                char *user;
-                char *domain;
-                char *p2;
                 int lastc;
-                        p2=strdup(p);
-                        user=strtok(p2, "@");
-                        domain=strtok(0, "@");
+		get_dotqmail_file(fpath);
+		p = cgi("forwardlists");
 
-                        vget_assign(domain, buf, 156, NULL, NULL);
-                        sprintf(fpath, "%s/.qmail-%s", buf, user);
-                        free(p2);
-			p = cgi("forwardlists");
-			if( strlen(p) < 4 ) 
+        	sprintf(folder, "%s.tmp", fpath);
+
+        	if ((fp2=fopen(folder, "w")) == NULL)
+        	        return;
+
+
+		lastc = 1;
+		
+		if ((fp1=fopen(fpath, "r")) != NULL)
+		{
+		    while (fgets(buf, sizeof(buf), fp1))
+		    {
+			if( buf[0] == '&' ) continue;
+			if( buf[0] == '#' )
 			{
-				unlink(fpath);
+				if( *cgi("save") || strlen(p) < 4 ) 
+					fprintf(fp2, "%s", buf+1);
+				else		
+					fprintf(fp2, "%s", buf);
+			}
+			else {
+				if( *cgi("save") || strlen(p) < 4)
+					fprintf(fp2, "%s", buf);
+				else
+					fprintf(fp2, "#%s", buf);
+			}
+			lastc = 0;
+		    }
+		    fclose(fp1);
+		}
+
+		if( lastc )
+		{
+			if( strlen(p) < 4 ) {
+				unlink( fpath );
 				return;
 			}
+			// by lfan, if first created, add deliver
+			if( *cgi("save") )
+				fprintf(fp2, "./Maildir/\n" );
+		}
 
-                        sprintf(folder, "%s.tmp", fpath);
-
-                        if ((fp2=fopen(folder, "w")) == NULL)
-                                return;
-
-			/* by lfan, for mail filter problem
-                        if ((fp1=fopen(fpath, "r")) != NULL)
-                        {
-                            while (fgets(buf, sizeof(buf), fp1))
-                            {
-                                if( buf[0] == '&' ) continue;
-                                fprintf(fp2, "%s", buf);
-                            }
-                            fclose(fp1);
-                        }
-			*/
-
-                        for (lastc='\n'; *p; p++)
-                        {
-                            if (isspace((int)(unsigned char)*p) && *p != '\n')
-                                continue;
-                            if (*p == '\n' && lastc == '\n')
-                                continue;
-                            if (lastc == '\n')
-                            {
-                                putc('&', fp2);
-                            }
-                            putc(*p, fp2);
-                            lastc = *p;
-                        }
-                        fclose(fp2);
-                        rename(folder, fpath);
-                }
+        	for (lastc='\n'; *p; p++)
+        	{
+        	    if (isspace((int)(unsigned char)*p) && *p != '\n')
+        	        continue;
+        	    if (*p == '\n' && lastc == '\n')
+        	        continue;
+        	    if (lastc == '\n')
+        	    {
+        	        putc('&', fp2);
+        	    }
+        	    putc(*p, fp2);
+        	    lastc = *p;
+        	}
+		if( lastc != '\n' )
+			putc('\n', fp2);
+        	fclose(fp2);
+        	rename(folder, fpath);
         }
 
 	if (*cgi("do.changepwd") && auth_changepass)
@@ -456,37 +483,32 @@ void pref_setprefs()
 void pref_forward()
 {
 FILE *fp;
-char buf[256], fpath[80], *p;
+char buf[256], fpath[80], *p, flag;
 
         printf("<textarea cols=40 rows=4 name=\"forwardlists\" wrap=\"off\">");
 
-        if (( p=login_returnaddr() ))
+	get_dotqmail_file(fpath);
+
+	flag = 0;
+        if ((fp=fopen(fpath, "r")) != NULL)
         {
-        char *user;
-        char *domain;
-        char *p2;
-        int lastc;
-                p2=strdup(p);
-                user=strtok(p2, "@");
-                domain=strtok(0, "@");
-
-                vget_assign(domain, buf, 156, NULL, NULL);
-                sprintf(fpath, "%s/.qmail-%s", buf, user);
-                free(p2);
-
-                if ((fp=fopen(fpath, "r")) != NULL)
+                p = buf;
+                p += 1;
+                while (fgets(buf, sizeof(buf), fp))
                 {
-                        p = buf;
-                        p += 1;
-                        while (fgets(buf, sizeof(buf), fp))
-                        {
-                            if( buf[0] != '&' ) continue;
-                            output_attrencoded_oknl(p);
-                        }
-                        fclose(fp);
+                    if( buf[0] != '&' ) 
+		    { 
+			    if( buf[0] != '#' )
+			    	flag = 1; 
+			    continue; 
+		    }
+                    output_attrencoded_oknl(p);
                 }
+                fclose(fp);
         }
-        printf("</textarea>");
+		
+        printf("</textarea><br>\n");
+	printf("<input type=checkbox name=\"save\" value=\"yes\" %s>", flag? "checked":"" );
 }
 
 void pref_isoldest1st()
@@ -526,7 +548,7 @@ void pref_displayweekstart()
 		printf("<option value=\"%d\"%s>", i,
 		       i == pref_startofweek ? " SELECTED":"");
 
-		output_attrencoded_oknl( pcp_wdayname_long(i));
+		//output_attrencoded_oknl( pcp_wdayname_long(i));
 	}
 	printf("</SELECT>");
 }

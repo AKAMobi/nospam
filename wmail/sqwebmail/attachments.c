@@ -871,8 +871,9 @@ int attach_upload(const char *draft,
 		argvec[2]=(char *)calc_mime_type(cgi_attachfilename);
 		n=3;
 
-		if (strncasecmp(argvec[2], "text/", 5) == 0 ||
-		    strcasecmp(argvec[2], "auto") == 0)
+		// by lfan, in order to solve OE problem
+		//if (strncasecmp(argvec[2], "text/", 5) == 0 ||
+		//    strcasecmp(argvec[2], "auto") == 0)
 		{
 			argvec[3]="-C";
 			argvec[4]=(char *)sqwebmail_content_charset;

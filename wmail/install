@@ -1,10 +1,16 @@
 #!/bin/sh
 
-./configure --prefix=/home/wmail \
-        --enable-cgibindir=/home/wmail/www/cgi-bin \
-        --enable-imagedir=/home/wmail/www/image \
+if [ "$1" = "" ]; then
+        PREFIX=/home
+else
+        PREFIX=$1
+fi
+
+./configure --prefix=$PREFIX/wmail \
+        --enable-cgibindir=$PREFIX/wmail/www/cgi-bin \
+        --enable-imagedir=$PREFIX/wmail/www/image \
         --enable-imageurl=/image \
-        --with-cachedir=/home/wmail/var/cache \
+        --with-cachedir=$PREFIX/wmail/var/cache \
         --enable-webpass=no \
         --without-ispell \
         --with-maxmsgsize=5242880 \

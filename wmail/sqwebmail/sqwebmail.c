@@ -285,9 +285,9 @@ const	char *p=nonloginscriptptr();
 	char	*q=cgiurlencode(sqwebmail_mailboxid);
 	char	buf[NUMBUFSIZE];
 
-		printf("/wn/%s/%s/%s", q,
-			sqwebmail_sessiontoken ?  sqwebmail_sessiontoken:" ",
-			libmail_str_time_t(login_time, buf));
+		printf("/wn/");
+			//sqwebmail_sessiontoken ?  sqwebmail_sessiontoken:" ",
+			//libmail_str_time_t(login_time, buf));
 		free(q);
 	}
 }
@@ -300,9 +300,9 @@ void output_loginscriptptr_get()
 	char	*q=cgiurlencode(sqwebmail_mailboxid);
 	char	buf[NUMBUFSIZE];
 
-		printf("/wn/%s/%s/%s", q,
-			sqwebmail_sessiontoken ?  sqwebmail_sessiontoken:" ",
-			libmail_str_time_t(login_time, buf));
+		printf("/wn/");
+			//sqwebmail_sessiontoken ?  sqwebmail_sessiontoken:" ",
+			//libmail_str_time_t(login_time, buf));
 		free(q);
 	}
 }
@@ -329,11 +329,11 @@ char	buf[NUMBUFSIZE];
 		}
 
 		ADD("/wn/");
-		ADDE(sqwebmail_mailboxid);
-		ADD("/");
-		ADD(sqwebmail_sessiontoken ? sqwebmail_sessiontoken:" ");
-		ADD("/");
-		ADD(libmail_str_time_t(login_time, buf));
+		//ADDE(sqwebmail_mailboxid);
+		//ADD("/");
+		//ADD(sqwebmail_sessiontoken ? sqwebmail_sessiontoken:" ");
+		//ADD("/");
+		//ADD(libmail_str_time_t(login_time, buf));
 
 		ADD( "?" );
 		if (sqwebmail_folder)
@@ -732,9 +732,11 @@ void output_form(const char *formname)
 	*/
 
 	if (strcmp(formname, "index.html") && strcmp(formname, "empty.html") &&
-		strcmp(formname, "print.html"))
+		strcmp(formname, "invalid.html"))
+	{
 		cginocache();
-
+		//cginocache_msie();
+	}
 #ifdef	GZIP
 
 	dogzip=0;
@@ -766,8 +768,8 @@ void output_form(const char *formname)
 
 	/* Do not send a Vary header for attachment downloads */
 
-	if (*cgi("download") == 0)
-		printf("Vary: Accept-Language\n");
+//	if (*cgi("download") == 0)
+//		printf("Vary: Accept-Language\n");
 
 #ifdef	GZIP
 	if (dogzip)
@@ -1675,7 +1677,10 @@ char	*p;
 
 	if (strcmp(formname, "logout") == 0)
 	{
-		//unlink(IPFILE);
+		// by lfan, remove cookie
+		cginocache();
+		cgi_setcookie("wmail-session", "NO");
+		unlink(IPFILE);
 		http_redirect_top("");
 		return;
 	}
@@ -2268,9 +2273,12 @@ time_t	timeouthard=TIMEOUTHARD;
 		if (!pi)	enomem();
 
 		(void)strtok(pi, "/");	/* Skip login */
-		u=strtok(NULL, "/");	/* mailboxid */
-		sqwebmail_sessiontoken=strtok(NULL, "/"); /* sessiontoken */
-		q=strtok(NULL, "/");	/* login time */
+		//u=strtok(NULL, "/");	/* mailboxid */
+		u=cgi_cookie("wmail-login");
+		//sqwebmail_sessiontoken=strtok(NULL, "/"); /* sessiontoken */
+		sqwebmail_sessiontoken=cgi_cookie("wmail-session");
+		//q=strtok(NULL, "/");	/* login time */
+		q=cgi_cookie("wmail-time");
 		login_time=0;
 		while (q && *q >= '0' && *q <= '9')
 			login_time=login_time * 10 + (*q++ - '0');
@@ -2579,6 +2587,14 @@ time_t	timeouthard=TIMEOUTHARD;
 					}
 					if( p ) 
 						free(p);
+				}
+
+				// by lfan, support cookie
+				{
+					char buf[256];
+					cgi_setcookie("wmail-session", sqwebmail_sessiontoken );
+					cgi_setcookie("wmail-time", libmail_str_time_t(login_time, buf));
+					cgi_setcookie("wmail-login", sqwebmail_mailboxid);
 				}
 
 				//by lfan

@@ -28,19 +28,7 @@ extern void output_attrencoded(const char *);
 
 static const char *internal_err=0;
 
-static void get_dotqmail_file( char* fpath, char* retuser )
-{
-	char *user, *domain, *p, *p2, buf[256];
-        p=login_returnaddr();
-        p2=strdup(p); 
-        user=strtok(p2, "@");
-        domain=strtok(0, "@");
-        vget_assign(domain, buf, 256, NULL, NULL);
-        sprintf(fpath, "%s/.qmail-%s", buf, user);
-	if( retuser )
-		strcpy( retuser, user );
-	free(p2);
-}
+extern void get_dotqmail_file( char* fpath );
 
 //by lfan, filter bug
 static void save_filter()
@@ -183,12 +171,14 @@ struct maildirfilterrule *r;
 	{
 		maildir_filter_ruledel(&mf, r);
 		maildir_filter_savemaildirfilter(&mf, ".", login_returnaddr());
+		/*
 		if( !mf.first )
 		{
 			char fpath[256];
-			get_dotqmail_file(fpath, 0);
+			get_dotqmail_file(fpath);
 			unlink(fpath);
 		}
+		*/
 		clrfields();
 		save_filter();
 	}
@@ -588,13 +578,30 @@ const char *autoreply_from="";
 	if (r)
 	{
 		// by lfan, modify .qmail-user
-		FILE *fp;
-		char fpath[256], user[256];
-		get_dotqmail_file(fpath, user);
+		FILE *fp, *fp1;
+		char fpath[256], ftemp[256], buf[1024];
+		get_dotqmail_file(fpath);
+
+		sprintf( ftemp, "%s.tmp", fpath );
 		
-		fp=fopen(fpath, "w");
-		fprintf(fp, "|/usr/local/bin/maildrop ./%s/.mailfilter\n", user);
-		fclose(fp);
+		if ((fp1=fopen(ftemp, "w")) == NULL)
+			return;
+
+		fprintf(fp1, "|/usr/local/bin/maildrop ./.mailfilter\n");
+		
+		if ((fp=fopen(fpath, "r")) != NULL)
+		{
+			while (fgets(buf, sizeof(buf), fp))
+			{
+				if( buf[0] == '&' )
+					fprintf( fp1, "%s", buf ); 
+			}
+			fclose(fp);
+		}
+			
+		fclose(fp1);
+		rename(ftemp, fpath);
+
 		
 		maildir_filter_savemaildirfilter(&mf, ".", login_returnaddr());
 		maildir_filter_freerules(&mf);

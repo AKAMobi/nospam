@@ -281,9 +281,9 @@ const char	*qerrmsg;
 	// by lfan
         
 	printf("<TABLE WIDTH=\"100%%\" CLASS=\"csmtype\" BGCOLOR=\"#93BEE2\" BORDER=0 CELLPADDING=2 CELLSPACING=1>\n");
-	printf("<TR><TD WIDTH=5%%></TD><TD WIDTH=30%%>%s", getarg("CURPOS"));
+	printf("<TR><TD WIDTH=5%%></TD><TD WIDTH=25%%>%s", getarg("CURPOS"));
 	list_folder_xlate(dir, getarg("INBOX"), getarg("DRAFTS"), getarg("SENT"), getarg("TRASH"));
-	printf("</TD><TD WIDTH=30%%>");
+	printf("</TD><TD WIDTH=25%%>");
 	printf(getarg("MAILMSG"), msg_total, msg_new);
 	printf("</TD><TD WIDTH=25%%>%s%d &nbsp;", getarg("PAGETOTAL"), 
 		(msg_total + pref_flagpagesize - 1) / pref_flagpagesize );
@@ -302,7 +302,7 @@ const char	*qerrmsg;
 		
 		printf("</SELECT>\n");
 	}
-	printf("</TD><TD WIDTH=5%%>");
+	printf("</TD><TD WIDTH=10%% ALIGN=RIGHT>");
 	
         if (morebefore) {
 		size_t  beforepos;
@@ -314,7 +314,7 @@ const char	*qerrmsg;
 		printf("&form=folder&pos=%ld\">", (long)beforepos);
 		printf("%s</A>", beforelab);
 	}
-	printf("</TD><TD WIDTH=5%%>");
+	printf("</TD><TD WIDTH=10%% ALIGN=LEFT>");
 	if (moreafter) {
 		printf("<A HREF=\"");
 		output_scriptptrget();
@@ -385,7 +385,7 @@ const char	*qerrmsg;
 	char	*froms, *subjs;
 	const char *p, *q;
 	// by lfan size_t l;
-	char type[8];
+	char type[8], attflag;
 	char *start_bold, *end_bold;
 
 	static const char folder_index_entry_start[]="<FONT COLOR=\"#000000\" STYLE=\"folder-index-message\">";
@@ -400,7 +400,7 @@ const char	*qerrmsg;
 		size=MSGINFO_SIZE(contents[i]);
 
 		type[0]=maildirfile_type(MSGINFO_FILENAME(contents[i]));
-
+		attflag = strstr( MSGINFO_FILENAME(contents[i]), ":2,A" ) ? 1: 0;
 		type[1]='\0';
 		if (type[0] == '\0')	strcpy(type, "&nbsp;");
 
@@ -484,7 +484,7 @@ const char	*qerrmsg;
 		free(subjs);
 
 		folder_msg_unlink(dir, pos+i, type[0]);
-		printf("</TD><TD ALIGN=RIGHT>%s&nbsp;<BR></TD></TR>\n", size);
+		printf("</TD><TD ALIGN=RIGHT>%s&nbsp;%s<BR></TD></TR>\n", size, attflag? getarg("ATTICON"):"");
 	}
 	
 	/* by lfan, move to template
@@ -3466,12 +3466,12 @@ int	fd;
 	part=*mimeid ? rfc2045_find(rfc, mimeid):rfc;
 	if (!part)	error("Message not found.");
 	rfc2045_mimeinfo(part, &content_type, &dummy, &charset);
-
+/*
 	if (cgi_useragent("MSIE"))
 		cginocache_msie();
 	else
 		cginocache();
-
+*/
 	if (rfc2231_udecodeType(part, "name", NULL,
 				&content_name) < 0)
 		content_name=NULL;
@@ -3620,7 +3620,7 @@ void folder_showquota()
 		     );
 		printf("<DIV style=\"WIDTH: %d%%; HEIGHT: 16px; BACKGROUND-COLOR: #339933\">"
 		       "</DIV></TD></TR></TABLE></TD><TD ALIGN=RIGHT>100%%</TD></TR></TABLE>",
-		       quotainfo.size.nbytes * 100 / quotainfo.quota.nbytes );
+		       quotainfo.size.nbytes / ( quotainfo.quota.nbytes / 100 ) );
 			
 	}
 	// by lfan, when the mailbox didn't use

@@ -986,6 +986,25 @@ int	rc;
 	return (rc);
 }
 
+// detecting attachment, by lfan
+int maildir_checkatt(char *fname)
+{
+	FILE *fp;
+	char buf[1024];
+	fp = fopen( fname, "r" );
+	
+	if( fp != NULL )
+	{
+		while( !feof(fp) ) {
+			fgets( buf, 1024, fp );
+			if( strncmp( buf, "Content-Disposition: attachment;", 32 ) == 0 )
+				return 1;
+		}
+		fclose(fp);
+	}
+	
+	return 0;
+}
 /*
 ** Grab new messages from new.
 */
@@ -1011,18 +1030,28 @@ time_t	cntmtime;
 	{
 	char	*oldname, *newname;
 	char	*p;
+	int	nLen;
 
 		if (dire->d_name[0] == '.')	continue;
 
 		oldname=alloc_filename(dirbuf, dire->d_name, "");
+		// by lfan
+		if( maildir_checkatt( oldname ) )
+			nLen = 1;
+		else
+			nLen = 0;
 
-		newname=malloc(strlen(oldname)+4);
+		newname=malloc(strlen(oldname)+4+nLen);
 		if (!newname)	enomem();
 
 		strcat(strcat(strcpy(newname, dir), "/cur/"), dire->d_name);
 		p=strrchr(newname, '/');
 		if ((p=strchr(p, ':')) != NULL)	*p=0;	/* Someone screwed up */
 		strcat(newname, ":2,");
+
+		// by lfan, adding Attachment flag
+		if( nLen ) strcat(newname, "A");
+
 		rename(oldname, newname);
 		free(oldname);
 		free(newname);
