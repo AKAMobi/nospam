@@ -42,7 +42,7 @@ sub init_socket
 
 	$self->{socket} ||= IO::Socket::INET->new(Proto =>"tcp",
                                 PeerAddr =>'127.0.0.1',
-                                PeerPort =>3310 ) || return undef;
+                                PeerPort =>3311 ) || return undef;
 
 	return $self->{socket};
 }
@@ -60,35 +60,18 @@ sub catch_virus
 				Action => 0 
 			} );
 	}
-	
-	return $self->check_file( $mail_info );
-}
-
-sub check_file
-{
-	my $self = shift;
-
-	my $mail_info = shift;
 
 	my $file = $mail_info->{emlfilename};
 
-	# get rid of double //
-	$file =~ s#//#/#g;
-
-	my $conn = $self->init_socket;
-
-	my $req = "SCAN $file\n";
-	print $conn $req;
-	my $result = <$conn>; 
-	chomp $result;
-	close $conn;
+	#my $result = $self->check_file_socket_tcp( $file );
+	my $result = $self->check_file_clamscan( $file );
 
 	if ( $result =~ m#ERROR$# ){
 		$self->{zlog}->fatal ( "AntiVirus return ERROR[$result] for file[$file]" );
 		return ( {	Result => 0,
 				Reason => '²¡¶¾ÒýÇæÄÚ²¿´íÎó',
 				Action => 0 
-			});
+				});
 	}
 
 	$result =~ m#^$file: (.+)#;
@@ -100,11 +83,72 @@ sub check_file
 	my $is_virus = (defined $1)?0:1;
 	my $virus_name = $2 if $is_virus;
 
-	
+
 	return ( {	Result	=> $is_virus,
 			Reason => $virus_name||'',
 			Action =>  ('Y' eq $self->{conf}->{config}->{AntiVirusEngine}->{RefuseVirus})?1:0 
-		});
+			});
+
+}
+
+sub check_file_clamscan
+{
+	my $self = shift;
+
+	my $file = shift;
+
+	# get rid of double //
+	$file =~ s#//#/#g;
+
+	if ( ! open ( FD, "/usr/bin/clamscan --disable-summary --stdout $file|" ) ) {
+		$self->{zlog}->fatal ( "check_file_clamscan open failure with file [$file]" );
+		return '';
+	}
+	my $result = <FD>; 
+	chomp $result;
+	close FD;
+
+	return $result;
+}
+
+sub check_file_socket_tcp
+{
+	my $self = shift;
+
+	my $file = shift;
+
+	# get rid of double //
+	$file =~ s#//#/#g;
+
+	my $result ; 
+
+	my $conn = $self->init_socket;
+
+	print $conn "SESSION\n";
+
+	eval {
+		$SIG{ALRM} = sub { die "CLAMAV DIE" };
+		alarm 2;
+		print $conn "PING\n";
+		$result = <$conn>;
+		chomp $result;
+
+
+
+		alarm 0;
+	};
+
+	if ( $result ne 'PONG' ){
+		$self->{zlog}->fatal ( "PING return not PONG[$result]" );
+	}
+
+	print $conn "SCAN $file\nEND\n";
+	print $conn $req;
+	$result = <$conn>; 
+	chomp $result;
+	close $conn;
+
+	return $result;
 }
 1;
 
