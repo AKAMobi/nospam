@@ -1,3 +1,0 @@
-#!/bin/sh
-
-ntpdate time.windows.com time.nist.gov> /dev/null 2>&1

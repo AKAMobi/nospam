@@ -1,5 +1,0 @@
-GAViewable=Y
-UserLogUpload=N
-MailGatewayInternalIP=10.4.3.7
-MailGatewayInternalMask=24
-ContentEngineMaxMailSize=6048576
