@@ -142,6 +142,7 @@ my $action_map = {
 		,'shutdown' => [\&shutdown, ""]
 
 		,'QuarantineGetInfo' => [\&QuarantineGetInfo , "<email address> <password>"]
+		,'QuarantineProcessMail' => [\&QuarantineProcessMail , " : use stdin & stdout"]
 
 		,'heartbeat_siwei' => [\&heartbeat_siwei, " : TAP watchdog heartbeat"]
 
@@ -740,6 +741,49 @@ sub shutdown
 sub clean_Log
 {
 	return `cat /dev/null > /var/log/NoSPAM.csv`;
+}
+
+sub QuarantineProcessMail
+{
+	use AKA::Mail::Controler;
+	my $AMC = new AKA::Mail::Controler;
+
+	my ($no,$file,$action);
+	while ( <STDIN> ){
+		chomp;
+		if ( /(\d+),([^,]+),(\w)/ ){
+			($no,$file,$action) = ($1,$2,uc $3);
+			if ( $action eq 'D' ){
+				# file will be unlinked after all action
+			}elsif ( $action eq 'F' ){
+				my ($from,$to) = _get_quarantine_info($file);
+				$AMC->send_mail_file_by_queue( $from, $to, $file );
+				
+			}
+			unlink $file; unlink "$file.info";
+			print "$no,0\n";
+		}else{
+			$zlog->fatal ( "wi QuarantineProcessMail can't parse input: [$_]" );
+			next;
+		}
+	}
+	return 0;
+
+	sub _get_quarantine_info
+	{
+		my $file = shift;
+
+		my ($from,$to);
+		if ( open (FD,"<$file.info") ){
+			$from = <FD>; chomp $from;
+			$to = <FD>; chomp $to;
+			close FD;
+			return ($from,$to);
+		}else{
+			$zlog->fatal ( "wi QuarantineProcessMail::_get_quarantine_info can't open file [$file]" );
+			return undef;
+		}
+	}
 }
 
 sub QuarantineGetInfo 
