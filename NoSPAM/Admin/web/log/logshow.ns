@@ -89,13 +89,20 @@ function enableMonitor()
 <thead>
 <tr>
 	<td>±àºÅ</td>
-<?
-foreach($head as $value){
-?>
-	<td><?=$value?></td>
-<?
-}
-?>
+	<td><?=$head[0]?></td>
+	<td><?=$head[1]?></td>
+	<td><?=$head[2]?></td>
+	<td><?=$head[3]?></td>
+	<td><?=$head[4]?></td>
+	<td><?=$head[5]?></td>
+	<td><?=$head[6]?></td>
+	<td><?=$head[7]?></td>
+	<td><?=$head[8]?></td>
+	<td><?=$head[9]?></td>
+	<td><?=$head[10]?></td>
+	<td><?=$head[11]?></td>
+	<td><?=$head[12]?></td>
+	<td><?=$head[13]?></td>
 </tr>
 </thead>
 <tbody>
@@ -108,12 +115,12 @@ if(count($lines)>0){
 ?>
 <tr class="<?=$className?>">
 	<td><?=$start?></td>
-    <td><?=$values[0]?></td>
+    <td><?=date("Y-m-d H:i:s",intval($values[0]))?></td>
     <td><?=$dir[intval($values[1])]?></td>
     <td><?=$values[2]?></td>
     <td><?=$values[3]?></td>
     <td><?=$values[4]?></td>
-    <td><?=$values[5]?></td>
+    <td><?=htmlspecialchars(trim($values[5]))?></td>
     <td><?=$vSpam[intval($values[6])]?></td>
     <td><?=$values[7]?></td>
     <td><?=$rAction[intval($values[8])]?></td>

@@ -2,16 +2,16 @@
 require_once("../inc/include.ns");
 
 if($_POST["submit"]=="提交"){
-	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Minutes"]))
+	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Seconds"]) || !is_numeric($_POST["Block"]))
 		die("错误，请输入数字");
-    if(intval($_POST["Counts"])==0 || intval($_POST["Minutes"])==0){
+    if(intval($_POST["Counts"])==0 || intval($_POST["Seconds"])==0){
         $Counts = 0;
-        $Minutes = 0;
+        $Seconds = 0;
     }else{
 		$Counts = $_POST["Counts"];
-		$Minutes = $_POST["Minutes"];
+		$Seconds = $_POST["Seconds"];
 	}
-	$SendRatePerSubject = $Counts."/".($Minutes*60);
+	$SendRatePerSubject = $Counts."/".$Seconds."/".$_POST["Block"];
 	$spamconf->setParam("SendRatePerSubject",$SendRatePerSubject);
 	$spamconf->save();
 	if(($ret=wi("reset_SendRatePerSubject",$result))==0)
@@ -19,7 +19,7 @@ if($_POST["submit"]=="提交"){
 	else
 		echo "修改失败，错误代码：".$ret;
 }else{
-	list($Counts,$Seconds) = explode("/",$spamconf->getParam("SendRatePerSubject"));
+	list($Counts,$Seconds,$Block) = explode("/",$spamconf->getParam("SendRatePerSubject"));
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,12 +30,12 @@ if($_POST["submit"]=="提交"){
 
 <body>
 <form name="form1" method="post" action="">
-每封邮件最大的发送频率：每
-  <input type="text" name="Minutes" value="<?=intval(intval($Seconds)/60)?>">
-  分钟同一封邮件最多发送
-  <input type="text" name="Counts" value="<?=$Counts?>">
-  次(0表示不限制，建议时间设置不要大于 30 分钟)<br>
-  <input type="submit" name="submit" value="提交">
+每封邮件最大的发送频率：<br>
+每<input type="text" size="2" name="Seconds" value="<?=$Seconds?>">秒<br>
+同一封邮件最多发送<input type="text" size="2" name="Counts" value="<?=$Counts?>">次<br>
+超限封禁时间为<input type="text" size="2" name="Block" value="<?=$Block?>">秒<br>
+(0表示不限制，建议时间设置不要大于 1800 秒)<br>
+<input type="submit" name="submit" value="提交">
 </form>
 <?
 if(!$bDynamic){

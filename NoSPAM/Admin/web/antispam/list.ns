@@ -1,12 +1,6 @@
 <?
 require_once("../inc/include.ns");
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT"); // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache"); // HTTP/1.0
-
 switch($_GET["option"]){
 	case "WhiteIP":
 	case "BlackIP":
@@ -52,7 +46,7 @@ switch($_GET["action"]){
 
 function show()
 {
-	global $spamconf,$title,$bAntiSpam,$bState,$List,$column;
+	global $spamconf,$title,$bAntiSpam,$bState,$List,$column,$sOption;
 
 	$pagenum = $_GET["pagenum"];
 	if(!$pagenum || $pagenum < 1)
@@ -78,6 +72,12 @@ function show()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+<p><form action="<?="?option=".$_GET['option']."&action=save"?>" method="post">
+<input type="hidden" name="type" value="switch">
+<label><input type="radio" name="<?=$sOption?>" value="Y" <? if($bState) echo " checked" ?>>开启</label>
+<label><input type="radio" name="<?=$sOption?>" value="N" <? if(!$bState) echo " checked" ?>>关闭</label>
+<input type="submit" value="修改">
+</form></p>
 <form action="<?="?option=".$_GET['option']."&action=del"?>" method="post">
 <table class="RuleTB">
 <caption><?=$title?></caption>
@@ -238,6 +238,7 @@ function modify()
 <body>
 <form method="POST" action="<?="?&option=".$_GET["option"]."&action=save"?>">
 <input type="hidden" name="type" value="modify">
+<input type="hidden" name="oKey" value="<?=$_GET["key"]?>">
 <table width="50%" border="1" align="center">
 <caption>添加<?=$title?></caption>
 <tr>
@@ -258,11 +259,26 @@ function modify()
 
 function save()
 {
-	global $List,$sList,$spamconf,$column;
+	global $List,$sList,$spamconf,$columni,$sOption;
 	
-	if($_POST['type']!="modify")
+	switch($_POST['type']){
+		case 'switch':
+		$spamconf->setParam($sOption,$_POST[$sOption]);
+		$spamconf->save();
+		if(($ret=wi("reset_".$_GET["option"],$result))==0)
+			header("Location: ".$_SERVER['PHP_SELF']."?option=".$_GET["option"]);
+		else
+			echo "修改失败，错误代码：".$ret;
+		return;
+		break;
+		case 'modify':
+		unset($List[$_POST['oKey']]);
+		break;
+		default:
 		if(array_key_exists($_POST['key'],$List))
-			die("相同的$column已存在！");
+			echo "相同的$column已存在！";
+			exit();
+	}
 
 	$List[$_POST['key']] = $_POST['note'];
 	$spamconf->setList($sList,$List);

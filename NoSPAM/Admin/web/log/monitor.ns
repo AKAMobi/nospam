@@ -13,6 +13,9 @@ else
 $num = $_GET["line"];
 $cmd = "/usr/bin/tail -n $num ".LOGFILE;
 exec($cmd,$output);
+$wc = "/usr/bin/wc";
+$total = intval(exec("$wc -l ".LOGFILE));
+$start = ($total-$num)<0?1:($total-$num+1);
 
 $dir = array("外到内","内到外");
 $vSpam = array("正常邮件","疑似垃圾","垃圾邮件","黑名单");
@@ -35,14 +38,22 @@ function loadPage()
 <body onload="loadPage()">
 <table class="RuleTB">
 <tr class="RuleTBH">
-	<th>编号</th>
-<?
-foreach($head as $value){
-?>
-	<th><?=$value?></th>
-<?
-}
-?>
+	<th width="35">编号</th>
+    <th width="100"><?=$head[0]?></th>
+    <th><?=$head[1]?></th>
+    <th><?=$head[2]?></th>
+    <th><?=$head[3]?></th>
+    <th><?=$head[4]?></th>
+    <th><?=$head[5]?></th>
+    <th><?=$head[6]?></th>
+    <th><?=$head[7]?></th>
+    <th><?=$head[8]?></th>
+    <th><?=$head[9]?></th>
+    <th><?=$head[10]?></th>
+    <th><?=$head[11]?></th>
+    <th><?=$head[12]?></th>
+    <th><?=$head[13]?></th>
+</tr>
 </tr>
 <?
 if(count($output) > 0){
@@ -52,8 +63,8 @@ if(count($output) > 0){
 		$values = explode(",",$line);
 ?>
 <tr class="<?=$className?>">
-	<td><?=$i?></td>
-	<td><?=$values[0]?></td>
+	<td with="30"><?=$start?></td>
+	<td><?=date("Y-m-d H:i:s",intval($values[0]))?></td>
 	<td><?=$dir[intval($values[1])]?></td>
 	<td><?=$values[2]?></td>
 	<td><?=$values[3]?></td>
@@ -69,7 +80,7 @@ if(count($output) > 0){
 	<td><?=$values[13]?></td>
 </tr>
 <?
-		$i++;
+		$i++;$start++;
 	}
 }
 ?>

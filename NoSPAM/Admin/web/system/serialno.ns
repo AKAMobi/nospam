@@ -26,6 +26,7 @@ if(!file_exists(LICENSE)){
 </form>
 <?
 }else{
+	$result = "";
 	if(($ret=wi("check_License License.dat",$result))==0){	
 		$LicenseInfo = trim(implode("",$result));
 		echo $LicenseInfo;

@@ -21,7 +21,7 @@ if($_POST["submit"]){
 <body>
 <form name="form1" method="post" action="">
   <p>每个 IP 可以同时发起的并发连接：
-    <input name="ConnPerIP" type="text" id="ConnPerIP" value="<?=$spamconf->getParam("ConnPerIP")?>">
+    <input name="ConnPerIP" type="text" size="2" id="ConnPerIP" value="<?=$spamconf->getParam("ConnPerIP")?>">
  (0 表示不限制 )
 </p>
   <p>
