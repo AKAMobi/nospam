@@ -1,5 +1,9 @@
 #!/bin/sh
 
+killall ns-daemon_ex
+sleep 1
+killall -9 ns-daemon_ex
+
 exec 2>&1 \
 envdir ./env \
 sh -c ' exec \
