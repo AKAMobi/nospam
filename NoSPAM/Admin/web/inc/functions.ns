@@ -1,4 +1,6 @@
 <?
+session_start();
+	
 require_once('const.ns');
 require_once('params.ns');
 
@@ -117,7 +119,6 @@ function unhtmlentities ($string)
 
 function getSessionVal($key)
 {
-	session_start();
 	if (array_key_exists($key, $_SESSION))
 		$ret = $_SESSION[$key];
 	else
@@ -168,7 +169,8 @@ function ConvertSize($iSize)
 /*
 * add by XiaoyingHu Jul 30,2004
 */
-function html_format ($str, $wrap=false) {
+function html_format ($str, $wrap=false, $htmlTags=false) {
+    if ($htmlTags) return $str;
     $str = str_replace (' ', '&nbsp;', htmlspecialchars ($str));
     if ($wrap) $str = nl2br ($str);
     return $str;
