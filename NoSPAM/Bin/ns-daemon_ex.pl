@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w 
+#!/usr/bin/perl -w -I/home/NoSPAM
 
 ###----------------------------------------###
 ###     noSPAM server class                ###
@@ -8,6 +8,12 @@ package noSPAM;
 use vars qw(@ISA);
 use strict;
 
+# I18N
+use POSIX qw(setlocale);
+use Locale::Messages qw (LC_MESSAGES bind_textdomain_codeset);
+use Locale::TextDomain ('engine.nospam.cn');
+bind_textdomain_codeset ('engine.nospam.cn' => 'GBK');
+
 use Net::Server::PreFork;
 @ISA = qw(Net::Server::PreFork);
 
@@ -15,6 +21,8 @@ use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use AKA::Mail;
 
 my $AM = new AKA::Mail;
+#print $AM->get_language, "\n";
+setlocale (LC_MESSAGES, $AM->get_language());
 
 ### run the server
 noSPAM->run(); #	port => '127.0.0.1:40307' 
