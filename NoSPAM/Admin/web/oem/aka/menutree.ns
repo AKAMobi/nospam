@@ -15,7 +15,9 @@ require_once("inc/include.ns");
 <body bgcolor="#cccccc">
 <script>
 if (document.getElementById) {
-	var tree = new WebFXTree('管理选项');
+	// gettext demo by zixia:
+	// var tree = new WebFXTree('管理选项');
+	var tree = new WebFXTree('<?= _("Management") ?>');
 	tree.setBehavior('classic');
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){

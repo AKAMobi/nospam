@@ -12,7 +12,9 @@ $loginblacklist = new LoginBlackList();
 
 if ( $loginblacklist->isDenied($_SERVER['REMOTE_ADDR']) ){
 	$deniedTime = $loginblacklist->getDeniedTime($_SERVER['REMOTE_ADDR']);
-	errorReturn("由于到达最大错误登录次数，当前IP：".$_SERVER['REMOTE_ADDR']. "被封禁到".date("Y-m-d H:i:s",$deniedTime),"/admin/");
+	// gettext demo by zixia:
+	//errorReturn("由于到达最大错误登录次数，当前IP：".$_SERVER['REMOTE_ADDR']. "被封禁到".date("Y-m-d H:i:s",$deniedTime),"/admin/");
+	errorReturn( _("Due to login attempts exceed maximum tmes, current IP:") . $_SERVER['REMOTE_ADDR'] . _("will not be permitted login untill ") . date("Y-m-d H:i:s",$deniedTime), "/admin/");
 }
 
 $id=$_REQUEST['adminID'];
