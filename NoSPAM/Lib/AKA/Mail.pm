@@ -9,6 +9,8 @@
 package AKA::Mail;
 use strict;
 
+use Locale::TextDomain qw(engine.nospam.aka.cn);
+
 use MIME::Base64; 
 use MIME::QuotedPrint; 
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
@@ -465,7 +467,7 @@ $self->{zlog}->debug( "send_mail_info smtp_code: [" . $smtp_code . "]\n"
 		print $socket $exit_code . "\n";
 	}else{
 		print $socket "553\n";
-		print $socket "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n";
+		print $socket __"Sorry, System had no valid license now, It still can't work.\n";
 		print $socket "150\n";
 	}
 }
@@ -553,9 +555,9 @@ sub process
 	
 			$mail_info->{aka}->{resp} = {
 					smtp_code => 553,
-					smtp_info => '对不起，由于 ' 
-						. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || '安全策略')
-						. ' ，系统拒收您的邮件。',
+					smtp_info => __("Sorry, due to ")
+						. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || __("Security Policy"))
+						. __("System reject your mail.") ,
 					exit_code => 150
 			};
 	
@@ -563,7 +565,7 @@ sub process
 				$mail_info->{aka}->{resp}->{smtp_info} = $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
 								|| 'This message was rejected.';
 			}elsif ( $engine eq 'dynamic' ){
-					$mail_info->{aka}->{resp}->{smtp_code} = 451;
+				$mail_info->{aka}->{resp}->{smtp_code} = 451;
 			}
 
 			return $mail_info;
@@ -602,7 +604,7 @@ sub init_engine_info
 
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 			result	=>0,
-			desc	=>'未运行',
+			desc	=>__("not run"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
@@ -610,7 +612,7 @@ sub init_engine_info
 	};
 	$self->{mail_info}->{aka}->{engine}->{spam} = {	
 			result	=>0,
-			desc	=>'未运行',
+			desc	=>__("not run"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
@@ -618,7 +620,7 @@ sub init_engine_info
 	};
 	$self->{mail_info}->{aka}->{engine}->{content} = {	
 			result	=>0,
-			desc	=>'未运行',
+			desc	=>__("not run"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
@@ -626,7 +628,7 @@ sub init_engine_info
 	};
 	$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 			result	=>0,
-			desc	=>'未运行',
+			desc	=>__("not run"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
@@ -634,7 +636,7 @@ sub init_engine_info
 	};
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
-			desc	=>'未运行',
+			desc	=>__("not run"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
@@ -728,8 +730,9 @@ sub qmail_requeue {
 	select(EOUT);$|=1;
 	select(EIN);$|=1;
 
+#XXX should this be DEFAULT instead of IGNORE ?
+# Ed Li 2004-06-12
 	local $SIG{PIPE} = 'IGNORE';
-#XXX preFork problem?
 	local $SIG{CHLD} = 'DEFAULT';
 
 	my $pid = fork;
@@ -882,13 +885,13 @@ sub write_queue
 					}elsif ( RESULT_SPAM_MUST==$aka->{engine}->{spam}->{result} ){
 						$tagged_subj = $config->{SpamEngine}->{SpamTag} . ' ' . $tagged_subj; 
 					}elsif ( RESULT_SPAM_BLACK==$aka->{engine}->{spam}->{result} ){
-						$tagged_subj = ($config->{SpamEngine}->{BlackTag}||"【黑名单】") . ' ' . $tagged_subj; 
+						$tagged_subj = ($config->{SpamEngine}->{BlackTag}||__("[Black List]")) . ' ' . $tagged_subj; 
 					}
 				}
 				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagSubject} ){
 					if ( $aka->{engine}->{antivirus}->{result} ){
 						$tagged_subj = ( $config->{AntiVirusEngine}->{VirusTag}
-								|| "【病毒 " . $aka->{engine}->{antivirus}->{result} .  "】"
+								|| __("[VIRUS ") . $aka->{engine}->{antivirus}->{result} .  __("]") 
 							) . ' ' . $tagged_subj; 
 					}
 				}
@@ -988,7 +991,7 @@ sub antivirus_engine
 	if ( 'Y' ne uc $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{antivirus} = ( { 	
 				result 	=> 0,
-				desc	=> '未启用',
+				desc	=> __("OFF"),
 				action 	=> 0, 
 
 				enabled	=> 0,
@@ -1007,7 +1010,7 @@ sub antivirus_engine
 			# 没有限制“由内向外”的邮件
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 					result	=>0,
-					desc	=>'内向外未检查',
+					desc	=>__("Need not check outgoing mail"),
 					action	=>ACTION_PASS,
 
                   			enabled => 1,
@@ -1023,7 +1026,7 @@ sub antivirus_engine
 			# 没有限制“由外向内”的邮件
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
 					result  => 0,
-					desc	=>'外向内未检查',
+					desc	=>__("Need not check incoming mail") ,
 					action  => 0,
 
 					enabled => 1,
@@ -1045,7 +1048,7 @@ sub antivirus_engine
 #$self->{zlog}->debug ( "random: $random1_100 , sample: " . $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} );
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
 					result  => 0,
-					desc	=>'采样抽签未中',
+					desc	=> __("This mail is not in circle of check"),
 					action  => 0,
 
 					enabled => 1,
@@ -1116,7 +1119,7 @@ sub archive_engine
 	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine}->{ArchiveEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
-			desc	=>'未启用',
+			desc	=>__("OFF"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
@@ -1132,7 +1135,7 @@ sub archive_engine
 	unless ( @archivetype ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
-			desc	=>'未设置',
+			desc	=>__("not set"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
@@ -1185,7 +1188,7 @@ sub archive_engine
 	unless ( $need_archive ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
-			desc	=>'未符合条件',
+			desc	=>__("not fit condition"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
@@ -1197,7 +1200,7 @@ sub archive_engine
 	unless ( $emlfile && -f $emlfile ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
-			desc	=>'内部错误',
+			desc	=>__("internal error"),
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
@@ -1210,7 +1213,7 @@ sub archive_engine
 
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>1,
-			desc	=>'已提交',
+			desc	=>__("commited"),
 			action	=>ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
@@ -1229,7 +1232,7 @@ sub spam_engine
 						$self->{mail_info}->{aka}->{returnpath}
 						 );
 
-	my ( $is_spam, $reason, $dns_query_time ) = (0,'垃圾识别引擎',0);
+	my ( $is_spam, $reason, $dns_query_time ) = (0,__("AntiSpam Engine"),0);
 	my $sa_result = {};
 
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 1;
@@ -1238,11 +1241,11 @@ sub spam_engine
 		$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 0;
 
 		$is_spam = RESULT_SPAM_NOT;
-		$reason = '未启用';
+		$reason = __("OFF");
 	}
 	elsif ( $self->{mail_info}->{aka}->{RELAYCLIENT} ) { # 内部RELAY
 		$is_spam = RESULT_SPAM_NOT;
-		$reason = '可追查检查';
+		$reason = __("Traceable");
 
 	}
 	elsif ( $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){ # 认证用户
@@ -1252,13 +1255,13 @@ sub spam_engine
 			unless ( $auth_user =~ /\@/ );
 		
 		$is_spam = RESULT_SPAM_NOT;
-		$reason = '认证用户';
+		$reason = __("Authed user");
 
 		if ( ($auth_user ne $returnpath) &&
 				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # 内部可追查
 				  ($self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/Out/i) ) ){ 
 			$is_spam = RESULT_SPAM_MAYBE;
-			$reason = '发信人非身份认证用户';
+			$reason = __("Sender must as same as auth user");
 		}
 		
 		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
@@ -1374,7 +1377,7 @@ sub dynamic_engine
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => '未启用',
+	                                desc    => __("OFF"),
        	                         	action  => 0,
 	
                                 	enabled => 0,
@@ -1394,7 +1397,7 @@ sub dynamic_engine
 			# 没有限制“由内向外”的邮件
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 					result	=>0,
-					desc	=>'内向外未限制',
+					desc	=>__("outgoing mail is not limited"),
 					action	=>ACTION_PASS,
 
                   			enabled => 1,
@@ -1410,7 +1413,7 @@ sub dynamic_engine
 			# 没有限制“由外向内”的邮件
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 					result  => 0,
-					desc	=>'外向内未限制',
+					desc	=> __("incoming mail is not limited"),
 					action  => 0,
 
 					enabled => 1,
@@ -1439,7 +1442,7 @@ sub dynamic_engine
 			if ( $_ eq $mailfrom ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => '发信人白名单',
+	                                desc    => __("Sender white list"),
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -1454,7 +1457,7 @@ sub dynamic_engine
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => $is_overrun,
-	                                desc    => '发信人' . $reason,
+	                                desc    => __("Mail sender") . $reason,
        	                         	action  => 1,
 	
                                 	enabled => 1,
@@ -1471,7 +1474,7 @@ sub dynamic_engine
 			if ( $_ eq $subject ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => '邮件主题白名单',
+	                                desc    => __("Mail subject white list"),
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -1486,7 +1489,7 @@ sub dynamic_engine
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => $is_overrun,
-	                                desc    => '邮件' . $reason,
+	                                desc    => __("Mail") . $reason,
        	                         	action  => 1,
 	
                                 	enabled => 1,
@@ -1505,7 +1508,7 @@ sub dynamic_engine
 			if ( $AI->is_ip_in_range($ip, $_) ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => 'IP白名单',
+	                                desc    => 'IP' . __("white list"),
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -1533,7 +1536,7 @@ sub dynamic_engine
 
 	$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 		result  => 0,
-		desc    => '通过动态监测',
+		desc    => __("Overrun check was passed"),
 		action  => 0,
 
 		enabled => 1,
@@ -1577,7 +1580,7 @@ sub content_engine_is_enabled
 	if ( 'Y' ne uc $self->{conf}->{config}->{ContentEngine}->{ContentFilterEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{content} = {
                			result  => 0,
-                                desc    => '未启用',
+                                desc    => __("OFF"),
                         	action  => 0,
 
                                	enabled => 1,
@@ -1597,7 +1600,7 @@ sub content_engine_is_enabled
 			# 没有限制“由内向外”的邮件
 			$self->{mail_info}->{aka}->{engine}->{content} = {	
 					result	=>0,
-					desc	=>'内向外未过滤',
+					desc	=>__("Outgoing mail need not filter"),
 					action	=>ACTION_PASS,
 
                   			enabled => 1,
@@ -1613,7 +1616,7 @@ sub content_engine_is_enabled
 			# 没有限制“由外向内”的邮件
 			$self->{mail_info}->{aka}->{engine}->{content} = {
 					result  => 0,
-					desc	=>'外向内未过滤',
+					desc	=> __("Incoming mail need not filter"),
 					action  => 0,
 
 					enabled => 1,
@@ -1630,7 +1633,7 @@ sub content_engine_is_enabled
 		if ( $self->{mail_info}->{aka}->{size} > $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
 			$self->{mail_info}->{aka}->{engine}->{content} = {
                			result  => 0,
-                                desc    => '尺寸超过配置最大值',
+                                desc    => __("Maximum size excceed"),
                         	action  => 0,
 
                                	enabled => 1,
@@ -1656,7 +1659,7 @@ sub check_license_file
 	if ( ! open( LFD, "<$licensefile" ) ){
 		$self->{zlog}->debug ( "AKA::License::check_license_file no [$licensefile]" );
 		# No license
-		return (0, "本设备尚无可用许可证");
+		return (0, __("System has no valid license now") );
 	}
 	
 	my $license_content;
@@ -1692,7 +1695,7 @@ sub check_license_file
 	unless ( defined $license_content && defined $license_checksum && 
 			length($license_content) && length($license_checksum) ){
 		#$self->{zlog}->debug ( "AKA::License::check_license_file can't get enough information from [$licensefile]" );
-		return (0,"许可证错误#1");
+		return (0,__("License error ") . "#1");
 	}
 
 	my $cmp_str;
@@ -1702,12 +1705,12 @@ sub check_license_file
 	if ( $cmp_str ne $license_data ){
 		#print "license_data $license_data ne $cmpstr\n";
 		#$self->{zlog}->debug ( "AKA::License::check_license_file licese check failed!" );
-		return (0,"许可证错误#2");
+		return (0,__("License error ") . "#2");
 	}
 	if( !$self->{license}->is_valid_checksum( $license_content, $license_checksum ) ){
 		#print "checksum $license_checksum not valid for [$license_content]\n";
 		#$self->{zlog}->debug ( "AKA::License::check_license_file not valid!" );
-		return (0,"许可证错误#3");
+		return (0,__("License error ") . "#3");
 	}
 
 	if ( length($hardware_license) ){
@@ -1728,7 +1731,7 @@ sub check_license_file
 	}
 
 	# it's valid
-	$LicenseHTML ||= '许可证有效！';
+	$LicenseHTML ||= __("License valid!");
 	return (1,$LicenseHTML);
 }
 
