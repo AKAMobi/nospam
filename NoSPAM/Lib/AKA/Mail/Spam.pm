@@ -106,7 +106,7 @@ sub is_traceable
 		}
 
 		if ( grep(/^Domain$/i,@TraceType) ){
-$self->{zlog}->debug ( "Mail::Spam::is_traceable in Domain" );
+#$self->{zlog}->debug ( "Mail::Spam::is_traceable in Domain" );
 			push ( @ptr_domain, $self->get_ptr_from_ip( $smtp_ip, $res ) );
 		}
 
@@ -218,7 +218,7 @@ sub get_ptr_from_ip
 
 	if ($query) {
 		foreach my $rr (grep { $_->type eq 'PTR' } $query->answer) {
-$self->{zlog}->debug ("Spam get ptr of $ip : $rr->ptrdname");
+$self->{zlog}->debug ("Spam get ptr of $ip : " . $rr->ptrdname);
 			push (@PTRs, $rr->ptrdname);
 		}
 	} else {
@@ -418,7 +418,7 @@ sub spam_checker
 	if ( $from_addr=~/\@(\S+)/ ){
 		$email_domain = $1;
 	}else{
-		$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr]." );
+		#$self->{zlog}->debug ( "Spam::spam_checker can't get email_domain from [$from_addr]." );
 		return (0, __("bounced mail"));
 	}
 
