@@ -376,6 +376,7 @@ sub ZombieFile_clean
 			, '/var/log/NoSPAM.fatal'
 			, '/var/log/NoSPAM.stderr'
 			, '/var/log/NoSPAM.stdout'
+			, '/var/log/NoSPAM.sa'
 	);
 
 	foreach my $workdir ( keys %$workdirs ){
