@@ -27,6 +27,7 @@ use AKA::Mail::Archive;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 # XXX
+
 open (NSOUT, ">&=2");
 close (STDERR);
 open (STDERR, ">>/var/log/NoSPAM.stderr") or die "can't reopen STDERR";
