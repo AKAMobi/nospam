@@ -88,16 +88,19 @@ sub dynamic_engine
 		($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
 	}
 
-	if ( $mailfrom && $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom ) ){
-		return ( 1, "用户发送邮件频率超限" );
+	if ( $mailfrom ){
+		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom );
+		return ($is_overrun,'发信人'.$reason) if ( $is_overrun );
 	}
 
-	if ( $subject && $self->{dynamic}->is_overrun_rate_per_subject( $subject ) ){
-		return ( 1, "重复邮件发送频率超限" );
+	if ( $subject ){
+		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_subject( $subject );
+		return ($is_overrun,'邮件'.$reason) if ( $is_overrun );
 	}
 
-	if ( $ip && $self->{dynamic}->is_overrun_rate_per_ip( $ip ) ){
-		return ( 1, "IP发送频率超限" );
+	if ( $ip ){
+		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_ip( $ip );
+		return ($is_overrun,'IP'.$reason) if ( $is_overrun );
 	}
 
 	$is_overrun ||= 0;

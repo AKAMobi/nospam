@@ -44,6 +44,11 @@ sub new
 	$self->{define}->{ConnRatePerIP} = $self->{conf}->{config}->{ConnRatePerIP} || '0/0';
 
 	$self->{define}->{DBMFILE} = "/home/NoSPAM/var/run/Dynamic.dbm";
+	$self->{define}->{SyncCacheSize} = '100K';
+	# 清除过期记录的时间间隔，秒为单位
+	$self->{define}->{clean_interval} = 600;
+	# 缺省超限封禁时间：1Hour
+	$self->{define}->{DefaultDenyTime} = 3600;
 
 	$self->{dynamic_info} = {};
 
@@ -77,6 +82,12 @@ sub dump
 
 	use Data::Dumper;
 	print Dumper( $self->{dynamic_info} );
+
+	my $namespace;
+	foreach $namespace ( keys %{$self->{dynamic_info}} ){
+		printf "$namespace: %d entris\n", scalar keys %{$self->{dynamic_info}->{$namespace}};
+	}
+
 }
 
 # 给出subject，察看是否subject超出限制频率
@@ -88,18 +99,20 @@ sub is_overrun_rate_per_subject
 
 	if ( ! $subject ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_subject can't get address." );
-		return 0;
+		return (0,'无参数');
 	}
 	
-	my ( $num, $sec );
-	$self->{define}->{SendRatePerSubject}=~ m#(\d+)/(\d+)#;
-	($num, $sec) = ( $1,$2 );
+	my ( $num, $sec, $deny_sec );
+	$self->{define}->{SendRatePerSubject}=~ m#(\d+)/(\d+)/(\d+)#;
+	$self->{define}->{SendRatePerSubject}=~ m#(\d+)/(\d+)#
+                unless ( defined $3 );
+	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return 0 if ( !$num || !$sec );
+	return (0,'参数不足') if ( !$num || !$sec );
 
 	# is  overrun?
-	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec );
+	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec, $deny_sec );
 }
 
 # 给出mail_from，察看是否此address超出限制频率
@@ -111,18 +124,21 @@ sub is_overrun_rate_per_mailfrom
 
 	if ( ! $mail_from ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_mailfrom can't get address." );
-		return 0;
+		return (0,'无参数');
 	}
 	
-	my ( $num, $sec );
-	$self->{define}->{SendRatePerFrom}=~ m#(\d+)/(\d+)#;
-	($num, $sec) = ( $1,$2 );
+	my ( $num, $sec, $deny_sec );
+
+	$self->{define}->{SendRatePerFrom}=~ m#(\d+)/(\d+)/(\d+)#;
+	$self->{define}->{SendRatePerFrom}=~ m#(\d+)/(\d+)#
+                unless ( defined $3 );
+	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 
 	# 0 or undef means no limit
-	return 0 if ( !$num || !$sec );
+	return (0,'参数不足') if ( !$num || !$sec );
 	
 	# is overrun?
-	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec );
+	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec, $deny_sec );
 }
 
 # 给出ip，察看是否此ip超出限制频率
@@ -134,18 +150,20 @@ sub is_overrun_rate_per_ip
 
 	if ( ! $ip ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_ip can't get ip." );
-		return 0;
+		return (0,'无参数');
 	}
 	
-	my ( $num, $sec );
-	$self->{define}->{ConnRatePerIP}=~ m#(\d+)/(\d+)#;
-	($num, $sec) = ( $1,$2 );
+	my ( $num, $sec, $deny_sec );
+	$self->{define}->{ConnRatePerIP}=~ m#(\d+)/(\d+)/(\d+)#;
+	$self->{define}->{ConnRatePerIP}=~ m#(\d+)/(\d+)# 
+		unless ( defined $3 );
+	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return 0 if ( !$num || !$sec );
+	return (0,'参数不足') if ( !$num || !$sec );
 
 	# is overrun?
-	return $self->is_overrun_rate_per_XXX ( 'IP', $ip, $num, $sec );
+	return $self->is_overrun_rate_per_XXX ( 'IP', $ip, $num, $sec, $deny_sec );
 }
 
 
@@ -154,60 +172,67 @@ sub is_overrun_rate_per_XXX
 {
 	my $self = shift;
 
-	my ( $namespace, $key, $num, $sec ) = @_;
+	my ( $namespace, $key, $num, $sec, $deny_sec ) = @_;
+	$deny_sec ||= $self->{define}->{DefaultDenyTime};
 
 	# 0 means unlimited
-	return 0 if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
+	return (0,'引擎无参数') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );
-		return 0;
+		return (0,'引擎参数不足');
 	}
 
 	# zero means UNLIMITED
-	return 0 if ( 0==$num || 0==$sec );
+	return (0,'无限制') if ( 0==$num || 0==$sec );
 
 	# 限制最长时间不大于1Hour
 	$sec = $self->{define}->{max_time} if ( $sec > $self->{define}->{max_time} );
 
 	if ( ! $self->attach ){
 		$self->{zlog}->fatal ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't attach" );
-		return 0;
+		return (0,'引擎加载失败');
 	}
 
-	$self->{sh}->SyncCacheSize('100K'); 
+	# protect our timer
+	$key = '__AMD_LAST_REFRESH_TIME__' if ( $key eq '_AMD_LAST_REFRESH_TIME_' );
+
+	$self->{sh}->SyncCacheSize( $self->{define}->{SyncCacheSize}||'100K' ); 
 	$self->lock_DBM;
 
 	my $namespace_obj = $self->{dynamic_info}->{$namespace};
-	$namespace_obj->{'_LAST_REFRESH_TIME_'} ||= 0;
-	$self->{dynamic_info}->{$namespace} = $namespace_obj;
+	$namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} ||= 0;
 
-	# 每2分钟清理一下内存 XXX
-	if ( time - $namespace_obj->{'_LAST_REFRESH_TIME_'} > 120 ){
-		$self->refresh_info( $namespace, $sec );
-		$namespace_obj = $self->{dynamic_info}->{$namespace};
-		$namespace_obj->{'_LAST_REFRESH_TIME_'} = time;
-		$self->{dynamic_info}->{$namespace} = $namespace_obj;
+	# 最大每clean_interval s 清理一下内存
+	if ( time - $namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} > $self->{define}->{clean_interval} ){
+		$namespace_obj = $self->refresh_info( $namespace_obj, $sec );
+		# do this out of circle
+		#$namespace_obj = $self->{dynamic_info}->{$namespace};
+		$namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} = time;
+		#$self->{dynamic_info}->{$namespace} = $namespace_obj;
 	}
 
+
 	# 将数据保存起来备查
-	$self->add_dynamic_info( $namespace, $key );
+	$namespace_obj = $self->add_dynamic_info( $namespace_obj, $key );
 
 	# 检查是否超过限额
-	my $overrun = $self->check_quota_exceed( $namespace, $key, $num );
+	my ($overrun,$reason) = $self->check_quota_exceed_ex( $namespace_obj, $key, $num, $sec, $deny_sec );
+
+	$self->{dynamic_info}->{$namespace} = $namespace_obj;
 
 	$self->unlock_DBM;
 
-	return $overrun;
+	return ($overrun,$reason);
 }	
 
 sub refresh_info
 {
 	my $self = shift;
 
-	my ( $namespace, $sec ) = @_;
+	my ( $namespace_obj, $sec ) = @_;
 
-	if ( ! $namespace || ! $sec ){
+	if ( ! $namespace_obj || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::refresh_info can't get params: [" . join("",@_) . "]" );
 		return 0;
 	}
@@ -216,17 +241,14 @@ sub refresh_info
 	my ( $secmic, $seconds );
 	my ( $val_count );
 
-	my $ns_obj = $self->{dynamic_info}->{$namespace};
 #print STDERR "refresh_bad_ip: check $ns_obj\n";
-       	foreach $key ( keys %{$ns_obj} ){
+       	foreach $key ( keys %{$namespace_obj} ){
 #print STDERR "refresh_bad_ip: check $key\n";
-                foreach $secmic ( keys %{$ns_obj->{$key}} ){
+                foreach $secmic ( keys %{$namespace_obj->{$key}} ){
 #print STDERR "refresh_bad_ip: check $key $secmic\n";
                         if ( $secmic =~ /^(\d+)\.(\d+)$/ ){
-                                $seconds = $1;
-
-                                if ( time - $seconds > $sec ){
-                                        delete $ns_obj->{$key}->{$secmic} ;
+                                if ( time - $1 > $sec ){
+                                        delete $namespace_obj->{$key}->{$secmic} ;
 #print STDERR "refresh_bad_ip: delete badlist $key $secmic\n";
                                 }
                         }else{
@@ -234,52 +256,102 @@ sub refresh_info
 			}
                 }
 
-                $val_count = keys %{$ns_obj->{$key}};
-                if ( 0==$val_count ) {
-                        delete $ns_obj->{$key};
+                $val_count = keys %{$namespace_obj->{$key}};
+                if ( 2>$val_count &&
+				defined $namespace_obj->{$key}->{_DENY_TO_} 
+			) {
+                        delete $namespace_obj->{$key};
                 }
         }
 	
-	$self->{dynamic_info}->{$namespace} = $ns_obj;
+	#$self->{dynamic_info}->{$namespace} = $ns_obj;
 
-	return 1;
+	return $namespace_obj;
 }
 
 sub add_dynamic_info
 {
         my $self = shift;
 
-	my ($namespace,$key) = @_;
+	my ($namespace_obj,$key) = @_;
 
-	if ( ! $namespace || ! $key ){
+	if ( ! $namespace_obj || ! $key ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::add_dynamic_info can't get params: [" . join("",@_) . "]" );
 		return 0;
 	}
 
         ($seconds, $microseconds) = gettimeofday;
 
-	my $ns_obj = $self->{dynamic_info}->{$namespace};
-	$ns_obj->{$key}->{$seconds . '.' . $microseconds} = 1;
-	$self->{dynamic_info}->{$namespace} = $ns_obj;
+	$namespace_obj->{$key}->{$seconds . '.' . $microseconds} = 1;
+
+	return $namespace_obj;
 #print STDERR "add_bad_ip: $namespace, $key\n";
 }
 
+# 检查给定时间内的记录数目，可能会影响性能
+sub check_quota_exceed_ex
+{
+	my $self = shift;
+
+	my ( $namespace_obj, $key, $num, $sec, $deny_sec ) = @_;;
+
+	if ( ! $namespace_obj || ! $key || ! $num || ! $sec || ! $deny_sec){
+		$self->{zlog}->debug ( "AKA::Mail::Dynamic::check_quota_exceed can't get params: [" . join("",@_) . "]" );
+		return (0,'参数不足 ');
+	}
+
+	my $ns_obj_who = $namespace_obj->{$key};
+
+	if ( defined $ns_obj_who->{_DENY_TO_} ){
+		my $wait_time = $ns_obj_who->{_DENY_TO_} - time;
+		if( $wait_time > 0 ){
+			# change to minute
+			$wait_time = int($wait_time/60);
+			# 由于超额，还没到被解封时间，仍然返回OVERRUN
+			return (1, "发送超限，还需$wait_time分钟解封");
+		}else{
+			delete $ns_obj_who->{_DENY_TO_};
+		}
+	}
+
+	my $num_counter = 0;
+       	foreach ( keys %{$ns_obj_who} ){
+               if ( /^(\d+)\.(\d+)$/ ){
+                        if ( time - $1 < $sec ){
+				$num_counter++;
+                        }
+                }else{
+			$self->{zlog}->debug ( "AKA::Mail::Dynamic::refresh_info found a val not sec.mic format: [$_]" );
+		}
+        }
+	
+        if ( $num_counter > $num ) {
+		# limit OVERRUN! EXCEED!
+		$ns_obj_who->{_DENY_TO_} = time+$deny_sec;
+		return (1,'发送超限');;
+        }
+
+	# we still have quota!
+	return (0,'通过动态检测');
+}
+
+
+# 检查 DynamicInfo 中所有记录的数目，可能性能会好一些
 sub check_quota_exceed
 {
 	my $self = shift;
 
 	# no need to sec, because we already delete older items before sec second.
-	my ( $namespace, $key, $num ) = @_;;
+	my ( $namespace_obj, $key, $num, $sec ) = @_;;
 
-	if ( ! $namespace || ! $key || ! $num){
+	if ( ! $namespace_obj || ! $key || ! $num || ! $sec){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::check_quota_exceed can't get params: [" . join("",@_) . "]" );
 		return 0;
 	}
 
 	my $num_counter;
 
-	my $ns_obj = $self->{dynamic_info}->{$namespace};
-        $num_counter = keys ( %{$ns_obj->{$key}} );
+        $num_counter = keys ( %{$namespace_obj->{$key}} );
 
 #print STDERR "check_bad_ip: key $key has $num_counter times actions ... \n";
 
