@@ -19,18 +19,19 @@ sub new
 
 	bless $self, $class;
 
+	$self->{define}->{rrdfile} = '/home/NoSPAM/etc/nospam.rrd';
+	$self->{define}->{gifpath} = "/home/NoSPAM/admin/status/";
 	return $self;
 }
 
-sub test
+sub gen_gif
 {
 	my $self = shift;
 	
 	my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 
-	my $rrdfile = "/home/NoSPAM/var/nospam.rrd";
-	my $gifpath = "/home/NoSPAM/admin/status/";
-	my $gifname = "size";
+	my $rrdfile = $self->{define}->{rrdfile};
+	my $gifpath = $self->{define}->{gifpath};
 
 	my ( $start_time,$end_time,@vrules );
 
@@ -117,15 +118,14 @@ sub get_year_param
 }
 
 
-
 sub create_rrd
 {
 	my $self = shift;
-	my $file = shift;
+	my $file = $self->{define}->{rrdfile};
 
 	RRDs::create(
-		"rrdtool create $file"
-		,'--step 300'
+		$file
+	#	,'--step 300'
             	,'DS:num_all:GAUGE:600:U:U'
             	,'DS:num_ok:GAUGE:600:U:U'
             	,'DS:num_in:GAUGE:600:U:U'
@@ -145,44 +145,47 @@ sub create_rrd
             	,'DS:size_4K:GAUGE:600:U:U'
             	,'DS:size_16K:GAUGE:600:U:U'
             	,'DS:size_32K:GAUGE:600:U:U'
-            DS:size_64K:GAUGE:600:U:U 	\
-            DS:size_128K:GAUGE:600:U:U 	\
-            DS:size_256K:GAUGE:600:U:U 	\
-            DS:size_512K:GAUGE:600:U:U 	\
-            DS:size_1M:GAUGE:600:U:U 	\
-            DS:size_5M:GAUGE:600:U:U 	\
-            DS:size_10M:GAUGE:600:U:U 	\
-            DS:size_gt10M:GAUGE:600:U:U 	\
-					\
-            DS:time_all:GAUGE:600:U:U   \
-            DS:time_virus:GAUGE:600:U:U   \
-            DS:time_spam:GAUGE:600:U:U   \
-            DS:time_content:GAUGE:600:U:U   \
-            DS:time_overrun:GAUGE:600:U:U   \
-            DS:time_archive:GAUGE:600:U:U   \
-            				\
-            DS:cpu_all:GAUGE:600:U:U   \
-            DS:cpu_virus:GAUGE:600:U:U   \
-            DS:cpu_spam:GAUGE:600:U:U   \
-            DS:cpu_content:GAUGE:600:U:U   \
-            DS:cpu_overrun:GAUGE:600:U:U   \
-            DS:cpu_archive:GAUGE:600:U:U   \
-            				\
-            RRA:MIN:0.5:1:600      \
-            RRA:MIN:0.5:6:700      \
-            RRA:MIN:0.5:24:775     \
-            RRA:MIN:0.5:288:797    \
-            RRA:AVERAGE:0.5:1:600      \
-            RRA:AVERAGE:0.5:6:700      \
-            RRA:AVERAGE:0.5:24:775     \
-            RRA:AVERAGE:0.5:288:797    \
-            RRA:MAX:0.5:1:600          \
-            RRA:MAX:0.5:6:700          \
-            RRA:MAX:0.5:24:775         \
-            RRA:MAX:0.5:288:797
-_RRD_CMD_
+            	,'DS:size_64K:GAUGE:600:U:U'
+            	,'DS:size_128K:GAUGE:600:U:U'
+            	,'DS:size_256K:GAUGE:600:U:U'
+            	,'DS:size_512K:GAUGE:600:U:U'
+            	,'DS:size_1M:GAUGE:600:U:U'
+            	,'DS:size_5M:GAUGE:600:U:U'
+            	,'DS:size_10M:GAUGE:600:U:U'
+            	,'DS:size_gt10M:GAUGE:600:U:U'
+				
+            	,'DS:time_all:GAUGE:600:U:U'
+            	,'DS:time_virus:GAUGE:600:U:U'
+            	,'DS:time_spam:GAUGE:600:U:U'
+            	,'DS:time_content:GAUGE:600:U:U'
+            	,'DS:time_overrun:GAUGE:600:U:U'
+            	,'DS:time_archive:GAUGE:600:U:U'
+            				
+            	,'DS:cpu_all:GAUGE:600:U:U'
+            	,'DS:cpu_virus:GAUGE:600:U:U'
+            	,'DS:cpu_spam:GAUGE:600:U:U'
+            	,'DS:cpu_content:GAUGE:600:U:U'
+            	,'DS:cpu_overrun:GAUGE:600:U:U'
+            	,'DS:cpu_archive:GAUGE:600:U:U'
+            				
+            	,'RRA:MIN:0.5:1:600'
+            	,'RRA:MIN:0.5:6:700'
+            	,'RRA:MIN:0.5:24:775'
+            	,'RRA:MIN:0.5:288:797'
+            	,'RRA:AVERAGE:0.5:1:600'
+            	,'RRA:AVERAGE:0.5:6:700'
+            	,'RRA:AVERAGE:0.5:24:775'
+            	,'RRA:AVERAGE:0.5:288:797'
+            	,'RRA:MAX:0.5:1:600'
+            	,'RRA:MAX:0.5:6:700'
+            	,'RRA:MAX:0.5:24:775'
+            	,'RRA:MAX:0.5:288:797'
+	);
 
-	system($cmd);
+	my $ERR = RRDs::error;
+	if ( $ERR ){
+		die "RRDs err: $ERR\n";
+	}
 }
 
 sub rrdgraph_size
@@ -202,7 +205,7 @@ sub rrdgraph_size
 			"--width=500",        
 			"--upper-limit=40",  
 			"--lower-limit=0",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 
@@ -408,7 +411,7 @@ sub rrdgraph_engine
 			"--height=200",        
 			"--width=500",
 			"--interlaced",
-			#"--lazy",
+			"--lazy",
 			#'--imginfo "<IMG SRC="%s" WIDTH="%lu" HEIGHT="%lu" ALT="Demo">"',
 			"--upper-limit=200",  
 			"--lower-limit=-100",   
@@ -600,7 +603,7 @@ sub rrdgraph_type
 			"--width=500",        
 			"--upper-limit=100",  
 			"--lower-limit=-20",   
-			#"--lazy",
+			"--lazy",
 			#"--rigid",          
 			#"--base=1024",     
 			"DEF:num_all_raw=$rrdfile:num_all:AVERAGE", 

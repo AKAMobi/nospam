@@ -119,6 +119,8 @@ sub server
 	#local $SIG{CHLD} = \&{$self->reaper};
 	local $SIG{CHLD} = 'IGNORE';
 	while ( $client = $server->accept() ){
+		$self->{start_time} = [gettimeofday];
+
 		if (!$client) {
 		# this can happen when interrupted by SIGCHLD on Solaris,
 		# perl 5.8.0, and some other platforms with -m.
@@ -301,7 +303,7 @@ sub send_mail_info
 	my ($smtp_code,$smtp_info,$exit_code);
 	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code} ||'';
 	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info} ||'';
-	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'';
+	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code} ||'0';
 
 #print "after process, before send\n";
 #$self->{zlog}->debug( "net_process after process smtp_code: [" . $smtp_code . "]\n"
@@ -330,9 +332,11 @@ sub process
 		return undef;
 	}
 
-	$self->{start_time} = [gettimeofday];
-
 	$self->{mail_info} = $mail_info;
+
+
+	$mail_info->{aka}->{start_time} = $self->{start_time};
+	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
 
 	# 设置引擎运行的结果数据缺省值
 	$self->init_engine_info();
@@ -340,16 +344,45 @@ sub process
 	# 获取文件尺寸和标题等基本信息
 	$self->get_mail_base_info;
 
+	my ($user,$system,$cuser,$csystem) = times;
+	my $last_cputime;
 
+	$last_cputime = $user+$system+$cuser+$csystem;
 
 	$self->antivirus_engine() 	unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{antivirus}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
+#$self->{zlog}->debug ( "before spam: [" . $last_cputime . "]" );
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+#$self->{zlog}->debug ( "after spam: [" . ($user+$system+$cuser+$csystem) . "]" );
+	$self->{mail_info}->{aka}->{engine}->{spam}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+#$self->{zlog}->debug ( "store spam: [" . $self->{mail_info}->{aka}->{engine}->{spam}->{cputime} . "]" );
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{content}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{dynamic}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{interactive}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 	
 	$self->archive_engine()	;	#unless $self->{mail_info}->{aka}->{drop};
 					# archive should run even we drop mail
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{archive}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
 
 	# Log
 	$self->log_engine();
@@ -756,12 +789,12 @@ sub log_engine
 # rrdtool data source
 #
 #
-my $mail_type = {	'virus'		=>	0x000000001
-			'spam'
-			'content'
-			'dynamic'
-			,
-	$self->{zlog}->log_ds ( $self->{mail_info} );
+#my $mail_type = {	'virus'		=>	0x000000001
+#			'spam'
+#			'content'
+#			'dynamic'
+#			,
+#	$self->{zlog}->log_ds ( $self->{mail_info} );
 }
 
 sub antivirus_engine
