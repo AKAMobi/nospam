@@ -38,15 +38,20 @@ echo "Copying source files..."
 cp -fv ${SOURCEHOME}/{NoSPAM.pl,smtp_auth_proxy.pl} aka/home/NoSPAM/bin
 cp -fv ${SOURCEHOME}/ContentFilter/{UpdateRule.pl,UploadLog.pl} aka/home/NoSPAM/bin
 cp -fv ${SOURCEHOME}/post_install.pl aka/root
+cp -fv ${SOURCEHOME}/qmail-scanner-1.20/mini-ns-queue.pl aka/var/qmail/bin/ns-queue.pl
+rm -f aka/var/qmail/bin/ins-queue
+ln -s ns-queue aka/var/qmail/bin/ins-queue
 
 echo "Encrypting..."
 chmod 755 aka/home/NoSPAM/bin/*.pl
 ${SOURCEHOME}/Admin/factory/encrypt aka/home/NoSPAM/bin/*.pl
 chmod 755 aka/root/*.pl
 ${SOURCEHOME}/Admin/factory/encrypt aka/root/*.pl
+${SOURCEHOME}/Admin/factory/encrypt aka/var/qmail/bin/*.pl
 
 echo "Compiling qns_loader & wi  source"
 gcc -o aka/home/NoSPAM/bin/qns_loader ${SOURCEHOME}/qns_loader.c
+rm -f aka/home/NoSPAM/bin/qins_loader
 ln -s qns_loader aka/home/NoSPAM/bin/qins_loader
 gcc -o aka/home/NoSPAM/bin/wi ${SOURCEHOME}/wi.c
 

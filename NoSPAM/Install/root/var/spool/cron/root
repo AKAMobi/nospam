@@ -6,4 +6,5 @@
 0 4 * * * (/var/qmail/bin/ns-queue -z>>/var/log/police.cron 2>&1)
 0 4 * * * (cat /dev/null > /var/log/police.cron)
 0 4 * * * (cat /dev/null > /var/log/NoSPAM.debug)
+0 4 * * * (cat /dev/null > /var/log/maillog)
 0 4 * * * (cat /dev/null > /home/NoSPAM/spool/ns-queue.debug)

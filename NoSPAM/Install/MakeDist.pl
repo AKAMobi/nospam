@@ -6,7 +6,8 @@ $NSVER='1.3-4.7';
 `rm -fr tmp`;
 `mkdir tmp`;
 
-@tarballs = qw(qmail kernel network);
+#@tarballs = qw(qmail kernel network);
+@tarballs = qw(qmail);
 
 opendir(DIR, ".") || die "can't opendir .: $!\n";
 @pkgs = grep { !/^\./ && (!/[A-Z]/) } readdir(DIR);
@@ -34,9 +35,10 @@ foreach $pkg ( @pkgs ){
 	chdir '..';
 }
 
-print "Cleaning CVS info...\n";
+print "Cleaning CVS & README info...\n";
 `find ./tmp | grep CVS | xargs rm -fr`;
 chdir 'tmp';
+unlink 'README';
 
 print "Tar to NoSPAM prepare package...\n";
 `tar czvf ../Dist/ns-prep-$NSVER.i386.rpm root/post_install usr/lib/perl5/site_perl/5.8.0/AKA/Loader.pm usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/auto/AKA/Loader/Loader.so`;
