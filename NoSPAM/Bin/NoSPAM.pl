@@ -464,11 +464,11 @@ _POD_
 
 sub reset_Locale;
 {
-	my $locale_cfg = "/etc/mrtg/rmtg.cfg.$language";
-	my $default_cfg = "/etc/mrtg/rmtg.cfg";
+	my $locale_cfg = "/etc/mrtg/mrtg.cfg.$language";
+	my $default_cfg = "/etc/mrtg/mrtg.cfg";
 	if ( -e $locale_cfg && -f $locale_cfg ){
 		unlink $default_cfg;
-		link ( $locale_cfg, $locale_cfg );
+		link ( $locale_cfg, $default_cfg );
 	}
 }
 
