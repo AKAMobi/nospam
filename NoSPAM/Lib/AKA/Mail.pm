@@ -654,7 +654,7 @@ sub quarantine_engine
 	}elsif( 'File' eq $userlistdb ){
 		my $q_users = $self->{user}->is_user_exist(@emails);
 		if ( !defined $q_users  ){
-$self->{zlog}->debug( "User [" . join (',',@emails) . "] not exist." );
+#$self->{zlog}->debug( "User [" . join (',',@emails) . "] not exist." );
 			my $nosuchuseraction = uc $self->{conf}->{config}->{QuarantineEngine}->{NoSuchUserAction} ;
 			if( 'D' eq $nosuchuseraction){
 				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
@@ -695,7 +695,7 @@ $self->{zlog}->debug( "User [" . join (',',@emails) . "] not exist." );
 				} );
 			}
 		}else{
-$self->{zlog}->debug( "User [" . join (',',@emails) . "] exist." );
+#$self->{zlog}->debug( "User [" . join (',',@emails) . "] exist." );
 			$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
 				result 	=> 0,
 				desc	=> __("registered user"),
@@ -1409,13 +1409,22 @@ sub spam_engine
 	#}
 	else{ #由外向内
 
-		if ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
+		# 检查用户白名单
+		my $is_user_whitelist = 0;
+		if ( length($returnpath) ){
+			$is_user_whitelist = $self->{user}->is_user_whitelist($returnpath, split(/,/,$self->{mail_info}->{aka}->{recips}));
+			if ( $is_user_whitelist ){
+				( $is_spam, $reason, $dns_query_time ) = (0, _("User WhiteList"), 0);
+			}
+		}
+
+		if ( !$is_user_whitelist && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/In/i ){
 			( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 #$self->{zlog}->debug ( "spam_checker: $returnpath: $is_spam, $reason" );
 		}
 		
-		if ( !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
+		if ( !$is_user_whitelist && !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
 			my $result = $self->get_sa_result();
 			if ( defined $result ){

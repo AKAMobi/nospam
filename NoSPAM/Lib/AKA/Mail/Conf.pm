@@ -58,6 +58,9 @@ use constant	{
 	,QUARANTINE_DROP	=>	0
 	,QUARANTINE_USER	=>	1
 	,QUARANTINE_ADMIN	=>	2
+
+	,WHITE_LIST		=>	1
+	,BLACK_LIST		=>	2
 };
 
 

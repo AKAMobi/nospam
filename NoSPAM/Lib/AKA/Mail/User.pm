@@ -10,6 +10,7 @@ package AKA::Mail::User;
 use strict;
 
 use AKA::Mail::DB;
+use AKA::Mail::Conf;
 
 sub new
 {
@@ -36,11 +37,42 @@ sub is_user_exist
 	
 	my $q_users = undef;
 	foreach ( @emails ){
+
+		# XXX
+		$q_users->{$_} = 1;
+		next;
+		# XXX
+
 		if ( $self->{db}->user_email_exist( $_ ) ){
 			$q_users->{$_} = 1;
 		}
 	}
 	return $q_users;
 }
+
+# 检查是否发件人被收件人列入白名单
+# 如果有多个收件人，则任何一个收件人将发件人列入白名单即可
+# 如果是白名单，返回1，否则返回0；
+sub is_user_whitelist($$$)
+{
+	my $self = shift;
+	my $sender_email = shift;
+	my @receiver_emails = @_;
+
+	return $self->{db}->is_user_whitelist( AKA::Mail::Conf::WHITE_LIST, $sender_email, @receiver_emails );
+}
+
+# 检查是否发件人被收件人列入白名单
+# 如果有多个收件人，则任何一个收件人将发件人列入白名单即可
+# 如果是白名单，返回1，否则返回0；
+sub is_user_blacklist($$$)
+{
+	my $self = shift;
+	my $sender_email = shift;
+	my @receiver_emails = @_;
+
+	return $self->{db}->is_user_whitelist( AKA::Mail::Conf::BLACK_LIST, $sender_email, @receiver_emails );
+}
+
 
 1;

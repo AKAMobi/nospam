@@ -101,6 +101,25 @@ sub make_info_content
 	my $info_content = "$from\n$to\n$subject\n$size\n$reason\n$desc";;
 	return $info_content;
 }
+sub get_quarantine_info
+{
+	my $file = shift;
+
+	my $info = {}; 
+	if ( open (FD,"<$file.info") ){
+		$info->{from} = <FD>; chomp $$info->{from};
+		$info->{to} = <FD>; chomp $info->{to};
+		$info->{subject} = <FD>; chomp $info->{subject};
+		$info->{size} = <FD>; chomp $info->{size};
+		$info->{reason} = <FD>; chomp $info->{reason};
+		$info->{desc} = <FD>; chomp $info->{desc};
+		close FD;
+		return $info;
+	}else{
+		$zlog->fatal ( "wi QuarantineProcessMail::_get_quarantine_info can't open file [$file]" );
+		return undef;
+	}
+}
 
 1;
 
