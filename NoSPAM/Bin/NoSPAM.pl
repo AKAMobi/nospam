@@ -1078,6 +1078,7 @@ sub _network_set_sysctl
 	return 0;
 }
 
+# for MXRelay & Gateway
 sub ProtectDomain_reset
 {
 	my $ProtectDomain = $conf->{config}->{MailServer}->{ProtectDomain} ;
@@ -1109,9 +1110,14 @@ sub ProtectDomain_reset
 	$zlog->fatal ( "file_update_all: _file_update_smtproutes err # $ret !" ) if $ret;
 	$err = 1 if ( $ret );
 
-	$ret = &_network_reset_smtp_dnat( $Domain_IP, $Domain_Port );
-	$zlog->fatal ( "file_update_all: _network_set_smtp_dnat err # $ret !" ) if $ret;
-	$err = 1 if ( $ret );
+	use AKA::Mail::GW;
+	my $AMG = new AKA::Mail::GW;
+
+	if ( $AMG->isGateway() ){
+		$ret = &_network_reset_smtp_dnat( $Domain_IP, $Domain_Port );
+		$zlog->fatal ( "file_update_all: _network_set_smtp_dnat err # $ret !" ) if $ret;
+		$err = 1 if ( $ret );
+	}
 
 	return $err;
 }
@@ -1144,7 +1150,6 @@ sub _network_reset_smtp_dnat
 	#print( "$iptables -t nat -D PREROUTING -p tcp -j SMTP \n" );
 	$ret = system( "$iptables -t nat -D PREROUTING -p tcp -j SMTP > /dev/null 2>&1" );
 	$ret = system( "$iptables -t nat -I PREROUTING -p tcp -j SMTP " );
-
 
 	my ( $domain, $ip, $port );
 	my $has_set = {};
