@@ -1086,8 +1086,9 @@ sub _network_reset_smtp_dnat
 	if ( $ret ){
 		$ret = system( "$iptables -t nat -N SMTP" );
 	}
-	$ret = system( "$iptables -t nat -D PREROUTING -p tcp -j SMTP " );
-	$ret = system( "$iptables -t nat -A PREROUTING -p tcp -j SMTP " );
+	#print( "$iptables -t nat -D PREROUTING -p tcp -j SMTP \n" );
+	$ret = system( "$iptables -t nat -D PREROUTING -p tcp -j SMTP > /dev/null 2>&1" );
+	$ret = system( "$iptables -t nat -I PREROUTING -p tcp -j SMTP " );
 
 
 	my ( $domain, $ip, $port );

@@ -76,7 +76,7 @@ sub load_user_filetype
 {
 	my $self = shift;
 
-	if ( ! open ( FD, '<' . $self->{conf}->{user_filetype} ) ){
+	if ( ! open ( FD, '<' . $self->{conf}->{define}->{user_filetype} ) ){
 		$self->{zlog}->fatal( "Parser: open user_filetype failure!" );
 		return;
 	}
