@@ -134,7 +134,7 @@ sub server
 			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
 			if ( $self->check_conffile_update() ){
 				close $server;
-				#kill 9, $$;
+				kill 9, $$;
 				exit;
 			}
 			; # goto accept
@@ -808,8 +808,10 @@ sub antivirus_engine
 	# 抽样检查
 	#
 	if ( 'Y' eq uc $self->{conf}->{config}->{AntiVirusEngine}->{SampleCheck} ){
-		if ( $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} < int(rand(98)+1) ){
-			# 不需要采样
+		#my $random1_100 = int(rand(98)+1);
+		my $random1_100 = $$ % 100;
+		if ( $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} < $random1_100 ){
+#$self->{zlog}->debug ( "random: $random1_100 , sample: " . $self->{conf}->{config}->{AntiVirusEngine}->{SampleProbability} );
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
 					result  => 0,
 					desc	=>'采样抽签未中',
@@ -894,7 +896,7 @@ sub archive_engine
 	if ( !grep(/^All$/,@archivetype) ){
 		$need_archive=0 if ( $need_archive && grep(/^Spam$/,@archivetype) && $run_spam && !$is_spam );
 		$need_archive=0 if ( $need_archive && grep(/^NotSpam$/,@archivetype) && $run_spam && $is_spam );
-$self->{zlog}->debug( "archive: NotSpam [$need_archive] [$run_spam] [$is_spam]" );
+#$self->{zlog}->debug( "archive: NotSpam [$need_archive] [$run_spam] [$is_spam]" );
 
 		$need_archive=0 if ( $need_archive && grep(/^Virus$/,@archivetype) && $run_virus && !$is_virus );
 		$need_archive=0 if ( $need_archive && grep(/^NotVirus$/,@archivetype) && $run_virus && $is_virus );
