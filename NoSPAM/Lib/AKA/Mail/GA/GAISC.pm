@@ -150,7 +150,7 @@ sub start_daemon_process
 		return $self->SUPER::start_daemon_process();
 	}
 
-	# XXX by zixia: for test file $self->GAISC_get_ftp_info();
+	$self->GAISC_get_ftp_info();
 	return $self->GAISC_server;
 	
 }
@@ -184,6 +184,7 @@ sub mail_info_to_file
         #$serialno = int ( $serialno );
 
 	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . $serialno . '.' . lc($type);
+$self->{zlog}->debug ( "mail_info_to_file: $filename" );
 
 	my $mimedata;
 	if ( open ( FD, '<' . $mail_info->{aka}->{emlfilename} ) ){
@@ -196,34 +197,34 @@ sub mail_info_to_file
 		return undef;
 	} 
 
-	print FD "GAISC.$type.Rule=" . $mail_info->{aka}->{rule_info}->{rule_id} . '0x0D0x0A';
-	print FD "GAISC.$type.Time=". $self->{zlog}->get_time_stamp . '0x0D0x0A';
-	print FD "GAISC.$type.From=". $mail_info->{head}->{from} . '0x0D0x0A';
-	print FD "GAISC.$type.To=". $mail_info->{head}->{to} . '0x0D0x0A';
-	print FD "GAISC.$type.Cc=". $mail_info->{head}->{cc} . '0x0D0x0A';
-	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . '0x0D0x0A';
-	print FD "GAISC.$type.Received=". $self->get_received_str($mail_info) . '0x0D0x0A';
-	print FD "GAISC.$type.Length=" . length($mail_info->{body_text}) . '0x0D0x0A';
-	print FD "GAISC.$type.Content=". $mail_info->{body_text} . '0x0D0x0A';
-	print FD "GAISC.$type.SelfLength=" . (-s $mail_info->{aka}->{emlfilename}||0) . '0x0D0x0A';
-	print FD "GAISC.$type.SelfMai=0x0D0x0A" . $mimedata . '0x0D0x0A';
+	print FD "GAISC.$type.Rule=" . $mail_info->{aka}->{rule_info}->{rule_id} . "\r\n";
+	print FD "GAISC.$type.Time=". $self->{zlog}->get_time_stamp . "\r\n";
+	print FD "GAISC.$type.From=". $mail_info->{head}->{from} . "\r\n";
+	print FD "GAISC.$type.To=". $mail_info->{head}->{to} . "\r\n";
+	print FD "GAISC.$type.Cc=". $mail_info->{head}->{cc} . "\r\n";
+	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . "\r\n";
+	print FD "GAISC.$type.Received=". $self->get_received_str($mail_info) . "\r\n";
+	print FD "GAISC.$type.Length=" . length($mail_info->{body_text}) . "\r\n";
+	print FD "GAISC.$type.Content=". $mail_info->{body_text} . "\r\n";
+	print FD "GAISC.$type.SelfLength=" . (-s $mail_info->{aka}->{emlfilename}||0) . "\r\n";
+	print FD "GAISC.$type.SelfMai=0x0D0x0A" . $mimedata . "\r\n";
 
 	my $atta_num = 0;
 	foreach my $atta_file ( keys %{$mail_info->{body}} ){
 		next if ( $mail_info->{body}->{$atta_file}->{nofilename} );
 		$atta_num++;
 		print FD "GAISC.$type.AttachName$atta_num=" 
-			. $atta_file . '0x0D0x0A';
+			. $atta_file . "\r\n";
 		print FD "GAISC.$type.AttachType$atta_num="
 			. $mail_info->{body}->{$atta_file}->{type} 
 				. '/' . $mail_info->{body}->{$atta_file}->{subtype}
-			. '0x0D0x0A';
+			. "\r\n";
 		print FD "GAISC.$type.AttachLength$atta_num="
-			. $mail_info->{body}->{$atta_file}->{size} . '0x0D0x0A';
+			. $mail_info->{body}->{$atta_file}->{size} . "\r\n";
 		print FD "GAISC.$type.AttachCount$atta_num="
-			. $mail_info->{body}->{$atta_file}->{content} . '0x0D0x0A';
+			. $mail_info->{body}->{$atta_file}->{content} . "\r\n";
 	}
-	print FD "GAISC.$type.AttachCount=". $atta_num . '0x0D0x0A';
+	print FD "GAISC.$type.AttachCount=". $atta_num . "\r\n";
 	close FD;
 
 	return $filename;
@@ -248,12 +249,22 @@ sub make_alert
 
 sub feed_log
 {
-	# TODO get all logfile match the given condition.
+	my $self = shift;
+
+	my @logfiles = @_;
+
+	unless ( @logfiles ){
+		$self->{zlog}->fatal ( "GA::GAISC::feed_log got no alert file param" );
+		return;
+	}
+
+	$self->GAISC_get_log_result ( @logfiles );
+	unlink @logfiles;
+
 }
 
 sub feed_alert
 {
-	# TODO get all logfile match the given condition.
 	my $self = shift;
 
 	my @alertfiles = @_;
@@ -476,15 +487,23 @@ sub GAISC_get_alt_result
 	my $ftp = $self->_connect_ftp();
 	my $err = 1 unless $ftp;
 
-	$self->ftp_put_file( $ftp, '/' 
-		. $self->{GAISC}->{FTPDir} . '/alert/' . $self->{GAISC}->{GatewayIdentifier} . '/'
+	$self->ftp_put_file( $ftp, '/home/ssh/alert',
+		'/' . $self->{GAISC}->{FTPDir} . '/alert/' . $self->{GAISC}->{GatewayIdentifier} . '/'
 		, @alt_files ) unless $err;
 
 	$ftp->quit unless $err;
 
+	my @files = ();
+	foreach ( @alt_files ){
+		if ( m#([^/]+)$# ){
+			push ( @files, $1 );
+		}else{
+			push ( @files, $_ );
+		}
+	}
 
 	my $pkg = { data_cate => CATE_ALTDATA_NOTIFY,
-			data => join(',',@alt_files) . ','
+			data => join(',',@files) . ','
 		};
 
 	$pkg = $self->_make_pkg ( $pkg );
@@ -511,8 +530,28 @@ sub GAISC_get_log_result
 
 	my @log_files = @_;
 
+	my $ftp = $self->_connect_ftp();
+	my $err = 1 unless $ftp;
+
+#print "get log before ftp put: " . $self->{GAISC}->{FTPDir} . '/log/' . $self->{GAISC}->{GatewayIdentifier} . '/' . "\n";
+	$self->ftp_put_file( $ftp, '/home/ssh/log/'
+		, '/' . $self->{GAISC}->{FTPDir} . '/log/' . $self->{GAISC}->{GatewayIdentifier} . '/'
+		, @log_files ) unless $err;
+
+	$ftp->quit unless $err;
+
+	my @files = ();
+	foreach ( @log_files ){
+		if ( m#([^/]+)$# ){
+			push ( @files, $1 );
+		}else{
+			push ( @files, $_ );
+		}
+	}
+
+
 	my $pkg = { data_cate => CATE_LOGDATA_NOTIFY,
-			data => join(',',@log_files) . ','
+			data => join(',',@files) . ','
 		};
 
 	$pkg = $self->_make_pkg ( $pkg );
@@ -769,16 +808,8 @@ sub GAISC_resp_log_update
 			
 
 	$self->{zlog}->debug ( Dumper($log_req) );
+
 	my @logfiles = $self->get_file_list( '/home/ssh/log/', 'log' );
-
-	my $ftp = $self->_connect_ftp();
-	my $err = 1 unless $ftp;
-
-	$self->ftp_put_file( $ftp, '/' . $self->{GAISC}->{FTPDir} . '/log/' 
-			. $self->{GAISC}->{SystemIdentifier}, @logfiles ) unless $err;
-
-	$ftp->quit;
-
 
 	$pkg = {	data_cate	=> CATE_LOGRULE_RESULT,
 			data		=> DATA_SUCC
@@ -786,6 +817,11 @@ sub GAISC_resp_log_update
 
 	$pkg = $self->_make_pkg( $pkg );
 	$self->_send_pkg( $socket, $pkg );
+
+	if ( @logfiles ){
+		$self->GAISC_get_log_result( @logfiles );
+		unlink @logfiles;
+	}
 
 	return 1;
 }
@@ -924,22 +960,24 @@ sub ftp_put_file
 {
 	my $self = shift;
 
-	my ($ftp, $path, @files) = @_;
+	my ($ftp, $srcdir, $dstdir, @files) = @_;
 
+print "path: $srcdir -> $dstdir, files: " . join(',', @files) . "\n";
 
-	unless ( $ftp->cwd( $path ) ){
-		$ftp->delete ( $path );
-		unless ( $ftp->mkdir ( $path, 1 ) ){
-			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file mkdir [$path] failure!" );
+	unless ( $ftp->cwd( $dstdir ) ){
+		$ftp->delete ( $dstdir );
+		unless ( $ftp->mkdir ( $dstdir, 1 ) ){
+			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file mkdir [$dstdir] failure!" );
 			return undef;
 		}
-		$ftp->cwd ( $path );
+		$ftp->cwd ( $dstdir );
 	}
 
 	foreach ( @files ){
 		$self->{zlog}->debug( "GA::GAISC::ftp_put_file putting $_" );
+		$_ = $srcdir . $_ unless ( m#/# );
 		if ( ! $ftp->put($_) ){
-			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file put file [$_] to [$path] fialure!" );
+			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file put file [$srcdir / $_] to [$dstdir] fialure!" );
 		}
 	}
 	return 1;
@@ -970,15 +1008,4 @@ sub ftp_get_file
 	return 1;
 }
 
-sub test_ftp
-{
-	my $self = shift;
-
-	my $ftp = $self->_connect_ftp();
-	#ftp_put_file( $ftp, ".", "GAISC.conf" );
-
-	$self->ftp_put_file ( $ftp, "xixi/haha/hoho", "data" );
-
-	$ftp->quit;
-}
 
