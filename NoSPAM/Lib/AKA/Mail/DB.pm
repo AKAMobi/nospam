@@ -35,7 +35,7 @@ sub connect
 	#return $self->{dbh} if defined $self->{dbh};
 	eval { $self->{dbh}->disconnect; $self->{dbh} = undef; } if defined $self->{dbh};
 
-	$self->{zlog}->debug( "DB::connect pid $$" );
+	#$self->{zlog}->debug( "DB::connect pid $$" );
 	my $DBFile = $self->{define}->{DBFile};
 	$self->{dbh} = DBI->connect("dbi:SQLite:dbname=$DBFile","","") or 
 		$self->{zlog}->fatal( "DB::connect failed! $!" );

@@ -59,7 +59,8 @@ sub is_user_whitelist($$$)
 	my $sender_email = shift;
 	my @receiver_emails = @_;
 
-	return $self->{db}->is_user_whitelist( AKA::Mail::Conf::WHITE_LIST, $sender_email, @receiver_emails );
+	my $ret = $self->{db}->is_user_whitelist( AKA::Mail::Conf::WHITE_LIST, $sender_email, @receiver_emails );
+	return $ret;
 }
 
 # 检查是否发件人被收件人列入白名单

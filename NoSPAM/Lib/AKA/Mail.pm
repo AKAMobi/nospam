@@ -1413,17 +1413,21 @@ sub spam_engine
 		my $is_user_whitelist = 0;
 		my $is_user_blacklist = 0;
 		if ( length($returnpath) ){
+			#$self->{zlog}->debug ( "FT0 $returnpath $is_user_whitelist" );
 			$is_user_whitelist = $self->{user}->is_user_whitelist($returnpath, split(/,/,$self->{mail_info}->{aka}->{recips}));
+			#$self->{zlog}->debug ( "FT1 $returnpath $is_user_whitelist" );
 			if ( $is_user_whitelist ){
-				( $is_spam, $reason, $dns_query_time ) = (0, _("User Whitelist"), 0);
+				( $is_spam, $reason, $dns_query_time ) = (0, __("User Whitelist"), 0);
 			}
+			#$self->{zlog}->debug ( "FT2 $returnpath $is_user_whitelist" );
 
 			$is_user_blacklist = $self->{user}->is_user_blacklist($returnpath, split(/,/,$self->{mail_info}->{aka}->{recips}));
 			if ( $is_user_blacklist ){
-				( $is_spam, $reason, $dns_query_time ) = (3, _("User Blacklist"), 0);
+				( $is_spam, $reason, $dns_query_time ) = (3, __("User Blacklist"), 0);
 			}
 
 		}
+
 
 		if ( !$is_user_whitelist && !$is_user_blacklist  && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} &&
 				$self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/In/i ){
@@ -1431,14 +1435,17 @@ sub spam_engine
 #$self->{zlog}->debug ( "spam_checker: $returnpath: $is_spam, $reason" );
 		}
 		
-		if ( !$is_user_whitelist && !$is_user_blacklist && !$is_spam && 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} &&
-				$self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
+		if ( !$is_user_whitelist && !$is_user_blacklist && !$is_spam 
+				&& 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} 
+				&& $self->{conf}->{config}->{SpamEngine}->{SmartProtectDirection}=~/In/i ){
 			my $result = $self->get_sa_result();
 			if ( defined $result ){
 				($sa_result,$is_spam,$reason) = @$result;
 			}
 		}
 	}
+
+
 
 	my $action = AKA::Mail::Conf::ACTION_PASS;
 

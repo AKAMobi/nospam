@@ -98,7 +98,7 @@ sub make_info_content
 	
 	my ($from,$to,$subject,$size,$reason,$desc) = @_;
 
-	my $info_content = "$from\n$to\n$subject\n$size\n$reason\n$desc";;
+	my $info_content = "$from\n$to\n$subject\n$size\n$reason\n$desc";
 	return $info_content;
 }
 sub get_quarantine_info
