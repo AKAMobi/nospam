@@ -355,6 +355,9 @@ sub ZombieFile_clean
 		, '/home/ssh/rule/'	=>	'+7'
 		, '/home/ssh/log'	=>	'+7'
 		, '/home/ssh/alert'	=>	'+7'
+
+		, '/tmp'	=>	'+7'
+		, '/var/tmp'	=>	'+7'
 	};
 
 	my @workfiles = ( '/home/NoSPAM/spool/ns-queue.debug '
@@ -366,14 +369,14 @@ sub ZombieFile_clean
 
 	foreach my $workdir ( keys %$workdirs ){
 		my $mtime = $workdirs->{$workdir};
-		`find $workdir -path $workdir/* -mtime $mtime -exec rm -rf {} \\; >/dev/null 2>&1`;
+		`find $workdir -path "$workdir/*" -mtime $mtime -exec rm -rf {} \\; >/dev/null 2>&1`;
 	}
 
 	foreach my $workfile ( @workfiles ){
 		open ( FD, ">$workfile" ) && close FD;
 	}
 
-	`find /var/log -path "/var/log/*.*" -name *.?.* -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /var/log -path "/var/log/*.*" -name "[a-z]*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 
 	return 0;
 }
