@@ -1,0 +1,5 @@
+vpopmail, install a common vpopmail, then add virtual domains below:
+	localhost.localdomain ( main )
+	localhost ( syn link to localhost.localdomain )
+	factory.gw.nospam.aka.cn ( syn link to localhost.localdomain, factory default domain name )
+
