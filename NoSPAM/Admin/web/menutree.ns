@@ -9,9 +9,10 @@ require_once("inc/include.ns");
 <title>系统菜单</title>
 <script src="js/xtree.js"></script>
 <link type="text/css" rel="stylesheet" href="css/xtree.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
 </head>
 
-<body bgcolor="#cccccc">
+<body><!-- bgcolor="#cccccc"-->
 <script>
 if (document.getElementById) {
 	var tree = new WebFXTree('管理选项');
