@@ -8,9 +8,6 @@
 
 int main( int argc, char* argv[] )
 {
-	//execvp(argv[1], argv+1);
-	//strcpy ( argv[0], QNS_BINARY );
-
 	setuid ( 0 );
 	setgid ( 0 );
 
