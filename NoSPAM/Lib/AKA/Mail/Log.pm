@@ -118,9 +118,9 @@ sub log_csv {
 	my $aka = $mail_info->{aka};
 	my $engine = $mail_info->{aka}->{engine};
 
-	my $esc_subject = $mail_info->{aka}->{subject};
+	my $esc_subject = $mail_info->{aka}->{subject} || '';
 	$esc_subject =~ s/,/_/g;
-	$subject = ' ' . $esc_subject . ' ';
+	$esc_subject = ' ' . $esc_subject . ' ';
 
 	if ( open ( LFD, ">>/var/log/NoSPAM.csv" ) ){
 		flock(LFD,LOCK_EX);

@@ -11,6 +11,8 @@ package AKA::Mail;
 use MIME::Base64; 
 use MIME::QuotedPrint; 
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+use Errno;
+use IO::Socket;
 
 use AKA::License;
 use AKA::Mail::Conf;
@@ -80,6 +82,88 @@ sub new
 
 }
 
+sub server
+{
+	my $self = shift;
+
+	my $server = new IO::Socket::INET( LocalAddr => '127.0.0.1',
+					LocalPort => '40307',
+					Proto => 'tcp',
+					Type => SOCK_STREAM,
+					ReuseAddr => 1,
+					Listen => SOMAXCONN
+			) || sleep 1 && die "Could not create INET socket: $! $@\n";
+
+	my $client;
+	my $pid;
+
+	while ( $client = $server->accept() ){
+		if (!$client) {
+		# this can happen when interrupted by SIGCHLD on Solaris,
+		# perl 5.8.0, and some other platforms with -m.
+			if ($! == &Errno::EINTR) {
+				next;
+			} else {
+				sleep 1;
+				die "accept failed: $!\n";
+			}
+		}
+		$pid = fork();
+
+		if ( $pid > 0 ){ #parent
+			; # goto accept
+		}elsif ( 0==$pid ){ # child
+			$self->net_process($client);
+			close $client;
+			exit;
+		}else{ #err
+			$self->{zlog}->fatal ( "Mail::server fork return < 0? [$pid]" );
+		}
+	}
+}
+
+sub net_process
+{
+	my $self = shift;
+	my $socket = shift;
+
+	unless ( $socket && $socket->connected ){
+		$self->{zlog}->fatal ( "Mail::net_process got invalid socket [$socket]" );
+		return;
+	}
+
+	$_ = <$socket>; chomp;
+	print "$_\n";
+	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
+
+	$_ = <$socket>; chomp;
+	print "$_\n";
+	$self->{mail_info}->{aka}->{REMOTEIP} = $_;
+
+	$_ = <$socket>; chomp;
+	print "$_\n";
+	$self->{mail_info}->{aka}->{REMOTEINFO} = $_;
+
+	$_ = <$socket>; chomp;
+	print "$_\n";
+	$self->{mail_info}->{aka}->{emlfilename} = $_;
+
+	$_ = <$socket>; chomp;
+	print "$_\n";
+	$self->{mail_info}->{aka}->{fd1} = $_;
+
+open ( FD, ">/tmp/srv.debug" );
+use Data::Dumper;
+print FD Dumper ($self->{mail_info}->{aka} );
+close FD;
+	$self->process ( $self->{mail_info} );
+
+	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_code} . "\n";
+	print $socket $self->{mail_info}->{aka}->{resp}->{smtp_info} . "\n";
+	print $socket $self->{mail_info}->{aka}->{resp}->{exit_code} . "\n";
+	
+}
+
 sub process
 {
 	my $self = shift;
@@ -127,6 +211,9 @@ sub process
 				return $mail_info;
 			}else{
 				$self->cleanup();
+				unless ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc}){
+					$self->{zlog}->fatal ( "engine $engine has action buf no desc?" );
+				}
 				$mail_info->{aka}->{resp} = {
 						smtp_code => 553,
 						smtp_info => '对不起，由于 ' 
@@ -305,7 +392,8 @@ sub qmail_requeue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
+		$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
+		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0 for [$msg]. (#4.3.0) - $!");
 
 		open (STDOUT, "<&EOUT") ||  return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
 		select(STDIN);$|=1;
