@@ -12,6 +12,9 @@ use XML::Simple;
 use POSIX qw(strftime);
 use strict;
 
+use AKA::Mail::Log;
+use AKA::Mail::Conf;
+
 sub new
 {
 	my $class = shift;
@@ -190,6 +193,7 @@ sub merge_new_rule
 	for my $rule_id ( keys %{$rule_del} ){
 		$self->{zlog}->log ( "deleting rule id: [$rule_id] from filterdb" );
 		next unless ( $rule_id );
+$self->{zlog}->debug( "GA::merge del rule id: $rule_id\n" );
 		delete $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} 
 			if defined $filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id};
 	}
@@ -330,6 +334,25 @@ sub get_update_xml_simple
 			parseropts => \@parseropts , 
 			KeyAttr => {'rule'=>'+rule_id', 'rule-id'=>'+rule_id'}, 
 			ForceArray => ['rule', 'rule-id']);
+}
+
+# Ed Li <zxiia@zixia.net>, Zhuohuan <lizh@aka.cn>
+# to
+# zixia@zixia.net,lizh@aka.cn
+sub get_addr_str_from_mail_str
+{
+	my $self = shift;
+
+	my $mail_str = shift;
+
+	my @TOs;
+	foreach ( split(/,/, $mail_str ) ){
+		if ( m#((\d|\w|\.|\-|_)+\@(\d|\w|\.|\-|_)+)# ){
+			push ( @TOs, $1 );
+		}
+	}
+
+	return join(',',@TOs);
 }
 
 1;

@@ -81,7 +81,8 @@ sub process
 	my ( $action, $param, $rule_id );
 
 	if ( $rule_info ){
-		if ( 'user' ne lc $rule_info->{id_type} ){
+		# XXX change 'msp' to 'user'
+		if ( 'msp' ne lc $rule_info->{id_type} ){
 			use AKA::Mail::GA;
 			my $AMG = new AKA::Mail::GA;
 			$AMG->check_match($mail_info);

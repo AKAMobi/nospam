@@ -86,7 +86,7 @@ sub check_match
 	my $self = shift;
 	my $mail_info = shift;
 
-	$self->make_log( $mail_info );
+	$self->make_copy( $mail_info );
 
 	my $rule_info = $mail_info->{aka}->{rule_info};
 	
@@ -167,11 +167,29 @@ sub mail_info_to_file
 
 	my $mail_info = shift;
 	my $type = shift;
+	my $sel_str = shift || '111100';
 
 	$type = uc $type;
 	unless ( $type eq 'ALT' || $type eq 'LOG' ){
 		$self->{zlog}->fatal ( "GA::GAISC::mail_info_to_file got type [$type] err." );
 		return undef;
+	}
+
+	my $content_map = { 1 => 'from'
+				, 2 => 'to'
+				, 3 => 'cc'
+				, 4 => 'subject'
+				, 5 => 'content'
+				, 6 => 'atta_content'
+			};
+
+	my %selector;
+
+	for ( my $n=1; $n<=length($sel_str); $n++ ){
+		if ( 1==substr($sel_str,$n-1,1) ){
+			$selector{$content_map->{$n}} = 1;
+		}
+			
 	}
 
 #use Data::Dumper;
@@ -184,30 +202,71 @@ sub mail_info_to_file
         #$serialno = int ( $serialno );
 
 	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . $serialno . '.' . lc($type);
-$self->{zlog}->debug ( "mail_info_to_file: $filename" );
-
-	my $mimedata;
-	if ( open ( FD, '<' . $mail_info->{aka}->{emlfilename} ) ){
-		$mimedata = join('', <FD>);
-		close ( FD );
-	}
+#$self->{zlog}->debug ( "mail_info_to_file: $filename" );
 
 	unless ( open ( FD, ">$filename" ) ){
 		$self->{zlog}->fatal ( "GA::GAISC::mail_info_to_file can't write file [$filename]" );
 		return undef;
 	} 
 
-	print FD "GAISC.$type.Rule=" . $mail_info->{aka}->{rule_info}->{rule_id} . "\r\n";
+	print FD "GAISC.$type.Rule=" . $mail_info->{aka}->{rule_info}->{rule_id} . "\r\n"
+		if ( uc $type eq 'ALT' );
+
 	print FD "GAISC.$type.Time=". $self->{zlog}->get_time_stamp . "\r\n";
-	print FD "GAISC.$type.From=". $mail_info->{head}->{from} . "\r\n";
-	print FD "GAISC.$type.To=". $mail_info->{head}->{to} . "\r\n";
-	print FD "GAISC.$type.Cc=". $mail_info->{head}->{cc} . "\r\n";
-	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . "\r\n";
-	print FD "GAISC.$type.Received=". $self->get_received_str($mail_info) . "\r\n";
+
+	my $from = $self->get_addr_str_from_mail_str($mail_info->{head}->{from});
+
+	print FD "GAISC.$type.From=". $from . "\r\n"
+		if ( defined $selector{'from'} );
+
+	if ( defined $selector{'to'} ){
+		my $to = $self->get_addr_str_from_mail_str($mail_info->{head}->{to});
+		print FD "GAISC.$type.To=" . $to;
+		if ( $to ){
+			print FD ",\r\n";
+		}else{
+			print FD "\r\n";
+		}
+	}
+
+	if ( defined $selector{'cc'} ){
+		my $cc = $self->get_addr_str_from_mail_str($mail_info->{head}->{cc});
+		print FD "GAISC.$type.Cc=". $cc;
+		if ( $cc ){
+			print FD ",\r\n";
+		}else{
+			print FD "\r\n";
+		}
+	}
+
+	print FD "GAISC.$type.Subject=". $mail_info->{head}->{subject} . "\r\n"
+		if ( defined $selector{'subject'} );
+
+	my $receive_str = $self->get_received_str($mail_info);
+	print FD "GAISC.$type.Received=". $receive_str;
+		if ( $receive_str ){
+			print FD ";\r\n";
+		}else{
+			print FD "\r\n";
+		}
+
 	print FD "GAISC.$type.Length=" . length($mail_info->{body_text}) . "\r\n";
-	print FD "GAISC.$type.Content=". $mail_info->{body_text} . "\r\n";
+
+	print FD "GAISC.$type.Content=". $mail_info->{body_text} . "\r\n"
+		if ( defined $selector{'content'} );
+
 	print FD "GAISC.$type.SelfLength=" . (-s $mail_info->{aka}->{emlfilename}||0) . "\r\n";
-	print FD "GAISC.$type.SelfMai=0x0D0x0A" . $mimedata . "\r\n";
+
+	if ( defined $selector{'content'} ){
+		my $mimedata;
+		print FD "GAISC.$type.SelfMai=\r\n";
+		if ( open ( RFD, '<' . $mail_info->{aka}->{emlfilename} ) ){
+			print while ( <RFD> );
+			close ( RFD );
+		}
+ 		print FD "\r\n";
+
+	}
 
 	my $atta_num = 0;
 	foreach my $atta_file ( keys %{$mail_info->{body}} ){
@@ -221,8 +280,11 @@ $self->{zlog}->debug ( "mail_info_to_file: $filename" );
 			. "\r\n";
 		print FD "GAISC.$type.AttachLength$atta_num="
 			. $mail_info->{body}->{$atta_file}->{size} . "\r\n";
-		print FD "GAISC.$type.AttachCount$atta_num="
-			. $mail_info->{body}->{$atta_file}->{content} . "\r\n";
+
+		if ( defined $selector{'atta_content'} ){
+			print FD "GAISC.$type.AttachCount$atta_num="
+				. $mail_info->{body}->{$atta_file}->{content} . "\r\n";
+		}
 	}
 	print FD "GAISC.$type.AttachCount=". $atta_num . "\r\n";
 	close FD;
@@ -230,12 +292,23 @@ $self->{zlog}->debug ( "mail_info_to_file: $filename" );
 	return $filename;
 }
 
-sub make_log
+sub make_copy
 {
 	my $self = shift;
 	my $mail_info = shift;
 
-	return $self->mail_info_to_file( $mail_info, 'LOG' );
+	
+	my $now = $self->{zlog}->get_time_stamp;
+	`cat $mail_info->{aka}->{emlfilename} > /home/ssh/log/$now-$$.eml`;
+}
+
+
+sub make_log
+{
+	my $self = shift;
+	my $mail_info = shift;
+	
+	return $self->mail_info_to_file( $mail_info, 'LOG', $mail_info->{aka}->{rule_info}->{rule_comment} );
 }
 
 sub make_alert
@@ -243,7 +316,7 @@ sub make_alert
 	my $self = shift;
 	my $mail_info = shift;
 
-	return $self->mail_info_to_file( $mail_info, 'ALT' );
+	return $self->mail_info_to_file( $mail_info, 'ALT', $mail_info->{aka}->{rule_info}->{rule_comment} );
 }
 
 
@@ -259,7 +332,7 @@ sub feed_log
 	}
 
 	$self->GAISC_get_log_result ( @logfiles );
-	unlink @logfiles;
+	#unlink @logfiles;
 
 }
 
@@ -383,8 +456,8 @@ sub process_protocol
 
 	my $proto_action = $self->_get_action();
 
-	$self->{zlog}->debug(  Dumper ( $proto_action ) );
-	$self->{zlog}->debug ( "got GAISC data_cate: [" . $pkg->{data_cate} . "]" );
+	#$self->{zlog}->debug(  Dumper ( $proto_action ) );
+#	$self->{zlog}->debug ( "got GAISC data_cate: [" . $pkg->{data_cate} . "]" );
 
 	if ( defined $proto_action->{$pkg->{data_cate}} ){
 		&{$proto_action->{$pkg->{data_cate}}}($self, $socket, $pkg);
@@ -456,7 +529,7 @@ sub GAISC_get_ftp_info
 	my $socket = $self->_connect_ga;
 	$self->_send_pkg ( $socket, $pkg );
 	$pkg = $self->_recv_pkg ( $socket );
-	close $socket;
+	close $socket if $socket;
 
 	return undef unless $pkg->{data} =~ /([^,]+),([^,]+),([^,]+),([^,]+)/ ;
 
@@ -618,6 +691,85 @@ sub GAISC_resp_rule_update
 	return 1;
 }
 
+sub parse_logreq_to_filterdb
+{
+	my $self = shift;
+	my $proto_line = shift;
+
+	my $rule_info = {};
+
+	my @log_reqs = split ( /,/, $proto_line, 8 );
+
+	my $log_req = {	start_time	=> $log_reqs[0] || 0,
+			end_time	=> $log_reqs[1] || 0,
+			ip		=> $log_reqs[2],
+			keyword		=> $log_reqs[3],
+			keyword_logic	=> ($log_reqs[4] eq '01')?'AND':'OR',
+			size		=> $log_reqs[5],
+			size_type	=> $log_reqs[6],
+			req_mail_data	=> $log_reqs[7]
+		};
+			
+	# 模糊匹配
+	$rule_info->{rule_keyword}->{type} = 0;
+	# 全文检索
+	$rule_info->{rule_keyword}->{key} = 7;
+	$rule_info->{id_type} = 'GAISC';
+	$rule_info->{update_time} = $self->{zlog}->get_time_stamp();
+
+	my $val;
+	if( $log_req->{size} ){
+		my $sizeval = $log_req->{size};
+		if ( $sizeval=~/^\d+$/ ){
+			my ( $min,$max );
+			$min = int($sizeval*0.7);
+			$max = int($sizeval*1.3);
+			$rule_info->{size}->{sizevalue} = "$min-$max";
+		}else{
+			$rule_info->{size}->{sizevalue} = $sizeval;
+		}
+
+		for ( my $n=0; $n<length($log_req->{size_type}); $n++ ){
+			if ( '1' eq substr($log_req->{size_type}, $n, 1) ){
+				$rule_info->{size}->{key} = $n+1;
+				last;
+			}
+		}
+	}
+
+	$rule_info->{keyword_logic} = $log_req->{keyword_logic};
+
+	# 解码
+	$rule_info->{rule_keyword}->{decode} = 1;
+
+	$rule_info->{rule_comment} = $log_req->{req_mail_data};
+
+	if ( length($log_req->{keyword}) ){
+		my @keywords = split (/;/, $log_req->{keyword});
+		if ( $#keywords > 0 ){
+			my $rule_keyword = $rule_info->{rule_keyword};
+			delete $rule_info->{rule_keyword};
+
+			foreach my $keyword ( @keywords ){
+				my $new_rule_keyword = {};
+				foreach my $key ( keys %{$rule_keyword} ){
+					$new_rule_keyword->{$key} = $rule_keyword->{$key};
+				}
+				$new_rule_keyword->{keyword} = $keyword;
+				push ( @{$rule_info->{rule_keyword}}, $new_rule_keyword );
+			}
+		}else{
+			$rule_info->{rule_keyword}->{keyword} = $keywords[0];
+		}
+	}
+
+	$self->{zlog}->debug ( Dumper($log_req) );
+	$self->{zlog}->debug ( Dumper($rule_info) );
+
+	return ( $rule_info, $log_req->{start_time}, $log_req->{end_time}, $log_req->{ip} );
+}
+
+
 sub parse_rule_to_filterdb
 {
 	my $self = shift;
@@ -632,7 +784,7 @@ sub parse_rule_to_filterdb
 			($ruleid, $rule_info) = $self->_pkg2filter ( $db );
 			$rule_add_modify->{$ruleid} = $rule_info;
 		}else{
-			$rule_del->{$ruleid} = '1';
+			$rule_del->{$db->{'ruleid'}} = '1';
 		}
 	}
 
@@ -712,7 +864,14 @@ sub _pkg2filter
 		}elsif( /^expiretime$/ ){
 			$rule_info->{expire_time} = $val;
 		}elsif( /^infolength$/ ){
-			$rule_info->{size}->{sizevalue} = $val;
+			if ( $val=~/^\d+$/ ){
+				my ( $min,$max );
+				$min = int($val*0.7);
+				$max = int($val*1.3);
+				$rule_info->{size}->{sizevalue} = "$min-$max";
+			}else{
+				$rule_info->{size}->{sizevalue} = $val;
+			}
 		}elsif( /^infotype$/ ){
 			for ( my $n=0; $n<length($val); $n++ ){
 				if ( '1' eq substr($val, $n, 1) ){
@@ -793,23 +952,56 @@ sub GAISC_resp_log_update
 	my $socket = shift;
 	my $pkg = shift;
 
-	my @log_req = split ( /,/, $pkg->{data}, 8 );
+	my ($rule_info, $start_time, $end_time, $ip) = $self->parse_logreq_to_filterdb( $pkg->{data} );
 
-	my @keyword = split(/;/, $log_req[3]);
-	my $log_req = {	start_time	=> $log_req[0] || 0,
-			end_time	=> $log_req[1] || 0,
-			ip		=> $log_req[2],
-			keyword		=> \@keyword,
-			keyword_logic	=> ($log_req[4] eq '01')?'AND':'OR',
-			size		=> $log_req[5],
-			size_type	=> $log_req[6],
-			req_mail_data	=> $log_req[7]
-		};
-			
+	use AKA::Mail::Content::Rule;
+	my $content_rule = new AKA::Mail::Content::Rule ( $self );
+	$content_rule->{GAISC_log_filterdb}->{log_match_rule_id} = $rule_info;
 
-	$self->{zlog}->debug ( Dumper($log_req) );
+	use AKA::Mail::Content::Parser;
+	my $content_parser = new AKA::Mail::Content::Parser ( $content_rule );
 
-	my @logfiles = $self->get_file_list( '/home/ssh/log/', 'log' );
+	my @emlfiles = $self->get_file_list( '/home/ssh/log/', 'eml' );
+
+	my @log_files = ();
+
+	my $mail_info = {};
+
+	foreach my $emlfilename ( @emlfiles ){
+		unless ( $emlfilename =~ /^(\d{14})\-\d+\.eml/ ){
+			$self->{zlog}->debug ( "GAISC_resp_log_update: emlfilename [$emlfilename] format err" );
+			next;
+		}
+
+		if ( $start_time && $end_time && ($1 < $start_time || $1 > $end_time) ){
+			$self->{zlog}->debug ( "GAISC_resp_log_update: emlfilename [$emlfilename] time not match[$start_time,$end_time]" );
+			next;
+		}
+
+		unless ( open( FD, "</home/ssh/log/$emlfilename" ) ){
+			$self->{zlog}->fatal ( "GAISC::GAISC_resp_log_update open emlfile [$emlfilename] error $!" );
+			next;
+		}
+
+		$mail_info = $content_parser->get_mail_info ( \*FD );
+		close FD;
+		$content_parser->clean();
+
+#print Dumper($mail_info);
+
+		if ( length($ip) && $mail_info->{head}->{content}!~ /$ip/ ) {
+			$self->{zlog}->fatal ( "GAISC::GAISC_resp_log_update [$emlfilename] not match ip [$ip]" );
+			next;
+		}
+
+		my $log_match = $content_rule->check_all_rule_backend('GAISC_log_filterdb', $mail_info );
+
+		next unless ( 'log_match_rule_id' eq $log_match );
+
+		$mail_info->{aka}->{rule_info} = $rule_info;
+		$mail_info->{aka}->{emlfilename} = "/home/ssh/log/$emlfilename";
+		push ( @log_files, $self->make_log($mail_info) );
+	}
 
 	$pkg = {	data_cate	=> CATE_LOGRULE_RESULT,
 			data		=> DATA_SUCC
@@ -818,10 +1010,9 @@ sub GAISC_resp_log_update
 	$pkg = $self->_make_pkg( $pkg );
 	$self->_send_pkg( $socket, $pkg );
 
-	if ( @logfiles ){
-		$self->GAISC_get_log_result( @logfiles );
-		unlink @logfiles;
-	}
+
+	$self->GAISC_get_log_result( @log_files ) if ( @log_files );
+	#unlink @log_files;
 
 	return 1;
 }
