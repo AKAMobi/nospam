@@ -505,13 +505,13 @@ fT= gFld("<b>邮件系统管理</b>", "");
 	if (adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
 	insDoc(fT, gLnk(0,"添加管理员账号","addAdmin.php"));
-  aux1 = insFld(fT, gFld("反垃圾邮件"));
-		insDoc(aux1,gLnk(0,"AS-SMTP设置","AKD/ARMY/AKD_ARMY1.htm"));
-		insDoc(aux1,gLnk(0,"IP黑名单","AKD/ARMY/AKD_ARMY2.htm"));
-		insDoc(aux1,gLnk(0,"IP白名单","AKD/ARMY/AKD_ARMY3.htm"));
-		insDoc(aux1,gLnk(0,"域名黑名单","AKD/ARMY/AKD_ARMY4.htm"));
-		insDoc(aux1,gLnk(0,"域名白名单","KD/ARMY/AKD_ARMY5.htm"));
-		insDoc(aux1,gLnk(0,"地址黑名单","AKD/ARMY/AKD_ARMY6.htm"));
+  aux1 = insFld(fT, gFld("反垃圾邮件",""));
+		insDoc(aux1,gLnk(0,"AS-SMTP设置","controlMFCheck.php"));
+		insDoc(aux1,gLnk(0,"IP黑名单","controlBlackIP.php"));
+		insDoc(aux1,gLnk(0,"IP白名单","controlWhiteIP.php"));
+		insDoc(aux1,gLnk(0,"域名黑名单","controlBadDomain.php"));
+		insDoc(aux1,gLnk(0,"域名白名单","controlGoodDomain.php"));
+		insDoc(aux1,gLnk(0,"地址黑名单","controlBadAccount.php"));
 <?php
 }
 ?>
