@@ -6,7 +6,7 @@ function getDomain(){
 }
 
 define( 'DOMAIN', getDomain() );
-define( 'VPOPMAILHOME', '/opt/vpopmail/' );
+define( 'VPOPMAILHOME', '/home/vpopmail/' );
 system( VPOPMAILHOME . "bin/chmod 644 " .VPOPMAILHOME . "domains/" . DOMAIN . "/vpasswd" );
 define( "USERPROFILE", "USERDATA");
 define("GROUPFILE", "GROUPS");
