@@ -9,7 +9,7 @@ require_once("inc/include.ns");
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#cccccc">
 <table width="100%" border="0">
 <tr>
-	<td align="left"><img src="" width="100" height="80" alt="logo"></td>
+	<td align="left"><img src="images/Logo.gif" width="100" height="80" alt="logo"></td>
 	<td align="right">用户：<?=getAdminID()?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$bForSell? "正式版":"非正式版"?>
 	<?if($sExpire!="") echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sExpire}过期";?></td>
 </tr>
