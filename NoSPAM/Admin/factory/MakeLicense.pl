@@ -9,6 +9,7 @@ ExpireDate=2004-12-31
 Version=1
 
 FactoryName=
+ProductName=iXRay
 
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
