@@ -1987,7 +1987,7 @@ msgstr "总邮件数"
 
 #: ../Admin/web/log/showstat.ns:75
 msgid "Normal Mails"
-msgstr "总邮件数"
+msgstr "正常邮件数"
 
 #: ../Admin/web/log/showstat.ns:77
 msgid "Virus Mails"
