@@ -10,7 +10,8 @@ if ($_POST['emailAddr'] && $_POST['emailPass']) {
         html_error (array ('邮件地址错误!'), 0, 1, 1);
     if (!$pass)
         html_error (array ('请输入密码!'), 0, 1, 1);
-    switch ($currentUser->login ($email, $pass)) {
+    $ret = $currentUser->login ($email, $pass);
+    switch ( $ret ) {
         case 0:
             //if (session_is_registered ('sCurrentUser'))
             //    session_unregister ('sCurrentUser');
@@ -24,11 +25,11 @@ if ($_POST['emailAddr'] && $_POST['emailPass']) {
                                                 );
             header ('Location: main.ns' . ($currentUser->init?'init':''));
             break;
-        case -1:
+        case 255:
             html_error (array ('用户名/密码 错误!'), 0, 1, 1);
             break;
         default:
-            html_error (array ('系统错误!'), 0, 1, 1);
+            html_error (array ('系统错误!'. $ret), 0, 1, 1);
     }
     exit ();
 }
