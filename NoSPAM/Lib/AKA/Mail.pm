@@ -1224,9 +1224,9 @@ sub content_engine
 	return unless ( $self->content_engine_is_enabled() );
 
 	# content parser get all mail information, and return it.
-$self->{zlog}->debug( "content_engine 1 action: [" . $self->{mail_info}->{aka}->{engine}->{content}->{action} . "]" );
+#$self->{zlog}->debug( "content_engine 1 action: [" . $self->{mail_info}->{aka}->{engine}->{content}->{action} . "]" );
 	$self->{mail_info} = $self->{content}->process( $self->{mail_info} );
-$self->{zlog}->debug( "content_engine 2 action: [" . $self->{mail_info}->{aka}->{engine}->{content}->{action} . "]" );
+#$self->{zlog}->debug( "content_engine 2 action: [" . $self->{mail_info}->{aka}->{engine}->{content}->{action} . "]" );
 
 	$self->{mail_info}->{aka}->{drop} ||= ( 
 						( ACTION_REJECT eq $self->{mail_info}->{aka}->{engine}->{content}->{action} )
