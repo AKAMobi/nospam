@@ -512,6 +512,12 @@ sub process
 	$self->{mail_info}->{aka}->{engine}->{antivirus}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 	$last_cputime = $user+$system+$cuser+$csystem;
 
+	# by Ed 2004-06-14 dynamic 拒绝的邮件就不必进行后续处理。
+	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
+	($user,$system,$cuser,$csystem) = times;
+	$self->{mail_info}->{aka}->{engine}->{dynamic}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
+	$last_cputime = $user+$system+$cuser+$csystem;
+
 #$self->{zlog}->debug ( "before spam: [" . $last_cputime . "]" );
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
 	($user,$system,$cuser,$csystem) = times;
@@ -523,11 +529,6 @@ sub process
 	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
 	($user,$system,$cuser,$csystem) = times;
 	$self->{mail_info}->{aka}->{engine}->{content}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
-	$last_cputime = $user+$system+$cuser+$csystem;
-
-	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
-	($user,$system,$cuser,$csystem) = times;
-	$self->{mail_info}->{aka}->{engine}->{dynamic}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 	$last_cputime = $user+$system+$cuser+$csystem;
 
 	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
@@ -1260,7 +1261,7 @@ sub spam_engine
 			unless ( $auth_user =~ /\@/ );
 		
 		$is_spam = RESULT_SPAM_NOT;
-		$reason = __("Authed user");
+		$reason = __("Auth user");
 
 		if ( ($auth_user ne $returnpath) &&
 				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # 内部可追查
@@ -1473,6 +1474,7 @@ sub dynamic_engine
        	                         	runned  => 1,
                                 	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
+			$self->{mail_info}->{aka}->{drop} = 1;
 			return ;
 		}
 	}
@@ -1505,6 +1507,7 @@ sub dynamic_engine
        	                         	runned  => 1,
                                 	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
+			$self->{mail_info}->{aka}->{drop} = 1;
 			return ;
 		}
 	}
@@ -1539,6 +1542,7 @@ sub dynamic_engine
        	                         	runned  => 1,
                                 	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
+			$self->{mail_info}->{aka}->{drop} = 1;
 			return ;
 		}
 	}
