@@ -98,8 +98,8 @@ sub log_match
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'action'} = $rule_info->{rule_action}->{action};
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'sender'} = $mail_info->{from};
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'subject'} = $mail_info->{subject};
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_header'} = encode_base64( $head_data );
-	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_content'} = encode_base64( $body_data );
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_header'} = $head_data;
+	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'mail_content'} = $body_data;
 
 	open ( FD, ">$emlfile" ) or $self->{zlog}->log ( "pf: open $emlfile for writing error" );
 	print FD $head_data;

@@ -34,11 +34,11 @@ sub new
 
 	$self->{parent} = $parent;
 
-	$self->{zlog} = new AKA::Mail::Police::Log($self) ;
-	$self->{conf} = new AKA::Mail::Police::Conf($self) ;
-	$self->{parser} = new AKA::Mail::Police::Parser($self);
-	$self->{ruler} = new AKA::Mail::Police::Rule($self);
-	$self->{verify} = new AKA::Mail::Police::Rule($self);
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Police::Log($self) ;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
+	$self->{parser} = $parent->{parser} || new AKA::Mail::Police::Parser($self);
+	$self->{ruler} = $parent->{ruler} || new AKA::Mail::Police::Rule($self);
+	$self->{verify} = $parent->{verify} || new AKA::Mail::Police::Rule($self);
 
 	return $self;
 }
@@ -74,23 +74,24 @@ sub get_action
 		# 缺省为'This message was rejected'
 	}elsif ( 2==$action ){ # 2、discard 丢弃邮件。无参数
 	}elsif ( 3==$action ){
+		# 3、quarantine 隔离邮件。带一个字符串参数，内容为隔离邮件的存放目录，
+		# 缺省为'/var/spool/uncmgw/Quarantines'
 		$param ||= '/var/spool/uncmgw/Quarantines';
 		if ( ! -d $param ){
 			$self->{zlog}->log ( "pf: quarantines dir not exist: [$param]" );
 		}
-		# 3、quarantine 隔离邮件。带一个字符串参数，内容为隔离邮件的存放目录，
-		# 缺省为'/var/spool/uncmgw/Quarantines'
 	}elsif ( 4==$action ){
 		# FIXME 
 		# 4、strip 剥离邮件中的附件。带一个字符串参数，内容为替换被剥除附件的文本信息内容，
 		# 缺省为'邮件附件中包含有不安全文件\$file，已经被剥离！'
+		$self->{zlog}->log ( "pf: FIXME: strip attachment action not support yet" );
 	}elsif ( 5==$action ){
 		# 5、 delay 给邮件处理操作加延时(秒)。带一个整数参数，内容为添加延时的秒数
 		if ( $param ){
 			if ( $param < 600 ){
 				sleep ( $param );
 			}else{
-				$self->{zlog}->log ( "pf: delay time too long! param: [$param]" );
+				$self->{zlog}->log ( "pf: delay time too long! param: [$param], set to 600" );
 				sleep ( 600 );
 			}
 		}
@@ -141,6 +142,7 @@ sub get_action
 		if ( ! $param ){
 			$self->{zlog}->log ( "pf: chghdr can't find param!" );
 		}else{
+			# FIXME: param 的格式是这样吗？
 			if ( $param =~ /([^\:]+):\s*(.*)/ ){
 				my ( $tag, $data ) = ( $1, $2 );
 				my $head = $self->{parser}->{entity}->head;
@@ -152,8 +154,6 @@ sub get_action
 		}
 	
 	}	
-
-
 
 	($action, $param)
 }

@@ -16,10 +16,10 @@ use AKA::Mail::Police::Conf;
 
 #@EXPORT=("function1", "function2", "function3");
 
-#use Data::Dumper;
+use Data::Dumper;
 # 改变$转义、缩进
-#$Data::Dumper::Useperl = 1;
-#$Data::Dumper::Indent = 1;
+$Data::Dumper::Useperl = 1;
+$Data::Dumper::Indent = 1;
 
 sub new
 {
@@ -47,7 +47,7 @@ sub get_match_rule
 	my $rule_id = check_all_rule( $self, $mail_info );
 
 	if ( $rule_id ){
-		#$self->{zlog}->log_match($rule_info, $mail_info), 
+		$self->{zlog}->log( "pf: rule id $rule_id info: \n" . Dumper($rule_info) ), 
 		return $self->{filterdb}->{$rule_id};
 	}
 	return undef;
@@ -75,9 +75,11 @@ sub check_all_rule
 
 	foreach my $rule_id ( keys %{$self->{filterdb}} ){
 		next if ( ! $rule_id );
+		$self->{zlog}->log ( "pf: checking rule id: $rule_id..." );
 		if ( check_attachment_rule ( $self, $rule_id, $mail_info ) &&
 				check_size_rule ( $self, $rule_id, $mail_info ) &&
 				check_keyword_rule ( $self, $rule_id, $mail_info ) ){
+			$self->{zlog}->log ( "pf: rule id $rule_id MATCH!" );
 			return $rule_id;
 		}
 	}	
@@ -133,6 +135,8 @@ sub check_keyword_rule
 
 	my $keyword_rule = $self->{filterdb}->{$rule_id}->{rule_keyword};
 
+#XXX
+eval { 
 	if ( -1 != $#$keyword_rule ){
 		#多条
 		foreach my $sub_keyword_rule ( @{$keyword_rule} ){
@@ -142,6 +146,7 @@ sub check_keyword_rule
 		}
 		return 1;
 	}
+};
 	return check_single_keyword_rule( $self, $keyword_rule, $mail_info );
 
 }
@@ -238,6 +243,8 @@ sub check_ip_range
 
 	my ( $ip, $ip_range ) = @_;
 
+	my ( $ip_long, $start_long, $end_long );
+
 	if ( !defined $ip_range ){ 
 		$self->{zlog}->log ( "error: check_ip_range no range found!" );
 		return 0;
@@ -245,12 +252,11 @@ sub check_ip_range
 
 	if ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)/ ){
 		#	1 一个具体的IP，如："202.116.12.34"
-		return ( $ip == $1 );
+		return ( $ip eq $1 );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\-(\d+\.\d+\.\d+\.\d+)/ ){
 		# 	2 用减号"-"连接两个IP值，表示一个连续的IP段（包括两个断点），如："202.116.22.1-202.116.22.24"
 		my ( $ip_start, $ip_end ) = ( $1, $2 );
 
-		my ( $ip_long, $start_long, $end_long );
 		$ip_long = ip2int($ip);
 		$start_long = ip2int($ip_start);
 		$end_long = ip2int($ip_end);
@@ -260,7 +266,7 @@ sub check_ip_range
 		#	3 用斜杠"/"分隔的一个IP值和一个数字。如："202.116.22.0/24"表示202.116.22.*
 		my $bits = $2;
 		my $match_long = ip2int($1);
-		my $ip_long = ip2int($ip);
+		$ip_long = ip2int($ip);
 
 		$match_long = $match_long >> $bits;
 		$ip_long = $ip_long >> $bits;
@@ -335,24 +341,24 @@ sub check_single_keyword_rule
 	$match_keyword = $rule->{keyword};
 
 	if ( 1==$match_key ){ #1主题包含关键字
-		return check_re_match ( $mail_info->{head}->{subject}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type );
 	}elsif ( 2==$match_key ){ #2发件人包含关键字
-		return check_re_match ( $mail_info->{head}->{from}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{from}, $match_keyword, $match_type );
 	}elsif ( 3==$match_key ){ #3收件人包含关键字
-		return check_re_match ( $mail_info->{head}->{to}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{to}, $match_keyword, $match_type );
 	}elsif ( 4==$match_key ){ #4抄送人包含关键字
-		return check_re_match ( $mail_info->{head}->{cc}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{cc}, $match_keyword, $match_type );
 	}elsif ( 5==$match_key ){ #5信头包含关键字
-		return check_re_match ( $mail_info->{head}->{content}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type );
 	}elsif ( 6==$match_key ){ #6信体包含关键字
-		return check_re_match ( $mail_info->{body_text}, $match_keyword, $match_type );
+		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type );
 	}elsif ( 7==$match_key ){ #7全文包含关键字
-		return ( check_re_match ( $mail_info->{body_text}, $match_keyword, $match_type ) &&
-				check_re_match ( $mail_info->{head}->{content}, $match_keyword, $match_type ) );
+		return ( check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type ) &&
+				check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type ) );
 	}elsif ( 8==$match_key ){ #8附件包含关键字
 		#FIXME 当前是匹配文件名而不是内容
 		foreach my $filename ( keys %{$mail_info->{body}} ){
-			if ( check_re_match ( $filename, $match_keyword, $match_type ) ){
+			if ( check_re_match ( $self, $filename, $match_keyword, $match_type ) ){
 				return 1;
 			}
 		}
