@@ -1058,7 +1058,10 @@ char    *dir1=xlate_mdir(sqwebmail_folder);
 		maildir_msgdeletefile(sqwebmail_folder, f, pos);
 		maildir_savefoldermsgs(sqwebmail_folder);
 	}
+
+	// by lfan, refresh cache
         maildir_checknew(dir1);
+	maildir_reload(sqwebmail_folder);
         free(dir1);
 
 	if (rc)
