@@ -342,9 +342,10 @@ sub process
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
 	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
 	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
-	$self->archive_engine()		unless $self->{mail_info}->{aka}->{drop};
 	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
 	
+	$self->archive_engine()	;	#unless $self->{mail_info}->{aka}->{drop};
+					# archive should run even we drop mail
 
 	# Log
 	$self->log_engine();
@@ -841,10 +842,19 @@ sub archive_engine
 	my $start_time = [gettimeofday];
 
 	my $emlfile = $self->{mail_info}->{aka}->{emlfilename};
+
 	my $is_spam = $self->{mail_info}->{aka}->{engine}->{spam}->{result};
+	my $run_spam = $self->{mail_info}->{aka}->{engine}->{spam}->{runned};
+
 	my $is_virus = $self->{mail_info}->{aka}->{engine}->{antivirus}->{result};
+	my $run_virus = $self->{mail_info}->{aka}->{engine}->{antivirus}->{runned};
+
 	my $is_overrun = $self->{mail_info}->{aka}->{engine}->{dynamic}->{result};
+	my $run_overrun = $self->{mail_info}->{aka}->{engine}->{dynamic}->{runned};
+
 	my $is_matchrule = $self->{mail_info}->{aka}->{engine}->{content}->{result};
+	my $run_matchrule = $self->{mail_info}->{aka}->{engine}->{content}->{runned};
+
 	my $recips = $self->{mail_info}->{aka}->{recips};
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine}->{ArchiveEngine} ){
@@ -878,40 +888,43 @@ sub archive_engine
 
 
 	my @archive_address = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress}};
-	my $need_archive = 0;
+	my $need_archive = 1;	# 所有的条件必须满足才会审计
 
 	#选择性归档：全部/特定地址/垃圾/非垃圾/匹配了规则的 Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
-	$need_archive=1 if ( !$need_archive && grep(/^All$/,@archivetype) );
-#$self->{zlog}->debug ( "archive: [$need_archive] [" . !$need_archive . "] [" . grep('Spam',@archivetype) . "] [" . $is_spam . "]");
-#$self->{zlog}->debug ( "archive All: [$need_archive]" );
+	if ( !grep(/^All$/,@archivetype) ){
+		$need_archive=0 if ( $need_archive && grep(/^Spam$/,@archivetype) && $run_spam && !$is_spam );
+		$need_archive=0 if ( $need_archive && grep(/^NotSpam$/,@archivetype) && $run_spam && $is_spam );
+$self->{zlog}->debug( "archive: NotSpam [$need_archive] [$run_spam] [$is_spam]" );
 
-	$need_archive=1 if ( !$need_archive && grep(/^Spam$/,@archivetype) && $is_spam );
-#$self->{zlog}->debug ( "archive Spam: [$need_archive] [$is_spam]" );
-	$need_archive=1 if ( !$need_archive && grep(/^NotSpam$/,@archivetype) && (!$is_spam) );
-#$self->{zlog}->debug ( "archive NotSpam: [$need_archive] [$is_spam]" );
+		$need_archive=0 if ( $need_archive && grep(/^Virus$/,@archivetype) && $run_virus && !$is_virus );
+		$need_archive=0 if ( $need_archive && grep(/^NotVirus$/,@archivetype) && $run_virus && $is_virus );
 
-	$need_archive=1 if ( !$need_archive && grep(/^Virus$/,@archivetype) && $is_virus );
-	$need_archive=1 if ( !$need_archive && grep(/^NotVirus$/,@archivetype) && (!$is_virus) );
+		$need_archive=0 if ( $need_archive && grep(/^Excessive$/,@archivetype) && $run_overrun && !$is_overrun );
+		$need_archive=0 if ( $need_archive && grep(/^NotExcessive$/,@archivetype) && $run_overrun && $is_overrun );
 
-	$need_archive=1 if ( !$need_archive && grep(/^Excessive$/,@archivetype) && ($is_overrun) );
-	$need_archive=1 if ( !$need_archive && grep(/^NotExcessive$/,@archivetype) && (!$is_overrun) );
+		$need_archive=0 if ( $need_archive && grep(/^MatchRule$/,@archivetype) && $run_matchrule && !$is_matchrule );
+		$need_archive=0 if ( $need_archive && grep(/^NotMatchRule$/,@archivetype) && $run_matchrule && $is_matchrule );
 
-	$need_archive=1 if ( !$need_archive && grep(/^MatchRule$/,@archivetype) && ($is_matchrule) );
-	$need_archive=1 if ( !$need_archive && grep(/^NotMatchRule$/,@archivetype) && (!$is_matchrule) );
-
-	
-	if ( !$need_archive && grep(/^Address$/,@archivetype) && @archive_address){
-		my ( $recip, $archive_addr );
-		ARCHIVE_ADDR_LOOP: 
-		foreach $recip ( split(/,/,$recips) ){
-			foreach $archive_addr ( @archive_address ){
-				if ( $archive_addr eq $recip ){
-					$need_archive=1 ;
-					last ARCHIVE_ADDR_LOOP;
+		if ( $need_archive && grep(/^Address$/,@archivetype) ){
+			if ( ! @archive_address){
+				$need_archive = 0;
+			}else{
+				my ( $recip, $archive_addr );
+				my $match = 0;
+				ARCHIVE_ADDR_LOOP: 
+				foreach $recip ( split(/,/,$recips) ){
+					foreach $archive_addr ( @archive_address ){
+						if ( $archive_addr eq $recip ){
+							$match=1 ;
+							last ARCHIVE_ADDR_LOOP;
+						}
+					}
 				}
+				$need_archive = 0 if ( !$match );
 			}
 		}
 	}
+
 
 	unless ( $need_archive ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
@@ -980,21 +993,27 @@ sub spam_engine
 	if ( ! $client_smtp_ip || ! $returnpath ){
 		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ ) );
 
-		$self->{mail_info}->{aka}->{engine}->{spam}->{result} = RESULT_SPAM_MAYBE;
-		$self->{mail_info}->{aka}->{engine}->{spam}->{desc} = '参数不足';
-		$self->{mail_info}->{aka}->{engine}->{spam}->{action} = ACTION_PASS;
+		$self->{mail_info}->{aka}->{engine}->{spam} = { result	=> RESULT_SPAM_MAYBE,
+								desc 	=> '参数不足',
+								action	=> ACTION_PASS,
+                      				enabled => 1,
+                      				runned  => 1,
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		};
 		return;
 	}
 
 	my ( $is_spam, $reason ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 
-	$self->{mail_info}->{aka}->{engine}->{spam}->{result} = $is_spam;
-	$self->{mail_info}->{aka}->{engine}->{spam}->{desc} = $reason;
-	$self->{mail_info}->{aka}->{engine}->{spam}->{action} = (  ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} 
-								   ) && $is_spam
-								) ? ACTION_REJECT : ACTION_PASS ;
-	
-        $self->{mail_info}->{aka}->{engine}->{spam}->{runtime} = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
+	$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>	$is_spam,
+							desc	=>	$reason,
+							action	=>	(
+			( $is_spam && ( 'Y' eq $self->{conf}->{config}->{SpamEngine}->{RefuseSpam} ) ) 
+			? ACTION_REJECT : ACTION_PASS ) ,
+                      				enabled => 1,
+                      				runned  => 1,
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+	};
 
 	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{spam}->{action};
 

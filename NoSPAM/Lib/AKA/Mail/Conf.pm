@@ -161,9 +161,12 @@ sub init_config
 	# Archive
 	#
 	$config->{ArchiveEngine}->{ArchiveEngine} ||= "N";
-	$config->{ArchiveEngine}->{ArchiveType} ||= "None";
+	$config->{ArchiveEngine}->{ArchiveType} = $self->cut_comma_to_array_ref( 
+								$config->{ArchiveEngine}->{ArchiveType} 
+							);
+
 	$config->{ArchiveEngine}->{ArchiveAddress} = $self->cut_comma_to_array_ref( 
-								$config->{DynamicEngine}->{ArchiveAddress} 
+								$config->{ArchiveEngine}->{ArchiveAddress} 
 							);
 
 	#
