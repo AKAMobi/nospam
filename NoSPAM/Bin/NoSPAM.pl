@@ -481,9 +481,9 @@ sub check_License
 
 sub reset_DateTime
 {
-	$zlog->debug("NoSPAM Util::reset_DateTime $param[0]");
+	$zlog->debug("NoSPAM Util::reset_DateTime $param[0] $param[1]");
 
-	if ( system("$date_binary -s $param[0]") ){
+	if ( system("$date_binary -s '$param[0] $param[1]'") ){
 		return -1;
 	}
 	if ( system("$clock_binary -w") ){
@@ -500,7 +500,7 @@ sub reboot
 
 sub shutdown
 {
-	$zlog->debug("NoSPAM Util::reset_DateTime");
+	$zlog->debug("NoSPAM Util::shutdown");
 	return system ( "$shutdown_binary now" );
 }
 
