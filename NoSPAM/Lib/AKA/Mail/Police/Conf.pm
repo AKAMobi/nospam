@@ -40,7 +40,7 @@ sub new
 
 	$self->{define}->{mspid} = "300001";
 	$self->{define}->{home} = "/home/ssh/";
-	$self->{define}->{tmpdir} = "/tmp/";
+	$self->{define}->{tmpdir} = "/home/NoSPAM/spool/tmp/";
 
 	# 用户过滤策略
 	$self->{define}->{user_filterdb} = "/home/NoSPAM/etc/UserFilterRule.xml";
