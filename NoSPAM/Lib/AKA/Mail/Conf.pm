@@ -41,9 +41,9 @@ sub new
 
 	#$self->{zlog} = $parent->{zlog};
 
-	$self->init_config;
-	$self->init_intconf;
-	$self->init_licconf;
+	$self->init_config;	# config
+	$self->init_intconf;	# intconf
+	$self->init_licconf;	# licconf
 
 	return $self;
 }
@@ -138,12 +138,16 @@ sub init_config
 	$config->{DynamicEngine}->{WhiteIPConcurList} = $self->cut_comma_to_array_ref( 
 								$config->{DynamicEngine}->{WhiteIPConcurList} 
 							);
-	$config->{DynamicEngine}->{WhiteIPRateList} = $self->cut_comma_to_array_ref( 
-								$config->{DynamicEngine}->{WhiteIPRateList} 
+	$config->{DynamicEngine}->{WhiteFromList} = 	$self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{WhiteFromList} 
 							);
 	$config->{DynamicEngine}->{WhiteSubjectList} = $self->cut_comma_to_array_ref( 
 								$config->{DynamicEngine}->{WhiteSubjectList} 
 							);
+	$config->{DynamicEngine}->{WhiteIPRateList} = $self->cut_comma_to_array_ref( 
+								$config->{DynamicEngine}->{WhiteIPRateList} 
+							);
+
 
 	#
 	# Network

@@ -23,11 +23,42 @@ sub new
 	bless $self, $class;
 
 	$self->{parent} = $parent;
-	$self->{conf} = $parent->{conf} || new AKA::Conf;
-	$self->{zlog} = $parent->{zlog} || new AKA::Log;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;
 
 	return $self;
 
+}
+
+sub isServerGateway
+{
+	my $self = shift;
+	my $mode = shift;
+
+	if ( 'Y' eq $self->{conf}->{licconf}->{ServerGatewaySwitchable} ){
+		return ( $self->{conf}->{config}->{System}->{ServerGateway}=~/$mode/ );
+	}else{
+		return ( $self->{conf}->{licconf}->{ServerGateway}=~/$mode/ );
+	}
+}
+
+sub isGateway
+{
+	my $self = shift;
+
+	return $self->isServerGateway('Gateway');
+}
+
+sub isServer
+{
+	my $self = shift;
+	return $self->isServerGateway('Server');
+}
+
+sub isMXRelay
+{
+	my $self = shift;
+	return $self->isServerGateway('MXRelay');
 }
 
 sub get_srvip_from_domain

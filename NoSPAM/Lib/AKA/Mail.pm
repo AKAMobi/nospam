@@ -87,10 +87,11 @@ sub new
 		$self->{license_ok} = 1;
 	}
 
-	$self->{conffile_list}->{conffile} = $self->{conf}->{define}->{conffile};
-	$self->{conffile_list}->{license} = $self->{conf}->{define}->{licensefile};
-	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};
-	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};
+	$self->{conffile_list}->{conffile} = $self->{conf}->{define}->{conffile};	# NoSPAM.conf
+	$self->{conffile_list}->{intconffile} = $self->{conf}->{define}->{intconffile};	# NoSPAM.intconf
+	$self->{conffile_list}->{license} = $self->{conf}->{define}->{licensefile};	# License.dat
+	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};	# PoliceDB.xml
+	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};	# UserFilterDB.xml
 
 	$self->check_conffile_update();
 
@@ -853,6 +854,10 @@ sub dynamic_engine
 
 	my ( $is_overrun, $reason );
 
+
+	#
+	# 引擎开关
+	#
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
@@ -867,21 +872,47 @@ sub dynamic_engine
 		return;
 	}
 
+	#
+	# 判断保护方向
+	#
 	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
-		$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
+		# 是“由内向外”
+		if ( $self->{conf}->{config}->{DynamicEngine}->{ProtectDirection}!~/Out/ ){
+			# 没有限制“由内向外”的邮件
+			$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 						result	=>0,
-						desc	=>'本地用户',
+						desc	=>'通过',
 						action	=>ACTION_PASS,
 
                       				enabled => 1,
                       				runned  => 1,
                                 		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
-		};
-		return;
+			};
+			return;
+		}
+
+	}else{
+		# 是“由外向内”
+		if ( $self->{conf}->{config}->{DynamicEngine}->{ProtectDirection}!~/In/ ){
+			# 没有限制“由外向内”的邮件
+			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+					result  => 0,
+					desc    => '通过',
+					action  => 0,
+
+					enabled => 1,
+					runned  => 1,
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			};
+			return;
+		}
 
 	}
 
 
+	#
+	# 判断动态
+	#
 	# we check what we has seen
 	if ( ! $subject || ! $mailfrom || ! $ip ){
 		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
@@ -891,6 +922,22 @@ sub dynamic_engine
 	}
 
 	if ( $mailfrom ){
+		# 检查白名单
+		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteFromList}} ){
+			if ( /^$mailfrom$/ ){
+				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => 0,
+	                                desc    => '发信人白名单',
+       	                         	action  => 0,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				};
+				return ;
+			}
+		}
+		# 递交后台处理
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom );
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -907,6 +954,22 @@ sub dynamic_engine
 	}
 
 	if ( $subject ){
+		# 检查白名单
+		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteSubjectList}} ){
+			if ( /^$subject$/ ){
+				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => 0,
+	                                desc    => '邮件主题白名单',
+       	                         	action  => 0,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				};
+				return ;
+			}
+		}
+	
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_subject( $subject );
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -923,6 +986,22 @@ sub dynamic_engine
 	}
 
 	if ( $ip ){
+		# 检查白名单
+		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteIPRateList}} ){
+			if ( /^$ip$/ ){
+				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
+	               			result  => 0,
+	                                desc    => 'IP白名单',
+       	                         	action  => 0,
+	
+                                	enabled => 1,
+       	                         	runned  => 1,
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				};
+				return ;
+			}
+		}
+	
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_ip( $ip );
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
