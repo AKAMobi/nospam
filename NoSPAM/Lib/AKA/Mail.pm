@@ -614,7 +614,12 @@ sub quarantine_action($$$$)
 	$subject = $self->{mail_info}->{aka}->{subject};
 	$size = $self->{mail_info}->{aka}->{size};
 
-	$self->{quarantine}->quarantine( $q_type, $emlfile, $mailfrom, $mailto, $subject, $size, $q_reason, $q_desc);
+	# 检查每一个收件人是否为注册用户，否则不保存隔离
+	foreach ( split(/,/,$mailto) ){
+		if ( $self->{mail_info}->{aka}->{engine}->{quarantine}->{q_users}->{$_} ){
+			$self->{quarantine}->quarantine( $q_type, $emlfile, $mailfrom, $_, $subject, $size, $q_reason, $q_desc);
+		}
+	}
 }
 
 sub quarantine_engine
@@ -627,7 +632,7 @@ sub quarantine_engine
               length($self->{mail_info}->{aka}->{TCPREMOTEINFO}) );
 
 	my $recips = $self->{mail_info}->{aka}->{recips};
-	my ($email) = split(/,/,$recips); 	# 如果有多个收件人，只判断第一个
+	my @emails = split(/,/,$recips); 	# 如果有多个收件人，只判断第一个
 
 	my $start_time = [gettimeofday];
 
@@ -644,8 +649,9 @@ sub quarantine_engine
 		} );
 		return;
 	}elsif( 'DB' eq $userlistdb ){
-		if ( ! $self->{user}->is_user_exist($email) ){
-$self->{zlog}->debug( "User [$email] not exist." );
+		my $q_users = $self->{user}->is_user_exist(@emails);
+		if ( !defined $q_users  ){
+$self->{zlog}->debug( "User [" . join (',',@emails) . "] not exist." );
 			my $nosuchuseraction = uc $self->{conf}->{config}->{QuarantineEngine}->{NoSuchUserAction} ;
 			if( 'D' eq $nosuchuseraction){
 				$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
@@ -686,12 +692,13 @@ $self->{zlog}->debug( "User [$email] not exist." );
 				} );
 			}
 		}else{
-$self->{zlog}->debug( "User [$email] exist." );
+$self->{zlog}->debug( "User [" . join (',',@emails) . "] exist." );
 			$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
 				result 	=> 0,
 				desc	=> __("registered user"),
 				action 	=> AKA::Mail::Conf::ACTION_ACCEPT, 
 
+				q_users => $q_users,
 				enabled	=> 1,
 				runned	=> 1,
 				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))

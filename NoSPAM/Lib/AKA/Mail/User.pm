@@ -28,12 +28,19 @@ sub new
 	return $self;
 }
 
-sub is_user_exist($$)
+# 参数可以是 emails 的数组，因为引擎又可能处理的是发给多人的邮件
+sub is_user_exist
 {
 	my $self = shift;
-	my $email = shift;
+	my @emails = @_;
 	
-	return $self->{db}->user_email_exist( $email );
+	my $q_users = undef;
+	foreach ( @emails ){
+		if ( $self->{db}->user_email_exist( $_ ) ){
+			$q_users->{$_} = 1;
+		}
+	}
+	return $q_users;
 }
 
 1;
