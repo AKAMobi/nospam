@@ -42,6 +42,17 @@ static void get_dotqmail_file( char* fpath, char* retuser )
 	free(p2);
 }
 
+//by lfan, filter bug
+static void save_filter()
+{
+	if (maildir_filter_exportmaildirfilter(".") ||
+		maildir_filter_importmaildirfilter("."))
+	        printf("%s", getarg("INTERNAL"));
+	else
+	        printf("%s", getarg("UPDATED"));
+	clrfields();
+}
+
 static void clrfields()
 {
 	cgi_put("currentfilternum", "");
@@ -119,12 +130,16 @@ struct maildirfilterrule *r;
 
 	if (*cgi("do.save"))
 	{
+		/*
 		if (maildir_filter_exportmaildirfilter(".") ||
 			maildir_filter_importmaildirfilter("."))
 			printf("%s", getarg("INTERNAL"));
 		else
 			printf("%s", getarg("UPDATED"));
 		clrfields();
+		*/
+		
+		save_filter();
 	}
 
 	if (*cgi("do.add"))
@@ -156,6 +171,7 @@ struct maildirfilterrule *r;
 		maildir_filter_ruleup(&mf, r);
 		maildir_filter_savemaildirfilter(&mf, ".", login_returnaddr());
 		clrfields();
+		save_filter();
 	}
 	else if (*cgi("do.movedown") && r)
 	{
@@ -174,6 +190,7 @@ struct maildirfilterrule *r;
 			unlink(fpath);
 		}
 		clrfields();
+		save_filter();
 	}
 	else if (*cgi("do.edit"))
 	{
@@ -581,6 +598,8 @@ const char *autoreply_from="";
 		
 		maildir_filter_savemaildirfilter(&mf, ".", login_returnaddr());
 		maildir_filter_freerules(&mf);
+		// by lfan
+		save_filter();
 		clrfields();
 		return;
 	}
