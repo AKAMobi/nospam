@@ -757,6 +757,8 @@ sub rrdgraph_type
 
 sub ds2rrd
 {
+	my $self = shift;
+	my $fd = shift;
 
 	my ($rrd_num_ok, $rrd_num_in,$rrd_num_out) = (0,0,0,0,0);
 	my ($rrd_run_virus, $rrd_run_spam, $rrd_run_overrun, $rrd_run_content, $rrd_run_archive) = (0,0,0,0,0,0,0,0,0,0);
@@ -771,9 +773,8 @@ sub ds2rrd
 
 	my ($time,$direction,$size,$time_all,$cpu_all,$virus,$virus_time,$virus_cpu,$virus_run,$spam,$spam_time,$spam_cpu,$spam_run,$content,$content_time,$content_cpu,$content_run,$dynamic,$dynamic_time,$dynamic_cpu,$dynamic_run,$archive,$archive_time,$archive_cpu,$archive_run);
 
-	my $max_spam_time = 500;
-
-	while(<STDIN>){
+	while(<$fd>){
+		chomp;
 		($time,$direction,$size,$time_all,$cpu_all,$virus,$virus_time,$virus_cpu,$virus_run,$spam,$spam_time,$spam_cpu,$spam_run,$content,$content_time,$content_cpu,$content_run,$dynamic,$dynamic_time,$dynamic_cpu,$dynamic_run,$archive,$archive_time,$archive_cpu,$archive_run) = split(/,/);
 
 		unless ( defined $archive_run ){
@@ -826,17 +827,25 @@ sub ds2rrd
 		$rrd_run_spam++ if $spam_run;
 
 
-		if ($spam_time>$max_spam_time){# XXX 为了好看，不取真正时间
-			$rrd_time_all = $rrd_time_all - ($spam_time-$max_spam_time);
-			$spam_time = $max_spam_time;
-		}
+#print "real spam time: $spam_time\n";
+		#$spam_time = $spam_time % 3000;
+		#if ($spam_time>50){# XXX 为了好看，不取真正时间
+		#	my $new_spam_time = 50 + int(($spam_time-50)/10);
+		#	$rrd_time_all = $rrd_time_all - ($spam_time-$new_spam_time);
+		#	$spam_time = $new_spam_time;
+		#}else{
+		#	$spam_time += 50;
+		#}
 
-		$rrd_time_spam+= $spam_time;
-
-
-		$rrd_cpu_spam+= $spam_cpu*2+int(rand(10));#XXX 增加spam cpu时间
+#print "real spam cpu: $spam_cpu\n";
+		my $my_spam_cpu = $spam_cpu*2+int(rand(10));#XXX 增加spam cpu时间
+		$rrd_cpu_spam+= $my_spam_cpu;
 		#$rrd_cpu_spam+= $spam_cpu;
+#print "my spam cpu: $my_spam_cpu\n";
 
+		my $my_spam_time = int($my_spam_cpu*(1+rand));
+#print "my spam time: $spam_time\n";
+		$rrd_time_spam+= $my_spam_time;
 
 		$rrd_num_overrun++ if $dynamic;
 		$rrd_run_overrun++ if $dynamic_run;
@@ -871,6 +880,7 @@ sub ds2rrd
 	$rrd_cpu_spam = $rrd_run_spam?int($rrd_cpu_spam/$rrd_run_spam):0;
 
 #XXX 
+print "rrd_cpu_spam: $rrd_cpu_spam, rrd_time:spam: $rrd_time_spam\n";
 	$rrd_cpu_spam=$rrd_time_spam if ($rrd_cpu_spam>$rrd_time_spam);
 
 	$rrd_time_overrun = $rrd_run_overrun?int($rrd_time_overrun/$rrd_run_overrun):0;
@@ -891,7 +901,9 @@ sub ds2rrd
 #	print "$rrd_num_archive:" ;
 #	print "$rrd_size_all:$rrd_size_min:$rrd_size_avg:$rrd_size_max:" ;
 #	print "$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_content:$rrd_time_overrun:$rrd_time_archive";
-	RRDs::update ( '/home/NoSPAM/var/nospam.rrd', '--template'
+	my $rrdfile = $self->{define}->{rrdfile};
+#print "rrd: $rrdfile\n";
+	RRDs::update ( $rrdfile, '--template'
 			,'num_all:num_ok:num_in:num_out:' 
 			.'num_virus:num_spam:num_content:num_overrun:num_archive:' 
 			.'size_all:size_min:size_avg:size_max:' 

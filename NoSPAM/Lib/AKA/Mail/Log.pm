@@ -178,6 +178,8 @@ sub log_csv {
 	my $cputime = $user+$system+$cuser+$csystem;
 
 #$self->debug( "log spam cputime: [" . $engine->{spam}->{cputime} . "]" );
+#$self->debug( "log spam runtime: [" . $engine->{spam}->{runtime} . "]" );
+#$self->debug( "log spam dnstime: [" . $engine->{spam}->{dns_query_time} . "]" );
 	if ( open ( LFD, ">>/var/log/NoSPAM.rrdds" ) ){
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
@@ -188,7 +190,8 @@ sub log_csv {
 					) ?'1':'0' 
 				)
 			. ',' . $aka->{size} 
-			. ',' . int(1000*tv_interval($mail_info->{aka}->{start_time}, [gettimeofday]))
+			. ',' . ( int(1000*tv_interval($mail_info->{aka}->{start_time}, [gettimeofday])) 
+				  - $engine->{spam}->{dns_query_time} )
 			. ',' . int(1000*$cputime)
 
 			. ',' . $engine->{antivirus}->{result}

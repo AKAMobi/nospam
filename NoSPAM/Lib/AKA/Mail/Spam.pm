@@ -11,6 +11,7 @@ use AKA::Mail::Conf;
 use AKA::IPUtil;
 
 use Net::DNS;
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 
 sub new
 {
@@ -76,6 +77,7 @@ sub is_traceable
 
 	my @mx_n_a ;
 	
+	my $start_time = [gettimeofday];
 	if ( grep(/^Mail$/i,@TraceType) ){
 		push ( @mx_n_a, $self->get_mx_from_domain( $from_domain, $res ) );
 	}
@@ -83,6 +85,7 @@ sub is_traceable
 	if ( grep(/^IP$/i,@TraceType) ){
 		push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
 	}
+	$self->{dns_query_time} = int(1000*tv_interval ( $start_time, [gettimeofday] ));
 
 	# TODO: add HAND support
 
@@ -392,7 +395,7 @@ sub spam_checker
 	
 	#$self->{zlog}->debug ( "Spam::spam_checker checking $smtp_ip <=> $from_addr spam result [$is_spam because $reason]" );
 
-	return ($is_spam, $reason);
+	return ($is_spam, $reason, $self->{dns_query_time});
 }
 
 
