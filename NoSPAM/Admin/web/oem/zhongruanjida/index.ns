@@ -43,7 +43,7 @@ function login()
 //-->
 
 </SCRIPT>
-<title>网警</title>
+<title>反垃圾邮件系统</title>
 <style type="text/css">
 <!--
 OL,UL,P,BODY,TD,TR,TH,FORM { font-family: verdana,arial,helvetica,sans-serif; font-size:x-small; color: #333333; }

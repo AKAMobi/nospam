@@ -36,8 +36,8 @@ function formsubmit(action)
 <p>
 <form method="POST" name="form1">
   <input type="hidden" name="action">
-  <input type="button" value="<?=_("Shutdown")?>" onclick="formsubmit('reboot')">
-  <input type="button" value="<?=_("Reboot")?>" onclick="formsubmit('shutdown')">
+  <input type="button" value="<?=_("Shutdown")?>" onclick="formsubmit('shutdown')">
+  <input type="button" value="<?=_("Reboot")?>" onclick="formsubmit('reboot')">
 </form>
 </p>
 </body>
