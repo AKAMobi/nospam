@@ -186,7 +186,126 @@ _USAGE_
 
 sub System_patch
 {
-	return -1;
+	use Digest::MD5 qw(md5_base64);
+
+	my $patch_file=$param[0] or return err_msg ("请指定升级包文件名。");
+	-f $patch_file or return err_msg ("无法访问升级包文件。");
+
+	my $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
+	mkdir $upgrade_dir or return err_msg ("无法建立升级目录。");;
+	`mv $patch_file $upgrade_dir`;
+	chdir $upgrade_dir;
+
+	return err_msg ("无法分析升级包。") unless ( $patch_file=~m#([^/]+).no$# );
+	$patch_file=$1;
+
+	my ($PNSVERSION,$PATCH_DATE,$PATCH_VER);
+	if ( $patch_file=~/^(P|U)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d+)/ ){
+		$PNSVERSION="$2$3$4$5";
+		$PATCH_DATE="$6-$7";
+		$PATCH_VER=$8;
+	}else{
+		return err_msg("升级包格式错误#1！");
+	}
+
+	my $NSVERSION=`head /home/NoSPAM/etc/VERSION`;
+	chomp $NSVERSION;
+	my $NSPVERSION=`head /home/NoSPAM/etc/PATCHVERSION` || '00';
+	chomp $NSPVERSION;
+
+	if ( $NSVERSION ne $PNSVERSION ){
+		return err_msg( "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。");
+	}
+
+	if ( $PATCH_VER lt $NSPVERSION ){
+		return err_msg( "当前系统已经使用过比当前升级包版本高的升级包，无法降级。");
+	}
+
+
+	`tar xf $patch_file.no`;
+
+	my $SUM=`head SUM`;
+	chomp $SUM;
+	open ( FD, "/usr/bin/md5sum $upgrade_dir/$patch_file.ns|" ) or return err_msg("系统内部错误#1。");
+	my $md5sum = <FD>;
+	close FD;
+	chomp $md5sum;
+	if ( $md5sum=~/^(\S+)\s+/ ){
+		$md5sum = $1;
+	}else{
+		return err_msg("系统内部错误#2。");
+	}
+
+	my $checksum = md5_base64( 'okboy' . $md5sum . 'zixia' . $md5sum . '@2004-03-07' );
+	if ( $checksum ne $SUM ){
+		return err_msg ( "升级包格式错误#3" );
+	}
+
+
+	chdir '/' or return err_msg ("系统内部错误#3。");
+	`unzip -p -P zixia\@noSPAM_OKBoy_GNULinux! $upgrade_dir/$patch_file.ns | tar x >> /var/log/NoSPAM.stdout 2>/var/log/NoSPAM.stderr`;
+
+
+	my ($PISOVER,$PINFO,$PTIME);
+	$PISOVER=`head VER`;
+	chomp $PISOVER;
+	$PTIME=`head TIMESTAMP`;
+	chomp $PTIME;
+	$PINFO=`cat INFO`;
+
+
+	unlink 'VER','INFO','SUM','TIMESTAMP';
+	if ( -f '/root/post_patch' ){
+		`/root/post_patch`;
+		unlink '/root/post_patch';
+	}
+
+	&record( $patch_file, $PISOVER, $PATCH_VER, $PTIME, $PINFO );
+
+	my $REBOOT=0;
+	if ( -e '/REBOOT' ){
+		$REBOOT=1;
+		unlink '/REBOOT';
+	}
+
+	`rm -fr $upgrade_dir`;
+
+	print "$patch_file 升级完成。";
+
+	if ( $REBOOT ){
+		return 1;
+	}
+	return 0;
+
+	sub err_msg
+	{
+		my $msg = shift;
+
+		`rm -fr $upgrade_dir`;
+
+		print $msg, "\n";
+		return -1;
+	}
+
+	sub record
+	{
+		my ($pkgname, $isover, $patch_ver, $patch_gen_time, $patch_info ) = @_;
+		my $now = time;
+
+		open ( FD, ">/home/NoSPAM/etc/PATCHVERSION" );
+		print FD $patch_ver;
+		close FD;
+
+		my $record_dir = '/home/NoSPAM/var/log/upgrade/';
+
+		open ( FD, ">>$record_dir/log" ) or return err_msg ("无法记录升级信息");
+		print FD "$now,$patch_gen_time,$pkgname,$patch_ver,$isover\n" ;
+		close ( FD );
+
+		open ( FD, ">$record_dir/$pkgname.info" ) or  return err_msg ("无法记录升级包信息");
+		print FD "$patch_info";
+		close FD;
+	}
 }
 
 sub ZombieFile_clean
@@ -778,8 +897,6 @@ sub heartbeat_siwei
 	use Device::SerialPort 0.05;
 	use Time::HiRes qw(usleep);
 
-	use strict;
-
 	my $file = "/dev/ttyS0";
 
 	my $ob = Device::SerialPort->new ($file) || die "Can't open $file: $!";
@@ -795,14 +912,21 @@ sub heartbeat_siwei
 # 3: Prints Prompts to Port and Main Screen
 
 	$ob->error_msg(1);              # use built-in error messages
-		$ob->user_msg(1);
+	$ob->user_msg(1);
 
-	my $in = 1;
-	while ($in) {
-		$ob->write("#sw#");
-		usleep(200000);
-		print int($in++/5),"\n";
-	}
+	eval {
+		my $in = 1;
+		while ($in) {
+			$ob->write("#sw#");
+			usleep(150000);
+			#print int($in++/5),"\n";
+		}
+	}; 
+	$zlog->fatal ( "heartbeat return $@, restarting..." );
+
+	sleep 10;
+
+	exec {'/home/NoSPAM/bin/NoSPAM'} 'heartbeat_siwei' or $zlog->fatal ( "heartbeat exec failed!" );
 }
 
 sub MailQueue_getList
@@ -931,7 +1055,7 @@ chkconfig --level 3 named on
 chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
 #AKA::Mail::AntiVirus will start automatic
-#chkconfig --level 3 clamd on
+chkconfig --level 3 clamd on
 chkconfig --level 3 freshclam  on
 chkconfig --level 3 xinetd  on
 chkconfig --level 3 ntpd  on
@@ -958,6 +1082,10 @@ chmod 000 /etc/cron.daily/slocate.cron
 unlink /root/post_install
 ';
 	system ( "$cmd" );
+	if ( $NSVER=~/(\d+)\.(\d+)-(\d+)\.(\d+)/ ){
+       		my $VERSION=sprintf("%02d%02d%02d%02d",$1,$2,$3,$4);
+		`echo $VERSION > /home/NoSPAM/etc/VERSION`;
+	}
 	exit;
 }
 
