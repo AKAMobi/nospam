@@ -82,11 +82,7 @@ sub new
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
 
-	if ( ! $self->check_license_file ){
-		$self->{license_ok} = 0;
-	}else{
-		$self->{license_ok} = 1;
-	}
+	($self->{license_ok},$self->{license_html}) = $self->check_license_file();
 
 	$self->{conffile_list}->{conffile} = $self->{conf}->{define}->{conffile};	# NoSPAM.conf
 	$self->{conffile_list}->{intconffile} = $self->{conf}->{define}->{intconffile};	# NoSPAM.intconf
@@ -1401,12 +1397,13 @@ sub check_license_file
 	if ( ! open( LFD, "<$licensefile" ) ){
 		#$self->{zlog}->fatal ( "AKA::License::check_license_file can't open [$licensefile]" );
 		# No license
-		return 0;
+		return (0, "本设备尚无可用许可证");
 	}
 	
 	my $license_content;
 	my $license_data;
 	my $license_checksum;
+	my $hardware_license;
 	
 	while ( <LFD> ){
 		chomp;
@@ -1419,6 +1416,8 @@ sub check_license_file
 			$license_data =~ s/\s*//g;
 		}elsif ( /^LicenseHTML=(.+)$/ ){
 			$LicenseHTML = $1;
+		}elsif ( /^HardwareLicense=(.+)$/ ){
+			$hardware_license = $1;
 		}
 
 		$license_content .= $_;
@@ -1431,7 +1430,7 @@ sub check_license_file
 	unless ( defined $license_content && defined $license_checksum && 
 			length($license_content) && length($license_checksum) ){
 		$self->{zlog}->fatal ( "AKA::License::check_license_file can't get enough information from [$licensefile]" );
-		return 0;
+		return (0,"许可证错误#1");
 	}
 
 	my $cmp_str;
@@ -1440,15 +1439,21 @@ sub check_license_file
 
 	if ( $cmp_str ne $license_data ){
 		#print "license_data $license_data ne $cmpstr\n";
-		return 0;
+		return (0,"许可证错误#2");
 	}
 	if( !$self->{license}->is_valid_checksum( $license_content, $license_checksum ) ){
 		#print "checksum $license_checksum not valid for [$license_content]\n";
-		return 0;
+		return (0,"许可证错误#3");
 	}
+
+	if ( length($hardware_license) ){
+		my ($hwok,$hwinfo) = $self->{license}->check_hardware ( $hardware_license );
+		return ($hwok,$hwinfo) unless ( $hwok );
+	}
+
 	# it's valid
-	$LicenseHTML ||= '<h1>许可证有效！</h1>';
-	return $LicenseHTML;
+	$LicenseHTML ||= '许可证有效！';
+	return (1,$LicenseHTML);
 }
 
 sub get_mail_base_info

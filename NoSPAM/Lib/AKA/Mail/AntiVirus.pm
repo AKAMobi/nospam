@@ -8,7 +8,7 @@
 
 package AKA::Mail::AntiVirus;
 
-use AKA::Mail;
+#use AKA::Mail;
 use AKA::Mail::Log;
 use AKA::Mail::Conf;
 

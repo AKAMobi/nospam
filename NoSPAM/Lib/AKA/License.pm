@@ -147,6 +147,63 @@ sub get_IDE_serial
 	return $id;
 }
 
+sub check_hardware
+{
+	my $self = shift;
+	my $hardware_license = shift;
+
+	$hardware_license = $self->decode($hardware_license);
+
+# 	KEY:VAL;KEY:VAL;
+	my $hl = {};
+	foreach ( split(/;/,$hardware_license) ){
+		$hl->{$1} = $2 if ( /(.+)=(.+)/ );
+	}
+
+	
+	return (0,'处理器不符合要求') if ( exists $hl->{CPU} && ($self->get_CPU_bogomips > $hl->{CPU})  );
+
+	return (1,'硬件系统正确');
+}
+
+sub get_CPU_bogomips
+{
+	my $self = shift;
+
+	my @cpuinfo;
+	if ( open ( FD, "</proc/cpuinfo" ) ){
+		@cpuinfo = <FD>;
+		close FD;
+	}
+	
+	my @bogomips = grep ( /bogomips/, @cpuinfo );
+
+	if ( $bogomips[0]=~/bogomips\s+:\s+(\d+)/ ){
+		return $1;
+	}
+
+	$self->{zlog}->fatal ( "License::get_CPU_bogomips failed" );
+
+	return 0;
+}
+
+sub encode
+{
+	my $self = shift;
+	my $str = shift;
+
+	$str =~ y/=;,:_\-+0-9A-Za-z/a-m5-9N-Zn-zA-M0-4:_\-+;,=/; 
+	return  $str;
+}
+
+sub decode
+{
+	my $self = shift;
+	my $str = shift;
+
+	$str =~ y/a-m5-9N-Zn-zA-M0-4:_\-+;,=/=;,:_\-+0-9A-Za-z/;
+	return $str;
+}
 
 1;
 
