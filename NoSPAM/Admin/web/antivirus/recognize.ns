@@ -1,0 +1,104 @@
+<?
+require_once("../inc/include.ns");
+/*
+if(!$bAntiVirusEngineEnabled)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+*/
+
+if(!adminPerm(PERM_ADMIN_VIRUS))
+	die("您没有访问该网页的权限。");
+
+if($_POST["Submit"]=="修改"){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+		
+	if(isset($_POST["SampleCheck"]) && $_POST["SampleCheck"]=="Y"){
+		$spamconf->setParam("SampleCheck","Y","AntiVirusEngine");
+		$spamconf->setParam("SampleProbability",$_POST["SampleProbability"],"AntiVirusEngine");
+	}else{
+		$spamconf->setParam("SampleCheck","N","AntiVirusEngine");
+	}
+	$spamconf->save();
+	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
+		echo "修改成功";
+	else
+		echo "修改失败，错误代码$ret";
+}else{
+$bCheck = ($spamconf->getParam("SampleCheck","AntiVirusEngine")=="Y");
+$iProbability = intval($spamconf->getParam("SampleProbability","AntiVirusEngine"));
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>病毒识别</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<script language="javascript">
+function change()
+{
+	if(form1.SampleCheck.checked)
+		form1.SampleProbability.disabled=false;
+	else
+		form1.SampleProbability.disabled=true;
+}
+
+function restore()
+{
+	if(form1.SampleCheck.defaultChecked)
+		form1.SampleProbability.disabled=false;
+	else
+		form1.SampleProbability.disabled=true;
+}
+</script>
+</head>
+<body>
+<?
+if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+<form method="POST" name="form1" onreset="restore()">
+	<p>
+	<input type="checkbox" name="SampleCheck" value="Y"<?if($bCheck) echo " checked";?> onclick="change()">抽样检查<br>
+	抽样概率：
+	<select name="SampleProbability"<?if(!$bCheck) echo " disabled";?>>
+<?
+	for($i=10;$i<=100;$i+=10){
+		echo "<option value=\"$i\"";
+		if($iProbability == $i)
+			echo " selected";
+		echo ">$i";
+	}
+?>
+	</select>%<br>
+	<input type="submit" name="Submit" value="修改">
+	<input type="reset" value="恢复">
+	</p>
+</form>
+<?
+	if(!$bAntiVirus){
+?>
+<script>
+alert("注意：病毒识别引擎未启动");
+</script>
+<?
+	}
+}else{
+?>
+	<p>
+	<input type="checkbox" name="SampleCheck"<?if($bCheck) echo " checked";?> disabled>抽样检查<br>
+	抽样概率：<?=$iProbability?>%
+	</p>
+<?
+	if(!$bAntiVirus){
+?>
+<script>
+alert("注意：病毒识别引擎未启动");
+</script>
+<?
+	}
+}
+?>
+</body>
+</html>
+<?
+}
+?>

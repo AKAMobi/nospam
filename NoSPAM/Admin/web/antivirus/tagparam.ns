@@ -1,0 +1,105 @@
+<?
+require_once("../inc/include.ns");
+
+/*
+if(!$bAntiVirusEngineEnabled)
+	die("对不起，本系统没有开启病毒邮件引擎功能");
+*/
+
+if(!adminPerm(PERM_ADMIN_VIRUS))
+	die("您没有访问该网页的权限。");
+
+if($_POST["Submit"]=="修改"){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+	$tagpos = $_POST["tagpos"];
+	$spamconf->setParam("TagHead","N","AntiVirusEngine");
+	$spamconf->setParam("TagSubject","N","AntiVirusEngine");
+	$spamconf->setParam("TagReason","N","AntiVirusEngine");
+	if(count($tagpos) > 0){
+		foreach($tagpos as $pos)
+			$spamconf->setParam($pos,"Y","AntiVirusEngine");
+	}
+	$spamconf->setParam("VirusTag",$_POST["VirusTag"],"AntiVirusEngine");
+	$spamconf->save();
+	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
+		echo "修改成功！";
+	else
+		echo "修改失败，错误代码：".$ret;
+}else{
+	$cTagHead = $spamconf->getParam("TagHead","AntiVirusEngine");
+	$cTagSubject = $spamconf->getParam("TagSubject","AntiVirusEngine");
+	$cTagReason = $spamconf->getParam("TagReason","AntiVirusEngine");
+	$VirusTag = $spamconf->getParam("VirusTag","AntiVirusEngine");
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>标记参数</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+<form name="form1" method="post" action="">
+  <p>
+    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?>>在邮件头上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?>>在主题上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?>>在邮件头标记原因
+</p>
+  <p> 病毒邮件的主题标记：
+    <input name="VirusTag" type="text" id="VirusTag" value="<?=$VirusTag?>">
+  推荐：【病毒邮件】<br>
+  <p>
+    <input type="reset" name="reset" value="缺省">
+	<input type="button" value="推荐值" onclick="form1.VirusTag.value='【病毒邮件】';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
+    <input type="submit" name="Submit" value="修改">
+</p>
+</form>
+<?
+		if(!$bAntiVirus){
+?>
+<script>
+alert("注意：病毒识别引擎未启动");
+</script>
+<?
+		}
+?>
+</body>
+</html>
+<?
+	}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>标记参数</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+  <p>
+    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?> disabled>在邮件头上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?> disabled>在主题上打标记<br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?> disabled>在邮件头标记原因
+</p>
+  <p> 病毒邮件的主题标记：
+    <?=$VirusTag?><br>
+    </p>
+<?
+		if(!$bAntiVirus){
+?>
+<script>
+alert("注意：病毒识别引擎未启动");
+</script>
+<?
+		}
+?>
+</body>
+</html>
+<?
+	}
+}
+?>
