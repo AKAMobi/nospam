@@ -5,7 +5,7 @@
 # 先将 usr/lib/perl module & post_install 做成 prepare 的安装包，然后删除这部分内容，再做 prepare 调用的安装包
 #
 
-$NSVER='2.2-7.24';
+$NSVER='2.3-12.12';
 
 `chmod +s aka/home/NoSPAM/bin/wi aka/home/NoSPAM/bin/qns_loader`;
 `rm -fr Dist/*.rpm`;
