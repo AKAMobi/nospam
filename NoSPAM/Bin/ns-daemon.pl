@@ -3,10 +3,10 @@ use AKA::Mail;
 
 
 close ( STDERR );
-open (STDERR, ">/dev/null");
+open (STDERR, ">/var/log/NoSPAM.stderr");
 
 close ( STDOUT );
-open (STDOUT, ">/dev/null");
+open (STDOUT, ">/var/log/NoSPAM.stdout");
 
 my $AM = new AKA::Mail;
 
