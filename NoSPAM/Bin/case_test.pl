@@ -10,10 +10,10 @@ $S = new AKA::Mail::Spam;
 #&test_dynamic_clean;
 #&test_dynamic_init;
 #&test_dynamic_dump;
-#&test_dynamic_subject;
+&test_dynamic_subject;
 #&test_black_ip;
 #&test_traceable;
-&test_check_license_file;
+#&test_check_license_file;
 exit;
 ############################
 sub test_check_license_file

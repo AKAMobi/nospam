@@ -24,20 +24,20 @@ switch($_GET["option"]){
 	$sKey = $Keys[1];
 	$sOption = "Subject";
 	break;
-	default:
+	case "IP":
 	$sKey = $Keys[0];
 	$sOption = "IP";
+	default:
+	showselect();
+	exit();
 }
 
 list($Key,$column) = explode(",",$sKey);
 
-/*echo "get_DynamicEngineDBData $Key";*/
-if(($ret = wi("get_DynamicEngineDBData $Key",$Data))!=0)
-{ ; } /*	die("错误代码：$ret");*/
+if(($ret = wi("get_DynamicEngineDBData $Key",$sData))!=0)
+	die("错误代码：$ret");
 
-//$Data = explode("\n",$str);
-
-$iSize = count($Data);
+$iSize = count($sData);
 $pagenum = $_GET["pagenum"];
 if(!$pagenum || $pagenum < 1)
 	$pagenum = PAGENUM;
@@ -52,6 +52,35 @@ if(!$page || $page < 1)
 	$page = 1;
 if($page > $pages)
 	$page = $pages;
+
+$Date = array();
+
+if($iSize > 0){
+	foreach($sDate as $line){
+		$value = explode(",",$line);
+		$Content = $value[0];
+		if(trim($value[1])=="")
+			$OpenTime = "未封禁";
+		else
+			$OpenTime = date("Y-m-d H:i:s",intval($value[1]));
+		$SendTime = array_slice($value, 2);
+		$SendCount = count($SendTime);
+		array_push($Data,array($Content, $OpenTime, $SendCount, $SendTime));
+	}
+}
+
+function cmp($a,$b)
+{
+	if($a[2] > $b[2])
+		return 1;
+	
+	if($a[2] < $b[2])
+		return -1;
+	
+	return 0;
+}
+
+usort($Data,"cmp");
 
 $rData = array_slice($Data, ($page-1)*$pagenum, $pagenum);
 $start = ($page-1)*$pagenum+1;
@@ -102,16 +131,12 @@ function flush()
 <?
 if(count($rData)>0){
 	$i = 0;
-	foreach($rData as $line){
+	foreach($rData as $value){
 		$className = $i%2? "RuleTB2":"RuleTB1";
-		$value = explode(",",$line);
 		$Content = $value[0];
-		if(trim($value[1])=="")
-			$OpenTime = "未封禁";
-		else
-			$OpenTime = date("Y-m-d H:i:s",intval($value[1]));
-		$SendTime = array_slice($value, 2);
-		$SendCount = count($SendTime);
+		$OpenTime = $value[1];
+		$SendCount = $value[2];
+		$SendTime = $value[3]
 ?>
 <tr class="<?=$className?>">
 	<td><input type="checkbox" name="key[]" value="<?=htmlentities($Content,ENT_COMPAT)?>"></td>
@@ -145,8 +170,10 @@ switch($sOption){
 	break;
 	case "Subject":
 	$sort = "String";
+	break
 	case "IP":
 	$sort = "IP";
+	break;
 }
 ?>
 var st = new SortableTable(document.getElementById("table-1"),
@@ -244,7 +271,7 @@ function del()
 	if(is_array($key)){
 		if(count($key)>0){
 			foreach($key as $tmp){
-				$rawKey = html_entity_decode($tmp);
+				$rawKey = unhtmlentities($tmp);
 				$sKey = escapeshellarg($rawKey);
 				if(($ret=wi("del_DynamicEngineKeyData $Option $sKey",$result))==0)
 					header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
@@ -270,5 +297,24 @@ function flushdb()
 		echo "数据库清空成功！";
 	else
 		echo "清空数据库".$name."失败，错误代码：$ret";
+}
+
+function showselect()
+{
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>动态引擎实时管理</title>
+</head>
+<body>
+<div align="center">
+<input type="button" value="发件人" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="主题" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="IP" onclick="location.href='realtime.ns?option=IP'">
+</div>
+</body>
+</html>
+<?
 }
 ?>

@@ -13,7 +13,7 @@ use AKA::IPUtil;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 open (NSOUT, ">&=2");
-close (STDERR);
+#close (STDERR);
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -47,9 +47,10 @@ my $action_map = {
 			'start_System' => [\&start_System, "Init system on boot" ]
 			, 'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ]
 
-			, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, "Get All NameSpace from AMD" ]
-			, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, 'Get All Data of a NameSpace from AMD' ]
-			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, 'Del a item of a NameSpace from AMD' ]
+			, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
+			, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
+			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item> : Del a item of a NameSpace from AMD' ]
+			, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
 
 			,'reset_Network' => [\&reset_Network, ""]
 			,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
@@ -89,6 +90,7 @@ if ( ! defined $action ){
 	exit $ret;
 }else{
 	$zlog->fatal( "NoSPAM System Util unsuport action: $action( " . join(',',@param) . " )" );
+	print "NoSPAM System Util unsuport action: $action( " . join(',',@param) . " )\n";
 	exit 0;
 }
 
@@ -136,7 +138,7 @@ sub usage
 $prog <action> [action params ...]
   action could be:
 _USAGE_
-	foreach ( keys %{$action_map} ){
+	foreach ( sort keys %{$action_map} ){
 		print NSOUT "    $_ ";
 		if ( defined $action_map->{$_}[1] ){
 			print NSOUT "$action_map->{$_}[1]";
@@ -923,14 +925,15 @@ sub get_DynamicEngineDBData
 	my @result;
 	$AMD->lock_DBM_r;
 	foreach $item ( keys %{$ns_obj} ){
+		next if ( $item=~/_AMD_/ );
 		$item =~ s/,/£¬/g;
 		@result = ($item);
-		if ( defined $ns_obj->{$item}->{_DENY_TO_} ){
-			push (@result,$ns_obj->{$item}->{_DENY_TO_});
+		if ( defined $ns_obj->{"$item"}->{'_DENY_TO_'} ){
+			push (@result,$ns_obj->{"$item"}->{'_DENY_TO_'});
 		}else{
 			push (@result,'');
 		}
-		foreach ( sort keys %{$ns_obj->{$item}} ){
+		foreach ( sort keys %{$ns_obj->{"$item"}} ){
 			push (@result,$1) if /^(\d+)\.(\d+)$/ ;
 		}
 		print join(',',@result), "\n";
@@ -952,6 +955,21 @@ sub del_DynamicEngineKeyItem
 	my $AMD = new AKA::Mail::Dynamic;
 
 	return 10 unless $AMD->del_dynamic_info_ns_item ($ns,$item);
+
+	return 0;
+}
+
+sub clean_DynamicEngineKey
+{
+	my $ns = shift @param;
+
+	return 5 unless ( $ns );
+
+	use AKA::Mail::Dynamic;
+
+	my $AMD = new AKA::Mail::Dynamic;
+
+	return 10 unless $AMD->clean_dynamic_info_ns ($ns);
 
 	return 0;
 }

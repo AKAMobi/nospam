@@ -201,6 +201,7 @@ sub is_overrun_rate_per_XXX
 	$key = '__AMD_LAST_REFRESH_TIME__' if ( $key eq '_AMD_LAST_REFRESH_TIME_' );
 
 	$self->lock_DBM;
+	$self->{sh}->SyncCacheSize( $self->{define}->{SyncCacheSize}||'100K' ); 
 
 	my $namespace_obj = $self->{dynamic_info}->{$namespace};
 	$namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} ||= 0;
@@ -389,7 +390,6 @@ sub attach
 	if ( ! $self->{sh} ){
 		return 0;
 	}
-	$self->{sh}->SyncCacheSize( $self->{define}->{SyncCacheSize}||'100K' ); 
 
 	return 1;
 }
@@ -524,6 +524,25 @@ sub del_dynamic_info_ns_item
 	return 1;
 }
 
+sub clean_dynamic_info_ns
+{
+	my $self = shift;
+	my $ns = shift;
+
+	return undef unless ( $ns );
+
+	$self->attach;
+
+	$self->lock_DBM;
+
+	my $ns_obj = $self->{dynamic_info}->{$ns};
+	$ns_obj = {};
+	$self->{dynamic_info}->{$ns} = $ns_obj;
+
+	$self->unlock_DBM;
+	
+	return 1;
+}
 
 sub test
 {

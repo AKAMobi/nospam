@@ -1,11 +1,14 @@
 <?
 require_once("../inc/include.ns");
 
-$sTime = $_GET["s"];
-$eTime = $_GET["e"];
+//$sTime = $_GET["s"];
+//$eTime = $_GET["e"];
 
+$sTime = 955854000000;
+$eTime = 1082084400000;
 if(($ret=wi("get_LogSimpleAnaylize $sTime $eTime",$result))!=0)
 	die("´íÎó´úÂë£º$ret");
-
-
 ?>
+<pre>
+<? print_r($result);?>
+</pre>
