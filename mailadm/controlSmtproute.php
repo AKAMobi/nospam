@@ -29,7 +29,7 @@ function doConfig(){
 	if (!isset($_POST['content'])){ 
 		return false;
 	}
-	$handle=fopen("/var/qmail/control/goodmailfrom","w");	
+	$handle=fopen("/var/qmail/control/smtproutes","w");	
 	if (!$handle) {
 		echo "错误，无法保存设置！<br>";
 		return false;
@@ -43,7 +43,7 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 	echo "设置保存成功！<br>";
 } else {
 
-$handle = fopen ("/var/qmail/control/goodmailfrom", "r");
+$handle = fopen ("/var/qmail/control/smtproutes", "r");
 $list="";
 while (!feof ($handle)) {
     $buffer= fgets($handle, 4096);
@@ -57,10 +57,10 @@ fclose ($handle);
 <INPUT type="hidden" name="doConfig">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="2" class=title><b>设置域名白名单列表</b></td>
+<td colspan="2" class=title><b>设置SMTP转发列表</b></td>
 </tr>
 <tr>
-	<td colspan="2">域名白名单：
+	<td colspan="2">SMTP转发列表：
 	</td>
 </tr>
 <tr>
