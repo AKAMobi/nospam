@@ -177,7 +177,9 @@ sub is_overrun_rate_per_XXX
 	my $self = shift;
 
 	my ( $namespace, $key, $num, $sec, $deny_sec ) = @_;
-	$deny_sec ||= $self->{define}->{DefaultDenyTime};
+	# by Ed 2004-06-14 允许用户不 deny 
+	#$deny_sec ||= $self->{define}->{DefaultDenyTime};
+	$deny_sec ||= 0;
 
 	# 0 means unlimited
 	return (0,__("passed")) if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
@@ -305,7 +307,7 @@ sub check_quota_exceed_ex
 
 	my ( $namespace_obj, $key, $num, $sec, $deny_sec ) = @_;;
 
-	if ( ! $namespace_obj || ! $key || ! $num || ! $sec || ! $deny_sec){
+	if ( ! $namespace_obj || ! $key || ! $num || ! $sec || !defined($deny_sec) ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::check_quota_exceed can't get params: [" . join("",@_) . "]" );
 		return (0,__("need param"));
 	}
