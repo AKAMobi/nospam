@@ -494,6 +494,52 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/bayes.ns">贝叶斯过滤器</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/rbl.ns">智能实时黑名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/netcheck.ns">智能集中分析</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/sa.ns">智能内容分析</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+
+	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/awl.ns">智能降噪系统</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+	<TR>
+		<TD align="left">
 		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">垃圾处理</A>
 		</TD>
 	</TR>

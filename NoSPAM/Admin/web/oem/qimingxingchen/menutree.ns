@@ -147,13 +147,13 @@ if($SpamEngine > 0){
 	c1.add(new WebFXTreeItem('<?=_("Sender BlackList")?>','antispam/list.ns?option=BlackFrom','main'));
 	c.add(new WebFXTreeItem('<?=_("Traceable")?>','antispam/traceable.ns','main'));
 	
-	var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
-	c.add(c3);
-	c3.add(new WebFXTreeItem('<?=_("Bayes Filter")?>','antispam/bayes.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Realtime Blocklist")?>','antispam/rbl.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Process Center")?>','antispam/netcheck.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Content Analyze")?>','antispam/sa.ns','main'));
-	c3.add(new WebFXTreeItem('<?=_("Noise Reduce System")?>','antispam/awl.ns','main'));
+	//var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
+	//c.add(c3);
+	c.add(new WebFXTreeItem('<?=_("Bayes Filter")?>','antispam/bayes.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Realtime Blocklist")?>','antispam/rbl.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Process Center")?>','antispam/netcheck.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Content Analyze")?>','antispam/sa.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Noise Reduce System")?>','antispam/awl.ns','main'));
 	c.add(new WebFXTreeItem('<?=_("Spam Treatment")?>','antispam/treatment.ns','main'));
 
 
