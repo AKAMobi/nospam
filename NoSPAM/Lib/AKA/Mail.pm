@@ -11,6 +11,7 @@ package AKA::Mail;
 
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
+use AKA::Mail::AntiVirus;
 use AKA::Mail::Spam;
 use AKA::Mail::Dynamic;
 use AKA::Mail::Archive;
@@ -54,7 +55,7 @@ sub antivirus_engine
 
 	$self->{antivirus} ||= new AKA::Mail::AntiVirus($self);
 
-	return $self->{archive}->catch_virus( {		emlfilename => $emlfile
+	return $self->{antivirus}->catch_virus( {		emlfilename => $emlfile
 						});
 }
 

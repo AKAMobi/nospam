@@ -72,6 +72,9 @@ sub check_file
 
 	my $file = $mail_info->{emlfilename};
 
+	# get rid of double //
+	$file =~ s#//#/#g;
+
 	my $conn = $self->init_socket;
 
 	my $req = "SCAN $file\n";
