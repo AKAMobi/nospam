@@ -87,6 +87,9 @@ BODY {
 <TR>
 	<TD bgColor="#cccccc" height="2"></TD>
 </TR>
+<?php
+if(adminPerm(PERM_ADMIN_SYSTEM)){
+?>
 <TR>
 <TD onclick="popmenu('Aux1','img1')" class="mu2" height="20">
 	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;系统管理
@@ -114,11 +117,13 @@ BODY {
 	<TR>
 		<TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
+	<?if($Switchable){?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="system/gatewaymode.ns">运行模式</A>
 		</TD>
 	</TR>
+	<?}?>
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
@@ -162,6 +167,7 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?}?>
 <TR>
 <TD onclick="popmenu('Aux2','img2')" class="mu2" height="20">
 	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;管理员
@@ -173,6 +179,9 @@ BODY {
 <TR>
 <TD id="Aux2" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+<?
+if(adminPerm(PERM_ADMIN_ADMIN)){
+?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="user/showadminlist.ns">管理员列表</A>
@@ -189,6 +198,7 @@ BODY {
 	<TR>
 		<TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
+<?}?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
@@ -205,6 +215,10 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?
+if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
 <TR>
 <TD onclick="popmenu('Aux3','img3')" class="mu2" height="20">
 	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;透明网关模式
@@ -232,6 +246,13 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+
+if($MailRelay > 0 && strstr($ServerMode,"Relay")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
 <TR>
 <TD onclick="popmenu('Aux4','img4')" class="mu2" height="20">
 	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX转发模式
@@ -259,6 +280,13 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+
+if($MailServer > 0 && strstr($ServerMode,"Server")){
+	if(adminPerm(PERM_ADMIN_SERVER)){
+?>
 <TR>
 <TD onclick="popmenu('Aux5','img5')" class="mu2" height="20">
 	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;独立服务器模式
@@ -318,6 +346,13 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+
+if($DynamicEngine > 0){
+	if(adminPerm(PERM_ADMIN_DYNAMIC)){
+?>
 <TR>
 <TD onclick="popmenu('Aux6','img6')" class="mu2" height="20">
 	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;动态限制引擎
@@ -377,6 +412,12 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>
 <TR>
 <TD onclick="popmenu('Aux7','img7')" class="mu2" height="20">
 	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;病毒识别引擎
@@ -406,20 +447,18 @@ BODY {
 	</TR>
 	<TR>
 		<TD align="center">
-		<A target="main" href="antivirus/tagparam.ns">标记参数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="center">
-		<A target="main" href="antivirus/refusevirus.ns">转发设置</A>
+		<A target="main" href="antivirus/treatment.ns">病毒处理</A>
 		</TD>
 	</TR>
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+
+if($SpamEngine > 0){
+	if(adminPerm(PERM_ADMIN_SPAM)){
+?>
 <TR>
 <TD onclick="popmenu('Aux8','img8')" class="mu2" height="20">
 	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;垃圾邮件引擎
@@ -497,20 +536,19 @@ BODY {
 	</TR>
 	<TR>
 		<TD align="center">
-		<A target="main" href="antispam/tagparam.ns">标记参数</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-	<TR>
-		<TD align="center">
-		<A target="main" href="antispam/refusespam.ns">转发设置</A>
+		<A target="main" href="antispam/treatment.ns">垃圾处理</A>
 		</TD>
 	</TR>
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+
+if($ContentEngine > 0){
+	if(adminPerm(PERM_ADMIN_CONTENT)){
+?>
 <TR>
 <TD onclick="popmenu('Aux9','img9')" class="mu2" height="20">
 	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;内容过滤引擎
@@ -562,6 +600,11 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?php
+	}
+}
+	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
+?>
 <TR>
 <TD onclick="popmenu('Aux10','img10')" class="mu2" height="20">
 	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;邮件审计引擎
@@ -589,6 +632,11 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?
+	}
+
+if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
+?>
 <TR>
 <TD onclick="popmenu('Aux11','img11')" class="mu2" height="20">
 	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;智能交互引擎
@@ -624,6 +672,11 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?
+}
+
+if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
+?>
 <TR>
 <TD onclick="popmenu('Aux12','img12')" class="mu2" height="20">
 	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;日志监控
@@ -635,6 +688,9 @@ BODY {
 <TR>
 <TD id="Aux12" style="DISPLAY: none" height="2">
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+<?
+	if (adminPerm(PERM_ADMIN_LOG)){
+?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="status/status.html">系统状态</A>
@@ -667,6 +723,9 @@ BODY {
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
+<?
+		if(adminPerm(PERM_ADMIN_WRITE)){
+?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="log/logflush.ns">日志清空删除</A>
@@ -675,14 +734,26 @@ BODY {
 	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
+<?php
+		}
+	}
+	if(adminPerm(PERM_ADMIN_AUDIT)){
+?>
 	<TR>
 		<TD align="center">
 		<A target="main" href="log/audit.ns">操作日志审计</A>
 		</TD>
 	</TR>
+<?
+	}
+}
+?>
 	</TABLE>
 </TD>
 </TR>
+<?
+if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
+?>
 <TR>
 <TD onclick="popmenu('Aux13','img13')" class="mu2" height="20">
 	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;公安网络监管
@@ -726,6 +797,9 @@ BODY {
 	</TABLE>
 </TD>
 </TR>
+<?
+}
+?>
 <TR>
 <TD class="mu2" height="20">
 	<A target="_top" href="logout.ns">退出系统</A>
