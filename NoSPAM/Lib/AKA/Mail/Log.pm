@@ -41,9 +41,9 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	#$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf;
+	#$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf;
 	#$self->{verify} = $parent->{verify};
-	#XXX by zixia no need to load Verify in Log module  || new AKA::Mail::Police::Verify;
+	#XXX by zixia no need to load Verify in Log module  || new AKA::Mail::Content::Verify;
 
 # Now we can retrieve the other arguments passed to the 
 # construtor.

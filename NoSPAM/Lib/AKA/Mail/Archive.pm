@@ -12,7 +12,7 @@ package AKA::Mail::Archive;
 use AKA::Mail::Conf;
 use AKA::Mail::Log;
 use AKA::Mail::Controler;
-use AKA::Mail::Police::Parser;
+use AKA::Mail::Content::Parser;
 
 use Archive::Zip qw(:CONSTANTS :ERROR_CODES);
 
@@ -75,7 +75,7 @@ sub get_exchange_data
 	my $self = shift;
 	my $emlfile = shift;
 
-	$self->{parser} ||= new AKA::Mail::Police::Parser;
+	$self->{parser} ||= new AKA::Mail::Content::Parser;
 
 	open ( FD, "<$emlfile" ) or return 0;
 	my $emldata;
@@ -118,13 +118,13 @@ sub print_archive_zip
 {
 	my $self = shift;
 
-	my @file_list = $self->get_archive_files;
+	my $file_list = $self->get_archive_files;
 
 	my $member;
 
 	my $zip = Archive::Zip->new();
 
-	foreach ( @file_list ){
+	foreach ( @$file_list ){
 		m#(\d{8,}\.\d+)#;
 		
 		$member = $zip->addString( $self->get_exchange_data($_), "$1.log" );
@@ -141,9 +141,9 @@ sub clean_archive_files
 {
 	my $self = shift;
 	
-	my @file_list = $self->get_archive_files;
+	my $file_list = $self->get_archive_files;
 	
-	unlink @file_list;
+	unlink @$file_list;
 
 	return 1;
 }
@@ -170,7 +170,7 @@ sub get_archive_files
         }
 	closedir( DIRCUR );
 
-	return @file_list;
+	return \@file_list;
 }
 1;
 

@@ -6,12 +6,12 @@
 # Date: 2004-02-10
 
 
-use AKA::Mail::Police::Conf;
+use AKA::Mail::Content::Conf;
 use AKA::Mail::Log;
-use AKA::Mail::Police::Filter;
-use AKA::Mail::Police::Verify;
+use AKA::Mail::Content::Filter;
+use AKA::Mail::Content::Verify;
 
-package AKA::Mail::Police;
+package AKA::Mail::Content;
 
 #BEGIN
 #{
@@ -30,9 +30,9 @@ sub new
 
 	$self->{parent} = $parent;
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self);
-	$self->{conf} = new AKA::Mail::Police::Conf($self);
-	$self->{verify} = new AKA::Mail::Police::Verify($self);
-	$self->{filter} = new AKA::Mail::Police::Filter($self);
+	$self->{conf} = new AKA::Mail::Content::Conf($self);
+	$self->{verify} = new AKA::Mail::Content::Verify($self);
+	$self->{filter} = new AKA::Mail::Content::Filter($self);
 
 	return $self;
 

@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+package AKA::Mail::GA::GAISC;
+
 use strict;
 
 use Errno;
@@ -37,6 +39,25 @@ use constant CATE_PONG			=> '0000000005';
 use constant DATA_SUCC			=> '0000000001';
 use constant DATA_FAIL			=> '0000000002';
 
+
+sub new
+{
+	my $class = shift;
+
+	my $self = {};
+
+	bless $self, $class;
+
+	my $parent = shift;
+
+	$self->{parent} = $parent;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;
+	
+	$self->{define}->{archivedir} = "/home/vpopmail/domains/localhost.localdomain/archive/Maildir/";
+
+	return $self;
+}
 
 
 my $self = {};

@@ -5,11 +5,11 @@
 # EMail: zixia@zixia.net
 # Date: 2004-02-10
 
-package AKA::Mail::Police::Parser;
+package AKA::Mail::Content::Parser;
 
 use MIME::Parser;
 use AKA::Mail::Log;
-use AKA::Mail::Police::Conf;
+use AKA::Mail::Content::Conf;
 # for parse received line date
 use Date::Parse;
 
@@ -37,7 +37,7 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf($self) ;
 	$self->{mime_parser} ||= new MIME::Parser;
 
 	# FIXME: $a = $b || $c not work??

@@ -5,12 +5,12 @@
 # EMail: zixia@zixia.net
 # Date: 2004-02-10
 
-package AKA::Mail::Police::Filter;
+package AKA::Mail::Content::Filter;
 
 use AKA::Mail::Log;
-use AKA::Mail::Police::Conf;
-use AKA::Mail::Police::Rule;
-use AKA::Mail::Police::Parser;
+use AKA::Mail::Content::Conf;
+use AKA::Mail::Content::Rule;
+use AKA::Mail::Content::Parser;
 
 use MIME::Base64;
 #use Exporter;
@@ -37,10 +37,10 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
-	$self->{parser} = $parent->{parser} || new AKA::Mail::Police::Parser($self);
-	$self->{ruler} = $parent->{ruler} || new AKA::Mail::Police::Rule($self);
-	$self->{verify} = $parent->{verify} || new AKA::Mail::Police::Verify($self);
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf($self) ;
+	$self->{parser} = $parent->{parser} || new AKA::Mail::Content::Parser($self);
+	$self->{ruler} = $parent->{ruler} || new AKA::Mail::Content::Rule($self);
+	$self->{verify} = $parent->{verify} || new AKA::Mail::Content::Verify($self);
 
 	return $self;
 }

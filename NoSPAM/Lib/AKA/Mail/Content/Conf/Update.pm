@@ -6,7 +6,7 @@
 # Date: 2004-02-10
 
 
-package AKA::Mail::Police::Conf::Update;
+package AKA::Mail::Content::Conf::Update;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
@@ -32,10 +32,11 @@ sub new
 	$self->{conf} = $conf;
 
 	$self->{zlog} = $conf->{zlog} || new AKA::Mail::Log($self);
-	$self->{verify} = $conf->{verify} || new AKA::Mail::Police::Verify($self);
+	$self->{verify} = $conf->{verify} || new AKA::Mail::Content::Verify($self);
 
-	$self->{conf}{rule_add_modify} = undef;
-	$self->{conf}{rule_del} = undef;
+	# XXX remed by zixia 2004-04-18
+	#$self->{conf}{rule_add_modify} = undef;
+	#$self->{conf}{rule_del} = undef;
 
 	return $self;
 }

@@ -6,7 +6,7 @@
 # Date: 2004-02-10
 
 
-package AKA::Mail::Police::Verify;
+package AKA::Mail::Content::Verify;
 
 #use Exporter;
 #use vars qw(@ISA @EXPORT);

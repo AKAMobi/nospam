@@ -6,7 +6,7 @@
 # Date: 2004-02-10
 
 
-package AKA::Mail::Police::Conf;
+package AKA::Mail::Content::Conf;
 
 use AKA::Mail::Log;
 
@@ -21,7 +21,7 @@ use AKA::Mail::Log;
 # 改变$转义、缩进
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
-use AKA::Mail::Police::Conf::Update;
+use AKA::Mail::Content::Conf::Update;
 
 use XML::Simple;
 
@@ -72,7 +72,7 @@ sub check_n_update
 {
 	my $self = shift;
 
-	$self->{update} ||= new AKA::Mail::Police::Conf::Update($self);
+	$self->{update} ||= new AKA::Mail::Content::Conf::Update($self);
 	$self->{zlog} ||= new AKA::Mail::Log($self);
 
 	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
@@ -225,7 +225,7 @@ sub rebirth_update
 	$self->{zlog}->log( "renaming [$updatedb_file" . ".new] to [$updatedb_file]..." );
 	rename ( $updatedb_file . ".new" , $updatedb_file ) or die "can't rename [$updatedb_file" . ".new] to [$updatedb_file]";
 
-	my $sign = $self->{police}->{verify} || new AKA::Mail::Police::Verify($self);
+	my $sign = $self->{police}->{verify} || new AKA::Mail::Content::Verify($self);
 	if ( ! $sign->sign_key ( $updatedb_file ) ){
 		$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
 	}

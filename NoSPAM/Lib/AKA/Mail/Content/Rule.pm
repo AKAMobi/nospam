@@ -5,10 +5,10 @@
 # EMail: zixia@zixia.net
 # Date: 2004-02-10
 
-package AKA::Mail::Police::Rule;
+package AKA::Mail::Content::Rule;
 
 use AKA::Mail::Log;
-use AKA::Mail::Police::Conf;
+use AKA::Mail::Content::Conf;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -33,7 +33,7 @@ sub new
 	$self->{parent} = $parent;
 
 	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self) ;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf($self) ;
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Content::Conf($self) ;
 
 	return $self;
 }
