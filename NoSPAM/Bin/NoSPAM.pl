@@ -468,6 +468,7 @@ sub rebuild_default_bridge
 	$ret ||= system ( "$brctl_binary addif nospam eth0 > /dev/null 2>&1" );
 	$ret ||= system ( "$brctl_binary addif nospam eth1 > /dev/null 2>&1" );
 	$ret ||= system ( "$ifconfig_binary nospam 192.168.0.150 netmask 255.255.255.0 up" );
+	$ret ||= system ( "$brctl_binary stp nospam on > /dev/null 2>&1" );
 	my $intGWIP = $intconf->{MailGatewayInternalIP}||'10.4.3.7' ;
 	my $intBitmask = $intconf->{MailGatewayInternalMask}||32;
 
