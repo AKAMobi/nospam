@@ -7,7 +7,7 @@ $NSVER='1.3-4.7';
 `mkdir tmp`;
 
 #@tarballs = qw(qmail kernel network);
-@tarballs = qw(qmail);
+@tarballs = qw(qmail vpopmail wmail);
 
 opendir(DIR, ".") || die "can't opendir .: $!\n";
 @pkgs = grep { !/^\./ && (!/[A-Z]/) } readdir(DIR);
