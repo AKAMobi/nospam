@@ -49,6 +49,7 @@ else
     ;
 
 if ($process) {
+
     $ret = $currentUser->process ($jobList, $result);
 
     if ($ret!=0) 
@@ -127,13 +128,13 @@ function display_mail_list ($mailList,$start) {
 		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>尺寸</b></nobr></font></td>
 		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>察看</b></nobr></font></td>
 		<td bgcolor="#000000"><nobr><font color="#FFFFFF"><b>动作: </b></font> 
-		<input type="radio" value="D" name="action" id="actionDrop" /><font color="#FFFFFF">丢弃 
+		<input type="radio" value="D" name="action" id="actionDrop" /><font color="#FFFFFF">删除
 		</font>
-		<input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回 
-		</font> 
-		<input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发 
-		</font> 
-		<input type="radio" value="F" name="action" /><font color="#FFFFFF">转发</font></nobr></td>
+		<!--input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回
+		</font--> 
+		<!--input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发
+		</font--> 
+		<input type="radio" value="F" name="action" /><font color="#FFFFFF">通过</font--></nobr></td>
 	
 	</tr>
 <?php
@@ -151,10 +152,10 @@ function display_mail_list ($mailList,$start) {
 		<a target="_blank" href="viewmail.ns?file=<?php echo $mailList[$i]['FILE']; ?>">
 		<img alt="察看" src="images/view.gif" border="0"></a></font></td>
 		<td> 
-		<input type="radio" value="D" name="<?php echo 'file_'.$i; ?>" />丢弃 
-		<input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" />弹回 
-		<input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" />标记转发 
-		<input type="radio" value="F" name="<?php echo 'file_'.$i; ?>" />转发</td>
+		<input type="radio" value="D" name="<?php echo 'file_'.$i; ?>" />删除
+		<!--input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" />弹回 --> 
+		<!--input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" />标记转发  -->
+		<input type="radio" value="F" name="<?php echo 'file_'.$i; ?>" />通过</td>
 	</tr>
 <?php
     }
@@ -169,6 +170,7 @@ function display_process_result ($result) {
         printf ('正在处理第 %d 封邮件……%s <br />', $result[$i][0], ($result[$i][1]===0)?'成功':'失败');    
     }
         
+//print_r ( $_SESSION['sCurrentUser'] );
 }
 /* functions definations end */
 
