@@ -347,7 +347,7 @@ function add()
 </tr>
 <tr>
 	<td></td>
-	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，用逗号","分隔</td>
+	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，每行一个</td>
 </tr>
 <?if(strstr($ServerMode,"Server")){?>
 <tr>
@@ -503,13 +503,13 @@ function modify()
 </tr>
 <tr>
 	<td></td>
-	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，用逗号","分隔</td>
+	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，每行一个。</td>
 </tr>
 <?if(strstr($ServerMode,"Server")){?>
 <tr>
 	<td align="right">管理邮件域：</td>
 	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
-	<td>用逗号","分隔</td>
+	<td>每行一个。</td>
 </tr>
 <?}?>
 <tr align="center" >

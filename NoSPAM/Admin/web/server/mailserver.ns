@@ -335,6 +335,8 @@ function save()
 	if ( $TotalDomain> 0){
 		foreach ($vDomains as $value){
 			$TotalUser += intval($Section["VirtualDomain_{$value}_MaxUser"]);
+			if ( $bModify && $value==$domain )
+				continue; //如果是修改，则不计算当前domain的quota到totalquota
 			$TotalQuota += intval($Section["VirtualDomain_{$value}_Quota"]);
 		}
 	}
@@ -366,7 +368,7 @@ function save()
 			echo "用户空间限额必须设置为正整数";
 			return;
 		}
-		if ($MaxUser < ($TotalQuota + intval($_POST["Quota"])*intval($_POST["QuotaUnit"]))){
+		if ($MaxQuota < ($TotalQuota + intval($_POST["Quota"])*intval($_POST["QuotaUnit"]))){
 			echo "虚拟域用户空间限额数量超过上限";
 			return;
 		}
