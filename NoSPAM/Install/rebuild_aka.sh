@@ -5,10 +5,20 @@ cpperl()
 {
 	echo "cpperl $1 to $2..."
 	echo '#!/usr/bin/perl -X' > $2;
+	echo 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
+	echo 'my $AKA_noSPAM_release = 1;' >> $2;
+	cat $1 >> $2;
+}
+
+cpperl_T()
+{
+	echo "cpperl_T $1 to $2..."
+	echo '#!/usr/bin/perl -TX' > $2;
 	echo 'open (NSOUT, ">&=2"); close STDERR;' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
 }
+
 
 SOURCEHOME="/NoSPAM/"
 
@@ -53,6 +63,7 @@ cpperl ${SOURCEHOME}/Bin/ns-daemon.pl aka/home/NoSPAM/bin/ns-daemon.pl
 cpperl ${SOURCEHOME}/Bin/ga-daemon.pl aka/home/NoSPAM/bin/ga-daemon.pl
 cpperl ${SOURCEHOME}/Bin/smtp_auth_proxy.pl aka/home/NoSPAM/bin/smtp_auth_proxy.pl
 cpperl ${SOURCEHOME}/Bin/rrdgraph.pl aka/home/NoSPAM/bin/rrdgraph.pl
+cpperl_T ${SOURCEHOME}/Bin/cli.pl aka/home/NoSPAM/bin/cli.pl
 chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
 chmod 755 aka/root/*.pl
