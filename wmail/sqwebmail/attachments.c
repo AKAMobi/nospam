@@ -817,6 +817,7 @@ int attach_upload(const char *draft,
 	}
 
 	{
+		char *p;
 		const char *cp=strrchr(cgi_attachfilename, '/');
 		int len;
 		static const char fnStr[]="filename";
@@ -825,6 +826,17 @@ int attach_upload(const char *draft,
 			++cp;
 		else
 			cp=cgi_attachfilename;
+
+		p = rfc2047_encode_str( cp, sqwebmail_content_charset );
+		if( p )
+		{
+			filenamemime = malloc( strlen(p) + 12 );
+			sprintf( filenamemime, "filename=\"%s\"", p );
+			free(p);
+		}
+
+		/* by lfan, replace rfc2231 with rfc2047, according to outlook
+		 * so we can solve the chinese filename problem
 
 		rfc2231_attrCreate(fnStr, cp,
 				   sqwebmail_content_charset, NULL,
@@ -840,6 +852,7 @@ int attach_upload(const char *draft,
 					   filenamemime, &len,
 					   sqwebmail_content_language);
 		}
+		*/
 	}
 
 	argvec[0]="makemime";
