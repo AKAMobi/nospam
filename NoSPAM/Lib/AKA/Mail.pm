@@ -87,6 +87,11 @@ sub new
 		$self->{license_ok} = 1;
 	}
 
+	$self->{conffile_list}->{conffile} = $self->{conf}->{define}->{conffile};
+	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};
+	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};
+
+	$self->check_conffile_update();
 
 	return $self;
 
@@ -106,6 +111,7 @@ sub server
 	my $client;
 	my $pid;
 
+	$self->{zlog}->debug ( "Mail::server start to listen" );
 	#local $SIG{CHLD} = \&REAPER;
 	local $SIG{CHLD} = 'IGNORE';
 	while ( $client = $server->accept() ){
@@ -122,6 +128,11 @@ sub server
 		$pid = fork();
 
 		if ( $pid > 0 ){ #parent
+			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
+			if ( $self->check_conffile_update() ){
+				sleep 1;
+				exit;
+			}
 			; # goto accept
 		}elsif ( 0==$pid ){ # child
 			$self->net_process($client);
@@ -153,13 +164,36 @@ sub server
 	}
 }
 
-sub is_conf_updated
+sub check_conffile_update
 {
 	my $self = shift;
 
-	my ($nospam_update_time,$content_update_time);
+	my $mtime;
+	foreach my $conf_name ( keys %{$self->{conffile_list}} ){
+		if ( ! $self->{load_time}->{$conf_name} ){
+			$self->{zlog}->debug ( "Mail::check_conffile_update init $conf_name => " 
+				. $self->{conffile_list}->{$conf_name} . " load time" );
+			$self->{load_time}->{ $conf_name } = time;
+		}else{
+			$mtime = (stat( $self->{conffile_list}->{$conf_name} ))[9];
+			if ( $mtime > $self->{load_time}->{$conf_name} ){
+				# 如果文件比加载时刻新
+				if ( $mtime > time ){
+					# 文件修改时间是未来？
+					$self->{zlog}->debug ( "Mail::check_conffile_update found $conf_name => " 
+						. $self->{conffile_list}->{$conf_name} 
+						. " modified in the feature? update it to now" );
+					utime undef, undef, $self->{conffile_list}->{$conf_name};
+				}
+
+				$self->{zlog}->debug ( "Mail::check_conffile_update found $conf_name => " 
+					. $self->{conffile_list}->{$conf_name} . " updated!" );
+				return 1;
+			}
 	
-	
+		}
+	}
+	return 0;
 }
 
 sub recv_mail_info
