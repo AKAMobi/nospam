@@ -71,31 +71,36 @@ sub dynamic_engine
 
 	my ( $subject, $mailfrom, $ip ) = @_;
 
+	my ( $is_overrun, $reason );
+
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine} ){
 		return (0, "动态限制引擎未启动" );
 	}
 
 
-	if ( ! $subject || ! $mailfrom ){
+	if ( ! $subject || ! $mailfrom || ! $ip ){
 		$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
-		return (0, "动态限制引擎参数不足" );
+		# we should check what we can check.
+
+		($is_overrun,$reason) = (0, "动态限制引擎参数不足" );
 	}
 
-	if ( $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom ) ){
+	if ( $mailfrom && $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom ) ){
 		return ( 1, "用户发送邮件频率超限" );
 	}
 
-	if ( $self->{dynamic}->is_overrun_rate_per_subject( $subject ) ){
+	if ( $subject && $self->{dynamic}->is_overrun_rate_per_subject( $subject ) ){
 		return ( 1, "重复邮件发送频率超限" );
 	}
 
-	if ( $self->{dynamic}->is_overrun_rate_per_ip( $ip ) ){
+	if ( $ip && $self->{dynamic}->is_overrun_rate_per_ip( $ip ) ){
 		return ( 1, "IP发送频率超限" );
 	}
 
+	$is_overrun ||= 0;
+	$reason ||="已通过动态监测";
 
-	return ( 0, "已通过动态监测" );
-
+	return ( $is_overrun, $reason );
 }
 
 sub content_engine_is_enabled

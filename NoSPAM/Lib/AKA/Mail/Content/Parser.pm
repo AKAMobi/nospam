@@ -38,7 +38,7 @@ sub new
 	$self->{mime_parser} ||= new MIME::Parser;
 
 	# FIXME: $a = $b || $c not work??
-	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/tmp/";
+	my $tmpdir = $self->{conf}->{define}->{tmpdir} || "/home/NoSPAM/spool/tmp/";
 	#$self->{zlog}->debug ( "setting outputdir to $tmpdir" );
 
 	$self->{mime_parser}->output_dir($tmpdir);

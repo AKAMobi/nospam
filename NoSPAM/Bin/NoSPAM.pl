@@ -31,6 +31,7 @@ my $iputil = new AKA::IPUtil;
 
 my $action_map = { 
 			'start_System' => [\&start_System, "Init system on boot" ],
+			'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ],
 
 			'reset_Network' => [\&reset_Network, ""],
 			'reset_ConnPerIP' => [\&reset_ConnPerIP, ""],
