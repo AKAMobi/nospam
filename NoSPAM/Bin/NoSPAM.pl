@@ -186,6 +186,7 @@ _USAGE_
 
 sub GA_reset
 {
+	eval '
 	use Config::Tiny;
 
 	my $gaisc_conffile = "/home/NoSPAM/etc/GAISC.conf";
@@ -208,10 +209,12 @@ sub GA_reset
 	}else{
 		return 1;
 	}
+	';
 }
 
 sub System_patch
 {
+	eval '
 	use Digest::MD5 qw(md5_base64);
 
 	our $upgrade_dir = "/home/NoSPAM/spool/tmp/Upgrade-$$";
@@ -237,7 +240,7 @@ sub System_patch
 
 	my $NSVERSION=`head /home/NoSPAM/etc/VERSION`;
 	chomp $NSVERSION;
-	my $NSPVERSION=`head /home/NoSPAM/etc/PATCHVERSION` || '00';
+	my $NSPVERSION=`head /home/NoSPAM/etc/PATCHVERSION` || "00";
 	chomp $NSPVERSION;
 
 	if ( $NSVERSION ne $PNSVERSION ){
@@ -263,13 +266,13 @@ sub System_patch
 		return err_msg("系统内部错误#2。");
 	}
 
-	my $checksum = md5_base64( 'okboy' . $md5sum . 'zixia' . $md5sum . '@2004-03-07' );
+	my $checksum = md5_base64( "okboy" . $md5sum . "zixia" . $md5sum . "\@2004-03-07" );
 	if ( $checksum ne $SUM ){
 		return err_msg ( "升级包格式错误#3" );
 	}
 
 
-	chdir '/' or return err_msg ("系统内部错误#3。");
+	chdir "/" or return err_msg ("系统内部错误#3。");
 	`unzip -p -P zixia\@noSPAM_OKBoy_GNULinux! $upgrade_dir/$patch_file.ns | tar x >> /var/log/NoSPAM.stdout 2>/var/log/NoSPAM.stderr`;
 
 
@@ -281,21 +284,21 @@ sub System_patch
 	$PINFO=`cat INFO`;
 
 
-	unlink 'VER','INFO','SUM','TIMESTAMP';
-	if ( -f '/root/post_patch' ){
+	unlink "VER","INFO","SUM","TIMESTAMP";
+	if ( -f "/root/post_patch" ){
 		`/root/post_patch`;
-		unlink '/root/post_patch';
+		unlink "/root/post_patch";
 	}
 
-	if ( -e '/RECORD' ){
+	if ( -e "/RECORD" ){
 		&record( $patch_file, $PISOVER, $PATCH_VER, $PTIME, $PINFO );
-		unlink '/RECORD';
+		unlink "/RECORD";
 	}
 
 	my $REBOOT=0;
-	if ( -e '/REBOOT' ){
+	if ( -e "/REBOOT" ){
 		$REBOOT=1;
-		unlink '/REBOOT';
+		unlink "/REBOOT";
 	}
 
 	`rm -fr $upgrade_dir`;
@@ -326,7 +329,7 @@ sub System_patch
 		print FD $patch_ver;
 		close FD;
 
-		my $record_dir = '/home/NoSPAM/var/upgrade/';
+		my $record_dir = "/home/NoSPAM/var/upgrade/";
 
 		open ( FD, ">>$record_dir/log" ) or return err_msg ("无法记录升级信息");
 		print FD "$now,$patch_gen_time,$pkgname,$patch_ver,$isover\n" ;
@@ -336,6 +339,7 @@ sub System_patch
 		print FD "$patch_info";
 		close FD;
 	}
+	';
 }
 
 sub ZombieFile_clean
