@@ -53,6 +53,7 @@ cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
 chmod 755 aka/root/*.pl
 
 cpperl ${SOURCEHOME}/Bin/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
+chmod 755 aka/var/qmail/bin/ns-queue.pl
 
 rm -f aka/var/qmail/bin/ins-queue
 ln -s ns-queue aka/var/qmail/bin/ins-queue
