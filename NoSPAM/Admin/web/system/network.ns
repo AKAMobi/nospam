@@ -10,7 +10,7 @@ if($Switchable)
 else
 	$mode = $intServerGateway;
 
-if($_POST["Submit"]=="<?=_("Modify")?>"){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have not permission to modify system config"));
 
