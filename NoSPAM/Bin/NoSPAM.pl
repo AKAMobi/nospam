@@ -917,6 +917,7 @@ chkconfig --level 3 httpd on
 chkconfig --level 3 snmpd on
 #AKA::Mail::AntiVirus will start automatic
 #chkconfig --level 3 clamd on
+chkconfig --level 3 freshclam  on
 chkconfig --level 3 iptables off
 chkconfig --level 3 gpm off
 chkconfig --level 3 keytable off
