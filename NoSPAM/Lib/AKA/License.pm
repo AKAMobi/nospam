@@ -145,12 +145,35 @@ sub get_prodno
 {
 	my $self = shift;
 	
-	my $HD_serial = &get_HD_serial;
+	my $IDserial = '';
 
-	return md5_hex( 'okboy' . $HD_serial . 'zixia' . $HD_serial . '@2004-03-07' );
+	$IDserial .= &get_HD_serial;
+	$IDserial .= &get_SCSI_serial;
+
+	return md5_hex( 'okboy' . $ID_serial . 'zixia' . $ID_serial . '@2004-03-07' );
 }
 
-sub get_HD_serial
+sub get_SCSI_serial
+{
+	my $self = shift;
+
+	my $id = '';
+
+	my @lines;
+
+	if ( open ( FD, "</proc/scsi/aic7xxx/0> ) ){
+		@lines = <FD>;
+		@lines = grep ( /^0x/, @lines );
+	}
+
+	$id = join ( "", @lines );
+
+	$id =~ s/[\s\n\r]*//g;
+
+	return $id;
+}
+
+sub get_IDE_serial
 {
 	my $self = shift;
 
@@ -158,7 +181,7 @@ sub get_HD_serial
 	my $ret;
 
 	use Fcntl;
-	open ( HDAFD, "</dev/hda" ) or open ( HDAFD, "</dev/hdb" ) or die "can't open\n";
+	return undef unless open ( HDAFD, "</dev/hda" ) or open ( HDAFD, "</dev/hdb" ) ;
 	ioctl( HDAFD, 0x030d, $id ) or die "can't ioctl\n";
 	close ( HDAFD );
 
