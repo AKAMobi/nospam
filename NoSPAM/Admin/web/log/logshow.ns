@@ -114,9 +114,13 @@ function enableMonitor()
 	<td><?=$head[4]?></td>
 	<td><?=$head[5]?></td>
 	<td><?=$head[6]?></td>
+<?
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>
 	<td><?=$head[7]?></td>
 	<td><?=$head[8]?></td>
 	<td><?=$head[9]?></td>
+<?}?>
 	<td><?=$head[10]?></td>
 	<td><?=$head[11]?></td>
 	<td><?=$head[12]?></td>
@@ -151,9 +155,14 @@ if(count($lines)>0){
     <td><?=$values[4]?></td>
     <td><?=htmlspecialchars(trim($values[5]))?></td>
     <td><?=ConvertSize(intval($values[6]))?></td>
+
+<?
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>
     <td><?=$vVirus[intval($values[7])]?></td>
     <td><?=$values[8]?></td>
     <td><?=$rAction[intval($values[9])]?></td>
+<?}?>
     <td><?=$vSpam[$values[10]]?></td>
     <td><?=$values[11]?></td>
     <td><?=$rAction[intval($values[12])]?></td>

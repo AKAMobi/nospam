@@ -123,7 +123,7 @@ function sortTable(sKey)
 <body>
 数据库选择：
 <select name="DBSelect" onchange="changeDB()">
-<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安部规则数据数据库（只读）<? } ?>
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安规则数据数据库（只读）<? } ?>
 <option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户规则数据库
 
 </select><br>

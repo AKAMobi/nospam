@@ -61,12 +61,17 @@ function loadPage()
 	<td><?=$head[4]?></td><!--收件人地址//-->
 	<td><?=$head[5]?></td><!--主题//-->
 	<td><?=$head[6]?></td><!--尺寸//-->
-	<td><?=$head[7]?></td><!--垃圾度//-->
-	<td><?=$head[8]?></td><!--垃圾原因//-->
-	<td><?=$head[9]?></td><!--垃圾处理//-->
-	<td><?=$head[10]?></td><!--病毒//-->
-	<td><?=$head[11]?></td><!--病毒名//-->
-	<td><?=$head[12]?></td><!--病毒处理//-->
+
+<?
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>
+	<td><?=$head[7]?></td><!--病毒//-->
+	<td><?=$head[8]?></td><!--病毒名//-->
+	<td><?=$head[9]?></td><!--病毒处理//-->
+<?}?>
+	<td><?=$head[10]?></td><!--垃圾度//-->
+	<td><?=$head[11]?></td><!--垃圾原因//-->
+	<td><?=$head[12]?></td><!--垃圾处理//-->
 	<td><?=$head[13]?></td><!--动作描述//-->
 	<td><?=$head[14]?></td><!--动作类型//-->
 	<td><?=$head[15]?></td><!--动作参数//-->
@@ -96,9 +101,13 @@ if(count($output) > 0){
 	<td><?=$values[4]?></td>
 	<td><?=htmlspecialchars(trim($values[5]))?></td>
 	<td><?=ConvertSize(intval($values[6]))?></td>
+<?
+	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
+?>
 	<td nowrap><?=$vVirus[intval($values[7])]?></td>
 	<td nowrap><?=$values[8]?></td>
 	<td nowrap><?=$rAction[intval($values[9])]?></td>
+<?}?>
     <td nowrap><?=$vSpam[$values[10]]?></td>
     <td nowrap><?=$values[11]?></td>
     <td nowrap><?=$rAction[intval($values[12])]?></td>

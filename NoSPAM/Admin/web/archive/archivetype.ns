@@ -108,6 +108,10 @@ function flush()
     <p>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>匹配规则的邮件<br>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>未匹配规则的邮件<br>
+<!--blockquote>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>包括用户规则<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="GARule" <?if(in_array("GARule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>包括网监规则<br>
+</blockquote-->
     </p>
     <p>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>发往特定地址<br>

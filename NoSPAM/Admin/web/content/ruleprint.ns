@@ -35,7 +35,7 @@ function changeDB()
 <body>
 <p>
 <select name="DBSelect" onchange="changeDB()">
-<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安部数据（只读）<? } ?>
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安数据（只读）<? } ?>
 <option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户自定义数据（可修改）
 </select>
 </p>
