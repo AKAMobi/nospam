@@ -460,6 +460,7 @@ sub list_queue
 			my $q = { 'from' => $10,
 				'id' => $8,
 				'file' => $qmap{$8},
+				'size' => -s $qmap{$8},
 				'date' => "$1 $2 $3 $4:$5:$6" };
 				$_ = <QUEUE>;
 				if (/^\s*(\S+)\s+(.*)/) {

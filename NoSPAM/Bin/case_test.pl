@@ -10,12 +10,29 @@ $S = new AKA::Mail::Spam;
 #&test_dynamic_clean;
 #&test_dynamic_init;
 #&test_dynamic_dump;
-&test_dynamic_subject;
+#&test_dynamic_subject;
+&test_queue;
 #&test_black_ip;
 #&test_traceable;
 #&test_check_license_file;
 exit;
 ############################
+sub test_queue
+{
+	use AKA::Mail::MailControler;
+	my $AMMC = new AKA::Mail::MailControler;
+	
+	my @q = $AMMC->list_queue;
+	my @del_list;
+	foreach ( @q ){
+		#next unless ( $_->{size} > 20000000 );
+		#$_->{file} =~ m#/(\d+/\d+)$#;
+		#push ( @del_list, $1 );
+		print Dumper( $_ );
+	}
+	#$AMMC->delete_queues( @del_list );
+}
+
 sub test_check_license_file
 {
 	use AKA::Mail;
