@@ -81,7 +81,7 @@ sub is_traceable
 
 	my @TraceType = @{$self->{conf}->{config}->{SpamEngine}->{TraceType}};
 
-	my @mx_n_a ;
+	my (@mx_n_a, @ptr_domain) ;
 	
 	my $start_time = [gettimeofday];
 
@@ -92,7 +92,7 @@ sub is_traceable
 	eval {
 #$self->{zlog}->debug ( "Mail::Spam::is_traceable in eval " . join(',',@TraceType) );
 		$old_alarm_sig = $SIG{ALRM};
-		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
+		local $SIG{ALRM} = sub { die "DNS DIE" };
 		$old_alarm = alarm $TIMEOUT;
 
 		if ( grep(/^Mail$/i,@TraceType) ){
@@ -104,6 +104,12 @@ sub is_traceable
 #$self->{zlog}->debug ( "Mail::Spam::is_traceable in IP" );
 			push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
 		}
+
+		if ( grep(/^Domain$/i,@TraceType) ){
+$self->{zlog}->debug ( "Mail::Spam::is_traceable in Domain" );
+			push ( @ptr_domain, $self->get_ptr_from_ip( $smtp_ip, $res ) );
+		}
+
 	};
 	my $alarm_status=$@;
 	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
@@ -139,6 +145,18 @@ sub is_traceable
 #$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
 		if ( $traceable && $strict_traceable ){
 			last;
+		}
+
+		# 检查反向DNS PTR是不是指向邮件发送域
+		if ( !$strict_traceable ){
+			foreach ( @ptr_domain ){
+				if ( /$from_domain/ ){
+$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip ptr $_ include $from_domain" );
+					$strict_traceable = 1;
+					$traceable = 1;
+					last;
+				} 
+			}
 		}
 
 		if ( !$strict_traceable ){
@@ -188,6 +206,26 @@ sub get_a_from_domain
 	}
 
 	return @As;
+}
+
+sub get_ptr_from_ip
+{
+	my ( $self, $ip, $res ) = @_;
+
+	my @PTRs;
+
+        my $query = $res->query($ip, "PTR");
+
+	if ($query) {
+		foreach my $rr (grep { $_->type eq 'PTR' } $query->answer) {
+$self->{zlog}->debug ("Spam get ptr of $ip : $rr->ptrdname");
+			push (@PTRs, $rr->ptrdname);
+		}
+	} else {
+		@PTRs = ();
+	}
+
+	return @PTRs;
 }
 
 sub get_mx_from_domain
