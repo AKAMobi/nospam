@@ -521,11 +521,11 @@ class License
 	}
 
 	function getMaxProtectDomainNumber()	{	    
-if (!array_key_exists('MaxProtectDomainNumber',$this->params))
-	        return -1;	    return intval($this->params['MaxProtectDomainNumber']);    	}	    
+		if (!array_key_exists('MaxProtectDomainNumber',$this->params))
+			return -1;	    return intval($this->params['MaxProtectDomainNumber']);    	}	    
 
 	function getRestrictDomainList() {
-return $this->params['RestrictDomainList'];
+		return $this->params['RestrictDomainList'];
 	}
 
 	function getMaxQuota()
@@ -862,12 +862,12 @@ class EmailUser {
 		$this->db->query ($sql);
 		$this->whiteList[$id]=new WhiteListItem ($id, $email, $type);
 		$this->listTotal ++ ;
-		
+
 		if ($file) {
-		    $buf = array (array ('ACT'=>(($type==QUARANTINE_WHILE_LIST)?'F':'D'), 'FILE'=>$file));
-		    $this->process ($buf, $buf2);    
+			$buf = array (array ('ACT'=>(($type==QUARANTINE_WHILE_LIST)?'F':'D'), 'FILE'=>$file));
+			$this->process ($buf, $buf2);    
 		}
-		
+
 		return 0;
 	}
 
@@ -907,12 +907,12 @@ class EmailUser {
 			list ($x, $x, $x, $time, $pid, $info) = explode ('.', $file);
 			if (strcmp ($info, QUARANTINEINFOSUFFIX)==0) { // mail infor file
 				$this->fullMailList[$pid.$time]['INFO'] = substr ($file, strlen(QUARANTINEFILEPREFIX));
-			    $this->fullMailList[$pid.$time]['TIME'] = $time;
+				$this->fullMailList[$pid.$time]['TIME'] = $time;
 				$this->fullMailList[$pid.$time]['FILE'] = $time.'.'.$pid;
 				$this->fullMailList[$pid.$time]['PID']  = $pid;
 			}
 			else {
-				
+
 			}
 		}
 		closedir ($dh);
@@ -1019,6 +1019,47 @@ class EmailUser {
 			$i ++;
 		}
 		return true;
+	}
+
+	function emptyQuarantine () {
+		$tmp = tempnam ('/tmp', 'QUARANTINEPROCESSMAIL.');
+		$cmd = WI . " QuarantineProcessMail 2>&1 >".$tmp;
+
+		$pipe = popen($cmd, 'w');
+		if (!$pipe) {
+			unlink ($tmp);
+			return -1;
+		}
+
+		$i = 1;
+
+		foreach ($this->fullMailList as $m_id=>$_m) {
+			$cmd = sprintf ("%d,%s,D\n",$i,$this->get_file ($_m['FILE']));
+			fputs ($pipe, $cmd, strlen ($cmd));
+			$i ++;
+		}
+
+		pclose ($pipe);
+		$fh = fopen ($tmp, 'rb');
+		if (!$fh) {
+			unlink ($tmp);
+			return -2;
+		}
+
+		$output = fread ($fh, filesize ($tmp));
+		fclose ($fh);
+		unlink ($tmp);
+
+		$output = explode ("\n", $output);
+
+		for ($i=0; $i < sizeof ($output); $i ++) {
+			list ($no, $ret) = explode (',', $output[$i]);
+			$no = intval ($no);
+			if (!$no) continue;
+			if ($ret !== 0)
+				return -3;
+		}
+		return 0;
 	}
 
 	function process ($jobList, &$result) {

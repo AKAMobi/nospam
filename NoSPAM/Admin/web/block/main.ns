@@ -45,6 +45,14 @@ elseif ($doAction==2) {
         $process = 1;
     }
 }
+elseif ($doAction == 3) {
+	switch ($currentUser->emptyQuarantine ()) {
+		case 0:
+			break;
+		default:
+			html_error_quit (array (_("System error")), 0,1 ,1);
+	}
+}
 else
     ;
 
@@ -83,8 +91,8 @@ function change(obj) {
 function restore(obj) {
 	obj.style.backgroundColor = "";
 }
-function setDoVal() {
-    document.form1.do_action.value = "2";
+function setDoVal(type) {
+    document.form1.do_action.value = type;
     document.form1.submit();
 }
 function mailAction(actionVal) {
@@ -116,9 +124,9 @@ function mailAction(actionVal) {
 ?>
 </p>
 <p align="center">
-<input type="button" value="<?=_("Process emails")?>" onclick="setDoVal()" />
+<input type="button" value="<?=_("Process emails")?>" onclick="setDoVal('2')" />
 <input type="button" value="<?=_("White/Black list management")?>" onclick="window.location.href='whitelist.ns';" />
-
+<input type="button" value="<?=_("Empty Quarantine Bin")?>" onclick="setDoVal('3')" />
 </p>
 </form>
 <?php
