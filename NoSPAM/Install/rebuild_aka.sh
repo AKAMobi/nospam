@@ -87,6 +87,7 @@ echo "Changing qns_loader & wi permission"
 chown root aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod +s aka/home/NoSPAM/bin/{qns_loader,wi}
 chmod -R o+r aka/* 
+chmod 755 aka/home/NoSPAM/bin/cli
 
 echo "Cleaning cvs,test rubbish"
 find aka -type f -name ".#*" -exec rm -fv {} \;

@@ -1404,6 +1404,7 @@ sub check_license_file
 	my $license_data;
 	my $license_checksum;
 	my $hardware_license;
+	my $expire_date;
 	
 	while ( <LFD> ){
 		chomp;
@@ -1418,6 +1419,8 @@ sub check_license_file
 			$LicenseHTML = $1;
 		}elsif ( /^HardwareLicense=(.+)$/ ){
 			$hardware_license = $1;
+		}elsif ( /^ExpireDate=(.+)$/ ){
+			$expire_date = $1;
 		}
 
 		$license_content .= $_;
@@ -1449,6 +1452,12 @@ sub check_license_file
 	if ( length($hardware_license) ){
 		my ($hwok,$hwinfo) = $self->{license}->check_hardware ( $hardware_license );
 		return ($hwok,$hwinfo) unless ( $hwok );
+	}
+
+	if ( length($expire_date) ){
+		my ($dateok, $dateinfo) = $self->{license}->check_expiredate ( $expire_date );
+		return ($dateok,$dateinfo) unless ( $dateok );
+		$LicenseHTML .= $dateinfo if ( $dateinfo );
 	}
 
 	# it's valid

@@ -96,14 +96,14 @@ sub get_exchange_data
 	}
 
 	my $ex_dat =
-		"From:" . $mail_info->{head}->{from} . "0x0D0x0A"
-		. "To:" . $mail_info->{head}->{to} . "0x0D0x0A"
-		. "Cc:" . $mail_info->{head}->{cc} . "0x0D0x0A"
-		. "Subject:" . $mail_info->{head}->{subject} . "0x0D0x0A"
-		. "Received:" . join(';',@receives) . "0x0D0x0A"
-		. "Content:" . length($mail_info->{body_text}) . "0x0D0x0A"
-		. $mail_info->{body_text} . "0x0D0x0A"
-		. "Mail:" . length($emldata) . "0x0D0x0A"
+		"From:" . $mail_info->{head}->{from} . "\r\n"
+		. "To:" . $mail_info->{head}->{to} . "\r\n"
+		. "Cc:" . $mail_info->{head}->{cc} . "\r\n"
+		. "Subject:" . $mail_info->{head}->{subject} . "\r\n"
+		. "Received:" . join(';',@receives) . "\r\n"
+		. "Content:" . length($mail_info->{body_text}) . "\r\n"
+		. $mail_info->{body_text} . "\r\n"
+		. "Mail:" . length($emldata) . "\r\n"
 		. $emldata
 		;
 		

@@ -11,6 +11,7 @@ package AKA::License;
 use AKA::Mail::Log;
 
 use Digest::MD5 qw(md5_base64 md5_hex);
+use POSIX qw ( mktime );
 
 sub new
 {
@@ -203,6 +204,39 @@ sub decode
 
 	$str =~ y/a-m5-9N-Zn-zA-M0-4:_\-+;,=/=;,:_\-+0-9A-Za-z/;
 	return $str;
+}
+
+sub check_expiredate($$)
+{
+	my $self = shift;
+	my $expire_date = shift;
+
+	my ($year,$month,$date,$hour,$minute,$second);
+
+	($year,$month,$date) = $expire_date=~/(\d+)-(\d+)-(\d+)/ ;
+	($hour,$month,$date) = $expire_date=~/(\d+):(\d+):(\d+)/ ;
+
+	# 如果License中没有expire_date或者parse失败，则认为未过期
+	unless ( $year && $month && $date ){
+		$self->{zlog}->debug ( "License::check_expiredate parse err: [$expire_date]" );
+		return ( 1, undef ) ;
+	}
+
+#	my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
+
+	$year -= 1700;
+	$month -= 1;
+	
+	my $expire_time = POSIX::mktime( $second,$minute,$hour,$date,$month,$year );
+	my $now_time = time;
+
+	return ( 0, '许可证已经过期！' ) if ( $expire_time < $now_time );
+
+	my $days_left = int(($expire_time-$now_time)/86400);
+
+	return ( 1, "许可证将在$days_left天后过期！") if ( $days_left < 30 );
+
+	return ( 1,undef );
 }
 
 1;

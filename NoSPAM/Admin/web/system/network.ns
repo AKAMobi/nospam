@@ -40,30 +40,29 @@ if($_POST["Submit"]=="修改"){
 
 <body>
 <form name="form1" method="post" action="">
-  <table class="TableBorder1" width="80%" align="center">
+  <table class="TableBorder2" width="80%" align="center">
     <caption>
   <b>网络设置</b>
     </caption>
-    <tr>
-      <th scope="row">主机名称： </th>
+    <tr class="TableBody2">
+      <td scope="row">主机名称： </td>
       <td class="TableBody1"><input name="Hostname" type="text" id="Hostname" value="<?=$spamconf->getParam("Hostname","Network")?>"></td>
     </tr>
-    <tr>
-      <th scope="row"> IP ： </th>
+    <tr class="TableBody1">
+      <td scope="row"> IP ： </td>
       <td class="TableBody1"><input name="IP" type="text" id="IP" value="<?=$spamconf->getParam("IP","Network")?>"></td>
     </tr>
-    <tr>
-      <th scope="row"> 网络掩码： </th>
+    <tr class="TableBody2">
+      <td scope="row"> 网络掩码： </td>
       <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>">请使用掩码位数，不能使用x.x.x.x格式</td>
     </tr>
-    <tr>
-      <th scope="row"> 网关： </th>
+    <tr class="TableBody1">
+      <td scope="row"> 网关： </td>
       <td class="TableBody1"><input name="Gateway" type="text" id="Gateway" value="<?=$spamconf->getParam("Gateway","Network")?>"></td>
     </tr>
-    <tr>
-      <th colspan="2" scope="row"><input type="submit" name="Submit" value="修改"><input type="reset" name="reset" value="重置"></th>
-    </tr>
   </table>
+
+      <p align=center><input type="submit" name="Submit" value="修改"> <input type="reset" name="reset" value="重置"></p>
 </form>
 </body>
 </html>

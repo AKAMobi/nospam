@@ -10,7 +10,7 @@ require_once("inc/include.ns");
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<p><?php echo $ProductName; ?> AntiSPAM System V2</p>
+<p><?php echo $ProductName; ?></p>
 <?
 if( ($ret=wi("get_Serial",$result))==0 ){
 	$serial = trim(implode("",$result));
@@ -43,6 +43,9 @@ if(!file_exists(LICENSE)){
 <?= $bForSell? "正式销售版":"非正式销售版"?>
 </p>
 <?
+	}else{
+		echo "<h2>许可证已经失效</h2>";
+		header("Refresh: 0;URL=/admin/system/serialno.ns");
 	}
 }
 ?>

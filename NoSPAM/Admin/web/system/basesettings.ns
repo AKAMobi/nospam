@@ -102,54 +102,54 @@ if($_POST["Submit"] == "修改"){
 ?>
 <form method="POST" name="form1">
 <table borer="0">
-<tr>
-	<th scope="row"> 服务器名： </th>
+<tr class="TableBody1">
+	<td scope="row"> 服务器名： </td>
 	<td>
 		<input name="MailHostName" type="text" value="<?=$spamconf->getParam("MailHostName","MailServer")?>">
 	</td>
 </tr>
-<tr>
-	<th scope="row"> SMTP HELO主机名： </th>
+<tr class="TableBody2">
+	<td scope="row"> SMTP HELO主机名： </td>
 	<td>
 		<input name="HeloHostSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("HeloHost","MailServer")) echo " checked";?> onclick="form1.HeloHost.disabled=true">缺省：<?=$spamconf->getParam("MailHostName","MailServer")?>
 		<input name="HeloHostSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("HeloHost","MailServer")) echo " checked";?> onclick="form1.HeloHost.disabled=false">
 		<input name="HeloHost" type="text" value="<?=$spamconf->getParam("HeloHost","MailServer")?>"<?if (!$spamconf->hasParam("HeloHost","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> SMTP 问候语： </th>
+<tr class="TableBody1">
+	<td scope="row"> SMTP 问候语： </td>
 	<td>
 		<input name="SmtpGreetingSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("SmtpGreeting","MailServer")) echo " checked";?> onclick="form1.SmtpGreeting.disabled=true">缺省：ESMTP
 		<input name="SmtpGreetingSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("SmtpGreeting","MailServer")) echo " checked";?> onclick="form1.SmtpGreeting.disabled=false">
 		<input name="SmtpGreeting" type="text" value="<?=$spamconf->getParam("SmtpGreeting","MailServer")?>"<?if (!$spamconf->hasParam("SmtpGreeting","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> SMTP 连接超时： </th>
+<tr class="TableBody2">
+	<td scope="row"> SMTP 连接超时： </td>
 	<td>
 		<input name="TimeoutConnectSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=true">缺省：60
 		<input name="TimeoutConnectSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=false">
 		<input name="TimeoutConnect" type="text" value="<?=$spamconf->getParam("TimeoutConnect","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> SMTP 发送邮件超时： </th>
+<tr class="TableBody1">
+	<td scope="row"> SMTP 发送邮件超时： </td>
 	<td>
 		<input name="TimeoutRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=true">缺省：1200
 		<input name="TimeoutRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=false">
 		<input name="TimeoutRemote" type="text" value="<?=$spamconf->getParam("TimeoutRemote","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> SMTP 接收邮件超时： </th>
+<tr class="TableBody2">
+	<td scope="row"> SMTP 接收邮件超时： </td>
 	<td>
 		<input name="TimeoutSmtpdSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=true">缺省：1200
 		<input name="TimeoutSmtpdSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=false">
 		<input name="TimeoutSmtpd" type="text" value="<?=$spamconf->getParam("TimeoutSmtpd","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> 最大邮件尺寸： </th>
+<tr class="TableBody1">
+	<td scope="row"> 最大邮件尺寸： </td>
 	<td>
 		<input name="DataBytesSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=true;form1.DataUnit.disabled=true;">不限制：0
 		<input name="DataBytesSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=false;form1.DataUnit.disabled=false;">
@@ -160,8 +160,8 @@ if($_POST["Submit"] == "修改"){
 		</select>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> 邮件队列投递超时： </th>
+<tr class="TableBody2">
+	<td scope="row"> 邮件队列投递超时： </td>
 	<td>
 		<input name="QueueLifeTimeSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=true;form1.QueueLifeUnit.disabled=true;">缺省：7天
 		<input name="QueueLifeTimeSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=false;form1.QueueLifeUnit.disabled=false;">
@@ -173,16 +173,16 @@ if($_POST["Submit"] == "修改"){
 		</select>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> 本地并发投递数： </th>
+<tr class="TableBody1">
+	<td scope="row"> 本地并发投递数： </td>
 	<td>
 		<input name="ConcurrencyLocalSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=true">缺省：10
 		<input name="ConcurrencyLocalSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=false">
 		<input name="ConcurrencyLocal" type="text" value="<?=$spamconf->getParam("ConcurrencyLocal","MailServer")?>"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
-<tr>
-	<th scope="row"> 远程并发投递数： </th>
+<tr class="TableBody2">
+	<td scope="row"> 远程并发投递数： </td>
 	<td>
 		<input name="ConcurrencyRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=true">缺省：20
 		<input name="ConcurrencyRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=false">

@@ -69,15 +69,15 @@ if($pos < $total/2){
 <caption><h3>操作日志审计</h3></caption>
 <thead>
 <tr>
-	<td>序号</td>
-	<td>时间</td>
-	<td>管理员</td>
-	<td>IP地址</td>
-	<td>更改文件</td>
-	<td>更改选项</td>
-	<td>动作</td>
-	<td>旧值</td>
-	<td>新值</td>
+	<td nowrap>序号</td>
+	<td nowrap>时间</td>
+	<td nowrap>管理员</td>
+	<td nowrap>IP地址</td>
+	<td nowrap>更改文件</td>
+	<td nowrap>更改选项</td>
+	<td nowrap>动作</td>
+	<td nowrap>旧值</td>
+	<td nowrap>新值</td>
 </tr>
 </thead>
 <tbody>
