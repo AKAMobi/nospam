@@ -35,7 +35,7 @@ if($_GET["action"]){
 <body>
 日志大小：<?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><br>
 交换格式下载：<input type="button" value="下载" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=download','_blank')"><br>
-日志晴空：<input type="button" value="清空" onclick="document.location.href='<?=$_SERVER['PHP_SELF']?>?action=clean';">
+日志清空：<input type="button" value="清空" onclick="document.location.href='<?=$_SERVER['PHP_SELF']?>?action=clean';">
 </body>
 </html>
 <?
