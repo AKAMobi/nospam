@@ -340,6 +340,7 @@ sub process
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
 	$self->content_engine()		unless $self->{mail_info}->{aka}->{drop};
 	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
+	$self->interactive_engine()	unless $self->{mail_info}->{aka}->{drop};
 	
 
 	# Log
@@ -1385,6 +1386,12 @@ sub get_mail_base_info
 	$self->{mail_info}->{aka}->{recips} = $recips;
 	$self->{mail_info}->{aka}->{env_returnpath} = $env_returnpath;
 	$self->{mail_info}->{aka}->{env_recips} = $env_recips;
+}
+
+sub interactive_engine
+{
+	my $self = shift;
+
 }
 
 1;

@@ -19,7 +19,7 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-#	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log; #die "AKA::IPUtil can't get parent zlog";
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log; #die "AKA::IPUtil can't get parent zlog";
 
 	$self->{define}->{qmail_dir} = '/var/qmail/';
 
@@ -34,6 +34,8 @@ sub new
 	$self->{define}->{qmail_local_dir} = $self->{define}->{'qmail_dir'} . "/queue/local";
 	$self->{define}->{qmail_remote_dir} = $self->{define}->{'qmail_dir'} . "/queue/remote";
 	$self->{define}->{qmail_assigns_file} = $self->{define}->{'qmail_dir'} . "/users/assign";
+
+	$self->{define}->{qmail_inject_binary} = $self->{define}->{'qmail_dir'} . "/bin/qmail-inject";
 
 	return $self;
 }
@@ -679,45 +681,177 @@ sub get_mail_from_queue
 }
 
 # zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
+sub send_email_data_by_inject 
+{
+	my $self = shift;
+
+	my($from, $to, $email_data )=@_;
+
+	unless ( defined $from && length($from) && defined $to && length($to) ){
+		$self->{zlog}->fatal("Controler::send_email_data_by_inject no from [$from] to [$to] specified.");
+		return undef;
+	}
+
+	unless ( length($email_data ) ){
+		$self->{zlog}->fatal ("Controler::send_email_file sending email data zero?");
+		return undef;
+	}
+
+	if ( open(SM,"|" . $self->{define}->{qmail_inject_binary} . " -Ah -f'$from' $to") ){
+		print SM $email_data;
+	}
+
+	close(SM);
+
+	return 1;
+}
+
+
+# zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
 # TODO finish this function
-sub send_email_file {
+sub send_email_file_by_inject {
+	my $self = shift;
+
 	my($to, $email_file, $sign )=@_;
 
 	if ( !$to || !length($to) ){
-		&debug("e_s: sending email no to: [$to] specified.");
-		return;
+		$self->{zlog}->fatal("Controler::send_email_file no to [$to] specified.");
+		return undef;
 	}
 
 	if ( ! open(EML, "<$email_file") ){
-		&debug("e_s: sending email file to $to open $email_file error.");
-# not this function's duty: unlink ( $email_file );
-		return;
+		$self->{zlog}->fatal ("Controler::send_email_file sending email file to $to open $email_file error.");
+		return undef;
 	}
 
-	open(SM,"|$qmailinject -h -f ''")||&error_condition("s_e_f: cannot open $qmailinject for sending quarantine report - $!");
-	&debug("e_s: sending email file via: $qmailinject to address ($to)");
-
-	my $in_header = 1;
-	while ( <EML> ){
-		if ( $in_header ){
-			if (/^(\r|\r\n|\n)$/) {
-				$in_header = 0;
-			}elsif (/^To: \S+/){
-				$_ = "To: $to\n";
-			}elsif ( /^CC: /i || /^BCC: /i ){
-# only send to archiver! -_-b
-				next;
-			}
-		}
-		print SM;
+	if ( open(SM,"|" . $self->{define}->{qmail_inject_binary} . " -a -h -f 'postmaster' -n") ){
+		my $in_header = 1;
+		print SM while ( <EML> );
+		print SM "\n$sign\n";
 	}
-	print SM "\n$sign";
-
 
 	close(SM);
 	close(EML);
 
 }
+
+# TODO finish this function
+sub send_mail_file_by_queue {
+	my $self = shift;
+
+	my $aka = $self->{mail_info}->{aka};
+
+	my($sender,$env_recips,$msg)= ( $aka->{env_returnpath}, $aka->{env_recips}, $aka->{emlfilename} );
+	my ($findate);
+
+	# Create a pipe through which to send the envelope addresses.
+	pipe (EOUT, EIN) or return $self->close_smtp(451, "Unable to create a pipe. - $!");
+	select(EOUT);$|=1;
+	select(EIN);$|=1;
+
+	local $SIG{PIPE} = 'IGNORE';
+
+	my $pid = fork;
+
+	if (not defined $pid) {
+		$self->{zlog}->fatal ( "Controler::send_mail_file_by_queue: fork error" );
+		return 0;
+	} elsif ($pid == 0) {
+		# In child.  Mutilate our file handles.
+		close EIN; 
+
+		$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
+		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0 for [$msg]. (#4.3.0) - $!");
+
+		open (STDOUT, "<&EOUT") ||  return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
+		select(STDIN);$|=1;
+
+		$self->write_queue();
+
+		#This child is finished - exit
+		exit;
+	} else {
+		# In parent.
+		close EOUT;
+
+		# Feed the envelope addresses to qmail-queue.
+		#my $envelope = "$sender\0$env_recips";
+		my $envelope = $aka->{env_returnpath} . "\0" . $aka->{env_recips};
+
+
+		print EIN $envelope;
+		close EIN  || return 0;
+
+		$envelope =~ s/\0/\\0/g;
+		$self->{zlog}->debug ( "Controler::send_mail_by_queue: envelope data: [$envelope]" );
+
+	}
+
+	# We should now have queued the message.  Let's find out the exit status
+	# of qmail-queue.
+	waitpid ($pid, 0);
+	$xstatus =($? >> 8);
+	if ( $xstatus > 10 && $xstatus < 41 ) {
+		$self->{zlog}->fatal("Controler::send_mail_by_queue: qmail-queue exit [$xstatus] - $!");
+		return 0;
+	} elsif ($xstatus > 0) {
+		$self->{zlog}->fatal("Controler::send_mail_by_queue: qmail-queue exit [$xstatus] - $!");
+		return 0;
+	}
+	# send success
+	return 1;
+}
+
+sub write_queue
+{
+	my $self = shift;
+
+	my $aka = $self->{mail_info}->{aka};
+	my $config = $self->{conf}->{config};
+
+	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
+	#open (QMQ, "|/tmp/qq.pl")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
+	($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
+	#my $elapsed_time = tv_interval ( $self->{start_time}, [gettimeofday]);
+	$findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
+	$findate .= sprintf "%02d %02d:%02d:%02d -0000", $year+1900, $hour, $min, $sec;
+
+	print QMQ "Received: from " . $aka->{returnpath} . " by " 
+		. $config->{Network}->{Hostname} 
+		. " with noSPAM-" . $self->{conf}->{licconf}->{Version} .  "\n";
+	#print QMQ " Processed in $elapsed_time secs; $findate\n";
+
+	my ($pf_action, $pf_param) = ( $aka->{engine}->{content}->{action}, 
+					$aka->{engine}->{content}->{desc} );
+	my ($pf_hdr_key,$pf_hdr_done);
+	if (  ACTION_ADDHDR<=$pf_action && ACTION_CHGHDR>=$pf_action ){
+		$pf_hdr_done = 0;
+		if ( $pf_param =~ /^([^:]+): /){
+			$pf_hdr_key = $1;
+		}elsif ( ACTION_DELHDR!=$pf_action ){
+			$self->{zlog}->debug ( "pf: pf_param: [$pf_param] can't parse to header data when requeue, pf_action: [$pf_action]" );
+		}
+	}else{
+		$pf_hdr_done = 1;
+	}
+
+	my $still_headers=1;
+
+	print QMQ while (<STDIN>) ;
+
+	close(QMQ); #||&$self->close_smtp("Unable to close pipe to $qmailqueue (#4.3.0) - $!");
+
+	$xstatus = ( $? >> 8 );
+	if ( $xstatus > 10 && $xstatus < 41 ) {
+		#return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
+		return 0;
+	} elsif ($xstatus > 0) {
+		# return $self->close_smtp(451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
+		return 0;
+	}
+	return 1;
+}
+
 
 
 1;
