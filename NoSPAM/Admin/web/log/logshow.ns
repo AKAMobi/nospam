@@ -272,6 +272,6 @@ for($i=10;$i<=60;$i+=10){
 显示最后<select name="oLine" id="oLine" disabled><option value="5">5<option value="10">10<option value="20">20<option value="40">40<option value="80">80</select>行<br>
 <input type="button" value="提交" id="submit" name="submit" onclick="enableMonitor()" disabled>
 </p>
-<iframe id="oDynamic" name="oDynamic" style="display: none" src="dummy.htm"></iframe>
+<iframe id="oDynamic" name="oDynamic" style="display: none" src="../dummy.htm"></iframe>
 </body>
 </html>
