@@ -13,7 +13,7 @@ use AKA::IPUtil;
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
 open (NSOUT, ">&=2");
-#close (STDERR);
+close (STDERR);
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -49,7 +49,7 @@ my $action_map = {
 
 			, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
 			, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
-			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item> : Del a item of a NameSpace from AMD' ]
+			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item1> <Item2> ... : Del a item of a NameSpace from AMD' ]
 			, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
 
 			,'reset_Network' => [\&reset_Network, ""]
@@ -946,15 +946,16 @@ sub get_DynamicEngineDBData
 sub del_DynamicEngineKeyItem
 {
 	my $ns = shift @param;
-	my $item = shift @param;
 
-	return 5 unless ( $ns && $item );
+	return 5 unless ( $ns && $param[0] );
 
 	use AKA::Mail::Dynamic;
 
 	my $AMD = new AKA::Mail::Dynamic;
 
-	return 10 unless $AMD->del_dynamic_info_ns_item ($ns,$item);
+	foreach $item ( @param ){
+		return 10 unless $AMD->del_dynamic_info_ns_item ($ns,$item);
+	}
 
 	return 0;
 }
