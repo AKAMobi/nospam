@@ -50,3 +50,80 @@ diff -rua qmail-1.03.cocktail/received.c qmail-1.03/received.c
    qmail_puts(qqt,protocol);
    qmail_puts(qqt,";\n\t");
    datetime_tai(&dt,now());
+diff -rua qmail-1.03.orig/qmail-qmqpd.c qmail-1.03/qmail-qmqpd.c
+--- qmail-1.03.orig/qmail-qmqpd.c	1998-06-15 18:53:16.000000000 +0800
++++ qmail-1.03/qmail-qmqpd.c	2004-06-06 05:21:02.000000000 +0800
+@@ -53,6 +53,8 @@
+   }
+ }
+ 
++char envelope_from[1000];
++
+ void getcomma()
+ {
+   char ch;
+@@ -78,7 +80,7 @@
+   if (!local) local = env_get("TCPLOCALIP");
+   if (!local) local = "unknown";
+  
+-  received(&qq,"QMQP",local,remoteip,remotehost,remoteinfo,(char *) 0);
++  received(&qq,"QMQP",local,remoteip,remotehost,remoteinfo,(char *) 0,envelope_from);
+ }
+ 
+ char buf[1000];
+@@ -132,9 +134,11 @@
+   }
+   getcomma();
+ 
+-  if (getbuf())
++  envelope_from[0]=0;
++  if (getbuf()){
+     qmail_from(&qq,buf);
+-  else {
++    str_copy(envelope_from,buf);
++  } else {
+     qmail_from(&qq,"");
+     qmail_fail(&qq);
+     flagok = 0;
+diff -rua qmail-1.03.orig/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
+--- qmail-1.03.orig/qmail-smtpd.c	1998-06-15 18:53:16.000000000 +0800
++++ qmail-1.03/qmail-smtpd.c	2004-06-06 04:21:41.000000000 +0800
+@@ -378,7 +378,7 @@
+   qp = qmail_qp(&qqt);
+   out("354 go ahead\r\n");
+  
+-  received(&qqt,"SMTP",local,remoteip,remotehost,remoteinfo,fakehelo);
++  received(&qqt,"SMTP",local,remoteip,remotehost,remoteinfo,fakehelo,mailfrom.s);
+   blast(&hops);
+   hops = (hops >= MAXHOPS);
+   if (hops) qmail_fail(&qqt);
+diff -rua qmail-1.03.orig/received.c qmail-1.03/received.c
+--- qmail-1.03.orig/received.c	1998-06-15 18:53:16.000000000 +0800
++++ qmail-1.03/received.c	2004-06-06 05:14:39.000000000 +0800
+@@ -37,7 +37,7 @@
+ /* "Received: from relay1.uu.net (HELO uunet.uu.net) (7@192.48.96.5)\n" */
+ /* "  by silverton.berkeley.edu with SMTP; 26 Sep 1995 04:46:54 -0000\n" */
+ 
+-void received(qqt,protocol,local,remoteip,remotehost,remoteinfo,helo)
++void received(qqt,protocol,local,remoteip,remotehost,remoteinfo,helo,envelope_from)
+ struct qmail *qqt;
+ char *protocol;
+ char *local;
+@@ -45,6 +45,7 @@
+ char *remotehost;
+ char *remoteinfo;
+ char *helo;
++char *envelope_from;
+ {
+   struct datetime dt;
+ 
+@@ -63,6 +64,9 @@
+   safeput(qqt,remoteip);
+   qmail_puts(qqt,")\n  by ");
+   safeput(qqt,local);
++  qmail_puts(qqt," (envelope-from ");
++  safeput(qqt,envelope_from);
++  qmail_puts(qqt,")\n\t");
+   qmail_puts(qqt," with ");
+   qmail_puts(qqt,protocol);
+   qmail_puts(qqt,"; ");

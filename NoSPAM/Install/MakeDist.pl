@@ -1,5 +1,11 @@
 #!/usr/bin/perl -w
-$NSVER='2.0-5.9';
+
+#
+# Ed Li <zixia@zixia.net> 2004-06-14
+# 先将 usr/lib/perl module & post_install 做成 prepare 的安装包，然后删除这部分内容，再做 prepare 调用的安装包
+#
+
+$NSVER='2.1-6.14';
 
 `chmod +s aka/home/NoSPAM/bin/wi aka/home/NoSPAM/bin/qns_loader`;
 `rm -fr Dist/*.rpm`;
@@ -18,6 +24,7 @@ foreach $pkg ( @pkgs ){
 		print "Skip file $pkg.\n";
 		next;
 	}
+	next if $pkg eq 'tmp';
 	print "Processing $pkg ...\n";
 	chdir $pkg;
 	$not_tarball = 1;
@@ -38,7 +45,6 @@ foreach $pkg ( @pkgs ){
 	}
 
 	chdir '..';
-	
 	chdir 'tmp';
 	if ( -f 'post_proc.sh' ){
 		print "Setting file mod & permissions for $pkg...\n";

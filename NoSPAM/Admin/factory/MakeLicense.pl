@@ -16,12 +16,13 @@ my $hw_lic_enc = $AL->encode($hw_lic);
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-9-10
+ExpireDate=2004-7-10
 Version=2
 
 FactoryName=Suns Security Technology Co., Ltd.
 ProductName=noSPAM AntiSPAM System
 ProductSN=$prodno
+Language=zh_CN
 
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay,Tailer

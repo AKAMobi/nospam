@@ -39,3 +39,6 @@ VLAN LVS
 cpp qns_loader的超时处理
 DNS timeout?
 可追查误判
+检查 razor 等是否 register
+localedef -f GB2312 -i zh_CN zh_CN.gb2312 
+ localedef -f GBK -i zh_CN zh_CN        

@@ -4,7 +4,7 @@
 cpperl()
 {
 	echo "cpperl $1 to $2..."
-	echo '#!/usr/bin/perl -X' > $2;
+	echo '#!/usr/bin/perl -X -I/home/NoSPAM' > $2;
 	# 这个导致 ns-queue 没有输出了？echo 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
@@ -13,7 +13,7 @@ cpperl()
 cpperl_T()
 {
 	echo "cpperl_T $1 to $2..."
-	echo '#!/usr/bin/perl -TX' > $2;
+	echo '#!/usr/bin/perl -TX -I/home/NoSPAM' > $2;
 	echo 'open (NSOUT, ">&=2"); close STDERR;' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
@@ -27,7 +27,16 @@ mkdir -p aka/usr/lib/perl5/site_perl/5.8.0/i386-linux-thread-multi/auto/AKA/
 mkdir -p aka/usr/lib/perl5/site_perl/5.8.0/AKA/Mail/Police/Conf
 mkdir -p aka/root
 mkdir -p aka/home/NoSPAM/bin
+mkdir -p aka/home/NoSPAM/LocaleData/{zh_CN,en_US}/LC_MESSAGES
 mkdir -p aka/var/qmail/bin
+
+#####
+#
+# I18N Translations.
+#
+#####
+cd ../Locale; make; cd -
+cp ../Locale/engine.nospam.cn.mo aka/home/NoSPAM/LocaleData/zh_CN/LC_MESSAGES
 
 ######
 #
@@ -43,6 +52,7 @@ cp -Rv ${SOURCEHOME}/Lib/AKA aka/usr/lib/perl5/site_perl/5.8.0/
 echo "Deleteing Loader source & CVS:"
 rm -fvr aka/usr/lib/perl5/site_perl/5.8.0/AKA/Loader
 find aka/usr/lib/perl5/site_perl/5.8.0/AKA | grep CVS | xargs rm -fr
+find aka/usr/lib/perl5/site_perl/5.8.0/AKA -name tags | xargs rm -f
 
 echo "Encrypting..."
 find aka/usr/lib/perl5/site_perl/5.8.0/AKA | grep pm$ | grep -v CVS | grep -v Loader | xargs ${SOURCEHOME}/Admin/factory/encrypt 
@@ -54,7 +64,7 @@ find aka/usr/lib/perl5/site_perl/5.8.0/AKA | grep pm$ | grep -v CVS | grep -v Lo
 #
 ########3
 echo "Deleting old file..."
-rm -fvr aka/home/NoSPAM/bin/{NoSPAM,ns-daemon,ns-daemon_exsmtp_auth_proxy,UpdateRule,UploadLog}
+rm -fvr aka/home/NoSPAM/bin/{NoSPAM,ns-daemon,ns-daemon_ex,ga-daemon,smtp_auth_proxy,UpdateRule,UploadLog}
 rm -fvr aka/root/post_install
 
 echo "Copying source files..."
