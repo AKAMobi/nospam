@@ -93,7 +93,7 @@ sub catch_virus
 
 				enabled	=> 1,
 				runned	=> 1,
-				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 			});
 
 		$result = $self->check_file_clamscan( $file );
@@ -108,7 +108,7 @@ sub catch_virus
 
 				enabled	=> 1,
 				runned	=> 1,
-				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 			});
 	}
 
@@ -129,7 +129,7 @@ sub catch_virus
 
 			enabled	=> 1,
 			runned	=> 1,
-			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+			runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 		});
 
 }

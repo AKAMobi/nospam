@@ -65,7 +65,7 @@ sub process
 
                                         enabled => 1,
                                         runned  => 1,
-                                        runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                        runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 		return $mail_info;
 	}
@@ -107,7 +107,7 @@ sub process
 		enabled => 1,
 		runned  => 1,
 		rule_info  => $rule_info,
-		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 	};
 
 	return $mail_info;
