@@ -4,7 +4,7 @@ require_once('../inc/include.ns');
 if(!adminPerm(PERM_ADMIN_SYSTEM))
 	die(_("You have no permission to access this page"));
 
-if (isset($_POST["Submit"]) && $_POST["Submit"] == "иоть"){
+if (isset($_POST["Submit"]) && $_POST["Submit"] == _("Upload")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 	upgrade();
