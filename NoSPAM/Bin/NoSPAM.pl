@@ -1241,7 +1241,7 @@ sub _network_set_ip
 		$zlog->fatal( "_network_set_ip ip ro re gw dev nospam [$gw] failed with ret: $ret !" ) if ( $ret );
 		$err = 1 if ( $ret );
 
-		$ret = system ( "$ip_binary ro replace default via $gw dev nospam" );
+		$ret = system ( "$ip_binary ro replace default via $gw dev nospam src $ip" );
 		$zlog->fatal( "_network_set_ip ip ro replace default via [$gw] failed with ret: $ret !" ) if ( $ret );
 		$err = 1 if ( $ret );
 	}
