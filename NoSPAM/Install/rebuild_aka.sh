@@ -37,6 +37,7 @@ mkdir -p aka/var/qmail/bin
 #####
 cd ../Locale; make; cd -
 cp ../Locale/engine.nospam.cn.mo aka/home/NoSPAM/LocaleData/zh_CN/LC_MESSAGES
+cp ../Locale/web.nospam.cn.mo aka/home/NoSPAM/LocaleData/zh_CN/LC_MESSAGES
 
 ######
 #

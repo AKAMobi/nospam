@@ -124,7 +124,7 @@ sub init_config
 	$config->{SpamEngine}->{WhiteIPList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{WhiteIPList} );
 
 	$config->{SpamEngine}->{SpamTag} ||= __("[Spam]");
-	$config->{SpamEngine}->{MaybeSpamTag} ||= __("[MaybeSpam]");
+	$config->{SpamEngine}->{MaybeSpamTag} ||= __("[LikelySpam]");
 
 	$config->{SpamEngine}->{RefuseSpam} ||= "N";
 

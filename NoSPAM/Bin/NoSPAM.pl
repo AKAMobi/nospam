@@ -316,7 +316,7 @@ sub System_patch
 
 	`rm -fr $upgrade_dir`;
 
-	print "$patch_file " . __("upgrade successful.");
+	print "$patch_file " . __("upgrade successfully.");
 
 	if ( $REBOOT ){
 		return 1;
@@ -709,7 +709,7 @@ sub check_License
 	}
 # INVALID license!
 	system ( $cmd_smtpd_down );
-	print ($LicenseHTML || "<h1>" . __("License is not valide or expired.") . "</h1>");
+	print ($LicenseHTML || "<h1>" . __("License is not valide or already expires") . "</h1>");
 	return -1;
 }
 

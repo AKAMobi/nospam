@@ -432,23 +432,23 @@ sub spam_checker
 
 
 	if ( &is_white_ip($self,$smtp_ip) ){
-		$reason = __("IP White List");
+		$reason = __("IP WhiteList");
 		$is_spam = 0;
 	}elsif ( &is_white_domain($self,$email_domain) ){
-		$reason = __("Domain White List");
+		$reason = __("Domain WhiteList");
 		$is_spam = 0;
 	}elsif ( &is_white_addr( $self,$from_addr ) ){
-		$reason = __("Sender White List");
+		$reason = __("Sender WhiteList");
 		$is_spam = 0;
 	}elsif ( &is_black_ip($self,$smtp_ip) ){
-		$reason = __("IP Black List");
+		$reason = __("IP BlackList");
 		$is_spam = 3;
 	}elsif ( &is_black_domain($self,$email_domain) ) {
-		$reason = __("Domain Black List");
+		$reason = __("Domain BlackList");
 		$is_spam = 3;
 	}elsif ( &is_black_addr($self,$from_addr) ){
 		$is_spam = 3;
-		$reason = __("Sender Black List");
+		$reason = __("Sender BlackList");
 	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{Traceable} ){
 		# 只有启用了可追查性检查时才判断
 #use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );

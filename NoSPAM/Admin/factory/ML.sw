@@ -23,6 +23,7 @@ ServerGateway=Gateway
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 MailGateway=100
+MailRelay=100
 DynamicEngine=100
 AntiVirusEngine=100
 SpamEngine=100

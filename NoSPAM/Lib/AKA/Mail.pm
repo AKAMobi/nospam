@@ -563,7 +563,7 @@ sub process
 					smtp_code => 553,
 					smtp_info => __("Sorry, due to ")
 						. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || __("Security Policy"))
-						. __("System reject your mail.") ,
+						. __("System rejects your mail.") ,
 					exit_code => 150
 			};
 	
@@ -1219,7 +1219,7 @@ sub archive_engine
 
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>1,
-			desc	=>__("commited"),
+			desc	=>__("submmited"),
 			action	=>ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
@@ -1261,7 +1261,7 @@ sub spam_engine
 			unless ( $auth_user =~ /\@/ );
 		
 		$is_spam = RESULT_SPAM_NOT;
-		$reason = __("Auth user");
+		$reason = __("Authorized user");
 
 		if ( ($auth_user ne $returnpath) &&
 				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # 内部可追查
@@ -1485,7 +1485,7 @@ sub dynamic_engine
 			if ( $_ eq $subject ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => __("Mail subject white list"),
+	                                desc    => __("Mail subject whitelist"),
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -1520,7 +1520,7 @@ sub dynamic_engine
 			if ( $AI->is_ip_in_range($ip, $_) ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 	               			result  => 0,
-	                                desc    => 'IP' . __("white list"),
+	                                desc    => 'IP' . __("whitelist"),
        	                         	action  => 0,
 	
                                 	enabled => 1,
@@ -1646,7 +1646,7 @@ sub content_engine_is_enabled
 		if ( $self->{mail_info}->{aka}->{size} > $self->{conf}->{intconf}->{ContentEngineMaxMailSize} ){
 			$self->{mail_info}->{aka}->{engine}->{content} = {
                			result  => 0,
-                                desc    => __("Maximum size excceed"),
+                                desc    => __("Maximum size exceeds"),
                         	action  => 0,
 
                                	enabled => 1,
@@ -1744,7 +1744,7 @@ sub check_license_file
 	}
 
 	# it's valid
-	$LicenseHTML ||= __("License valid!");
+	$LicenseHTML ||= __("License is valid!");
 	return (1,$LicenseHTML);
 }
 
