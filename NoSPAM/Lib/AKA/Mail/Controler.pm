@@ -697,6 +697,7 @@ sub send_email_data_by_inject
 		return undef;
 	}
 
+	# FIXME
 	if ( open(SM,"|" . $self->{define}->{qmail_inject_binary} . " -Ah -f'$from' $to") ){
 		print SM $email_data;
 	}
