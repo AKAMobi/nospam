@@ -14,6 +14,7 @@ use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Errno;
 use IO::Socket;
 
+use Data::Dumper;
 use POSIX qw(:signal_h :errno_h :sys_wait_h);
 
 use AKA::License;
@@ -161,6 +162,37 @@ sub is_conf_updated
 	
 }
 
+sub recv_mail_info
+{
+	my $self = shift;
+	my $socket = shift;
+
+my $logstr;
+	$_ = <$socket>; chomp;
+$logstr .= "RELAYCLIENT: [$_]\n";
+	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
+
+	$_ = <$socket>; chomp;
+$logstr .= "TCPREMOTEIP: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
+
+	$_ = <$socket>; chomp;
+$logstr .= "TCPREMOTEINFO: [$_]\n";
+	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
+
+	$_ = <$socket>; chomp;
+$logstr .= "emlfilename: [$_]\n";
+	$self->{mail_info}->{aka}->{emlfilename} = $_;
+
+	$_ = <$socket>; chomp;
+$logstr .= "$fd1: $_\n";
+	$self->{mail_info}->{aka}->{fd1} = $_;
+
+$self->{zlog}->log ( $logstr );
+
+	$self->{mail_info};
+}
+
 sub net_process
 {
 	my $self = shift;
@@ -171,45 +203,68 @@ sub net_process
 		return;
 	}
 
-print "\n#####################################\n";
-	$_ = <$socket>; chomp;
-	print "RELAYCLIENT: [$_]\n";
-	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
+	my ($old_alarm_sig,$old_alarm);
 
-	$_ = <$socket>; chomp;
-	print "TCPREMOTEIP: [$_]\n";
-	$self->{mail_info}->{aka}->{TCPREMOTEIP} = $_;
+#print "before eval recv\n";
+	eval {
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
+		$old_alarm = alarm( 10 );
 
-	$_ = <$socket>; chomp;
-	print "TCPREMOTEINFO: [$_]\n";
-	$self->{mail_info}->{aka}->{TCPREMOTEINFO} = $_;
+		$self->recv_mail_info( $socket );
+	}; if ($@) {
+		$self->{zlog}->fatal ( "Mail::net_process call recv_mail_info from socket[$@]" );
+		# content engine have not start to work
+		#$self->cleanup;
+		return;
+	}
+	$SIG{ALRM} = $old_alarm_sig;
+	alarm $old_alarm;
+#print "after eval recv, before process\n";
 
-	$_ = <$socket>; chomp;
-	print "emlfilename: [$_]\n";
-	$self->{mail_info}->{aka}->{emlfilename} = $_;
+$self->{zlog}->debug( "mail_info.req\@srv\n"
+	. Dumper ($self->{mail_info}->{aka} )
+	. "<<<<processing...>>>" );
 
-	$_ = <$socket>; chomp;
-	print "fd1: [$_]\n";
-	$self->{mail_info}->{aka}->{fd1} = $_;
-
-open ( FD, ">>/var/log/NoSPAM.debug" );
-use Data::Dumper;
-print FD "mail_info.req\@srv\n";
-print FD Dumper ($self->{mail_info}->{aka} );
-print "<<<<processing...>>>\n";
-
+	#
+	# Main process function
+	#
 	$self->process ( $self->{mail_info} );
 
-	print "\n";
+#print "after process, before send\n";
+$self->{zlog}->debug( "smtp_code: [" . $smtp_code . "]\n"
+	. "smtp_info: [" . $smtp_info . "]\n"
+	. "exit_code: [" . $exit_code . "]" );
 
 	my ($smtp_code,$smtp_info,$exit_code);
 	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code};
 	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info};
 	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code};
 
-	print "smtp_code: [" . $smtp_code . "]\n";
-	print "smtp_info: [" . $smtp_info . "]\n";
-	print "exit_code: [" . $exit_code . "]\n";
+	eval {
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
+		$old_alarm = alarm( 10 );
+
+		$self->send_mail_info ( $socket );
+	}; if ($@) {	
+		$self->{zlog}->fatal ( "Mail::net_process call recv_mail_info from socket[$@]" );
+		# content engine have not start to work
+		#$self->cleanup;
+		return;
+	}
+	$SIG{ALRM} = $old_alarm_sig;
+	alarm $old_alarm;
+		
+#print "after send \n";
+$self->{zlog}->debug ( "mail_info.resp\@srv\n" . Dumper ($self->{mail_info}->{aka}) );
+	
+}
+
+sub send_mail_info
+{
+	my $self = shift;
+	my $socket = shift;
 
 	if ( $self->{license_ok} ){
 		print $socket $smtp_code . "\n";
@@ -220,11 +275,6 @@ print "<<<<processing...>>>\n";
 		print $socket "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。";
 		print $socket "150\n";
 	}
-		
-print FD "mail_info.resp\@srv\n";
-print FD Dumper ($self->{mail_info}->{aka} );
-close FD;
-	
 }
 
 sub process
@@ -246,6 +296,8 @@ sub process
 
 	# 获取文件尺寸和标题等基本信息
 	$self->get_mail_base_info;
+
+
 
 	$self->antivirus_engine() 	unless $self->{mail_info}->{aka}->{drop};
 	$self->spam_engine() 		unless $self->{mail_info}->{aka}->{drop};
@@ -659,6 +711,7 @@ sub antivirus_engine
 
 	$self->{mail_info}->{aka}->{engine}->{antivirus} = 
 		$self->{antivirus}->catch_virus( $self->{mail_info}->{aka}->{emlfilename} );
+
 
 	$self->{mail_info}->{aka}->{drop} ||= $self->{mail_info}->{aka}->{engine}->{antivirus}->{action};
 	#$self->{mail_info}->{aka}->{drop_info} ||= '553 邮件包含病毒 ' . $self->{mail_info}->{aka}->{engine}->{antivirus}->{desc};
