@@ -373,7 +373,7 @@ sub ZombieFile_clean
 		open ( FD, ">$workfile" ) && close FD;
 	}
 
-	`find /var/log -path "/var/log/*.*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /var/log -path "/var/log/*.*" -name *.?.* -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 
 	return 0;
 }
