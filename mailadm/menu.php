@@ -22,7 +22,7 @@ function Folder(folderDescription, hreference)
   this.isLastNode = 0 
  
   this.isOpen = true 
-  this.iconSrc = "../images/ftv2folderopen.gif"   
+  this.iconSrc = "images/ftv2folderopen.gif"   
   this.children = new Array 
   this.nChildren = 0 
  
@@ -71,10 +71,10 @@ function propagateChangesInState(folder)
   { 
     if (folder.nodeImg) 
       if (folder.isLastNode) 
-        folder.nodeImg.src = "../images/ftv2mlastnode.gif" 
+        folder.nodeImg.src = "images/ftv2mlastnode.gif" 
       else 
-	  folder.nodeImg.src = "../images/ftv2mnode.gif" 
-    folder.iconImg.src = "../images/ftv2folderopen.gif" 
+	  folder.nodeImg.src = "images/ftv2mnode.gif" 
+    folder.iconImg.src = "images/ftv2folderopen.gif" 
     for (i=0; i<folder.nChildren; i++) 
       folder.children[i].display() 
   } 
@@ -82,10 +82,10 @@ function propagateChangesInState(folder)
   { 
     if (folder.nodeImg) 
       if (folder.isLastNode) 
-        folder.nodeImg.src = "../images/ftv2plastnode.gif" 
+        folder.nodeImg.src = "images/ftv2plastnode.gif" 
       else 
-	  folder.nodeImg.src = "../images/ftv2pnode.gif" 
-    folder.iconImg.src = "../images/ftv2folderclosed.gif" 
+	  folder.nodeImg.src = "images/ftv2pnode.gif" 
+    folder.iconImg.src = "images/ftv2folderclosed.gif" 
     for (i=0; i<folder.nChildren; i++) 
       folder.children[i].hide() 
   }  
@@ -128,14 +128,14 @@ var nc
   if (level>0) 
     if (lastNode)
     { 
-      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='../images/ftv2mlastnode.gif' width=16 height=22 border=0></a>") 
-      leftSide = leftSide + "<img src='../images/ftv2blank.gif' width=16 height=22>"  
+      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='images/ftv2mlastnode.gif' width=16 height=22 border=0></a>") 
+      leftSide = leftSide + "<img src='images/ftv2blank.gif' width=16 height=22>"  
       this.isLastNode = 1 
     } 
     else 
     { 
-      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='../images/ftv2mnode.gif' width=16 height=22 border=0></a>") 
-      leftSide = leftSide + "<img src='../images/ftv2vertline.gif' width=16 height=22>" 
+      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='images/ftv2mnode.gif' width=16 height=22 border=0></a>") 
+      leftSide = leftSide + "<img src='images/ftv2vertline.gif' width=16 height=22>" 
       this.isLastNode = 0 
     } 
   else 
@@ -239,7 +239,7 @@ function Item(itemDescription, itemLink)
   this.id = -1
   this.navObj = 0
   this.iconImg = 0
-  this.iconSrc = "../images/ftv2doc.gif" 
+  this.iconSrc = "images/ftv2doc.gif" 
  
   this.initialize = initializeItem 
   this.createIndex = createEntryIndex 
@@ -269,13 +269,13 @@ function initializeItem(level, lastNode, leftSide)
   if (level>0) 
     if (lastNode)
     { 
-      this.renderOb(leftSide + "<img src='../images/ftv2lastnode.gif' width=16 height=22>") 
-      leftSide = leftSide + "<img src='../images/ftv2blank.gif' width=16 height=22>"  
+      this.renderOb(leftSide + "<img src='images/ftv2lastnode.gif' width=16 height=22>") 
+      leftSide = leftSide + "<img src='images/ftv2blank.gif' width=16 height=22>"  
     } 
     else 
     { 
-      this.renderOb(leftSide + "<img src='../images/ftv2node.gif' width=16 height=22>") 
-      leftSide = leftSide + "<img src='../images/ftv2vertline.gif' width=16 height=22>" 
+      this.renderOb(leftSide + "<img src='images/ftv2node.gif' width=16 height=22>") 
+      leftSide = leftSide + "<img src='images/ftv2vertline.gif' width=16 height=22>" 
     } 
   else 
     this.renderOb("")   
@@ -535,7 +535,7 @@ fT= gFld("<b>邮件系统管理</b>", "");
 
 </script>
 
-<body background="/images/bj_01.gif">
+<body background="images/bj_01.gif">
 <script>
 initializeDocument();
 </script>
