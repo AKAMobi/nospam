@@ -400,7 +400,7 @@ sub ZombieFile_clean
 		open ( FD, ">$workfile" ) && close FD;
 	}
 
-	`find /var/log -path "/var/log/*.*" -name "[a-z]*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /var/log -type f -path "/var/log/*.*" -name "[a-z]*" -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 
 	#quarantine queue
 	&QuarantineQueuePurge;
@@ -457,7 +457,19 @@ _POD_
 	&SA_update;
 	# 检查 locale list/Razor register等一次性的工作，在rc.local中
 
+	&reset_Locale;
+
 	return $err;
+}
+
+sub reset_Locale;
+{
+	my $locale_cfg = "/etc/mrtg/rmtg.cfg.$language";
+	my $default_cfg = "/etc/mrtg/rmtg.cfg";
+	if ( -e $locale_cfg && -f $locale_cfg ){
+		unlink $default_cfg;
+		link ( $locale_cfg, $locale_cfg );
+	}
 }
 
 sub PerformanceTune
@@ -791,13 +803,20 @@ sub QuarantineQueuePurge
 	my $queue_life_sec = $conf->{config}->{QuarantineEngine}->{TimeOut} || 0;
 	my $queue_life_day = $queue_life_sec / 86400; # 60*60 * 24
 	my $timeout_action = $conf->{config}->{QuarantineEngine}->{TimeOutAction} || 'D';
-	$queue_life_day ||= 7;
+	
+	$queue_life_day ||= 1;
+	# 硬性限制最多保存90天
+	$queue_life_day = 90 if ( $queue_life_day > 90 );
 
-	my @timeout_list = `find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day | grep -v "\.info$"`;
+	my @timeout_list = `find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day | grep -v "\.info\$"`;
+	chomp @timeout_list; # get rid of \n
+
 	if ( 'D' eq uc $timeout_action ){
 		my @info_list = map ( "$_.info", @timeout_list );
-		unlink @timeout_list;
+
+		# unlink info_list first, for web user will not get err
 		unlink @info_list;;
+		unlink @timeout_list;
 		my $cnt = @info_list;
 		$zlog->debug ( "wi::QuarantineQueuePurge purge $cnt mails, timeout val $queue_life_sec" );
 	}elsif ( 'F' eq uc $timeout_action ){
