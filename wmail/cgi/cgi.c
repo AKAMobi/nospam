@@ -154,7 +154,7 @@ struct cgi_arglist *argp;
 			if (cl > CGIMAXFORMDATAARG)
 			{
 				printf("Content-Type: text/html\n\n");
-				printf("<HTML><BODY><H1>Attachment size exceeds limit set by system administrator</H1></BODY></HTML>\n");
+				printf("<HTML><BODY><H1>附件大小超过管理员限制</H1></BODY></HTML>\n");
 				fake_exit(1);
 			}
 			cgi_formdata(cl);
@@ -170,7 +170,7 @@ struct cgi_arglist *argp;
 		if (cl > CGIMAXARG)
 		{
 			printf("Content-Type: text/html\n\n");
-			printf("<HTML><BODY><H1>Message size exceeds limit set by system administrator</H1></BODY></HTML>\n");
+			printf("<HTML><BODY><H1>邮件大小超过管理员限制</H1></BODY></HTML>\n");
 			fake_exit(1);
 		}
 	cgi_args=malloc(cl+1);	/* Extra insurance */
