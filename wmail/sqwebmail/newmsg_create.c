@@ -704,7 +704,7 @@ off_t	transferencodingpos;
 			{
 				maildir_writemsgstr(newdraftfd,
 						    "Content-Type: text/plain;"
-						    " format=flowed;"
+						    " format=flowed1;"
 						    " charset=");
 				maildir_writemsgstr(newdraftfd, charset);
 				maildir_writemsgstr(newdraftfd,

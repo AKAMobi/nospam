@@ -302,7 +302,7 @@ const char	*qerrmsg;
 		
 		printf("</SELECT>\n");
 	}
-	printf("</TD><TD WIDTH=10%%>");
+	printf("</TD><TD WIDTH=5%%>");
 	
         if (morebefore) {
 		size_t  beforepos;
@@ -314,6 +314,7 @@ const char	*qerrmsg;
 		printf("&form=folder&pos=%ld\">", (long)beforepos);
 		printf("%s</A>", beforelab);
 	}
+	printf("</TD><TD WIDTH=5%%>");
 	if (moreafter) {
 		printf("<A HREF=\"");
 		output_scriptptrget();
@@ -369,8 +370,8 @@ const char	*qerrmsg;
 
 	printf("<TABLE WIDTH=\"100%%\" BORDER=0 CELLSPACING=1 CELLPADDING=5 BGCOLOR=\"#336699\" CLASS=\"csmtype\">"
 	       "<TR ALIGN=LEFT CLASS=\"wmtype\"><TH WIDTH=\"5%%\">%s</TH>"
-	       "<TH WIDTH=\"15%%\">%s</TH><TH WIDTH=\"20%%\">%s</TH><TH WIDTH=\"50%%\">%s</TH>"
-	       "<TH ALIGN=RIGHT WIDTH=\"10%%\">%s</TH></TR>\n",
+	       "<TH WIDTH=\"20%%\">%s</TH><TH WIDTH=\"20%%\">%s</TH><TH WIDTH=\"48%%\">%s</TH>"
+	       "<TH ALIGN=RIGHT WIDTH=\"7%%\">%s</TH></TR>\n",
 	       getarg("STATUS"),
 	       getarg("DATE"),
 	       getarg("FROM"),
@@ -461,8 +462,17 @@ const char	*qerrmsg;
 
 		subjs=rfc2047_decode_simple(subj);
 		if (subjs == 0)	enomem();
-		if (strlen(subjs) >= 40)
-			strcpy(subjs+37, "...");
+		if (strlen(subjs) >= 40) {
+			size_t k;
+			for( k = 36; k>=0; k-- )
+				if( subjs[k] >= 0 )
+					break;
+			if( (36-k) % 2  == 1 ) // half char!
+				k=38;
+			else
+				k=37;
+			strcpy(subjs+k, "...");
+		}
 
 		// by lfan
 		if (strlen(subjs) == 0)
