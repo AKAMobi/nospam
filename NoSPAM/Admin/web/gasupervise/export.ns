@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if ($GAInterface <= 0)
-	die("本系统无监管功能支持");
+	die(_("Sorry, This Product has no Policy Auto-Download Engine License"));
 
 if(!adminPerm(PERM_ADMIN_GASUP))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_GET["action"]){
 	if($_GET["action"]=="download"){
@@ -18,9 +18,9 @@ if($_GET["action"]){
 		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
-                	echo "操作成功！";
+		echo _("Config Modify Success! ");
         	else    
-                	echo "操作失败！错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
 }else{
 ?>
@@ -28,14 +28,14 @@ if($_GET["action"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>四部委交换格式</title>
+<title><?=_("Exchange Format")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
-日志大小：<?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><br>
-交换格式下载：<input type="button" value="下载" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=download','_blank')"><br>
-日志清空：<input type="button" value="清空" onclick="document.location.href='<?=$_SERVER['PHP_SELF']?>?action=clean';">
+<?=_("Log Size")?>: <?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><br>
+<?=_("Download")?>: <input type="button" value="<?=_("Download")?>" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=download','_blank')"><br>
+<?=_("Flush Log")?>: <input type="button" value="<?=_("Clear")?>" onclick="document.location.href='<?=$_SERVER['PHP_SELF']?>?action=clean';">
 </body>
 </html>
 <?

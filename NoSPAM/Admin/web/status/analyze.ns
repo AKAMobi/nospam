@@ -2,12 +2,12 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 ?>
 <html>
 <head>
-<title>邮件分析显示</title>
+<title><?=_("Mail Stat.")?></title>
 <META HTTP-EQUIV="Refresh" CONTENT="300">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Cache-Control" content="no-cache">
@@ -16,34 +16,34 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<DIV><h2>邮件类别分布</h2></DIV>
+<DIV><h2><?=_("Mail Type Stat.")?></h2></DIV>
 <DIV><A HREF="mail_type.ns"><IMG BORDER=0 ALT="Mail Type Graph" SRC="mail_type-day.gif"></A>
 <BR>
 </DIV>
 <hr>
 
 </DIV>
-<DIV><h2>邮件流量分布</h2></DIV>
+<DIV><h2><?=_("Mail Traffic Stat.")?></h2></DIV>
 <DIV><A HREF="mail_traffic.ns"><IMG BORDER=0 ALT="Mail Traffic Graph" SRC="mail_traffic-day.gif"></A>
 <BR>
 </DIV>
 <hr>
 
-<DIV><h2>邮件尺寸分布</h2></DIV>
+<DIV><h2><?=_("Mail Size Stat.")?></h2></DIV>
 <DIV><A HREF="mail_size.ns"><IMG BORDER=0 ALT="Mail Size Graph" SRC="mail_size-day.gif"></A>
 <BR>
 </DIV>
 <hr>
 
 </DIV>
-<DIV><h2>DNS 运行状态</h2></DIV>
+<DIV><h2><?=_("DNS Status")?></h2></DIV>
 <DIV><A HREF="dns.ns"><IMG BORDER=0 ALT="DNS Status Graph" SRC="dns-day.gif"></A>
 <BR>
 </DIV>
 <hr>
 
 
-<DIV><h2>引擎运行状态</h2></DIV>
+<DIV><h2><?=_("Engine Running Status")?></h2></DIV>
 <DIV><A HREF="mail_engine.ns"><IMG BORDER=0 ALT="Mail Engine Graph" SRC="mail_engine-day.gif"></A>
 <BR>
 </DIV>

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	$spamconf->setParam("NoSPAMEngine",$_POST["SpamEngine"],"SpamEngine");
 	$spamconf->setParam("TraceEngine",$_POST["TraceEngine"],"SpamEngine");
@@ -23,9 +23,9 @@ if($_POST["isSubmit"]){
 	$spamconf->save();
 
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败";
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bSmartEngine = ($spamconf->getParam("SmartEngine","SpamEngine")=="Y")? true:false;
 	$bTraceEngine = ($spamconf->getParam("TraceEngine","SpamEngine")=="Y")? true:false;
@@ -36,7 +36,7 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>引擎开关</title>
+<title><?=_("Engines Switches")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -72,69 +72,67 @@ function change(bState)
 
 <body>
 <form name="form1" method="post" action="">
-    <p><b>反垃圾引擎</b>：
+    <p><b><?=_("AntiSpam Engine")?></b>: 
     <input type="radio" name="SpamEngine" value="Y"<? if($bAntiSpam) echo" checked"; ?> onclick="change(false)">
-    开启
+    <?=_("On")?>
     <input type="radio" name="SpamEngine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> onclick="change(true)">
-    关闭
+    <?=_("Off")?>
  <hr align="left" width="400">
-  <p><b>可追查性检查</b>：
+  <p><b><?=_("Traceable")?></b>：
     <input type="radio" id="idTraceEngineY" name="TraceEngine" value="Y"
 	<?	if(!$bAntiSpam) echo" disabled "; 
 		if($bTraceEngine) echo" checked "; 
 	?>
     >
-    开启
+    <?=_("On")?>
     <input type="radio" id="idTraceEngineN" name="TraceEngine" value="N"
 	<?	if(!$bAntiSpam) echo" disabled "; 
 		if(!$bTraceEngine) echo" checked"; 
 	?>
     >
-    关闭
+    <?=_("Off")?>
     <br>
-    作用方向：
+    <?=_("Direction")?>: 
     <input type="checkbox" id="idTraceProtectDirectionOut" name="TraceProtectDirection[]" value="Out"<?if(strstr($sTraceProtectDirection,"Out")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    由内向外
+    <?=_("Outward")?>: 
     <input type="checkbox" id="idTraceProtectDirectionIn" name="TraceProtectDirection[]" value="In"<?if(strstr($sTraceProtectDirection,"In")) echo " checked";if(!$bAntiSpam) echo " disabled"?>>
-    由外向内
+    <?=_("Inward")?>: 
     <p>
  
 <p>
-
-
-   <b>智能检测</b>：
+<b><?=_("Intelligent Test")?></b>: 
     <input type="radio" id="idSmartEngineY" name="SmartEngine" value="Y" 
 	<? 
 		if (!$bAntiSpam) echo " disabled "; 
 		if ($bSmartEngine) echo " checked ";
 	?>
     >
-    开启
+    <?=_("On")?>: 
     <input type="radio" id="idSmartEngineN" name="SmartEngine" value="N"
 	<? 
 		if (!$bAntiSpam) echo " disabled "; 
 		if (!$bSmartEngine) echo " checked ";
 	?>
     >
-    关闭
+    <?=_("Off")?>: 
     <br>
-    作用方向：
+    <?=_("Direction")?>: 
     <input type="checkbox" id="idSmartProtectDirectionOut" name="SmartProtectDirection[]" value="Out" 
 	<?
 		if(strstr($sSmartProtectDirection,"Out")) echo " checked";
 		if(!$bAntiSpam) echo " disabled"
 	?>
     >
-    由内向外
+    <?=_("Outward")?>: 
     <input type="checkbox" id="idSmartProtectDirectionIn" name="SmartProtectDirection[]" value="In"
 	<?
 		if(strstr($sSmartProtectDirection,"In")) echo " checked";
 		if(!$bAntiSpam) echo " disabled"
 	?> 
     >
-    由外向内
+    <?=_("Inward")?>: 
     <br>
-    <input type="submit" name="isSubmit" value="修改">
+    <input type="submit" name="isSubmit" value="<?=_("Modify")?>">
 </form>
 
 </body>

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["Traceable"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	if($_POST["Traceable"]=="Y"){
 		$spamconf->setParam("Traceable","Y","SpamEngine");
@@ -26,9 +26,9 @@ if($_POST["Traceable"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_Traceable",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bTrace = ($spamconf->getParam("Traceable","SpamEngine")=="Y")? true:false;
 	$sType = $spamconf->getParam("TraceType","SpamEngine");
@@ -40,7 +40,7 @@ if($_POST["Traceable"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>可追查性检查</title>
+<title><?=_("Traceable")?></title>
 <script type="text/javascript" src="../js/range.js"></script>
 <script type="text/javascript" src="../js/timer.js"></script>
 <script type="text/javascript" src="../js/slider.js"></script>
@@ -101,36 +101,36 @@ function formReset()
   <p>
     <label>
     <input id="TraceY" type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> onclick="change(false)">
-  开启</label>
+  <?=_("On")?></label>
     <br>
     <label>
     <input id="TraceN" name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> onclick="change(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <br>
-    可追查性选项：
-    <input name="options[]" type="checkbox" id="option3" value="Domain"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Domain")!==false) echo " checked"; ?>>域名
-    <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Mail")!==false) echo " checked"; ?>>邮件
+    <?=_("Traceable Options")?>: 
+    <input name="options[]" type="checkbox" id="option3" value="Domain"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Domain")!==false) echo " checked"; ?>><?=_("Domain")?>
+    <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Mail")!==false) echo " checked"; ?>><?=_("Mail")?>
     <input name="options[]" type="checkbox" id="option2" value="IP"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"IP")!==false) echo " checked"; ?>>IP </p>
   <p>
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-  <td>疑似垃圾：</td>
-  <td align="right">垃圾</td>
+  <td><?=_("Like Spam")?>:</td>
+  <td align="right"><?=_("Spam")?></td>
   <td><div class="slider" id="slider-1" tabIndex="1">
   	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>"/>
   </div></td>
-  <td align="left">正常</td>
+  <td align="left"><?=_("NonSpam")?></td>
   </tr>
   <tr>
-  <td>垃圾邮件：</td>
-  <td align="right">垃圾</td>
+  <td><?=_("Spam")?>:</td>
+  <td align="right"><?=_("Spam")?></td>
   <td><div class="slider" id="slider-2" tabIndex="1">
     <input class="slider-input" id="slider2" name="TraceSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceSpamMask?>"/>
   </div></td>
-  <td align="left">正常</td>
+  <td align="left"><?=_("NonSpam")?></td>
   </tr>
   </table>
-  <p>注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非垃圾邮件</p>
+  <p><?=_("Note: From Left to Right is Spam, Like Spam, NonSpam")?></p>
  <script>
  var s1 = new Slider(document.getElementById("slider-1"), document.getElementById("slider1"));
  var s2 = new Slider(document.getElementById("slider-2"), document.getElementById("slider2")); 
@@ -161,16 +161,16 @@ function formReset()
  </script>
   </p>
   <p>
-    <input type="reset" name="reset" value="恢复">
-	<input type="button" value="推荐值" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
-    <input type="submit" name="submit" value="提交">
+    <input type="reset" name="reset" value="<?=_("Reset")?>">
+	<input type="button" value="<?=_("Recommend: ")?>" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
+    <input type="submit" name="submit" value="<?=_("Submit")?>">
   </p>
 </form>
 <?
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}
@@ -184,7 +184,7 @@ alert("注意：反垃圾引擎未启动");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>可追查性检查</title>
+<title><?=_("Traceable")?></title>
 <script type="text/javascript" src="../js/range.js"></script>
 <script type="text/javascript" src="../js/timer.js"></script>
 <script type="text/javascript" src="../js/slider.js"></script>
@@ -197,26 +197,26 @@ alert("注意：反垃圾引擎未启动");
   <p>
     <label>
     <input type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> disabled>
-  开启</label>
+  <?=_("On")?></label>
     <br>
     <label>
     <input name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> disabled>
-  关闭</label>
+  <?=_("Off")?></label>
     <br>
-    可追查性选项：
-    <input name="options[]" type="checkbox" id="option1" value="Domain"<? if(strpos($sType,"Domain")!==false) echo " checked"; ?> disabled>域名
-    <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(strpos($sType,"Mail")!==false) echo " checked"; ?> disabled>邮件
+    <?=_("Traceable Options")?>: 
+    <input name="options[]" type="checkbox" id="option1" value="Domain"<? if(strpos($sType,"Domain")!==false) echo " checked"; ?> disabled><?=_("Domain")?>
+    <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(strpos($sType,"Mail")!==false) echo " checked"; ?> disabled><?=_("Mail")?>
     <input name="options[]" type="checkbox" id="option2" value="IP"<? if(strpos($sType,"IP")!==false) echo " checked"; ?> disabled>IP </p>
   <p>
   <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-  <td>严格可追查度：</td>
+  <td><?=_("Like Spam")?>:</td>
   <td><div class="slider" id="slider-1" tabIndex="1">
   	<input class="slider-input" id="slider1" name="TraceMaybeSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceMaybeSpamMask?>" disabled/>
   </div></td>
   </tr>
   <tr>
-  <td>可追查度：</td>
+  <td><?=_("Spam")?>:</td>
   <td><div class="slider" id="slider-2" tabIndex="1">
     <input class="slider-input" id="slider2" name="TraceSpamMask" <? if(!$bTrace) echo "disabled"; ?> value="<?=$iTraceSpamMask?>" disabled/>
   </div></td>
@@ -246,7 +246,7 @@ alert("注意：反垃圾引擎未启动");
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}

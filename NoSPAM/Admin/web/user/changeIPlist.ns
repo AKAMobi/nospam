@@ -4,7 +4,7 @@ require_once("../inc/include.ns");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>修改IP地址列表</TITLE>
+<TITLE><?=_("Management IP List")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
@@ -14,10 +14,7 @@ require_once("../inc/include.ns");
 function changeIPList() {
 
 	if (!adminPerm(PERM_ADMIN_BASIC) ){
-?>
-		<br>
-		您没有访问该网页的权限。<br>
-<?php
+	echo "<br>"._("You have not permission to operate this page")."<br>";
 		return false;
 	}
 
@@ -40,19 +37,19 @@ function changeIPList() {
 	$result=setIPList($id,$iplist);
 
 	if ( ($result==ERR_FORMAT_IP) ){
-		errorReturn("IP地址格式错误,请重新输入",$_SERVER['REQUEST_URI']);
+		errorReturn(_("IP format Error, re-Input:"),$_SERVER['REQUEST_URI']);
 	}
 
 	if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 		session_unset();
 		session_destroy();
-		errorReturn("无此管理员账号,请重新输入",$_SERVER['REQUEST_URI']);
+		errorReturn(_("No this Admin, re-Input:"),$_SERVER['REQUEST_URI']);
 	} 
 
 	if ($result!=OK) {
-		errorReturn('其他错误，叫系统管理员来debug', $_SERVER['REQUEST_URI']);
+		errorReturn(_("Other Error, need DEBUG"), $_SERVER['REQUEST_URI']);
 	}
-		echo "IP地址列表修改成功！";
+		echo _("Management IP List Modify Success!");
 		return true;
 	}
 	
@@ -75,25 +72,25 @@ function changeIPList() {
 <table>
 <tbody>
 <tr>
-<td>管理员账号</td>
+<td><?=_("Admin Account")?></td>
 <td><? echo $id; ?></td>
 </tr>
 <tr>
-	<td>IP地址限制：</td>
+	<td><?=_("Management IP Restrict")?>:</td>
 	<td>
 		<TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA>
-		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>>允许
-		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>>禁止
-		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>>不限制
+		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>><?=_("Permit")?>
+		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>><?=_("Deny")?>
+		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>><?=_("No Restrict")?>
 	</td>
 </tr>
 <tr>
 	<td></td>
-	<td>使用192.168.1.1或192.168.1.0/24这样的格式，每行一个。</td>
+	<td><?=_("Stand by format 192.168.1.1 or 192.168.1.0/24, one per line.")?></td>
 </tr>
 </tbody>
 </table>
-<INPUT type="submit" value="提交修改信息">
+<INPUT type="submit" value="<?=_("Submit")?>">
 </form>
 <?php
 

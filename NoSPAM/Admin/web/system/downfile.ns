@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 switch($_GET["file"]){
 	case "config":
@@ -15,11 +15,11 @@ switch($_GET["file"]){
 	$file = LICENSE;
 	break;
 	default:
-	die("错误");
+	die(_(" Error"));
 }
 
 if(!file_exists($file))
-	die("错误！文件不存在！");
+	die(_("Error: File do not existed !"));
 
 header("Cache-control: private");
 header("Content-type: application/text");

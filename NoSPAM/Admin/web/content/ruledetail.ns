@@ -2,9 +2,9 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $rule_id = $_POST["rule_id"];
 
@@ -22,7 +22,7 @@ else
 	$config = new RuleDB(UserDB);
 
 $rule = $config->get_rule_by_id($rule_id);
-if(!$rule) die("错误的规则编号");
+if(!$rule) die(_("Rule Number Error"));
 $category_id = $rule->get_attribute("category_id");
 $action = $config->get_action_rule($rule->get_attribute("rule_id"));
 $keywords = $rule->get_elements_by_tagname("rule_keyword");
@@ -43,57 +43,54 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
 <body>
     <table border="0" width="100%">
     <tr>
-        <td>规则编号：<?=$rule->get_attribute("rule_id")?></td>
-        <td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
+        <td><?=_("No.")?>: <?=$rule->get_attribute("rule_id")?></td>
+        <td><?=_("Description")?>: <?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
     </tr>
     <tr>
-        <td>类别：<?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
-	    <td><?if($bPolice){?>编号类型：<?=$rule->get_attribute("id_type")?><?}?></td>
+        <td><?=_("Group")?>: <?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
+	    <td><?if($bPolice){?><?=_("Policy Type")?>: <?=$rule->get_attribute("id_type")?><?}?></td>
     </tr>
     <tr>
-        <td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
-        <td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
+        <td><?=_("Create Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?></td>
+        <td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
     </tr>
 	<tr>
-		<td>过期时间：<?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"无"?></td>
-		<td><?if($bPolice){?>报警级别：<?=$rule->get_attribute("alarmlevel")?><?}?></td>
+		<td><?=_("Expire Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"无"?></td>
+		<td><?if($bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
 	</tr>
 	<?if ($bPolice){?>
 	<tr>
-		<td>实时上报：<?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "是":"否"):"否"?></td>
+		<td><?=_("Realtime Upload")?>: <?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "Y":"N"):"N"?></td>
 		<td></td>
 	</tr>
 	<?}?>
 	</table>
     <br>
-规则间逻辑关系：<?
+<?=_("Rules logic")?>: <?
 	switch ($rule_logic){
 		case "NOT":
-		echo "否";
-		break;
 		case "OR":
-		echo "或";
+		echo $rule_logic;
 		break;
 		case "AND":
 		default:
-		echo "与";
+		echo "AND";
 	}
+
 ?>
 	<br>
     <fieldset style="width: 95%">
-    <legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
+    <legend><b><?=_("Keyword and IP rules")?>: </b><?=$keywordscount._(" items")?> </legend>
     <div align="center">
-关键字规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	switch ($keyword_logic){
 		case "NOT":
-		echo "否";
-		break;
 		case "OR":
-		echo "或";
+		echo $rule_logic;
 		break;
 		case "AND":
 		default:
-		echo "与";
+		echo "AND";
 	}
 ?>
 	<br>
@@ -103,13 +100,13 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
         foreach($keywords as $keyword){
 ?>
         <fieldset style="border-style: double; width: 90%">
-        <legend>第<?=$i?>条</legend>
-        匹配位置：<?=$KeyPos[$keyword->get_attribute("key")]?>
-        解码：<? if($keyword->get_attribute("decode")) echo "先解码"; else echo "不先解码"; ?>
-        大小写：<? if($keyword->get_attribute("case_sensitive")) echo "区分大小写"; else echo "不区分大小写"; ?>
+        <legend><?=_("No.").$i?></legend>
+        <?=_("Match Position")?>: <?=$KeyPos[$keyword->get_attribute("key")]?>
+        <?=_("Decode")?>: <? if($keyword->get_attribute("decode")) echo _("Decode First"); else echo _("not Decode"); ?>
+        <?=_("Case")?>: <? if($keyword->get_attribute("case_sensitive")) echo _("Sensitive"); else echo _("Insensitive"); ?>
         <br>
-        类型：<?=$KeyMatchType[$keyword->get_attribute("type")]?>
-        过滤内容：<?=utf8_decode($keyword->get_attribute("keyword"))?><br>
+        <?=_("Match Type")?>: <?=$KeyMatchType[$keyword->get_attribute("type")]?>
+        <?=_("Filter Content")?>: <?=utf8_decode($keyword->get_attribute("keyword"))?><br>
         </fieldset><br><br>
 <?
         $i++;
@@ -119,19 +116,17 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
     </div>
     </fieldset>
     <fieldset style="width: 95%">
-    <legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
+    <legend><b><?=_("Numeric rules")?>: </b><?=$sizescount._(" items")?></legend>
     <div align="center">
-数值规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	switch ($size_logic){
 		case "NOT":
-		echo "否";
-		break;
 		case "OR":
-		echo "或";
+		echo $size_logic;
 		break;
 		case "AND":
 		default:
-		echo "与";
+		echo "AND";
 	}
 ?>
 	<br>
@@ -141,9 +136,9 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
         foreach($sizes as $size){
 ?>
         <fieldset style="border-style: double; width: 90%">
-        <legend>第<?=$i?>条</legend>
-        匹配位置：<?=$SizePos[$size->get_attribute("key")]?>
-        数值要求：<?=$size->get_attribute("sizevalue")?>
+        <legend><?=_("No.").$i?></legend>
+        <?=_("Match Position")?>: <?=$SizePos[$size->get_attribute("key")]?>
+        <?=_("Size Value")?>: <?=$size->get_attribute("sizevalue")?>
         <br>
         </fieldset><br><br>
 <?
@@ -154,19 +149,17 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
     </div>
     </fieldset>
     <fieldset style="width: 95%">
-    <legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
+    <legend><b><?=_("Attachment rules")?></b> <?=$attachmentscount._(" items")?> </legend>
     <div align="center">
-附件规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	switch ($attach_logic){
 		case "NOT":
-		echo "否";
-		break;
 		case "OR":
-		echo "或";
+		echo $size_logic;
 		break;
 		case "AND":
 		default:
-		echo "与";
+		echo "AND";
 	}
 ?>
 	<br>
@@ -176,11 +169,11 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
         foreach($attachments as $attachment){
 ?>
         <fieldset style="border-style: double; width: 90%">
-        <legend>第<?=$i?>条</legend>
-        限制文件名：<? if(!$attachment->has_attribute("filename")) echo "无"; else echo utf8_decode($attachment->get_attribute("filename"));?>
-        限制文件类型：<? if(!$attachment->has_attribute("filetype")) echo "无";else echo $FileType[$attachment->get_attribute("filetype")][0];?>
+        <legend><?=_("No.").$i?></legend>
+        <?=_("Filename Must be")?>: <? if(!$attachment->has_attribute("filename")) echo _("none"); else echo utf8_decode($attachment->get_attribute("filename"));?>
+        <?=_("File Ext Must be")?>: <? if(!$attachment->has_attribute("filetype")) echo _("none");else echo $FileType[$attachment->get_attribute("filetype")][0];?>
         <br>
-        数值要求：<?=$attachment->get_attribute("sizevalue")?>
+        <?=_("Size Value")?>: <?=$attachment->get_attribute("sizevalue")?>
         </fieldset><br><br>
 <?
             $i++;
@@ -190,7 +183,7 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
     <div>
     </fieldset>
     <br>
-    动作：<?=$Actions[$action->get_attribute("action")]?>
-    动作参数：<? if($action->get_attribute("action_param")==null) echo "无"; else echo $action->get_attribute("action_param"); ?>
+    <?=_("Action")?>: <?=$Actions[$action->get_attribute("action")]?>
+    <?=_("Action Parameter")?>: <? if($action->get_attribute("action_param")==null) echo _("none"); else echo $action->get_attribute("action_param"); ?>
 </body>
 </html>

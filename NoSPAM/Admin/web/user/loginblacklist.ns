@@ -2,21 +2,21 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"] == "修改"){
+if($_POST["Submit"] == "<?=_("Modify")?>"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	if (!is_numeric($_POST['UserMaxLoginRetry']) ||
 		!is_numeric($_POST['IPMaxLoginRetry']) ||
 		!is_numeric($_POST['DenyTimeAfterMaxLogin'])){
-		die("重试次数和封禁时间必须都是数字！");
+		die(_("Retries & Block time must be number"));
 	}
 	$spamconf->setParam("UserMaxLoginRetry",$_POST['UserMaxLoginRetry'],"System");
 	$spamconf->setParam("IPMaxLoginRetry",$_POST['IPMaxLoginRetry'],"System");
 	$spamconf->setParam("DenyTimeAfterMaxLogin",$_POST['DenyTimeAfterMaxLogin'],"System");
 	$spamconf->save();
-	echo "修改成功！";
+	echo _("Config Modify Success! ");
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -24,7 +24,7 @@ if($_POST["Submit"] == "修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>登录限制</title>
+<title><?=_("Login Restrict")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -32,23 +32,10 @@ if($_POST["Submit"] == "修改"){
 <div align="center">
 <form name="form1" method="post" action="">
 <table border="1">
-<tr>
-	<td>5分钟内对同一用户重试次数：</td>
-	<td align="left"><input type="text" name="UserMaxLoginRetry" value="<?=$spamconf->getParam("UserMaxLoginRetry","System")?>"></td>
-</tr>
-<tr>
-	<td>5分钟内对不同用户重试次数：</td>
-	<td align="left"><input type="text" name="IPMaxLoginRetry" value="<?=$spamconf->getParam("IPMaxLoginRetry","System")?>"></td>
-</tr>
-<tr>
-	<td>超限封禁时间：</td>
-	<td align="left"><input type="text" name="DenyTimeAfterMaxLogin" value="<?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")?>">分钟</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<input type="submit" name="Submit" value="修改">
-	</td>
-</tr>
+<tr> <td><?=_("Retries in 5 minutes for same person: ")?></td> <td align="left"><input type="text" name="UserMaxLoginRetry" value="<?=$spamconf->getParam("UserMaxLoginRetry","System")?>"></td> </tr>
+<tr> <td><?=_("Retries in 5 minutes for same IP: ")?></td> <td align="left"><input type="text" name="IPMaxLoginRetry" value="<?=$spamconf->getParam("IPMaxLoginRetry","System")?>"></td> </tr>
+<tr> <td><?=_("Block Time: ")?></td> <td align="left"><input type="text" name="DenyTimeAfterMaxLogin" value="<?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")?>"><?=_("Minutes")?></td> </tr>
+<tr> <td colspan="2"> <input type="submit" name="Submit" value="<?=_("Modify")?>"> </td> </tr>
 </table>
 </form>
 </div>
@@ -61,7 +48,7 @@ if($_POST["Submit"] == "修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>登录限制</title>
+<title><?=_("Login Restrict")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -69,16 +56,16 @@ if($_POST["Submit"] == "修改"){
 <div align="center">
 <table border="1">
 <tr>
-	<td>5分钟内对同一用户重试次数：</td>
+	<td><?=_("Retries in 5 minutes for same person: ")?></td>
 	<td><?=$spamconf->getParam("UserMaxLoginRetry","System")?></td>
 </tr>
 <tr>
-	<td>5分钟内对不同用户重试次数：</td>
+	<td><?=_("Retries in 5 minutes for same IP: ")?></td>
 	<td><?=$spamconf->getParam("IPMaxLoginRetry","System")?></td>
 </tr>
 <tr>
-	<td>超限封禁时间：</td>
-	<td><?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")?>分钟</td>
+	<td><?=_("Block Time: ")?></td>
+	<td><?=$spamconf->getParam("DenyTimeAfterMaxLogin","System")._("Minutes")?></td>
 </tr>
 </table>
 </div>

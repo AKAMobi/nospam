@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($DynamicEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"]=="修改"){
+if($_POST["Submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	
 	if(isset($_POST["DynEngine"])){
 		$spamconf->setParam("DynamicEngine",$_POST["DynEngine"],"DynamicEngine");
@@ -21,9 +21,9 @@ if($_POST["Submit"]=="修改"){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_DynamicEngine",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$sDirection = $spamconf->getParam("ProtectDirection","DynamicEngine");
 	if(adminPerm(PERM_ADMIN_WRITE)){
@@ -32,35 +32,35 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>引擎开关</title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
 <form name="form1" method="post" action="">
   <p>
-  	引擎开关：<br>
+  	<?=_("Engine Switch")?>:<br>
     <label>
     <input type="radio" name="DynEngine" value="Y"<?if($bDynamic) echo " checked";?>>
-    开启</label>
+    <?=_("On")?></label>
     <br>
     <label>
     <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?>>
-    关闭</label>
+    <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Submit" value="修改">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form>
 <form name="form2" method="post" action="">
   <p>
-  	作用方向：<br>
+  	<?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bDynamic) echo " disabled"?>>
-    由内向外
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bDynamic) echo " disabled"?>>
-    由外向内
+    <?=_("Inward")?>
     <br>
-    <input type="submit" name="Submit" value="修改"<?if(!$bDynamic) echo " disabled"?>>
+    <input type="submit" name="Submit" value="<?=_("Modify")?>"<?if(!$bDynamic) echo " disabled"?>>
   </p>
 </form>
 </body>
@@ -72,29 +72,29 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>引擎开关</title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
   <p>
-  	引擎开关：<br>
+  	<?=_("Engine Switch")?>:<br>
     <label>
     <input type="radio" name="DynEngine" value="Y"<?if($bDynamic) echo " checked";?> disabled>
-    开启</label>
+    <?=_("On")?></label>
     <br>
     <label>
     <input type="radio" name="DynEngine" value="N"<?if(!$bDynamic) echo " checked";?> disabled>
-    关闭</label>
+    <?=_("Off")?></label>
     <br>
   </p>
   <p>
-  	作用方向：<br>
+  	<?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";?> disabled>
-    由内向外
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";?> disabled>
-    由外向内
+    <?=_("Inward")?>
     <br>
   </p>
 </body>

@@ -2,23 +2,23 @@
 require_once('../inc/include.ns');
 
 if ($GAInterface <= 0)
-	die("本系统无监管功能支持");
+	die(_("Sorry, This Product has no Policy Auto-Download Engine License"));
 
 if (!adminPerm(PERM_ADMIN_GASUP))
-	die("你无权查看该页");
+	die(_("You have not permission to operate this page"));
 
-if ($_POST["Submit"] == "修改"){
+if ($_POST["Submit"] == _("Modify")){
 	if (!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改");
+		die(_("You have not permission to modify system config"));
 	$spamconf->setParam("MSP_IP",$_POST['MSP_IP'],"GAInterface");
 	$spamconf->setParam("MSP_Port",$_POST['MSP_Port'],"GAInterface");
 	$spamconf->setParam("MSP_ID",$_POST['MSP_ID'],"GAInterface");
 	$spamconf->save();
 	
 	if (($ret = wi("GA_reset",$result)) == 0){
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	} else {
-		echo "修改失败，错误代码{$ret}";
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
 } else {
 	$bState = ($spamconf->getParam("GAInterface","GAInterface") == "Y") && adminPerm(PERM_ADMIN_WRITE);
@@ -27,7 +27,7 @@ if ($_POST["Submit"] == "修改"){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
-<title>MSP设置</title>
+<title>MSP</title>
 </head>
 <body>
 <div align="center">
@@ -47,8 +47,8 @@ if ($_POST["Submit"] == "修改"){
 </tr>
 </table>
 <br>
-<input type="submit" name="Submit" value="修改"<?if (!$bState) echo " disabled";?>>
-<input type="reset" value="重置"<?if (!$bState) echo " disabled";?>>
+<input type="submit" name="Submit" value="<?=_("Modify")?>"<?if (!$bState) echo " disabled";?>>
+<input type="reset" value="<?=_("Reset")?>"<?if (!$bState) echo " disabled";?>>
 </form>
 </div>
 </body>

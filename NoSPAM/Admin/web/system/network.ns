@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $ServerGateway = $spamconf->getParam("ServerGateway","System");
 if($Switchable)
@@ -10,13 +10,13 @@ if($Switchable)
 else
 	$mode = $intServerGateway;
 
-if($_POST["Submit"]=="修改"){
+if($_POST["Submit"]=="<?=_("Modify")?>"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
-	if(!checkipaddr($_POST["IP"],false)) die("IP地址".$_POST["IP"]."有误！");
-	if(!is_numeric($_POST["Netmask"]) || intval($_POST["Netmask"])>32 || intval($_POST["Netmask"]<=0)) die("掩码".$_POST["Netmask"]."有误！");
-	if(!checkipaddr($_POST["Gateway"],false)) die("IP地址".$_POST["Gateway"]."有误！");
+	if(!checkipaddr($_POST["IP"],false)) die("IP ".$_POST["IP"]._(" Error"));
+	if(!is_numeric($_POST["Netmask"]) || intval($_POST["Netmask"])>32 || intval($_POST["Netmask"]<=0)) die("Mask ".$_POST["Netmask"]._(" Error"));
+	if(!checkipaddr($_POST["Gateway"],false)) die("IP ".$_POST["Gateway"]._(" Error"));
 	
 	$spamconf->setParam("Hostname",$_POST["Hostname"],"Network");
 	$spamconf->setParam("IP",$_POST["IP"],"Network");
@@ -24,9 +24,9 @@ if($_POST["Submit"]=="修改"){
 	$spamconf->setParam("Gateway",$_POST["Gateway"],"Network");
 	$spamconf->save();
 	if(($ret=wi("reset_Network",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "无法更新设置，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -34,7 +34,7 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>网络设置</title>
+<title><?=_("Network Setting")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -42,27 +42,27 @@ if($_POST["Submit"]=="修改"){
 <form name="form1" method="post" action="">
   <table class="TableBorder2" width="80%" align="center">
     <caption>
-  <b>网络设置</b>
+  <b><?=_("Network Setting")?></b>
     </caption>
     <tr class="TableBody2">
-      <td scope="row">主机名称： </td>
+      <td scope="row"> Hostname: </td>
       <td class="TableBody1"><input name="Hostname" type="text" id="Hostname" value="<?=$spamconf->getParam("Hostname","Network")?>"></td>
     </tr>
     <tr class="TableBody1">
-      <td scope="row"> IP ： </td>
+      <td scope="row"> IP: </td>
       <td class="TableBody1"><input name="IP" type="text" id="IP" value="<?=$spamconf->getParam("IP","Network")?>"></td>
     </tr>
     <tr class="TableBody2">
-      <td scope="row"> 网络掩码： </td>
-      <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>">请使用掩码位数，不能使用x.x.x.x格式</td>
+      <td scope="row"> Mask: </td>
+      <td class="TableBody1"><input name="Netmask" size="2" maxlength="2" type="text" id="Netmask" value="<?=$spamconf->getParam("Netmask","Network")?>"><?=_("Do not use x.x.x.x format, Please use Mask length")?></td>
     </tr>
     <tr class="TableBody1">
-      <td scope="row"> 网关： </td>
+      <td scope="row"> <?=_("Default Gateway")?>: </td>
       <td class="TableBody1"><input name="Gateway" type="text" id="Gateway" value="<?=$spamconf->getParam("Gateway","Network")?>"></td>
     </tr>
   </table>
 
-      <p align=center><input type="submit" name="Submit" value="修改"> <input type="reset" name="reset" value="重置"></p>
+      <p align=center><input type="submit" name="Submit" value="<?=_("Modify")?>"> <input type="reset" name="reset" value="<?=_("Reset")?>"></p>
 </form>
 </body>
 </html>
@@ -74,29 +74,29 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>网络设置</title>
+<title><?=_("Network Setting")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
   <table class="TableBorder1" width="80%" border="1" align="center">
     <caption>
-  网络设置
+  <?=_("Network Setting")?>
     </caption>
     <tr>
-      <th scope="row">主机名称： </th>
+      <th scope="row"> Hostname: </th>
       <td class="TableBody1"><?=$spamconf->getParam("Hostname","Network")?></td>
     </tr>
     <tr>
-      <th scope="row">IP ： </th>
+      <th scope="row"> IP: </th>
       <td class="TableBody1"><?=$spamconf->getParam("IP","Network")?></td>
     </tr>
     <tr>
-      <th scope="row"> 网络掩码： </th>
+      <th scope="row"> Mask: </th>
       <td class="TableBody1"><?=$spamconf->getParam("Netmask","Network")?></td>
     </tr>
     <tr>
-      <th scope="row"> 网关： </th>
+      <th scope="row"> <?=_("Default Gateway")?>: </th>
       <td class="TableBody1"><?=$spamconf->getParam("Gateway","Network")?></td>
     </tr>
   </table>

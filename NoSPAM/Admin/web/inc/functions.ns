@@ -15,7 +15,7 @@ function wi($param, &$result)
 	if ($tmpRet != 0){
 ?>
 <script>
-alert('配置已保存，但是系统目前尚无可用License，请联系销售商。');
+alert("<?=_("Config had saved, but This Product has no valid License, Please contact with your product provider.")");
 location.href='/admin/system/serialno.ns';
 </script>
 <?
@@ -37,11 +37,11 @@ function savetofile($str, $file)
 		}else{
 			fclose($fp1);
 			unlink($file.".new");
-			die("无法写入文件，磁盘已满？");
+			die(_("Can not write file, Disk Full?"));
 		}
 		flock($fp, LOCK_UN);
 	}else{
-		echo "无法锁定文件！";
+		echo _("Can not lock file !");
 	}
 	fclose($fp);
 }
@@ -145,11 +145,11 @@ function LogAction($func, $action, $option, $oldValue = "", $newValue = "")
 	if( flock($fp, LOCK_EX) ){
 		$fp1 = fopen(ACTIONLOG,"a");
 		if(fwrite($fp1,$str) != strlen($str))
-			echo ("无法写入文件，磁盘已满？");
+			echo (_("Can not write file, Disk Full?"));
 		fclose($fp1);
 		flock($fp, LOCK_UN);
 	}else{
-		echo "无法锁定文件！";
+		echo _("Can not lock file !");
 	}
 	fclose($fp);
 }

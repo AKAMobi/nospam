@@ -2,27 +2,20 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-$result="时间,邮件方向"
-	. ",发件人IP,发件人地址,收件人地址,主题,尺寸"
-	. ",病毒,病毒名,病毒动作"
-	. ",垃圾度,垃圾原因,垃圾动作"
-	. ",规则,动作类型,动作参数"
-	. ",动态限制,动态描述"
-	. ",审计,审计描述"
-	;
+$result=_("Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,Description");
 	$head = explode(",",$result);
 
 /*
 if(($ret=wi("get_LogHead",$result))==0)
 	$head = explode(",",$result[0]);
 else
-	die("错误代码：$ret");
+	die(_("ErrNo: ").$ret);
 */
 
 if(!file_exists(LOGFILE))
-	die("日志文件不存在");
+	die(_("Error: File do not existed !"));
 
 $grep = "/bin/grep";
 $tail = "/usr/bin/tail";
@@ -54,15 +47,15 @@ if($pos < $total/2){
 	exec("$tail -n ".($total-$pos+$pagenum)." ".LOGFILE." | $grep -m $pagenum ,",$lines);
 }
 
-$dir = array("外到内","内到外");
-$vSpam = array("非垃圾","疑似垃圾","垃圾邮件","黑名单");
-$vVirus = array("非病毒","发现病毒");
-$rAction = array("通过","丢弃");
-$dynamic = array("正常","超限");
+$dir = array(_("Inward"),_("Outward"));
+$vSpam = array(_("NonSpam"),_("Like Spam"),_("Spam"),_("Blacklist"));
+$vVirus = array(_("NonVirus"),_("Virus"));
+$rAction = array(_("Pass"),_("Drop"));
+$dynamic = array(_("NonOverrun"),_("Overrun"));
 ?>
 <html>
 <head>
-<title>日志显示</title>
+<title><?=_("Log Browser")?></title>
 
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -92,7 +85,7 @@ function enableMonitor()
 {
 	interval = oInterval.value;
 	if(interval=="" || isNaN(interval)){
-		alert("页面刷新时间请输入数字");
+		alert(<?=_("Page Refresh Time must be Number")?>);
 		return;
 	}
 	line = document.all.oLine.value;
@@ -106,7 +99,7 @@ function enableMonitor()
 <table width="100%" class="sort-table" id="table-1" cellspacing="1">
 <thead>
 <tr class="TableTitle2">
-	<td nowrap>编号</td>
+	<td nowrap><?=_("No.")?></td>
 	<td nowrap><?=$head[0]?></td>
 	<td nowrap><?=$head[1]?></td>
 	<td nowrap><?=$head[2]?></td>
@@ -224,32 +217,32 @@ st.onsort = function () {
 </script>
 <div align="right" style="font: 14px">
 <?
-echo "<a href='logshow.ns?page=1&pagenum=$pagenum' title='第一页'><<-</a>&nbsp;";
+echo "<a href='logshow.ns?page=1&pagenum=$pagenum' title='1'><<-</a>&nbsp;";
 if($pages > 10000){
 	$temp10000 = $page%10000? intval($page/10000):intval($page/10000)-1;
 	if($temp10000 > 0)
-		echo "<a href='logshow.ns?page=".(($temp10000-1)*10000)."&pagenum=$pagenum' title='前万页'><<<<</a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp10000-1)*10000)."&pagenum=$pagenum' title='10000'><<<<</a>&nbsp;";
 	else
 		echo "<<<<&nbsp;";
 }
 if($pages > 1000){
 	$temp1000 = $page%1000? intval($page/1000):intval($page/1000)-1;
 	if($temp1000 > 0)
-		echo "<a href='logshow.ns?page=".(($temp1000-1)*1000)."&pagenum=$pagenum' title='前千页'><<<</a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp1000-1)*1000)."&pagenum=$pagenum' title='1000'><<<</a>&nbsp;";
 	else
 		echo "<<<&nbsp;";
 }
 if($pages > 100){
 	$temp100 = $page%100? intval($page/100):intval($page/100)-1;
 	if($temp100 > 0)
-		echo "<a href='logshow.ns?page=".(($temp100-1)*100)."&pagenum=$pagenum' title='前百页'><<</a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp100-1)*100)."&pagenum=$pagenum' title='100'><<</a>&nbsp;";
 	else
 		echo "<<&nbsp;";
 }
 if($pages > 10){
 	$temp10 = $page%10? intval($page/10):intval($page/10)-1;
 	if($temp10 > 0)
-		echo "<a href='logshow.ns?page=".(($temp10-1)*10)."&pagenum=$pagenum' title='前十页'><</a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp10-1)*10)."&pagenum=$pagenum' title='10'><</a>&nbsp;";
 	else
 		echo "<&nbsp;";
 }
@@ -263,30 +256,30 @@ while($j<10 && $i <= $pages){
 }
 if($pages > 10){
 	if(($temp10+1)*10 < $pages)
-		echo "<a href='logshow.ns?page=".(($temp10+1)*10+1)."&pagenum=$pagenum' title='后十页'>></a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp10+1)*10+1)."&pagenum=$pagenum' title='10'>></a>&nbsp;";
 	else
 		echo ">&nbsp;";
 }
 if($pages > 100){
 	if(($temp100+1)*100 < $pages)
-		echo "<a href='logshow.ns?page=".(($temp100+1)*100+1)."&pagenum=$pagenum' title='后百页'>>></a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp100+1)*100+1)."&pagenum=$pagenum' title='100'>>></a>&nbsp;";
 	else
 		echo ">>&nbsp;";
 }
 if($pages > 1000){
 	if(($temp1000+1)*1000 < $pages)
-		echo "<a href='logshow.ns?page=".(($temp1000+1)*1000+1)."&pagenum=$pagenum' title='后千页'>>>></a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp1000+1)*1000+1)."&pagenum=$pagenum' title='1000'>>>></a>&nbsp;";
 	else
 		echo ">>>&nbsp;";
 }
 if($pages > 10000){
 	if(($temp10000+1)*10000 < $pages)
-		echo "<a href='logshow.ns?page=".(($temp10000+1)*10000+1)."&pagenum=$pagenum' title='后万页'>>>>></a>&nbsp;";
+		echo "<a href='logshow.ns?page=".(($temp10000+1)*10000+1)."&pagenum=$pagenum' title='10000'>>>>></a>&nbsp;";
 	else
 		echo ">>>>&nbsp;";
 }
-echo "<a href='logshow.ns?page=-1&pagenum=$pagenum' title='最后一页'>->></a>&nbsp;";
-echo "共".$pages."页，";
+echo "<a href='logshow.ns?page=-1&pagenum=$pagenum' title='last'>->></a>&nbsp;";
+echo _("Total")." $pages "._(", ");
 ?>
 <script>
 function jump()
@@ -294,13 +287,13 @@ function jump()
 	p = document.all.page.value;
 	n = document.all.pagenum.value;
 	if(p=="" || isNaN(p)){
-		alert("页数必须为数字！");
+		alert(<?=_("Page Must be Number")?>);
 		return;
 	}
 	location.href="logshow.ns?page="+p+"&pagenum="+n;
 }
 </script>
-每页<select name="pagenum">
+<select name="pagenum">
 <?
 for($i=10;$i<=60;$i+=10){
 	if($i==$pagenum)
@@ -309,16 +302,16 @@ for($i=10;$i<=60;$i+=10){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录，第
-<input type="text" size="5" name="page" value="<?=$page?>">页<input type="button" value="跳转" onclick="jump()">
+</select><?=_(" records/page")?>, <input type="button" value="<?=_("Jump to Page ")?>" onclick="jump()">
+<input type="text" size="5" name="page" value="<?=$page?>">
 </div>
 </div>
 <div id="oMonitor" name="oMonitor" style="display: none"></div>
 <p>
-<input type="checkbox" onclick="switchMonitor()">打开监控<br>
-页面刷新时间：<input type="text" size="2" maxlength="3" d="oInterval" name="oInterval" disabled>秒&nbsp;&nbsp;
-显示最后<select name="oLine" id="oLine" disabled><option value="5">5<option value="10">10<option value="20">20<option value="40">40<option value="80">80</select>行<br>
-<input type="button" value="提交" id="submit" name="submit" onclick="enableMonitor()" disabled>
+<input type="checkbox" onclick="switchMonitor()"><?=_("Realtime Monitor")?><br>
+<?=_("Page Refresh Time")?>: <input type="text" size="2" maxlength="3" d="oInterval" name="oInterval" disabled><?=_("Seconds")?>&nbsp;&nbsp;
+<?=_("Display Last")?><select name="oLine" id="oLine" disabled><option value="5">5<option value="10">10<option value="20">20<option value="40">40<option value="80">80</select><?=_("Lines")?><br>
+<input type="button" value="<?=_("Submit")?>" id="submit" name="submit" onclick="enableMonitor()" disabled>
 </p>
 <iframe id="oDynamic" name="oDynamic" style="display: none" src="../dummy.htm"></iframe>
 </body>

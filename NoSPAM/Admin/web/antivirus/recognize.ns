@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($AntiVirusEngine <= 0)
-	die("对不起，本系统没有开启反病毒功能");
+	die(_("Sorry, This Product has no AntiVirus Engine License"));
 
 if(!adminPerm(PERM_ADMIN_VIRUS))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"]=="修改"){
+if($_POST["Submit"]=="<?=_("Modify")?>"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 		
 	if(isset($_POST["SampleCheck"]) && $_POST["SampleCheck"]=="Y"){
 		$spamconf->setParam("SampleCheck","Y","AntiVirusEngine");
@@ -19,9 +19,9 @@ if($_POST["Submit"]=="修改"){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_AntiVirusEngine",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码$ret";
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 $bCheck = ($spamconf->getParam("SampleCheck","AntiVirusEngine")=="Y");
 $iProbability = intval($spamconf->getParam("SampleProbability","AntiVirusEngine"));
@@ -30,7 +30,7 @@ $iProbability = intval($spamconf->getParam("SampleProbability","AntiVirusEngine"
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>病毒识别</title>
+<title><?=_("AntiVirus")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function change()
@@ -56,8 +56,8 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form method="POST" name="form1" onreset="restore()">
 	<p>
-	<input type="checkbox" name="SampleCheck" value="Y"<?if($bCheck) echo " checked";?> onclick="change()">抽样检查<br>
-	抽样概率：
+	<input type="checkbox" name="SampleCheck" value="Y"<?if($bCheck) echo " checked";?> onclick="change()"><?=_("Sample Check")?><br>
+	<?=_("Sample Rate")?>:
 	<select name="SampleProbability"<?if(!$bCheck) echo " disabled";?>>
 <?
 	for($i=10;$i<=100;$i+=10){
@@ -68,29 +68,29 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 	}
 ?>
 	</select>%<br>
-	<input type="submit" name="Submit" value="修改">
-	<input type="reset" value="恢复">
+	<input type="submit" name="Submit" value="<?=_("Modify")?>">
+	<input type="reset" value="<?=_("Reset")?>">
 	</p>
 </form>
 <?
 	if(!$bAntiVirus){
 ?>
 <script>
-alert("注意：病毒识别引擎未启动");
+alert("<?=_("ALERT: AntiVirus Engine is OFF")?>");
 </script>
 <?
 	}
 }else{
 ?>
 	<p>
-	<input type="checkbox" name="SampleCheck"<?if($bCheck) echo " checked";?> disabled>抽样检查<br>
-	抽样概率：<?=$iProbability?>%
+	<input type="checkbox" name="SampleCheck"<?if($bCheck) echo " checked";?> disabled><?=_("Sample Check")?><br>
+	<?=_("Sample Rate")?>: <?=$iProbability?>%
 	</p>
 <?
 	if(!$bAntiVirus){
 ?>
 <script>
-alert("注意：病毒识别引擎未启动");
+alert("<?=_("ALERT: AntiVirus Engine is OFF")?>");
 </script>
 <?
 	}

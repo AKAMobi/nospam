@@ -2,8 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
-
+	die(_("You have not permission to operate this page"));
 ?>
 
 <HTML>
@@ -17,46 +16,14 @@ if(!adminPerm(PERM_ADMIN_LOG))
 
 <BODY bgcolor="#ffffff" text="#000000" link="#000000" vlink="#000000" alink="#000000">
 
-<DIV><H2>内网流量图</H2></DIV>
-<DIV><A HREF="internalnet.html"><IMG BORDER=1 ALT="internalnet Traffic Graph" SRC="internalnet-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>外网流量图</H2></DIV>
-<DIV><A HREF="externalnet.html"><IMG BORDER=1 ALT="externalnet Traffic Graph" SRC="externalnet-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>TCP 连接状态图</H2></DIV>
-<DIV><A HREF="tcp.html"><IMG BORDER=1 ALT="TCP Connection Graph" SRC="tcp-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>SMTP 连接状态图</H2></DIV>
-<DIV><A HREF="smtp.html"><IMG BORDER=1 ALT="SMTP Connection Graph" SRC="smtp-day.png"></A>
-<BR>
-</DIV>
-
-
-<DIV><H2>CPU 负载图</H2></DIV>
-<DIV><A HREF="cpu.html"><IMG BORDER=1 ALT="cpu Traffic Graph" SRC="cpu-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>内存使用状态图</H2></DIV>
-<DIV><A HREF="mem.html"><IMG BORDER=1 ALT="mem Traffic Graph" SRC="mem-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>磁盘负载图</H2></DIV>
-<DIV><A HREF="hdio.html"><IMG BORDER=1 ALT="hdio Traffic Graph" SRC="hdio-day.png"></A>
-<BR>
-</DIV>
-
-<DIV><H2>磁盘使用率图</H2></DIV>
-<DIV><A HREF="hdfree.html"><IMG BORDER=1 ALT="hdfree Traffic Graph" SRC="hdfree-day.png"></A>
-<BR>
-</DIV>
+<DIV><H2><?=_("Internal Network Traffic")?></H2></DIV> <DIV><A HREF="internalnet.html"><IMG BORDER=1 ALT="internalnet Traffic Graph" SRC="internalnet-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("External Network Traffic")?></H2></DIV> <DIV><A HREF="externalnet.html"><IMG BORDER=1 ALT="externalnet Traffic Graph" SRC="externalnet-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("TCP connect")?></H2></DIV> <DIV><A HREF="tcp.html"><IMG BORDER=1 ALT="TCP Connection Graph" SRC="tcp-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("SMTP connect")?></H2></DIV> <DIV><A HREF="smtp.html"><IMG BORDER=1 ALT="SMTP Connection Graph" SRC="smtp-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("CPU Load")?></H2></DIV> <DIV><A HREF="cpu.html"><IMG BORDER=1 ALT="cpu Traffic Graph" SRC="cpu-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("Memory Usage")?></H2></DIV> <DIV><A HREF="mem.html"><IMG BORDER=1 ALT="mem Traffic Graph" SRC="mem-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("HardDisk Traffic")?></H2></DIV> <DIV><A HREF="hdio.html"><IMG BORDER=1 ALT="hdio Traffic Graph" SRC="hdio-day.png"></A> <BR> </DIV>
+<DIV><H2><?=_("HardDisk Usage")?></H2></DIV> <DIV><A HREF="hdfree.html"><IMG BORDER=1 ALT="hdfree Traffic Graph" SRC="hdfree-day.png"></A> <BR> </DIV>
 
 </BODY>
 </HTML>

@@ -1,9 +1,7 @@
 <?php
 require_once('inc/include.ns');
 if (!isset($AdminID)){
-?>
-	<p>请正常<A HREF="/admin/">登录</a>！</p>
-<?php
+	echo "<p>"._("Please")."<A HREF='/admin/'>"._("Login")."</a>!</p>";
 	exit();
 }
 ?>
@@ -14,7 +12,7 @@ if (!isset($AdminID)){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?php echo $ProductName; ?> 管理系统</title>
+<title><?php echo $ProductName; echo _("Management System");?></title>
 </head>
 
 <frameset rows="80,*" cols="*" frameborder="NO" border="0" framespacing="0">

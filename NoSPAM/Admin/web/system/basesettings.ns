@@ -2,11 +2,11 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"] == "修改"){
+if($_POST["Submit"] == _("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 		
 	$spamconf->setParam("MailHostName",$_POST['MailHostName'],"MailServer");
 	if ($_POST['HeloHostSwitch'] == "Default"){
@@ -23,38 +23,38 @@ if($_POST["Submit"] == "修改"){
 		$spamconf->delParam("TimeoutConnect","MailServer");
 	}else{
 		if (!is_numeric($_POST['TimeoutConnect']))
-			die("SMTP 连接超时值必须为数字");
+			die(_("SMTP Connect Timeout")._(" must be number"));
 		$spamconf->setParam("TimeoutConnect",$_POST['TimeoutConnect'],"MailServer");
 	}
 	if ($_POST['TimeoutRemoteSwitch'] == "Default"){
 		$spamconf->delParam("TimeoutRemote","MailServer");
 	}else{
 		if (!is_numeric($_POST['TimeoutRemote']))
-			die("SMTP 发送邮件超时值必须为数字");
+			die(_("SMTP Remote Deliver Timeout")._(" must be number"));
 		$spamconf->setParam("TimeoutRemote",$_POST['TimeoutRemote'],"MailServer");
 	}
 	if ($_POST['TimeoutSmtpdSwitch'] == "Default"){
 		$spamconf->delParam("TimeoutSmtpd","MailServer");
 	}else{
 		if (!is_numeric($_POST['TimeoutSmtpd']))
-			die("SMTP 接收邮件超时值必须为数字");
+			die(_("SMTP Receive Timeout")._(" must be number"));
 		$spamconf->setParam("TimeoutSmtpd",$_POST['TimeoutSmtpd'],"MailServer");
 	}
 	if ($_POST['DataBytesSwitch'] == "Default"){
 		$spamconf->delParam("DataBytes","MailServer");
 	}else{
 		if (!is_numeric($_POST['DataBytes']))
-			die("最大邮件尺寸值必须为数字");
+			die(_("Mail Max Size")._(" must be number"));
 		$spamconf->setParam("DataBytes",intval($_POST['DataBytes'])*intval($_POST['DataUnit']),"MailServer");
 	}
 	if ($_POST['QueueLifeTimeSwitch'] == "Default"){
 		$spamconf->delParam("QueueLifeTime","MailServer");
 	}else{
 		if (!is_numeric($_POST['QueueLifeTime']))
-			die("邮件队列投递超时值必须为数字");
+			die(_("Queue LifeTime")._(" must be number"));
 		
 		if ((intval($_POST['QueueLifeTime'])*intval($_POST['QueueLifeUnit'])) > (7 * 86400) || intval($_POST['QueueLifeTime']) < 0)
-			die("邮件队列投递超时必须大于0秒小于7天");
+			die(_("Queue LifeTime must > 0s and < 7days"));
 		
 		$spamconf->setParam("QueueLifeTime",intval($_POST['QueueLifeTime'])*intval($_POST['QueueLifeUnit']),"MailServer");
 	}
@@ -62,10 +62,10 @@ if($_POST["Submit"] == "修改"){
 		$spamconf->delParam("ConcurrencyLocal","MailServer");
 	}else{
 		if (!is_numeric($_POST['ConcurrencyLocal']))
-			die("本地并发投递数值必须为数字");
+			die(_("Local Deliver Concurrency")._(" must be number"));
 		
 		if (intval($_POST['ConcurrencyLocal']) > 50 || intval($_POST['ConcurrencyLocal']) < 0)
-			die("本地并发投递数不能小于0或大于50");
+			die(_("Local Deliver Concurrency must between 0-50"));
 			
 		$spamconf->setParam("ConcurrencyLocal",$_POST['ConcurrencyLocal'],"MailServer");
 	}
@@ -73,10 +73,10 @@ if($_POST["Submit"] == "修改"){
 		$spamconf->delParam("ConcurrencyRemote","MailServer");
 	}else{
 		if (!is_numeric($_POST['ConcurrencyRemote']))
-			die("远程并发投递数值必须为数字");
+			die(_("Remote Deliver Concurrency")._(" must be number"));
 		
 		if (intval($_POST['ConcurrencyRemote']) > 500 || intval($_POST['ConcurrencyRemote']) < 0)
-			die("本地并发投递数不能小于0或大于500");
+			die(_("Remote Deliver Concurrency must between 0-500"));
 
 		$spamconf->setParam("ConcurrencyRemote",$_POST['ConcurrencyRemote'],"MailServer");
 	}
@@ -84,16 +84,16 @@ if($_POST["Submit"] == "修改"){
 	$spamconf->save();
 	
 	if(($ret=wi("MailBaseSetting_reset",$result)) == 0){
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	}else{
-		echo "修改失败，错误代码：$ret";
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
 }else{
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>基本参数</title>
+<title><?=_("SMTP Parameters")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -103,55 +103,55 @@ if($_POST["Submit"] == "修改"){
 <form method="POST" name="form1">
 <table borer="0">
 <tr class="TableBody1">
-	<td scope="row"> 服务器名： </td>
+	<td scope="row"> <?=_("Mail HostName")?>: </td>
 	<td>
 		<input name="MailHostName" type="text" value="<?=$spamconf->getParam("MailHostName","MailServer")?>">
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> SMTP HELO主机名： </td>
+	<td scope="row"> <?=_("SMTP HELO Name")?>: </td>
 	<td>
-		<input name="HeloHostSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("HeloHost","MailServer")) echo " checked";?> onclick="form1.HeloHost.disabled=true">缺省：<?=$spamconf->getParam("MailHostName","MailServer")?>
+		<input name="HeloHostSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("HeloHost","MailServer")) echo " checked";?> onclick="form1.HeloHost.disabled=true"><?=_("Default")?>: <?=$spamconf->getParam("MailHostName","MailServer")?>
 		<input name="HeloHostSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("HeloHost","MailServer")) echo " checked";?> onclick="form1.HeloHost.disabled=false">
 		<input name="HeloHost" type="text" value="<?=$spamconf->getParam("HeloHost","MailServer")?>"<?if (!$spamconf->hasParam("HeloHost","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody1">
-	<td scope="row"> SMTP 问候语： </td>
+	<td scope="row"> <?=_("SMTP Greeting")?>: </td>
 	<td>
-		<input name="SmtpGreetingSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("SmtpGreeting","MailServer")) echo " checked";?> onclick="form1.SmtpGreeting.disabled=true">缺省：ESMTP
+		<input name="SmtpGreetingSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("SmtpGreeting","MailServer")) echo " checked";?> onclick="form1.SmtpGreeting.disabled=true"><?=_("Default")?>: ESMTP
 		<input name="SmtpGreetingSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("SmtpGreeting","MailServer")) echo " checked";?> onclick="form1.SmtpGreeting.disabled=false">
 		<input name="SmtpGreeting" type="text" value="<?=$spamconf->getParam("SmtpGreeting","MailServer")?>"<?if (!$spamconf->hasParam("SmtpGreeting","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> SMTP 连接超时： </td>
+	<td scope="row"> <?=_("SMTP Connect Timeout")?>: </td>
 	<td>
-		<input name="TimeoutConnectSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=true">缺省：60
+		<input name="TimeoutConnectSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=true"><?=_("Default")?>: 60
 		<input name="TimeoutConnectSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutConnect","MailServer")) echo " checked";?> onclick="form1.TimeoutConnect.disabled=false">
 		<input name="TimeoutConnect" type="text" value="<?=$spamconf->getParam("TimeoutConnect","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutConnect","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody1">
-	<td scope="row"> SMTP 发送邮件超时： </td>
+	<td scope="row"> <?=_("SMTP Remote Deliver Timeout")?>: </td>
 	<td>
-		<input name="TimeoutRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=true">缺省：1200
+		<input name="TimeoutRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=true"><?=_("Default")?>: 1200
 		<input name="TimeoutRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutRemote","MailServer")) echo " checked";?> onclick="form1.TimeoutRemote.disabled=false">
 		<input name="TimeoutRemote" type="text" value="<?=$spamconf->getParam("TimeoutRemote","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutRemote","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> SMTP 接收邮件超时： </td>
+	<td scope="row"> <?=_("SMTP Receive Timeout")?>: </td>
 	<td>
-		<input name="TimeoutSmtpdSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=true">缺省：1200
+		<input name="TimeoutSmtpdSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=true"><?=_("Default")?>: 1200
 		<input name="TimeoutSmtpdSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " checked";?> onclick="form1.TimeoutSmtpd.disabled=false">
 		<input name="TimeoutSmtpd" type="text" value="<?=$spamconf->getParam("TimeoutSmtpd","MailServer")?>"<?if (!$spamconf->hasParam("TimeoutSmtpd","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody1">
-	<td scope="row"> 最大邮件尺寸： </td>
+	<td scope="row"> <?=_("Mail Max Size")?>: </td>
 	<td>
-		<input name="DataBytesSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=true;form1.DataUnit.disabled=true;">不限制：0
+		<input name="DataBytesSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=true;form1.DataUnit.disabled=true;"><?=_("0 is No Limit")?>
 		<input name="DataBytesSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("DataBytes","MailServer")) echo " checked";?> onclick="form1.DataBytes.disabled=false;form1.DataUnit.disabled=false;">
 		<input name="DataBytes" type="text" value="<?=$spamconf->getParam("DataBytes","MailServer")?>"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " disabled";?>>
 		<select name="DataUnit"	type="text"<?if (!$spamconf->hasParam("DataBytes","MailServer")) echo " disabled";?>>
@@ -161,79 +161,79 @@ if($_POST["Submit"] == "修改"){
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> 邮件队列投递超时： </td>
+	<td scope="row"> <?=_("Queue LifeTime")?>: </td>
 	<td>
-		<input name="QueueLifeTimeSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=true;form1.QueueLifeUnit.disabled=true;">缺省：7天
+		<input name="QueueLifeTimeSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=true;form1.QueueLifeUnit.disabled=true;"><?=_("Default")?>: 7<?=_("Days")?>
 		<input name="QueueLifeTimeSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("QueueLifeTime","MailServer")) echo " checked";?> onclick="form1.QueueLifeTime.disabled=false;form1.QueueLifeUnit.disabled=false;">
 		<input name="QueueLifeTime" type="text" value="<?=$spamconf->getParam("QueueLifeTime","MailServer")?>"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
 		<select name="QueueLifeUnit" type="text"<?if (!$spamconf->hasParam("QueueLifeTime","MailServer")) echo " disabled";?>>
-			<option value="1" selected>秒
-			<option value="3600">小时
-			<option value="86400">天
+			<option value="1" selected><?=_("Seconds")?>
+			<option value="3600"><?=_("Hours")?>
+			<option value="86400"><?=_("Days")?>
 		</select>
 	</td>
 </tr>
 <tr class="TableBody1">
-	<td scope="row"> 本地并发投递数： </td>
+	<td scope="row"> <?=_("Local Deliver Concurrency")?>: </td>
 	<td>
-		<input name="ConcurrencyLocalSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=true">缺省：10
+		<input name="ConcurrencyLocalSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=true"><?=_("Default")?>: 10
 		<input name="ConcurrencyLocalSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " checked";?> onclick="form1.ConcurrencyLocal.disabled=false">
 		<input name="ConcurrencyLocal" type="text" value="<?=$spamconf->getParam("ConcurrencyLocal","MailServer")?>"<?if (!$spamconf->hasParam("ConcurrencyLocal","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 <tr class="TableBody2">
-	<td scope="row"> 远程并发投递数： </td>
+	<td scope="row"> <?=_("Remote Deliver Concurrency")?>: </td>
 	<td>
-		<input name="ConcurrencyRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=true">缺省：20
+		<input name="ConcurrencyRemoteSwitch" type="radio" value="Default"<?if (!$spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=true"><?=_("Default")?>: 20
 		<input name="ConcurrencyRemoteSwitch" type="radio" value="Custom"<?if ($spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " checked";?> onclick="form1.ConcurrencyRemote.disabled=false">
 		<input name="ConcurrencyRemote" type="text" value="<?=$spamconf->getParam("ConcurrencyRemote","MailServer")?>"<?if (!$spamconf->hasParam("ConcurrencyRemote","MailServer")) echo " disabled";?>>
 	</td>
 </tr>
 </table>
-<input type="submit" name="Submit" value="修改">
+<input type="submit" name="Submit" value="<?=_("Modify")?>">
 </form>
 <?
 	}else{
 ?>
 <table borer="0">
 <tr>
-	<th scope="row"> 服务器名： </th>
+	<th scope="row"> <?=_("Mail HostName")?>: </th>
 	<td><?=$spamconf->getParam("MailHostName","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> SMTP HELO主机名： </th>
+	<th scope="row"> <?=_("SMTP HELO Name")?>: </th>
 	<td><?=$spamconf->getParam("HeloHost","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> SMTP 问候语： </th>
+	<th scope="row"> <?=_("SMTP Greeting")?>: </th>
 	<td><?=$spamconf->getParam("SmtpGreeting","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> SMTP 连接超时： </th>
+	<th scope="row"> <?=_("SMTP Connect Timeout")?>: </th>
 	<td><?=$spamconf->getParam("TimeoutConnect","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> SMTP 发送邮件超时： </th>
+	<th scope="row"> <?=_("SMTP Remote Deliver Timeout")?>: </th>
 	<td><?=$spamconf->getParam("TimeoutRemote","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> SMTP 接收邮件超时： </th>
+	<th scope="row"> <?=_("SMTP Receive Timeout")?>: </th>
 	<td><?=$spamconf->getParam("TimeoutSmtpd","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> 最大邮件尺寸： </th>
+	<th scope="row"> <?=_("Mail Max Size")?>: </th>
 	<td><?=$spamconf->getParam("DataBytes","MailServer")?>Bytes</td>
 </tr>
 <tr>
-	<th scope="row"> 邮件队列投递超时： </th>
+	<th scope="row"> <?=_("Queue LifeTime")?>: </th>
 	<td><?=$spamconf->getParam("QueueLifeTime","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> 本地并发投递数： </th>
+	<th scope="row"> <?=_("Local Deliver Concurrency")?>: </th>
 	<td><?=$spamconf->getParam("ConcurrencyLocal","MailServer")?></td>
 </tr>
 <tr>
-	<th scope="row"> 远程并发投递数： </th>
+	<th scope="row"> <?=_("Remote Deliver Concurrency")?>: </th>
 	<td><?=$spamconf->getParam("ConcurrencyRemote","MailServer")?></td>
 </tr>
 </table>

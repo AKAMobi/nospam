@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["RefuseSpam"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	$spamconf->setParam("RefuseSpam",$_POST["RefuseSpam"],"SpamEngine");
 	$tagpos = $_POST["tagpos"];
 	$spamconf->setParam("TagHead","N","SpamEngine");
@@ -23,9 +23,9 @@ if($_POST["RefuseSpam"]){
 	$spamconf->setParam("MaybeSpamTag",$_POST["MaybeSpamTag"],"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$RefuseSpam = $spamconf->getParam("RefuseSpam","SpamEngine");
 	$cTagHead = $spamconf->getParam("TagHead","SpamEngine");
@@ -39,7 +39,7 @@ if($_POST["RefuseSpam"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>转发设置</title>
+<title><?=_("Spam Treatment")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -48,38 +48,38 @@ if($_POST["RefuseSpam"]){
   <p>
     <label>
     <input type="radio" name="RefuseSpam" value="N"<? if($RefuseSpam=="N") echo " checked"; ?>>
-    通过垃圾邮件</label>
+    <?=_("Tag & Pass")?></label>
     <br>
     <label>
     <input type="radio" name="RefuseSpam" value="Y"<? if($RefuseSpam=="Y") echo " checked"; ?>>
-    弹回垃圾邮件</label>
+    <?=_("Perm. Reject")?></label>
     <br>
     <label>
     <input type="radio" name="RefuseSpam" value="D"<? if($RefuseSpam=="D") echo " checked"; ?>>
-    丢弃垃圾邮件</label>
+    <?=_("Drop")?></label>
   </p>
   <p>
-    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?>>在邮件头上打标记<br>
-	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?>>在主题上打标记<br>
-	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?>>在邮件头标记原因
+    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?>><?=_("Tag on header")?><br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?>><?=_("Tag on Subject")?><br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?>><?=_("Tag Reason on header")?>
 </p>
-  <p> 垃圾邮件的主题标记：
+  <p> <?=_("Spam Subject Tag Text: ")?>
     <input name="SpamTag" type="text" id="SpamTag" value="<?=$SpamTag?>">
-  推荐：【垃圾邮件】<br>
-	  疑似垃圾的主题标记：
+  <?=_("Recommend: ")._("[Spam]")?><br>
+  <?=_("Like Spam Subject Tag Text: ")?>
     <input name="MaybeSpamTag" type="text" id="MaybeSpamTag" value="<?=$MaybeSpamTag?>">
-  推荐：【疑似垃圾】</p>
+  <?=_("Recommend: ")._("[Like Spam]")?>
   <p>
-    <input type="reset" name="reset" value="缺省">
-	<input type="button" value="推荐值" onclick="form1.SpamTag.value='【垃圾邮件】';form1.MaybeSpamTag.value='【疑似垃圾】';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
-    <input type="submit" name="submit" value="修改">
+    <input type="reset" name="reset" value="<?=_("Default")?>">
+	<input type="button" value="<?=_("Recommend")?>" onclick="form1.SpamTag.value='<?=_("[Spam]")?>';form1.MaybeSpamTag.value='<?=_("[Like Spam]")?>';form1.tagpos[0].checked=true;form1.tagpos[1].checked=true;form1.tagpos[2].checked=true;">
+    <input type="submit" name="submit" value="<?=_("Modify")?>">
 </p>
 </form>
 <?
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}
@@ -93,7 +93,7 @@ alert("注意：反垃圾引擎未启动");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>转发设置</title>
+<title><?=_("Spam Treatment")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -101,27 +101,29 @@ alert("注意：反垃圾引擎未启动");
   <p>
     <label>
     <input type="radio" name="RefuseSpam" value="N"<? if($RefuseSpam=="N") echo " checked"; ?> disabled>
-    允许垃圾邮件通过</label>
+    <?=_("Tag & Pass")?></label>
     <br>
     <label>
     <input type="radio" name="RefuseSpam" value="Y"<? if($RefuseSpam=="Y") echo " checked"; ?> disabled>
-    直接丢弃垃圾邮件</label>
+    <?=_("Perm. Reject")?></label>
+    <br>
+    <label>
+    <input type="radio" name="RefuseSpam" value="D"<? if($RefuseSpam=="D") echo " checked"; ?> disabled>
+    <?=_("Drop")?></label>
   </p>
   <p>
-    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?> disabled>在邮件头上打标记<br>
-	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?> disabled>在主题上打标记<br>
-	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?> disabled>在邮件头标记原因
+    <input name="tagpos[]" type="checkbox" id="tagpos" value="TagHead"<? if($cTagHead=="Y") echo " checked"; ?> disabled><?=_("Tag on header")?><br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagSubject"<? if($cTagSubject=="Y") echo " checked"; ?> disabled><?=_("Tag on Subject")?><br>
+	<input name="tagpos[]" type="checkbox" id="tagpos" value="TagReason"<? if($cTagReason=="Y") echo " checked"; ?> disabled><?=_("Tag Reason on header")?>
 </p>
-  <p> 垃圾邮件的主题标记：
-    <?=$SpamTag?><br>
-	  疑似垃圾的主题标记：
-    <?=$MaybeSpamTag?>
+  <p> <?=_("Spam Subject Tag Text: ")?> <?=$SpamTag?><br>
+  <?=_("Like Spam Subject Tag Text: ")?> <?=$MaybeSpamTag?>
     </p>
 <?
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}

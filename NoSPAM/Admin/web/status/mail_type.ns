@@ -2,12 +2,11 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
-
+	die(_("You have not permission to operate this page"));
 ?>
 <html>
 <head>
-<title>邮件分析显示</title>
+<title><?=_("Mail Type Stat.")?></title>
 <META HTTP-EQUIV="Refresh" CONTENT="300">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Cache-Control" content="no-cache">
@@ -16,35 +15,30 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>邮件类别分布</H1><BR>
+<H1><?=_("Mail Type Stat.")?></H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
-Total: 处理邮件总数 <br>Received: 接收数 <br>Send: 发送数 <br>Normal: 正常邮件数<br>
-Virus: 病毒数 <br>Spam: 垃圾数 <br>MatchRule: 匹配内容过滤规则数 <br>Overrun: 动态超限数 <br>Audit: 提交审计数
+<?=_("All & Each Type of Mail Stat.:")?>
 <HR>
-<H3>每日 图表 (5 分钟 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="mail_type-day.gif" ALT="day">
+<H3><?=_("Daily")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="mail_type-day.gif" ALT="day">
 <!-- End `Daily' Graph (5 Minute -->
 
 <!-- Begin `Weekly' Graph (30 Minute -->
 <HR>
-<H3>每周 图表 (30 分钟 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="mail_type-week.gif" ALT="week">
+<H3><?=_("Weekly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="mail_type-week.gif" ALT="week">
 <!-- End `Weekly' Graph (30 Minute -->
 
 <!-- Begin `Monthly' Graph (2 Hour -->
 <HR>
-<H3>每月 图表 (2 小时 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="mail_type-month.gif" ALT="month">
+<H3><?=_("Monthly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="mail_type-month.gif" ALT="month">
 <!-- End `Monthly' Graph (2 Hour -->
 
 <!-- Begin `Yearly' Graph (1 Day -->
 <HR>
-<H3>每年 图表 (1 天 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="mail_type-year.gif" ALT="year">
+<H3><?=_("Yearly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="mail_type-year.gif" ALT="year">
 <!-- End `Yearly' Graph (1 Day -->
 </BODY>
 

@@ -3,16 +3,16 @@ require_once("../inc/include.ns");
 require_once("flist.inc");
 
 if($DynamicEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["submit"]=="提交"){
+if($_POST["submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	if(!is_numeric($_POST["Counts"]) || !is_numeric($_POST["Seconds"]) || !is_numeric($_POST["Block"]))
-		die("错误，请输入数字");
+		die(_("Must Input a Number"));
     if(intval($_POST["Counts"])==0 || intval($_POST["Seconds"])==0){
         $Counts = 0;
         $Seconds = 0;
@@ -24,9 +24,9 @@ if($_POST["submit"]=="提交"){
 	$spamconf->setParam("SendRatePerSubject",$SendRatePerSubject,"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SendRatePerSubject",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	list($Counts,$Seconds,$Block) = explode("/",$spamconf->getParam("SendRatePerSubject","DynamicEngine"));
 ?>
@@ -34,7 +34,7 @@ if($_POST["submit"]=="提交"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>邮件重复限制</title>
+<title><?=_("Mails per Subject")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -43,47 +43,47 @@ if($_POST["submit"]=="提交"){
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
-每封邮件最大的发送频率：<br>
-每<input type="text" size="2" name="Seconds" value="<?=$Seconds?>">秒<br>
-同一封邮件最多发送<input type="text" size="2" name="Counts" value="<?=$Counts?>">次<br>
-超限封禁时间为<input type="text" size="2" name="Block" value="<?=$Block?>">秒<br>
-(0表示不限制，建议时间设置不要大于 1800 秒)<br>
-<input type="submit" name="submit" value="提交">
+<?=_("Mails per Subject")?>: <br>
+<?=_("in")?><input type="text" size="2" name="Seconds" value="<?=$Seconds?>"><?=_("Seconds")?><br>
+<?=_("One Mail should be sent no more than")?><input type="text" size="2" name="Counts" value="<?=$Counts?>"><?=_(" times")?><br>
+<?=_("or will be Block")?><input type="text" size="2" name="Block" value="<?=$Block?>"><?=_("Seconds")?><br>
+(<?=_("0 is No Limit").", "._("But you'd better no more then 1800 seconds.")?>)
+<input type="submit" name="submit" value="<?=_("Submit")?>">
 </form>
 <?
 }else{
 ?>
-每封邮件最大的发送频率：<br>
-每&nbsp;<font color="Red"><?=$Seconds?></font>&nbsp;秒<br>
-同一封邮件最多发送&nbsp;<font color="Red"><?=$Counts?></font>&nbsp;次<br>
-超限封禁时间为&nbsp;<font color="Red"><?=$Block?></font>&nbsp;秒<br>
-(0表示不限制，建议时间设置不要大于 1800 秒)
+<?=_("Mails per Subject")?>: <br>
+<?=_("in")?> <font color="Red"><?=$Seconds?></font> <?=_("Seconds")?><br>
+<?=_("One Mail should be sent no more than")?> <font color="Red"><?=$Counts?></font><?=_(" times")?><br>
+<?=_("or will be Block")?><font color="Red"><?=$Block?></font> <?=_("Seconds")?><br>
+(<?=_("0 is No Limit").", "._("But you'd better no more then 1800 seconds.")?>)
 <?
 }
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteSubjectList","DynamicEngine","邮件白名单","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteSubjectList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteSubjectList","DynamicEngine","邮件白名单","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteSubjectList","DynamicEngine","邮件白名单","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
-	SaveData("WhiteSubjectList","DynamicEngine","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
-	DrawListTable("WhiteSubjectList","DynamicEngine","邮件白名单","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
+	SaveData("WhiteSubjectList","DynamicEngine",_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteSubjectList","DynamicEngine","邮件白名单","邮件主题",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteSubjectList","DynamicEngine",_("Subject WhiteList"),_("Subject"),(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 
 if(!$bDynamic){
 ?>  
 <script>
-alert("注意：动态限制引擎未开启！");
+alert("<?=_("ALERT: Overrun Limit Engine is OFF")?>");
 </script>
 <?
 }

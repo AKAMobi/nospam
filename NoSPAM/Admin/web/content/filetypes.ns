@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $action = $_POST["action"];
 if(!$action)
@@ -61,7 +61,7 @@ function showdetail(str)
 	document.all.oDetail.style.top = y-10;
 	document.all.oDetail.style.left = x+15;
 	document.all.oDetail.style.display = "";	
-	document.all.oDetail.innerHTML = "<b>详细扩展名列表：</b><br>"+str;
+	document.all.oDetail.innerHTML = "<b><?=_("All Ext List")?>: </b><br>"+str;
 }
 
 function hidedetail()
@@ -75,23 +75,12 @@ function hidedetail()
 <form method="POST">
 <input type="hidden" name="action" value="del" />
 <table class="RuleTB" width="100%">
-<caption>自定义文件类型</caption>
+<caption><?=_("User Define File Type")?></caption>
 <tr class="RuleTBH">
 <?
-	if(adminPerm(PERM_ADMIN_WRITE)){
-?>
-	<th>选择</th>
-<?
-	}
-?>
-	<th>中文描述</th>
-	<th>附件扩展名</th>
-<?
-	if(adminPerm(PERM_ADMIN_WRITE)){
-?>
-	<th>编辑</th>
-<?
-	}
+	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Select")."</th>"; }
+	echo "<th>"._("Description")."</th><th>"._("Attachment Ext")."</th>";
+	if(adminPerm(PERM_ADMIN_WRITE)){ echo "<th>"._("Edit")."</th>"; }
 ?>
 </tr>
 <?
@@ -119,7 +108,7 @@ if($iSize > 0){
 <?
 	if($count > 3){
 		echo $exts[0];
-		echo "<br>...省略".($count-2)."项...<br>";
+		echo "<br>..."._("omit ").($count-2)._(" items")"...<br>";
 		echo $exts[$count-1];
 	}else{
 		for($s=0;$s<$count;$s++){
@@ -134,8 +123,8 @@ if($iSize > 0){
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 	<td align="center">
-		<input type="button" value="修改" onclick="location.href='filetypes.ns?action=modify&id=<?=$id?>'">
-		<input type="button" value="删除" onclick="location.href='filetypes.ns?action=del&id=<?=$id?>'">
+		<input type="button" value="<?=_("Modify")?>" onclick="location.href='filetypes.ns?action=modify&id=<?=$id?>'">
+		<input type="button" value="<?=_("Delete")?>" onclick="location.href='filetypes.ns?action=del&id=<?=$id?>'">
 	</td>
 <?
 	}
@@ -162,8 +151,8 @@ function jump()
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<input type="button" value="添加" onclick="location.href='filetypes.ns?action=add'" /> 
-	<input type="submit" value="批量删除" />
+	<input type="button" value="<?=_("Add")?>" onclick="location.href='filetypes.ns?action=add'" /> 
+	<input type="submit" value="<?=_("Delete")?>" />
 <?
 	}
 ?>
@@ -187,7 +176,7 @@ else
 	echo "<a href='".$_SERVER['PHP_SELF']."?page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
 echo "<a href='".$_SERVER['PHP_SELF']."?page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
 ?>
-跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?=_("Jump to Page ")?><select name="oPage" id="oPage" onchange="jump()">
 <?
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -196,7 +185,7 @@ for($i = 1; $i <= $pages; $i++){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+</select><?=_(", ")?><select name="oPagenum" id="oPagenum" onchange="jump()">
 <?
 for($i = 5; $i <= 30; $i+=5){
 	if($i == $pagenum)
@@ -205,7 +194,7 @@ for($i = 5; $i <= 30; $i+=5){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录
+</select><?=_(" records/page")?>
 </td>
 </tr>
 </table>
@@ -221,7 +210,7 @@ function del()
 	global $FileType;
 	$ids = $_REQUEST["id"];
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 
 	if(is_array($ids)){
 		if(count($ids) > 0)
@@ -239,7 +228,7 @@ function savefile()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 
 	ksort($FileType,SORT_NUMERIC);
 	$str = $MaxTypeID."\n";
@@ -256,7 +245,7 @@ function add()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 	$id = $MaxTypeID+1;
 	if($id < 150)
 		$id = 150;
@@ -270,15 +259,15 @@ function add()
 	<input type="hidden" size="10" maxlength="8" name="id" value="<?=$id?>">
 	<table border="1" width="600">
 	<tr>
-		<th scope="row">中文描述：</th>
+		<th scope="row"><?=_("Description")?>: </th>
 		<td align="left"><input type="text" name="name"></td>
 	</tr>
 	<tr>
-		<th scope="row">附件扩展名：</th>
+		<th scope="row"><?=_("Attachment Ext")?>: </th>
 		<td align="left"><TEXTAREA name="note" cols="10" rows="10"></TEXTAREA></td>
 	</tr>
 	<tr>
-		<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
+		<th colspan="2"><input type="submit" value="<?=_("Save")?>" /><input type="reset" value="<?=_("Reset")?>" /></th>
 	</tr>
 	<table>
 	</form>
@@ -293,11 +282,11 @@ function modify()
 {
 	global $FileType;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 	
 	$id = $_GET["id"];
 	if(!array_key_exists($id,$FileType))
-		die("错误的分类编号");
+		die(_("Group Number Error"));
 ?>
 <html>
 <body>
@@ -309,17 +298,17 @@ function modify()
 	<input type="hidden" size="10" maxlength="8" name="id" value="<?=$id?>">
 	<table border="1" width="600">
 	<tr>
-		<th scope="row">中文描述：</th>
+		<th scope="row"><?=_("Description")?>: </th>
 		<td align="left"><input type="text" name="name" value="<?=$FileType[$id][0]?>"></td>
 	</tr>
 	<tr>
-		<th scope="row">附件扩展名：</th>
+		<th scope="row"><?=_("Attachment Ext")?>: </th>
 		<td align="left">
 			<TEXTAREA name="note" cols="10" rows="10"><?=str_replace(",","\n",$FileType[$id][1])?></TEXTAREA>
 		</td>
 	</tr>
 	<tr>
-		<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
+		<th colspan="2"><input type="submit" value="<?=_("Save")?>" /><input type="reset" value="<?=_("Reset")?>" /></th>
 	</tr>
 	<table>
 	</form>
@@ -334,16 +323,16 @@ function save()
 {
 	global $FileType,$MaxTypeID;
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 
 	$id = $_POST["id"];
 	$name = $_POST["name"];
 	$note = str_replace("\n",",",str_replace("\r","",trim($_POST["note"])));
 	if(!is_numeric($id))
-		die("分类编号必须为数字！");
+		die(_("Group Number Must be Numeric !"));
 	if($_POST["type"]!="modify"){
 		if(array_key_exists($id,$FileType))
-			die("相同的分类编号已存在！");
+			die(_("This Group Number has existed !"));
 		$MaxTypeID++;
 	}
 

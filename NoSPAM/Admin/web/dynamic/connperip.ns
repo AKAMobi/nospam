@@ -3,28 +3,28 @@ require_once("../inc/include.ns");
 require_once("flist.inc");
 
 if($DynamicEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["submit"]=="提交"){
+if($_POST["submit"]==_("Submit")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
-	if(!is_numeric($_POST["ConnPerIP"])) die("请输入数字");
+		die(_("You have not permission to modify system config"));
+	if(!is_numeric($_POST["ConnPerIP"])) die(_("Must Input a Number"));
 	$spamconf->setParam("ConnPerIP",$_POST["ConnPerIP"],"DynamicEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ConnPerIP",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>同时连接数</title>
+<title><?=_("Concurrent SMTP Connect per IP")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -33,57 +33,57 @@ if($_POST["submit"]=="提交"){
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
-  <p>每个 IP 可以同时发起的并发连接：
+  <p><?=_("Concurrent SMTP Connect per IP")?>: 
     <input name="ConnPerIP" type="text" size="2" id="ConnPerIP" value="<?=$spamconf->getParam("ConnPerIP","DynamicEngine")?>">
- (0 表示不限制 )
- 	<br>注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。
+ (<?=_("0 is No Limit")?>)
+ 	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
 </p>
   <p>
-    <input type="submit" name="submit" value="提交">
+    <input type="submit" name="submit" value="<?=_("Submit")?>">
 </p>
 </form>
 <?
 }else{
 ?>
-  <p>每个 IP 可以同时发起的并发连接：
-    &nbsp;<font color="Red"><?=$spamconf->getParam("ConnPerIP","DynamicEngine")?></font>&nbsp;秒
- (0 表示不限制 )
- 	<br>注意：并发连接设置无论保护方向设置为任何值，都保护且只保护‘外到内’的方向。
+  <p><?=_("Concurrent SMTP Connect per IP")?>: 
+    &nbsp;<font color="Red"><?=$spamconf->getParam("ConnPerIP","DynamicEngine")?></font>&nbsp;<?=_("Seconds")?>
+ (<?=_("0 is No Limit")?>)
+ 	<br><?=_("Note: Concurrent SMTP Connect per IP only function on Inward traffic.")?>
 </p>
 <?
 }
 
 switch($_GET["action"]){
 	case "add":
-	DrawAddTable("WhiteIPConcurList","DynamicEngine","IP白名单","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawAddTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "del":
 	DeleteData("WhiteIPConcurList","DynamicEngine",(bool)adminPerm(PERM_ADMIN_WRITE));
 	if(($ret=wi("reset_ConnPerIP",$result))!=0){
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 		exit(-1);
 	}
-	DrawListTable("WhiteIPConcurList","DynamicEngine","IP白名单","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "modify":
-	DrawModifyTable("WhiteIPConcurList","DynamicEngine","IP白名单","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawModifyTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	case "save":
-	SaveData("WhiteIPConcurList","DynamicEngine","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	SaveData("WhiteIPConcurList","DynamicEngine","IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	if(($ret=wi("reset_ConnPerIP",$result))!=0){
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 		exit(-1);
 	}
-	DrawListTable("WhiteIPConcurList","DynamicEngine","IP白名单","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 	break;
 	default:
-	DrawListTable("WhiteIPConcurList","DynamicEngine","IP白名单","ＩＰ地址",(bool)adminPerm(PERM_ADMIN_WRITE));
+	DrawListTable("WhiteIPConcurList","DynamicEngine",_("IP WhiteList"),"IP",(bool)adminPerm(PERM_ADMIN_WRITE));
 }
 	
 if(!$bDynamic){
 ?>
 <script>
-alert("注意：动态限制引擎未开启！");
+alert("<?=_("ALERT: Overrun Limit Engine is OFF")?>");
 </script>
 <?
 }

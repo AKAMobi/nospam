@@ -1,52 +1,52 @@
 <?
 require_once('functions.ns');
 
-$KeyPos[1] = "主题";
-$KeyPos[2] = "发件人";
-$KeyPos[3] = "收件人";
-$KeyPos[4] = "抄送人";
-$KeyPos[5] = "信头";
-$KeyPos[6] = "信体";
-$KeyPos[7] = "全文";
-$KeyPos[8] = "附件";
-$KeyPos[9] = "客户端IP";
-$KeyPos[10] = "源客户端IP";
+$KeyPos[1] = _("Subject");
+$KeyPos[2] = _("Mail From");
+$KeyPos[3] = _("To");
+$KeyPos[4] = _("CC");
+$KeyPos[5] = _("Header");
+$KeyPos[6] = _("Body");
+$KeyPos[7] = _("Mail Content");
+$KeyPos[8] = _("Attachment");
+$KeyPos[9] = _("Last Relay IP");
+$KeyPos[10] = _("Sender IP");
 
-$KeyMatchType[0] = "字符串模糊匹配";
-$KeyMatchType[1] = "正则表达式匹配";
-$KeyMatchType[6] = "单个IP地址匹配";
-$KeyMatchType[7] = "连续IP地址匹配";
-$KeyMatchType[8] = "IP/MASK匹配";
-$KeyMatchType[9] = "字符串精确匹配";
+$KeyMatchType[0] = _("String Include");
+$KeyMatchType[1] = _("Regular Express Match");
+$KeyMatchType[6] = _("Single IP Match");
+$KeyMatchType[7] = _("IP Seg Match");
+$KeyMatchType[8] = _("IP/Mask Match");
+$KeyMatchType[9] = _("String Exact Match");
 
-$SizePos[1] = "全文";
-$SizePos[2] = "信头";
-$SizePos[3] = "信体";
-$SizePos[4] = "附件大小";
-$SizePos[5] = "附件个数";
-$SizePos[150] = "TO,CC,BCC收件人总数";
+$SizePos[1] = _("Mail Content");
+$SizePos[2] = _("Header");
+$SizePos[3] = _("Body");
+$SizePos[4] = _("Attachment Size");
+$SizePos[5] = _("Attachment Counts");
+$SizePos[150] = _("To,CC,Bcc Total");
 
-$FileType[1] = array("压缩文件","");
-$FileType[2] = array("声音文件","");
-$FileType[3] = array("图片文件","");
-$FileType[4] = array("文本类型","");
-$FileType[5] = array("可执行文件","");
-$FileType[6] = array("其他类型","");
+$FileType[1] = array(_("ZIP File"),"");
+$FileType[2] = array(_("Audio File"),"");
+$FileType[3] = array(_("Image File"),"");
+$FileType[4] = array(_("Text File"),"");
+$FileType[5] = array(_("Exe File"),"");
+$FileType[6] = array(_("Other File"),"");
 
-$Actions[0] = "通过";
-$Actions[1] = "拒绝";
-$Actions[2] = "丢弃";
-$Actions[3] = "隔离";
-$Actions[4] = "剥离附件";
-$Actions[5] = "延迟处理";
-$Actions[6] = "无操作";
-$Actions[7] = "接受";
-$Actions[8] = "添加收件人";
-$Actions[9] = "删除收件人";
-$Actions[10] = "改变收件人";
-$Actions[11] = "添加信头记录";
-$Actions[12] = "删除信头记录";
-$Actions[13] = "修改信头记录";
+$Actions[0] = _("Pass");
+$Actions[1] = _("Reject");
+$Actions[2] = _("Drop");
+$Actions[3] = _("Quarantine");
+$Actions[4] = _("Strip Attachment");
+$Actions[5] = _("Delay");
+$Actions[6] = _("NOOP");
+$Actions[7] = _("Accept");
+$Actions[8] = _("Add Receiptor");
+$Actions[9] = _("Del Receiptor");
+$Actions[10] = _("Replace Receiptor");
+$Actions[11] = _("Add Header");
+$Actions[12] = _("Del Header");
+$Actions[13] = _("Replace Header");
 
 $Category = array();
 

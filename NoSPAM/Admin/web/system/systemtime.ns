@@ -2,20 +2,20 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["SystemTime"]){
 	if(($ret=wi("reset_DateTime ".$_POST["SystemTime"],$result))==0)
-		echo "修改时间成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改时间失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>系统时间</title>
+<title><?=_("System Clock")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 var oInterval = "";
@@ -48,10 +48,10 @@ function realtime()
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 <form name="form1" method="post" action="">
-  系统时间：
+  <?=_("System Clock")?>:
     <input name="SystemTime" type="text" id="SystemTime" value="<?=date("Y-m-d H:i:s")?>">
-    <input type="checkbox" name="synch" onclick="realtime()">同步本地<br>
-    <input type="submit" name="Submit" value="提交">
+    <input type="checkbox" name="synch" onclick="realtime()"><?=_("Sync")?><br>
+    <input type="submit" name="Submit" value="<?=_("Submit")?>">
 </form>
 <?
 	}else{

@@ -1,18 +1,18 @@
 <?
 require_once("../inc/include.ns");
 if($ArchiveEngine <= 0)
-	die("对不起，本系统没有开启审计功能");
+	die(_("Sorry, This Product has no Archive Engine License"));
 
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["ArchiveEngine"]){
 	$spamconf->setParam("ArchiveEngine",$_POST["ArchiveEngine"],"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -20,7 +20,7 @@ if($_POST["ArchiveEngine"]){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
-<title>引擎开关</title>
+<title><?=_("Engine Switch")?></title>
 </head>
 
 <body>
@@ -28,13 +28,13 @@ if($_POST["ArchiveEngine"]){
   <p>
     <label>
     <input type="radio" name="ArchiveEngine" value="Y"<? if($bArchive) echo " checked"; ?>>
-    启用</label>
+    <?=_("On")?></label>
     <br>
     <label>
     <input type="radio" name="ArchiveEngine" value="N"<? if(!$bArchive) echo " checked"; ?>>
-    关闭</label>
+    <?=_("Off")?></label>
     <br>
-    <input type="submit" name="submit" value="修改">
+    <input type="submit" name="submit" value="<?=_("Modify")?>">
   </p>
 </form>
 </body>

@@ -135,7 +135,7 @@ function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -147,7 +147,7 @@ function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
 	    $adminInfo = fgets($hAdminProfile,1024); 
 	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note, $IPs, $Domains) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
-	    	echo "错误：用户id已存在！<br>";
+	    	echo _("Error: This Admin ID has existed !")."<br>";
 		   	flock($hAdminProfile, LOCK_UN);
 	    	return ERR_IDEXIST;
 	    }
@@ -186,7 +186,7 @@ function isPasswordRight($id, $passwd){
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -232,7 +232,7 @@ function getAdminInfo($id){
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -276,7 +276,7 @@ function setPassword($id, $passwd){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -356,7 +356,7 @@ function getAdminList(){
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -397,7 +397,7 @@ function modifyAdminPrivilidge($id,$Perm){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -482,7 +482,7 @@ function deleteAdmin($id){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -556,7 +556,7 @@ function setIPList($id, $iplist){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 
@@ -640,7 +640,7 @@ function modifyAdmin($id, $passwd, $privilidge, $note, $ip, $domain)
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "错误：管理员数据文件无法打开。<br>";
+        echo _("Error: Can not Open Administrators Data file.")."<br>";
 		exit(-1);
     }
 

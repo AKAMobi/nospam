@@ -2,7 +2,7 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 ?>
 <html>
 <head>
@@ -162,7 +162,7 @@ function showStat()
 	eTime.setDate(document.all.eDate.value);
 	eTime.setHours(document.all.eHour.value);
 	if(sTime.valueOf() > eTime.valueOf()){
-		alert('开始时间不能大于结束时间！');
+		alert("<?=_("Start Time can not later than End Time")?>");
 		return;
 	}
 	document.all.statFrame.src = "showstat.ns?s="+(sTime.valueOf()/1000)+"&e="+(eTime.valueOf()/1000);
@@ -171,19 +171,19 @@ function showStat()
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="initSelect()">
-统计开始时间：
-<select id="sYear" name="sYear" onchange="recalcDate('s')"></select>年
-<select id="sMonth" name="sMonth" onchange="recalcDate('s')"></select>月
-<select id="sDate" name="sDate"></select>日
-<select id="sHour" name="sHour"></select>时
+<?=_("Start Time")?>:
+<select id="sYear" name="sYear" onchange="recalcDate('s')"></select>/
+<select id="sMonth" name="sMonth" onchange="recalcDate('s')"></select>/
+<select id="sDate" name="sDate"></select>
+<select id="sHour" name="sHour"></select>
 <br>
-统计结束时间：
-<select id="eYear" name="eYear" onchange="recalcDate('e')"></select>年
-<select id="eMonth" name="eMonth" onchange="recalcDate('e')"></select>月
-<select id="eDate" name="eDate"></select>日
-<select id="eHour" name="eHour"></select>时
+<?=_("End Time")?>:
+<select id="eYear" name="eYear" onchange="recalcDate('e')"></select>/
+<select id="eMonth" name="eMonth" onchange="recalcDate('e')"></select>/
+<select id="eDate" name="eDate"></select>
+<select id="eHour" name="eHour"></select>
 <br>
-<input type="button" value="察看结果" onclick="showStat()">
+<input type="button" value="OK!" onclick="showStat()">
 <div id="stat" name="stat"></div>
 <iframe id="statFrame" name="statFrame" style="display: none" src="dummy.htm"></iframe>
 </body>

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["BayesEnabled"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	if($_POST["BayesEnabled"]=="Y"){
 		$spamconf->setParam("BayesEnabled","Y","SpamEngine");
@@ -25,9 +25,9 @@ if($_POST["BayesEnabled"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bBayes = ($spamconf->getParam("BayesEnabled","SpamEngine")=="Y")? true:false;
 
@@ -45,7 +45,7 @@ if($_POST["BayesEnabled"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>贝叶斯过滤器</title>
+<title><?=_("Bayes Filter")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -74,39 +74,39 @@ function change(bState)
 
 <body>
 <form name="form1" method="post">
-  <p>贝叶斯识别开关：<br>
+  <p><?=_("Bayes Switch: ")?><br>
     <label>
     <input id="idBayesY" type="radio" name="BayesEnabled" value="Y"<? if($bBayes) echo " checked" ?> onclick="change(false)">
-  开启</label><br>
+  <?=_("On")?></label><br>
     <label>
     <input id="idBayesN" name="BayesEnabled" type="radio" value="N"<? if(!$bBayes) echo " checked" ?> onclick="change(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <p>
-  <p>自学习功能：
+  <p><?=_("Self-Study: ")?>
     <label>
     <input id="idAutoLearnY" type="radio" name="AutoLearn" value="Y" <? if($bAutoLearn) echo " checked" ?> <? if(!$bBayes) echo " disabled "; ?> >
-  开启</label> 
+  <?=_("On")?></label> 
     <label>
     <input id="idAutoLearnN" name="AutoLearn" type="radio" value="N" <? if(!$bAutoLearn) echo " checked" ?> <? if(!$bBayes) echo " disabled "; ?> >
-  关闭</label><br>
+  <?=_("Off")?></label><br>
  
-    作为正常邮件学习的最高分：<input name="NonSpamMinScore" type="input" id="idNonSpamMinScore" value="<?=$iNonSpamScore?>" <? if(!$bBayes) echo " disabled";?> > 推荐值：0.1<br>
-    作为垃圾邮件学习的最低分：<input name="SpamMinScore" type="input" id="idSpamMinScore" value="<?=$iSpamScore?>" <? if(!$bBayes) echo " disabled"; ?> > 推荐值：20
+    <?=_("Highest Score Self-Study as NonSpam: ")?><input name="NonSpamMinScore" type="input" id="idNonSpamMinScore" value="<?=$iNonSpamScore?>" <? if(!$bBayes) echo " disabled";?> > <?=_("Recommend: ")?>0.1<br>
+    <?=_("Lowest Score Self-Study as Spam: ")?><input name="SpamMinScore" type="input" id="idSpamMinScore" value="<?=$iSpamScore?>" <? if(!$bBayes) echo " disabled"; ?> > <?=_("Recommend: ")?>20
   <p>
 
-    贝叶斯过滤器能够工作最少需要的数据量：<br>
-	垃圾邮件数据：<input name="MinSpamKlg" type="input" id="idMinKlgSpam" value="<?=$iMinKnowledgeSpam?>"<? if(!$bBayes) echo " disabled";?>> 推荐值：400<br>
-	非垃圾邮件数据：<input name="MinNonSpamKlg" type="input" id="idMinKlgNonSpam" value="<?=$iMinKnowledgeNonSpam?>"<? if(!$bBayes) echo " disabled"; ?>> 推荐值：400<br>
+    <?=_("Min Knowledge that Bayes Filter can work: ")?><br>
+	<?=_("Min Spam Knowledge: ")?><input name="MinSpamKlg" type="input" id="idMinKlgSpam" value="<?=$iMinKnowledgeSpam?>"<? if(!$bBayes) echo " disabled";?>> <?=_("Recommend: ")?>400<br>
+	<?=_("Min NonSpam Knowledge: ")?><input name="MinNonSpamKlg" type="input" id="idMinKlgNonSpam" value="<?=$iMinKnowledgeNonSpam?>"<? if(!$bBayes) echo " disabled"; ?>> <?=_("Recommend: ")?>400<br>
   <p>
-    <input type="reset" name="reset" value="恢复">
-    <input type="submit" name="submit" value="提交">
+    <input type="reset" name="reset" value=<?=_("Reset")?>>
+    <input type="submit" name="submit" value=<?=_("Submit")?>>
   </p>
 </form>
 <?
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert(<?=_("ALERT: AntiSpam Engine is OFF")?>);
 </script>
 <?
 		}

@@ -2,13 +2,13 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_AUDIT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 switch($_GET["action"])
 {
 	case "dl":
 	if(!file_exists(ACTIONLOG))
-		die("错误！文件不存在！");
+		die(_("Error: File do not existed !"));
 	header("Cache-control: private");
 	header("Content-type: application/text");
 	header("Content-Disposition: attachment; filename=Operation.log");
@@ -18,10 +18,10 @@ switch($_GET["action"])
 	case "del":
 	if ($AdminID == SYSOPID){
 		fclose(fopen(ACTIONLOG,"w"));
-		echo "清空成功！";
-		LogAction("操作日志","清空","");
+		echo _("Log Flush Success !");
+		LogAction(_("Op Log"),_("Flush"),"");
 	} else {
-		echo "无此权限";
+		echo _("No Permission");
 	}
 	exit();
 }
@@ -59,25 +59,25 @@ if($pos < $total/2){
 <html>
 <head>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<title>操作日志审计</title>
+<title><?=_("Op Log")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
 </head>
 <body>
 <table class="sort-table" id="table-1" cellspacing="0" border="0">
-<caption><h3>操作日志审计</h3></caption>
+<caption><h3><?=_("Op Log")?></h3></caption>
 <thead>
 <tr>
-	<td nowrap>序号</td>
-	<td nowrap>时间</td>
-	<td nowrap>管理员</td>
-	<td nowrap>IP地址</td>
-	<td nowrap>更改文件</td>
-	<td nowrap>更改选项</td>
-	<td nowrap>动作</td>
-	<td nowrap>旧值</td>
-	<td nowrap>新值</td>
+	<td nowrap><?=_("No.")?></td>
+	<td nowrap><?=_("Time")?></td>
+	<td nowrap><?=_("Admin")?></td>
+	<td nowrap>IP</td>
+	<td nowrap><?=_("File")?></td>
+	<td nowrap><?=_("Param")?></td>
+	<td nowrap><?=_("Action")?></td>
+	<td nowrap><?=_("Before Modify")?></td>
+	<td nowrap><?=_("After Modify")?></td>
 </tr>
 </thead>
 <tbody>
@@ -108,35 +108,35 @@ if (count($lines) > 0){
 <tfoot>
 <tr>
 	<td colspan="9">
-	<input type="button" value="下载" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=dl','_top')">
-	<?if ($AdminID == SYSOPID) {?><input type="button" value="清空" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=del'"><?}?>
+	<input type="button" value="<?=_("Download")?>" onclick="window.open('<?=$_SERVER['PHP_SELF']?>?action=dl','_top')">
+	<?if ($AdminID == SYSOPID) {?><input type="button" value="<?=_("Flush")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=del'"><?}?>
 <?
-echo "<a href='javascript:go(1)' title='第一页'><<-</a>&nbsp;";
+echo "<a href='javascript:go(1)' title='1'><<-</a>&nbsp;";
 if($pages > 10000){
 	$temp10000 = $page%10000? intval($page/10000):intval($page/10000)-1;
 	if($temp10000 > 0)
-		echo "<a href='javascript:go(".(($temp10000-1)*10000).")' title='前万页'><<<<</a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp10000-1)*10000).")' title='10000'><<<<</a>&nbsp;";
 	else
 		echo "<<<<&nbsp;";
 }
 if($pages > 1000){
 	$temp1000 = $page%1000? intval($page/1000):intval($page/1000)-1;
 	if($temp1000 > 0)
-		echo "<a href='javascript:go(".(($temp1000-1)*1000).")' title='前千页'><<<</a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp1000-1)*1000).")' title='1000'><<<</a>&nbsp;";
 	else
 		echo "<<<&nbsp;";
 }
 if($pages > 100){
 	$temp100 = $page%100? intval($page/100):intval($page/100)-1;
 	if($temp100 > 0)
-		echo "<a href='javascript:go(".(($temp100-1)*100).")' title='前百页'><<</a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp100-1)*100).")' title='100'><<</a>&nbsp;";
 	else
 		echo "<<&nbsp;";
 }
 if($pages > 10){
 	$temp10 = $page%10? intval($page/10):intval($page/10)-1;
 	if($temp10 > 0)
-		echo "<a href='javascript:go(".(($temp10-1)*10).")' title='前十页'><</a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp10-1)*10).")' title='10'><</a>&nbsp;";
 	else
 		echo "<&nbsp;";
 }
@@ -150,32 +150,32 @@ while($j<10 && $i <= $pages){
 }
 if($pages > 10){
 	if(($temp10+1)*10 < $pages)
-		echo "<a href='javascript:go(".(($temp10+1)*10+1).")' title='后十页'>></a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp10+1)*10+1).")' title='10'>></a>&nbsp;";
 	else
 		echo ">&nbsp;";
 }
 if($pages > 100){
 	if(($temp100+1)*100 < $pages)
-		echo "<a href='javascript:go(".(($temp100+1)*100+1).")' title='后百页'>>></a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp100+1)*100+1).")' title='100'>>></a>&nbsp;";
 	else
 		echo ">>&nbsp;";
 }
 if($pages > 1000){
 	if(($temp1000+1)*1000 < $pages)
-		echo "<a href='javascript:go(".(($temp1000+1)*1000+1).")' title='后千页'>>>></a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp1000+1)*1000+1).")' title='1000'>>>></a>&nbsp;";
 	else
 		echo ">>>&nbsp;";
 }
 if($pages > 10000){
 	if(($temp10000+1)*10000 < $pages)
-		echo "<a href='javascript:go(".(($temp10000+1)*10000+1).")' title='后万页'>>>>></a>&nbsp;";
+		echo "<a href='javascript:go(".(($temp10000+1)*10000+1).")' title='10000'>>>>></a>&nbsp;";
 	else
 		echo ">>>>&nbsp;";
 }
-echo "<a href='javascript:go(-1)' title='最后一页'>->></a>&nbsp;";
-echo "共".$pages."页，";
+echo "<a href='javascript:go(-1)' title='end'>->></a>&nbsp;";
+echo _("Total")." $pages "._(", ");
 ?>
-每页<select name="pagenum">
+<select name="pagenum">
 <?
 for($i=10;$i<=60;$i+=10){
 	if($i==$pagenum)
@@ -184,8 +184,8 @@ for($i=10;$i<=60;$i+=10){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录，第
-<input type="text" size="5" name="page" value="<?=$page?>">页<input type="button" value="跳转" onclick="go(document.all.page.value)">
+</select><?=_(" records/page")?>, <input type="button" value="<?=_("Jump to Page ")?>" onclick="go(document.all.page.value)">
+<input type="text" size="5" name="page" value="<?=$page?>">
 	</td>
 </tr>
 </tfoot>
@@ -228,7 +228,7 @@ st.onsort = function () {
 function go(p)
 {
 	if(p=="" || isNaN(p)){
-		alert("页数必须为数字！");
+		alert(_("Page Must be Number"));
 		return;
 	}
 	
