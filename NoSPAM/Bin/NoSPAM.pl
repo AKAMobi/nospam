@@ -406,6 +406,7 @@ _POD_
 
 
 	&MailBaseSetting_reset;
+	&SystemEngine_reset;
 
 	return $err;
 }
