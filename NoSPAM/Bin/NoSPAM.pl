@@ -760,7 +760,7 @@ sub reset_ConnPerIP
 		return 20;
 	}
 	
-	if ( system("$iptables -I ConnPerIP -p tcp --syn --dport 25 -m iplimit --iplimit-above $ParalConn -j REJECT") ){
+	if ( system("$iptables -I ConnPerIP -p tcp --syn --dport 25 -m connlimit --connlimit-above $ParalConn -j REJECT") ){
 		return 21;
 	}
 
@@ -921,6 +921,7 @@ sub get_DynamicEngineDBData
 
 	my $item;
 	my @result;
+	$AMD->lock_DBM_r;
 	foreach $item ( keys %{$ns_obj} ){
 		$item =~ s/,/£¬/g;
 		@result = ($item);
@@ -934,6 +935,7 @@ sub get_DynamicEngineDBData
 		}
 		print join(',',@result), "\n";
 	}
+	$AMD->unlock_DBM;
 
 	return 0;
 }
