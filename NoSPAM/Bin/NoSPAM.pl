@@ -29,7 +29,12 @@ my $licenseconf = &get_licenseconf;
 my $zlog = new AKA::Mail::Log;
 my $iputil = new AKA::IPUtil;
 
-my $action_map = { 'reset_Network' => [\&reset_Network, ""],
+my $action_map = { 
+			'start_System' => [\&start_System, "Init system on boot" ],
+
+			'reset_Network' => [\&reset_Network, ""],
+			'reset_ConnPerIP' => [\&reset_ConnPerIP, ""],
+			'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""],
 			'get_GW_Mode' => [\&get_GW_Mode, ""], 
 			'set_GW_Mode' => [\&set_GW_Mode, ""], 
 			'get_Serial' => [\&get_Serial, ""],
@@ -57,7 +62,7 @@ if ( ! defined $action ){
 	&release_lock($lock);
 	exit $ret;
 }else{
-	$zlog->fatal( "NoSPAM System Util unsuport action: $action" );
+	$zlog->fatal( "NoSPAM System Util unsuport action: $action " . join(' ',@param) );
 	exit 0;
 }
 
@@ -66,6 +71,33 @@ if ( ! defined $action ){
 exit -1;
 
 #############################
+sub start_System
+{
+	my $ret;
+
+	$ret = &reset_Network;
+	$ret ||= &reset_ConnPerIP;
+	
+	# Share Memory for Dynamic Engine.
+	$ret ||= &init_IPC;
+
+	$zlog->log("NoSPAM System Restarted, Util init ret $ret" );
+
+	return $ret;
+}
+
+sub init_IPC
+{
+	use AKA::Mail::Dynamic;
+
+	my $AMD = new AKA::Mail::Dynamic;
+
+	if ( ! $AMD->attach( 1 ) ){
+		return 10;
+	}
+
+	return 0;
+}
 
 sub usage
 {
@@ -354,6 +386,15 @@ sub reset_Network_set_sysctl
 sub reset_Network_update_hostname
 {
 	my $mode = shift;
+
+	my %host_map;
+	open ( FD, "</etc/hosts" ) or die "can't open hosts";
+	while ( <FD> ){
+		chomp;
+		if ( /(\d+\.\d+\.\d+\.\d+)\s+(.+)/ ){
+			$host_map{$1} = $2;;
+		}
+	}
 }
 
 sub reset_Network_update_smtproutes
@@ -430,6 +471,74 @@ sub reset_Network
 		$zlog->fatal( "NoSPAM Util::reset_Network update hosts & smtproute file failure!" );
 		return -2;
 	}
+
+	return 0;
+}
+
+sub reset_ConnPerIP
+{
+	my $ParalConn = $conf->{config}->{ConnPerIP} || 0;
+
+	$zlog->debug("NoSPAM Util::reset_ConnPerIP to $ParalConn");
+
+	# delete link to input
+	if ( system("$iptables -D INPUT -j ConnPerIP") ) {
+		# It's ok.
+	}
+
+	# 0 means no limit
+	return if ( 0==$ParalConn );
+
+	# flush, create it if not exist
+	if ( system("$iptables -F ConnPerIP") ) {
+		if ( system("$iptables -N ConnPerIP") ) {
+			return 10;
+		}
+	}
+
+	if ( system("$iptables -I INPUT -j ConnPerIP") ) {
+		return 20;
+	}
+	
+	if ( system("$iptables -I ConnPerIP -p tcp --syn --dport 25 -m iplimit --iplimit-above $ParalConn -j REJECT") ){
+		return 21;
+	}
+
+	return 0;
+}
+
+sub reset_ConnRatePerIP
+{
+	my $ConnRate = $conf->{config}->{ConnRatePerIP} || 0;
+
+	$zlog->debug("NoSPAM Util::reset_ConnRatePerIP to $ConnRate");
+
+=pod
+	now to do it in perl module.
+
+	# delete link to input
+	if ( system("$iptables -D INPUT -j ConnRatePerIP") ) {
+		# It's ok.
+	}
+
+	# 0 means no limit
+	return if ( 0==$ConnRate );
+
+	# flush, create it if not exist
+	if ( system("$iptables -F ConnRatePerIP") ) {
+		if ( system("$iptables -N ConnRatePerIP") ) {
+			return -10;
+		}
+	}
+
+	if ( system("$iptables -I INPUT -j ConnRatePerIP") ) {
+		return -20;
+	}
+	
+	if ( system("$iptables -I ConnRatePerIP -p tcp --syn --dport 25 -m iplimit --iplimit-above $ParaConn -j REJECT >/dev/null 2>&1") ){
+		return -21;
+	}
+=cut
 
 	return 0;
 }
