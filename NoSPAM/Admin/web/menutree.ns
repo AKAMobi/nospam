@@ -99,6 +99,7 @@ if($ServerMode == "Server"){
 	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
 	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
 	  gs.add( new WebFXTreeItem('外存IO','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('外存使用率','status/hdfree.html','main') );
 	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
 	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
