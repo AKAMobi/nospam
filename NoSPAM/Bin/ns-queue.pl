@@ -350,7 +350,9 @@ sub working_copy {
   my $begin_content='';
   my $still_attachment='';
   while (<TMPFILE>) {
+#&debug( "TMPFILE still_headers: $still_headers $_" );
    if ( $still_headers ){
+#&debug( "TMPFILE in still_headers: $_" );
 	if ( /^Subject: ([^\n]+)/i) {
 #&debug( "SUBJECT $_" );
 		$decoded_subject = $1 || '';
@@ -373,7 +375,7 @@ sub working_copy {
 	$still_headers = 0 if (/^(\r|\r\n|\n)$/);
    }
 	# we only precess mail header here.
-	last;
+	last unless $still_headers;
   }
   close(TMPFILE)||&error_condition("cannot close $scandir/$wmaildir/tmp/$file_id - $!");
 
