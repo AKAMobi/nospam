@@ -83,14 +83,35 @@ sub is_traceable
 	my @mx_n_a ;
 	
 	my $start_time = [gettimeofday];
-	if ( grep(/^Mail$/i,@TraceType) ){
-		push ( @mx_n_a, $self->get_mx_from_domain( $from_domain, $res ) );
+
+
+	my ($old_alarm_sig,$old_alarm);
+
+	eval {
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
+		$old_alarm = alarm 30;
+
+		if ( grep(/^Mail$/i,@TraceType) ){
+			push ( @mx_n_a, $self->get_mx_from_domain( $from_domain, $res ) );
+		}
+
+		if ( grep(/^IP$/i,@TraceType) ){
+			push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
+		}
+	};
+	my $alarm_status=$@;
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
+	alarm $old_alarm;
+	
+	$self->{dns_query_time} = int(1000*tv_interval ( $start_time, [gettimeofday] ));
+
+	if ($alarm_status and $alarm_status ne "" ) { 
+		$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) timeout" );
+#		如果 DNS 超时，我们应该判断邮件为正常邮件
+		return 2;
 	}
 
-	if ( grep(/^IP$/i,@TraceType) ){
-		push ( @mx_n_a, $self->get_a_from_domain( $from_domain, $res ) );
-	}
-	$self->{dns_query_time} = int(1000*tv_interval ( $start_time, [gettimeofday] ));
 
 	# TODO: add HAND support
 
