@@ -11,6 +11,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
+/*
+ * 底层接口，负责取回网卡的 MAC 数据
+ */
 unsigned char * get_mac_serial( char* result )
 {
 	register int fd, intrface;
@@ -57,6 +60,9 @@ unsigned char * get_mac_serial( char* result )
 	return 0;
 }
 
+/*
+ * 底层接口，负责取回硬盘序列号
+ */
 unsigned char* get_hd_serial(unsigned char* result) {
 	static char *sealcode = "IENCOASI2304KJASDIWE234984ALSKDWMZXOIUDWD";
 	struct hd_driveid id;
@@ -84,6 +90,9 @@ unsigned char* get_hd_serial(unsigned char* result) {
 	return result;
 }
 
+/*
+ * 上层接口，这个函数返回硬件识别号
+ */
 unsigned char * get_prodno ( unsigned char* prodno )
 {
 	unsigned char serial_orig[1024] = "";
@@ -100,6 +109,9 @@ unsigned char * get_prodno ( unsigned char* prodno )
 
 }
 
+/*
+ * 传入 License 文件数据，返回文件数据的校验值
+ */
 unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* license_ex )
 {
 	unsigned char license_ex_orig[1024] = "";
@@ -119,6 +131,9 @@ unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* lice
 
 
 
+/*
+ * 传入硬件识别号，生成 License 号
+ */
 unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 {
 	unsigned char license_orig[1024] = "";
@@ -136,6 +151,9 @@ unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 	return license;
 }
 
+/*
+ * 传入 License 文件，检查文件是否合法；
+ */
 int check_license_file ( const char* filepath )
 {
 	char license_file[32768];
