@@ -142,6 +142,11 @@ int maildirquota_countfile(const char *filename);
 
 void maildir_deliver_quota_warning(const char *dir, const int percent);
 
+// by lfan
+int maildir_openquotafile_init(struct maildirsize *info,
+		               const char *maildir,
+			       const char *newquota);
+
 #ifdef  __cplusplus
 }
 #endif

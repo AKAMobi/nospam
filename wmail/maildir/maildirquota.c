@@ -53,7 +53,9 @@ static void parsequotastr(const char *, struct maildirquota *);
 
 /* Read the maildirsize file */
 
-static int maildir_openquotafile_init(struct maildirsize *info,
+// by lfan, correct maildirsize computation error
+//static int maildir_openquotafile_init(struct maildirsize *info,
+int maildir_openquotafile_init(struct maildirsize *info,
 				      const char *maildir,
 				      const char *newquota);
 
@@ -66,7 +68,8 @@ int maildir_openquotafile(struct maildirsize *info, const char *maildir)
 	return (maildir_openquotafile_init(info, maildir, NULL));
 }
 
-static int maildir_openquotafile_init(struct maildirsize *info,
+// by lfan, remove static
+int maildir_openquotafile_init(struct maildirsize *info,
 				      const char *maildir,
 				      const char *newquota)
 {
