@@ -309,7 +309,8 @@ sub check_quota_exceed_ex
 		if( $wait_time > 0 ){
 			# change to minute
 			$wait_time = int($wait_time/60);
-			# 由于超额，还没到被解封时间，仍然返回OVERRUN
+			# 由于超额，还没到被解封时间，仍然返回OVERRUN，并且增加封禁时间
+			$ns_obj_who->{_DENY_TO_} += $deny_sec;
 			return (1, "发送超限，还需$wait_time分钟解封");
 		}else{
 			delete $ns_obj_who->{_DENY_TO_};
