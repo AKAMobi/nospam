@@ -1,7 +1,7 @@
 <?php
 require_once ('config.ns');
 require_once ('../inc/include.ns');
-require_once("../inc/mimeDecode.ns");
+require_once('../inc/mimedecode.ns');
 ob_start ();
 
 session_start ();
