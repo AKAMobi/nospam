@@ -9,7 +9,7 @@ if (!isset($AdminID)){
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/frameset.dtd">
 <!-- saved from url=(0038)https://192.168.239.59/admin/frames.ns -->
-<HTML><HEAD><TITLE>时空反邮件垃圾系统 管理系统</TITLE>
+<HTML><HEAD><TITLE> <?php echo $ProductName; ?> 管理系统</TITLE>
 <META http-equiv=Content-Type content="text/html; charset=gb2312">
 <META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
 <FRAMESET border=0 frameSpacing=0 rows=160,* frameBorder=NO cols=*>

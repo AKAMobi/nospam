@@ -48,12 +48,12 @@ if(!adminPerm(PERM_ADMIN_LOG))
 <BR>
 </DIV>
 
-<DIV><H2>外存负载图</H2></DIV>
+<DIV><H2>磁盘负载图</H2></DIV>
 <DIV><A HREF="hdio.html"><IMG BORDER=1 ALT="hdio Traffic Graph" SRC="hdio-day.png"></A>
 <BR>
 </DIV>
 
-<DIV><H2>外存使用率图</H2></DIV>
+<DIV><H2>磁盘使用率图</H2></DIV>
 <DIV><A HREF="hdfree.html"><IMG BORDER=1 ALT="hdfree Traffic Graph" SRC="hdfree-day.png"></A>
 <BR>
 </DIV>

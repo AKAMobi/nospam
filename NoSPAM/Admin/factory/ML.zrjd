@@ -5,31 +5,24 @@ use POSIX qw(strftime);
 my $prodno = $ARGV[0];
 die "pls provide prodno\n" unless $prodno ;
 
-use AKA::License;
-$AL = new AKA::License;
-
 my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
-
-my $hw_lic = "CPU=6000;RAM=1025000";
-my $hw_lic_enc = $AL->encode($hw_lic);
 
 $License = <<_LICENSE_;
 ForSell=No
 GenerateDate=$now
-ExpireDate=2004-9-30
+ExpireDate=2004-09-04
 Version=2
 
-FactoryName=北京网警创新信息安全技术有限公司
-ProductName=网警邮通神  NETCOP-MFS-100
+FactoryName=中软吉大
+ProductName=垃圾邮件过滤系统
 ProductSN=$prodno
 
-ServerGatewaySwitchable=Y
-ServerGateway=Gateway,Server,MXRelay
+ServerGatewaySwitchable=N
+ServerGateway=Gateway,MXRelay
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
 MailGateway=100
-MailServer=100
 MailRelay=100
 AntiVirusEngine=100
 DynamicEngine=100
@@ -38,15 +31,11 @@ ContentEngine=100
 ArchiveEngine=100
 GAInterface=100
 
-
-#独立服务器的License限制；
-MailServerMaxUser=1000
-MailServerMaxDomain=10
-MailServerMaxQuota=3000000000
-
 _LICENSE_
 
-$License .= "\nHardwareLicense=$hw_lic_enc\n" if ( $hw_lic_enc );
+
+use AKA::License;
+$AL = new AKA::License;
 
 print make_license( $License, $prodno ), "\n";
 

@@ -195,12 +195,12 @@ int net_process( string &result,
 			io->connect (UNIXSOCKETFILE);
 			break;
 		} catch ( ... ) {
-			if (retry++<3){
+			if (retry++<10){
 				sleep(3);
 				continue;
 			}
 			log ( "cant connect to engine" );
-			qns_err_n_exist ( "443 Engine temporarily unavailable.", 150 );
+			qns_err_n_exist ( "443 noSPAM Engine temporarily unavailable.", 150 );
 			return 150;
 		}
 	}

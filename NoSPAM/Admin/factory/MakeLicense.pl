@@ -19,7 +19,7 @@ GenerateDate=$now
 ExpireDate=2004-9-10
 Version=2
 
-FactoryName=Debug Security Technology Co., Ltd.
+FactoryName=Suns Security Technology Co., Ltd.
 ProductName=noSPAM AntiSPAM System V2
 ProductSN=$prodno
 

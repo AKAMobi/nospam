@@ -3,3 +3,96 @@ UserLogUpload=N
 MailGatewayInternalIP=10.4.3.7
 MailGatewayInternalMask=24
 ContentEngineMaxMailSize=6048576
+SpamAssassinMaxMailSize=131072
+
+[SpamAssassin]
+## Optional Score Increases
+score=HTML_COMMENT_8BITS        0
+score=UPPERCASE_25_50           0
+score=UPPERCASE_50_75           0
+score=UPPERCASE_75_100  0
+
+score=HEAD_ILLEGAL_CHARS 0
+score=SUBJ_ILLEGAL_CHARS 0
+score=DCC_CHECK 4.000
+score=RAZOR2_CHECK 2.500
+score=BAYES_99 4.300
+score=BAYES_90 3.500
+score=BAYES_80 3.000
+
+# 系统内置，不需修改
+dns_available=yes
+
+use_bayes_rules=1
+bayes_learn_during_report=1
+bayes_use_hapaxes=1
+bayes_use_chi2_combining=1
+bayes_journal_max_size=1024000
+bayes_expiry_max_db_size=1500000
+bayes_auto_expire=1
+bayes_learn_to_journal=0
+bayes_path=/home/NoSPAM/sa/bayes
+bayes_file_mode=0700
+
+lock_method=flock
+fold_headers=1
+envelope_sender_header=Return-Path
+
+razor_config=/etc/razor/razor-agent.conf
+pyzor_options=/home/NoSPAM/sa/pyzor/readyexec --homedir /home/NoSPAM/sa/pyzor
+pyzor_path=/usr/bin/readyexec
+dcc_home=/etc/dcc
+dcc_dccifd_path=/etc/dcc/dccifd
+
+auto_whitelist_path=/home/NoSPAM/sa/auto-whitelist
+auto_whitelist_file_mode=0700
+
+# 系统自动根据配置修改，无用户界面
+trusted_networks=211.151.91.27/24
+
+# 界面上可以修改
+
+# DCC
+use_dcc=1
+dcc_timeout=10
+dcc_body_max=999999
+dcc_fuz1_max=999999
+dcc_fuz2_max=999999
+
+# Pyzor
+use_pyzor=1
+pyzor_timeout=10
+pyzor_max=5
+
+#Razor
+use_razor2=1
+razor_timeout=10
+
+#RBL
+skip_rbl_checks=0
+rbl_timeout=15
+
+check_mx_attempts=2
+check_mx_delay=5
+
+#header SYMBOLIC_TEST_NAME eval:check_rbl('set', 'zone' [, 'sub-test'])
+#header SYMBOLIC_TEST_NAME eval:check_rbl_txt('set', 'zone')
+#header SYMBOLIC_TEST_NAME eval:check_rbl_sub('set', 'sub-test')
+
+#AWL
+use_auto_whitelist=1
+auto_whitelist_factor=0.5
+
+#Bayes
+use_bayes=1
+bayes_auto_learn=1
+bayes_auto_learn_threshold_nonspam=0.1
+bayes_auto_learn_threshold_spam=12
+
+#bayes_ignore_header header_name
+#bayes_ignore_from add@ress.com
+#bayes_ignore_to add@ress.com
+
+bayes_min_ham_num=200
+bayes_min_spam_num=200
+

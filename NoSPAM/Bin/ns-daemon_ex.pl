@@ -65,8 +65,9 @@ sub process_request {
 		$old_alarm_sig = $SIG{ALRM};
 		local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
 
-		# 2 minute timeout
-		$old_alarm = alarm( 120 );
+		# 5 minute timeout
+		# /av/dns/spamassassin(rbl,urirbl,dcc,razor,pyzor etc.)
+		$old_alarm = alarm( 300 );
 
 		$AM->net_process_ex;
 	}; if ($@) {
