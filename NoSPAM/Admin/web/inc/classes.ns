@@ -417,6 +417,11 @@ class License
 		return $parts[0];
 	}
 	
+	function getProductName()
+	{
+		return $this->params["ProductName"];
+	}
+	
 	function LicenseHTML()
 	{
 		return $this->params["LicenseHTML"];

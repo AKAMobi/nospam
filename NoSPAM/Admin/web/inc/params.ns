@@ -129,6 +129,8 @@ if(file_exists(LICENSE)){
 	$MaxDomain = $license->getMaxDomain();
 	$MaxQuota = $license->getMaxQuota();
 	$GAInterface = $license->getGAInterface();
+
+	$ProductName = $license->getProductName();
 }
 
 $ServerMode = $Switchable? $spamconf->getParam("ServerGateway","System"):$intServerGateway;

@@ -25,29 +25,34 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 <?if($Switchable){?>
 	a.add(new WebFXTreeItem('网关运行模式','system/gatewaymode.ns','main'));
 <?}?>
+
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
 	a.add(new WebFXTreeItem('邮件基本参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
 
-	var b = new WebFXTreeItem('用户管理','help/user.htm','main');
+	var b = new WebFXTreeItem('管理员管理','help/user.htm','main');
 	tree.add(b);
+<?
+if(adminPerm(PERM_ADMIN_ADMIN)){
+?>
+	b.add(new WebFXTreeItem('管理员列表管理','user/showadminlist.ns','main'));
+	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
+<?
+}
+?>
 	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
 	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
 <?
 }
-if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
-	b.add(new WebFXTreeItem('管理员管理','user/showadminlist.ns','main'));
 <?
-}
 
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var l = new WebFXTreeItem('邮件网关管理');
+	var l = new WebFXTreeItem('透明网关模式管理');
 	tree.add(l);
 	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
 	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
@@ -58,7 +63,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-	var k = new WebFXTreeItem('邮件服务器管理');
+	var k = new WebFXTreeItem('独立服务器模式管理');
 	tree.add(k);
 	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
 	k.add(new WebFXTreeItem('邮件队列监管','server/mailqueue.ns','main'));
@@ -74,7 +79,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var n = new WebFXTreeItem('邮件中转器管理');
+	var n = new WebFXTreeItem('MX转发模式管理');
 	tree.add(n);
 	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
 	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
@@ -151,7 +156,7 @@ if($ContentEngine > 0){
 	tree.add(f);
 	f.add(new WebFXTreeItem('基本设置','archive/archiveengine.ns','main'));
 	f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('选择审计','archive/archivetype.ns','main'));
+	f.add(new WebFXTreeItem('选择性审计','archive/archivetype.ns','main'));
 <?
 	}
 

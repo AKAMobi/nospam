@@ -5,26 +5,33 @@ die "pls provide prodno\n" unless $prodno ;
 
 $License = <<_LICENSE_;
 ForSell=No
-ExpireDate=2004-6-1
+ExpireDate=2004-3-1
 Version=2
 
 FactoryName=测试部
 ProductName=测试版
 
-ServerGatewaySwitchable=N
+ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay,Tailer
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 
-DynamicEngine=Yes
-ContentEngine=Yes
-SpamEngine=Yes
-ArchiveEngine=Yes
-AntivirusEngine=Yes
+MailGateway=100
+MailServer=100
+MailRelay=100
+AntiVirusEngine=100
+DynamicEngine=100
+SpamEngine=100
+ContentEngine=100
+ArchiveEngine=100
+InteractiveEngine=100
+GAInterface=100
 
-DynamicEngineEnabled=Yes
-ContentEngineEnabled=Yes
-SpamEngineEnabled=Yes
+
+#独立服务器的License限制；
+MailServerMaxUser=1000
+MailServerMaxDomain=10
+MailServerMaxQuota=30000000
 
 _LICENSE_
 
