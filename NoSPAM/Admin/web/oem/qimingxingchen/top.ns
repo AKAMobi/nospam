@@ -1,18 +1,43 @@
 <?
 require_once("inc/include.ns");
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<title>top</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"><!-- bgcolor="#cccccc"-->
-<table width="100%" border="0">
-<tr>
-	<td align="left"><img src="images/Logo.gif" width="225" height="59" alt="Logo"></td>
-	<td align="right">用户：<?=getAdminID()?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$bForSell? "正式销售版":"非销售版"?>
-	<?if($sExpire!="") echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sExpire}过期";?></td>
-</tr>
+
+<body leftmargin="0" topmargin="0">
+<table width="103%" height="115" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="315" height="115" align="left" valign="bottom"><img src="images/a1top_01.jpg" width="315" height="62"></td>
+    <td width="1">&nbsp;</td>
+    <td align="right" valign="bottom"> 
+      <table width="375" height="22" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="360" align="center" valign="bottom" background="images/a1top_bg.gif" class="toptext">
+          用户：<?=getAdminID()?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$bForSell? "正式销售版":"非销售版"?>
+	  <?if($sExpire!="") echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sExpire}过期";?></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table width="100%" height="11" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="11" background="images/a2top_bg.gif"><img src="images/tr.gif" width="1" height="1"></td>
+  </tr>
+</table>
+<table width="100%" height="42" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="42" align="center" valign="middle" background="images/a3top_bg.gif"><img src="images/a3top_01.gif" width="781" height="42"></td>
+  </tr>
+</table>
+<table width="100%" height="7" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td><img src="images/tr.gif" width="1" height="1"></td>
+  </tr>
 </table>
 </body>
 </html>
