@@ -145,6 +145,12 @@ sub server
 	while ( $client = $server->accept() ){
 		$self->{start_time} = [gettimeofday];
 
+#XXX
+$self->net_process($client);
+shutdown ( $client, 2 );
+close $client;
+sleep 3;
+next;
 		if (!$client) {
 		# this can happen when interrupted by SIGCHLD on Solaris,
 		# perl 5.8.0, and some other platforms with -m.
@@ -687,10 +693,12 @@ sub qmail_requeue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		#$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
+		$self->{zlog}->debug ( "try to open [$msg] for fd 0" );
 		open(STDIN,"<$msg")|| exit -1; # return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
+		#open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
 
 		open (STDOUT, "<&EOUT") ||  exit -1; #return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
+		#open (STDOUT, "<&EOUT") || return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
 		select(STDIN);$|=1;
 
 		$self->write_queue();
@@ -713,21 +721,21 @@ sub qmail_requeue {
 		#$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
 
 	}
-$self->{zlog}->debug ( "here" );
+#$self->{zlog}->debug ( "here" );
 
 	# We should now have queued the message.  Let's find out the exit status
 	# of qmail-queue.
 	
-	#waitpid ($pid, 0);
+	waitpid ($pid, 0);
 
 	#eval {
-		1 while (waitpid($pid, POSIX::WNOHANG()) > 0);
+		#1 while (waitpid($pid, POSIX::WNOHANG()) > 0);
 	#}; 
-$self->{zlog}->debug ( "here1 $@" ) if $@;
-$self->{zlog}->debug ( "here1 $?" );
+#$self->{zlog}->debug ( "here1 $@" ) if $@;
+#$self->{zlog}->debug ( "here1 $?" );
 
 	my $xstatus =($? >> 8);
-$self->{zlog}->debug ( "here2" );
+#$self->{zlog}->debug ( "here2" );
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
