@@ -198,7 +198,9 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	g.add(ga);
 	  ga.add( new WebFXTreeItem('邮件分类','status/mail_type.ns','main') );
 	  ga.add( new WebFXTreeItem('邮件尺寸','status/mail_size.ns','main') );
-	  ga.add( new WebFXTreeItem('引擎运行','status/mail_engine.ns','main') );
+	  ga.add( new WebFXTreeItem('邮件流量','status/mail_type.ns','main') );
+	  ga.add( new WebFXTreeItem('DNS 查询','status/mail_size.ns','main') );
+	  ga.add( new WebFXTreeItem('引擎耗时','status/mail_engine.ns','main') );
 	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
 	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
