@@ -9,7 +9,7 @@ package AKA::Mail::DB;
 
 use strict;
 use DBI;
-use AKA::Mail::Conf;
+use AKA::Mail::Log;
 
 sub new
 {
@@ -20,7 +20,7 @@ sub new
 	my $parent = shift;
 
 	$self->{parent} = $parent;
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Conf;
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;
 	
 	$self->{define}->{DBFile} = "/home/NoSPAM/var/sqlite/nospam.sqlite";
 
@@ -31,8 +31,11 @@ sub connect
 {
 	my $self = shift;
 	
-	return $self->{dbh} if defined $self->{dbh};
+	# XXX
+	#return $self->{dbh} if defined $self->{dbh};
+	eval { $self->{dbh}->disconnect; $self->{dbh} = undef; } if defined $self->{dbh};
 
+	$self->{zlog}->debug( "DB::connect pid $$" );
 	my $DBFile = $self->{define}->{DBFile};
 	$self->{dbh} = DBI->connect("dbi:SQLite:dbname=$DBFile","","") or 
 		$self->{zlog}->fatal( "DB::connect failed! $!" );

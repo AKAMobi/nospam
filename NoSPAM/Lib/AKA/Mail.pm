@@ -250,7 +250,7 @@ sub recv_mail_info_ex
 {
 	my $self = shift;
 
-#my $logstr;
+my $logstr;
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
 #$logstr .= "RELAYCLIENT: [$_]\n";
 	$self->{mail_info}->{aka}->{RELAYCLIENT} = $_;
@@ -268,11 +268,14 @@ sub recv_mail_info_ex
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
-	$self->{mail_info}->{aka}->{fd1} = $_;
-#s/\0/\\0/g;
-#$logstr .= "fd1: $_\n";
 
-#$self->{zlog}->debug ( $logstr );
+	s/\s+//g; # 去掉邮件地址中的空格, for 启明星辰的错误地址簿
+	
+	$self->{mail_info}->{aka}->{fd1} = $_;
+s/\0/\\0/g;
+$logstr .= "fd1: $_\n";
+
+$self->{zlog}->debug ( $logstr );
 
 	$self->{mail_info};
 }
