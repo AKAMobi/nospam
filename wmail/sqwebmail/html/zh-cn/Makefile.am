@@ -11,7 +11,7 @@ html = abooklist.html  attachments.html autoresponder.html \
              newmsg.html printnocookie.html \
              printredirect.html quickadd.html readmsg.html \
              redirect.html signature.html\
-             gpg.html gpgcreate.html gpgerr.html \
+             gpg.html gpgcreate.html gpgerr.html sendok.html\
              navbar.inc.html
 
 htmllib_DATA=$(conf) $(html)
