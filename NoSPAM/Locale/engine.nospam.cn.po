@@ -198,7 +198,7 @@ msgstr "加载失败"
 #: ../Lib/AKA/Mail/Dynamic.pm:328
 #, perl-brace-format
 msgid ""
-"overrun, will not be allowed to send mail untill {wait_time} minutes later."
+" overrun deny {wait_time} minutes."
 msgstr "发送超限，还需{wait_time}分钟解封"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:348
