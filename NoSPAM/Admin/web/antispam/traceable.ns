@@ -11,7 +11,7 @@ if($_POST["Traceable"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die(_("You have no permission to modify system configuration"));
 
-	if($_POST["Traceable"]=="Y"){
+//	if($_POST["Traceable"]=="Y"){
 		$spamconf->setParam("Traceable","Y","SpamEngine");
 		$spamconf->setParam("TraceSpamMask",intval(intval($_POST["TraceSpamMask"])/8),"SpamEngine");
 		$spamconf->setParam("TraceMaybeSpamMask",intval(intval($_POST["TraceMaybeSpamMask"])/8),"SpamEngine");
@@ -21,9 +21,9 @@ if($_POST["Traceable"]){
 				$sType .= ",".$option;
 		}
 		$spamconf->setParam("TraceType",$sType,"SpamEngine");
-	}else{
-		$spamconf->setParam("Traceable","N","SpamEngine");
-	}
+//	}else{
+//		$spamconf->setParam("Traceable","N","SpamEngine");
+//	}
 	$spamconf->save();
 	if(($ret=wi("reset_Traceable",$result))==0)
 		echo _("Modification Success! ");
@@ -99,6 +99,7 @@ function formReset()
 <body>
 <form name="form1" method="post" onreset="formReset();">
   <p>
+<!--
     <label>
     <input id="TraceY" type="radio" name="Traceable" value="Y"<? if($bTrace) echo " checked" ?> onclick="change(false)">
   <?=_("On")?></label>
@@ -107,6 +108,8 @@ function formReset()
     <input id="TraceN" name="Traceable" type="radio" value="N"<? if(!$bTrace) echo " checked" ?> onclick="change(true)">
   <?=_("Off")?></label>
     <br>
+-->
+   <input name="Traceable" type="hidden" value="Y">
     <?=_("Traceable Options")?>: 
     <input name="options[]" type="checkbox" id="option3" value="Domain"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Domain")!==false) echo " checked"; ?>><?=_("Domain")?>
     <input name="options[]" type="checkbox" id="option1" value="Mail"<? if(!$bTrace) echo " disabled"; if(strpos($sType,"Mail")!==false) echo " checked"; ?>><?=_("Mail")?>
