@@ -1,6 +1,7 @@
 <?
 require_once('../inc/include.ns');
 
+
 if ($GAInterface <= 0)
 	die(_("Sorry, This Product has no Policy Auto-Download Engine License"));
 
@@ -60,7 +61,7 @@ function change(bState)
 	<input type="radio" value="GAISC" name="GAProtocol"<?if ($spamconf->getParam("GAProtocol","GAInterface") == "GAISC") echo " checked";if ($spamconf->getParam("GAInterface","GAInterface") == "N" || !$bState) echo " disabled";?>>GAISC
 </lable><br>
 <br>
-<input type="submit" name="Submit" value="<?=_("Modify")?>"<?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>
+<input type="submit" name="Submit" value="<?=_("Submit")?>"<?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>
 <input type="reset" value="<?=_("Reset")?>"<?if (!adminPerm(PERM_ADMIN_WRITE)) echo " disabled";?>>
 </form>
 </div>

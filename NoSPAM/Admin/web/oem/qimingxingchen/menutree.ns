@@ -249,6 +249,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	tree.add(m);
 	m.add(new WebFXTreeItem('<?=_("Switch Board")?>','gasupervise/basesettings.ns','main'));
 	m.add(new WebFXTreeItem('MSP','gasupervise/msp.ns','main'));
+	//m.add(new WebFXTreeItem('<?=_("GAISC Setting")?>','gasupervise/gaisc.ns','main'));
 	m.add(new WebFXTreeItem('<?=_("Exchange Format")?>','gasupervise/export.ns','main'));
 <?
 }
