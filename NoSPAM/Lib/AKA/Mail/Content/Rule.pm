@@ -126,9 +126,12 @@ sub check_all_rule_backend
 	my $has_rule;
 	my ($rule_logic,$attach_logic,$size_logic,$keyword_logic);
 	# 规则检查顺序：以rule由小到大为序，依次检查
+#use Data::Dumper;
+#$self->{zlog}->debug ( Dumper(%{$self->{$which_db}}) );
+
 	foreach my $rule_id ( sort keys %{$self->{$which_db}} ){
+	#	$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 		next if ( ! $rule_id );
-		#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id..." );
 
 		# AND / OR / NOT
 		# attachment & size & keyword is not controled by match_logic, it always use 'AND'
@@ -139,6 +142,7 @@ sub check_all_rule_backend
 		$keyword_logic = $self->{$which_db}->{$rule_id}->{keyword_logic} || 'AND';
 
 		$has_rule = 0;
+#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id before attach... has_rule=$has_rule" );
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
 			# 如果有相关的 rule，则必须匹配才可能符合
 			# 不匹配则 next
@@ -146,34 +150,39 @@ sub check_all_rule_backend
 				return $rule_id if $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
 			}elsif ( 'NOT' eq $rule_logic ){
 				next until ! $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
+				$has_rule = 1;
 			}else{
 				next until $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
+				$has_rule = 1;
 			}
-			$has_rule = 1;
 		}
+#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id before size..." );
 		if ( $self->{$which_db}->{$rule_id}->{size} ){
 			if ( 'OR' eq $rule_logic ){
 				return $rule_id if $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
 			}elsif ( 'NOT' eq $rule_logic ){
 				next until ! $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
+				$has_rule = 1;
 			}else{
 				next until $self->check_size_rule ( $which_db, $rule_id, $mail_info, $size_logic ) ;
+				$has_rule = 1;
 			}
-			$has_rule = 1;
 		}
+#$self->{zlog}->debug ( "pf: checking user rule id: $rule_id before keyword..." );
 		if ( $self->{$which_db}->{$rule_id}->{rule_keyword} ){
 			if ( 'OR' eq $rule_logic ){
 				return $rule_id if $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
 			}elsif ( 'NOT' eq $rule_logic ){
 				next until ! $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
+				$has_rule = 1;
 			}else{
 				next until $self->check_keyword_rule ( $which_db, $rule_id, $mail_info, $keyword_logic );
+				$has_rule = 1;
 			}
 #$self->{zlog}->debug ( "RULE: logic: MATCH check keyword rule " . $rule_id  . ' of logic ' . $keyword_logic );  
-			$has_rule = 1;
 		}
 		if ( $has_rule ){
-			#$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
+			$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
 			# 'NOT' and 'AND' return here.
 			if ( $rule_logic eq 'OR' ){
 				return undef;
@@ -182,6 +191,7 @@ sub check_all_rule_backend
 			}
 		}
 	}	
+$self->{zlog}->debug ( "pf: checking user rule id: $rule_id finaly no match..." );
 	return undef;
 }
 
