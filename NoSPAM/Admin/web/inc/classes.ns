@@ -1022,7 +1022,8 @@ class EmailUser {
 	}
 
 	function emptyQuarantine () {
-		$tmp = tempnam ('/tmp', 'QUARANTINEPROCESSMAIL.');
+		 $tmp = tempnam ('/tmp', 'QUARANTINEPROCESSMAIL.');
+		//$tmp = "/tmp/zixia.tmp";
 		$cmd = WI . " QuarantineProcessMail 2>&1 >".$tmp;
 
 		$pipe = popen($cmd, 'w');
@@ -1053,12 +1054,12 @@ class EmailUser {
 		$output = explode ("\n", $output);
 
 		for ($i=0; $i < sizeof ($output); $i ++) {
-		$output[$i]=ltrim (trim ($output[$i]);
+		$output[$i]=ltrim (trim ($output[$i]) );
       	        if (!$output[$i]) continue;	
 		list ($no, $ret) = explode (',', $output[$i]);
 			$no = intval ($no);
 			if (!$no) continue;
-			if ($ret !== 0)
+			if ($ret != 0)
 				return -3;
 		}
 		return 0;

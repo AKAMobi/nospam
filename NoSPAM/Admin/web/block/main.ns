@@ -46,11 +46,11 @@ elseif ($doAction==2) {
     }
 }
 elseif ($doAction == 3) {
-	switch ($currentUser->emptyQuarantine ()) {
+	switch ($tmpret = $currentUser->emptyQuarantine ()) {
 		case 0:
 			break;
 		default:
-			html_error (array (_("System error")), 0,1 ,1);
+			html_error (array (_("System error #$tmpret")), 0,1 ,1);
 	}
 }
 else
