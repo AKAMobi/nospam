@@ -36,6 +36,13 @@ function doConfig(){
 	}
 	fputs($handle,$_POST['type']);
 	fclose($handle);
+	$handle=fopen("/var/qmail/control/mxcheckrefuse","w");	
+	if (!$handle) {
+		echo "错误，无法保存设置！<br>";
+		return false;
+	}
+	fputs($handle,isset($_POST['refuse'])?"1":"0");
+	fclose($handle);
 	return true;
 }
 
@@ -55,6 +62,18 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 	} else {
 		$config=0;
 	}
+	$handle=fopen("/var/qmail/control/mxcheckrefuse","r");
+	if ($handle) {
+		$info=fscanf($handle,"%d");
+		list($config2)=$info;
+		$config2=intval($config2);
+		if ( ($config2<0) || ($config2>4) ) {
+			$config2=0;
+		}
+		fclose($handle);
+	} else {
+		$config2=0;
+	}
 ?>
 <center>
 <form action="<? echo $_SERVER['PHP_SELF']; ?>" method=post>
@@ -72,6 +91,11 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 <?php
 	}
 	?>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+	<input type=checkbox name="refuse" <?php if ($config2) echo "checked"; ?>>直接拒收可疑信件</input>
 	</td>
 </tr>
 <tr align="center" >
