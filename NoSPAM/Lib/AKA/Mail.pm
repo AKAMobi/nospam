@@ -916,7 +916,7 @@ sub archive_engine
 
 	$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>1,
-			desc	=>'提交审计',
+			desc	=>'已提交',
 			action	=>ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
