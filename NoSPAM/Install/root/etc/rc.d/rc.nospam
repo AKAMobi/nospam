@@ -1,0 +1,22 @@
+#!/bin/sh
+
+is_locale_exist=`/usr/bin/localedef --list-archive | grep zh_CN | wc -l`
+
+# 0 means not exist, after create, is_locale_exist will eq 2
+if [ 0 -eq $is_locale_exist ]; then
+        echo "`date` zh_CN not found in locale, creating..." >> /var/log/NoSPAM
+        /usr/bin/localedef -f GBK -i zh_CN zh_CN
+fi
+
+if [ ! -e /home/NoSPAM/sa/razor/identity ]; then
+        echo "`date` Razor not regist, registing..." >> /var/log/NoSPAM
+        /usr/bin/razor-admin -home=/home/NoSPAM/sa/razor -register
+        if [ ! -e /home/NoSPAM/sa/razor/identity ]; then
+                echo "`date` Razor not regist, retry registing..." >> /var/log/NoSPAM
+                /usr/bin/razor-admin -home=/home/NoSPAM/sa/razor -register
+        fi
+        if [ ! -e /home/NoSPAM/sa/razor/identity ]; then
+                echo "`date` Razor not regist, retry retry registing..." >> /var/log/NoSPAM
+                /usr/bin/razor-admin -home=/home/NoSPAM/sa/razor -register
+        fi
+fi
