@@ -106,35 +106,35 @@ function enableMonitor()
 <table width="100%" class="sort-table" id="table-1" cellspacing="1">
 <thead>
 <tr class="TableTitle2">
-	<td>±àºÅ</td>
-	<td><?=$head[0]?></td>
-	<td><?=$head[1]?></td>
-	<td><?=$head[2]?></td>
-	<td><?=$head[3]?></td>
-	<td><?=$head[4]?></td>
-	<td><?=$head[5]?></td>
-	<td><?=$head[6]?></td>
+	<td nowrap>±àºÅ</td>
+	<td nowrap><?=$head[0]?></td>
+	<td nowrap><?=$head[1]?></td>
+	<td nowrap><?=$head[2]?></td>
+	<td nowrap><?=$head[3]?></td>
+	<td nowrap><?=$head[4]?></td>
+	<td nowrap><?=$head[5]?></td>
+	<td nowrap><?=$head[6]?></td>
 <?
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	<td><?=$head[7]?></td>
-	<td><?=$head[8]?></td>
-	<td><?=$head[9]?></td>
+	<td nowrap><?=$head[7]?></td>
+	<td nowrap><?=$head[8]?></td>
+	<td nowrap><?=$head[9]?></td>
 <?}?>
-	<td><?=$head[10]?></td>
-	<td><?=$head[11]?></td>
-	<td><?=$head[12]?></td>
-	<td><?=$head[13]?></td>
-	<td><?=$head[14]?></td>
-	<td><?=$head[15]?></td>
-	<td><?=$head[16]?></td>
-	<td><?=$head[17]?></td>
+	<td nowrap><?=$head[10]?></td>
+	<td nowrap><?=$head[11]?></td>
+	<td nowrap><?=$head[12]?></td>
+	<td nowrap><?=$head[13]?></td>
+	<td nowrap><?=$head[14]?></td>
+	<td nowrap><?=$head[15]?></td>
+	<td nowrap><?=$head[16]?></td>
+	<td nowrap><?=$head[17]?></td>
 
 <?
 if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	<td><?=$head[18]?></td>
-	<td><?=$head[19]?></td>
+	<td nowrap><?=$head[18]?></td>
+	<td nowrap><?=$head[19]?></td>
 <?}?>
 </tr>
 </thead>
