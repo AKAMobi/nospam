@@ -17,7 +17,6 @@
 #include	"pref.h"
 #include	"mailinglist.h"
 #include	"newmsg.h"
-#include	"pcp.h"
 #include	"addressbook.h"
 #include	"autoresponse.h"
 #include	"http11/http11.h"
@@ -878,9 +877,7 @@ static void do_output_form_loop(FILE *f)
 			    (c == '2' && *cgi("folderdir") != ':') ||
 			    (c == '4' && maildir_filter_hasmaildirfilter(".")) ||
 			    (c == '5' && has_gpg(GPGDIR)) ||
-			    (c == '6' && !ishttps()) ||
-			    (c == '7' && !sqpcp_has_calendar()) ||
-			    (c == '8' && !sqpcp_has_groupware())
+			    (c == '6' && !ishttps())
 			    )
 			{
 				while ((c=getc(f)) != EOF)
@@ -1280,6 +1277,7 @@ static void do_output_form_loop(FILE *f)
 		{
 			pref_displayweekstart();
 		}
+/* by lfan, remove calendar
 		else if (strcmp(kw, "NEWEVENT") == 0)
 		{
 			sqpcp_newevent();
@@ -1424,6 +1422,7 @@ static void do_output_form_loop(FILE *f)
 		{
 			sqpcp_eventacl();
 		}
+*/
 		else if (strcmp(kw, "ABOOKNAMELIST") == 0)
 		{
 			ab_addrselect();
@@ -1720,7 +1719,7 @@ char	*p;
 #endif
 		return;
 	}
-
+/*
 	if (sqpcp_loggedin())
 	{
 		if (*cgi("do.neweventpreview"))
@@ -1776,18 +1775,20 @@ char	*p;
 		formname="folders";
 		if (sqpcp_loggedin())
 		{
-			formname="eventshow";	/* default */
+			formname="eventshow";	// default
 			if (sqpcp_eventedit() == 0)
 				formname="newevent";
 		}
 	}
+*/
 
 
 	if (strcmp(formname, "open-draft") == 0)
 	{
 		formname="newmsg";
+		/*
 		if (sqpcp_has_calendar())
-			/* DRAFTS may contain event files */
+			// DRAFTS may contain event files 
 		{
 			const char *n=cgi("draft");
 			char *filename;
@@ -1823,8 +1824,9 @@ char	*p;
 				free(filename);
 			}
 		}
+		*/
 	}
-
+/*
 	if (strcmp(formname, "newevent") == 0 ||
 	    strcmp(formname, "eventdaily") == 0 ||
 	    strcmp(formname, "eventweekly") == 0 ||
@@ -1834,9 +1836,9 @@ char	*p;
 	{
 		if (!sqpcp_has_calendar() ||
 		    !sqpcp_loggedin())
-			formname="folders";	/* Naughty boy */
+			formname="folders";	// Naughty boy 
 	}
-
+*/
 	p=malloc(strlen(formname)+6);
 	if (!p)	enomem();
 
@@ -1986,7 +1988,7 @@ void cleanup()
 	gpg_cleanup();
 #endif
 	freeargs();
-	sqpcp_close();
+	//sqpcp_close();
 }
 
 #if HAVE_SQWEBMAIL_UNICODE
@@ -2227,7 +2229,7 @@ time_t	timeouthard=TIMEOUTHARD;
 	pi=getenv("PATH_INFO");
 
 	pi_malloced=0;
-	sqpcp_init();
+	//sqpcp_init();
 
 	if (pi && strncmp(pi, "/printmsg/", 10) == 0)
 	{
@@ -2376,7 +2378,7 @@ time_t	timeouthard=TIMEOUTHARD;
 #endif
 #endif
 		pref_init();
-		(void)sqpcp_loggedin();
+		//(void)sqpcp_loggedin();
 		output_user_form(cgi("form"));
 		free(pi);
 	}
@@ -2522,14 +2524,22 @@ time_t	timeouthard=TIMEOUTHARD;
 				pref_init();
 				if (pref_autopurge > 0) maildir_autopurge();
 
-				sqpcp_login(ubuf, p);
+				//sqpcp_login(ubuf, p);
 				// by lfan, correct maildirsize error
 				{
 					struct vqpasswd *mypw;
 					if ( (mypw = vauth_getpw( u, u2 )) != NULL ) {
 						struct maildirsize quotainfo;
 						char buf[1024];
-						sprintf( buf, "%sS", mypw->pw_shell );
+						long lSize = 0;
+						lSize = atol(mypw->pw_shell);
+						if( strchr( mypw->pw_shell, 'M' ) ) {
+							lSize *= 1048576;
+						}
+						else if( strchr( mypw->pw_shell, 'K' ) ) {
+							lSize *= 1024;	
+						}
+						sprintf( buf, "%dS", lSize );
 						if( maildir_openquotafile_init( &quotainfo, ".", buf) == 0 )
 						{
 							maildir_checkquota( &quotainfo, 0, 0 );
