@@ -42,7 +42,7 @@ Virus: 病毒数 <br>Spam: 垃圾数 <br>MatchRule: 匹配内容过滤规则数 <br>Overrun: 动
 
 <!-- Begin `Yearly' Graph (1 Day -->
 <HR>
-<H3>每年 图表 (1 天 平均)</H3><
+<H3>每年 图表 (1 天 平均)</H3>
 <IMG VSPACE=10 ALIGN=TOP 
      SRC="mail_type-year.gif" ALT="year">
 <!-- End `Yearly' Graph (1 Day -->
