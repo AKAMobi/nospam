@@ -195,6 +195,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
 	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
 	  gs.add( new WebFXTreeItem('TCP连接','status/tcp.html','main') );
+	  gs.add( new WebFXTreeItem('SMTP连接','status/smtp.html','main') );
 	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
 	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
 	  gs.add( new WebFXTreeItem('磁盘负载','status/hdio.html','main') );
