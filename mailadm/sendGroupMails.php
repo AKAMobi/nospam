@@ -124,13 +124,14 @@ require 'Mail.php';
 require 'Mail/mime.php';
 
 $headers['From'] = $mailbox;
+$headers['To'] = 'alluser@'.DOMAIN;
 $headers['Subject'] = $title;
 
 $mime = new Mail_mime;
 
 $mime->setTXTBody($content);
 	
-$attachdir="/tmp/wmail".$_SESSION['AdminID'];
+$attachdir="/tmp/wmail/".$_SESSION['AdminID'];
 @mkdir("/tmp/wmail");
 @mkdir($attachdir);
 
@@ -149,18 +150,32 @@ if ($fp1!=FALSE) {
 	fclose($fp1);
 	@unlink($attachdir . "/.index");
 }
-
+$fp2=fopen($attachdir . "/.mail","w");
+if ($fp2==FALSE) {
+	echo "无法建立信件！";
+	exit(0);
+}
 // get MIME formatted message headers and body
 $body = $mime->get(array('text_charset'=>'GB2312'));
 $header = $mime->headers($headers);
+fwrite($fp2,"Return-Path: <".$header['From'].">\n");
+fwrite($fp2,"Date: ".date("r")."\n");
 
-$message =& Mail::factory('sendmail');
+foreach ($header as $name => $value) {
+	fwrite($fp2, $name.': '.$value."\n");
+}
+fwrite($fp2, "\n");
+fwrite($fp2, $body);
 
+fclose($fp2);
+
+$mail_name=time().".12345.".DOMAIN;
 	for( $i = 0 ; $i < $mail_count ; $i++)	{
 			list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
+			$user_maildir= VPOPMAILHOME . 'domains/' . DOMAIN . '/' . $user_account . "/Maildir/new/";
+			$user_mailname= $user_maildir.$mail_name; 
 			if ($isSendAll) {
-				$message->send($user_account.'@'.DOMAIN, $header, $body);
-//				mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
+				@copy($attachdir . "/.mail", $user_mailname);
 				continue;
 			}
 			for ($t=0; $t<count($userinfo_list); $t++){
@@ -172,15 +187,15 @@ $message =& Mail::factory('sendmail');
 				$groups=explode(',',trim($userinfo_list[$t]['group']));
 				foreach ($sendgrouplist as $sendgroup) {
 					if (in_array($sendgroup,$groups)) {
-						$message->send($user_account.'@'.DOMAIN, $header, $body);
+						@copy($attachdir . "/.mail", $user_mailname);
 						
-					//	mail($user_account.'@'.DOMAIN,$title,$content,$mailbox);
 						break;
 					}
 				}
 			}
  
 	}
+@unlink($attachdir . "/.mail");
 	echo "发送成功！";
 	return false;
 }

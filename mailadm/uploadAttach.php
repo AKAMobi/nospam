@@ -57,7 +57,7 @@ $filename_trans = array(" " => "_",
 	@$action=$_GET["act"];
     	$totalsize=0;
 	$allnames="";
-	$attachdir="/tmp/wmail".$_SESSION['AdminID'];
+	$attachdir="/tmp/wmail/".$_SESSION['AdminID'];
 	@mkdir("/tmp/wmail");
 	@mkdir($attachdir);
 	if ($action=="delete") {
@@ -236,7 +236,6 @@ function clickclose() {
           </tr>
           <tr> 
             <td colspan="2" height="25" class="form01"> 
-			  <input type="hidden" name="MAX_FILE_SIZE" value="10240">
               <input type="file" name="attachfile" size="20" value class="form02">
             </td>
           </tr>
