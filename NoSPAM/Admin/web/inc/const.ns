@@ -9,6 +9,6 @@ if ( !defined("CONST_DEFINED") ){
 	define("UserDB","/home/NoSPAM/etc/UserFilterRule.xml");
 	define("Category","/home/NoSPAM/etc/category");
 	define("WI","/home/NoSPAM/bin/wi");
-	define("PAGENUM",30);
+	define("PAGENUM",10);
 }
 ?>
