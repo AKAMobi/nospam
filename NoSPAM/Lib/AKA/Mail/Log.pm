@@ -238,7 +238,7 @@ sub log_csv {
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
 
-	if ( !$engine->{antivirus}->{result} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
+	if ( $engine->{spam}->{sa} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
 		flock(LFD,LOCK_EX);
 		seek(LFD, 0, 2);
 #print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
@@ -246,9 +246,8 @@ sub log_csv {
 			. "TCPREMOTEIP: " . $aka->{TCPREMOTEIP} . "\n" . "Envelope-From: " . $aka->{returnpath} . "\n"
 				. "Recips: " . $recips . "\nSubject: " . $esc_subject . "\n"
 
-			. "Size: " . $aka->{size} . "\n"
+			. "Size: " . $aka->{size} . "\n";
 
-			. 'isVirus: ' . $engine->{antivirus}->{result} . ',' . $engine->{antivirus}->{desc} . "\n";
 use Data::Dumper;
 		print LFD Dumper ( $engine->{spam}->{sa} );
 
