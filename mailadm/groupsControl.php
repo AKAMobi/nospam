@@ -206,6 +206,10 @@ function addGroup($newgroupname){
 function showGroups(){
 	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
    
+    if ( ! file_exists($groupdefine_profile) ){
+	fclose ( fopen ( $groupdefine_profile, "w" ) );
+    }
+
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
     if ($h_groupdefine_profile == NULL ){

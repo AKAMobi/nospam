@@ -29,6 +29,7 @@ function doConfig(){
 	if (!isset($_POST['type'])){ 
 		return false;
 	}
+
 	$handle=fopen("/var/qmail/control/mfcheck","w");	
 	if (!$handle) {
 		echo "错误，无法保存设置！<br>";
@@ -36,6 +37,7 @@ function doConfig(){
 	}
 	fputs($handle,$_POST['type']);
 	fclose($handle);
+
 	$handle=fopen("/var/qmail/control/mxcheckrefuse","w");	
 	if (!$handle) {
 		echo "错误，无法保存设置！<br>";
@@ -49,6 +51,9 @@ function doConfig(){
 if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 	echo "设置修改成功！<br>";
 } else {
+	if ( ! file_exists("/var/qmail/control/mfcheck") ){
+		fclose( fopen("/var/qmail/control/mfcheck","w") );
+	}
 
 	$handle=fopen("/var/qmail/control/mfcheck","r");
 	if ($handle) {
@@ -62,6 +67,11 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 	} else {
 		$config=0;
 	}
+
+	if ( ! file_exists("/var/qmail/control/mxcheckrefuse") ){
+		fclose( fopen("/var/qmail/control/mxcheckrefuse","w") );
+	}
+
 	$handle=fopen("/var/qmail/control/mxcheckrefuse","r");
 	if ($handle) {
 		$info=fscanf($handle,"%d");
