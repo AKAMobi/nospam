@@ -6,18 +6,21 @@
 # Date: 2004-02-10
 
 
-package AKA::Mail::Police::Log;
-use AKA::Mail::Police::Verify;
+package AKA::Mail::Log;
 
 
-use XML::Simple;
+#use XML::Simple;
 use POSIX qw(strftime);
 
 my $can_log = 1;
+my $can_debug = 1;
+my $can_fatal = 1;
 
 BEGIN
 {
-	open MYLOG, ">>/var/log/police" or $can_log = 0;
+	open MYLOG, ">>/var/log/NoSPAM" or $can_log = 0;
+	open DEBUG, ">>/var/log/NoSPAM.debug" or $can_debug = 0;
+	open FATAL, ">>/var/log/NoSPAM.fatal" or $can_fatal = 0;
 }
 
 sub new
@@ -39,7 +42,9 @@ sub new
 
 	$self->{parent} = $parent;
 	$self->{conf} = $parent->{conf} || new AKA::Mail::Police::Conf;
-	$self->{verify} = $parent->{verify} || new AKA::Mail::Police::Verify;
+	$self->{verify} = $parent->{verify};
+	#XXX by zixia no need to load Verify in Log module  || new AKA::Mail::Police::Verify;
+
 # Now we can retrieve the other arguments passed to the 
 # construtor.
 
@@ -53,6 +58,31 @@ sub new
 	return $self;
 
 }
+
+sub fatal
+{
+	my ($slef,$what) = @_;
+
+	$what =~ s/\n//g;
+
+	if ( $can_fatal ){
+		print FATAL &get_time_stamp . " $what\n";
+	}
+}
+
+
+
+sub debug
+{
+	my ($slef,$what) = @_;
+
+	$what =~ s/\n//g;
+
+	if ( $can_debug ){
+		print DEBUG &get_time_stamp . " $what\n";
+	}
+}
+
 
 sub log
 {
@@ -84,6 +114,8 @@ sub DESTROY
 END
 {
 	close(MYLOG);
+	close(DEBUG);
+	close(FATAL);
 }
 
 1;
