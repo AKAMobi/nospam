@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-05 12:19+0800\n"
+"POT-Creation-Date: 2004-09-18 02:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -133,6 +133,12 @@ msgstr "许可证错误"
 
 msgid "License is valid!"
 msgstr "许可证有效！"
+
+msgid "User Whitelist"
+msgstr "用户自定义白名单"
+
+msgid "User Blacklist"
+msgstr "用户自定义黑名单"
 
 msgid "Updating"
 msgstr "更新中"

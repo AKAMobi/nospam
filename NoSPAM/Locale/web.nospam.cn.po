@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-16 13:37+0800\n"
+"POT-Creation-Date: 2004-09-18 02:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -572,8 +572,14 @@ msgstr "分类编号必须为数字！"
 msgid "This Group Number already exists !"
 msgstr "相同的分类编号已存在！"
 
-msgid "Error, Please input rule_id"
-msgstr "错误！请给出rule_id"
+msgid "Rules List"
+msgstr "规则列表"
+
+msgid "Auto-Download Policy(Readonly)"
+msgstr "公安规则数据数据库（只读）"
+
+msgid "User Policy"
+msgstr "用户规则数据库"
 
 msgid "Description"
 msgstr "描述"
@@ -593,9 +599,6 @@ msgstr "更新时间"
 msgid "Expire Time"
 msgstr "过期时间"
 
-msgid "none"
-msgstr "无"
-
 msgid "Alarm Level"
 msgstr "报警级别"
 
@@ -608,47 +611,14 @@ msgstr "规则间逻辑关系"
 msgid "Keyword and IP rules"
 msgstr "关键字及IP规则"
 
+msgid " items"
+msgstr "项"
+
 msgid "Sub-Rules logic"
 msgstr "规则内部逻辑关系"
 
 msgid "Match Position"
 msgstr "匹配位置"
-
-msgid "Match Type"
-msgstr "类型"
-
-msgid "Filter Content"
-msgstr "过滤内容"
-
-msgid "Size Value"
-msgstr "数值要求"
-
-msgid "Attachment rules"
-msgstr "附件规则"
-
-msgid "Filename Must be"
-msgstr "限制文件名"
-
-msgid "File Ext Must be"
-msgstr "限制文件类型"
-
-msgid "Action"
-msgstr "动作"
-
-msgid "Action Parameter"
-msgstr "动作参数"
-
-msgid "Rules List"
-msgstr "规则列表"
-
-msgid "Auto-Download Policy(Readonly)"
-msgstr "公安规则数据数据库（只读）"
-
-msgid "User Policy"
-msgstr "用户规则数据库"
-
-msgid " items"
-msgstr "项"
 
 msgid "Decode"
 msgstr "解码"
@@ -668,8 +638,35 @@ msgstr "区分大小写"
 msgid "Insensitive"
 msgstr "不区分大小写"
 
+msgid "Match Type"
+msgstr "类型"
+
+msgid "Filter Content"
+msgstr "过滤内容"
+
 msgid "Numeric rules"
 msgstr "数值规则"
+
+msgid "Size Value"
+msgstr "数值要求"
+
+msgid "Attachment rules"
+msgstr "附件规则"
+
+msgid "Filename Must be"
+msgstr "限制文件名"
+
+msgid "none"
+msgstr "无"
+
+msgid "File Ext Must be"
+msgstr "限制文件类型"
+
+msgid "Action"
+msgstr "动作"
+
+msgid "Action Parameter"
+msgstr "动作参数"
 
 msgid "All Extenstion List"
 msgstr "全部扩展名列表"
@@ -736,6 +733,9 @@ msgstr "删除信头记录"
 
 msgid "Replace Header"
 msgstr "替换信头记录"
+
+msgid "Error, Please input rule_id"
+msgstr "错误！请给出rule_id"
 
 msgid "Sorry, This Product has no Overrun Limit Engine License"
 msgstr "对不起，本系统没有动态限制引擎License"
@@ -1764,7 +1764,7 @@ msgstr "察看未解码邮件"
 msgid "View Mails Decoded"
 msgstr "察看解码邮件"
 
-msgid "To"
+msgid "Incept"
 msgstr "收件人"
 
 msgid "Cc"
@@ -1929,6 +1929,9 @@ msgstr "空间限额"
 msgid "Error"
 msgstr "错误"
 
+msgid "Number(s)"
+msgstr "个"
+
 msgid "Delete Fail, ErrNo: "
 msgstr "删除失败，错误代码："
 
@@ -2086,7 +2089,7 @@ msgid "Login Restriction"
 msgstr "登录限制"
 
 msgid "Mail Domain Protection"
-msgstr "邮件域用户管理"
+msgstr "邮件保护域设置"
 
 msgid "Mail Server Setting"
 msgstr "独立服务器设置"
@@ -2352,11 +2355,12 @@ msgstr "成功"
 msgid "Logout Succeed. Please Close This Browser Window"
 msgstr "已成功退出。请关闭此窗口"
 
-#, fuzzy
+#~ msgid "Number Rule"
+#~ msgstr "数值规则"
+
 #~ msgid ","
 #~ msgstr "页，每页"
 
-#, fuzzy
 #~ msgid " disabled"
 #~ msgstr "关闭"
 
