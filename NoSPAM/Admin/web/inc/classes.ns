@@ -1,4 +1,6 @@
-<?
+<?php
+require_once ('DB.ns');
+
 class XMLConfig
 {
 	var $file;
@@ -681,6 +683,18 @@ class LoginBlackList
  *  start
  *  add by Xiaoying Hu Jul 30 , 2004
  */
+class WhiteListItem {
+    var $id;
+    var $email;
+    var $type;
+    
+    function WhiteListItem ($id, $email, $type) {
+        $this->id = $id;
+        $this->email = $email;
+        $this->type = $type;
+    }
+    
+}
 
 class EmailUser {
     var $email;
@@ -694,6 +708,11 @@ class EmailUser {
     var $start;
     var $end;
     var $totalSize;
+    var $whiteList;
+    var $listTotle;
+    var $listTable;
+    var $listType;
+    var $db;
     
     /**
         int login (string $emailAddr, string $password)
@@ -713,7 +732,7 @@ class EmailUser {
             case 1:
                 $this->init = true;
             case 0:
-                $this->path = $result[0];
+                $this->path = '/block/huxy/';//$result[0];
                 $this->email = trim ($emailAddr);
                 list ($this->user, $this->domain) = explode ('@', $this->email);
                 break;
@@ -722,6 +741,120 @@ class EmailUser {
         }
         return 0;
     }
+    
+    function initWhiteList ($type) {
+        if (!file_exists (QUARANTINESQLFILEPATH)) {
+            echo _("SQLite Database File is not exist: ");
+            echo QUARANTINESQLFILEPATH;
+            exit ();
+        }
+        $dsn = array ('dbFile'=> QUARANTINESQLFILEPATH , 'dbMode'=>0666, 'dbType'=>'sqlite' );
+        $this->listTable = QUARANTINEWHITELISTTABLE;
+        $tmp = new DB;
+        $this->db = $tmp->init ($dsn);
+        unset ($tmp);
+        switch ($type) {
+            case QUARANTINE_WHILE_LIST:
+                $this->listType = QUARANTINE_WHILE_LIST;
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
+                break;
+            case QUARANTINE_BLACK_LIST:
+                $this->listType = QUARANTINE_BLACK_LIST;
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType);
+                break;
+            default:
+                $this->listType = QUARANTINE_ALL_LIST;
+                $sql = sprintf ("SELECT COUNT(*) as TOTAL FROM %s WHERE user = '%s' AND domain = '%s' ;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain));
+        }
+        if (!$this->db->query ($sql)) {
+            $this->quitDb ();
+            return -1;
+        }
+        $buf = sqlite_fetch_array ($this->db->result, 1);
+        $this->listTotal = intval ($buf['TOTAL']);
+        $this->db->free ();
+        return 0;
+    }
+    
+    function getWhiteList ($start, $num) {
+        $this->whiteList = array ();
+        $start = intval ($start);    
+        $num = intval ($num);
+        if ($this->listTotal <= 0) return 0;
+        if ($start < 1 || $start > $this->listTotal) $start = 1;
+        $start --;
+        if ($num < 0 || $start + $num > $this->listTotal)
+            $num = $this->listTotal;
+        
+        switch ($this->listType) {
+            case QUARANTINE_WHILE_LIST:
+            case QUARANTINE_BLACK_LIST:
+                $sql = sprintf ("SELECT * FROM %s WHERE user = '%s' AND domain = '%s' AND type = %d LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $this->listType, $start, $num);
+                break;
+            default:
+                $sql = sprintf ("SELECT * FROM %s WHERE user = '%s' AND domain = '%s' LIMIT %d, %d;", $this->listTable, db_escape_string ($this->user), db_escape_string ($this->domain), $start, $num);
+        }
+        if (!$this->db->query ($sql)) {
+            return -1;
+        }
+        while ($buf = sqlite_fetch_array ($this->db->result, 1)) {
+            $id = intval ($buf['autoid']);
+            $this->whiteList[$id]=new WhiteListItem ($id, $buf['email'], $buf['type']);
+        }
+        $this->db->free ();
+        return 0;
+    }
+    
+    function delItemFromList ($id) {
+        $id = intval ($id);
+        if (!$id) return;
+        $sql = sprintf ("DELETE FROM %s WHERE user = '%s' AND domain = '%s' AND autoid = %d ;",
+                        $this->listTable,
+                        db_escape_string ($this->user),
+                        db_escape_string ($this->domain),
+                        $id
+                        );    
+        $this->db->query ($sql);
+        if (isset ($this->whiteList[$id])) {
+            unset ($this->whiteList[$id]);
+            $this->listTotal --;    
+        }
+    }
+        
+    function addItemToList ($email, $type) {
+        if ($type != QUARANTINE_WHILE_LIST && $type != QUARANTINE_BLACK_LIST)
+            return -1;
+        if (!checkmailaddr($email))
+            return -2;
+        $sql = sprintf ("SELECT MAX(autoid) as MAXID FROM %s ;", $this->listTable);
+        if (!$this->db->query ($sql)) {
+            return -3;
+        }
+        
+        $buf = sqlite_fetch_array ($this->db->result, 1);
+        $id = intval ($buf['MAXID']);
+        if ($id == 0)
+            return -4;
+        $id ++;
+        $sql = sprintf ("INSERT INTO %s ". /*( autoid , user , domain , email , type )*/ " VALUES ( '%d' , '%s' , '%s' , '%s' , '%d' );" ,
+                    $this->listTable,
+                    $id,
+                    db_escape_string ($this->user),
+                    db_escape_string ($this->domain),
+                    db_escape_string ($email),
+                    $type
+                    );
+        $this->db->query ($sql);
+        $this->whiteList[$id]=new WhiteListItem ($id, $email, $type);
+        $this->listTotal ++ ;
+        return 0;
+    }
+        
+    function quitDb () {
+        $this->db->close ();
+        unset ($this->db);    
+    }
+            
     
     function set_login_user ($userInfo) {
         if (!is_array ($userInfo)) return false;
@@ -744,7 +877,9 @@ class EmailUser {
         $this->totalSize = 0;
         if (!is_dir ($this->path))
             return 0;
-        if (!($dh = opendir ($this->path))) return 0;
+        if (!($dh = opendir ($this->path))) {
+            return 0;
+        }
         while (false !== ($file = readdir ($dh))) {
             if (strcmp ($file, '.')==0 || strcmp ($file, '..')==0)
                 continue;
@@ -759,19 +894,10 @@ class EmailUser {
             }
         }
         closedir ($dh);
-        uasort ($this->fullMailList, $this->_u_sort_func);
+        uasort ($this->fullMailList, '_u_sort_func');
         $this->mailCnt = sizeof ($this->fullMailList);
         $this->totalSize = $this->get_dir_size ($this->path);
         return 0;
-    }
-    
-    function _u_sort_func ($array1, $array2) {
-        if ($array1['TIME'] > $array2['TIME'])
-            return 1;
-        elseif ($array1['TIME'] < $array2['TIME'])
-            return -1;
-        else
-            return 0;
     }
     
     function get_file ($file) {
@@ -912,6 +1038,15 @@ class EmailUser {
         return 0;
     }
 }
+
+function _u_sort_func ($array1, $array2) {
+        if ($array1['TIME'] > $array2['TIME'])
+            return 1;
+        elseif ($array1['TIME'] < $array2['TIME'])
+            return -1;
+        else
+            return 0;
+    }
 
 class PageTool {
     var $pageSize;

@@ -40,7 +40,7 @@ function del_form ($fileName) {
 
 function display_navigation_bar ($fileName,$actions) {
     $fileName = urlencode ($fileName);
-    echo '<p align="center">';
+    echo '<p class="title">';
     reset ($actions);
     while (list ($act, $name)=each ($actions)) {
         if (strcmp ($act, 'del')==0) 
@@ -75,18 +75,18 @@ function view_decode_mail ($file, $fileName) {
     $structure = $decode->decode($params);
 ?>
 <br /><center>
-<table cellspacing="0" cellpadding="5" width="90%" border="1" >
-    <tr><td width="80">发件人</td><td><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
-    <tr><td>收件人</td><td><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
-    <tr><td>抄送</td><td><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
-    <tr><td >日期</td><td><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
-    <tr><td>主题</td><td><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
-    <tr><td colspan="2" align="left" valign="top">
+<table cellspacing="0" cellpadding="5" width="90%" border="0"  class="t1">
+    <tr><td class="sorthead">发件人</td><td class="t2"><?php echo html_format ($structure->headers['from']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead">收件人</td><td class="t2"><?php echo html_format ($structure->headers['to']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead">抄送</td><td class="t2"><?php echo html_format ($structure->headers['cc']); ?>&nbsp;</td></tr>
+    <tr><td  class="sorthead">日期</td><td class="t2"><?php echo html_format ($structure->headers['date']); ?>&nbsp;</td></tr>
+    <tr><td class="sorthead">主题</td><td class="t2"><?php echo html_format ($structure->headers['subject']); ?>&nbsp;</td></tr>
+    <tr><td colspan="2" align="left" valign="top" class="t2">
 <?php
     print_mail_body ($fileName, $structure);
 ?>    
     </td></tr>
-    <tr><td colspan="2" align="left" valign="top">
+    <tr><td colspan="2" align="left" valign="top" class="sorthead">
 <?php
     $idArr = array ();
     $depth = 1;

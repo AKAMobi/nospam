@@ -1,0 +1,66 @@
+body {
+    font-size: 12px;
+    font-family: verdana;
+    margin : 0px;
+	padding: 0px;
+}
+table {
+    font-size: 12px;
+    font-family: verdana;
+}
+td {
+    font-size: 12px;
+    font-family: verdana;
+}
+.title {
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #366DB4;
+    color: #FFFFFF;
+    line-height: 26px;
+    padding-left : 20px;
+}    
+.title A {
+    color: #FFFFFF;
+    text-decoration : none;
+}
+.title A:hover {
+color : #E69123;
+}
+
+.pagetitle {
+	font-size : 13px;
+	font-weight : bold;
+	color : #4878B3;
+}
+.sorthead {
+   font-size : 12px;
+   font-weight: bold;
+   text-align: center;
+   padding : 1px;
+   background-color: #CDCDCD;
+   border-right-style: solid;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #4878B3;
+    color : #628DCE;
+}
+.t2 {
+   border-right-style: solid;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #4878B3;
+    }
+.t1 {
+    border-top-style: solid;
+    border-left-style: solid;
+    border-width: 1px;
+    border-color: #4878B3;
+}
+A {
+	color: black;
+}
+A:hover {
+	color :#4C68C5;
+}
+

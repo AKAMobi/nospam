@@ -1,0 +1,172 @@
+<?php
+require_once ('funcs.ns');
+
+if ($currentUser->init_maillist ()!==0)
+    exit (_("System Error"));
+
+switch ($_GET['type']) {
+    case QUARANTINE_WHILE_LIST:
+        $type = QUARANTINE_WHILE_LIST;
+        break;
+    case QUARANTINE_BLACK_LIST:
+        $type = QUARANTINE_BLACK_LIST;
+        break;
+    default:
+        $type = QUARANTINE_ALL_LIST ;   
+}
+
+if ($currentUser->initWhiteList ($type)!=0)
+    exit (_("Database query error!"));
+    
+$msg = '';
+switch ($_GET['act']) {
+    case 'add':
+        switch ($currentUser->addItemToList (trim ($_GET['addemail']), intval ($_GET['addtype']))) {
+            case -1:
+                $msg = _("Unkown list type!");
+                break;
+            case -2:
+                $msg = _("Invalid email address!");
+                break;
+            case -3:
+            case -4:
+                $msg = _("Database query error!");
+                break;
+            case 0:
+                $msg = _("Add success!");
+                break;
+            default:
+                $msg = _("error!");
+        }
+        break;
+    case 'del':
+        $currentUser->delItemFromList ($_GET['id']);
+        break;
+    default:  
+}
+
+$pageNo = intval ($_POST['pn']?$_POST['pn']:$_GET['pn']);
+$pageSize = intval ($_POST['ps']?$_POST['ps']:$_GET['ps']);
+$pageTool = new PageTool ($pageNo, $currentUser->listTotal, $pageSize);
+
+if ($currentUser->getWhiteList ($pageTool->start, $pageTool->num)!=0)
+    exit (_("Can't get user's white/black list!"));
+
+html_init ();
+
+display_navigation_bar ();
+
+if ($msg)
+echo sprintf ('<p align="center"><font color="red">%s</font></p>',$msg);
+
+display_white_list ();
+
+display_navigation_bar ();
+
+?><p align="center">
+<form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" id="form1" name="form1">
+<input type="hidden" name="type" value="<?php echo $currentUser->listType; ?>" />
+<?php
+$pageTool->page_bar ('form1', $_SERVER['PHP_SELF'], 9, ' onchange="document.form1.submit()" ');
+?>
+</form>
+</p><?php
+
+add_email_to_list_form ();
+
+$currentUser->quitDb ();
+unset ($currentUser);
+html_quit ();
+?>
+<?php
+function display_navigation_bar () {
+    echo sprintf ('<p align="center" class="title">[<a href="%s">%s</a>]&nbsp;[<a href="%s">%s</a>]&nbsp;[<a href="%s">%s</a>]&nbsp;[<a href="%s">%s</a>]</p>',
+            $_SERVER['PHP_SELF'].'?type='.QUARANTINE_BLACK_LIST,
+            _("Black list"),
+            $_SERVER['PHP_SELF'].'?type='.QUARANTINE_WHILE_LIST,
+            _("White list"),
+            $_SERVER['PHP_SELF'].'?type='.QUARANTINE_ALL_LIST,
+            _("All list"),
+            'main.ns',
+            _("Return")
+            );
+}
+
+function display_white_list () {
+    global $currentUser, $pageTool;
+?>
+<p align="center"><b>
+<?php
+    echo $currentUser->email . "&nbsp;&nbsp;&nbsp;";
+    if ($currentUser->listType == QUARANTINE_WHILE_LIST)
+        echo _("Quarantine email white list");
+    elseif ($currentUser->listType == QUARANTINE_BLACK_LIST)
+        echo _("Quarantine email black list");
+    else
+        echo _("Quarantine email white/black list");
+?>
+</b></p>
+<center>
+<table cellspacing="0" cellpadding="3" width="600" border="0" class="t1">
+<tbody>
+    <tr>
+        <td class="sorthead"><nobr><?=_("ID");?></nobr></td>
+        <td class="sorthead"><nobr><?=_("Email");?></nobr></td>
+        <td class="sorthead"><nobr><?=_("Type");?></nobr></td>
+        <td class="sorthead"><nobr><?=_("Action");?></nobr></td>
+    </tr>
+</tbody>
+<?php
+    $i = $pageTool->start;
+    if (sizeof ($currentUser->whiteList) > 0) {
+        foreach ($currentUser->whiteList as $item) {
+            if ($item->type == QUARANTINE_WHILE_LIST)
+                $typeName = _("White list");
+            elseif ($item->type == QUARANTINE_BLACK_LIST)
+                $typeName = _("Black list");
+            else
+                $typeName = _("Unknown");
+            
+            echo sprintf ("<tbody><tr><td class='t2'>%d</td><td class='t2'>%s</td><td class='t2'>%s</td><td class='t2'><a href=\"%s\">%s</a></td></tr></tbody>",
+                            $i,
+                            $item->email,
+                            $typeName,
+                            $_SERVER['PHP_SELF'].'?type='.$currentUser->listType.'&act=del&id='.$item->id,
+                            _("Delete")
+                            );
+            $i ++;    
+        }
+            
+    }
+    
+?>
+</table>
+</center>
+<?php    
+}
+
+function add_email_to_list_form () {
+    global $currentUser, $pageTool;
+?>
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+<input type="hidden" name="pn" value="<?php echo $pageTool->pageNo; ?>" />
+<input type="hidden" name="ps" value="<?php echo $pageTool->pageSize; ?>" />
+<input type="hidden" name="type" value="<?php echo $currentUser->listType; ?>" />
+<input type="hidden" name="act" value="add" />
+<center>
+<?=_("Add email to list: ")?>
+<?=_("Email")?>: 
+<input type="text" name="addemail" />
+&nbsp;<?=_("Type")?>: 
+<select name="addtype">
+<option value="<?=QUARANTINE_WHILE_LIST?>"><?=_("White list")?></option>
+<option value="<?=QUARANTINE_BLACK_LIST?>"><?=_("Black list")?></option>
+</select>
+&nbsp;<input type="submit" value="<?=_("Add")?>" />
+</center>
+</form>
+<?php    
+}
+
+
+?>

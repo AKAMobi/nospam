@@ -3,6 +3,7 @@ require_once ('funcs.ns');
 
 if ($currentUser->init_maillist ()!==0)
     exit ('System Error!');
+
 $process = 0;
 $jobList = array ();
 $doAction = intval ($_POST['do_action']);
@@ -78,7 +79,7 @@ if ($process)
 <!--
 function change(obj) {
 	oldbgcolor = obj.style.backgroundColor;
-	obj.style.backgroundColor = "#FFFF00";
+	obj.style.backgroundColor = "#eeeeee";
 	obj.style.cursor = "hand";
 }
 function restore(obj) {
@@ -104,6 +105,7 @@ function setDoVal() {
 </p>
 <p align="center">
 <input type="button" value="处理邮件" onclick="setDoVal()" />
+<input type="button" value="管理黑白名单" onclick="window.location.href='whitelist.ns';" />
 
 </p>
 </form>
@@ -117,45 +119,48 @@ html_quit ();
 function display_mail_list ($mailList,$start) {
 ?>
 <center>
-<table cellspacing="0" cellpadding="3" border="1" width="95%">
-	<tr>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>编号</nobr></b></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>隔离原因</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>隔离时间</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>收件人</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>发件人</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>主题</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>尺寸</b></nobr></font></td>
-		<td bgcolor="#000000"><font color="#FFFFFF"><b><nobr>察看</b></nobr></font></td>
-		<td bgcolor="#000000"><nobr><font color="#FFFFFF"><b>动作: </b></font> 
-		<input type="radio" value="D" name="action" id="actionDrop" /><font color="#FFFFFF">删除
-		</font>
+<table cellspacing="0" cellpadding="3" border="0" width="90%" class="t1">
+	<tr class="sorthead">
+		<td class="sorthead"><b><nobr>编号</nobr></b></td>
+		<td class="sorthead"><b><nobr>隔离原因</b></nobr></td>
+		<td class="sorthead"><b><nobr>隔离时间</b></nobr></td>
+		<td class="sorthead"><b><nobr>收件人</b></nobr></td>
+		<td class="sorthead"><b><nobr>发件人</b></nobr></td>
+		<td class="sorthead"><b><nobr>主题</b></nobr></td>
+		<td class="sorthead"><b><nobr>尺寸</b></nobr></td>
+		<td class="sorthead"><b><nobr>察看</b></nobr></td>
+		<td class="sorthead"><nobr><b>动作: </b>
+		<input type="radio" value="D" name="action" id="actionDrop" />删除
 		<!--input type="radio" value="R" name="action" /><font color="#FFFFFF">弹回
 		</font--> 
 		<!--input type="radio" value="T" name="action" /><font color="#FFFFFF">标记转发
 		</font--> 
-		<input type="radio" value="F" name="action" /><font color="#FFFFFF">通过</font--></nobr></td>
-	
+		<input type="radio" value="F" name="action" />通过</nobr></td>
+	    <td class="sorthead"><nobr><b>添加到黑白名单</b></nobr></td>
 	</tr>
 <?php
     for ($i = 0 ; $i < sizeof ($mailList) ; $i ++) {
 ?>
 	<tr onmouseover="change(this)"   onmouseout="restore(this)">
-		<td><?php echo $i+$start; ?></td>
-		<td><?php echo $mailList[$i]['TYPE'].': '.$mailList[$i]['REASON']; ?></td>
-		<td><?php echo date ('Y-m-d H:i:s', $mailList[$i]['TIME']); ?></td>
-		<td><?php echo implode ('<br/>', $mailList[$i]['TO']); ?></td>
-		<td><i><?php echo $mailList[$i]['FROM']; ?></i></td>
-		<td onmouseover="bgcolor='FF0000';"><?php echo html_format ($mailList[$i]['SUBJECT']); ?></td>
-		<td><?php echo ConvertSize ($mailList[$i]['SIZE']); ?></td>
-		<td><font color="#00000">
+		<td class="t2"><?php echo $i+$start; ?></td>
+		<td class="t2"><?php echo $mailList[$i]['TYPE'].': '.$mailList[$i]['REASON']; ?></td>
+		<td class="t2"><?php echo date ('Y-m-d H:i:s', $mailList[$i]['TIME']); ?></td>
+		<td class="t2"><?php echo implode ('<br/>', $mailList[$i]['TO']); ?></td>
+		<td class="t2"><i><?php echo $mailList[$i]['FROM']; ?></i></td>
+		<td class="t2" onmouseover="bgcolor='FF0000';"><?php echo html_format ($mailList[$i]['SUBJECT']); ?></td>
+		<td class="t2"><?php echo ConvertSize ($mailList[$i]['SIZE']); ?></td>
+		<td class="t2"><font color="#00000">
 		<a target="_blank" href="viewmail.ns?file=<?php echo $mailList[$i]['FILE']; ?>">
 		<img alt="察看" src="images/view.gif" border="0"></a></font></td>
-		<td> 
+		<td class="t2"> 
 		<input type="radio" value="D" name="<?php echo 'file_'.$i; ?>" />删除
 		<!--input type="radio" value="R" name="<?php echo 'file_'.$i; ?>" />弹回 --> 
 		<!--input type="radio" value="T" name="<?php echo 'file_'.$i; ?>" />标记转发  -->
 		<input type="radio" value="F" name="<?php echo 'file_'.$i; ?>" />通过</td>
+		<td class="t2">
+		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_BLACK_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>';" value="黑名单" />
+		<input type="button" onclick="window.location.href='whitelist.ns?act=add&addtype=<?php echo QUARANTINE_WHILE_LIST; ?>&addemail=<?php echo $mailList[$i]['FROM']; ?>';" value="白名单" />
+		</td>
 	</tr>
 <?php
     }

@@ -25,7 +25,7 @@ function login_init () {
 function display_mailbox_info () {
     global $currentUser;
 ?>
-<p align="left">
+<p align="left" class="title">
 您的邮箱：<?php echo $currentUser->email; ?>    当前隔离邮件：总共 <?php echo $currentUser->mailCnt; ?> 封，当前 <?php echo $currentUser->start; ?>-<?php echo $currentUser->end; ?> 封，占用空间 <?php echo $currentUser->totalSize; ?>
 &nbsp;&nbsp;&nbsp;&nbsp;[<a href="logout.ns">LOGOUT</a>]
 </p><br />
@@ -39,7 +39,7 @@ function html_init ($title=QUAR_DEFAULT_TITLE, $otherHeader='', $otherBodyParms=
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML><HEAD><TITLE><?php echo $title; ?></TITLE>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<link type="text/css" rel="stylesheet" href="css/style.css">
+<link type="text/css" rel="stylesheet" href="block.css">
 <?php echo $otherHeader; ?>
 </HEAD>
 <BODY <?php echo $otherBodyParms; ?>>
