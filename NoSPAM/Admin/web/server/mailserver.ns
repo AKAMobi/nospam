@@ -409,7 +409,7 @@ function save()
 			return;
 		}
 		if ($MaxQuota < ($TotalQuota + intval($_POST["Quota"])*intval($_POST["QuotaUnit"]))){
-			echo _("Virtual Mail Domain User Quota has exceed Limit");
+			echo _("Virtual Mail Domain User Quota has exceed Limit") . ": " . _("Max") . ": $MaxQuota Byte";
 			return;
 		}
 	}
