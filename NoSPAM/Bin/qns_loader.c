@@ -10,7 +10,7 @@
 /*
  * ns-queue dump eml to here, so we write eml here too.
  */
-#define EML_DIR "/home/NoSPAM/spool/working/tmp/"
+#define EML_DIR "/home/NoSPAM/spool/working/"
 #define EML_PREFIX "emlfile.gw.nospam.aka.cn"
 
 void dump_stdin_to_file()
@@ -19,10 +19,12 @@ void dump_stdin_to_file()
 	unsigned char buffer[BUF_LEN];
 	FILE *fp;
 
-	static char emlfile[128];
-	static char file_id[128];
+	char tmp_emlfile[128];
+	char new_emlfile[128];
+	char file_id[128];
 	snprintf ( file_id, 128, "%s.%d.%d", EML_PREFIX, time(0), getpid() );
-	snprintf ( emlfile, 128, "%s/%s", EML_DIR, file_id );
+	snprintf ( tmp_emlfile, 128, "%s/tmp/%s", EML_DIR, file_id );
+	snprintf ( new_emlfile, 128, "%s/new/%s", EML_DIR, file_id );
 
 	//printf ( "%s\n", emlfile );
 
@@ -32,8 +34,7 @@ void dump_stdin_to_file()
     &error_condition("$file_id exists, try again later");
   }
   */
-	//printf ( "emlfile: %s\n", emlfile );
-	fp = fopen ( emlfile, "w" );
+	fp = fopen ( tmp_emlfile, "w" );
 	if ( NULL==fp ){
 		fprintf ( stderr, "443 qns_loader can't open file\r\n" );
 		exit (150);
@@ -43,6 +44,8 @@ void dump_stdin_to_file()
 		fwrite (buffer, 1, len, fp);
 
 	fclose ( fp );
+
+	rename ( tmp_emlfile, new_emlfile );
 
 	setenv ( "AKA_FILE_ID", file_id, 1 );
 }
@@ -73,6 +76,7 @@ int main( int argc, char* argv[] )
 	//}
 
 	fprintf ( stderr, "443 qns_loader error\n" );
+	return 150;
 }
 
 

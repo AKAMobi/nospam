@@ -127,6 +127,8 @@ my $action_map = {
 
 		,'heartbeat_siwei' => [\&heartbeat_siwei, " : TAP watchdog heartbeat"]
 
+		,'ZombieFile_clean' => [\&ZombieFile_clean, " : clean orphen files"]
+
 		,'Version' => [\&Version, " : Show noSPAM system verion infomation"]
 
 };
@@ -180,6 +182,18 @@ _USAGE_
 			print NSOUT "\n";
 		}
 	print NSOUT "\n";
+}
+
+sub ZombieFile_clean
+{
+	`find /home/NoSPAM/spool/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /home/NoSPAM/spool/working/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /home/NoSPAM/spool/working/new -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
+
+	`find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	`find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
+	return 0;
 }
 
 sub start_System
@@ -677,7 +691,7 @@ sub Archive_clean_all
 
 sub UpdateRule
 {
-	use AKA::Mail::Police;
+	use AKA::Mail::Content;
 
 	use Data::Dumper;
 # 改变$转义、缩进
@@ -685,11 +699,11 @@ sub UpdateRule
 	$Data::Dumper::Indent = 1;
 
 
-	my $police = new AKA::Mail::Police;
+	my $AMC = new AKA::Mail::Content;
 
-	my $rule_num = $police->{conf}->check_n_update() ;
+	my $rule_num = $AMC->{conf}->check_n_update() ;
 
-	$police->{zlog}->debug ( "check_n_update: [" . $rule_num . "] rules\n" );
+	$AMC->{zlog}->debug ( "check_n_update: [" . $rule_num . "] rules\n" );
 	print ( "check_n_update: [" . $rule_num . "] rules\n" );
 }
 

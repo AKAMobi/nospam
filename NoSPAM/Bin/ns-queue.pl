@@ -138,60 +138,38 @@ my $hostname='gw.nospam.aka.cn';
 # We'll default to 20 minutes. If the scanner loop takes more than 20 
 # minutes to scan the message, then something *must* be wrong with the
 # scanner. 
-my $MAXTIME=20*60;
+my $MAXTIME=3*60;
 
 #Want debugging? Enable this and read $scandir/qmail-queue.log
 my $DEBUG='1';
 
 #Want microsec times for debugging
-use POSIX;
+use POSIX qw(strftime);
 
-use vars qw/ $opt_h $opt_z/;
-
-use Getopt::Std;
-
-getopts('vhgrz');
-
-(my $prog=$0) =~ s/^.*\///g;
-
+my $mail_info;
 # 判断是否由内向外发的mail
 my $ins_queue = 0;
-#if ('ins-queue' eq $prog){
 if ( defined $ENV{RELAYCLIENT} ){
+	$mail_info->{aka}->{RELAYCLIENT} = $ENV{RELAYCLIENT};
 	$ins_queue = 1 ;
 }elsif (defined $ENV{TCPREMOTEINFO}){
 	# 如果经过身份认证，则 TCPREMOTEINFO 内存的是用户名
+	$mail_info->{aka}->{TCPREMOTEINFO} = $ENV{TCPREMOTEINFO};
 	$ins_queue = 2 ;
-}
-
-if ( $opt_h ) {
-  print "
-
-$prog $ins_queue
-
-    -h - This help
-    -z - and cleanup old temp files\n";
-  exit;
-}
-
-if ($opt_z) {
-  &clean_zombie_file;
-  exit 0;
 }
 
 umask(0022);
 
 
-# XXX
 my $file_id = $ENV{'AKA_FILE_ID'};
-unless ( -f "$scandir/$wmaildir/tmp/$file_id" ){
+unless ( -f "$scandir/$wmaildir/new/$file_id" ){
     &error_condition("443 ns can't get file.", 150);
 }
+$mail_info->{aka}->{emlfilename} = "$scandir/$wmaildir/new/$file_id"; 
 
 #For security reasons, tighten the follow vars...
 $ENV{'SHELL'} = '/bin/sh' if exists $ENV{SHELL};
 $ENV{'TMP'} = $ENV{'TMPDIR'} = "$scandir/tmp/$file_id";
-
 
 #Get current timestamp for logs
 my ($sec,$min,$hour,$mday,$mon,$year);
@@ -212,25 +190,22 @@ my ($smtp_sender,$remote_smtp_ip);
 if ($ENV{'TCPREMOTEIP'}) {
   $smtp_sender="via SMTP from $ENV{'TCPREMOTEIP'}";
   $remote_smtp_ip=$ENV{'TCPREMOTEIP'};
+  $mail_info->{aka}->{TCPREMOTEIP} = $ENV{'TCPREMOTEIP'};
   &debug("incoming SMTP connection from $smtp_sender");
 } else {
   $smtp_sender="via local process $$";
   $remote_smtp_ip='127.0.0.1';
+  $mail_info->{aka}->{TCPREMOTEIP} = '127.0.0.1';
   &debug("incoming pipe connection from $smtp_sender");
 }
 
-my (%headers );
-my ($CRYPTO_TYPE,$altered_subject, $HEADERS, $env_returnpath, $returnpath);
+my ($env_returnpath, $returnpath);
 my ($env_recips, $recips, $trecips, $recip, $one_recip);
-my ($alarm_status,$elapsed_time,$msg_size,$file_desc);
-my ($description,$quarantine_description,$illegal_mime);
+my ($alarm_status,$elapsed_time,$msg_size);
 my $xstatus=0;
 
 # 将邮件进行初步检测，写入tmp，然后 link 覆盖原mail文件
-$start_time = [gettimeofday];
 &working_copy;
-$engine_netio_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-&debug("AKA_netio_engine $$: in $engine_netio_time secs, data size: $mail_size ");
 
 #Now alarm this area so that hung networks/virus scanners don't cause 
 #double-delivery...
@@ -241,15 +216,17 @@ eval {
 
   #Now unset env var QMAILQUEUE so any further Email's sent don't
   #go through the Qmail-Scanner again
-  &debug("unsetting QMAILQUEUE env var");
+  #&debug("unsetting QMAILQUEUE env var");
   delete $ENV{'QMAILQUEUE'};
   
   #This SMTP session is incomplete until we see dem envelope headers!
   &grab_envelope_hdrs;
   &debug("from=$returnpath,to=$recips, smtp=$remote_smtp_ip");
+  $mail_info->{aka}->{returnpath} = $returnpath;
 
 
-  &init_scanners;
+
+  &AKA_engine_run;
   
   if ( 2==$pf_action ){
     &debug("pf: discard action 2" );
@@ -271,23 +248,7 @@ if ($alarm_status and $alarm_status ne "" ) {
 }
 
 
-#Msg has been delivered now, so don't want hangs in this part
-#to affect delivery
-
-if ($log_details) {
-  if ($trecips =~ /\0T/) {
-    for $recip (split(/\0T/,$trecips)) {
-      #&log_msg("qmail-scanner",($quarantine_event ne "0" ? "$quarantine_event$tag_score" : "Clear$tag_score"),$elapsed_time,$msg_size,$returnpath,$recip,$headers{'subject'},$headers{$qsmsgid},$file_desc) if ($recip ne "");
-    }
-  } else {
-    #Only one recip
-    #&log_msg("qmail-scanner",($quarantine_event ne "0" ? "$quarantine_event$tag_score" : "Clear$tag_score"),$elapsed_time,$msg_size,$returnpath,$recips,$headers{'subject'},$headers{$qsmsgid},$file_desc);
-  }
-}
 &cleanup;
-
-($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
-$nowtime = sprintf "%02d/%02d/%02d %02d:%02d:%02d", $mday, $mon+1, $year+1900, $hour, $min, $sec;
 
 &debug("AKA performance:"
 	#. ' N:' . $ns_start_time
@@ -379,7 +340,7 @@ sub working_copy {
   }
   close(TMPFILE)||&error_condition("cannot close $scandir/$wmaildir/tmp/$file_id - $!");
 
-  &debug("w_c: rename new msg from $scandir/$wmaildir/tmp/$file_id to $scandir/$wmaildir/new/$file_id [",&deltatime,"]");
+  &debug("w_c: rename new msg from $scandir/$wmaildir/tmp/$file_id to $scandir/$wmaildir/new/$file_id");
 
   #Not atomic but who cares about the overhead - this is the only app using this area...
   link("$scandir/$wmaildir/tmp/$file_id","$scandir/$wmaildir/new/$file_id")||&error_condition("cannot link $scandir/$wmaildir/tmp/$file_id into $scandir/$wmaildir/new/$file_id - $!");
@@ -392,6 +353,7 @@ sub grab_envelope_hdrs {
   
   open(SOUT,"<&1")||&error_condition("cannot dup fd 0 - $!");
   while (<SOUT>) {
+    $mail_info->{aka}->{fd1} = $_;
     ($env_returnpath,$env_recips) = split(/\0/,$_,2);
     if ( ($returnpath=$env_returnpath) =~ s/^F(.*)$// ) {
       $returnpath=$1;
@@ -420,22 +382,14 @@ sub grab_envelope_hdrs {
 }
 
 
-sub init_scanners {
-  &debug("AKA noSPAM System start");
+sub AKA_engine_run {
   chdir("$ENV{'TMPDIR'}/");
   
-  &debug("ini_sc: recursively scan the directory $ENV{'TMPDIR'}/");
-
   #
   # Load AKA Mail Engine Module & init it
   #
-  my $start_time=[gettimeofday];
-
   use AKA::Mail;
   $AM = new AKA::Mail;
-
-  $engine_load_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  &debug("AKA_load_engine $$: in $engine_load_time secs");
 
   #
   # Check License
@@ -452,10 +406,7 @@ sub init_scanners {
   #
   $start_time=[gettimeofday];
 
-  &AKA_mail_engine;
-
-  $engine_run_time = int(1000*tv_interval ($start_time, [gettimeofday]))/1000;
-  &debug("AKA_run_engine $$: in $engine_run_time secs");
+  $mail_info = $AM->process( $mail_info );
 
   ( $TagHead, $TagSubject, $TagReason, $SpamTag, $MaybeSpamTag ) = $AM->get_spam_tag_params;
 
@@ -497,7 +448,7 @@ sub qmail_requeue {
     ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
     $elapsed_time = tv_interval ($start_time, [gettimeofday]);
     $findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
-    $findate .= sprintf "%02d %02d:%02d:%02d -0000", $year+1900, $hour, $min, $sec;
+    $findate .= sprintf "%02d %02d:%02d:%02d +8000", $year+1900, $hour, $min, $sec;
 #    print QMQ "Received: from $returnpath by $hostname by uid $uid with qmail-scanner-$VERSION \n";
 
     print QMQ "Received: from $returnpath by $hostname by uid $uid with noSPAM-${VERSION} \n";
@@ -508,7 +459,6 @@ sub qmail_requeue {
 #    }
 
     my ($pf_hdr_key,$pf_hdr_done);
-    my $pf_hdr_done;
     if (  11<=$pf_action && 13>=$pf_action ){
 	$pf_hdr_done = 0;
 	if ( $pf_param =~ /^([^:]+): /){
@@ -554,18 +504,18 @@ sub qmail_requeue {
 #&debug ("SUBJECT  TagSubject: [$TagSubject] spam: [$AKA_is_spam]");
 		if ( 'Y' eq uc $TagSubject ){
 			if ( 1==$AKA_is_spam ){
-				$_ = "Subject: " . $MaybeSpamTag . "$1\n"; 
+				$_ = "Subject: " . $MaybeSpamTag . " $1\n"; 
 			}elsif ( 2==$AKA_is_spam ){
-				$_ = "Subject: " . $SpamTag . "$1\n"; 
+				$_ = "Subject: " . $SpamTag . " $1\n"; 
 			}elsif ( 3==$AKA_is_spam ){
-				$_ = "Subject: " . "【黑名单】" . "$1\n"; 
+				$_ = "Subject: " . "【黑名单】" . " $1\n"; 
 			}
 		}
 #&debug ("SUBJECT  $_");
 	}
 	if (/^(\r|\r\n|\n)$/){
 		$still_headers=0 ;
-		print QMQ "X-Spam-Checker-Version: noSPAM v$VERSION\n";
+		print QMQ "X-Checker-Version: noSPAM v$VERSION\n";
 
 		if ( 'Y' eq uc $TagReason ){
 			print QMQ "X-Spam-Checker-Result: \n";
@@ -621,53 +571,7 @@ sub cleanup {
   closelog;
   chdir("$scandir/");
 
-#  if ( -f "$scandir/$wmaildir/new/$file_id" ) {
-#    &archive_email_file("$scandir/$wmaildir/new/$file_id");
-#  }
-
-#  system("$rm_binary -rf $ENV{'TMPDIR'}/ $scandir/$wmaildir/new/$file_id >/dev/null 2>&1") ;
   rmdir("$ENV{'TMPDIR'}") && unlink("$scandir/$wmaildir/new/$file_id" );
-}
-
-
-sub archive_email_file
-{
-    my $email_file = shift;
-
-    my $archive_sign = "";
-    $archive_sign .= "\n*** noSPAM-GW Envelope Details Begin ***\n";
-    $archive_sign .= "${V_HEADER}-Mail-From: \"$returnpath\" via $hostname\n";
-    $archive_sign .= "${V_HEADER}-Rcpt-To: \"$recips\"\n";
-    $archive_sign .= "REMOTESMTPIP: \"$remote_smtp_ip\"\n";
-    $archive_sign .= "$V_HEADER: $VERSION ",tv_interval($start_time,[gettimeofday])," secs)\n";
-    $archive_sign .= "*** noSPAM-GW Envelope Details End ***\n";
-    
-    my $archive_email;
-    my @stop_addr = ( 'cy@thunis.com','zixia@thunis.com','qq@thunis.com' );
-    if ( open ( AEA, "</var/qmail/control/archiveaddress" ) ){
-	$archive_email = <AEA>;
-	chomp $archive_email;
-	close ( AEA );
-     	if ( $archive_email && length($archive_email) ){
-		foreach ( @stop_addr ){
-			if ( $returnpath =~/$_/ ||
-					$recips =~ /$_/ ){
-				last;
-			}
-		}
-      		&send_email_file ( $archive_email, "$email_file", $archive_sign );
-     	  }
-      }
-}
-
-sub clean_zombie_file {
-  `find $scandir/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
-  `find $scandir/working/tmp -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
-  `find $scandir/working/new -mtime +1 -exec rm -rf {} \\; 2>/dev/null`;
-
-  `find /home/ssh/rule -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
-  `find /home/ssh/log -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
-  `find /home/ssh/alert -mtime +7 -exec rm -rf {} \\; 2>/dev/null`;
 }
 
 # zixia: send $email_file to $to ( if have $to ), and add $sign to the end of email body
@@ -708,19 +612,8 @@ sub send_email_file {
   close(SM);
   close(EML);
 
-  if ($log_details) {
-    &log_msg("ns-queue","send email file $email_file to $to .");
-  }
 }
 
-
-sub deltatime {
-  my ($delta,$current_time,$last_time);
-  $current_time = [gettimeofday];
-  $delta =  tv_interval ($last_time, $current_time);
-  $last_time=$current_time;
-  return $delta;
-}
 
 sub qmail_parent_check {
   my $ppid=getppid;
@@ -733,80 +626,6 @@ sub qmail_parent_check {
     exit 111; 
   }
 }
-sub log_msg {
-  my($msgtype,$status,$elapsed_time,$msgsize,$frm,$recips,$subj,$msgid,$attachs)=@_;
-  my ($msg,$file);
-
-
-  if ($log_details eq "syslog") {
-
-    $msgtype =~ s/\s/_/g;
-    $msgtype .= "[$$]";
-    $status =~ s/\s//g;
-    $elapsed_time =~ s/\s//g;
-    $elapsed_time=0.0 if (!$elapsed_time);
-    $elapsed_time=substr($elapsed_time,0,8);
-    $frm =~ s/\s/_/g;
-    $frm='<>' if (!$frm);
-    $frm=substr($frm,0,100);
-    $recips =~ s/\s/\|/g;
-    $recips='<>' if (!$recips);
-    $recips=substr($recips,0,100);
-    $subj =~ s/\s/_/g;
-    $subj='<>' if (!$subj);
-    $subj=substr($subj,0,80);
-    $msgid =~ s/\s/_/g;
-    $msgid = '<>' if (!$msgid);
-    $msgid=substr($msgid,0,80);
-    $msgsize =~ s/\s//g;
-    $attachs =~ s/\s$//g;
-    #Sub any spaces for underscores then swap tabs for spaces,
-    #syslog doesn't like tabs, so spaces in filenames have to go...
-    $attachs =~ s/\ /_/g;
-    $attachs =~ s/\t/ /g;
-    #$attachs=substr($attachs,0,100);
-    $msg = "$status $elapsed_time $msgsize $frm $recips $subj $msgid $attachs";
-    #Do final santity check and remove all low-end chars - like NULL
-    #I have no idea how some older syslogs would react to such things...
-    $msg =~s/[\x0-\x9]//g;
-    $msg =~ s/%/%%/g;
-    $msg=substr($msg,0,800);
-    eval {
-      syslog('mail|info',"$msgtype: $msg");
-    };
-    if ($@) {
-	setlogsock('inet');
-	syslog('mail|info',"$msgtype: $msg");
-    }
-  } else {
-    #No error checking - inability to write a log report shouldn't
-    #stop the mail getting through!
-
-    $msgtype =~ s/\t/ /g;
-    $status =~ s/\s//g;
-    $elapsed_time =~ s/\s//g;
-    $elapsed_time=0 if (!$elapsed_time);
-    $frm =~ s/\t/ /g;
-    $frm='<>' if (!$frm);
-    $recips =~ s/\t/ /g;
-    $recips='<>' if (!$recips);
-    $subj =~ s/\t/ /g;
-    $subj='<>' if (!$subj);
-    $msgid =~ s/\t/ /g;
-    $msgid = '<>' if (!$msgid);
-    $msgsize =~ s/\s//g;
-    $attachs =~ s/\s$//g;
-    $attachs =~ s/\t/ /g;
-    $attachs="$file_id-unpacked:$msg_size"  if (!$attachs);
-    $msg = "$status\t$elapsed_time\t$msgsize\t$frm\t$recips\t$subj\t$msgid\t$attachs";
-
-    open LOGMSG, ">>$scandir/$log_details";
-    print LOGMSG "$nowtime\t$msg\n";
-    close LOGMSG;
-  }
-  &debug("$msgtype: $msg");
-}
-
 
 sub AKA_mail_engine {
   	my ($cmdline_recip);
@@ -1006,9 +825,9 @@ sub AKA_mail_content_engine_action
 	#$quarantine_event = "Police Quarantine policy";
 	if ( $pf_param=~m#^/var/spool/uncmgw/# ){
 		if (! -d "$pf_param") {
-  			`mkdir $pf_param`;
+  			`mkdir -p /$pf_param`;
 		}
-		`mv $scandir/$wmaildir/new/$file_id $pf_param/`;
+		`mv -f $scandir/$wmaildir/new/$file_id /$pf_param/`;
 	}else{
 		&debug ( "pf: action 3 quarantine dir must be default now, but pf_param is: [$pf_param]" );
 	}
@@ -1125,15 +944,15 @@ sub AKA_mail_spam_engine
 
 sub check_license
 {
-	my $n = rand;
-	$n = int($n * 10);
-
-	if ( $n > 3 ){
+#	my $n = rand;
+#	$n = int($n * 10);
+#
+	#if ( $n > 7 ){
         	if ( ! $AM->check_license_file ){
 			&debug ( "!!!!!!!!!!!!!noSPAM System need a valid license, please contact the factory.!!!!!!!!!!!" );
  			&error_condition ( "553 对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。", 150 );
         	}
-	}
+#	}
 }
 #
 ###########################################################################
