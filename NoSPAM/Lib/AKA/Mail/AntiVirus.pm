@@ -79,7 +79,7 @@ sub catch_virus
   	
 	if ( 'Y' ne $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
 		return ( { 	result 	=> 0,
-				desc	=> 'Î´Æô¶¯',
+				desc	=> 'ÒýÇæÎ´Æô¶¯',
 				action 	=> 0, 
 
 				enabled	=> 0,

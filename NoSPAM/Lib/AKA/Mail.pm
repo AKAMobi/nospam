@@ -88,6 +88,7 @@ sub new
 	}
 
 	$self->{conffile_list}->{conffile} = $self->{conf}->{define}->{conffile};
+	$self->{conffile_list}->{license} = $self->{conf}->{define}->{licensefile};
 	$self->{conffile_list}->{filterdb} = $self->{content}->{content_conf}->{define}->{filterdb};
 	$self->{conffile_list}->{user_filterdb} = $self->{content}->{content_conf}->{define}->{user_filterdb};
 

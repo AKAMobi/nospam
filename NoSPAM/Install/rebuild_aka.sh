@@ -66,9 +66,7 @@ ${SOURCEHOME}/Admin/factory/encrypt aka/root/*.pl
 ${SOURCEHOME}/Admin/factory/encrypt aka/var/qmail/bin/*.pl
 
 echo "Compiling qns_loader & wi  source"
-gcc -o aka/home/NoSPAM/bin/qns_loader ${SOURCEHOME}/Bin/qns_loader.c
-#rm -f aka/home/NoSPAM/bin/qins_loader
-#ln -s qns_loader aka/home/NoSPAM/bin/qins_loader
+gcc -O2 -o aka/home/NoSPAM/bin/qns_loader ${SOURCEHOME}/Bin/qns_loader.c -D_GNU_SOURCE
 gcc -o aka/home/NoSPAM/bin/wi ${SOURCEHOME}/Bin/wi.c
 
 echo "Changing qns_loader & wi permission"

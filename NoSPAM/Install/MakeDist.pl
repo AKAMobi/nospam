@@ -49,7 +49,7 @@ chdir 'tmp';
 unlink 'README';
 
 print "Modifying file owner & mode...\n";
-`chown -R nospam home/NoSPAM/{etc,spool,var} home/vpopmail/domains var/qmail/control`;
+`chown -R nospam home/NoSPAM/{etc,spool,log,var} home/vpopmail/domains var/qmail/control`;
 `chown -R ssh home/ssh`;
 `chmod -R o+rx home/{NoSPAM,ssh,vpopmail,wmail} var/qmail/control`;
 
