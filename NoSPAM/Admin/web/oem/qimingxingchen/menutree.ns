@@ -43,7 +43,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 <?}?>
 
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
-	a.add(new WebFXTreeItem('SMTP参数','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('邮件参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));

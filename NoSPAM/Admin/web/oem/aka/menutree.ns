@@ -30,7 +30,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 
 	a.add(new WebFXTreeItem('引擎设置','system/engine.ns','main'));
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
-	a.add(new WebFXTreeItem('SMTP参数','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('邮件参数','system/basesettings.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
@@ -140,6 +140,11 @@ if($SpamEngine > 0){
 	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
 	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
 	c1.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
+	c1.add(new WebFXTreeItem('贝叶斯过滤器','antispam/bayes.ns','main'));
+	c1.add(new WebFXTreeItem('超级实时黑名单','antispam/rbl.ns','main'));
+	c1.add(new WebFXTreeItem('网络校验和检测','antispam/dcc.ns','main'));
+	c1.add(new WebFXTreeItem('智能内容分析','antispam/sa.ns','main'));
+	c1.add(new WebFXTreeItem('自动白名单降噪','antispam/awl.ns','main'));
 	c.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
 <?php
 	}

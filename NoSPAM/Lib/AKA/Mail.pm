@@ -25,6 +25,7 @@ use AKA::Mail::Log;
 
 use AKA::Mail::AntiVirus;
 use AKA::Mail::Spam;
+use AKA::Mail::SA;
 use AKA::Mail::Content;
 use AKA::Mail::Dynamic;
 
@@ -79,6 +80,7 @@ sub new
 
 	$self->{antivirus} 	= new AKA::Mail::AntiVirus($self);
 	$self->{spam} 		= new AKA::Mail::Spam($self);
+	$self->{sa} 		= new AKA::Mail::SA($self);
 	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
 	$self->{content} 	= new AKA::Mail::Content($self);
 	$self->{archive} 	= new AKA::Mail::Archive($self);
@@ -778,7 +780,7 @@ sub qmail_requeue {
 		close EIN  || return $self->close_smtp (451, "Write error to envelope pipe. (#4.3.0) - $!");
 
 		$envelope =~ s/\0/\\0/g;
-		$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
+		#$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
 
 	}
 
@@ -1084,6 +1086,25 @@ sub archive_engine
 
 	my $recips = $self->{mail_info}->{aka}->{recips};
 
+# XXX test sa
+
+	#$self->{zlog}->debug( "SA: $is_virus, $is_overrun" );
+=pod
+	if ( !$is_virus && !$is_overrun){
+		my $spamc_cmd = "/usr/bin/spamc < $emlfile ";
+		$emlfile =~ m#([^/]+)$#;
+		my $spamc_output = "/home/vpopmail/domains/localhost.localdomain/archive/Maildir/";
+		if ( $is_spam ){
+			$self->{zlog}->debug( "SA: $spamc_cmd > $spamc_output/spam/$1" );
+			system ( "$spamc_cmd > $spamc_output/spam/$1" );
+		}else{
+			$self->{zlog}->debug( "SA: $spamc_cmd > $spamc_output/nonspam/$1" );
+			system ( "$spamc_cmd > $spamc_output/nonspam/$1" );
+		}
+	}
+=cut
+# XXX test sa over
+
 	if ( 'Y' ne uc $self->{conf}->{config}->{ArchiveEngine}->{ArchiveEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
@@ -1111,8 +1132,6 @@ sub archive_engine
 		};
 		return;
 	}
-
-
 
 	my @archive_address = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress}};
 	my $need_archive = 1;	# 所有的条件必须满足才会审计
@@ -1203,6 +1222,8 @@ sub spam_engine
 						 );
 
 	my ( $is_spam, $reason, $dns_query_time ) = ();
+	my $sa_result = {};
+
 	$self->{mail_info}->{aka}->{engine}->{spam}->{enabled} = 1;
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
@@ -1239,6 +1260,20 @@ sub spam_engine
 	#}
 	else{
 		( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
+		
+		# SpamAssassin, default max size 128KB
+		if ( $self->{mail_info}->{aka}->{size} < ($self->{conf}->{intconf}->{SpamAssassinMaxMailSize}||131072) ){
+			$sa_result = $self->{sa}->get_result($self->{mail_info}->{aka}->{emlfilename});
+			if ( ! $is_spam && $sa_result->{SCORE} > 10 ){
+				$reason = $sa_result->{TESTS};
+				if ( $sa_result->{SCORE} < 15 ){
+					$is_spam = RESULT_SPAM_MAYBE ;
+				}else{
+					$is_spam = RESULT_SPAM_MUST;
+				}
+			}
+		}
+
 	}
 
 	my $action = ACTION_PASS;
@@ -1255,9 +1290,11 @@ sub spam_engine
 		$action = ACTION_ACCEPT;
 	}
 
+#$self->{zlog}->log ( "SA: " . $sa_result->{VERSION} );
 	$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>	$is_spam,
 							desc	=>	$reason,
 							action	=>	$action,
+							sa	=>	$sa_result,
                       				enabled => 1,
                       				runned  => 1,
                                 		runtime => int(1000*tv_interval ($start_time, [gettimeofday])) 

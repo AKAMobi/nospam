@@ -109,7 +109,7 @@ if(count($output) > 0){
 	<td nowrap><?=$Actions[intval($values[9])]?></td>
 <?}?>
     <td nowrap><?=$vSpam[$values[10]]?></td>
-    <td nowrap><?=$values[11]?></td>
+    <td><?=$values[11]?></td>
     <td nowrap><?=$Actions[intval($values[12])]?></td>
 	<td nowrap><?=$values[13]?></td>
 	<td nowrap><?=$Actions[intval($values[14])]?></td>

@@ -88,6 +88,8 @@ sub debug
 {
 	my ($slef,$what) = @_;
 
+	return unless $what;
+
 	$what =~ s/\n/\\n/g;
 
 	if ( $can_debug ){
@@ -235,6 +237,28 @@ sub log_csv {
 	}else{
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
+
+	if ( !$engine->{antivirus}->{result} && open ( LFD, ">>/var/log/NoSPAM.sa" ) ){
+		flock(LFD,LOCK_EX);
+		seek(LFD, 0, 2);
+#print LFD strftime("%Y-%m-%d %H:%M:%S", localtime) 
+		print LFD "\n==================================================\n"
+			. "TCPREMOTEIP: " . $aka->{TCPREMOTEIP} . "\n" . "Envelope-From: " . $aka->{returnpath} . "\n"
+				. "Recips: " . $recips . "\nSubject: " . $esc_subject . "\n"
+
+			. "Size: " . $aka->{size} . "\n"
+
+			. 'isVirus: ' . $engine->{antivirus}->{result} . ',' . $engine->{antivirus}->{desc} . "\n";
+use Data::Dumper;
+		print LFD Dumper ( $engine->{spam}->{sa} );
+
+		flock(LFD,LOCK_UN);
+		close(LFD);
+	}else{
+		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+	}
+
+
 }
 
 END

@@ -24,7 +24,7 @@ ProductName=网警邮通神  NETCOP-MFS-100
 ProductSN=$prodno
 
 ServerGatewaySwitchable=Y
-ServerGateway=Gateway,Server,MXRelay,Tailer
+ServerGateway=Gateway,Server,MXRelay
 
 LicenseHTML=<b>客户试用体验(非销售)版</b>
 

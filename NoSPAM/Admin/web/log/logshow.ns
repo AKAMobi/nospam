@@ -164,7 +164,7 @@ if(count($lines)>0){
     <td><?=$Actions[intval($values[9])]?></td>
 <?}?>
     <td><?=$vSpam[$values[10]]?></td>
-    <td><?=$values[11]?></td>
+    <td wrap><?=$values[11]?></td>
     <td><?=$Actions[intval($values[12])]?></td>
     <td><?=$values[13]?></td>
     <td><?=$Actions[intval($values[14])]?></td>

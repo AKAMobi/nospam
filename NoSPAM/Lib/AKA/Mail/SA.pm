@@ -143,8 +143,8 @@ sub sa_result
 		$result->{$_} = $status->_get_tag($_,'');
 	}
 
-	$result->{TESTS} = $status->_get_tag('TESTS','£¬');
-	$result->{TESTSSCORES} = $status->_get_tag('TESTSSCORES','£¬');
+	$result->{TESTS} = $status->_get_tag('TESTS',' ');
+	$result->{TESTSSCORES} = $status->_get_tag('TESTSSCORES',' ');
 	
 	return $result;
 }
