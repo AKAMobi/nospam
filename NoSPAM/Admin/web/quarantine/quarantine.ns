@@ -42,7 +42,7 @@ if($_POST["Submit"]==_("Modify")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("QuarantineEngine")?></title>
+<title><?=_("Quarantine Engine")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function doSwitchTime() {
@@ -60,7 +60,7 @@ function doSwitchTime() {
 </head>
 <body onload="doSwitchTime" >
 <form name="form1" method="post" action="">
-  <p> <?=_("QuarantineEngine Settings")?>:<br>
+  <p> <?=_("Quarantine Engine Settings")?>:<br>
     <label>
     <?=_("Quarantine Time out")?>
     <input type="hidden" name="QuarantineTimeOutSeconds" value="<?php echo $quarantineEnginTimeOut; ?>" />
@@ -76,8 +76,8 @@ function doSwitchTime() {
     <?=_("Quarantine time out action")?>
     <select name="QuarantineTimeOutAction">
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'selected'; ?>><?=_("Drop")?></option>
-    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option>
-    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'selected'; ?>><?=_("Tag")?></option>
+    <!--option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option-->
+    <!--option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'selected'; ?>><?=_("Tag")?></option-->
     <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'selected'; ?>><?=_("Forward")?></option>
     </select>
     </label>
@@ -94,7 +94,7 @@ function doSwitchTime() {
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("QuarantineEngine")?></title>
+<title><?=_("Quarantine Engine")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function doSwitchTime() {
@@ -111,7 +111,7 @@ function doSwitchTime() {
 </script>
 </head>
 <body onload="doSwitchTime" >
-  <p> <?=_("QuarantineEngine Settings")?>:<br>
+  <p> <?=_("Quarantine Engine Settings")?>:<br>
     <label>
     <?=_("Quarantine Time out")?>
     <input type="hidden" name="QuarantineTimeOutSeconds" value="<?php echo $quarantineEnginTimeOut; ?>" />
@@ -127,8 +127,8 @@ function doSwitchTime() {
     <?=_("Quarantine time out action")?>
     <select name="QuarantineTimeOutAction" disabled >
     <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'checked'; ?>><?=_("Drop")?></option>
-    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option>
-    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option>
+    <!--option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option-->
+    <!--option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option-->
     <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'checked'; ?>><?=_("Forward")?></option>
     </select>
     </label>
