@@ -1,0 +1,18 @@
+demo.c 是一个检查License的示例代码
+
+md5目录是RFC的md5源码，不用修改（参考Makefile中的lib:）
+
+license.h 是和 wmail 接口的头文件
+
+license.c 是序列号的计算和获取代码，除了基本的数据获取和数据运算部分完成以外，接口尚未最后完善；
+
+License.sample.dat 是一个示例的 License 文件格式；
+
+使用：
+	1、制作lib文件: libakalicense.a
+	make lib
+
+	2、把libakalicense.a和demo.c链接为demo
+	make all
+
+	3、执行demo，既可以得到本机的序列号，还可以验证 license 文件检查接口（尚未完成）
