@@ -1,20 +1,20 @@
 <?
 if(!isset($_GET["id"]))
-	die("错误");
+	die(_(" Error"));
 
 require_once("../inc/include.ns");
 require_once("Mail/mimeDecode.php");
 
 if($MailGateway <= 0 && $MailRelay <= 0 )
-	die("对不起，本系统没有开启本功能");
+	die(_("Sorry, This Product has no Gateway Mode License"));
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
-	die("你没有查看本页面的权限");
+	die(_("You have not permission to operate this page"));
 
 $id = $_GET["id"];
 
 if(($ret=wi("MailQueue_getMail $id",$result)) != 0)
-	die("获取邮件内容时发生错误，错误代码：$ret");
+	die(_("Error when fetch mail content, ErrNo: ").$ret);
 
 $input = implode("\n",$result);
 
@@ -28,7 +28,7 @@ $output = $decoder->decode($params);
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>邮件内容</title>
+<title><?=_("Mail Content")?></title>
 <link type="text/css" rel="StyleSheet" href="../css/style.css" />
 <script>
 function switch(flag)
@@ -48,9 +48,9 @@ function switch(flag)
 </head>
 <body>
 <p align="center">
-	<input type="button" onclick="switch(1)" value="察看未解码邮件">
-	<input type="button" onclick="switch(2)" value="察看解码邮件">
-	<input type="button" onclick="location.href='mailqueue.ns?action=del&<?="id={$id}&page={$_GET["page"]}&pagenum={$_GET["pagenum"]}"?>'" value="删除">
+	<input type="button" onclick="switch(1)" value="<?=_("View Mails unDecoded")?>">
+	<input type="button" onclick="switch(2)" value="<?=_("View Mails Decoded")?>">
+	<input type="button" onclick="location.href='mailqueue.ns?action=del&<?="id={$id}&page={$_GET["page"]}&pagenum={$_GET["pagenum"]}"?>'" value="<?=_("Delete")?>">
 </p>
 <p>
 <div style="display: none" id="undecode" name="undecode">

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $rule_id = $_GET["id"];
 
-if(!$rule_id) die("错误！请给出rule_id");
+if(!$rule_id) die(_("Error, Please input rule ID"));
 
 $bPolice = false;
 
@@ -30,75 +30,71 @@ $action = $config->get_action_rule($rule_id);
 <body onload="parent.document.all.InfoLayer.innerHTML=document.body.innerHTML">
 <table border="0" style="font-size: 12px">
 <tr>
-	<td>规则编号：<?=$rule_id?></td>
-	<td>规则说明：<?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
+	<td><?=_("No.")?>: <?=$rule_id?></td>
+	<td><?=_("Description")?>: <?=utf8_decode($rule->get_attribute("rule_comment"))?></td>
 </tr>
 <tr>
-	<td>类　　别：<?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
-	<td><?if($bPolice){?>编号类型：<?=$rule->get_attribute("id_type")?><?}?></td>
+	<td><?=_("Group")?>: <?=$Category[$category_id]?$Category[$category_id][0]:$category_id?></td>
+	<td><?if($bPolice){?><?=_("Policy Type")?>: <?=$rule->get_attribute("id_type")?><?}?></td>
 </tr>
 <tr>
-	<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
-	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
+	<td><?=_("Create Time")?>: <?=FormatTime($rule->get_attribute("create_time"))?></td>
+	<td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
 <tr>
-	<td>过期时间：<?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"无"?></td>
-	<td><?if($bPolice){?>报警级别：<?=$rule->get_attribute("alarmlevel")?><?}?></td>
+	<td><?=_("Expire Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):_("none")?></td>
+	<td><?if($bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
 </tr>
 <?if ($bPolice){?>
 <tr>
-	<td>实时上报：<?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "是":"否"):"否"?></td>
+	<td><?=_("Realtime Upload")?>: <?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "Y":"N"):"N"?></td>
 	<td></td>
 </tr>
 <?}?>
 </table>
 <p>
-规则间逻辑关系：<?
+<?=_("Rules logic")?>: <?
 if (!$rule->has_attribute("rule_logic")) {
-	echo "与";
+	echo "AND";
 } else {
 	switch ($rule->get_attribute("rule_logic")){
 		case "NOT":
-		echo "否";
-		break;
 		case "OR":
-		echo "或";
+		echo $rule_logic;
 		break;
 		case "AND":
 		default:
-		echo "与";
+		echo "AND";
 	}
 }
 ?>
 </p>
-<p style="font-size: 12px"><b>关键字及IP规则</b><br>
+<p style="font-size: 12px"><b><?=_("Keyword and IP rules")?></b><br>
 <?
 if(count($keywords) == 0){
 	echo "无";
 }else{
 ?>
-关键字规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	if (!$rule->has_attribute("keyword_logic")) {
-		echo "与";
+		echo "AND";
 	} else {
 		switch ($rule->get_attribute("keyword_logic")){
 			case "NOT":
-			echo "否";
-			break;
 			case "OR":
-			echo "或";
+			echo $rule_logic;
 			break;
 			case "AND":
 			default:
-			echo "与";
+			echo "AND";
 		}
 	}
 	echo "<br>";
 	$i = 1;
 	foreach($keywords as $keyword){
-		echo $i."、"."匹配位置：".$KeyPos[$keyword->get_attribute("key")];
-		echo "，类型：".$KeyMatchType[$keyword->get_attribute("type")];
-		echo "，过滤内容：".utf8_decode($keyword->get_attribute("keyword"))."<br>";
+		echo $i."、"._("Match Position").": ".$KeyPos[$keyword->get_attribute("key")];
+		echo ", "._("Match Type").": ".$KeyMatchType[$keyword->get_attribute("type")];
+		echo ", "._("Filter Content").": ".utf8_decode($keyword->get_attribute("keyword"))."<br>";
 		$i++;
 	}
 }
@@ -110,67 +106,63 @@ if(count($sizes) == 0){
     echo "无";
 }else{
 ?>
-数值规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	if (!$rule->has_attribute("size_logic")) {
-		echo "与";
+		echo "AND";
 	} else {
 		switch ($rule->get_attribute("size_logic")){
 			case "NOT":
-			echo "否";
-			break;
 			case "OR":
-			echo "或";
+			echo $rule_logic;
 			break;
 			case "AND":
 			default:
-			echo "与";
+			echo "AND";
 		}
 	}
 	echo "<br>";
     $i = 1;
     foreach($sizes as $size){
-        echo $i."、"."匹配位置：".$SizePos[$size->get_attribute("key")];
-		echo "，数值要求：".$size->get_attribute("sizevalue")."<br>";
+        echo $i."、"._("Match Position").": ".$SizePos[$size->get_attribute("key")];
+		echo ", "._("Size Value").": ".$size->get_attribute("sizevalue")."<br>";
 		$i++;
     }
 }
 ?>
 </p>
-<p style="font-size: 12px"><b>附件规则</b><br>
+<p style="font-size: 12px"><b><?=_("Attachment rules")?></b><br>
 <?
 if(count($attachments) == 0){
-    echo "无";
+    echo _("none");
 }else{
 ?>
-附件规则内部逻辑关系：<?
+<?=_("Sub-Rules logic")?>: <?
 	if (!$rule->has_attribute("attach_logic")) {
-		echo "与";
+		echo "AND";
 	} else {
 		switch ($rule->get_attribute("attach_logic")){
 			case "NOT":
-			echo "否";
-			break;
 			case "OR":
-			echo "或";
+			echo $size_logic;
 			break;
 			case "AND":
 			default:
-			echo "与";
+			echo "AND";
 		}
 	}
 	echo "<br>";
     $i = 1;
     foreach($attachments as $attachment){
-        echo $i."、"."限制文件名：".utf8_decode($attachment->get_attribute("filename"));
-		echo "，限制文件类型：".$FileType[$attachment->get_attribute("filetype")][0];
-		echo "，数值要求：".$attachment->get_attribute("sizevalue")."<br>";
+        echo $i."、"._("Filename Must be").": ".utf8_decode($attachment->get_attribute("filename"));
+		echo ", "._("File Ext Must be").": ".$FileType[$attachment->get_attribute("filetype")][0];
+		echo ", "._("Size Value").": ".$attachment->get_attribute("sizevalue")."<br>";
 		$i++;
     }
 }
 ?>
 </p>
 <p style="font-size: 12px">
-<b>动作</b>：<?=$Actions[$action->get_attribute("action")]?><br>
-<b>参数</b>：<?if($action->has_attribute("action_param") && $action->get_attribute("action_param")!="" ) echo utf8_decode($action->get_attribute("action_param")); else echo "无"; ?></p>
+<b><?=_("Action")?></b>: <?=$Actions[$action->get_attribute("action")]?><br>
+<b><?=_("Action Parameter")?></b>: <?if($action->has_attribute("action_param") && $action->get_attribute("action_param")!="" ) echo utf8_decode($action->get_attribute("action_param")); else echo _("none"); ?></p>
 </body>
 </html>

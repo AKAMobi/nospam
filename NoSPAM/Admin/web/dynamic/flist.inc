@@ -27,13 +27,13 @@ function DrawListTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <caption><?=$sTitle?></caption>
 <tr class="TableTitle2">
 <?if($bAccess){?>
-	<th>选择</th>
+	<th><?=_("Select")?></th>
 <?}?>
-	<th>编号</th>
+	<th><?=_("No.")?></th>
 	<th><?=$sColumn?></th>
-	<th>备注</th>
+	<th><?=_("Note")?></th>
 <?if($bAccess){?>
-	<th>编辑</th>
+	<th><?=_("Edit")?></th>
 <?}?>
 </tr>
 <?
@@ -52,8 +52,8 @@ function DrawListTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 	<td><?=$note?></td>
 <?if($bAccess){?>
 	<td align="center">
-		<input type="button" value="修改" onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$key&action=modify"?>'">
-		<input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$key&action=del"?>'">
+		<input type="button" value="<?=_("Modify")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$key&action=modify"?>'">
+		<input type="button" value="<?=_("Delete")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?key=$key&action=del"?>'">
 	</td>
 <?}?>
 </tr>
@@ -77,8 +77,8 @@ function jump()
 <tr>
 <td align="center">
 <?if($bAccess){?>
-<input type="button" value="添加" onclick="location.href='<?=$_SERVER['PHP_SELF']."?action=add"?>'">
-<input type="submit" name="submit" value="批量删除">
+<input type="button" value="<?=_("Add")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?action=add"?>'">
+<input type="submit" name="submit" value="<?=_("Delete")?>">
 <?}?>
 </td>
 <td align="right">
@@ -102,7 +102,7 @@ else
 	echo "<a href='".$_SERVER['PHP_SELF']."?page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
 echo "<a href='".$_SERVER['PHP_SELF']."?page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
 ?>
-跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?=_("Jump to Page ")?><select name="oPage" id="oPage" onchange="jump()">
 <?
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -111,7 +111,7 @@ for($i = 1; $i <= $pages; $i++){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+</select> <?=_(", ")?> <select name="oPagenum" id="oPagenum" onchange="jump()">
 <?
 for($i = 5; $i <= 30; $i+=5){
 	if($i == $pagenum)
@@ -120,7 +120,7 @@ for($i = 5; $i <= 30; $i+=5){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录
+</select><?=_(" records/page")?>
 </td>
 </tr>
 </table>
@@ -133,7 +133,7 @@ function DrawModifyTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 	global $spamconf;
 
 	if(!$bAccess){
-		print "你无权进行更改操作";
+		print _("You have not permission to modify system config");
 		exit(-1);
 	}
 	
@@ -145,17 +145,17 @@ function DrawModifyTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <input type="hidden" name="type" value="modify">
 <input type="hidden" name="oKey" value="<?=$_GET["key"]?>">
 <table width="50%" border="1" align="center">
-<caption>添加<?=$sTitle?></caption>
+<caption><?=_("Add").$sTitle?></caption>
 <tr>
-	<th scope="row"><?=$sColumn?>：</th>
+	<th scope="row"><?=$sColumn?>:</th>
 	<td align="left"><input type="text" name="key" value="<?=$_GET["key"]?>"></td>
 </tr>
 <tr>
-	<th scope="row">备　　注：</th>
+	<th scope="row"><?=_("Note")?>:</th>
 	<td align="left"><input type="text" name="note" value="<?=$rList[$_GET["key"]]?>"></td>
 </tr>
 <tr>
-	<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
+	<th colspan="2"><input type="submit" value="<?=_("Save")?>" /><input type="reset" value="<?=_("Reset")?>" /></th>
 </tr>
 <table>
 </form>
@@ -167,7 +167,7 @@ function DrawAddTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 	global $spamconf;
 
 	if(!$bAccess){
-		print "你无权进行更改操作";
+		print _("You have not permission to modify system config");
 		exit(-1);
 	}
 	
@@ -183,11 +183,11 @@ function DrawAddTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 	<td align="left"><input type="text" name="key"></td>
 </tr>
 <tr>
-	<th scope="row">备　　注：</th>
+	<th scope="row"><?=_("Note")?>:</th>
 	<td align="left"><input type="text" name="note"></td>
 </tr>
 <tr>
-	<th colspan="2"><input type="submit" value="保存" /><input type="reset" value="重置" /></th>
+	<th colspan="2"><input type="submit" value="<?=_("Save")?>" /><input type="reset" value="<?=_("Reset")?>" /></th>
 </tr>
 <table>
 </form>
@@ -199,7 +199,7 @@ function SaveData($sList, $sSection, $sColumn, $bAccess)
 	global $spamconf;
 
 	if(!$bAccess){
-		print "你无权进行更改操作";
+		print _("You have not permission to modify system config");
 		exit(-1);
 	}
 	$rList = $spamconf->getList($sList,$sSection);
@@ -207,7 +207,7 @@ function SaveData($sList, $sSection, $sColumn, $bAccess)
 	if(isset($_POST['type']) && $_POST['type']=="modify")
 		unset($rList[$_POST['oKey']]);
 	elseif (array_key_exists($_POST['key'],$rList)){
-		echo "相同的".$sColumn."已存在！";
+		echo _("Same ").$sColumn._(" has existed");
 		exit(-1);
 	}
 
@@ -221,7 +221,7 @@ function DeleteData($sList, $sSection, $bAccess)
 	global $spamconf;
 
 	if(!$bAccess){
-		print "你无权进行更改操作";
+		print _("You have not permission to modify system config");
 		exit(-1);
 	}
 

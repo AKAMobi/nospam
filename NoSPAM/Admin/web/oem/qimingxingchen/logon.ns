@@ -7,15 +7,15 @@
 <SCRIPT>
 
 <!--//
-var alertinput="请您首先输入：\n";
+var alertinput="<?=_("Input")?>:\n";
 
 function login() 
 {
 	var mesg = "";
 	
-	if(document.logon.adminID.value == "") mesg += "管理员账号\n";
+	if(document.logon.adminID.value == "") mesg += "<?=_("Admin")?>\n";
 	
-	if(document.logon.password.value == "") mesg += "密码\n";
+	if(document.logon.password.value == "") mesg += "<?=_("Password")?>\n";
 	
 	if(mesg != ""){
 		
@@ -59,12 +59,12 @@ function login()
 				  <FORM name=logon onsubmit="return login();" action="login.ns" method=post>
 				  <table width="100%" border="0" cellspacing="5" cellpadding="0">
                       <tr>
-                        <td align="center"> 管理员帐号：<br>
+                        <td align="center"> <?=_("Admin")?>: <br>
 						<input type="text" name="adminID"></td>
                       </tr>
                       <tr>
                         <td align="center">
-						密 码：<br>
+				<?=_("Password")?>: <br>
 						<input type="password" name="password" value="" width=100%></td>
                       </tr>
                       <tr>
@@ -72,11 +72,11 @@ function login()
                             <tr>
                               <td width="45">&nbsp;</td>
                               <td align="left">
-<input type="submit" name="submit" value="登 录">
+<input type="submit" name="submit" value="<?=_("Login")?>">
                               </td>
                               <td>&nbsp;</td>
                               <td align="right"> 
-                                <input type="reset" name="cancel" value="取 消">
+                                <input type="reset" name="cancel" value="<?=_("Cancel")?>">
                               </td>
                               <td width="45">&nbsp;</td>
                             </tr>

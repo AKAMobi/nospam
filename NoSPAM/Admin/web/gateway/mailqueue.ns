@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($MailGateway <= 0 && $MailRelay <= 0 && $MailServer <=0 )
-	die("对不起，本系统没有开启本功能");
+	die(_("Sorry, This Product has no Gateway Mode License"));
 
 if (!adminPerm(PERM_ADMIN_GATEWAY))
-	die("你没有查看本页面的权限");
+	die(_("You have not permission to operate this page"));
 
 $bWritable = (bool)adminPerm(PERM_ADMIN_WRITE);
 
@@ -39,7 +39,7 @@ function show()
 	
 	$start = ($page - 1)*$pagenum+1;
 	if(($ret=wi("MailQueue_getList $start $pagenum",$result)) != 0){
-		echo "获取邮件队列时出现错误，错误代码$ret";
+		echo _("Error when fetch mail queue, ErrNo: ").$ret;
 		return;
 	}
 	
@@ -56,7 +56,7 @@ function show()
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>邮件队列监管</title>
+<title><?=_("Monitor Mail Queue")?></title>
 <link type="text/css" rel="StyleSheet" href="../css/style.css" />
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -103,16 +103,16 @@ function jump()
 <thead>
 	<tr class="TableTitle2">
 <?if($bWritable){?>
-		<td>选择</td>
+		<td><?=_("Select")?></td>
 <?}?>
-		<td>序号</td>
-		<td>邮件ID</td>
-		<td>发送时间</td>
-		<td>发送地址</td>
-		<td>目标地址</td>
-		<td>邮件尺寸</td>
+		<td><?=_("No.")?></td>
+		<td><?=_("Mail ID")?></td>
+		<td><?=_("Send Time")?></td>
+		<td><?=_("Mail From")?></td>
+		<td><?=_("To")?></td>
+		<td><?=_("Size")?></td>
 <?if($bWritable){?>
-		<td>操作</td>
+		<td><?=_("Op")?></td>
 <?}?>
 	</tr>
 </thead>
@@ -144,7 +144,7 @@ if(count($queue) > 0){
 		<td onclick="location.href='<?=$url?>'"><?=$to?></td>
 		<td onclick="location.href='<?=$url?>'"><?=$size?></td>
 <?if($bWritable){?>
-		<td><input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?page=".$page."&pagenum=".$pagenum."action=del&id=".$id?>'"></td>
+		<td><input type="button" value="<?=_("Delete")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?page=".$page."&pagenum=".$pagenum."action=del&id=".$id?>'"></td>
 <?}?>
 	</tr>
 <?
@@ -160,10 +160,10 @@ if(count($queue) > 0){
 		<tr>
 			<td align="left">
 <?if($bWritable){?>
-				<input type="button" value="全部选择" onclick="selectAll()">
-				<input type="button" value="反向选择" onclick="inverseSelect()">
-				<input type="button" value="清空队列" onclick="if(confirm('注意！此操作将永久删除所有未投递的邮件，确认吗？')){location.href='<?=$_SERVER['PHP_SELF']?>?action=flush';}">
-				<input type="submit" value="批量删除">
+				<input type="button" value="<?=_("Select All")?>" onclick="selectAll()">
+				<input type="button" value="<?=_("Inverse Select")?>" onclick="inverseSelect()">
+				<input type="button" value="<?=_("Flush Queue")?>" onclick="if(confirm('<?=_("Note: This Op will clear all undeliver mails, Continue?")?>')){location.href='<?=$_SERVER['PHP_SELF']?>?action=flush';}">
+				<input type="submit" value="<?=_("Delete")?>">
 <?}?>
 			</td>
 			<td align="right">
@@ -187,7 +187,7 @@ else
 	echo "<a href='".$_SERVER['PHP_SELF']."?page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
 echo "<a href='".$_SERVER['PHP_SELF']."?page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
 ?>
-跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?=_("Jump to Page ")?><select name="oPage" id="oPage" onchange="jump()">
 <?
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -196,7 +196,7 @@ for($i = 1; $i <= $pages; $i++){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+</select><?=_(", ")?><select name="oPagenum" id="oPagenum" onchange="jump()">
 <?
 for($i = 10; $i < 60; $i+=10){
 	if($i == $pagenum)
@@ -205,7 +205,7 @@ for($i = 10; $i < 60; $i+=10){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录			
+</select><?=_(" records/page")?>			
 			</td>
 		</tr>
 		</table>
@@ -233,7 +233,7 @@ function del()
 	global $bWritable;
 	
 	if(!$bWritable){
-		echo "你无权进行修改操作";
+		die(_("You have not permission to modify system config"));
 		return;
 	}
 	
@@ -248,7 +248,7 @@ function del()
 	}
 	
 	if(($ret=wi("MailQueue_delID $args",$result)) != 0){
-		echo "删除邮件队列记录时出现错误，错误代码$ret";
+		echo _("Error when Delete Mail Queue, ErrNo: ").$ret;
 	}else{
 		header("Location: ".$_SERVER['PHP_SELF']."?page=".$_REQUEST["page"]."&pagenum=".$_REQUEST["pagenum"]);
 	}
@@ -259,13 +259,13 @@ function dellall()
 	global $bWritable;
 	
 	if(!$bWritable){
-		echo "你无权进行修改操作";
+		die(_("You have not permission to modify system config"));
 		return;
 	}
 
 	if(($ret=wi("MailQueue_delAll",$result)) != 0)
-		echo "删除邮件队列记录时出现错误，错误代码$ret";
+		echo _("Error when Delete Mail Queue, ErrNo: ").$ret;
 	else
-		echo "清空成功！";
+		echo _("Flush Queue")." "._("Success");
 }
 ?>

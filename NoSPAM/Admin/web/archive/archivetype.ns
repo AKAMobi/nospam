@@ -1,12 +1,12 @@
 <?
 require_once("../inc/include.ns");
 if($ArchiveEngine <= 0)
-	die("对不起，本系统没有开启审计功能");
+	die(_("Sorry, This Product has no Archive Engine License"));
 
 if(!adminPerm(PERM_ADMIN_ARCHIVE))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"] == "修改"){
+if($_POST["Submit"] == _("Modify")){
 	if($_POST["ArchiveSwitch"]=="All"){
 		$type = "All";
 	}else{
@@ -17,12 +17,12 @@ if($_POST["Submit"] == "修改"){
 		if (strpos($type,"Address") !== false){
 			$sAddr = str_replace("\n",",",str_replace("\r","",trim($_POST['ArchiveAddress'])));
 			if ($sAddr == "")
-				die("邮件地址不能为空");
+				die(_("Must a valid Email address"));
 			
 			$addrs = explode(",",$sAddr);
 			foreach($addrs as $addr){
 				if(!checkmailaddr($addr))
-					die("邮件地址".$addr."有误");
+					die(_("Email Address ").$addr._(" Error"));
 			}
 			$spamconf->setParam("ArchiveAddress",$sAddr,"ArchiveEngine");
 		}
@@ -30,9 +30,9 @@ if($_POST["Submit"] == "修改"){
 	$spamconf->setParam("ArchiveType",$type,"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$type = explode(",",$spamconf->getParam("ArchiveType","ArchiveEngine"));
 	$addr = $spamconf->getParam("ArchiveAddress","ArchiveEngine");
@@ -41,7 +41,7 @@ if($_POST["Submit"] == "修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>选择归档</title>
+<title><?=_("Select Archive")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 function change(bFlag)
@@ -86,47 +86,47 @@ function flush()
   <p>
     <label>
     <input type="radio" onclick="change(true)" name="ArchiveSwitch" value="All"<? if(in_array("All",$type)) echo" checked"; ?>>
-    全部审计</label>
+    <?=_("Archive All")?></label>
     <br>
     <label>
     <input type="radio" onclick="change(false)" name="ArchiveSwitch" value="Custom"<? if(!in_array("All",$type)) echo" checked"; ?>>
-    选择审计</label>
+    <?=_("Selected Archive")?></label>
     <br>
     <hr>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeS" value="Spam" onclick="form1.ArchiveTypeNS.checked=false;"<?if(in_array("Spam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>垃圾邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNS" value="NotSpam" onclick="form1.ArchiveTypeS.checked=false;"<?if(in_array("NotSpam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>非垃圾邮件
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeS" value="Spam" onclick="form1.ArchiveTypeNS.checked=false;"<?if(in_array("Spam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Spam")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNS" value="NotSpam" onclick="form1.ArchiveTypeS.checked=false;"<?if(in_array("NotSpam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("NonSpam")?>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeV" value="Virus" onclick="form1.ArchiveTypeNV.checked=false;"<?if(in_array("Virus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>病毒邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNV" value="NotVirus" onclick="form1.ArchiveTypeV.checked=false;"<?if(in_array("NotVirus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>非病毒邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeV" value="Virus" onclick="form1.ArchiveTypeNV.checked=false;"<?if(in_array("Virus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Virus")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNV" value="NotVirus" onclick="form1.ArchiveTypeV.checked=false;"<?if(in_array("NotVirus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("NonVirus")?><br>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeE" value="Excessive" onclick="form1.ArchiveTypeNE.checked=false;"<?if(in_array("Excessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>动态超限邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNE" value="NotExcessive" onclick="form1.ArchiveTypeE.checked=false;"<?if(in_array("NotExcessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>未动态超限邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeE" value="Excessive" onclick="form1.ArchiveTypeNE.checked=false;"<?if(in_array("Excessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Overrun")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNE" value="NotExcessive" onclick="form1.ArchiveTypeE.checked=false;"<?if(in_array("NotExcessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("NonOverrun")?><br>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>匹配规则的邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>未匹配规则的邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content Matched")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content not Matched")?><br>
 <!--blockquote>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>包括用户规则<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="GARule" <?if(in_array("GARule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>包括网监规则<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include User Define Rules")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="GARule" <?if(in_array("GARule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include Auto-Download Rules")?><br>
 </blockquote-->
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>发往特定地址<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Send to a given Email Address")?><br>
     <TEXTAREA name="ArchiveAddress" cols="20" rows="10"<?if(!in_array("Address",$type)) echo " disabled";?>><?=str_replace(",","\n",$addr)?></TEXTAREA>
     </p>
-    <input type="submit" name="Submit" value="修改">
-    <input type="reset" value="重置">
-    <input type="button" value="清空" onclick="flush()">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
+    <input type="reset" value="<?=_("Reset")?>">
+    <input type="button" value="<?=_("Clear")?>" onclick="flush()">
 </p>
 </form>
 <?
 if(!$bArchive){
 ?>
 <script>
-alert("注意：归档引擎未启动");
+alert("<?=_("ALERT: Archive Engine is OFF")?>");
 </script>
 <?
 }

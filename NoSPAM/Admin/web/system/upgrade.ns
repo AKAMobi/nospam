@@ -2,12 +2,11 @@
 require_once('../inc/include.ns');
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if (isset($_POST["Submit"]) && $_POST["Submit"] == "上载"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行此操作");
-
+		die(_("You have not permission to modify system config"));
 	upgrade();
 	exit(0);
 }
@@ -32,7 +31,7 @@ ksort($aUpgradeLog, SORT_NUMERIC);
 <html>
 <head>
 <META http-equiv=content-type content="text/html; charset=gb2312">
-<title>系统升级</title>
+<title><=_("System Upgrade")></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -57,7 +56,7 @@ function closeTips(obj)
 {
 	obj.style.backgroundColor = oldbgcolor;
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = "载入中，请稍候……";
+	document.all.InfoLayer.innerHTML = <?=_("Loading Upgrade package, waiting......")?>;
 }
 </script>
 </head>
@@ -65,21 +64,21 @@ function closeTips(obj)
 <table border="0">
 <tr>
 	<td>
-系统版本号：<?=trim(`cat /home/NoSPAM/etc/VERSION`).".".trim(`cat /home/NoSPAM/etc/PATCHVERSION`)?><p>
+<?=_("Release No.")?>: <?=trim(`cat /home/NoSPAM/etc/VERSION`).".".trim(`cat /home/NoSPAM/etc/PATCHVERSION`)?><p>
 	</td>
 </tr>
 <tr>
 	<td>
-系统更新记录：<br>
+<?=_("Upgrade History")?>: <br>
 		<table width="100%" class="sort-table" id="table-1" cellspacing="0">
 		<thead>
 			<tr class="TableTitle2">
-				<td>序号</td>
-				<td>安装日期</td>
-				<td>发布日期</td>
-				<td>升级包</td>
-				<td>升级号</td>
-				<td>适用版本</td>
+				<td><?=_("No.")?></td>
+				<td><?=_("Upgrade Date")?></td>
+				<td><?=_("Release Date")?></td>
+				<td><?=_("Upgrade Package")?></td>
+				<td><?=_("Upgrade Release")?></td>
+				<td><?=_("on which Version")?></td>
 			</tr>
 		</thead>
 <?
@@ -110,10 +109,10 @@ if (count($aUpgradeLog) > 0){
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
 <tr>
 	<td><br>
-<p>上载升级包：</p>
+<p><?=_("Upload Upgrade Package")?>:</p>
 <form action="?action=upload" method="post" enctype="multipart/form-data">
   <input type="file" name="upgradepkg">
-  <input type="submit" name="Submit" value="上载">
+  <input type="submit" name="Submit" value="<?=_("Upload")?>">
 </form>
 	</td>
 </tr>
@@ -155,7 +154,7 @@ st.onsort = function () {
 	}
 };
 </script>
-<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;">载入中，请稍候……</div>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #E6E6FA;"><?=_("Uploading Upgrade Package, waiting......")?></div>
 <iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
 </body>
 </html>
@@ -171,13 +170,13 @@ function upgrade()
 	
 	switch ($ret){
 		case 0:
-		echo "升级成功！";
+		echo _("Upgrade Success!");
 		break;
 		case 1:
-		echo "升级成功，重新启动系统后生效";
+		echo _("Upgrade Success, need Reboot system.");
 		break;
 		default:
-		echo "升级失败！";
+		echo _("Upgrade Fail!");
 	}
 	echo "</body></html>";
 }

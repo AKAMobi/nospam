@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $SATests = array(	'DATE' => array ('S'=>'日期检查', 'L'=>'包括时期是否合法，是否和当前时间相差太远，是否不符合RFC')
 		, 'DRUG' => array ('S'=>'药品检查', 'L'=>'检查常见的药品广告（主要为性用品广告）')
@@ -25,7 +25,7 @@ $SATests = array(	'DATE' => array ('S'=>'日期检查', 'L'=>'包括时期是否合法，是否
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	$DisableList = $SATests;
 	foreach ( $SATests as $RuleKey=>$RuleDesc ){
@@ -39,9 +39,9 @@ if($_POST["isSubmit"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo "修改成功";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败";
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 
 	$DisabledTests = $spamconf->getList("DisabledTests","SpamEngine");
@@ -51,12 +51,12 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>智能内容分析</title>
+<title><?=_("Intelligent Content Analyze")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
-对邮件内容进行分析<p>
+<?=_("Analyze Email Content")?><p>
 <?
 foreach ( $SATests as $RuleKey=>$RuleDesc ){
 ?>
@@ -72,21 +72,21 @@ foreach ( $SATests as $RuleKey=>$RuleDesc ){
 }
 ?>
   <p>
-    <input type="reset" name="reset" value="恢复">
-    <input type="submit" name="isSubmit" value="提交">
+    <input type="reset" name="reset" value="<?=_("Reset")?>">
+    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
   </p>
 </form>
 <!--form name="form1" method="post" action="">
   <p>
     <label>
     <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?>>
-    开启</label>
+    <?=_("On")?></label>
     <br>
     <label>
     <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?>>
-    关闭</label>
+    <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Submit" value="修改">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form-->
 </body>

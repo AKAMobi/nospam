@@ -2,10 +2,7 @@
 require_once('../inc/include.ns');
 
 	if (!adminPerm(PERM_ADMIN_ADMIN) ){
-?>
-		<br>
-		您没有访问该网页的权限。<br>
-<?php
+	echo "<br>"._("You have not permission to operate this page")."<br>";
 		return false;
 	}
 
@@ -32,7 +29,7 @@ $adminList=getAdminList();
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>显示管理员列表</TITLE>
+<TITLE><?=_("Admin List")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../css/sortabletable.css">
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -41,25 +38,25 @@ $adminList=getAdminList();
 <DIV align="center">
 <form action="?action=del" name="form1" method="post">
 <table class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
-<caption>管理员列表</caption>
+<caption><?=_("Admin List")?></caption>
 <thead>
 <tr class="TableTitle2">
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>选择</td>
+	<td><?=_("Select")?></td>
 <?
 }
 ?>
-	<td>管理员账号</td>
-	<td>备注</td>
-	<td>IP限制</td>
-	<td>用户权限</td>
-	<td>管理本地邮件域</td>
+	<td><?=_("Admin Name")?></td>
+	<td><?=_("Note")?></td>
+	<td><?=_("IP Restrict")?></td>
+	<td><?=_("Rights")?></td>
+	<td><?=_("Local Mail Domain")?></td>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>修改</td>
+	<td><?=_("Modify")?></td>
 <?
 }
 ?>
@@ -78,62 +75,62 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 	$iplist = trim($adminList[$i]['ip']);
 	$domain = trim($adminList[$i]['domain']);
 	if($iplist=="" || $iplist=="+" || $iplist=="-")
-		$iplist="无限制";
+		$iplist=_("No Restrict");
 	else{
 		switch($iplist[0]){
 			case "+";
-			$iplist="允许<br>".str_replace(",","<br>",substr($iplist,1));
+			$iplist=_("Permit")."<br>".str_replace(",","<br>",substr($iplist,1));
 			break;
 			case "-":
-			$iplist="禁止<br>".str_replace(",","<br>",substr($iplist,1));
+			$iplist=_("Deny")."<br>".str_replace(",","<br>",substr($iplist,1));
 			break;
 			default:
-			$iplist="无限制";
+			$iplist=_("No Restrict");
 		}
 	}
 	if($domain == "")
-		$domain = "无";
+		$domain = _("none");
 	else
 		$domain = str_replace(",","<br>",$domain);
 	if($adminID == SYSOPID)
-		$sPrivilege = "全部权限";
+		$sPrivilege = _("All Rights");
 	else{
 		$sPrivilege = "";
 		$priviledge = intval($adminList[$i]['privilidge']);
 		if(!havePerm($priviledge,PERM_ADMIN_LOGIN)){
-			$sPrivilege .= "禁止登录<br>";
-			$sadminID.="(禁止登录)";
+			$sPrivilege .= _("Login Deny")."<br>";
+			$sadminID.="("._("Login Deny").")";
 		}
 		if(!havePerm($priviledge,PERM_ADMIN_WRITE)){
-			$sPrivilege .= "<b>只读用户</b><br>";
-			$sadminID.="(只读)";
+			$sPrivilege .= "<b>"._("Readonly Admin")."</b><br>";
+			$sadminID.="("._("Readonly").")";
 		}
 		if(havePerm($priviledge,PERM_ADMIN_ADMIN))
-			$sPrivilege .= "管理员管理<br>";
+			$sPrivilege .= _("Administrator")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SYSTEM))
-			$sPrivilege .= "系统管理<br>";
+			$sPrivilege .= _("System")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SERVER))
-			$sPrivilege .= "服务器管理<br>";
+			$sPrivilege .= _("Standalone Server")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_GATEWAY))
-			$sPrivilege .= "网关中继管理<br>";
+			$sPrivilege .= _("Bridge & MX Relay")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_DYNAMIC))
-			$sPrivilege .= "动态限制引擎<br>";
+			$sPrivilege .= _("Overrun Limit")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_SPAM))
-			$sPrivilege .= "垃圾邮件引擎<br>";
+			$sPrivilege .= _("AntiSpam")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_VIRUS))
-			$sPrivilege .= "病毒识别引擎<br>";
+			$sPrivilege .= _("AntiVirus")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_CONTENT))
-			$sPrivilege .= "内容过滤引擎<br>";
+			$sPrivilege .= _("Content Filter")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_INTERACTIVE))
-			$sPrivilege .= "智能交互引擎<br>";
+			$sPrivilege .= _("Interactive")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_ARCHIVE))
-			$sPrivilege .= "邮件审计引擎<br>";
+			$sPrivilege .= _("Audit")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_LOG))
-			$sPrivilege .= "日志监控<br>";
+			$sPrivilege .= _("Log")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_AUDIT))
-			$sPrivilege .= "操作日志管理<br>";
+			$sPrivilege .= _("Op Log")."<br>";
 		if(havePerm($priviledge,PERM_ADMIN_GASUP))
-			$sPrivilege .= "公安监管配置";
+			$sPrivilege .= _("Auto-Download Policy");
 	}
 ?>
 	<tr valign="middle" class="<?=$className?>">
@@ -153,8 +150,8 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 		<td>
-			<input type="button" value="编辑" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?action=modify&id={$adminID}'"?>">
-			<input type="button" value="删除" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?action=del&id={$adminID}'"?>">
+			<input type="button" value="<?=_("Edit")?>" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?action=modify&id={$adminID}'"?>">
+			<input type="button" value="<?=_("Delete")?>" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?action=del&id={$adminID}'"?>">
 		</td>
 <?
 	}
@@ -168,8 +165,8 @@ for( $i = 0 ; $i < $count ; $i++,$j++)
 <tfoot>
 <tr>
 	<td colspan="7" align="center">
-		<input type="button" value="添加" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=add'">
-		<input type="submit" value="批量删除">
+		<input type="button" value="<?=_("Add")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']?>?action=add'">
+		<input type="submit" value="<?=_("Delete")?>">
 	</td>
 </tr>
 </tfoot>
@@ -232,7 +229,7 @@ st.onsort = function () {
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "对不起，你无权进行修改操作";
+		echo _("You have not permission to modify system config");
 		return -1;
 	}
 	global $ServerMode;
@@ -240,7 +237,7 @@ function add()
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>用户列表</TITLE>
+<TITLE><?=_("Admin List")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
@@ -248,118 +245,79 @@ function add()
 <form action="<? echo $_SERVER['PHP_SELF']; ?>?action=save" method=post name="form1">
 <table border=0>
 <tr align="center">
-<td colspan="3"><b>添加新管理员</b></td>
+<td colspan="3"><b><?=_("New Administrator")?></b></td>
 </tr>
 <tr>
-	<td align="right">新管理员帐号：</td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
+	<td align="right"><?=_("New Admin Username")?>: </td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
 	</td>
-	<td>请使用小写英文字母及数字起帐号名，必须使用英文字母开头。</td>
+	<td><?=_("UserName must use digit and lower-case Latin character, and start with character.")?></td>
 </tr>
 <tr>
-	<td align="right">输入密码：</td><td><input type=password name="passwd1"></td>
-	<td>请使用大小写英文字母和数字作为邮件密码。</td>
+	<td align="right"><?=_("Password")?>: </td><td><input type=password name="passwd1"></td>
+	<td><?=_("Password must use digit and Latin character.")?></td>
 </tr>
 <tr>
-	<td align="right">确认密码：</td><td><input type=password name="passwd2"></td>
-	<td>请再次输入密码，两次密码必须相同。</td>
+	<td align="right"><?=_("Password Again")?>: </td><td><input type=password name="passwd2"></td>
+	<td><?=_("Input Password again, and must identical with first input.")?></td>
 </tr>
 <tr>
-	<td align="right" >管理权限：</td><td colspan=2>
+	<td align="right" ><?=_("Rights")?>: </td><td colspan=2>
         <table border="1">
-        <tr>
-        	<td>管理员管理</td>
-        	<td><input type="checkbox" name="Admin"></td>
-        </tr>
-        <tr>
-        	<td>系统管理</td>
-        	<td><input type="checkbox" name="System"></td>
-        </tr>
-        <tr>
-        	<td>动态限制引擎</td>
-        	<td><input type="checkbox" name="Dynamic"></td>
-        </tr>
-        <tr>
-        	<td>垃圾邮件引擎</td>
-        	<td><input type="checkbox" name="Spam"></td>
-        </tr>
-        <tr>
-        	<td>病毒识别引擎</td>
-        	<td><input type="checkbox" name="Virus"></td>
-        </tr>
-        <tr>
-        	<td>内容过滤引擎</td>
-        	<td><input type="checkbox" name="Content"></td>
-        </tr>
-        <tr>
-        	<td>智能交互引擎</td>
-        	<td><input type="checkbox" name="Interactive"></td>
-        </tr>
-        <tr>
-        	<td>邮件审计引擎</td>
-        	<td><input type="checkbox" name="Archive"></td>
-        </tr>
-        <tr>
-        	<td>日志监控</td>
-        	<td><input type="checkbox" name="Log"></td>
-        </tr>
-        <tr>
-        	<td>操作日志审计</td>
-        	<td><input type="checkbox" name="Audit"></td>
-        </tr>
+        <tr> <td><?=_("Administrator")?></td> <td><input type="checkbox" name="Admin"></td> </tr>
+        <tr> <td><?=_("System")?></td> <td><input type="checkbox" name="System"></td> </tr>
+        <tr> <td><?=_("Overrun Limit")?></td> <td><input type="checkbox" name="Dynamic"></td> </tr>
+        <tr> <td><?=_("AntiSpam")?></td> <td><input type="checkbox" name="Spam"></td> </tr>
+        <tr> <td><?=_("AntiVirus")?></td> <td><input type="checkbox" name="Virus"></td> </tr>
+        <tr> <td><?=_("Content Filter")?></td> <td><input type="checkbox" name="Content"></td> </tr>
+        <tr> <td><?=_("Interactive")?></td> <td><input type="checkbox" name="Interactive"></td> </tr>
+        <tr> <td><?=_("Audit")?></td> <td><input type="checkbox" name="Archive"></td> </tr>
+        <tr> <td><?=_("Log")?></td> <td><input type="checkbox" name="Log"></td> </tr>
+        <tr> <td><?=_("Op Log")?></td> <td><input type="checkbox" name="Audit"></td> </tr>
 <?if(strstr($ServerMode,"Server")){?>
-        <tr>
-        	<td>服务器管理</td>
-        	<td><input type="checkbox" name="Server" onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
-        </tr>
+        <tr> <td><?=_("Standalone Server")?></td> <td><input type="checkbox" name="Server" onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td> </tr>
 <?}?>
-        <tr>
-        	<td>网关中继管理</td>
-        	<td><input type="checkbox" name="Gateway"></td>
-        </tr>
-        <tr>
-        	<td>公安监管配置</td>
-        	<td><input type="checkbox" name="GAInterface"></td>
-        </tr>
+        <tr> <td><?=_("Bridge & MX Relay")?></td> <td><input type="checkbox" name="Gateway"></td> </tr>
+        <tr> <td><?=_("Auto-Download Policy")?></td> <td><input type="checkbox" name="GAInterface"></td> </tr>
         </table>
 	</td>
 </tr>
 <tr>
 	<td></td>
- 	<td>只读</td>
+ 	<td><?=_("Readonly")?></td>
  	<td><input type="checkbox" name="DenyWrite"></td>
 </tr>
 <tr>
 	<td></td>
-  	<td>禁止登录</td>
+  	<td><?=_("Login Deny")?></td>
    	<td><input type="checkbox" name="DenyLogin"></td>
 </tr>
 <tr>
-	<td align="right">备注：</td><td><input type=text name="user_note"></td>
+	<td align="right"><?=_("Note")?>: </td><td><input type=text name="user_note"></td>
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr>
-	<td align="right">IP限制：</td><td><TEXTAREA name="iplist" cols="20" rows="10" disabled></TEXTAREA></td>
+	<td align="right"><?=_("IP Restrict")?>: </td><td><TEXTAREA name="iplist" cols="20" rows="10" disabled></TEXTAREA></td>
 	<td>
-		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;">允许
-		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;">禁止
-		<input type="radio" value="PASS" name="iprule" checked  onclick="form1.iplist.disabled=true;">不限制
+		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"><?=_("Permit")?>
+		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"><?=_("Deny")?>
+		<input type="radio" value="PASS" name="iprule" checked  onclick="form1.iplist.disabled=true;"><?=_("No Restrict")?>
 	</td>
 </tr>
 <tr>
 	<td></td>
-	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，每行一个</td>
+	<td colspan="2"><?=_("Stand by format 192.168.1.1 or 192.168.1.0/24, one per line.")?></td>
 </tr>
 <?if(strstr($ServerMode,"Server")){?>
 <tr>
-	<td align="right">管理邮件域：</td>
+	<td align="right"><?=_("Local Mail Domain")?>: </td>
 	<td><TEXTAREA name="domainlist" cols="20" rows="10" disabled></TEXTAREA></td>
 	<td></td>
 </tr>
 <?}?>
 <tr align="center" >
-	<td colspan=3><input type=submit name="adduser" value="  确  认  ">
+	<td colspan=3><input type=submit name="adduser" value="<?=_("Submit")?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  清  除  ">
+	<input type=reset value="<?=_("Reset")?>">
 	</td>
 </tr>
 </table>
@@ -373,7 +331,7 @@ function add()
 function modify()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "对不起，你无权进行修改操作";
+		echo _("You have not permission to modify system config");
 		return -1;
 	}
 	global $ServerMode;
@@ -395,7 +353,7 @@ function modify()
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>用户列表</TITLE>
+<TITLE><?=_("Admin List")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
@@ -404,118 +362,79 @@ function modify()
 <INPUT type="hidden" name="modify">
 <table border=0>
 <tr align="center">
-<td colspan="3"><b>修改管理员信息</b></td>
+<td colspan="3"><b><?=_("Edit Administrator")?></b></td>
 </tr>
 <tr>
-	<td align="right">管理员帐号：</td><td><input type=hidden name="user_id" value="<? echo $_REQUEST['id'] ?>"><? echo $_REQUEST['id'] ?>
+	<td align="right"><?=_("Admin Account")?>: </td><td><input type=hidden name="user_id" value="<? echo $_REQUEST['id'] ?>"><? echo $_REQUEST['id'] ?>
 	</td>
-	<td>请使用小写英文字母及数字起帐号名，必须使用英文字母开头。</td>
+	<td><?=_("UserName must use digit and lower-case Latin character, and start with character.")?></td>
 </tr>
 <tr>
-	<td align="right">输入密码：</td><td><input type=password name="passwd1"></td>
-	<td>如不更改密码则留空，请使用大小写英文字母和数字作为邮件密码。</td>
+	<td align="right"><?=_("Password")?>: </td><td><input type=password name="passwd1"></td>
+	<td><?=_("Password must use digit and Latin character.")?></td>
 </tr>
 <tr>
-	<td align="right">确认密码：</td><td><input type=password name="passwd2"></td>
-	<td>如不更改密码则留空，请再次输入密码，两次密码必须相同。</td>
+	<td align="right"><?=_("Password Again")?>: </td><td><input type=password name="passwd2"></td>
+	<td><?=_("Leave empty if Preserve").", "._("Input Password again, and must identical with first input.")?></td>
 </tr>
 <tr>
-	<td align="right" >管理权限：</td><td colspan=2>
+	<td align="right" ><?=_("Rights")?>: </td><td colspan=2>
         <table border="1">
-        <tr>
-        	<td>管理员管理</td>
-        	<td><input type="checkbox" name="Admin"<?if(havePerm($oPriviledge,PERM_ADMIN_ADMIN)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>系统管理</td>
-        	<td><input type="checkbox" name="System"<?if(havePerm($oPriviledge,PERM_ADMIN_SYSTEM)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>动态限制引擎</td>
-        	<td><input type="checkbox" name="Dynamic"<?if(havePerm($oPriviledge,PERM_ADMIN_DYNAMIC)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>垃圾邮件引擎</td>
-        	<td><input type="checkbox" name="Spam"<?if(havePerm($oPriviledge,PERM_ADMIN_SPAM)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>病毒识别引擎</td>
-        	<td><input type="checkbox" name="Virus"<?if(havePerm($oPriviledge,PERM_ADMIN_VIRUS)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>内容过滤引擎</td>
-        	<td><input type="checkbox" name="Content"<?if(havePerm($oPriviledge,PERM_ADMIN_CONTENT)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>智能交互引擎</td>
-        	<td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>邮件审计引擎</td>
-        	<td><input type="checkbox" name="Archive"<?if(havePerm($oPriviledge,PERM_ADMIN_ARCHIVE)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>日志监控</td>
-        	<td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>操作日志审计</td>
-        	<td><input type="checkbox" name="Audit"<?if(havePerm($oPriviledge,PERM_ADMIN_AUDIT)) echo " checked";?>></td>
-        </tr>
+        <tr> <td><?=_("Administrator")?></td> <td><input type="checkbox" name="Admin"<?if(havePerm($oPriviledge,PERM_ADMIN_ADMIN)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("System")?></td> <td><input type="checkbox" name="System"<?if(havePerm($oPriviledge,PERM_ADMIN_SYSTEM)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Overrun Limit")?></td> <td><input type="checkbox" name="Dynamic"<?if(havePerm($oPriviledge,PERM_ADMIN_DYNAMIC)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("AntiSpam")?></td> <td><input type="checkbox" name="Spam"<?if(havePerm($oPriviledge,PERM_ADMIN_SPAM)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("AntiVirus")?></td> <td><input type="checkbox" name="Virus"<?if(havePerm($oPriviledge,PERM_ADMIN_VIRUS)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Content Filter")?></td> <td><input type="checkbox" name="Content"<?if(havePerm($oPriviledge,PERM_ADMIN_CONTENT)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Interactive")?></td> <td><input type="checkbox" name="Interactive"<?if(havePerm($oPriviledge,PERM_ADMIN_INTERACTIVE)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Audit")?></td> <td><input type="checkbox" name="Archive"<?if(havePerm($oPriviledge,PERM_ADMIN_ARCHIVE)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Log")?></td> <td><input type="checkbox" name="Log"<?if(havePerm($oPriviledge,PERM_ADMIN_LOG)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Op Log")?></td> <td><input type="checkbox" name="Audit"<?if(havePerm($oPriviledge,PERM_ADMIN_AUDIT)) echo " checked";?>></td> </tr>
 <?if(strstr($ServerMode,"Server")){?>
-        <tr>
-        	<td>服务器管理</td>
-        	<td><input type="checkbox" name="Server"<?if(havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " checked";?> onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td>
-        </tr>
+        <tr> <td><?=_("Standalone Server")?></td> <td><input type="checkbox" name="Server"<?if(havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " checked";?> onclick="if(this.checked) form1.domainlist.disabled = false; else form1.domainlist.disabled = true;"></td> </tr>
 <?}?>
-        <tr>
-        	<td>网关中继管理</td>
-        	<td><input type="checkbox" name="Gateway"<?if(havePerm($oPriviledge,PERM_ADMIN_GATEWAY)) echo " checked";?>></td>
-        </tr>
-        <tr>
-        	<td>公安监管配置</td>
-        	<td><input type="checkbox" name="GAInterface"<?if(havePerm($oPriviledge,PERM_ADMIN_GASUP)) echo " checked";?>></td>
-        </tr>
+	<tr> <td><?=_("Bridge & MX Relay")?></td> <td><input type="checkbox" name="Gateway"<?if(havePerm($oPriviledge,PERM_ADMIN_GATEWAY)) echo " checked";?>></td> </tr>
+        <tr> <td><?=_("Auto-Download Policy")?></td> <td><input type="checkbox" name="GAInterface"<?if(havePerm($oPriviledge,PERM_ADMIN_GASUP)) echo " checked";?>></td> </tr>
         </table>
 	</td>
 </tr>
 <tr>
 	<td></td>
-   	<td>只读</td>
+   	<td><?=_("Readonly")?></td>
    	<td><input type="checkbox" name="DenyWrite"<?if(!havePerm($oPriviledge,PERM_ADMIN_WRITE)) echo " checked";?>></td>
 </tr>
 <tr>
 	<td></td>
-   	<td>禁止登录</td>
+   	<td><?=_("Login Deny")?></td>
    	<td><input type="checkbox" name="DenyLogin"<?if(!havePerm($oPriviledge,PERM_ADMIN_LOGIN)) echo " checked";?>></td>
 </tr>
 <tr>
-	<td align="right">备注：</td><td><input type=text name="user_note" value="<?=$adminInfo['note']?>"></td>
+	<td align="right"><?=_("Note")?>: </td><td><input type=text name="user_note" value="<?=$adminInfo['note']?>"></td>
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr>
-	<td align="right">IP限制：</td><td><TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA></td>
+	<td align="right"><?=_("IP Restrict")?>: </td><td><TEXTAREA cols="20" name="iplist" rows="10"<?if($iprule=="pass") echo " disabled";?>><?=str_replace(",","\n",$ip)?></TEXTAREA></td>
 	<td>
-		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>>允许
-		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>>禁止
-		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>>不限制
+		<input type="radio" value="PERMIT" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="permit") echo " checked";?>><?=_("Permit")?>
+		<input type="radio" value="DENY" name="iprule" onclick="form1.iplist.disabled=false;"<?if($iprule=="deny") echo " checked";?>><?=_("Deny")?>
+		<input type="radio" value="PASS" name="iprule" onclick="form1.iplist.disabled=true;"<?if($iprule=="pass") echo " checked";?>><?=_("No Restrict")?>
 	</td>
 </tr>
 <tr>
 	<td></td>
-	<td colspan="2">使用192.168.1.1或192.168.1.0/24这样的格式，每行一个。</td>
+	<td colspan="2"><?=_("Stand by format 192.168.1.1 or 192.168.1.0/24, one per line.")?></td>
 </tr>
 <?if(strstr($ServerMode,"Server")){?>
 <tr>
-	<td align="right">管理邮件域：</td>
+	<td align="right"><?=_("Local Mail Domain")?>: </td>
 	<td><TEXTAREA name="domainlist" cols="20" rows="10" <?if(!havePerm($oPriviledge,PERM_ADMIN_SERVER)) echo " disabled";?>><?=str_replace(",","\n",$adminInfo['domain'])?></TEXTAREA></td>
 	<td>每行一个。</td>
 </tr>
 <?}?>
 <tr align="center" >
-	<td colspan=3><input type=submit name="adduser" value="  确  认  ">
+	<td colspan=3><input type=submit name="adduser" value="<?=_("Submit")?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  清  除  ">
+	<input type=reset value="<?=_("Reset")?>">
 	</td>
 </tr>
 </table>
@@ -529,7 +448,7 @@ function modify()
 function save()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "对不起，你无权进行修改操作";
+		echo _("You have not permission to modify system config");
 		return -1;
 	}
 
@@ -542,46 +461,44 @@ function save()
 		$id=$_REQUEST['user_id'];
 		
 		if ($selfID==$id)
-			errorReturn("错误：您不能在此修改自己的信息", $_SERVER['PHP_SELF']);
+			errorReturn(_("Error: have not input Admin username"), $_SERVER['PHP_SELF']);
 		
 		if ($id=='')
-			errorReturn("错误：未输入管理员账号",$_SERVER['PHP_SELF']);
+			errorReturn(_("Error: You can't modify yourself info here"),$_SERVER['PHP_SELF']);
 			
 		if ($id==SYSOPID)
-			errorReturn("错误：您无权修改最高管理员". SYSOPID ."的信息",$_SERVER['PHP_SELF']);
+			errorReturn(_("Error: You can't modify SYSOP's Info: "). SYSOPID,$_SERVER['PHP_SELF']);
 	}
 
 	if (!isset($_REQUEST['user_id'])){ 
-		echo "错误：未输入用户ID<br>";
+		echo _("Error: Must input Admin Username")."<br>";
 		return false;
 	}
 	if (!$bModify && !isset($_REQUEST['passwd1'])){ 
-		echo "错误：未输入用户密码<br>";
+		echo _("Error: Must input password")."<br>";
 		return false;
 	}
 	if (!$bModify && !isset($_REQUEST['passwd2'])){ 
-		echo "错误：未确认输入用户密码<br>";
+		echo _("Error: Must input password again")."<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_note'])){ 
-		echo "错误：未输入备注<br>";
+		echo _("Error: Must input Note")."<br>";
 		return false;
 	}
 
 	if ($_REQUEST['user_id']==''){ 
-		echo "错误：未输入用户ID<br>";
+		echo _("Error: Must input Admin Username")."<br>";
 		return false;
 	}
 	if (!$bModify && $_REQUEST['passwd1']==''){ 
-		echo "错误：未输入用户密码<br>";
+		echo _("Error: Must input password")."<br>";
 		return false;
 	}
 	if (!$bModify && $_REQUEST['passwd2']==''){ 
-		echo "错误：未确认输入用户密码<br>";
+		echo _("Error: Must input password again")."<br>";
 		return false;
 	}
-
-
 	
 	$user_id = $_REQUEST['user_id'];		//用户ID
 	$passwd1 = $_REQUEST['passwd1'];						
@@ -602,7 +519,7 @@ function save()
 	$domainlist = "";
 
     if ( $passwd1 != $passwd2 ) {
-    	echo "错误：两次输入的密码不匹配<br>";
+    	echo _("Error: Password not match")."<br>";
     	return false;
     }
 
@@ -677,40 +594,40 @@ function save()
     	$result=addAdmin($user_id,$passwd1,$privilidge,$user_note,$iplist,$domainlist);
 	
 	if ($result==ERR_FORMAT_PASSWORD) {
-		errorReturn("密码含有非法字符,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("Error: Invalid Characters in Password"),$_SERVER['REQUEST_URI']);
 	}
 	if ($result==ERR_FORMAT_ID) {
-		errorReturn("账号含有非法字符,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("Error: Invalid Characters in Username"),$_SERVER['REQUEST_URI']);
 	}
 	if ($result==ERR_FORMAT_PRIVILIDGE) {
-		errorReturn("权限设置错误,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("Rights setting Error, Retry"),$_SERVER['REQUEST_URI']);
 	}
 	if ($result==ERR_FORMAT_NOTE) {
-		errorReturn("备注中含有非法字符“:”,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("Note can not has character ':' "),$_SERVER['REQUEST_URI']);
 	}
 	if ($result==ERR_FORMAT_IP) {
-		errorReturn("IP地址列表中含有非法字符“:”,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("IP List can not has character ':' "),$_SERVER['REQUEST_URI']);
 	}
 	if ($result==ERR_FORMAT_DOMAIN) {
-		errorReturn("邮件域名列表中含有非法字符“:”,请重试",$_SERVER['REQUEST_URI']);
+		errorReturn(_("Mail Domain List can not has character ':' "),$_SERVER['REQUEST_URI']);
 	}
 	if (!$bModify && $result==ERR_IDEXIST) {
-		errorReturn("用户ID已存在,请重试",$_SERVER['PHP_SELF']);
+		errorReturn(_("Error: This Admin ID has existed !"),$_SERVER['PHP_SELF']);
 	}
 
-	$success = $bModify? "修改":"加入";
+	$success = $bModify? _("Modify"):_("Add");
 	if ($result==OK){
-		echo "管理员 {$_REQUEST['user_id']}已经成功{$success}！<br>";
-		LogAction("管理员管理","{$success}管理员",$_REQUEST['user_id']);
+		echo _("Admin")." {$_REQUEST['user_id']} "._("Success")." {$success}！"."<br>";
+		LogAction(_("Administrator"),"{$success}"._("Admin"),$_REQUEST['user_id']);
 	}else{
-		echo "{$success}失败";
+		echo "{$success}"._("Fail");
 	}   	
 }
 
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "对不起，你无权进行修改操作";
+		echo _("You have not permission to modify system config");
 		return -1;
 	}
 	$id = $_REQUEST["id"];
@@ -719,20 +636,20 @@ function del()
 	if(is_array($id)){
 		if(count($id) > 0){
 			if(in_array($selfID, $id))
-				errorReturn("错误：您不能删除自己的账号", $_SERVER['PHP_SELF']);
+				errorReturn(_("Error: You can't delete yourself"), $_SERVER['PHP_SELF']);
 			if(in_array(SYSOPID, $id))
-				errorReturn("错误：您不能删除最高管理员的账号", $_SERVER['PHP_SELF']);
+				errorReturn(_("Error: You can't delete SYSOP"), $_SERVER['PHP_SELF']);
 			foreach($id as $value){
 				deleteAdmin($value);
 			}
-			LogAction("管理员管理","删除管理员账号",implode(",",$id));
+			LogAction(_("Administrator"),_("Delete an Admin"),implode(",",$id));
 		}
 	}else{
 		if($selfID == $id)
-			errorReturn("错误：您不能删除自己的账号", $_SERVER['PHP_SELF']);
+			errorReturn(_("Error: You can't delete yourself"), $_SERVER['PHP_SELF']);
 		if(SYSOPID == $id)
-			errorReturn("错误：您不能删除最高管理员的账号", $_SERVER['PHP_SELF']);
-		LogAction("管理员管理","删除管理员账号",$id);
+			errorReturn(_("Error: You can't delete SYSOP"), $_SERVER['PHP_SELF']);
+		LogAction(_("Administrator"),_("Delete an Admin"),$id);
 		deleteAdmin($id);
 	}
 	header("Location: ".$_SERVER['PHP_SELF']);

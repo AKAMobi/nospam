@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	if($_POST["RBLDisabled"]=="N"){
 		$spamconf->setParam("RBLDisabled","N","SpamEngine");
@@ -19,9 +19,9 @@ if($_POST["isSubmit"]){
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bRBLDisabled = ($spamconf->getParam("RBLDisabled","SpamEngine")=="Y")? true:false;
 	$iRBLTimeout = $spamconf->getParam("RBLTimeout","SpamEngine");
@@ -30,7 +30,7 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>超级RBL</title>
+<title><?=_("Super")?> RBL</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -50,42 +50,40 @@ function change(bState)
 
 <body>
 <form name="form1" method="post">
-  <p>超级RBL开关：<br>
+  <p><?=_("Super")?> RBL <?=_("Switch")?>: <br>
     <label>
     <input id="idRBLDisabledN" name="RBLDisabled" type="radio" value="N"<? if(!$bRBLDisabled) echo " checked" ?> onclick="change(false)">
-  开启</label><br>
+  <?=_("On")?></label><br>
     <label>
     <input id="idRBLDisabledY" type="radio" name="RBLDisabled" value="Y"<? if($bRBLDisabled) echo " checked" ?> onclick="change(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <p>
+    RBL <?=_("Query Timeout")?>: <input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> > <?=_("Seconds")?> <?=_("Recommend: ")?>15 <?=_("Seconds")?><br>
 
-    RBL查询超时：<input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> >秒 推荐值：15秒<br>
-
-    <input type="reset" name="reset" value="恢复">
-    <input type="submit" name="isSubmit" value="提交">
+    <input type="reset" name="reset" value="<?=_("Reset")?>">
+    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
   </p>
 </form>
-<p>
-目前系统内置已经支持的RBL：</p>
+<p><?=_("Current Embeded RBL: ")?></p>
 <ol>
-<li>SURBL Spam URI Realtime Blocklist</li>
-	<br>URI Black List, 检查邮件内容包含的URI是否列在黑名单中。
-<li>HABEAS </li>
-	<br>使用Header标记授权的方法进行反垃圾
-<li>NJABL Not Just Another Bogus List</li>
-<li>SORBS Spam and Open Relay Blocking System</li>
-<li>Spamhaus XBL+SBL </li>
-<li>RFC-Ignorant blacklists (both name and IP based) </li>
-	<br>Networks whose administrators choose not to obey the RFCs 
-<li>DSBL Distributed Server Boycott List </li>
-	<br>It publishes the IP addresses of hosts which have sent special test email to listme@listme.dsbl.org 
-<li>AHBL Abusive Hosts Blocking List </li>
-	<br>List of known abusive hosts and networks on the Internet 
-<li>BSP Bonded Sender Program </li>
-	<br>Monitoring High-volume Senders Identifying the source of a message Grouping related sources of mail Black or whitelisting a group of IP addresses 
-<li>SpamCop Blocklist </li>
-<li>RBL+ </li>
-	<br>Include: RBL (Realtime Blackhole List),DUL (Dynamic User List),RSS (Relay Spam Stopper),OPS (Open Proxy Stopper)
+<li><?=_("SURBL Spam URI Realtime Blocklist")?></li>
+	<br><?=_("URI Black List, Check if URI in Email included in Blocklist.")?>
+<li><?=_("HABEAS")?> </li>
+	<br><?=_("AntiSpam via Head Tag Auth.")?>
+<li><?=_("NJABL Not Just Another Bogus List")?></li>
+<li><?=_("SORBS Spam and Open Relay Blocking System")?></li>
+<li><?=_("Spamhaus XBL+SBL")?> </li>
+<li><?=_("RFC-Ignorant blacklists (both name and IP based)")?> </li>
+	<br><?=_("Networks whose administrators choose not to obey the RFCs")?> 
+<li><?=_("DSBL Distributed Server Boycott List")?> </li>
+	<br><?=_("It publishes the IP addresses of hosts which have sent special test email to listme@listme.dsbl.org")?> 
+<li><?=_("AHBL Abusive Hosts Blocking List")?> </li>
+	<br><?=_("List of known abusive hosts and networks on the Internet")?> 
+<li><?=_("BSP Bonded Sender Program")?> </li>
+	<br><?=_("Monitoring High-volume Senders Identifying the source of a message Grouping related sources of mail Black or whitelisting a group of IP addresses")?> 
+<li><?=_("SpamCop Blocklist")?> </li>
+<li><?=_("RBL+")?> </li>
+	<br><?=_("Include: RBL (Realtime Blackhole List),DUL (Dynamic User List),RSS (Relay Spam Stopper),OPS (Open Proxy Stopper)")?>
 </ol>
 
 
@@ -93,7 +91,7 @@ function change(bState)
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}

@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $page = $_GET["page"];
 $sort = $_GET["sort"];
@@ -56,7 +56,7 @@ $Flag[$sort] = $orderFlag[$order];
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<title>规则列表</title>
+<title><?=_("Rules List")?></title>
 
 <script language="javascript">
 oldbgcolor = "";
@@ -91,7 +91,7 @@ function showInfoLayer(id)
 function hideInfoLayer()
 {
 	document.all.InfoLayer.style.display = "none";
-	document.all.InfoLayer.innerHTML = "载入中，请稍候……";
+	document.all.InfoLayer.innerHTML = "<?=_("Loading, please waiting......")?>";
 }
 
 function changeDB()
@@ -121,15 +121,15 @@ function sortTable(sKey)
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-数据库选择：
+<?=_("Policy Select")?>:
 <select name="DBSelect" onchange="changeDB()">
-<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安规则数据数据库（只读）<? } ?>
-<option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户规则数据库
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>><?=_("Auto-Download Policy(Readonly)")?><? } ?>
+<option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>><?=_("User Policy")?>
 
 </select><br>
 <form action="<?=$url?><?if($bPolice) echo "?db=police";?>" method="POST">
-规则编号：
-<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="提交" />
+<?=_("No.")?>:
+<input type="text" maxlength="22" name="rule_id" /><input type="submit" value="<?=_("Submit")?>" />
 </form>
 <?
 if(!$readonly){
@@ -144,14 +144,14 @@ if(!$readonly){
 <table width="100%" class="RuleTB" width="100%">
 <tr class="TableTitleLink" style="cursor: hand">
 	<? if(!$readonly) { ?><th style="cursor: default"></th><? } ?>
-	<th onclick="sortTable('rule_id')">规则号<?=$Flag["rule_id"]?></th>
-	<th onclick="sortTable('rule_comment')">规则说明<?=$Flag["rule_comment"]?></th>
-	<th onclick="sortTable('category_id')">类别<?=$Flag["category_id"]?></th>
-	<th onclick="sortTable('create_time')">创建时间<?=$Flag["create_time"]?></th>
-	<th onclick="sortTable('rule_keyword')">关键字规则数<?=$Flag["rule_keyword"]?></th>
-	<th onclick="sortTable('size')">数字规则数<?=$Flag["size"]?></th>
-	<th onclick="sortTable('attachment')">附件规则数<?=$Flag["attachment"]?></th>
-	<th onclick="sortTable('action')">动作<?=$Flag["action"]?></th>
+	<th onclick="sortTable('rule_id')"><?=_("No.")?>: <?=$Flag["rule_id"]?></th>
+	<th onclick="sortTable('rule_comment')"><?=_("Description")?>: <?=$Flag["rule_comment"]?></th>
+	<th onclick="sortTable('category_id')"><?=_("Group")?>: <?=$Flag["category_id"]?></th>
+	<th onclick="sortTable('create_time')"><?=_("Create Time")?>: <?=$Flag["create_time"]?></th>
+	<th onclick="sortTable('rule_keyword')"><?=_("Keyword and IP rules")?>: <?=$Flag["rule_keyword"]?></th>
+	<th onclick="sortTable('size')"><?=_("Numeric rules")?>: <?=$Flag["size"]?></th>
+	<th onclick="sortTable('attachment')"><?=_("Attachment rules")?>: <?=$Flag["attachment"]?></th>
+	<th onclick="sortTable('action')"><?=_("Action")?>: <?=$Flag["action"]?></th>
 </tr>
 <?
 if(count($rules) > 0){
@@ -189,7 +189,7 @@ if(count($rules) > 0){
 <?
 if(!$readonly){
 ?>
-<input type="button" value="添加" onclick="location.href='rulemodify.ns?action=add'" /> <input type="submit" value="删除" />
+<input type="button" value="<?=_("Add")?>" onclick="location.href='rulemodify.ns?action=add'" /> <input type="submit" value="<?=_("Delete")?>" />
 <?
 }
 ?>
@@ -221,7 +221,7 @@ else
 	echo "<a href=\"rulemanage.ns?page=".($page+1)."&pagenum=".$pagenum."&order=".$order."&sort=".$sort."\">&gt</a>";
 ?>
  <a href="rulemanage.ns?<? if($bPolice) echo "db=police&"; ?>page=<?=$pages?>&pagenum=<?=$pagenum?>&order=<?=$order?>&sort=<?=$sort?>">&gt;&gt;</a> 
- 跳到第
+ <?=_("Jump to Page ")?>
 <select onchange="location.href='rulemanage.ns?<? if($bPolice) echo "db=police&"; ?>order=<?=$order?>&sort=<?=$sort?>&pagenum=<?=$pagenum?>&page='+this.value">
 <?
 for($i = 1; $i <= $pages; $i++){
@@ -232,7 +232,7 @@ for($i = 1; $i <= $pages; $i++){
 }
 ?>
 </select>
-页，每页
+<?=_(", ")?>
 <select onchange="location.href='rulemanage.ns?<? if($bPolice) echo "db=police&"; ?>order=<?=$order?>&sort=<?=$sort?>&page=<?=$page?>&pagenum='+this.value">
 <?
 for($i = 5; $i <= 30; $i+=5){
@@ -243,7 +243,7 @@ for($i = 5; $i <= 30; $i+=5){
 }
 ?>
 </select>
-条记录
+<?=_(" records/page")?>
 <td>
 </tr>
 </table>
@@ -254,13 +254,13 @@ if(!$readonly){
 <?
 }
 ?>
-<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #FFFFFF;">载入中，请稍候……</div>
+<div id="InfoLayer" name="InfoLayer" style="display: none; font-size: 12px; background-color: #FFFFFF;"><?=_("Loading, please waiting......")?></div>
 <iframe id="infoFrame" name="infoFrame" style="display: none" src="../dummy.htm"></iframe>
 <?
 if(!$bContentFilter){
 ?>
 <script>
-alert("注意：内容过滤引擎未启动");
+alert("<?=_("ALERT: Content Filter Engine is OFF")?>");
 </script>
 <?
 }

@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($SpamEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has not AntiSpam Engine License"));
 
 if(!adminPerm(PERM_ADMIN_SPAM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 
 	if($_POST["DCCEnabled"]=="Y"){
 		$spamconf->setParam("DCCEnabled","Y","SpamEngine");
@@ -39,9 +39,9 @@ if($_POST["isSubmit"]){
 	$spamconf->save();
 
 	if(($ret=wi("SA_update",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$bDCCEnabled = ($spamconf->getParam("DCCEnabled","SpamEngine")=="Y")? true:false;
 	$iDCCTimeout = $spamconf->getParam("DCCTimeout","SpamEngine");
@@ -61,7 +61,7 @@ if($_POST["isSubmit"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>网络校验和监测</title>
+<title><?=_("Network Diag and Monitor")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 <!--
@@ -106,61 +106,61 @@ function Razor_change(bState)
 
 <body>
 <form name="form1" method="post"> 
-  <p>分析服务器1<br>
+  <p><?=_("Analyze Server")?> 1: <br>
     <label>
     <input id="idDCCEnabledY" type="radio" name="DCCEnabled" value="Y"<? if($bDCCEnabled) echo " checked" ?> onclick="DCCchange(false)">
-  开启</label><br>
+  <?=_("On")?></label><br>
     <label>
     <input id="idDCCEnabledN" name="DCCEnabled" type="radio" value="N"<? if(!$bDCCEnabled) echo " checked" ?> onclick="DCCchange(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <p>
 
-    网络超时：<input name="DCCTimeout" type="input" id="idDCCTimeout" value="<?=$iDCCTimeout?>" <? if(!$bDCCEnabled) echo " disabled"; ?>><br>
-    垃圾邮件体最少出现次数：<input name="DCCBodyMax" type="input" id="idDCCBodyMax" value="<?=$iDCCBodyMax?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
-    垃圾邮件特征1最少出现次数：<input name="DCCFuz1Max" type="input" id="idDCCFuz1Max" value="<?=$iDCCFuz1Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
-    垃圾邮件特征2最少出现次数：<input name="DCCFuz2Max" type="input" id="idDCCFuz2Max" value="<?=$iDCCFuz2Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+    <?=_("Network Timeout: ")?><input name="DCCTimeout" type="input" id="idDCCTimeout" value="<?=$iDCCTimeout?>" <? if(!$bDCCEnabled) echo " disabled"; ?>><br>
+    <?=_("Least Spams Counts: ")?><input name="DCCBodyMax" type="input" id="idDCCBodyMax" value="<?=$iDCCBodyMax?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+    <?=_("Least Spams Spec 1 Counts: ")?><input name="DCCFuz1Max" type="input" id="idDCCFuz1Max" value="<?=$iDCCFuz1Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
+    <?=_("Least Spams Spec 2 Counts: ")?><input name="DCCFuz2Max" type="input" id="idDCCFuz2Max" value="<?=$iDCCFuz2Max?>" <? if(!$bDCCEnabled) echo " disabled";?>><br>
   <p>
 
 <hr width=400 align=left>
-  <p>分析服务器2：<br>
+  <p><?=_("Analyze Server")?> 2: <br>
     <label>
     <input id="idPyzorEnabledY" type="radio" name="PyzorEnabled" value="Y"<? if($bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(false)">
-  开启</label><br>
+  <?=_("On")?></label><br>
     <label>
     <input id="idPyzorEnabledN" name="PyzorEnabled" type="radio" value="N"<? if(!$bPyzorEnabled) echo " checked" ?> onclick="Pyzor_change(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <p>
 
-    网络超时：<input name="PyzorTimeout" type="input" id="idPyzorTimeout" value="<?=$iPyzorTimeout?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
-    垃圾邮件最少出现次数：<input name="PyzorMax" type="input" id="idPyzorMax" value="<?=$iPyzorMax?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
+    <?=_("Network Timeout: ")?><input name="PyzorTimeout" type="input" id="idPyzorTimeout" value="<?=$iPyzorTimeout?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
+    <?=_("Least Spams Counts: ")?><input name="PyzorMax" type="input" id="idPyzorMax" value="<?=$iPyzorMax?>" <? if(!$bPyzorEnabled) echo " disabled";?>><br>
   <p>
 
 <hr width=400 align=left>
-  <p>分析服务器3：<br>
+  <p><?=_("Analyze Server")?> 3: <br>
     <label>
     <input id="idRazorEnabledY" type="radio" name="RazorEnabled" value="Y"<? if($bRazorEnabled) echo " checked" ?> onclick="Razor_change(false)">
-  开启</label><br>
+  <?=_("On")?></label><br>
     <label>
     <input id="idRazorEnabledN" name="RazorEnabled" type="radio" value="N"<? if(!$bRazorEnabled) echo " checked" ?> onclick="Razor_change(true)">
-  关闭</label>
+  <?=_("Off")?></label>
     <p>
 
-    网络超时：<input name="RazorTimeout" type="input" id="idRazorTimeout" value="<?=$iRazorTimeout?>"<? if(!$bRazorEnabled) echo " disabled";?>><br>
+    <?=_("Network Timeout: ")?><input name="RazorTimeout" type="input" id="idRazorTimeout" value="<?=$iRazorTimeout?>"<? if(!$bRazorEnabled) echo " disabled";?>><br>
   <p>
 
 <hr width=400 align=left>
 
 
   <p>
-    <input type="reset" name="reset" value="恢复">
-    <input type="submit" name="isSubmit" value="提交">
+    <input type="reset" name="reset" value="<?=_("Reset")?>">
+    <input type="submit" name="isSubmit" value="<?=_("Submit")?>">
   </p>
 </form>
 <?
 		if(!$bAntiSpam){
 ?>
 <script>
-alert("注意：反垃圾引擎未启动");
+alert("<?=_("ALERT: AntiSpam Engine is OFF")?>");
 </script>
 <?
 		}

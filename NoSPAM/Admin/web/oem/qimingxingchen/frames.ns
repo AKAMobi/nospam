@@ -10,7 +10,7 @@ self.parent.location=document.location.href;
 
 
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>天澄反邮件垃圾系统 管理系统</title>
+<title><?=_("VenusTech AntiSpam System")?></title>
 </head>
 
 <frameset rows="134,*,75" cols="*" framespacing="NO" frameborder="0" border="0">

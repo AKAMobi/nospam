@@ -2,26 +2,26 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if($_POST["Mode"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	$oMode = explode(",",$intServerGateway);
 	$nMode = implode(",",$_POST["Mode"]);
 	$spamconf->setParam("ServerGateway",$nMode,"System");
 	$spamconf->save();
 	if(($ret=wi("set_GW_Mode $oMode $nMode",$result))==0){
-		echo "请重启系统以更新设置";
+		echo _("Please Reboot System!");
 	}else{
-		echo "无法更新设置，错误代码：".$ret;
+		echo _("Can not update Setting, ErrNo: ").$ret;
 	}
 }else{
 	$ModeName = array(
-						"Server"	=>	"独立服务器模式",
-						"Gateway"	=>	"透明网关模式",
-						"MXRelay"	=>	"MX转发模式",
-						"Tailer"	=>	"尾关模式"
+						"Server"	=>	_("Standalone Server Mode"),
+						"Gateway"	=>	_("Bridge Mode"),
+						"MXRelay"	=>	_("MX Relay Mode"),
+						"Tailer"	=>	_("Process Mode")
 					);
 	$Modes = explode(",",$intServerGateway);
 	if(adminPerm(PERM_ADMIN_WRITE)){
@@ -30,13 +30,13 @@ if($_POST["Mode"]){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>网关运行模式</title>
+<title><?=_("System Running Mode")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 function confirmCancel()
 {
 	if(form1.Server.defaultChecked){
-		if(!confirm("注意！如果当前独立服务器设置了邮件域，则系统取消独立服务器模式，切换后所有邮件域数据和邮件都将被删除！确认吗？"))
+		if(!confirm(<?=_("ALERT: If current Standalone Mail Server has set Mail Domain, and now disable Standalone Server Mode, ALL Mail Domain Data and Mails will be DELETEd! Continue?")?>))
 			form1.Server.checked = true;			
 	}
 }
@@ -54,7 +54,7 @@ function confirmCancel()
 	}
 ?>
   </p>
-  <input type="submit" value="修改"<? if(!$Switchable) echo " disabled" ?>>
+  <input type="submit" value="<?=_("Modify")?>"<? if(!$Switchable) echo " disabled" ?>>
 </form>
 </body>
 </html>
@@ -65,7 +65,7 @@ function confirmCancel()
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>网关运行模式</title>
+<title><?=_("System Running Mode")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 

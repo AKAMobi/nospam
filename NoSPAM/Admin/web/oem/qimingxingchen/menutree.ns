@@ -5,7 +5,7 @@ require_once("inc/include.ns");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>系统菜单</title>
+<title><?=_("System Menu")?></title>
 <script src="js/xtree.js"></script>
 <link type="text/css" rel="stylesheet" href="css/xtree.css">
 <link type="text/css" rel="stylesheet" href="css/style.css">
@@ -29,37 +29,37 @@ require_once("inc/include.ns");
                 <td valign="top" bgcolor="C4D9EA"> 
 <script>
 if (document.getElementById) {
-	var tree = new WebFXTree('管理选项');
+	var tree = new WebFXTree('<?=_("Management")?>');
 	tree.setBehavior('classic');
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
-	var a = new WebFXTreeItem('系统管理','help/system.htm','main');
+	var a = new WebFXTreeItem('<?=_("System")?>','help/system.htm','main');
 	tree.add(a);
-	a.add(new WebFXTreeItem('本设备序列号','system/serialno.ns', 'main'));
-	a.add(new WebFXTreeItem('升级更新','system/upgrade.ns', 'main'));
+	a.add(new WebFXTreeItem('<?=_("SerialNo & License")?>','system/serialno.ns', 'main'));
+	a.add(new WebFXTreeItem('<?=_("Upgrade")?>','system/upgrade.ns', 'main'));
 <?if($Switchable){?>
-	a.add(new WebFXTreeItem('运行模式','system/gatewaymode.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("System Mode")?>','system/gatewaymode.ns','main'));
 <?}?>
 
-	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
-	a.add(new WebFXTreeItem('邮件参数','system/basesettings.ns','main'));
-	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
-	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
-	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("Network Setting")?>','system/network.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("SMTP Parameters")?>','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("Config & Policy")?>','system/configmanage.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("System Clock")?>','system/systemtime.ns','main'));
+	a.add(new WebFXTreeItem('<?=_("Reboot & Shutdown")?>','system/reboot.ns','main'));
 
-	var b = new WebFXTreeItem('管理员','help/user.htm','main');
+	var b = new WebFXTreeItem('<?=_("Administrator")?>','help/user.htm','main');
 	tree.add(b);
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	b.add(new WebFXTreeItem('管理员列表','user/showadminlist.ns','main'));
-	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Admin List")?>','user/showadminlist.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Login Restrict")?>','user/loginblacklist.ns','main'));
 <?
 }
 ?>
-	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
-	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("Change Passwd")?>','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('<?=_("IP Restrict")?>','user/changeIPlist.ns','main'));
 <?
 }
 ?>
@@ -69,44 +69,36 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var l = new WebFXTreeItem('透明网关模式');
+	var l = new WebFXTreeItem('<?=_("Bridge Mode")?>');
 	tree.add(l);
-	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
-	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+	l.add(new WebFXTreeItem('<?=_("Protect Mail Domain")?>','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
 <?php
 	}
 }
-?>
-
-<?
 if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var n = new WebFXTreeItem('MX转发模式');
+	var n = new WebFXTreeItem('<?=_("MX Relay Mode")?>');
 	tree.add(n);
-	n.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
-	n.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+	n.add(new WebFXTreeItem('<?=_("Protect Mail Domain")?>','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
 <?
 	}
 }
-?>
-
-
-<?
-
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-	var k = new WebFXTreeItem('独立服务器模式');
+	var k = new WebFXTreeItem('<?=_("Standalone Server Mode")?>');
 	tree.add(k);
-	k.add(new WebFXTreeItem('独立服务器设置','server/mailserver.ns','main'));
-	k.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
-	var k2 = new WebFXTreeItem('用户管理');
+	k.add(new WebFXTreeItem('<?=_("Mail Server Setting")?>','server/mailserver.ns','main'));
+	k.add(new WebFXTreeItem('<?=_("Queue Monitor")?>','gateway/mailqueue.ns','main'));
+	var k2 = new WebFXTreeItem('<?=_("User Management")?>');
 	k.add(k2);
-	k2.add(new WebFXTreeItem('用户管理','server/showuserlist.ns','main'));
-	k2.add(new WebFXTreeItem('查找用户','server/searchUser.ns','main'));
-	k2.add(new WebFXTreeItem('用户组管理','server/groupsControl.ns','main'));
-	k2.add(new WebFXTreeItem('群发邮件','server/sendGroupMails.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("User Management")?>','server/showuserlist.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("Search User")?>','server/searchUser.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("User Group Management")?>','server/groupsControl.ns','main'));
+	k2.add(new WebFXTreeItem('<?=_("Maillist")?>','server/sendGroupMails.ns','main'));
 <?php
 	}
 }
@@ -116,25 +108,25 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-	var e = new WebFXTreeItem('动态限制引擎','help/dynamic.htm','main');
+	var e = new WebFXTreeItem('<?=_("Overrun Limit")?>','help/dynamic.htm','main');
 	tree.add(e);
-	e.add(new WebFXTreeItem('基本设置','dynamic/dynengine.ns','main'));
-	e.add(new WebFXTreeItem('同时连接数','dynamic/connperip.ns','main'));
-	e.add(new WebFXTreeItem('用户重复限制','dynamic/sendrateperfrom.ns','main'));
-	e.add(new WebFXTreeItem('邮件重复限制','dynamic/sendratepersubject.ns','main'));
-	e.add(new WebFXTreeItem('连接频率','dynamic/connrateperip.ns','main'));
-	e.add(new WebFXTreeItem('实时管理','dynamic/realtime.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','dynamic/dynengine.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("SMTP per IP")?>','dynamic/connperip.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("Mails per Sender")?>','dynamic/sendrateperfrom.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("Mails per Subject")?>','dynamic/sendratepersubject.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("SMTP Frequency")?>','dynamic/connrateperip.ns','main'));
+	e.add(new WebFXTreeItem('<?=_("Realtime Monitor")?>','dynamic/realtime.ns','main'));
 <?php
 	}
 }
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	var j = new WebFXTreeItem('病毒识别引擎','help/antivirus.htm','main');
+	var j = new WebFXTreeItem('<?=_("AntiVirus")?>','help/antivirus.htm','main');
 	tree.add(j);
-	j.add(new WebFXTreeItem('基本设置','antivirus/virusengine.ns','main'));
-	j.add(new WebFXTreeItem('病毒识别','antivirus/recognize.ns','main'));
-	j.add(new WebFXTreeItem('病毒处理','antivirus/treatment.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antivirus/virusengine.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("Virus Recognise")?>','antivirus/recognize.ns','main'));
+	j.add(new WebFXTreeItem('<?=_("Virus Deal")?>','antivirus/treatment.ns','main'));
 <?php
 	}
 
@@ -142,27 +134,27 @@ if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
 
-	var c = new WebFXTreeItem('垃圾邮件引擎','help/antispam.htm','main');
+	var c = new WebFXTreeItem('<?=_("AntiSpam")?>','help/antispam.htm','main');
 	tree.add(c);
-	c.add(new WebFXTreeItem('基本设置','antispam/spamengine.ns','main'));
-	var c1 = new WebFXTreeItem('黑白名单');
+	c.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','antispam/spamengine.ns','main'));
+	var c1 = new WebFXTreeItem('<?=_("Blacklist & Whitelist")?>');
 	c.add(c1);
-	c1.add(new WebFXTreeItem('IP白名单','antispam/list.ns?option=WhiteIP','main'));
-	c1.add(new WebFXTreeItem('邮件域名白名单','antispam/list.ns?option=WhiteDomain','main'));
-	c1.add(new WebFXTreeItem('邮件帐号白名单','antispam/list.ns?option=WhiteFrom','main'));
-	c1.add(new WebFXTreeItem('IP黑名单','antispam/list.ns?option=BlackIP','main'));
-	c1.add(new WebFXTreeItem('邮件域名黑名单','antispam/list.ns?option=BlackDomain','main'));
-	c1.add(new WebFXTreeItem('邮件帐号黑名单','antispam/list.ns?option=BlackFrom','main'));
-	c.add(new WebFXTreeItem('可追查性检查','antispam/traceable.ns','main'));
+	c1.add(new WebFXTreeItem('<?=_("IP WhiteList")?>','antispam/list.ns?option=WhiteIP','main'));
+	c1.add(new WebFXTreeItem('<?=_("Domain WhiteList")?>','antispam/list.ns?option=WhiteDomain','main'));
+	c1.add(new WebFXTreeItem('<?=_("Sender WhiteList")?>','antispam/list.ns?option=WhiteFrom','main'));
+	c1.add(new WebFXTreeItem('<?=_("IP BlackList")?>','antispam/list.ns?option=BlackIP','main'));
+	c1.add(new WebFXTreeItem('<?=_("Domain BlackList")?>','antispam/list.ns?option=BlackDomain','main'));
+	c1.add(new WebFXTreeItem('<?=_("Sender BlackList")?>','antispam/list.ns?option=BlackFrom','main'));
+	c.add(new WebFXTreeItem('<?=_("Traceable")?>','antispam/traceable.ns','main'));
 	
-	var c3 = new WebFXTreeItem('智能检测');
+	var c3 = new WebFXTreeItem('<?=_("Intelligent Test")?>');
 	c.add(c3);
-	c3.add(new WebFXTreeItem('贝叶斯过滤器','antispam/bayes.ns','main'));
-	c3.add(new WebFXTreeItem('智能实时黑名单','antispam/rbl.ns','main'));
-	c3.add(new WebFXTreeItem('智能集中分析','antispam/netcheck.ns','main'));
-	c3.add(new WebFXTreeItem('智能内容分析','antispam/sa.ns','main'));
-	c3.add(new WebFXTreeItem('智能降噪系统','antispam/awl.ns','main'));
-	c.add(new WebFXTreeItem('垃圾处理','antispam/treatment.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Bayes Filter")?>','antispam/bayes.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Realtime Blocklist")?>','antispam/rbl.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Process Center")?>','antispam/netcheck.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Content Analyze")?>','antispam/sa.ns','main'));
+	c3.add(new WebFXTreeItem('<?=_("Noise Reduce System")?>','antispam/awl.ns','main'));
+	c.add(new WebFXTreeItem('<?=_("Spam Treatment")?>','antispam/treatment.ns','main'));
 
 
 <?php
@@ -172,90 +164,90 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-	var d = new WebFXTreeItem('内容过滤引擎','help/content.htm','main');
+	var d = new WebFXTreeItem('<?=_("Content Filter")?>','help/content.htm','main');
 	tree.add(d);
-	d.add(new WebFXTreeItem('基本设置','content/contentengine.ns','main'));
-	d.add(new WebFXTreeItem('规则管理','content/rulemanage.ns','main'));
-	d.add(new WebFXTreeItem('类别管理','content/category.ns','main'));
-	d.add(new WebFXTreeItem('列印规则','content/ruleprint.ns','main'));
-	d.add(new WebFXTreeItem('文件类型','content/filetypes.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','content/contentengine.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Rules Management")?>','content/rulemanage.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Rule Group")?>','content/category.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Rules List")?>','content/ruleprint.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("User Define File Type")?>','content/filetypes.ns','main'));
 <?php
 	}
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	var f = new WebFXTreeItem('邮件审计引擎','help/archive.htm','main');
+	var f = new WebFXTreeItem('<?=_("Audit")?>','help/archive.htm','main');
 	tree.add(f);
-	f.add(new WebFXTreeItem('基本设置','archive/archiveengine.ns','main'));
-	//f.add(new WebFXTreeItem('审计地址','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('选择性审计','archive/archivetype.ns','main'));
+	f.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','archive/archiveengine.ns','main'));
+	//f.add(new WebFXTreeItem('<?=_("Archive Address")?>','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('<?=_("Select Archive")?>','archive/archivetype.ns','main'));
 <?
 	}
 
 if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
-	var i = new WebFXTreeItem('智能交互引擎','help/interengine.htm','main');
+	var i = new WebFXTreeItem('<?=_("Interactive")?>','help/interengine.htm','main');
 	tree.add(i);
-	i.add(new WebFXTreeItem('基本设置','interactive/interengine.ns','main'));
-	i.add(new WebFXTreeItem('超大邮件提醒','interactive/bigmail.ns','main'));
-	i.add(new WebFXTreeItem('过量邮件提醒','interactive/exmail.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','interactive/interengine.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("Too Huge Mail")?>超大邮件提醒','interactive/bigmail.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("Too Many Mails")?>过量邮件提醒','interactive/exmail.ns','main'));
 <?
 }
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
+	var g = new WebFXTreeItem('<?=_("Log")?>','help/log.htm','main');
 	tree.add(g);
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
-	var gs = new WebFXTreeItem('系统状态','status/status.ns','main');
+	var gs = new WebFXTreeItem('<?=_("System Status")?>','status/status.ns','main');
         g.add(gs);
-	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
-	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
-	  gs.add( new WebFXTreeItem('TCP连接','status/tcp.html','main') );
-	  gs.add( new WebFXTreeItem('SMTP连接','status/smtp.html','main') );
-	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
-	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
-	  gs.add( new WebFXTreeItem('磁盘负载','status/hdio.html','main') );
-	  gs.add( new WebFXTreeItem('磁盘空间','status/hdfree.html','main') );
-	var ga = new WebFXTreeItem('引擎分析','status/analyze.ns','main');
+	  gs.add( new WebFXTreeItem('<?=_("Internal Traffic")?>','status/internalnet.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("External Traffic")?>','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("TCP connect")?>','status/tcp.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("SMTP connect")?>','status/smtp.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("CPU Load")?>','status/cpu.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("Memory Usage")?>','status/mem.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("HardDisk Traffic")?>','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('<?=_("HardDisk Usage")?>','status/hdfree.html','main') );
+	var ga = new WebFXTreeItem('<?=_("Engine Running Status")?>','status/analyze.ns','main');
 	g.add(ga);
-	  ga.add( new WebFXTreeItem('邮件分类','status/mail_type.ns','main') );
-	  ga.add( new WebFXTreeItem('邮件尺寸','status/mail_size.ns','main') );
-	  ga.add( new WebFXTreeItem('邮件流量','status/mail_traffic.ns','main') );
-	  ga.add( new WebFXTreeItem('DNS 查询','status/dns.ns','main') );
-	  ga.add( new WebFXTreeItem('引擎耗时','status/mail_engine.ns','main') );
-	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
-	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
-	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
+	  ga.add( new WebFXTreeItem('<?=_("Mail Type Stat.")?>','status/mail_type.ns','main') );
+	  ga.add( new WebFXTreeItem('<?=_("Mail Size Stat.")?>','status/mail_size.ns','main') );
+	  ga.add( new WebFXTreeItem('<?=_("Mail Traffic Stat.")?>','status/mail_traffic.ns','main') );
+	  ga.add( new WebFXTreeItem('<?=_("DNS Status")?>','status/dns.ns','main') );
+	  ga.add( new WebFXTreeItem('<?=_("Engine Running Status")?>','status/mail_engine.ns','main') );
+	g.add(new WebFXTreeItem('<?=_("Log Browser")?>','log/logshow.ns','main'));
+	g.add(new WebFXTreeItem('<?=_("Log Stat.")?>','log/logstat.ns','main'));
+	g.add(new WebFXTreeItem('<?=_("Log Export")?>','log/logexport.ns','main'));
 <?
 		if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	g.add(new WebFXTreeItem('日志清空删除','log/logflush.ns','main'));
+	g.add(new WebFXTreeItem('<?=_("Flush Log")?>','log/logflush.ns','main'));
 <?php
 		}
 	}
 	if(adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	g.add(new WebFXTreeItem('操作日志审计','log/audit.ns','main'));
+	g.add(new WebFXTreeItem('<?=_("Op Log")?>','log/audit.ns','main'));
 <?php
 	}	
 }
 
 if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-	var m = new WebFXTreeItem('公安网络监管','help/gasupervise.htm','main');
+	var m = new WebFXTreeItem('<?=_("Auto-Download Policy")?>','help/gasupervise.htm','main');
 	tree.add(m);
-	m.add(new WebFXTreeItem('基本设置','gasupervise/basesettings.ns','main'));
-	m.add(new WebFXTreeItem('MSP设置','gasupervise/msp.ns','main'));
-	m.add(new WebFXTreeItem('四部委交换格式','gasupervise/export.ns','main'));
+	m.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSP','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('<?=_("Exchange Format")?>','gasupervise/export.ns','main'));
 <?
 }
 ?>
 
 
-	var h = new WebFXTreeItem('退出系统','logout.ns','_top');
+	var h = new WebFXTreeItem('<?=_("Logout")?>','logout.ns','_top');
 	tree.add(h);
 	document.write(tree);
 }

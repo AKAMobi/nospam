@@ -6,7 +6,7 @@ require_once("inc/include.ns");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>介绍页面</title>
+<title><?=_("Introduction") ?></title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -14,13 +14,13 @@ require_once("inc/include.ns");
 <?
 if( ($ret=wi("get_Serial",$result))==0 ){
 	$serial = trim(implode("",$result));
-	echo "本设备序列号为：$serial<br>";
+	echo _("The Product Serial No: ")."$serial<br>";
 }else{
-	echo "获取序列号时出现错误！错误代码$ret<br>";
+	echo _("Get Serial No Error! ErrNo: ")."$ret<br>";
 }
 if(!file_exists(LICENSE)){
 ?>
-<p> 本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。 </p>
+echo "<p>"._("This Product has not get valid License, Please contact with your product provider.")."</p>";
 <?
 }else{
 	$result = "";
@@ -28,23 +28,19 @@ if(!file_exists(LICENSE)){
 		$LicenseInfo = trim(implode("",$result));
 		echo $LicenseInfo;
 		if($Version == NOSPAM_VERSION){
-?>
-<p> 本设备 License 许可正确！ </p>
-<?
+echo "<p>"._("This Product License is OK! ")."</p>";
 		}else{
-?>
-<p> License版本错误！ </p>
-<?
+echo "<p>"._("The License is not match your product Version!")."</p>";
 		}
 ?>
 <p>
-发行厂商：<?=$sFactoryName?><br>
-许可证过期时间：<?=$sExpire?><br>
-<?= $bForSell? "正式销售版":"非正式销售版"?>
+<?=_("Manufacturer: ").$sFactoryName?><br>
+<?=_("License Expire: ").$sExpire?><br>
+<?= $bForSell? _("Product Release"):_("Demo Release")?>
 </p>
 <?
 	}else{
-		echo "<h2>许可证已经失效</h2>";
+		echo "<h2>"._("The License has Expired")."</h2>";
 		header("Refresh: 0;URL=/admin/system/serialno.ns");
 	}
 }

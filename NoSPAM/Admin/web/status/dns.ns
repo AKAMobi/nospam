@@ -2,12 +2,11 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
-
+	die(_("You have not permission to operate this page"));
 ?>
 <html>
 <head>
-<title>DNS 分析</title>
+<title><?=_("DNS Status")?></title>
 <META HTTP-EQUIV="Refresh" CONTENT="300">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <META HTTP-EQUIV="Cache-Control" content="no-cache">
@@ -16,38 +15,30 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>DNS 运行状态</H1><BR>
+<H1><?=_("DNS Status")?></H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
-1 Query: 查询一次得到结果<br>
-Above 1: 查询了多台DNS才得到结果<p>
-No Record: 没有查到DNS子记录<br>
-No Domain: 没有查到DNS域名记录<br>
-Failure: 查询失败
+<?=_("1 Query: Get Result in 1 Query<br> Above 1: Get Result in multi Query<p> No Record: Can not Get DNS sub Record<br> No Domain: Can not Get DNS Domain Name Record<br> Failure: Query Fail")?>
 <HR>
-<H3>每日 图表 (5 分钟 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="dns-day.gif" ALT="day">
+<H3><?=_("Daily")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="dns-day.gif" ALT="day">
 <!-- End `Daily' Graph (5 Minute -->
 
 <!-- Begin `Weekly' Graph (30 Minute -->
 <HR>
-<H3>每周 图表 (30 分钟 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="dns-week.gif" ALT="week">
+<H3><?=_("Weekly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="dns-week.gif" ALT="week">
 <!-- End `Weekly' Graph (30 Minute -->
 
 <!-- Begin `Monthly' Graph (2 Hour -->
 <HR>
-<H3>每月 图表 (2 小时 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="dns-month.gif" ALT="month">
+<H3><?=_("Monthly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="dns-month.gif" ALT="month">
 <!-- End `Monthly' Graph (2 Hour -->
 
 <!-- Begin `Yearly' Graph (1 Day -->
 <HR>
-<H3>每年 图表 (1 天 平均)</H3>
-<IMG VSPACE=10 ALIGN=TOP 
-     SRC="dns-year.gif" ALT="year">
+<H3><?=_("Yearly")?></H3>
+<IMG VSPACE=10 ALIGN=TOP SRC="dns-year.gif" ALT="year">
 <!-- End `Yearly' Graph (1 Day -->
 </BODY>
 

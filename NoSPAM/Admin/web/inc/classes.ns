@@ -54,7 +54,7 @@ class XMLConfig
 	function save()
 	{
 		if(!adminPerm(PERM_ADMIN_WRITE)){
-			echo "对不起，你没有修改权限";
+			echo _("You have not permission to modify system config");
 			return;
 		}
 		
@@ -64,7 +64,7 @@ class XMLConfig
 		$doc -> append_child($newroot);
 		$str = $doc->dump_mem(true,"ISO-8859-1");
 		savetofile($str,$this->file);
-		LogAction("规则数据库","修改","");
+		LogAction(_("Rules Database"),_("Modify"),"");
 	}
 }
 
@@ -257,11 +257,11 @@ class ConfFile
 				$this->params[$section] = array();
 			$oldValue = $this->params[$section][$key];
 			$this->params[$section][$key] = $value;
-			LogAction("配置文件","更改","(".$section.")".$key,$oldValue,$value);
+			LogAction(_("Config File"),_("Modify"),"(".$section.")".$key,$oldValue,$value);
 		}else{
 			$oldValue = $this->params[$key];
 			$this->params[$key] = $value;
-			LogAction("配置文件","更改",$key,$oldValue,$value);
+			LogAction(_("Config File"),_("Modify"),$key,$oldValue,$value);
 		}
 	}
 	
@@ -269,10 +269,10 @@ class ConfFile
 	{
 		if($this->bSection){
 			unset($this->params[$section][$key]);
-			LogAction("配置文件","删除","(".$section.")".$key);
+			LogAction(_("Config File"),_("Delete"),"(".$section.")".$key);
 		}else{
 			unset($this->params[$key]);
-			LogAction("配置文件","删除",$key);
+			LogAction(_("Config File"),_("Delete"),$key);
 		}
 	}
 	
@@ -290,7 +290,7 @@ class ConfFile
 	function save()
 	{
 		if(!adminPerm(PERM_ADMIN_WRITE)){
-			echo "对不起，你没有修改权限";
+			echo _("You have not permission to modify system config");
 			return;
 		}
 		
@@ -353,7 +353,7 @@ class NoSPAMConf extends ConfFile
 			if(count($aParam) > 0){
 				foreach($aParam as $key=>$note){
 					if(!checkipaddr($key,true))
-						die("IP地址".$key."格式有误");
+						die("IP ".$key._("Format Error"));
 					$temp[$i] = trim($key)."#".trim(str_replace(",","，",$note));
 					$i++;
 				}
@@ -397,6 +397,15 @@ class License
 			$this->params[trim($key)] = trim($value);
 		}
 	}
+
+	function Language()
+	{
+		if (!array_key_exists('Language',$this->params))
+			return "en_US";
+
+		return $this->params["Language"];
+	}
+
 
 	function Switchable()
 	{
@@ -563,7 +572,7 @@ class LoginBlackList
 			return false;
 		}
 
-		LogAction("用户登录","黑名单用户尝试登录",$sIP);
+		LogAction(_("Admin Login"),_("User in BlackList try to Login"),$sIP);
 		return true;
 	}
 	
@@ -580,7 +589,7 @@ class LoginBlackList
 		
 		$this->aBlockList[$sIP] = time() + 60 * $iDenyTimeAfterMaxLogin;
 		$this->saveBlockList();
-		LogAction("用户登录","加入IP黑名单",$sIP);
+		LogAction(_("Admin Login"),_("Add IP Blocklist"),$sIP);
 	}
 	
 	function saveBlockList()
@@ -616,7 +625,7 @@ class LoginBlackList
 			}
 		}
 
-		LogAction("用户登录","登录失败",$sID);
+		LogAction(_("Admin Login"),_("Login Fail"),$sID);
 
 		if ($bBlock){
 			$this->addBlockList($sIP);

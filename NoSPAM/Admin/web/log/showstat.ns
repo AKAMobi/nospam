@@ -2,16 +2,16 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $s = $_GET["s"];
 $e = $_GET["e"];
 
 if(($ret=wi("get_LogSimpleAnaylize $s $e",$result))!=0)
-	die("错误代码：$ret");
+	die(_("ErrNo: ").$ret);
 
-$sTime = date("Y年m月d日H时",intval($s));
-$eTime = date("Y年m月d日H时",intval($e));
+$sTime = date("Y/m/d H",intval($s));
+$eTime = date("Y/m/d H",intval($e));
 
 $tmpTotal = $result[0];
 $tmpMaybe = $result[1];
@@ -69,22 +69,22 @@ arsort($TopRule,SORT_NUMERIC);
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body onload="parent.document.all.stat.innerHTML = document.body.innerHTML">
-<p>由<?=$sTime?>至<?=$eTime?>的日志统计结果：</p>
+<p><?=$sTime?>-<?=$eTime?>:
 <p>
-总邮件数：<?=$Total?>封<br>
-正常邮件数：<?=$Total-$Virus-$Maybe-$SPAM?>封<p>
+<?=_("Total Mails")?>: <?=$Total?><br>
+<?=_("Friendly Mails")?>: <?=$Total-$Virus-$Maybe-$SPAM?><p>
 
-病毒邮件数：<?=$Virus?>封<br>
-疑似垃圾邮件数：<?=$Maybe?>封<br>
-垃圾邮件数：<?=$SPAM?>封
+<?=_("Virus Mails")?>: <?=$Virus?><br>
+<?=_("Like Spam Mails")?>: <?=$Maybe?><br>
+<?=_("Spam Mails")?>: <?=$SPAM?>
 </p>
 <p>
-发件人地址的发邮件数Top10：
+<?=_("Mail From Top10")?>:
 <table width="500" border="1">
 <tr class="TableTitleLink">
-	<th width="50">编号</th>
-	<th width="300">发件人</th>
-	<th width="150">发送数目</th>
+	<th width="50"><?=_("No.")?></th>
+	<th width="300"><?=_("Mail From")?></th>
+	<th width="150"><?=_("Counts")?></th>
 </tr>
 <?
 if(count($TopFrom)>0){
@@ -105,12 +105,12 @@ if(count($TopFrom)>0){
 </table>
 </p>
 <p>
-根据发件IP的发邮件数Top10：
+<?=_("Last Relay IP Top10")?>:
 <table width="500" border="1">
 <tr class="TableTitleLink">
-	<th width="50">编号</th>
-	<th width="300">发件IP</th>
-	<th width="150">发送数目</th>
+	<th width="50"><?=_("No.")?></th>
+	<th width="300">IP</th>
+	<th width="150"><?=_("Counts")?></th>
 </tr>
 <?
 if(count($TopIP)>0){
@@ -131,12 +131,12 @@ if(count($TopIP)>0){
 </table>
 </p>
 <p>
-根据每个内容规则匹配的邮件数Top10：
+<?=_("Rule Match Mail Top10")?>:
 <table width="500" border="1">
 <tr class="TableTitleLink">
-	<th width="50">编号</th>
-	<th width="300">匹配规则</th>
-	<th width="150">发送数目</th>
+	<th width="50"><?=_("No.")?></th>
+	<th width="300"><?=_("Matched Rule ID")?></th>
+	<th width="150"><?=_("Counts")?></th>
 </tr>
 <?
 if(count($TopRule)>0){

@@ -2,24 +2,24 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_LOG))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>日志导出统计</title>
+<title><?=_("Log Export")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
 <?
 if(!file_exists(LOGFILE)){
-	echo "日志文件不存在";
+	echo _("Error: File do not existed !");
 }else{
 ?>
-日志尺寸：<?=intval(filesize(LOGFILE)/1024)?>KByte
-<input type="button" value="下载" onclick="window.open('downlog.ns','_blank')">
+<?=_("Log Size").": ".intval(filesize(LOGFILE)/1024)?>KByte
+<input type="button" value="<?=_("Download")?>" onclick="window.open('downlog.ns','_blank')">
 <?
 }
 ?>

@@ -2,16 +2,16 @@
 require_once('../inc/include.ns');
 
 if($DynamicEngine <= 0)
-	die("对不起，本系统没有开启垃圾邮件引擎功能");
+	die(_("Sorry, This Product has no Overrun Limit Engine License"));
 
 if(!adminPerm(PERM_ADMIN_DYNAMIC))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if(wi("get_DynamicEngineDBKey",$tmpKeys)!=0)
-	die("无法连接引擎数据库");
+	die(_("Can not connect Engine Database"));
 
 if(count($tmpKeys) == 0)
-	die("系统没有当前数据");
+	die(_("System has no Data currently"));
 
 switch($_GET["action"]){
 	case "del":
@@ -43,7 +43,7 @@ if(!array_key_exists($sOption,$Keys)){
 $column = $Keys[$sOption];
 
 if(($ret = wi("get_DynamicEngineDBData $sOption",$sData))!=0)
-	die("错误代码：$ret");
+	die(_("ErrNo: ").$ret);
 
 $iSize = count($sData);
 $pagenum = $_GET["pagenum"];
@@ -68,7 +68,7 @@ if($iSize > 0){
 		$value = explode(",",$line);
 		$Content = $value[0];
 		if(trim($value[1])=="")
-			$OpenTime = "未封禁";
+			$OpenTime = _("NonBlocked");
 		else
 			$OpenTime = date("Y-m-d H:i:s",intval($value[1]));
 		$SendTime = array_slice($value, 2);
@@ -96,7 +96,7 @@ $start = ($page-1)*$pagenum+1;
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>动态引擎实时管理</title>
+<title><?=_("Overrun Limit Engine Realtime Management")?></title>
 
 <link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
 <script type="text/javascript" src="../js/sortabletable.js"></script>
@@ -112,7 +112,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 function flush()
 {
-	if(confirm("即将清空数据库，确定吗？")){
+	if(confirm(<?=_("Overrun Limit Database will be Clear, Continue?")?>)){
 		location.href="<?=$_SERVER['PHP_SELF']."?option=$sOption"?>&name=<?=$column?>&action=flush";
 	}
 }
@@ -140,10 +140,10 @@ function hidedetail()
 </head>
 <body>
 <div align="center">
-<h2>动态引擎数据库监管</h2>
-<input type="button" value="用户重复" onclick="location.href='realtime.ns?option=From'">
-<input type="button" value="邮件重复" onclick="location.href='realtime.ns?option=Subject'">
-<input type="button" value="连接频率" onclick="location.href='realtime.ns?option=IP'">
+<h2><?=_("Overrun Limit Engine Realtime Management")?></h2>
+<input type="button" value="<?=_("Mails per Sender")?>" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="<?=_("Mails per Subject")?>" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="<?=_("SMTP Connect Frequency per IP")?>" onclick="location.href='realtime.ns?option=IP'">
 </div>
 <form action="<?="?option=$sOption&page=$page&pagenum=$pagenum&action=del"?>" method="post">
 <table width="100%" class="sort-table" id="table-1" cellspacing="1">
@@ -152,22 +152,22 @@ function hidedetail()
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>选择</td>
+	<td><?=_("Select")?></td>
 <?
 }
 ?>
-	<td>编号</td>
+	<td><?=_("No.")?></td>
 	<td><?=$column?></td>
-	<td>解封时间</td>
-	<td>发送次数</td>
+	<td><?=_("Blocked Until")?></td>
+	<td><?=_("Sent Times")?></td>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>删除</td>
+	<td><?=_("Delete")?></td>
 <?
 }
 ?>
-	<td>发送记录</td>
+	<td><?=_("Sent Records")?></td>
 </tr>
 </thead>
 <tbody>
@@ -196,7 +196,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td><input type="button" value="删除" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=$sOption&page=$page&pagenum=$pagenum&action=del&key=".urlencode($Content)?>'"></td>
+	<td><input type="button" value="<?=_("Delete")?>" onclick="location.href='<?=$_SERVER['PHP_SELF']."?option=$sOption&page=$page&pagenum=$pagenum&action=del&key=".urlencode($Content)?>'"></td>
 <?
 }
 ?>
@@ -216,7 +216,7 @@ if(adminPerm(PERM_ADMIN_WRITE)){
 	if($SendCount > 3){
 		echo date("Y-m-d H:i:s",intval($SendTime[0]));
 		echo "<br>";
-		echo "...省略".($SendCount-2)."项<br>";
+		echo "..."._("omit").($SendCount-2)._(" items")."<br>";
 		echo date("Y-m-d H:i:s",intval($SendTime[$SendCount-1]));
 	}else{
 		foreach($SendTime as $j=>$iTime){
@@ -298,8 +298,8 @@ st.onsort = function () {
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-<input type="button" value="<?=$column?>数据库重置" onclick="flush()">
-<input type="submit" name="submit" value="批量删除">
+<input type="button" value="<?=$column._("Flush Database")?>" onclick="flush()">
+<input type="submit" name="submit" value="<?=_("Delete")?>">
 <?
 }
 ?>
@@ -325,7 +325,7 @@ else
 	echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=".($page+1)."&pagenum=$pagenum'>&gt;</a>&nbsp;";
 echo "<a href='".$_SERVER['PHP_SELF']."?option=".$_GET['option']."&page=$pages&pagenum=$pagenum'>&gt;&gt;</a>&nbsp;";
 ?>
-跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?=_("Jump to Page ")?><select name="oPage" id="oPage" onchange="jump()">
 <?
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -334,7 +334,7 @@ for($i = 1; $i <= $pages; $i++){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+</select>, <?=_(", ")?><select name="oPagenum" id="oPagenum" onchange="jump()">
 <?
 for($i = 10; $i <= 50; $i+=10){
 	if($i == $pagenum)
@@ -343,7 +343,7 @@ for($i = 10; $i <= 50; $i+=10){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>条记录
+</select><?=_(" records/page")?>
 </td></tr>
 </table>
 </form>
@@ -355,7 +355,7 @@ for($i = 10; $i <= 50; $i+=10){
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	$Option = $_GET['option'];
 	$key = $_REQUEST["key"];
 	if(is_array($key)){
@@ -371,7 +371,7 @@ function del()
 			if(($ret=wi("del_DynamicEngineKeyItem $args",$result))==0)
 				header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
 				else
-					die("删除".$Option."记录时出现错误，错误代码：".$ret);
+					die(_("Delete Record ").$Option._(" Error").", "._("ErrNo: ").$ret);
 		}else{
 			header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
 		}
@@ -381,21 +381,21 @@ function del()
 		if(($ret=wi("del_DynamicEngineKeyItem $Option $sKey",$result))==0)
 			header("Location: ".$_SERVER['PHP_SELF']."?option=".$Option."&page=".$_GET['page']."&pagenum=".$_GET['pagenum']);
 		else
-			die("删除".$Option."为".$rawKey."的记录时出现错误，错误代码：".$ret);
+			die(_("Delete Record ").$Option."=".$rawKey._(" Error").", "._("ErrNo: ").$ret);
 	}
 }
 
 function flushdb()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行更改操作");
+		die(_("You have not permission to modify system config"));
 	
 	$Option = $_GET['option'];
 	$name = $_GET['name'];
 	if(($ret=wi("clean_DynamicEngineKey $Option",$result))==0)
-		echo "数据库清空成功！";
+		echo _("Flush Database")." "._("Success");
 	else
-		echo "清空数据库".$name."失败，错误代码：$ret";
+		echo _("Flush Database")." $name "._("Fail").", "._("ErrNo: ").$ret;
 }
 
 function showselect()
@@ -404,15 +404,15 @@ function showselect()
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>动态引擎实时管理</title>
+<title><?=_("Overrun Limit Engine Realtime Management")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
 <div align="center">
-<h2>动态引擎数据库监管</h2>
-<input type="button" value="用户重复" onclick="location.href='realtime.ns?option=From'">
-<input type="button" value="邮件重复" onclick="location.href='realtime.ns?option=Subject'">
-<input type="button" value="连接频率" onclick="location.href='realtime.ns?option=IP'">
+<h2><?=_("Overrun Limit Engine Realtime Management")?></h2>
+<input type="button" value="<?=_("Mails per Sender")?>" onclick="location.href='realtime.ns?option=From'">
+<input type="button" value="<?=_("Mails per Subject")?>" onclick="location.href='realtime.ns?option=Subject'">
+<input type="button" value="<?=_("SMTP Connect Frequency per IP")?>" onclick="location.href='realtime.ns?option=IP'">
 </div>
 </body>
 </html>

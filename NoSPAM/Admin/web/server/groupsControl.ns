@@ -1,19 +1,16 @@
 <?php
 require_once("../inc/include.ns");
 if($MailServer <= 0)
-	die("对不起，本系统没有开启本功能");
+	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 if (!adminPerm(PERM_ADMIN_SERVER) ){
-?>
-<br>
-您没有访问该网页的权限。<br>
-<?php
+	echo "<br>"._("You have not permission to operate this page")."<br>";
 } else {
 $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
 unset($adminInfo);
 if($domains == "")
-	die("你目前没有任何邮件域管理权限");
+	die(_("You have no Mail Domain Management Permission yet."));
 
 $tmpDomains = explode(",", $domains);
 $aDomains = array();
@@ -40,12 +37,13 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>用户组管理</TITLE>
+<TITLE><?=_("User Group Management")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
-<div>邮件域：
+<div>
 <?
+	echo _("Mail Domain").":";
 	if($count == 1)
 		echo $currentDomain;
 	else{
@@ -65,7 +63,7 @@ $_COOKIE["MailDomain"] = $currentDomain;
 ?>
 </div>
 <DIV align="center">
-<h2>用户组管理</h2>
+<h2><?=_("User Group Management")?></h2>
 <?php
 
 if ($_POST['action']=='delete') {
@@ -100,7 +98,7 @@ function modifyGroup($oldgroupname,$newgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
+        echo _("Error: Can not Open User Group Data file.")."<br>";
 		exit(-1);
     }
    
@@ -118,10 +116,7 @@ function modifyGroup($oldgroupname,$newgroupname){
 		$groupname=trim($groupinfo[1]);
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
-?>
-用户组名：<?php echo $newgroupname ;?>已存在！<br>
-修改用户组失败。<br>
-<?php
+				echo _("User Group Name").": $newgroupname"._(" has existed")."<br>"._("User Group Modify Fail")."<br>";
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
 			   	fclose($h_groupdefine_profile);
@@ -163,7 +158,7 @@ function deleteGroup($oldgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
+        echo _("Error: Can not Open User Group Data file.")."<br>";
 		exit(-1);
     }
    
@@ -219,7 +214,7 @@ function addGroup($newgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
+        echo _("Error: Can not Open User Group Data file.")."<br>";
 		exit(-1);
     }
    
@@ -237,10 +232,7 @@ function addGroup($newgroupname){
 		$groupname=trim($groupinfo[1]);
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
-?>
-用户组名：<?php echo $newgroupname ;?>已存在！<br>
-添加新用户组失败。<br>
-<?php
+				echo _("User Group Name").": $newgroupname"._(" has existed")."<br>"._("User Group Add Fail")."<br>";
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
 			   	fclose($h_groupdefine_profile);
@@ -278,7 +270,7 @@ function showGroups(){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
+        echo _("Error: Can not Open User Group Data file.")."<br>";
 		exit(-1);
     }
    
@@ -302,12 +294,10 @@ function showGroups(){
    	fclose($h_groupdefine_profile);
     
 	if ($group_count<=0) {
-?>
-	目前尚无用户组定义！
-<?php
+		echo _("No User Group Define now");
 	} else {
+		echo _("Current User Group List: ");
 ?>
-现有用户组列表：
 <select id="oGroupList" size=10 >
 <?php
 	for ($i=0;$i<$group_count;$i++){
@@ -334,10 +324,10 @@ function showGroups(){
 <form action="<?php echo $_SERVER['PHP_SELF'] ; ?>" method="POST" id="oForm">
 <input type="hidden" name="group" id="oGroup">
 <input type="hidden" name="action" id="oAction">
-用户组名：<input type="text" name="newGroup">
-<input type="button" value="删除" onclick="doIt('delete');">
-<input type="button" value="添加" onclick="doIt('add');">
-<input type="button" value="修改" onclick="doIt('modify');">
+<?=_("User Group Name")?>: <input type="text" name="newGroup">
+<input type="button" value="<?=_("Delete")?>" onclick="doIt('delete');">
+<input type="button" value="<?=_("Add")?>" onclick="doIt('add');">
+<input type="button" value="<?=_("Modify")?>" onclick="doIt('modify');">
 </form>
 <?php
 }

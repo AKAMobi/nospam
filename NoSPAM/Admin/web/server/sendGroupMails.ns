@@ -2,20 +2,17 @@
 require_once("../inc/include.ns");
 
 if($MailServer <= 0)
-	die("对不起，本系统没有开启本功能");
+	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 if (!adminPerm(PERM_ADMIN_SERVER) ){
-?>
-<br>
-您没有访问该网页的权限。<br>
-<?php
+	echo "<br>"._("You have not permission to modify system config")."<br>";
 } else {
 
 $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
 unset($adminInfo);
 if($domains == "")
-	die("你目前没有任何邮件域管理权限");
+	die(_("You have no Mail Domain Management Permission yet."));
 
 $tmpDomains = explode(",", $domains);
 $aDomains = array();
@@ -42,11 +39,11 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>群发信件</TITLE>
+<TITLE><?=_("Maillist")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
-<div>邮件域：
+<div><?=_("Mail Domain")?>:
 <?
 	if($count == 1)
 		echo $currentDomain;
@@ -67,7 +64,7 @@ $_COOKIE["MailDomain"] = $currentDomain;
 ?>
 </div>
 <DIV align="center">
-<h2>群发信件</h2>
+<h2><?=_("Maillist")?></h2>
 <?php
 
 if ($_POST['action']=='send') {
@@ -206,7 +203,7 @@ if ($fp1!=FALSE) {
 }
 $fp2=fopen($attachdir . "/.mail","w");
 if ($fp2==FALSE) {
-	echo "无法建立信件！";
+	echo _("New Mail Fail!");
 	exit(0);
 }
 // get MIME formatted message headers and body
@@ -264,7 +261,7 @@ $linkpath='';
  
 	}
 @unlink($attachdir . "/.mail");
-	echo "发送成功！";
+	echo _("Send Success !");
 	return false;
 }
 
@@ -298,12 +295,10 @@ function showMenu(){
    	fclose($h_groupdefine_profile);
     
 	if ($group_count<=0) {
-?>
-	目前尚无用户组定义！
-<?php
+		echo _("No User Group Define now");
 	} else {
+		echo _("Select Group the mail should send to, or will send to all users: ");
 ?>
-请指定待发送的用户组,若不选择则信件将发给全部用户：
 <select id="oGroupList" size=10 multiple>
 <?php
 	for ($i=0;$i<$group_count;$i++){
@@ -321,15 +316,15 @@ function showMenu(){
 	function doSend(){
         var dot=false;
 		if (oForm.oContent.value=='') {
-			alert('群发信件内容为空!');
+			alert('<?=_("Maillist Mail Content is Empty!")?>');
 			return false;
 		}
 		if (oForm.oTitle.value=='') {
-			alert('群发信件标题为空!');
+			alert('<?=_("Maillist Mail Subject is Empty!")?>');
 			return false;
 		}
 		if (oForm.oMailbox.value=='') {
-			alert('管理员地址为空!');
+			alert('<?=_("Admin Email Address is Empty!")?>');
 			return false;
 		}
 		if (typeof(oGroupList) != "undefined") {
@@ -355,16 +350,16 @@ function showMenu(){
 <input type="hidden" name="sendAll" id="oSendAll" value="true">
 <table>
 <tr>
-<td>管理员邮箱</td><td><input type="text" name="mailbox" id="oMailbox"></td>
+<td><?=_("Admin Email Address")?></td><td><input type="text" name="mailbox" id="oMailbox"></td>
 </tr>
 <tr>
-<td>群发邮件标题</td><td><input type="text" name="title" id="oTitle"></td>
+<td><?=_("Maillist Mail Subject")?></td><td><input type="text" name="title" id="oTitle"></td>
 </tr>
 <tr>
-<td>群发信件内容</td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
+<td><?=_("Maillist Mail Content")?></td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
 </tr>
 </table>
-<input type="button" value="发送群体信件" onclick="doSend();">
+<input type="button" value="<?=_("Send Maillist")?>" onclick="doSend();">
 <script language="JavaScript">
 <!--
    function GoAttachWindow(){     
@@ -382,7 +377,7 @@ function showMenu(){
    }  
 -->
 </script>
-<input type="button" value="添加附件" onclick="GoAttachWindow()");
+<input type="button" value="<?=_("Add Attachment")?>" onclick="GoAttachWindow()");
 </form>
 <?php
 }

@@ -27,7 +27,7 @@
                 <td height="33" valign="middle"> <table width="100%" border="0" align="right" cellpadding="0" cellspacing="0">
                     <tr> 
                       <td width="35%" align="right"><img src="images/abottom_01.gif" width="57" height="12"></td>
-                      <td width="38%" align="right">&copy;启明星辰信息技术有限公司</td>
+                      <td width="38%" align="right">&copy;<?=_("VENUS INFO TECH INC.Corporate")?></td>
                       <td width="27%" align="right"><img src="images/abottom_logo.gif" width="107" height="31"></td>
                     </tr>
                   </table></td>

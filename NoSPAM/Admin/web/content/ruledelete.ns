@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 $rule_ids = $_POST["id"];
 if(count($rule_ids) > 0){
@@ -19,5 +19,5 @@ if(count($rule_ids) > 0){
 if(($ret=wi("reset_ContentEngine",$result))==0)
 	header("Location: rulemanage.ns?page=".$_POST["page"]."&pagenum=".$_POST["pagenum"]."&sort=".$_POST["sort"]);
 else
-	echo "修改失败，错误代码：".$ret;
+	echo _("Config Modify Fail, ErrNo: ").$ret;
 ?>

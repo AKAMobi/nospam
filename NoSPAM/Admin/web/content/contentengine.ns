@@ -2,14 +2,14 @@
 require_once("../inc/include.ns");
 
 if($ContentEngine <= 0)
-	die("对不起，本系统没有开启内容过滤引擎功能");
+	die(_("Sorry, This Product has no Content Filter Engine License"));
 
 if(!adminPerm(PERM_ADMIN_CONTENT))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
-if($_POST["Submit"]=="修改"){
+if($_POST["Submit"]==_("Modify")){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("你无权进行修改操作");
+		die(_("You have not permission to modify system config"));
 	if(isset($_POST["ContentFilterEngine"])){
 		$spamconf->setParam("ContentFilterEngine",$_POST["ContentFilterEngine"],"ContentEngine");
 	}else{
@@ -20,9 +20,9 @@ if($_POST["Submit"]=="修改"){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_ContentEngine",$result))==0)
-		echo "修改成功！";
+		echo _("Config Modify Success! ");
 	else
-		echo "修改失败，错误代码：".$ret;
+		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{
 	$sDirection = $spamconf->getParam("ProtectDirection","ContentEngine");
 	if(adminPerm(PERM_ADMIN_WRITE)){
@@ -31,35 +31,51 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>引擎开关</title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
+<script>
+<!--
+function change(bState)
+{
+	if(bState){
+		form2.oDir1.disabled = true;
+		form2.oDir2.disabled = true;
+		form2.idSubmit.disabled = true;
+	}else{
+		form2.oDir1.disabled = false;
+		form2.oDir2.disabled = false;
+		form2.idSubmit.disabled = false;
+	}
+}
+-->
+</script>
+
+
 </head>
 
 <body>
 <form name="form1" method="post" action="">
-  <p>
-  	引擎开关：<br>
+  <p> <?=_("Engine Switch")?>:<br>
     <label>
-    <input type="radio" name="ContentFilterEngine" value="Y"<? if($bContentFilter) echo " checked"; ?>>
-    开启</label>
+    <input type="radio" name="ContentFilterEngine" value="Y"<? if($bContentFilter) echo " checked"; ?> onclick="change(false)">
+    <?=_("On")?></label>
     <br>
     <label>
-    <input type="radio" name="ContentFilterEngine" value="N"<? if(!$bContentFilter) echo " checked"; ?>>
-    关闭</label>
+    <input type="radio" name="ContentFilterEngine" value="N"<? if(!$bContentFilter) echo " checked"; ?> onclick="change(true)">
+    <?=_("Off")?></label>
     <br>
-    <input type="submit" name="Submit" value="修改">
+    <input type="submit" name="Submit" value="<?=_("Modify")?>">
   </p>
 </form>
 <form name="form2" method="post" action="">
-  <p>
-  	作用方向：<br>
+  <p><?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";if(!$bContentFilter) echo " disabled"?>>
-    由内向外
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";if(!$bContentFilter) echo " disabled"?>>
-    由外向内
+    <?=_("Inward")?>
     <br>
-    <input type="submit" name="Submit" value="修改"<?if(!$bContentFilter) echo " disabled"?>>
+    <input type="submit" id="idSubmit" name="Submit" value="<?=_("Modify")?>"<?if(!$bContentFilter) echo " disabled"?>>
   </p>
 </form>
 </body>
@@ -71,28 +87,26 @@ if($_POST["Submit"]=="修改"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>引擎开关</title>
+<title><?=_("Engine Switch")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
-  <p>
-  	引擎开关：<br>
+  <p> <?=_("Engine Switch")?>:<br>
     <label>
     <input type="radio" name="ContentFilterEngine" value="Y"<? if($bContentFilter) echo " checked"; ?> disabled>
-    开启</label>
+    <?=_("On")?></label>
     <br>
     <label>
     <input type="radio" name="ContentFilterEngine" value="N"<? if(!$bContentFilter) echo " checked"; ?> disabled>
-    关闭</label>
+    <?=_("Off")?></label>
   </p>
-  <p>
-  	作用方向：<br>
+  <p><?=_("Direction")?>:<br>
     <input type="checkbox" id="oDir1" name="ProtectDirection[]" value="Out"<?if(strstr($sDirection,"Out")) echo " checked";?> disabled>
-    由内向外
+    <?=_("Outward")?>
     <br>
     <input type="checkbox" id="oDir2" name="ProtectDirection[]" value="In"<?if(strstr($sDirection,"In")) echo " checked";?> disabled>
-    由外向内
+    <?=_("Inward")?>
   </p>
 </body>
 </html>

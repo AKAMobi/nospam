@@ -1,13 +1,10 @@
 <?php
 require_once('../inc/include.ns');
 if($MailServer <= 0)
-	die("对不起，本系统没有开启本功能");
+	die(_("Sorry, This Product has no Standalone Server Mode License"));
 
 	if (!adminPerm(PERM_ADMIN_SERVER) ){
-?>
-		<br>
-		您没有访问该网页的权限。<br>
-<?php
+		echo "<br>"._("You have not permission to operate this page")."<br>";
 		return false;
 	}
 
@@ -15,7 +12,7 @@ $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
 unset($adminInfo);
 if($domains == "")
-	die("你目前没有任何邮件域管理权限");
+	die(_("You have no Mail Domain Management Permission yet."));
 
 $tmpDomains = explode(",", $domains);
 $aDomains = array();
@@ -42,11 +39,11 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>查找用户</TITLE>
+<TITLE><?=_("Search User")?></TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
-<div>邮件域：
+<div><?=_("Mail Domain")?>:
 <?
 	if($count == 1)
 		echo $currentDomain;
@@ -72,12 +69,12 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <table>
 <tbody>
 <tr>
-<td>请输入待查找的用户账号:</td>
+<td><?=_("Input User Account you want to search")?>:</td>
 <td><INPUT type="text" name="id"></td>
 </td>
 </tbody>
 </table>
-<INPUT type="submit" value="开始查找">
+<INPUT type="submit" value="<?=_("Search")?>">
 </form>
 </div>
 </BODY>

@@ -2,10 +2,10 @@
 require_once("../inc/include.ns");
 
 if(!adminPerm(PERM_ADMIN_SYSTEM))
-	die("您没有访问该网页的权限。");
+	die(_("You have not permission to operate this page"));
 
 if(!adminPerm(PERM_ADMIN_WRITE))
-	die("你无权进行更改操作");
+	die(_("You have not permission to modify system config"));
 
 switch($_GET["file"])
 {
@@ -22,11 +22,11 @@ switch($_GET["file"])
 	$filename = UserDB;
 	break;
 	default:
-	die("错误");
+	die(_(" Error"));
 }
 
 if(!move_uploaded_file($file["tmp_name"],$filename."new"))
-	die("上载文件失败！");
+	die(_("Upload Fail!"));
 
 if($_GET["file"] != "license"){
 	$fp = fopen($filename."new","r+");
@@ -37,5 +37,5 @@ if($_GET["file"] != "license"){
 }
 
 rename($filename."new",$filename);
-echo "上载成功！";
+echo _("Upload Success!");
 ?>
