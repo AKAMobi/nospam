@@ -215,6 +215,11 @@ sub check_size_value
 
 	my ( $size, $match_size ) = @_;
 
+	if ( ! defined $size || 0==length($size) ){
+		$self->{zlog}->fatal ( "error: cannot get  SIZEV:  it's undef?" );
+		return 0;
+	}
+
 	if ( defined $match_size && $match_size =~ /(\d+)\-(\d+)/ ){
 		$size_low = $1;
 		$size_high = $2;
@@ -338,7 +343,7 @@ sub check_re_match
 	my $self = shift;
 	my ( $content, $re, $is_re ) = @_;
 
-	if ( ! defined $re || ! defined $is_re ){
+	if ( ! defined $re || ! defined $is_re || ! defined $content ){
 		$self->{zlog}->fatal ( "error: check_regex not enough param." );
 		return 0;
 	}
