@@ -133,6 +133,15 @@ sub server
 #					Listen => SOMAXCONN
 #			) || sleep 1 && die "Could not create INET socket: $! $@\n";
 
+	if ( new IO::Socket::UNIX ( Type => 'SOCK_STREAM'
+					, Peer => '/home/NoSPAM/.ns'
+					, Type => SOCK_STREAM 
+				) ){
+		sleep 1 && die "UNIX socket already in use!\n";
+	}
+
+	unlink '/home/NoSPAM/.ns';
+
 	my $server = new IO::Socket::UNIX( Type => 'SOCK_STREAM'
 					, Local => '/home/NoSPAM/.ns'
 					, Type => SOCK_STREAM
