@@ -1508,6 +1508,12 @@ sub _file_update_service_localname
 	$ret ||= write_file($content, '/service/ismtpd/env/LOCALNAME');
 	$ret ||= write_file($content, '/service/pop3d/env/LOCALNAME');
 
+	my $default_domain = $conf->{config}->{MailServer}->{MailHostName} ;
+	if ( $default_domain ){
+		$ret ||= write_file($default_domain, '/service/smtpd/env/VPOPMAIL_DOMAIN' );
+		$ret ||= write_file($default_domain, '/service/ismtpd/env/VPOPMAIL_DOMAIN' );
+		$ret ||= write_file($default_domain, '/service/pop3d/env/VPOPMAIL_DOMAIN' );
+	}
 
 	return ERR_SYSTEM_CALL if system('cd /service/ismtpd;make>/dev/null 2>&1;/usr/bin/svc -t /service/smtpd /service/ismtpd');
 
