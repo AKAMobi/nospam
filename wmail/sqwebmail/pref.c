@@ -398,9 +398,13 @@ void pref_setprefs()
 		get_antispam_file(fpath);
 		if ((fp=fopen(fpath, "w")) != NULL)
 		{
-			if (*cgi("spam") )
+			if (!(*cgi("spam"))) {
+				fprintf(fp,"0");
+			} else if (!strcmp(cgi("spam"),"1") )
 				fprintf(fp, "1");
-			else 
+			else  if (!strcmp(cgi("spam"),"2") )
+				fprintf(fp,"2");
+			else
 				fprintf(fp,"0");
 			fclose(fp);
 		}
@@ -546,7 +550,9 @@ int flag;
 		fscanf(fp,"%d",&flag);		
                 fclose(fp);
 	}
-	printf("<input type=checkbox name=\"spam\" value=\"yes\" %s>保存可疑邮件到垃圾邮件箱中", flag? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"0\" %s>保存可疑邮件到收件箱中<br>", (flag==0)? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"1\" %s>保存可疑邮件到垃圾邮件箱中<br>", (flag==1)? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"2\" %s>直接丢弃可疑邮件<br>", (flag==2)? "checked":"" );
 }
 
 
