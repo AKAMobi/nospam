@@ -21,7 +21,7 @@ msgid "CPU is not licensed"
 msgstr "处理器未授权"
 
 #: ../Lib/AKA/License.pm:169
-msgid "Hareward system OK"
+msgid "Hareward system is licensed"
 msgstr "硬件系统已授权"
 
 #: ../Lib/AKA/License.pm:238
@@ -46,7 +46,7 @@ msgid "Security Policy"
 msgstr "安全策略"
 
 #: ../Lib/AKA/Mail.pm:566
-msgid "System reject your mail."
+msgid "System rejects your mail."
 msgstr "系统拒收您的邮件。"
 
 #: ../Lib/AKA/Mail.pm:613 ../Lib/AKA/Mail.pm:621 ../Lib/AKA/Mail.pm:629
@@ -94,7 +94,7 @@ msgid "internal error"
 msgstr "内部错误"
 
 #: ../Lib/AKA/Mail.pm:1222
-msgid "commited"
+msgid "submmited"
 msgstr "已提交"
 
 #: ../Lib/AKA/Mail.pm:1241
@@ -106,11 +106,11 @@ msgid "Traceable"
 msgstr "可追查检查"
 
 #: ../Lib/AKA/Mail.pm:1264
-msgid "Auth user"
+msgid "Authorized user"
 msgstr "认证用户"
 
 #: ../Lib/AKA/Mail.pm:1270
-msgid "Sender must as same as auth user"
+msgid "Sender must as same as Authorized user"
 msgstr "发信人非身份认证用户"
 
 #: ../Lib/AKA/Mail.pm:1410
@@ -122,7 +122,7 @@ msgid "incoming mail is not limited"
 msgstr "外向内未限制"
 
 #: ../Lib/AKA/Mail.pm:1455
-msgid "Sender white list"
+msgid "Sender WhiteList"
 msgstr "发信人白名单"
 
 #: ../Lib/AKA/Mail.pm:1470
@@ -130,7 +130,7 @@ msgid "Mail sender"
 msgstr "发信人"
 
 #: ../Lib/AKA/Mail.pm:1488
-msgid "Mail subject white list"
+msgid "Mail subject whitelist"
 msgstr "邮件主题白名单"
 
 #: ../Lib/AKA/Mail.pm:1503
@@ -138,7 +138,7 @@ msgid "Mail"
 msgstr "邮件"
 
 #: ../Lib/AKA/Mail.pm:1523
-msgid "white list"
+msgid "whitelist"
 msgstr "白名单"
 
 #: ../Lib/AKA/Mail.pm:1552
@@ -154,7 +154,7 @@ msgid "Incoming mail need not filter"
 msgstr "外向内未过滤"
 
 #: ../Lib/AKA/Mail.pm:1649
-msgid "Maximum size excceed"
+msgid "Maximum size exceeds"
 msgstr "尺寸超过配置最大值"
 
 #: ../Lib/AKA/Mail.pm:1675
@@ -166,7 +166,7 @@ msgid "License error "
 msgstr "许可证错误"
 
 #: ../Lib/AKA/Mail.pm:1747
-msgid "License valid!"
+msgid "License is valid!"
 msgstr "许可证有效！"
 
 #: ../Lib/AKA/Mail/AntiVirus.pm:89
@@ -178,7 +178,7 @@ msgid "[Spam]"
 msgstr "【垃圾邮件】"
 
 #: ../Lib/AKA/Mail/Conf.pm:127
-msgid "[MaybeSpam]"
+msgid "[LikelySpam]"
 msgstr "【疑似垃圾】"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:106 ../Lib/AKA/Mail/Dynamic.pm:131
@@ -202,7 +202,7 @@ msgstr "发送超限，还需{wait_time}分钟解封"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:351
 msgid " overrun"
-msgstr "发送超限"
+msgstr "超限"
 
 #: ../Lib/AKA/Mail/Dynamic.pm:355
 msgid " passed"
@@ -213,27 +213,27 @@ msgid "bounced mail"
 msgstr "退信"
 
 #: ../Lib/AKA/Mail/Spam.pm:435
-msgid "IP White List"
+msgid "IP WhiteList"
 msgstr "IP白名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:438
-msgid "Domain White List"
+msgid "Domain whitelist"
 msgstr "域名白名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:441
-msgid "Sender White List"
+msgid "Sender WhiteList"
 msgstr "发信人白名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:444
-msgid "IP Black List"
+msgid "IP BlackList"
 msgstr "IP黑名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:447
-msgid "Domain Black List"
+msgid "Domain BlackList"
 msgstr "域名黑名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:451
-msgid "Sender Black List"
+msgid "Sender BlackList"
 msgstr "发信人黑名单"
 
 #: ../Lib/AKA/Mail/Spam.pm:464
@@ -261,11 +261,11 @@ msgid "Upgrade package filename error."
 msgstr "升级包文件名错误。"
 
 #: ../Bin/NoSPAM.pl:260
-msgid "Upgrade package version mismatch with current system."
+msgid "Upgrade package version mismatches with current system."
 msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
 
 #: ../Bin/NoSPAM.pl:264
-msgid "System version higher then current upgrade package, can't downgrade."
+msgid "System version is higher then current upgrade package, can't downgrade."
 msgstr "系统已经安装过更高的升级包，无法降级。"
 
 #: ../Bin/NoSPAM.pl:272 ../Bin/NoSPAM.pl:279 ../Bin/NoSPAM.pl:288
@@ -277,7 +277,7 @@ msgid "Upgrade package checksum error"
 msgstr "升级包校验和错误"
 
 #: ../Bin/NoSPAM.pl:319
-msgid "upgrade successful."
+msgid "upgrade successfully."
 msgstr "升级完成。"
 
 #: ../Bin/NoSPAM.pl:347
@@ -288,8 +288,8 @@ msgstr "无法记录升级信息"
 msgid "Can't record upgrade package information"
 msgstr "无法记录升级包信息"
 
-#: ../Bin/NoSPAM.pl:712
-msgid "License is not valide or expired."
+#: ../Bin/NoSPAM.pl:711
+msgid "License is not valide or already expires"
 msgstr "当前许可证无效或已经过期！"
 
 #: ../Bin/NoSPAM.pl:749
