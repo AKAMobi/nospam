@@ -1019,9 +1019,8 @@ sub spam_engine
 	my $self = shift;
 
 	my $start_time = [gettimeofday];
-	my ( $client_smtp_ip, $returnpath, $mailfrom ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
-						$self->{mail_info}->{aka}->{returnpath},
-						$self->{mail_info}->{aka}->{mailfrom},
+	my ( $client_smtp_ip, $returnpath ) = ( $self->{mail_info}->{aka}->{TCPREMOTEIP},
+						$self->{mail_info}->{aka}->{returnpath}
 						 );
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
@@ -1051,7 +1050,7 @@ sub spam_engine
 
 	}
 
-	$returnpath ||= $mailfrom;
+	#$returnpath ||= $mailfrom;
 	unless ( length($client_smtp_ip) && length($returnpath) )
 	{
 		#$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
@@ -1067,7 +1066,7 @@ sub spam_engine
 		return;
 	}
 
-	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath||$mailfrom );
+	my ( $is_spam, $reason, $dns_query_time ) = $self->{spam}->spam_checker( $client_smtp_ip, $returnpath );
 
 	my $action = ACTION_PASS;
 	if ( $is_spam ) {
@@ -1487,7 +1486,7 @@ sub get_mail_base_info
 	open ( MAIL, '<' . $self->{mail_info}->{aka}->{emlfilename} ) or return undef;
 
 	my $still_headers = 1;
-	my ($subject,$mail_from);
+	my ($subject,$mail_from,$return_path);
 	while (<MAIL>) {
 		chomp;
 		if ( $still_headers ){
@@ -1510,6 +1509,17 @@ sub get_mail_base_info
 				}else{
 					$mail_from = '';
 				}
+			}
+			elsif ( /^Return-Path (.+)/ )
+			{
+				$return_path = $1;
+				if ( $return_path=~m#([a-z0-9.-_]\S+?\@\S+\.\S+[a-z0-9])\s*#i )
+				{
+					$return_path = $1;
+				}else{
+					$return_path = '';
+				}
+
 			}
 			$still_headers = 0 if (/^(\r|\r\n|\n)$/);
 		}
@@ -1539,8 +1549,10 @@ sub get_mail_base_info
 	$self->{mail_info}->{aka}->{subject} = $subject;
 	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
 
-	$self->{mail_info}->{aka}->{returnpath} = $returnpath;
-	$self->{mail_info}->{aka}->{mailfrom} = $mail_from;
+	$self->{mail_info}->{aka}->{returnpath} = $returnpath; # 这个是 smtp 协议中的 MAIL FROM: (.+)
+	$self->{mail_info}->{aka}->{returnpath} ||= $mail_from || $return_path; # XXX is this no problem?
+	$self->{mail_info}->{aka}->{mail_from} = $mail_from;
+	$self->{mail_info}->{aka}->{return_path} = $return_path; # 这个是邮件头重的Return-Path
 	$self->{mail_info}->{aka}->{recips} = $recips;
 	$self->{mail_info}->{aka}->{env_returnpath} = $env_returnpath;
 	$self->{mail_info}->{aka}->{env_recips} = $env_recips;
