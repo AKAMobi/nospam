@@ -1,0 +1,40 @@
+<?
+require_once("../inc/include.ns");
+if($_GET["action"]){
+	if($_GET["action"]=="download"){
+        	if(($ret=wi("Archive_get_exchangedata",$result))==0)
+                	echo "操作成功！";
+        	else    
+                	echo "操作失败！错误代码：".$ret;
+	}else if ($_GET["action"]=="clean"){
+        	if(($ret=wi("Archive_clean_all",$result))==0)
+                	echo "操作成功！";
+        	else    
+                	echo "操作失败！错误代码：".$ret;
+	}
+}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>审计数据管理</title>
+</head>
+
+<body>
+<input type="button" value="下载" onclick="window.open('archiveexport.ns?action=download','_blank')">
+<input type="button" value="清空" onclick="document.location.href='archiveexport.ns?action=clean';">
+<?
+if(!$bArchive){
+?>
+<script>
+alert("注意：审计引擎未启动");
+</script>
+<?
+}
+?>
+</body>
+</html>
+<?
+}
+?>
