@@ -1,9 +1,0 @@
-#!/bin/sh
-
-exec 2>&1 \
-envdir ./env \
-sh -c ' exec \
-	/usr/sbin/stunnel -f \
-	-d pop3s -r 127.0.0.1:110 \
-	-p /var/qmail/control/servercert.pem
-'

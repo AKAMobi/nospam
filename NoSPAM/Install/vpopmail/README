@@ -1,7 +1,0 @@
-vpopmail, install a common vpopmail, then add virtual domains below:
-	localhost.localdomain ( main )
-	localhost ( syn link to localhost.localdomain )
-	factory.gw.nospam.aka.cn ( syn link to localhost.localdomain, factory default domain name )
-
-add archive@localhost.localdomain to support mail Audit.
-better to change QUOTA from NOQUOTA to a reasonable number.
