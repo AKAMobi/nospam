@@ -374,10 +374,10 @@ sub reset_Network_set_netfilter
 	return -38 if ( $ret );
 
 
-	$ret = system( "$iptables -A INPUT -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT" );
+	$ret = system( "$iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT" );
 	return -40 if ( $ret );
-	$ret = system( "$iptables -A INPUT -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT" );
-	return -41 if ( $ret );
+	#$ret = system( "$iptables -A INPUT -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT" );
+	#return -41 if ( $ret );
 
 	$ret = system( "$iptables -P INPUT DROP" );
 	return -50 if ( $ret );
