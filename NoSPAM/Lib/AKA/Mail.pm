@@ -142,6 +142,7 @@ sub server
 			; # goto accept
 		}elsif ( 0==$pid ){ # child
 			$self->net_process($client);
+			shutdown ( $client, 2 );
 			close $client;
 			exit;
 		}else{ #err
