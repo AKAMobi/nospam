@@ -24,6 +24,9 @@ $sizescount = count($sizes);
 $attachmentscount = count($attachments);
 ?>
 <html>
+<head>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
 <body>
     <table border="0" width="100%">
     <tr>

@@ -114,11 +114,12 @@ function sortTable(sKey)
 <body>
 数据库选择：
 <select name="DBSelect" onchange="changeDB()">
-<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安部数据（只读）<? } ?>
-<option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户自定义数据（可修改）
+<? if($bGAView) {?><option value="0" <? if($_GET["db"]=="police") echo "selected";?>>公安部规则数据数据库（只读）<? } ?>
+<option value="1" <? if($_GET["db"]!="police") echo "selected"; ?>>用户规则数据库
+
 </select><br>
 <form action="<?=$url?>" method="POST">
-输入rule_id：
+修改规则编号：
 <input type="text" maxlength="22" name="rule_id" /><input type="submit" value="提交" />
 </form>
 <?

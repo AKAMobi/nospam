@@ -173,7 +173,7 @@ function clearFilter() {
 	<td>管理员账号</td>
 	<td>备注</td>
 	<td>修改密码</td>
-	<td>修改权限</td>
+	<!--td>修改权限</td-->
 	<td>删除</td>
 </tr>
 </thead>
@@ -191,7 +191,7 @@ for( $i = 0 ; $i < count($adminList) ; $i++)
 		<td><?=$adminID?></td>
 		<td><?=$note?></td>
 		<td><a href="<?=$changePasswdURL?>">修改密码</a></td>
-		<td><a href="<?=$modifyPrivilidgeURL?>">修改权限</a></td>
+		<!--td><a href="<?=$modifyPrivilidgeURL?>">修改权限</a></td-->
 		<td><a href="<?=$deleteURL?>">删除</a></td>
 	</tr>
 <?
