@@ -93,7 +93,7 @@ sub catch_virus
 
 	if ( $self->is_clamd_up() ){
 		$result = $self->check_file_socket_tcp( $file );
-		$self->{zlog}->debug ( "catch_virus use clamd" );#, result: [$result]" );
+		#$self->{zlog}->debug ( "catch_virus use clamd" );#, result: [$result]" );
 	}else{
 		# XXX pass virus for performance problem
 		return ( {	result	=> 0,
@@ -261,7 +261,7 @@ sub is_clamd_up
 	#$self->{zlog}->debug ( "is_clamd_up" );
 
 	if ( -f $self->{define}->{status_file} . 'OK' ){
-		$self->{zlog}->debug ( "is_clamd_up find OK" );
+		#$self->{zlog}->debug ( "is_clamd_up find OK" );
 		return 1;
 	}elsif ( -f $self->{define}->{status_file} . 'ERR' ){
 	        my $mtime = (stat( $self->{define}->{status_file} . 'ERR' ))[9];

@@ -69,6 +69,7 @@ sub new
 	$self->{conf} = new AKA::Mail::Conf($self);
 	$self->{zlog} = new AKA::Mail::Log($self);
 
+
 	$self->{antivirus} 	= new AKA::Mail::AntiVirus($self);
 	$self->{spam} 		= new AKA::Mail::Spam($self);
 	$self->{dynamic} 	= new AKA::Mail::Dynamic($self);
@@ -112,25 +113,40 @@ sub process
 	# 处理邮件动作，大家都有的动作
 	foreach my $engine ( keys %{$mail_info->{aka}->{engine}} ){
 		$_ = $self->{mail_info}->{aka}->{engine}->{$engine}->{action};
+		next if ( $_ eq ACTION_PASS );
+
 		if ( $_ eq ACTION_REJECT ){
 			if ( $engine eq 'content' ){
-				$self->close_smtp( '553 '
-					. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || 'This message was rejected.')
-					, 150 );
+				$self->cleanup();
+				$mail_info->{aka}->{resp} = {
+						smtp_code => 553,
+						smtp_info => $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
+								|| 'This message was rejected.',
+						exit_code => 150
+				};
+				return $mail_info;
 			}else{
-				$self->close_smtp( '553 对不起，由于 ' 
-					. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || '安全策略')
-					. ' ，系统拒收您的邮件。', 150 );
+				$self->cleanup();
+				$mail_info->{aka}->{resp} = {
+						smtp_code => 553,
+						smtp_info => '对不起，由于 ' 
+							. ($self->{mail_info}->{aka}->{engine}->{$engine}->{desc} || '安全策略')
+							. ' ，系统拒收您的邮件。',
+						exit_code => 150
+				};
+				return $mail_info;
 			}
 
 		}elsif ( $_ eq ACTION_DISCARD ){
 			$self->cleanup();
-			exit 0;
+			$mail_info->{aka}->{resp}->{exit_code} = 0;
+			return $mail_info;
 		}elsif ( $_ eq ACTION_QUARANTINE ){
 			$self->quarantine();
-			exit 0;
+			$mail_info->{aka}->{resp}->{exit_code} = 0;
+			return $mail_info;
 		}else{
-			$self->{zlog}->fatal ( "Mail::process got a unknown action: [" . $_ . "]" );
+			#$self->{zlog}->debug ( "Mail::process got a unknown action: [" . $_ . "]" );
 			next;
 		}
 	}
@@ -274,7 +290,7 @@ sub qmail_requeue {
 	my ($findate);
 
 	# Create a pipe through which to send the envelope addresses.
-	pipe (EOUT, EIN) or $self->close_smtp("Unable to create a pipe. - $!");
+	pipe (EOUT, EIN) or return $self->close_smtp(451, "Unable to create a pipe. - $!");
 	select(EOUT);$|=1;
 	select(EIN);$|=1;
 
@@ -284,14 +300,14 @@ sub qmail_requeue {
 	my $pid = fork;
 
 	if (not defined $pid) {
-		$self->close_smtp ("Unable to fork. (#4.3.0) - $!");
+		return $self->close_smtp (451, "Unable to fork. (#4.3.0) - $!");
 	} elsif ($pid == 0) {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		open(STDIN,"<$msg")|| $self->close_smtp ("Unable to reopen fd 0. (#4.3.0) - $!");
+		open(STDIN,"<$msg")|| return $self->close_smtp (451, "Unable to reopen fd 0. (#4.3.0) - $!");
 
-		open (STDOUT, "<&EOUT") ||  $self->close_smtp ("Unable to reopen fd 1. (#4.3.0) - $!");
+		open (STDOUT, "<&EOUT") ||  return $self->close_smtp (451, "Unable to reopen fd 1. (#4.3.0) - $!");
 		select(STDIN);$|=1;
 
 		$self->write_queue();
@@ -306,11 +322,13 @@ sub qmail_requeue {
 		#my $envelope = "$sender\0$env_recips";
 		my $envelope = $aka->{env_returnpath} . "\0" . $aka->{env_recips};
 
-		$envelope =~ s/\0/\\0/g;
-		$self->{zlog}->debug ( "q_r_q: envelope data: [$envelope]" );
 
 		print EIN $envelope;
-		close EIN  || $self->close_smtp ("Write error to envelope pipe. (#4.3.0) - $!");
+		close EIN  || return $self->close_smtp (451, "Write error to envelope pipe. (#4.3.0) - $!");
+
+		$envelope =~ s/\0/\\0/g;
+		$self->{zlog}->debug ( "parent: q_r_q: envelope data: [$envelope]" );
+
 	}
 
 	# We should now have queued the message.  Let's find out the exit status
@@ -318,9 +336,9 @@ sub qmail_requeue {
 	waitpid ($pid, 0);
 	$xstatus =($? >> 8);
 	if ( $xstatus > 10 && $xstatus < 41 ) {
-		$self->close_smtp("mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
+		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
-		$self->close_smtp("Unable to close pipe to $qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
+		return $self->close_smtp(451, "Unable to close pipe to qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
 	}
 }
 
@@ -331,11 +349,12 @@ sub write_queue
 	my $aka = $self->{mail_info}->{aka};
 	my $config = $self->{conf}->{config};
 
-	open (QMQ, "|$qmailqueue")|| $self->close_smtp ("Unable to open pipe to $qmailqueue [$xstatus] (#4.3.0) - $!");
+	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
+	#open (QMQ, "|/tmp/qq.pl")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
 	($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
 	my $elapsed_time = tv_interval ( $self->{start_time}, [gettimeofday]);
 	$findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
-	$findate .= sprintf "%02d %02d:%02d:%02d +8000", $year+1900, $hour, $min, $sec;
+	$findate .= sprintf "%02d %02d:%02d:%02d -0000", $year+1900, $hour, $min, $sec;
 
 	print QMQ "Received: from " . $aka->{returnpath} . " by " 
 		. $config->{Network}->{Hostname} 
@@ -412,7 +431,8 @@ sub write_queue
 						. " N:" . $aka->{engine}->{antivirus}->{desc} . "\n";
 				}
 				if ( 'Y' eq uc $config->{SpamEngine}->{TagReason} ){
-					print QMQ "  S:$AKA_is_spam R:$AKA_spam_reason\n";
+					print QMQ "  S:" . $aka->{engine}->{spam}->{result}
+						. ' R:' . $aka->{engine}->{spam}->{desc} . "\n";
 				}
 				#if ( $aka->{engine}->{content}->{enabled} ){
 					if ( 'Y' eq uc $config->{ContentEngine}->{TagReason} ){
@@ -442,9 +462,9 @@ sub write_queue
 	close(QMQ); #||&$self->close_smtp("Unable to close pipe to $qmailqueue (#4.3.0) - $!");
 	$xstatus = ( $? >> 8 );
 	if ( $xstatus > 10 && $xstatus < 41 ) {
-		$self->close_smtp("mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
+		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
-		$self->close_smtp("Unable to open pipe to $qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
+		return $self->close_smtp(451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!",$xstatus);
 	}
 }
 
@@ -452,12 +472,17 @@ sub write_queue
 sub close_smtp {
 	my $self = shift;
 
-	my ($string,$errcode)=@_;
+	my ($smtp_code, $smtp_info, $errcode)=@_;
 	$errcode=150 if (!$errcode);
 	$self->cleanup;
 
-	print NSOUT $string, "\r\n";
-	exit $errcode;
+	#print NSOUT $string, "\r\n";
+	#exit $errcode;
+	$self->{mail_info}->{aka}->{resp}->{smtp_code} = $smtp_code;
+	$self->{mail_info}->{aka}->{resp}->{smtp_info} = $smtp_info;
+	$self->{mail_info}->{aka}->{resp}->{exit_code} = $errcode;
+
+	return $self->{mail_info};
 }
 
 sub cleanup {
@@ -555,7 +580,7 @@ sub spam_engine
 	if ( ! $client_smtp_ip || ! $returnpath ){
 		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ ) );
 
-		$self->{mail_info}->{aka}->{engine}->{spam}->{result} = RESULT_SPAM_NOT;
+		$self->{mail_info}->{aka}->{engine}->{spam}->{result} = RESULT_SPAM_MAYBE;
 		$self->{mail_info}->{aka}->{engine}->{spam}->{desc} = '参数不足';
 		$self->{mail_info}->{aka}->{engine}->{spam}->{action} = ACTION_PASS;
 		return;
