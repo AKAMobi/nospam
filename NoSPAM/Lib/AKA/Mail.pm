@@ -141,6 +141,7 @@ sub server
 			}
 			; # goto accept
 		}elsif ( 0==$pid ){ # child
+			close $server;
 			$self->net_process($client);
 			shutdown ( $client, 2 );
 			close $client;
