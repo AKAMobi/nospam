@@ -751,6 +751,7 @@ sub QuarantineProcessMail
 	my ($no,$file,$action);
 	while ( <STDIN> ){
 		chomp;
+		$zlog->debug ( "wi QuarantineProcessMail got: [$_]" );
 		if ( /(\d+),([^,]+),(\w)/ ){
 			($no,$file,$action) = ($1,$2,uc $3);
 			if ( $action eq 'D' ){
@@ -758,7 +759,6 @@ sub QuarantineProcessMail
 			}elsif ( $action eq 'F' ){
 				my ($from,$to) = _get_quarantine_info($file);
 				$AMC->send_mail_file_by_queue( $from, $to, $file );
-				
 			}
 			unlink $file; unlink "$file.info";
 			print "$no,0\n";
