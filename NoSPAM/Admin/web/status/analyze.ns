@@ -16,7 +16,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<DIV><h2>邮件分类分析</h2></DIV>
+<DIV><h2>邮件类别分析</h2></DIV>
 <DIV><A HREF="mail_type.ns"><IMG BORDER=1 ALT="Mail Type Graph" SRC="mail_type-day.gif"></A>
 <BR>
 

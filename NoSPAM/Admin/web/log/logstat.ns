@@ -76,7 +76,7 @@ function initSelect()
 			oOption2.selected = true;
 		}
 	}
-	document.all.sHours.options(0).selected= true;
+	document.all.sHour.options(0).selected= true;
 }
 
 function genDate(iYear, iMonth)
