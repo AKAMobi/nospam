@@ -1,0 +1,341 @@
+<?
+require_once("../inc/include.ns");
+
+switch($_GET["action"]){
+	case "add":
+	add();
+	break;
+	case "del":
+	del();
+	case "modify":
+	modify();
+	break;
+	case "save":
+	save();
+	break;
+	default:
+	show();
+}
+
+function show()
+{
+	global $spamconf;
+
+	if(array_key_exists("MailServer",$spamconf->params))
+		$Section = $spamconf->params["MailServer"];
+	else
+		$Section = array();
+	
+	$Domains = array();
+	if(count($Section) > 0){
+		foreach($Section as $key=>$value){
+			if(preg_match("/ProtectDomain_(.+)_(?:IPPort|Cate)/",$key,$matches)){
+				if(in_array($matches[1],$Domains))
+					continue;
+				array_push($Domains, $matches[1]);
+			}
+		}
+	}
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>邮件域保护设置</title>
+<link type="text/css" rel="StyleSheet" href="../css/style.css" />
+<link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+</head>
+<body>
+<form action="?action=del" name="form1" method="post">
+<table class="sort-table" id="table-1" cellspacing="0">
+<thead>
+<tr>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+	<td>选择</td>
+<?}?>
+	<td>邮件域</td>
+	<td>IP</td>
+	<td>端口</td>
+	<td>备注</td>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+	<td>修改</td>
+<?}?>
+</tr>
+</thead>
+<tbody>
+<?
+	if(count($Domains) > 0){
+		$i = 1;
+		foreach($Domains as $Domain){
+			$className = $i%2? "RuleTB1":"RuleTB2";
+			$IPPort = $Section["ProtectDomain_{$Domain}_IPPort"];
+			if (false === strpos($IPPort,":")){
+				$IP = $IPPort;
+				$Port = 25;
+			}else{
+				list($IP,$Port) = explode(":",$IPPort);
+			}
+?>
+<tr class="<?=$className?>">
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+	<td><input type="checkbox" name="domain[]" value="<?=$Domain?>"></td>
+<?}?>
+	<td><?=$Domain?></td>
+	<td><?=$IP?></td>
+	<td><?=$Port?></td>
+	<td><?=$Section["ProtectDomain_{$Domain}_Cate"]?></td>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+	<td>
+		<input type="button" onclick="location.href='<?=$_SERVER['PHP_SELF']."?action=modify&domain=".$Domain?>'" value="编辑">
+		<input type="button" onclick="location.href='<?=$_SERVER['PHP_SELF']."?action=del&domain=".$Domain?>'" value="删除">
+	</td>
+<?}?>
+</tr>
+<?
+			$i++;
+		}
+	}
+?>
+</tbody>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+<tfoot>
+<tr>
+	<td colspan="7" align="center">
+		<input type="button" onclick="location.href='<?=$_SERVER['PHP_SELF']."?action=add"?>'" value="添加">
+		<input type="submit" value="批量删除">
+	</td>
+</tr>
+</tfoot>
+<?}?>
+</table>
+</form>
+<script>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+var st = new SortableTable(document.getElementById("table-1"),
+		["None", "String", "IP", "Number", "String", "None"]);
+<?}else{?>
+var st = new SortableTable(document.getElementById("table-1"),
+		["String", "IP", "Number", "String"]);
+<?}?>
+function addClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var l = p.length;
+	for (var i = 0; i < l; i++) {
+		if (p[i] == sClassName)
+			return;
+	}
+	p[p.length] = sClassName;
+	el.className = p.join(" ");
+
+}
+function removeClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var np = [];
+	var l = p.length;
+	var j = 0;
+	for (var i = 0; i < l; i++) {
+		if (p[i] != sClassName)
+			np[j++] = p[i];
+	}
+	el.className = np.join(" ");
+}
+st.onsort = function () {
+	var rows = st.tBody.rows;
+	var l = rows.length;
+	for (var i = 0; i < l; i++) {
+		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
+		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+	}
+};
+</script>
+</body>
+</html>
+<?
+}
+
+function add()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "你无权进行更改操作";
+		return;
+	}
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>邮件域保护设置</title>
+<link type="text/css" rel="StyleSheet" href="../css/style.css" />
+</head>
+<body>
+<form action="?action=save" method="post">
+<table border="1">
+<tr>
+	<th scope="row">邮件域：</th>
+	<td><input type="text" name="Domain"></td>
+</tr>
+<tr>
+	<th scope="row">IP地址：</th>
+	<td><input type="text" name="IP"></td>
+</tr>
+<tr>
+	<th scope="row">端口：</th>
+	<td><input type="text" name="Port"></td>
+</tr>
+<tr>
+	<th scope="row">备注：</th>
+	<td><input type="text" name="Cate"></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" value="提交"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+<?
+}
+
+function modify()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "你无权进行更改操作";
+		return;
+	}
+
+	global $spamconf;
+	
+	$domain = $_GET["domain"];
+	$IPPort = $spamconf->getParam("ProtectDomain_{$domain}_IPPort","MailServer");
+
+	if (false === strpos($IPPort,":")){
+		$IP = $IPPort;
+		$Port = 25;
+	}else{
+		list($IP,$Port) = explode(":",$IPPort);
+	}
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>邮件域保护设置</title>
+<link type="text/css" rel="StyleSheet" href="../css/style.css" />
+</head>
+<body>
+<form action="?action=save" method="post">
+<input type="hidden" name="modify">
+<table border="1">
+<tr>
+	<th scope="row">邮件域：</th>
+	<td><input type="hidden" name="Domain" value="<?=$domain?>"><?=$domain?></td>
+</tr>
+<tr>
+	<th scope="row">IP地址：</th>
+	<td><input type="text" name="IP" value="<?=$IP?>"></td>
+</tr>
+<tr>
+	<th scope="row">端口：</th>
+	<td><input type="text" name="Port" value="<?=$Port?>"></td>
+</tr>
+<tr>
+	<th scope="row">备注：</th>
+	<td><input type="text" name="Cate" value="<?=$spamconf->getParam("ProtectDomain_{$domain}_Cate","MailServer")?>"></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" value="提交"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+<?
+}
+
+function del()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "你无权进行更改操作";
+		return;
+	}
+
+	global $spamconf;
+	
+	$domain = $_REQUEST["domain"];
+	$args = "";
+	
+	if(is_array($domain)){
+		if(count($domain) > 0){
+			foreach($domain as $value){
+				$args .= $value." ";
+				$spamconf->delParam("ProtectDomain_{$value}_IPPort","MailServer");
+				$spamconf->delParam("ProtectDomain_{$value}_Cate","MailServer");
+			}
+			$args = rtrim($args);
+		}
+	}else{
+		$spamconf->delParam("ProtectDomain_{$domain}_IPPort","MailServer");
+		$spamconf->delParam("ProtectDomain_{$domain}_Cate","MailServer");
+		$args = $domain;
+	}
+	
+	$spamconf->save();
+
+	if(($ret=wi("ProtectDomain_del {$args}",$result)) == 0){
+			header("Location: ".$_SERVER['PHP_SELF']);
+	}else{
+		echo "删除失败，错误代码：$ret";
+		return;
+	}
+}
+
+function save()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "你无权进行更改操作";
+		return;
+	}
+
+	global $spamconf;
+	
+	$bModify = isset($_POST["modify"]);
+	$domain = trim($_POST["Domain"]);
+	$IP = $_POST['IP'];
+	$Port = empty($_POST['Port'])? 25:$_POST['Port'];
+	if (!checkipaddr($IP,false))
+		die("IP地址格式有误");
+	if (!is_numeric($Port) || intval($Port) < 1 || intval($Port) > 65535)
+		die("端口必须为数字且在1-65535之间！");
+	
+	if(!$bModify){
+		if( $spamconf->hasParam("ProtectDomain_{$Domain}_IPPort","MailServer") ){
+			echo "该邮件域已存在！";
+			return;
+		}
+		if($domain == "localhost" || $domain == "localhost.localdomain"){
+			errorReturn("系统保留域，不可添加！",$_SERVER['PHP_SELF']);
+			return;
+		}
+	}
+	
+	$spamconf->setParam("ProtectDomain_{$domain}_IPPort","{$IP}:{$Port}","MailServer");
+	$spamconf->setParam("ProtectDomain_{$domain}_Cate",$_POST["Cate"],"MailServer");
+	$spamconf->save();
+	if($bModify){
+		if(($ret=wi("ProtectDomain_reset $domain",$result)) == 0){
+			errorReturn("修改成功！",$_SERVER['PHP_SELF']);
+		}else{
+			echo "修改失败，错误代码：$ret";
+		}
+		return;
+	}else{
+		if(($ret=wi("ProtectDomain_add $domain",$result)) == 0){
+			errorReturn("添加成功！",$_SERVER['PHP_SELF']);
+		}else{
+			echo "添加失败，错误代码：$ret";
+		}
+		return;
+	}
+}
+?>
