@@ -1241,6 +1241,7 @@ sub MailQueue_getList
 
 	my $n=0;
 
+	my $q_from;
         foreach my $mail ( @q ){
 		$n++;
 #print "st: $start_num , n: $n, en: $end_num\n";
@@ -1250,9 +1251,13 @@ sub MailQueue_getList
 		$mail->{$_} =~ s/,/£¬/g foreach ( keys %{$mail} );
 
 		$mail->{'file'} =~ m#(\d+/\d+)$#;
+
+		$q_from = $mail->{'from'};
+		$q_from =~ s/<//g;
+		$q_from =~ s/>//g;
 		print $1
 			. ',' . $mail->{'date'}
-			. ',' . $mail->{'from'}
+			. ',' . $q_from
 			. ',' . $mail->{'to'}
 			. ',' . $mail->{'size'}
 			. "\n";
