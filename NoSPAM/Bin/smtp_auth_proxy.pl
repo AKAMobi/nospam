@@ -25,11 +25,11 @@ foreach ( @stop_users ){
 }
 
 my $remote_ip = $ENV{'TCPREMOTEIP'};
-my $REMOTE_SMTP = &get_remote_smtp_ip($user);
+my ($REMOTE_SMTP,$user_raw) = &get_remote_smtp_ip($user);
 
 if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) ){
 #	exit &local_auth( "zixia\@test.com\0zixia\0\0" );
-	zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to local.");
+	&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to local.");
 	exit &local_auth( "$user\0$pass\0$challenge\0" );
 	exit 20;
 }
@@ -37,11 +37,20 @@ if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) ){
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
 if ( ! $smtp->auth('LOGIN', $user, $pass) ){
-	zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
-	exit 20;
+	unless ( length($user_raw) ) {
+		&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
+		exit 20;
+	}
+
+	if ( ! $smtp->auth('LOGIN', $user_raw, $pass) ){
+		&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
+		exit 20;
+	}
+	# we have user_raw succeed now!
+	# it is a authed user.
 }
 
-zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.");
+&zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.");
 exit 0;
 
 #################################################
@@ -61,7 +70,7 @@ sub get_info
         if ( $buf =~ /\0/ ){
                 ($user,$pass,$challenge) = split ( /\0/, $buf );
         }else{
-            	zlog ($logit, "error: $n, $buf");
+            	&zlog ($logit, "error: $n, $buf");
         }
 
         ($user,$pass,$challenge);
@@ -71,16 +80,31 @@ sub get_remote_smtp_ip
 {
         my $user = shift;
 
+	my $user_raw;
         my $user_domain = "";
-        if ( $user =~ /^[^\@]+\@(.+)$/ ){
-                $user_domain = $1;
-        }elsif ( $user =~ /^[^\%]+\%(.+)$/ ){
-                $user_domain = $1;
-        }elsif ( $user =~ /^[^\&]+\&(.+)$/ ){
-                $user_domain = $1;
-        }elsif ( $user =~ /^[^\!]+\!(.+)$/ ){
-                $user_domain = $1;
+        if ( $user =~ /^([^\@]+)\@(.+)$/ ){
+		$user_raw = $1;
+                $user_domain = $2;
+        }elsif ( $user =~ /^([^\%]+)\%(.+)$/ ){
+		$user_raw = $1;
+                $user_domain = $2;
+        }elsif ( $user =~ /^([^\&]+)\&(.+)$/ ){
+		$user_raw = $1;
+                $user_domain = $2;
+        }elsif ( $user =~ /^([^\!]+)\!(.+)$/ ){
+		$user_raw = $1;
+                $user_domain = $2;
         }
+
+	unless ( length($user_domain) ){ # 如果用户输入的是 zixia 而不是 zixia@zixia.net 2004-05-08 by zixia
+		my $default_domain_file = '/var/qmail/control/me';
+		if ( -s $default_domain_file ){
+			open ( FD, "<$default_domain_file" );
+			$user_domain = <FD>;
+			close FD;
+			chomp $user_domain;
+		}
+	}
 
         my $line;
         my @lines;
@@ -107,10 +131,10 @@ sub get_remote_smtp_ip
 				print NSOUT "501 auth exchange cancelled (#5.0.2)\r\n";
 				exit -1;
 			}
-			return $ip;
+			return ($ip,$user_raw);
 		}
 	}
-        return undef;
+        return (undef,$user_raw);
 }
 
 
@@ -120,7 +144,7 @@ sub local_auth
 
 #	my $str = $auth_info;
 #	$str =~ s/\0/\\0/g;
-#	zlog( 1, $str );
+#	&zlog( 1, $str );
 
 	$^F = 3;
 
@@ -134,7 +158,7 @@ sub local_auth
 
 	$SIG{PIPE} = 'IGNORE';
 
-#zlog ($logit, "fileno: [" . fileno(EOUT) . "]" );
+#&zlog ($logit, "fileno: [" . fileno(EOUT) . "]" );
 	unless ( 3==fileno(EOUT) ){
 		print NSOUT "535 Unable to create a right pipe.\r\n";
 		return 150;
@@ -144,7 +168,7 @@ sub local_auth
 	close EIN;
 
 #print NSOUT "exec $ARGV[0]\n";
-#zlog ($logit, "exec: $ARGV[0] $ARGV[1]" );
+#&zlog ($logit, "exec: $ARGV[0] $ARGV[1]" );
 	exec { $ARGV[0] } @ARGV or print NSOUT "535 Unable to exec for auth! $!\r\n";
 
 	return 150;
