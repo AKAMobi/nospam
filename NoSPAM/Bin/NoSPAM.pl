@@ -67,6 +67,11 @@ my $action_map = {
 		, 'Archive_get_exchangedata' => [\&Archive_get_exchangedata, ' : get from archive, print GA format' ]
 		, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
 
+		, 'MailQueue_getList' => [\&MailQueue_getList, ' : list all mail from mail queue' ]
+		, 'MailQueue_delID' => [\&MailQueue_delID, ' <ID1> ... : del from mail queue' ]
+		, 'MailQueue_delAll' => [\&MailQueue_delAll, ' : del all mail from mail queue' ]
+		, 'MailQueue_getMail' => [\&MailQueue_getMail, ' <SID> : get mail content from mail queue' ]
+
 		,'reset_Network' => [\&reset_Network, ""]
 		,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
 		,'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""]
@@ -224,8 +229,9 @@ sub init_IPC
 
 sub usage
 {
-	# 如果加密过的则不显示usage
-	return if ( defined $AKA_noSPAM_release );
+	# 如果加密过的则不显示usage, no strict to prevent fatal error
+no strict;
+return if ( defined $AKA_noSPAM_release );
 
 	print NSOUT <<_USAGE_;
 
@@ -1265,3 +1271,81 @@ sub heartbeat_siwei
 	}
 }
 
+sub MailQueue_getList
+{
+	my ($start_num,$end_num) = @param;
+
+	$start_num ||= 1;
+	$end_num ||= $start_num + 30;
+
+       	use AKA::Mail::Controler;
+        my $AMC = new AKA::Mail::Controler;
+
+        my @q = $AMC->list_queue;
+
+	# first line output queue num
+	my $all_num = @q;
+	print $all_num, "\n";
+
+	return 0 if ( $all_num < $start_num );
+
+	my $n=0;
+
+        foreach my $mail ( @q ){
+		$n++;
+#print "st: $start_num , n: $n, en: $end_num\n";
+		next if ( $start_num > $n );
+		last if ( $end_num < $n );
+
+		$mail->{$_} =~ s/,/，/g foreach ( keys %{$mail} );
+
+		$mail->{'file'} =~ m#(\d+/\d+)$#;
+		print $1
+			. ',' . $mail->{'date'}
+			. ',' . $mail->{'from'}
+			. ',' . $mail->{'to'}
+			. ',' . $mail->{'size'}
+			. "\n";
+        }
+
+	return 0;
+}
+
+sub MailQueue_delID
+{
+       	use AKA::Mail::Controler;
+        my $AMC = new AKA::Mail::Controler;
+
+	$AMC->delete_queues( @param );
+
+	return 0;
+}
+
+sub MailQueue_delAll
+{
+       	use AKA::Mail::Controler;
+        my $AMC = new AKA::Mail::Controler;
+
+        my @q = $AMC->list_queue;
+
+        foreach ( @q ){
+		$_->{'file'} =~ m#(\d+/\d+)$#;
+		$AMC->delete_queues( $1 );
+        }
+
+	return 0;
+}
+
+sub MailQueue_getMail
+{
+	my $sid = shift @param;
+
+       	use AKA::Mail::Controler;
+        my $AMC = new AKA::Mail::Controler;
+
+	my $line_ref = $AMC->get_mail_from_queue($sid);
+
+	print foreach ( @{$line_ref} );
+
+	return 0;
+}
