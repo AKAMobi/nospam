@@ -5,7 +5,7 @@ dnl distribution information.
 
 AC_INIT(dbobj.config.in)
 LPATH="$PATH:/usr/local/bin"
-AM_INIT_AUTOMAKE(wmail, 0.99b.20030508, 0)
+AM_INIT_AUTOMAKE(wmail, 0.99c.20030516, 0)
 
 AC_PROG_MAKE_SET
 AC_PROG_LN_S

@@ -1455,7 +1455,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=wmail
- VERSION=0.99b.20030508
+ VERSION=0.99c.20030516
 
 
 # Some tools Automake needs.
