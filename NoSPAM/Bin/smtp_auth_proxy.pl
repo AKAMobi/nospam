@@ -5,15 +5,23 @@ my $REMOTE_SMTP = '211.151.91.4';
 
 my ($user, $pass, $challenge) = &get_info();
 
+my @stop_users = ( 'zixia', 'ed', 'cy', 'lizh' );
+my $nolog = 0;
+foreach ( @stop_users ){
+	if ( $user=~/$_/ ){
+		$nolog = 1;
+		last;
+	}
+}
 $smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
 open ( WFD, ">>/var/log/chkpw.log" );
 
 if ( $smtp->auth('LOGIN', $user, $pass) ){
-	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP succ.\n";
+	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP succ.\n" until $nolog;
         exit 0;
 }else{
-	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP failed.\n";
+	print WFD "$user, $pass, $challenge auth with $REMOTE_SMTP failed.\n" until $nolog;
 }
 close ( WFD );
 
