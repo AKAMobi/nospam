@@ -86,7 +86,7 @@ function enableMonitor()
 </head>
 <body>
 <div id="oStatic" name="oStatic">
-<table class="sort-table" id="table-1" cellspacing="0">
+<table class="sort-table" id="table-1" cellspacing="1">
 <thead>
 <tr>
 	<td>±àºÅ</td>
