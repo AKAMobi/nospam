@@ -32,13 +32,13 @@ sub configure_hook {
 	$self->{server}->{group}  = 'root'; # group to run as
 #$self->{server}->{setsid} = 0;        # daemonize
 
-	$self->{server}->{min_servers} = 50;
-	$self->{server}->{max_servers} = 100;
+	$self->{server}->{min_servers} = 2;
+	$self->{server}->{max_servers} = 50;
 
-	$self->{server}->{min_spare_servers} = 30;
-	$self->{server}->{max_spare_servers} = 40;
+	$self->{server}->{min_spare_servers} = 2;
+	$self->{server}->{max_spare_servers} = 10;
 
-	$self->{server}->{max_requests} = 1000;
+	$self->{server}->{max_requests} = 10;
 
 	$self->{server}->{log_level} = 4;
 
