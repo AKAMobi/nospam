@@ -88,6 +88,12 @@ sub catch_virus
 		$result = $self->check_file_socket_tcp( $file );
 		$self->{zlog}->debug ( "catch_virus use clamd" );#, result: [$result]" );
 	}else{
+		# XXX pass virus for performance problem
+		return ( {	Result	=> 0,
+			Reason => '病毒引擎重起中',
+			Action =>  0
+			});
+
 		$result = $self->check_file_clamscan( $file );
 		$self->{zlog}->debug ( "catch_virus use clamscan" ); #, result: [$result]" );
 	}
@@ -182,7 +188,9 @@ sub check_file_socket_tcp
 		return '';
 	}
 
-	my $conn = $self->init_socket;
+	close $conn;
+
+	$conn = $self->init_socket;
 	print $conn "SCAN $file\n";
 	$result = <$conn>; 
 	chomp $result;
@@ -269,9 +277,9 @@ sub restart_clamd
 	if ( open ( LOCKFD, '>' . $self->{define}->{status_file} . 'lock' )  ){
 		if ( flock(LOCKFD,LOCK_EX|LOCK_NB) ){
 			system("/etc/init.d/clamd restart > /dev/null 2>&1;");
-			sleep 1;
-			flock (LOCKFD,LOCK_UN);
+			sleep 3;
 			$self->set_clamd_up();
+			flock (LOCKFD,LOCK_UN);
 		}else{
 			$self->{zlog}->debug ( "researt_clamd: this is another process is restarting..." );
 		}
