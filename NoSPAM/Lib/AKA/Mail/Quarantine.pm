@@ -103,11 +103,12 @@ sub make_info_content
 }
 sub get_quarantine_info
 {
+	my $self = shift;
 	my $file = shift;
 
 	my $info = {}; 
 	if ( open (FD,"<$file.info") ){
-		$info->{from} = <FD>; chomp $$info->{from};
+		$info->{from} = <FD>; chomp $info->{from};
 		$info->{to} = <FD>; chomp $info->{to};
 		$info->{subject} = <FD>; chomp $info->{subject};
 		$info->{size} = <FD>; chomp $info->{size};
@@ -116,7 +117,7 @@ sub get_quarantine_info
 		close FD;
 		return $info;
 	}else{
-		$zlog->fatal ( "wi QuarantineProcessMail::_get_quarantine_info can't open file [$file]" );
+		$self->{zlog}->fatal ( "wi QuarantineProcessMail::_get_quarantine_info can't open file [$file]" );
 		return undef;
 	}
 }
