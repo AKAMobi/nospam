@@ -378,6 +378,15 @@ sub reset_Network
 		$zlog->fatal( "NoSPAM Util::reset_Network set network params failure!" );
 		return -1;
 	}
+
+=pod
+	if ( &reset_Network_update_hostname($mode) ||
+			&reset_Network_update_smtproutes($mode) ||
+		$zlog->fatal( "NoSPAM Util::reset_Network update hosts & smtproute file failure!" );
+		return -1;
+	}
+=cut
+
 	return 0;
 }
 

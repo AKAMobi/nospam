@@ -20,7 +20,7 @@ $config = new RuleDB(PoliceDB);
 
 $rule = $config->get_rule_by_id($rule_id);
 if(!$rule) die("´íÎóµÄ¹æÔò±àºÅ");
-$category_id = $rule->get_attribute("category_id")
+$category_id = $rule->get_attribute("category_id");
 $action = $config->get_action_rule($rule->get_attribute("rule_id"));
 $keywords = $rule->get_elements_by_tagname("rule_keyword");
 $sizes = $rule->get_elements_by_tagname("size");
