@@ -672,6 +672,7 @@ function save()
 	$success = $bModify? "修改":"加入";
 	if ($result==OK){
 		echo "管理员 {$_REQUEST['user_id']}已经成功{$success}！<br>";
+		LogAction("管理员管理","{$success}管理员",$_REQUEST['user_id']);
 	}else{
 		echo "{$success}失败";
 	}   	
@@ -695,12 +696,14 @@ function del()
 			foreach($id as $value){
 				deleteAdmin($value);
 			}
+			LogAction("管理员管理","删除管理员账号",implode(",",$id));
 		}
 	}else{
 		if($selfID == $id)
 			errorReturn("错误：您不能删除自己的账号", $_SERVER['PHP_SELF']);
 		if(SYSOPID == $id)
 			errorReturn("错误：您不能删除最高管理员的账号", $_SERVER['PHP_SELF']);
+		LogAction("管理员管理","删除管理员账号",$id);
 		deleteAdmin($id);
 	}
 	header("Location: ".$_SERVER['PHP_SELF']);
