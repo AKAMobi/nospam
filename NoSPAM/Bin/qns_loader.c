@@ -39,7 +39,7 @@ void dump_stdin_to_file()
     &error_condition("$file_id exists, try again later");
   }
   */
-	fd = TEMP_FAILURE_RETRY( open(tmp_emlfile,O_WRONLY|O_CREAT) );
+	fd = TEMP_FAILURE_RETRY( open(tmp_emlfile,O_WRONLY|O_CREAT, S_IRWXU|S_IROTH ) );
 
 	if ( fd<0 ){
 		fprintf ( stderr, "443 qns_loader can't open file\r\n" );

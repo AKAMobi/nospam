@@ -185,6 +185,11 @@ sub grab_envelope_hdrs {
 	  unlink "$scandir/$wmaildir/new/$file_id";
 	  exit;
   }
+  unless ( -s "$scandir/$wmaildir/new/$file_id" ){
+	  &debug("g_e_h: zero size emlfile.");
+	  unlink "$scandir/$wmaildir/new/$file_id";
+	  exit;
+  }
   $mail_info->{aka}->{fd1} = $_;
 }
 
