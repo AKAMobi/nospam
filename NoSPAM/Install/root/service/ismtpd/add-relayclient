@@ -1,0 +1,9 @@
+#!/bin/sh
+test $# = 0 && exit
+cp tcp tcp.new
+chmod 644 tcp.new
+for address in "$@"
+  do
+    echo "$address"':allow,RELAYCLIENT=""'
+  done >> tcp.new
+mv tcp.new tcp
