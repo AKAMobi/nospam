@@ -1,0 +1,543 @@
+<?php
+require_once('../inc/include.ns');
+
+if (!adminPerm(PERM_ADMIN_DOMAIN) ){
+?>
+	<br>
+	您没有访问该网页的权限。<br>
+<?php
+	return false;
+}
+
+$adminInfo = getAdminInfo(getAdminID());
+$domains = trim($adminInfo["domain"]);
+unset($adminInfo);
+if($domains == "")
+	die("你目前没有任何邮件域管理权限");
+
+$aDomains = explode(",", $domains);
+$count = count($aDomains);
+if($count == 1){
+	$currentDomain = $aDomains[0];
+}else{
+	$currentDomain = $_REQUEST["MailDomain"];
+	if(!in_array($currentDomain, $aDomains))
+		$currentDomain = $aDomains[0];
+}
+
+setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
+$_COOKIE["MailDomain"] = $currentDomain;
+
+switch($_GET["action"]){
+	case "add":
+	add();
+	break;
+	case "del":
+	del();
+	break;
+	case "save":
+	save();
+	break;
+	case "modify":
+	modify();
+	break;
+	default:
+	info();
+}
+
+function info(){
+	global $aDomains, $count, $currentDomain;
+	
+	$UserList=getUserList($currentDomain);
+	$user_count = count($UserList);
+
+	$pagenum = $_GET["pagenum"];
+	if(!$pagenum || $pagenum < 1)
+		$pagenum = PAGENUM;
+
+	
+	if($user_count == 0)
+		$pages = 1;
+	else
+		$pages = $user_count%$pagenum? intval($user_count/$pagenum)+1:($user_count/$pagenum);
+
+	$page = $_GET['page'];
+	if(!$page || $page < 1)
+		$page = 1;
+	if($page > $pages)
+		$page = $pages;
+	
+	$start = ($page-1)*$pagenum;
+
+?>
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=gb2312">
+<TITLE>邮件域用户列表</TITLE>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/sortabletable.css">
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+</head>
+<BODY>
+<div>邮件域：
+<?
+	if($count == 1)
+		echo $currentDomain;
+	else{
+?>
+	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?domain='+this.value">
+<?
+		for($i = 0; $i < $count; $i++){
+			echo "<option value=".$aDomains[$i];
+			if($currentDomain == $aDomains[$i] )
+				echo " selected";
+			echo ">".$aDomains[$i];
+		}
+?>
+	</select>
+<?
+	}
+?>
+</div>
+<DIV align="center">
+<form action="?MailDomain=<?=$currentDomain?>&action=del" name="form1" method="post">
+<table class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
+<caption>邮件域用户列表</caption>
+<thead>
+<tr>
+<?
+if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+	<td>选择</td>
+<?
+}
+?>
+	<td>序号</td>
+	<td>账号</td>
+	<td>用户姓名</td>
+	<td>用户单位</td>
+	<td>用户部门</td>
+	<td>用户岗位</td>
+	<td>用户身份号码</td>
+	<td>账号建立时间</td>
+	<td>容量限制</td>
+	<td>对外显示</td>
+	<td>备注</td>
+	<td>用户组</td>
+<?
+if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+	<td>操作</td>
+<?
+}
+?>
+</tr>
+</thead>
+<tbody>
+<?
+$j = 1;
+$end = min($start + $pagenum,$user_count);
+for( $i = $start ; $i < $end ; $i++,$j++,$start++)
+{
+	$className = $j%2? "RuleTB1":"RuleTB2";
+?>
+	<tr class="<?=$className?>">
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+		<td><input type="checkbox" name="id[]" value="<?=$UserList[$i]["id"]?>"></td>
+<?
+	}
+?>
+		<td><?=$start+1?></td>
+		<td><?=$UserList[$i]["id"]?></td>
+		<td><?=$UserList[$i]["name"]?></td>
+		<td><?=$UserList[$i]["unit"]?></td>
+		<td><?=$UserList[$i]["department"]?></td>
+		<td><?=$UserList[$i]["station"]?></td>
+		<td><?=$UserList[$i]["id_code"]?></td>
+		<td><?=$UserList[$i]["create_time"]?></td>
+		<td><?=$UserList[$i]["quota"]?>MB</td>
+		<td><?=$UserList[$i]["is_public"]?></td>
+		<td><?=$UserList[$i]["note"]?></td>
+		<td><?=$UserList[$i]["group"]?></td>
+<?
+	if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+		<td>
+			<input type="button" value="编辑" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=modify&id={$UserList[$i]["id"]}'"?>">
+			<input type="button" value="删除" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=del&id={$UserList[$i]["id"]}'"?>">
+		</td>
+<?
+	}
+?>
+	</tr>
+<?
+}
+?>
+</tbody>
+</table>
+<script>
+function jump()
+{
+	page = document.all.oPage.value;
+	pagenum = document.all.oPagenum.value;
+	location.href="<?=$_SERVER['PHP_SELF']?>?MailDomain=<?=$currentDomain?>&page="+page+"&pagenum="+pagenum;
+}
+</script>
+<table border="0" width="100%"> 
+<tr>
+<td align="center">
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+<input type="button" value="添加" onclick="location.href='<?=$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&action=add"?>'">
+<input type="submit" name="submit" value="批量删除">
+<?}?>
+</td>
+<td align="right">
+<?
+echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page=1&pagenum=$pagenum'>&lt;&lt;</a>&nbsp;";
+if($page == 1)
+	echo "&lt;&nbsp;";
+else
+	echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page=".($page-1)."&pagenum=$pagenum'>&lt;</a>&nbsp;";
+
+for($i = 1; $i <= $pages; $i++){
+	if($i == $page)
+		echo $i."&nbsp;";
+	else
+		echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page=$i&pagenum=$pagenum'>$i</a>&nbsp;";
+}
+
+if($page == $pages)
+	echo "&gt;&nbsp;";
+else
+	echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page=".($page+1)."&pagenum={$pagenum}'>&gt;</a>&nbsp;";
+echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page={$pages}&pagenum={$pagenum}'>&gt;&gt;</a>&nbsp;";
+?>
+跳至第<select name="oPage" id="oPage" onchange="jump()">
+<?
+for($i = 1; $i <= $pages; $i++){
+	if($i == $page)
+		echo "<option value='$i' selected>$i";
+	else
+		echo "<option value='$i'>$i";
+}
+?>
+</select>页，每页<select name="oPagenum" id="oPagenum" onchange="jump()">
+<?
+for($i = 10; $i < 60; $i+=10){
+	if($i == $pagenum)
+		echo "<option value='$i' selected>$i";
+	else
+		echo "<option value='$i'>$i";
+}
+?>
+</select>条记录
+</td>
+</tr>
+</table>
+</form>
+</div>
+<script>
+<?if(adminPerm(PERM_ADMIN_WRITE)){?>
+var st = new SortableTable(document.getElementById("table-1"),
+		["None", "Number", "String", "String", "String", "String", "String", "Number", "Date", "Size", "String", "String", "String", "None"]);
+<?}else{?>
+var st = new SortableTable(document.getElementById("table-1"),
+		["Number", "String", "String", "String", "String", "String", "Number", "Date", "Size", "String", "String", "String"]);
+<?}?>
+function addClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var l = p.length;
+	for (var i = 0; i < l; i++) {
+		if (p[i] == sClassName)
+			return;
+	}
+	p[p.length] = sClassName;
+	el.className = p.join(" ");
+
+}
+function removeClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var np = [];
+	var l = p.length;
+	var j = 0;
+	for (var i = 0; i < l; i++) {
+		if (p[i] != sClassName)
+			np[j++] = p[i];
+	}
+	el.className = np.join(" ");
+}
+st.onsort = function () {
+	var rows = st.tBody.rows;
+	var l = rows.length;
+	for (var i = 0; i < l; i++) {
+		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
+		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+	}
+};
+</script>
+</BODY>
+</HTML>
+<?
+}
+
+function add()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "对不起，你无权进行修改操作";
+		return -1;
+	}
+?>
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=gb2312">
+<TITLE>邮件域用户管理</TITLE>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+<center>
+<form action="?MailDomain=<?=$_REQUEST["MailDomain"]?>&action=save" method="post">
+<table border=0>
+<tr align="center">
+<td colspan="2" class=title><b>添加新用户</b></td>
+</tr>
+<tr>
+	<td>新帐号名：<input type=text name="user_id">
+	</td>
+	<td>请使用小写英文字母及数字起帐号名，必须使用英文字母开头。</td>
+</tr>
+<tr>
+	<td>输入密码：<input type=password name="passwd1"></td>
+	<td>请使用大小写英文字母和数字作为邮件密码。</td>
+</tr>
+<tr>
+	<td>确认密码：<input type=password name="passwd2"></td>
+	<td>请再次输入密码，两次密码必须相同。</td>
+</tr>
+<tr>
+	<td>用户姓名：<input type=text name="user_name"></td>
+	<td>用户的姓名。</td>
+</tr>
+<tr>
+	<td>用户单位：<input type=text name="user_unit"></td>
+	<td>用户所在的单位。</td>
+</tr>
+<tr>
+	<td>用户部门：<input type=text name="user_department"></td>
+	<td>用户所在的部门。</td>
+</tr>
+<tr>
+	<td>用户岗位：<input type=text name="user_station"></td>
+	<td>用户的岗位。</td>
+</tr>
+<tr>
+	<td>用户证件号码：<input type=text name="user_id_code"></td>
+	<td>用户的证件号码。</td>
+</tr>
+<tr>
+	<td>邮箱大小（M）：<input type=text name="user_box_size"></td>
+	<td>用户的邮箱大小。</td>
+</tr>
+<tr>
+	<td><input type=checkbox name="user_is_public">对外显示</td>
+	<td>是否公开对外显示在公共邮件列表中</td>
+</tr>
+<tr>
+	<td>备注：<input type=text name="user_note"></td>
+	<td></td>
+</tr>
+<tr align="center" >
+	<td colspan=2><input type=submit name="adduser" value="  确  认  ">
+		&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type=reset value="  清  除  ">
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+<?
+}
+
+function modify()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "对不起，你无权进行修改操作";
+		return -1;
+	}
+?>
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=gb2312">
+<TITLE>邮件域用户管理</TITLE>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+<center>
+<form action="?MailDomain=<?=$_REQUEST["MailDomain"]?>&action=save" method="post">
+<input type="hidden" name="modify">
+<table border=0>
+<tr align="center">
+<td colspan="2" class=title><b>修改用户信息</b></td>
+</tr>
+<tr>
+	<td>帐号名：<input type=text name="user_id">
+	</td>
+	<td></td>
+</tr>
+<tr>
+	<td>输入密码：<input type=password name="passwd1"></td>
+	<td>请使用大小写英文字母和数字作为邮件密码。</td>
+</tr>
+<tr>
+	<td>确认密码：<input type=password name="passwd2"></td>
+	<td>请再次输入密码，两次密码必须相同。</td>
+</tr>
+<tr>
+	<td>用户姓名：<input type=text name="user_name"></td>
+	<td>用户的姓名。</td>
+</tr>
+<tr>
+	<td>用户单位：<input type=text name="user_unit"></td>
+	<td>用户所在的单位。</td>
+</tr>
+<tr>
+	<td>用户部门：<input type=text name="user_department"></td>
+	<td>用户所在的部门。</td>
+</tr>
+<tr>
+	<td>用户岗位：<input type=text name="user_station"></td>
+	<td>用户的岗位。</td>
+</tr>
+<tr>
+	<td>用户证件号码：<input type=text name="user_id_code"></td>
+	<td>用户的证件号码。</td>
+</tr>
+<tr>
+	<td>邮箱大小（M）：<input type=text name="user_box_size"></td>
+	<td>用户的邮箱大小。</td>
+</tr>
+<tr>
+	<td><input type=checkbox name="user_is_public">对外显示</td>
+	<td>是否公开对外显示在公共邮件列表中</td>
+</tr>
+<tr>
+	<td>备注：<input type=text name="user_note"></td>
+	<td></td>
+</tr>
+<tr align="center" >
+	<td colspan=2><input type=submit value="  确  认  ">
+		&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type=reset value="  清  除  ">
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+<?
+}
+
+function save()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "对不起，你无权进行修改操作";
+		return -1;
+	}
+	header("Location: ".$_SERVER['PHP_SELF']);
+}
+
+function del()
+{
+	if(!adminPerm(PERM_ADMIN_WRITE)){
+		echo "对不起，你无权进行修改操作";
+		return -1;
+	}
+	header("Location: ".$_SERVER['PHP_SELF']);
+}
+
+function getUserList($domain)
+{
+	$passwd = VPOPMAILHOME . 'domains/' . $domain . '/vpasswd';
+	$profile = VPOPMAILHOME . 'domains/' . $domain . '/' . USERPROFILE;
+	
+	if(!file_exists($profile)){
+		$fp = fopen($profile,'w');
+		fclose($fp);
+		return array();
+	}
+
+	$h_user_profile = fopen ($profile,"r");
+	$userinfo_list=array();
+
+   	while (!feof($h_user_profile)){
+	    $userinfo = fgets($h_user_profile,1024); 
+	    list ($id, $unit, $department, $station, $id_code, $create_time, $is_public, $note, $group) = explode( ':', $userinfo);
+		$isPublic=$is_public?'Y':'N';
+
+	    array_push($userinfo_list,array("id" => $id,
+	    								"unit" => $unit,
+	    								"department" => $department,
+	    								"station" => $station,
+	    								"id_code" => $id_code,
+	    								"create_time" => $create_time,
+										"is_public" => $isPublic,
+										"note" => $note,
+										"group"=> str_replace(',', '，', $group))
+	    );
+	}
+	fclose($h_user_profile);
+	
+	if(file_exists($passwd))
+		$user_list = file( $passwd );
+	else
+		$user_list = array();
+	
+	$mail_count=count($user_list);
+	$user_count=count($userinfo_list);
+	$ret = array();
+
+	for( $i = 0 ; $i < $mail_count ; $i++)
+	{
+		list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
+		if (strpos($user_quota,'M')===false){
+			$user_quota_num=intval($user_quota/(1024*1024));
+		} else {
+		 	$user_quota_num=substr($user_quota,0,strpos($user_quota,'M'));
+		}
+		list($unit, $department, $station, $id_code, $create_time,$is_public,$note,$group)=array("","","","","","N","","");
+		for ($t=0; $t<$user_count; $t++){
+			if (!strcmp($user_account, $userinfo_list[$t]['id'])) {
+				break;
+			}
+		}
+		if ($t<count($userinfo_list)){
+			$unit=rtrim($userinfo_list[$t]['unit']);
+			$department=rtrim($userinfo_list[$t]['department']);
+			$station=rtrim($userinfo_list[$t]['station']);
+			$id_code=rtrim($userinfo_list[$t]['id_code']);
+			$create_time=rtrim($userinfo_list[$t]['create_time']);
+			$is_public=rtrim($userinfo_list[$t]['is_public']);
+			$note=rtrim($userinfo_list[$t]['note']);
+			$group=rtrim($userinfo_list[$t]['group']);
+		}
+		array_push($ret, array(
+						"id"			=>	$user_account,
+						"name"			=>	$user_name,
+						"unit"			=>	$unit,
+						"department"	=>	$department,
+						"station"		=>	$station,
+						"id_code"		=>	$id_code,
+						"create_time"	=>	$create_time,
+						"quota"			=>	$user_quota_num,
+						"is_public"		=>	$is_public,
+						"note"			=>	$note,
+						"group"			=>	$group
+							) );
+	}
+	return $ret;
+}
+?>
