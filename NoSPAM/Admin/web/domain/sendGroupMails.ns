@@ -1,5 +1,36 @@
 <?php
 require_once("../inc/vpopadm.inc.ns");
+
+if (!adminPerm(PERM_ADMIN_DOMAIN) ){
+?>
+<br>
+您没有访问该网页的权限。<br>
+<?php
+} else {
+
+$adminInfo = getAdminInfo(getAdminID());
+$domains = trim($adminInfo["domain"]);
+unset($adminInfo);
+if($domains == "")
+	die("你目前没有任何邮件域管理权限");
+
+$aDomains = explode(",", $domains);
+$count = count($aDomains);
+if($count == 1){
+	$currentDomain = $aDomains[0];
+}else{
+	if (isset($_GET["MailDomain"]))
+		$currentDomain = $_GET["MailDomain"];
+	else
+		$currentDomain = $_COOKIE["MailDomain"];
+
+	if(!in_array($currentDomain, $aDomains))
+		$currentDomain = $aDomains[0];
+}
+
+setcookie("MailDomain",$currentDomain);
+//setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
+$_COOKIE["MailDomain"] = $currentDomain;
 ?>
 <HTML>
 <HEAD>
@@ -8,16 +39,30 @@ require_once("../inc/vpopadm.inc.ns");
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<div>邮件域：
+<?
+	if($count == 1)
+		echo $currentDomain;
+	else{
+?>
+	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?MailDomain='+this.value">
+<?
+		for($i = 0; $i < $count; $i++){
+			echo "<option value=\"".$aDomains[$i]."\"";
+			if($currentDomain == $aDomains[$i] )
+				echo " selected";
+			echo ">".$aDomains[$i];
+		}
+?>
+	</select>
+<?
+	}
+?>
+</div>
 <DIV align="center">
 <h2>群发信件</h2>
 <?php
 
-if (!adminPerm(PERM_ADMIN_DOMAIN) ){
-?>
-<br>
-您没有访问该网页的权限。<br>
-<?php
-} else {
 if ($_POST['action']=='send') {
 	sendGroup($_POST['groups'],$_POST['sendAll']=='true', $_POST['mailbox'], $_POST['title'],$_POST['content']);
 } else {
@@ -78,17 +123,18 @@ function get_mimetype($name)
 }
 
 function sendGroup($sendGroups, $isSendAll, $mailbox,$title, $content) {
-	$passwd_file = VPOPMAILHOME . 'domains/' . DOMAIN . '/vpasswd';
+	global $currentDomain;
+	$passwd_file = VPOPMAILHOME . 'domains/' . $currentDomain . '/vpasswd';
 
-	$user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
+	$user_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . USERPROFILE;
 
+	if (!file_exists($user_profile)){
+		$fp = fopen($user_profile);
+		fclose($fp);
+	}
+	
     $h_user_profile = fopen ($user_profile,"a+");
    
-    if ($h_user_profile == NULL ){
-        echo "错误：用户数据文件无法打开。<br>";
-		exit(-1);
-    }
-
 	if (!$isSendAll){
    
 		flock($h_user_profile, LOCK_SH);
@@ -125,7 +171,7 @@ require 'Mail.ns';
 require 'Mail/mime.ns';
 
 $headers['From'] = $mailbox;
-$headers['To'] = 'alluser@'.DOMAIN;
+$headers['To'] = 'alluser@'.$currentDomain;
 $headers['Subject'] = $title;
 
 $mime = new Mail_mime;
@@ -170,7 +216,7 @@ fwrite($fp2, $body);
 
 fclose($fp2);
 
-$mail_name=time().".12345.".DOMAIN;
+$mail_name=time().".12345.".$currentDomain;
 $iscopy=true;
 $linkpath='';
 	for( $i = 0 ; $i < $mail_count ; $i++)	{
@@ -216,14 +262,15 @@ $linkpath='';
 }
 
 function showMenu(){
-	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
+	global $currentDomain;
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
    
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
-    if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
-		exit(-1);
-    }
+	if (!file_exists($user_profile)){
+		$fp = fopen($user_profile);
+		fclose($fp);
+	}
    
     flock($h_groupdefine_profile, LOCK_SH);
     

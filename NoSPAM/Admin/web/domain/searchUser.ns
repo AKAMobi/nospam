@@ -8,6 +8,30 @@ require_once('../inc/vpopadm.inc.ns');
 <?php
 		return false;
 	}
+
+$adminInfo = getAdminInfo(getAdminID());
+$domains = trim($adminInfo["domain"]);
+unset($adminInfo);
+if($domains == "")
+	die("你目前没有任何邮件域管理权限");
+
+$aDomains = explode(",", $domains);
+$count = count($aDomains);
+if($count == 1){
+	$currentDomain = $aDomains[0];
+}else{
+	if (isset($_GET["MailDomain"]))
+		$currentDomain = $_GET["MailDomain"];
+	else
+		$currentDomain = $_COOKIE["MailDomain"];
+
+	if(!in_array($currentDomain, $aDomains))
+		$currentDomain = $aDomains[0];
+}
+
+setcookie("MailDomain",$currentDomain);
+//setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
+$_COOKIE["MailDomain"] = $currentDomain;
 ?>
 <HTML>
 <HEAD>
@@ -16,8 +40,29 @@ require_once('../inc/vpopadm.inc.ns');
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<div>邮件域：
+<?
+	if($count == 1)
+		echo $currentDomain;
+	else{
+?>
+	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?MailDomain='+this.value">
+<?
+		for($i = 0; $i < $count; $i++){
+			echo "<option value=\"".$aDomains[$i]."\"";
+			if($currentDomain == $aDomains[$i] )
+				echo " selected";
+			echo ">".$aDomains[$i];
+		}
+?>
+	</select>
+<?
+	}
+?>
+</div>
 <DIV align="center">
-<FORM action="userInfo.ns" method="put">
+<FORM action="showuserlist.ns" method="GET">
+<input type="hidden" name="action" value="modify">
 <table>
 <tbody>
 <tr>

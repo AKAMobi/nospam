@@ -20,12 +20,17 @@ $count = count($aDomains);
 if($count == 1){
 	$currentDomain = $aDomains[0];
 }else{
-	$currentDomain = $_REQUEST["MailDomain"];
+	if (isset($_GET["MailDomain"]))
+		$currentDomain = $_GET["MailDomain"];
+	else
+		$currentDomain = $_COOKIE["MailDomain"];
+
 	if(!in_array($currentDomain, $aDomains))
 		$currentDomain = $aDomains[0];
 }
 
-setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
+setcookie("MailDomain",$currentDomain);
+//setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
 $_COOKIE["MailDomain"] = $currentDomain;
 
 switch($_GET["action"]){
@@ -86,10 +91,10 @@ function info()
 		echo $currentDomain;
 	else{
 ?>
-	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?domain='+this.value">
+	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?MailDomain='+this.value">
 <?
 		for($i = 0; $i < $count; $i++){
-			echo "<option value=".$aDomains[$i];
+			echo "<option value=\"".$aDomains[$i]."\"";
 			if($currentDomain == $aDomains[$i] )
 				echo " selected";
 			echo ">".$aDomains[$i];
@@ -369,6 +374,18 @@ function modify()
 		echo "对不起，你无权进行修改操作";
 		return -1;
 	}
+	
+	global $currentDomain;
+	
+	$user_id = $_REQUEST['id'];
+	$userinfo_list = getUserList($currentDomain,true);
+	if (!array_key_exists($user_id,$userinfo_list)){
+		echo "用户账号不存在";
+		return -1;
+	}
+	
+	$userinfo = $userinfo_list[$user_id];
+	unset($userinfo_list);
 ?>
 <HTML>
 <HEAD>
@@ -383,53 +400,59 @@ function modify()
 <table>
 <tbody>
 <tr>
-<td>账号</td>
-<INPUT type="hidden" name="id" value="<? echo $user_account; ?>">
-<td><? echo $user_account; ?></td>
+<td>账号<INPUT type="hidden" name="user_id" value="<? echo $user_id; ?>"></td>
+<td><? echo $user_id; ?></td>
+</tr>
+<tr>
+	<td>输入密码：</td>
+	<td><input type=password name="passwd1">若不修改请留空，请使用大小写英文字母和数字作为邮件密码。</td>
+</tr>
+<tr>
+	<td>确认密码：</td>
+	<td><input type=password name="passwd2">若不修改请留空，请再次输入密码，两次密码必须相同。</td>
 </tr>
 <tr>
 <td>姓名</td>
-<td><input type="text" name="user_name" value="<? echo $user_name; ?>"></td>
+<td><input type="text" name="user_name" value="<? echo $userinfo['name']; ?>"></td>
 </tr>
 <tr>
 <td>单位</td>
-<td><input type="text" name="user_unit" value="<? echo $unit; ?>"></td>
+<td><input type="text" name="user_unit" value="<? echo $userinfo['unit']; ?>"></td>
 </tr>
 <tr>
 <td>部门</td>
-<td><input type="text" name="user_department" value="<? echo $department; ?>"></td>
+<td><input type="text" name="user_department" value="<? echo $userinfo['department']; ?>"></td>
 </tr>
 <tr>
 <td>岗位</td>
-<td><input type="text" name="user_station" value="<? echo $station; ?>"></td>
+<td><input type="text" name="user_station" value="<? echo $userinfo['station']; ?>"></td>
 </tr>
 <tr>
 <td>证件号码</td>
-<td><input type="text" name="user_id_code" value="<? echo $id_code; ?>"></td>
+<td><input type="text" name="user_id_code" value="<? echo $userinfo['id_code']; ?>"></td>
 </tr>
 <tr>
 <td>账号建立时间</td>
-<td><? echo $create_time; ?></td>
+<td><? echo $userinfo['create_time']; ?></td>
 </tr>
 <tr>
 <td>邮箱容量</td>
-<td><input type="text" name="user_box_size" value="<? echo $user_quota_num; ?> ">MB</td>
+<td><input type="text" name="user_box_size" value="<? echo $userinfo['quota']; ?>">MB</td>
 </tr>
 <tr>
-	<td colspan=2><input type=checkbox name="user_is_public" <? echo ($is_public?'checked':''); ?>>对外显示</td>
+	<td colspan=2><input type=checkbox name="user_is_public" <? if ($userinfo['is_public']=='Y') echo "checked";?>>对外显示</td>
 </tr>
 <tr>
 <td>用户所属组</td>
 <td><select id="oGroupList" size=5 multiple><? 
-	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
-   
-    $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
-   
-    if ($h_groupdefine_profile == NULL ){
-        echo "错误：用户组数据文件无法打开。<br>";
-		exit(-1);
-    }
-   
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
+	if (!file_exists($groupdefine_profile)){
+		$fp = fopen($groupdefine_profile,"w");
+		fclose($fp);
+	}
+    
+	$h_groupdefine_profile = fopen ($groupdefine_profile,"r");
+      
     flock($h_groupdefine_profile, LOCK_SH);
     
 
@@ -449,7 +472,7 @@ function modify()
    	
    	fclose($h_groupdefine_profile);
 
-	$groups=explode(',',$group);
+	$groups=explode(',',$userinfo['group']);
 
 	for ($i=0;$i<$group_count;$i++){
 ?>
@@ -461,7 +484,7 @@ function modify()
 </tr>
 <tr>
 	<td>备注</td>
-	<td><input type=text name="user_note" value="<? echo $note ?>"></td>
+	<td><input type=text name="user_note" value="<? echo $userinfo['note'] ?>"></td>
 </tr>
 </tbody>
 </table>
@@ -491,12 +514,12 @@ function doModify(){
 
 function save()
 {
-	global $currentDomain;
-	
 	if(!adminPerm(PERM_ADMIN_WRITE)){
 		echo "对不起，你无权进行修改操作";
 		return -1;
 	}
+	
+	global $currentDomain,$spamconf;
 	
 	$bModify = isset($_POST['modify']);
 //判断用户信息填写是否完整：
@@ -574,6 +597,7 @@ function save()
 	$user_note = $_REQUEST['user_note'];		//用户证件号码
 	$user_is_public = isset($_REQUEST['user_is_public']);
 	$user_box_size = 1024 * 1024 * (intval($_REQUEST['user_box_size']) );
+
 	if($bModify){
 		$user_group = $_POST['groups'];
 	}
@@ -598,7 +622,7 @@ function save()
         echo "错误：用户ID中含有非法字符<br>";
         return false;
     }
-    if (!eregi( "^[0-9a-z]+$", $passwd1 )) {
+    if (!$bModify && !eregi( "^[0-9a-z]+$", $passwd1 )) {
     	echo  "错误：密码中含有非法字符<br>";
     	return false;
     }
@@ -644,11 +668,37 @@ function save()
     		return -1;
     	}
     }else{
+    	$MaxUserCount = intval($spamconf->getParam("VirtualDomain_{$currentDomain}_MaxUser","MailServer"));
+	    if ($MaxUserCount > 0){
+    		if (count($user_list) == $MaxUserCount){
+    			echo "用户数量已达上限";
+    			return -1;
+    		}
+		}
+		
     	if (array_key_exists($user_id, $user_list)){
     		echo "相同的帐号已存在";
     		return -1;
     	}
     }
+
+    $MaxQuota = intval($spamconf->getParam("VirtualDomain_{$currentDomain}_Quota","MailServer"));
+    if ($MaxQuota > 0){
+    	if ($user_box_size == 0){
+    		echo "必须设置用户限额";
+    		return -1;
+    	}
+    	$TotalQuota = 0;
+    	if (count($user_list) > 0){
+    		foreach ($user_list as $userinfo){
+    			$TotalQuota += $userinfo['quota']*1024*1024;
+    		}
+    	}
+    	if (($TotalQuota+$user_box_size) > intval($spamconf->getParam("VirtualDomain_{$currentDomain}_Quota","MailServer"))){
+    		echo "总用户空间限额超过上限";
+    		return -1;
+    	}
+	}
 
     if ($bModify)
     	$create_time = $user_list[$user_id]["create_time"];
@@ -659,7 +709,7 @@ function save()
 					"department"	=>	$user_department,
 					"station"		=>	$user_station,
 					"id_code"		=>	$user_id_code,
-					"create_time"	=>	$bModify? $create_time:("Y-m-d"),
+					"create_time"	=>	$bModify? $create_time:date("Y-m-d"),
 					"quota"			=>	$user_quota_num,
 					"is_public"		=>	$user_is_public,
 					"note"			=>	$user_note,
@@ -689,7 +739,91 @@ function del()
 		echo "对不起，你无权进行修改操作";
 		return -1;
 	}
-	header("Location: ".$_SERVER['PHP_SELF']);
+
+	if (!isset($_REQUEST['id'])){
+?>
+	错误:未指定用户账号！
+<?
+		return false;
+	} 
+	
+	global $currentDomain;
+	
+	if (is_array($_REQUEST["id"])){
+		$id = $_REQUEST["id"];
+	}else{
+		$id[0] = $_REQUEST["id"];
+	}
+
+	if (($key = array_search("postmaster", $id)) !== false){
+		unset($id[$key]);
+	}
+	
+	$passwd_file = VPOPMAILHOME . 'domains/' . $currentDomain . '/vpasswd';
+
+	$user_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . USERPROFILE;
+	
+	if (!file_exists($user_profile)){
+		$fp = fopen($user_profile,"w");
+		fclose($fp);
+	}
+
+    $h_user_profile = fopen ($user_profile,"a+");
+      
+    flock($h_user_profile, LOCK_EX);
+    
+    fseek($h_user_profile,0, SEEK_SET);
+
+	$userinfo_list=array();
+
+   	while (!feof($h_user_profile)){
+	    $userinfo = fgets($h_user_profile,1024); 
+		list ($sid, $unit, $department, $station, $id_code, $create_time, $is_public, $note) = explode( ':', $userinfo);
+		$userinfo_list[rtrim($sid)] = array("unit" => rtrim($unit),
+	    								"department" => rtrim($department),
+	    								"station" => rtrim($station),
+	    								"id_code" => rtrim($id_code),
+	    								"create_time" => rtrim($create_time),
+										"is_public" => rtrim($is_public),
+										"note" => rtrim($note));
+	}
+
+	$user_list = file( $passwd_file );
+ 	
+    $mail_count=count($user_list);
+	list($unit, $department, $station, $id_code, $create_time,$is_public,$note)=array("","","","","","","");
+	for( $i = 0 ; $i < $mail_count ; $i++)
+	{
+		list( $user_account, $xxx, $xxx, $xxx, $user_name, $xxx, $user_quota )  = explode( ':', $user_list[$i] );
+		$user_quota_num=$user_quota/1000000+0.5;
+		if (($key = array_search($user_account, $id)) !== false){
+			unset($id[$key]);
+			unset($userinfo_list[$user_account]);
+			system( VPOPMAILHOME . "bin/vdeluser " . $user_account . '@' . $currentDomain . ' > /dev/null' , $del_result );
+		}
+	}
+
+	ftruncate($h_user_profile,0);
+	foreach ($userinfo_list as $user_id=>$userinfo){
+		if (($key = array_search($user_id, $id)) !== false){
+			unset($id[$key]);
+			continue;
+		}
+		$str = $user_id.":";
+		$str .= implode(":",$userinfo);
+		$str .= "\n";
+		fputs($h_user_profile,$str);
+	}
+   	flock($h_user_profile, LOCK_UN);
+   	
+   	fclose($h_user_profile);
+	if (empty($id)){
+		header("Location: ".$_SERVER['PHP_SELF']);
+	} else {
+?>
+	错误：未找到账号为<?=implode(",",$id)?>的用户信息<br>
+<?
+	}
 }
 
 function getUserList($domain, $bAssoc)

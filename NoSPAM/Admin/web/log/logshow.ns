@@ -107,6 +107,9 @@ function enableMonitor()
 	<td><?=$head[11]?></td>
 	<td><?=$head[12]?></td>
 	<td><?=$head[13]?></td>
+	<td><?=$head[14]?></td>
+	<td><?=$head[15]?></td>
+	<td><?=$head[16]?></td>
 </tr>
 </thead>
 <tbody>
@@ -129,10 +132,13 @@ if(count($lines)>0){
     <td><?=$values[7]?></td>
     <td><?=$rAction[intval($values[8])]?></td>
     <td><?=$values[9]?></td>
-    <td><?=$Actions[intval($values[10])]?></td>
-    <td><?=$values[11]?></td>
-    <td><?=$dynamic[intval($values[12])]?></td>
-    <td><?=$values[13]?></td>
+    <td><?=$values[10]?></td>
+    <td><?=$Actions[intval($values[11])]?></td>
+    <td><?=$values[12]?></td>
+    <td><?=$Actions[intval($values[13])]?></td>
+    <td><?=$values[14]?></td>
+    <td><?=$dynamic[intval($values[15])]?></td>
+    <td><?=$values[16]?></td>
 </tr>
 <?
 		$start++;$i++;
@@ -143,7 +149,7 @@ if(count($lines)>0){
 </table>
 <script>
 var st = new SortableTable(document.getElementById("table-1"),
-		["Number","Date", "String", "IP", "Email", "Email", "String", "String", "String", "String", "String", "String", "String", "String", "String"]);
+		["Number","Date", "String", "IP", "Email", "Email", "String", "String", "String", "String", "Number", "String", "String", "String", "String", "String", "String", "String"]);
 function addClassName(el, sClassName) {
 	var s = el.className;
 	var p = s.split(" ");

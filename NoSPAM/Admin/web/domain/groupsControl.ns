@@ -1,5 +1,34 @@
 <?php
 require_once("../inc/vpopadm.inc.ns");
+if (!adminPerm(PERM_ADMIN_DOMAIN) ){
+?>
+<br>
+您没有访问该网页的权限。<br>
+<?php
+} else {
+$adminInfo = getAdminInfo(getAdminID());
+$domains = trim($adminInfo["domain"]);
+unset($adminInfo);
+if($domains == "")
+	die("你目前没有任何邮件域管理权限");
+
+$aDomains = explode(",", $domains);
+$count = count($aDomains);
+if($count == 1){
+	$currentDomain = $aDomains[0];
+}else{
+	if (isset($_GET["MailDomain"]))
+		$currentDomain = $_GET["MailDomain"];
+	else
+		$currentDomain = $_COOKIE["MailDomain"];
+
+	if(!in_array($currentDomain, $aDomains))
+		$currentDomain = $aDomains[0];
+}
+
+setcookie("MailDomain",$currentDomain);
+//setcookie("MailDomain",$currentDomain, time()+60*60*24*30, "/domain/", $_SERVER['SERVER_NAME']);
+$_COOKIE["MailDomain"] = $currentDomain;
 ?>
 <HTML>
 <HEAD>
@@ -8,16 +37,30 @@ require_once("../inc/vpopadm.inc.ns");
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
+<div>邮件域：
+<?
+	if($count == 1)
+		echo $currentDomain;
+	else{
+?>
+	<select onchange="location.href='<?=$_SERVER['PHP_SELF']?>?MailDomain='+this.value">
+<?
+		for($i = 0; $i < $count; $i++){
+			echo "<option value=\"".$aDomains[$i]."\"";
+			if($currentDomain == $aDomains[$i] )
+				echo " selected";
+			echo ">".$aDomains[$i];
+		}
+?>
+	</select>
+<?
+	}
+?>
+</div>
 <DIV align="center">
 <h2>用户组管理</h2>
 <?php
 
-if (!adminPerm(PERM_ADMIN_DOMAIN) ){
-?>
-<br>
-您没有访问该网页的权限。<br>
-<?php
-} else {
 if ($_POST['action']=='delete') {
 	deleteGroup($_POST['group']);
 } else if ($_POST['action']=='add') {
@@ -37,10 +80,15 @@ showGroups();
 <?php
 
 function modifyGroup($oldgroupname,$newgroupname){
+	global $currentDomain;
 	if (trim($newgroupname)=='') {
 		return true;
 	}
-		$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
+
+	if ( ! file_exists($groupdefine_profile) ){
+	fclose ( fopen ( $groupdefine_profile, "w" ) );
+    }
    
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
@@ -99,8 +147,12 @@ function modifyGroup($oldgroupname,$newgroupname){
 }
 
 function deleteGroup($oldgroupname){
-		$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
-   
+	global $currentDomain;
+		$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
+       if ( ! file_exists($groupdefine_profile) ){
+	fclose ( fopen ( $groupdefine_profile, "w" ) );
+    }
+
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
@@ -148,11 +200,15 @@ function deleteGroup($oldgroupname){
 }
 
 function addGroup($newgroupname){
+	global $currentDomain;
 	if (trim($newgroupname)=='') {
 		return true;
 	}
-	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
    
+    if ( ! file_exists($groupdefine_profile) ){
+	fclose ( fopen ( $groupdefine_profile, "w" ) );
+    }
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
@@ -205,7 +261,8 @@ function addGroup($newgroupname){
 }
 
 function showGroups(){
-	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
+	global $currentDomain;
+	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
    
     if ( ! file_exists($groupdefine_profile) ){
 	fclose ( fopen ( $groupdefine_profile, "w" ) );
