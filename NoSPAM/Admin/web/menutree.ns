@@ -32,12 +32,12 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
 	a.add(new WebFXTreeItem('系统重启关机','system/reboot.ns','main'));
 
-	var b = new WebFXTreeItem('管理员管理','help/user.htm','main');
+	var b = new WebFXTreeItem('管理员','help/user.htm','main');
 	tree.add(b);
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	b.add(new WebFXTreeItem('管理员列表管理','user/showadminlist.ns','main'));
+	b.add(new WebFXTreeItem('管理员列表','user/showadminlist.ns','main'));
 	b.add(new WebFXTreeItem('登录限制设置','user/loginblacklist.ns','main'));
 <?
 }
@@ -45,6 +45,20 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	b.add(new WebFXTreeItem('修改自己的密码','user/changePasswd.ns','main'));
 	b.add(new WebFXTreeItem('修改IP限制列表','user/changeIPlist.ns','main'));
 <?
+}
+?>
+
+<?
+
+if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
+	if(adminPerm(PERM_ADMIN_GATEWAY)){
+?>
+	var l = new WebFXTreeItem('透明网关模式');
+	tree.add(l);
+	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
+<?php
+	}
 }
 ?>
 
@@ -61,18 +75,8 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 }
 ?>
 
-<?
 
-if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
-	if(adminPerm(PERM_ADMIN_GATEWAY)){
-?>
-	var l = new WebFXTreeItem('透明网关模式');
-	tree.add(l);
-	l.add(new WebFXTreeItem('邮件域保护设定','gateway/protectdomain.ns','main'));
-	l.add(new WebFXTreeItem('邮件队列监管','gateway/mailqueue.ns','main'));
-<?php
-	}
-}
+<?
 
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){

@@ -72,10 +72,11 @@ arsort($TopRule,SORT_NUMERIC);
 <p>由<?=$sTime?>至<?=$eTime?>的日志统计结果：</p>
 <p>
 总邮件数：<?=$Total?>封<br>
+正常邮件数：<?=$Total-$Virus-$Maybe-$SPAM?>封<p>
+
 病毒邮件数：<?=$Virus?>封<br>
 疑似垃圾邮件数：<?=$Maybe?>封<br>
 垃圾邮件数：<?=$SPAM?>封
-正常邮件数：<?=$Total-$Virus-$Maybe-$SPAM?>封
 </p>
 <p>
 发件人地址的发邮件数Top10：
