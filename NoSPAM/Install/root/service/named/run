@@ -1,3 +1,4 @@
 #!/bin/sh
 
-exec /usr/sbin/named -u named -f
+exec 2>&1 \
+sh -c ' exec /usr/sbin/named -u named -f'
