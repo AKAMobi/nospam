@@ -51,9 +51,7 @@ sub init_socket
 #print "\n";
 
 	if ( !defined $self->{clamd} || ! $self->{clamd}->connected ){
-		$self->set_clamd_down();
 		$self->restart_clamd();
-		$self->set_clamd_up();
 		if ( $rescue ){
 			$self->{zlog}->fatal( "init_socket still can't connect after a restart of clamd" );
 			return undef;
@@ -128,7 +126,7 @@ sub check_file_clamscan
 	# get rid of double //
 	$file =~ s#//#/#g;
 
-	if ( ! open ( FD, "/usr/bin/clamscan --disable-summary --stdout $file|" ) ) {
+	if ( ! open ( FD, "/usr/bin/clamscan -m --infected --disable-summary --stdout $file|" ) ) {
 		$self->{zlog}->fatal ( "check_file_clamscan open failure with file [$file]" );
 		return '';
 	}
@@ -169,9 +167,7 @@ sub check_file_socket_tcp
 	if ($alarm_status and $alarm_status ne "" ) { 
 		$self->{zlog}->debug ( "PING timeout" );
 		#if ($alarm_status eq "CLAMAV DIE") {
-		$self->set_clamd_down();
 		$self->restart_clamd();
-		$self->set_clamd_up();
 		if ( $rescue ){
 			$self->{zlog}->fatal ( "check_file_socket_tcp still can't PING after a restart." );
 			return '';
@@ -252,8 +248,10 @@ sub is_clamd_up
 	# 	or long time down.
 	# maybe system initial, long time die as need a restart
 
+	my $time = time;
+	utime $time, $time, $self->{define}->{status_file} . 'ERR'  ;
+
 	$self->restart_clamd;
-	$self->set_clamd_up;
 	return 1;
 }
 
@@ -261,7 +259,23 @@ sub restart_clamd
 {
 	my $self = shift;
 	$self->{zlog}->debug ( "researt_clamd" );
-	return system("killall -9 clamd > /dev/null 2>&1 ; /usr/sbin/clamd >/dev/null 2>&1; sleep 1;");
+
+	#return system("killall -9 clamd > /dev/null 2>&1 ; /usr/sbin/clamd >/dev/null 2>&1; sleep 1;");
+
+	use Fcntl ':flock'; # import LOCK_* constants
+
+	if ( open ( LOCKFD, '>' . $self->{define}->{status_file} . 'lock' )  ){
+		if ( flock(LOCKFD,LOCK_EX|LOCK_NB) ){
+			$self->set_clamd_down();
+			system("/etc/init.d/clamd restart > /dev/null 2>&1; sleep 1;");
+			$self->set_clamd_up();
+			flock (LOCKFD,LOCK_UN);
+		}else{
+			$self->{zlog}->debug ( "researt_clamd: this is another process is restarting..." );
+		}
+		close ( LOCKFD );
+	}
+
 }
 
 1;
