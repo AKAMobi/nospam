@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <time.h>
 
 #define QNS_BINARY "/var/qmail/bin/ns-queue"
 //#define QINS_BINARY "/var/qmail/bin/ins-queue"
@@ -17,12 +22,12 @@ void dump_stdin_to_file()
 {
 	int len;
 	unsigned char buffer[BUF_LEN];
-	FILE *fp;
+	int fd;
 
 	char tmp_emlfile[128];
 	char new_emlfile[128];
 	char file_id[128];
-	snprintf ( file_id, 128, "%s.%d.%d", EML_PREFIX, time(0), getpid() );
+	snprintf ( file_id, 128, "%s.%d.%d", EML_PREFIX, (int)time(0), getpid() );
 	snprintf ( tmp_emlfile, 128, "%s/tmp/%s", EML_DIR, file_id );
 	snprintf ( new_emlfile, 128, "%s/new/%s", EML_DIR, file_id );
 
@@ -34,32 +39,35 @@ void dump_stdin_to_file()
     &error_condition("$file_id exists, try again later");
   }
   */
-	fp = fopen ( tmp_emlfile, "w" );
-	if ( NULL==fp ){
+	fd = TEMP_FAILURE_RETRY( open(tmp_emlfile,O_WRONLY|O_CREAT) );
+
+	if ( fd<0 ){
 		fprintf ( stderr, "443 qns_loader can't open file\r\n" );
 		exit (150);
 	}
 
-	while (len = fread (buffer, 1, BUF_LEN, stdin))
-		fwrite (buffer, 1, len, fp);
+	while( (len = (TEMP_FAILURE_RETRY( read(0,buffer,BUF_LEN))) ) ){
+		if( len < 0 ){
+			fprintf ( stderr, "443 qns_loader can't read file\r\n" );
+			exit (150);
+		}
+		len = TEMP_FAILURE_RETRY ( write ( fd, buffer, len) );
+		if( len < 0 ){
+			fprintf ( stderr, "443 qns_loader can't write file\r\n" );
+			exit (150);
+		}
+	}
 
-	fclose ( fp );
+	TEMP_FAILURE_RETRY( close ( fd ) );
 
-	rename ( tmp_emlfile, new_emlfile );
+	TEMP_FAILURE_RETRY ( rename ( tmp_emlfile, new_emlfile ) );
 
-	setenv ( "AKA_FILE_ID", file_id, 1 );
+	TEMP_FAILURE_RETRY ( setenv ( "AKA_FILE_ID", file_id, 1 ) );
 }
 
 
-/*
- * if ( RELAYCLIENT || TCPREMOTEINFO )
- * 	ins = 1;
- */
 int main( int argc, char* argv[] )
 {
-
-	//execvp(argv[1], argv+1);
-	//strcpy ( argv[0], QNS_BINARY );
 
 	dump_stdin_to_file();
 
@@ -69,11 +77,7 @@ int main( int argc, char* argv[] )
 	seteuid ( 0 );
 	setegid ( 0 );
 
-	//if ( strstr(argv[0],"qins_loader") ){
-	//	execvp( QINS_BINARY, argv );
-	//}else{
-		execvp( QNS_BINARY, argv );
-	//}
+	execvp( QNS_BINARY, argv );
 
 	fprintf ( stderr, "443 qns_loader error\n" );
 	return 150;

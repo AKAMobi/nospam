@@ -41,8 +41,8 @@
 # 2004-03-12 by Ed
 open (NSOUT, ">&=2") or die "can't open NSOUT";
 close (STDERR);
-#open (STDERR,">/dev/null");
-open (STDERR,">>/tmp/ns-queue.STDERR");
+open (STDERR,">/dev/null");
+#open (STDERR,">>/tmp/ns-queue.STDERR");
 
 # 时间记录
 
@@ -59,8 +59,6 @@ my $wmaildir='working';
 #Name of file in $scandir where debugging output goes
 my $debuglog="ns-queue.debug";
 
-my $log_details="mailstats.csv";
-
 
 $ENV{'PATH'}='/bin:/usr/bin';
 
@@ -69,13 +67,6 @@ my $hostname='gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
 
-#Maximum amount of time we allow Q-S to run before returning
-# a temp failure. This is so remote SMTP servers don't get confused
-# over whether or not they have delivered to a SMTP server
-# that's refused to say "OK" for over an hour...
-# We'll default to 20 minutes. If the scanner loop takes more than 20 
-# minutes to scan the message, then something *must* be wrong with the
-# scanner. 
 my $MAXTIME=3*60;
 
 #Want debugging? Enable this and read $scandir/qmail-queue.log
@@ -96,9 +87,6 @@ if ( defined $ENV{RELAYCLIENT} ){
 	$mail_info->{aka}->{TCPREMOTEINFO} = $ENV{TCPREMOTEINFO};
 }
 
-umask(0022);
-
-
 my $file_id = $ENV{'AKA_FILE_ID'};
 unless ( -f "$scandir/$wmaildir/new/$file_id" ){
     &error_condition("443 ns can't get file.", 150);
@@ -113,8 +101,6 @@ $ENV{'TMP'} = $ENV{'TMPDIR'} = "$scandir/tmp/$file_id";
 my ($sec,$min,$hour,$mday,$mon,$year);
 ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
 my $nowtime = strftime("%a, %d %b %Y %H:%M:%S %z", localtime(time));
-
-my ($smtp_sender,$remote_smtp_ip,$uid);
 
 if ($DEBUG ) {
   open(LOG,">>$scandir/$debuglog");
@@ -189,28 +175,28 @@ sub debug {
 sub grab_envelope_hdrs {
   select(STDOUT); $|=1;
   open(SOUT,"<&1")||&error_condition("cannot dup fd 0 - $!");
-  $mail_info->{aka}->{fd1} = <SOUT>;
+  $_ = <SOUT>;
   close(SOUT);
+  unless ( defined $_ && $_ ne "F\0T\0\0") {
+#At the very least this is supposed to be $env_returnpath='F' - so
+#qmail-smtpd must be officially dropping the incoming message for
+#some (valid) reason (including the other end dropping the connection).
+	  &debug("g_e_h: no sender and no recips.");
+	  unlink "$scandir/$wmaildir/new/$file_id";
+	  exit;
+  }
+  $mail_info->{aka}->{fd1} = $_;
 }
 
 
 sub AKA_engine_run {
   chdir("$ENV{'TMPDIR'}/");
   
-  #
-  # Load AKA Mail Engine Module & init it
-  #
-  #use AKA::Mail;
-  #$AM = new AKA::Mail;
   use AKA::MailClient;
   my $AMC = new AKA::MailClient;
 
-  #
-  # Check License
-  #
   $start_time=[gettimeofday];
 
-  #&check_license;
 use Data::Dumper;
 print LOG "mail_info.orig\@ns-queue\n";
 print LOG Dumper($mail_info);
@@ -233,24 +219,13 @@ sub qmail_parent_check {
   my $ppid=getppid;
   &debug("q_s_c: PPID=$ppid");
   if ($ppid == 1)  {
-    &debug("q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too...");
+    &debug("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too...");
     close(LOG);
     #Exit with temp error anyway - just to be real anal...
     exit 111; 
   }
 }
-sub check_license
-{
-#	my $n = rand;
-#	$n = int($n * 10);
-#
-	#if ( $n > 7 ){
-        	if ( ! $AM->check_license_file ){
-			&debug ( "!!!!!!!!!!!!!noSPAM System need a valid license, please contact the factory.!!!!!!!!!!!" );
- 			&error_condition ( "553 对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。", 150 );
-        	}
-#	}
-}
+
 #
 ###########################################################################
 # This is UNPUBLISHED PROPRIETARY SOURCE CODE of AKA Information & Technology 
