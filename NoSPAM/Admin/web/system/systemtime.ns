@@ -6,7 +6,7 @@ if(!adminPerm(PERM_ADMIN_SYSTEM))
 
 if($_POST["SystemTime"]){
 	if(($ret=wi("reset_DateTime ".$_POST["SystemTime"],$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification Succeed! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 }else{

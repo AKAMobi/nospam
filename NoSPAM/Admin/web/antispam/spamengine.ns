@@ -23,7 +23,7 @@ if($_POST["isCommit"]){
 	$spamconf->save();
 
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification Succeed! ");
 	else
 		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{

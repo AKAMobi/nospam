@@ -18,7 +18,7 @@ switch($_GET["action"])
 	case "del":
 	if ($AdminID == SYSOPID){
 		fclose(fopen(ACTIONLOG,"w"));
-		echo _("Log Flush Success !");
+		echo _("Log Flush Succeed !");
 		LogAction(_("Operation Log Management"),_("Flush"),"");
 	} else {
 		echo _("No Permission");

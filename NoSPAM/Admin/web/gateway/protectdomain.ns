@@ -330,14 +330,14 @@ function save()
 	$spamconf->save();
 	if($bModify){
 		if(($ret=wi("ProtectDomain_reset $domain",$result)) == 0){
-			errorReturn(_("Modify Success !"),$_SERVER['PHP_SELF']);
+			errorReturn(_("Modify Succeed !"),$_SERVER['PHP_SELF']);
 		}else{
 			echo _("Modify Fail, ErrNo: ").$ret;
 		}
 		return;
 	}else{
 		if(($ret=wi("ProtectDomain_add $domain",$result)) == 0){
-			errorReturn(_("Add Success !"),$_SERVER['PHP_SELF']);
+			errorReturn(_("Add Succeed !"),$_SERVER['PHP_SELF']);
 		}else{
 			echo _("Add Fail, ErrNo: ").$ret;
 		}

@@ -625,7 +625,7 @@ function save()
 
 	$success = $bModify? _("Modify"):_("Add");
 	if ($result==OK){
-		echo _("Admin")." {$_REQUEST['user_id']} "._("Success")." {$success}£¡"."<br>";
+		echo _("Admin")." {$_REQUEST['user_id']} "._("Succeed")." {$success}£¡"."<br>";
 		LogAction(_("Administrator"),"{$success}"._("Admin"),$_REQUEST['user_id']);
 	}else{
 		echo "{$success}"._("Fail");

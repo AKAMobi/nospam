@@ -437,7 +437,7 @@ if(!$Category[$_POST["category_id"]])
 </tr>
 <tr>
 	<td>
-	<?=_("Expire Time")?>: <select id="expireYear" name="expireYear" onchange="recalcDate()"<?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>/
+	<?=_("Expiring Time")?>: <select id="expireYear" name="expireYear" onchange="recalcDate()"<?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>/
 <select id="expireMonth" name="expireMonth" onchange="recalcDate()" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>/
 <select id="expireDate" name="expireDate" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select> 
 <select id="expireHour" name="expireHour" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select> <input type="hidden" name="expire_time" <?if (!isset($_POST['bExpire'])) echo " disabled";?>><input type="checkbox" name="bExpire" onclick="changeExpire()"<?if (isset($_POST['bExpire'])) echo " checked";?>></td>
@@ -987,7 +987,7 @@ if(count($Category) > 0){
     <td><?=_("Update Time")?>: <?=date("Y-m-d H:i:s",$time)?></td>
 </tr>
 <tr>
-	<td><?=_("Expire Time")?>: <select id="expireYear" name="expireYear" onchange="recalcDate()" disabled></select>/
+	<td><?=_("Expiring Time")?>: <select id="expireYear" name="expireYear" onchange="recalcDate()" disabled></select>/
 <select id="expireMonth" name="expireMonth" onchange="recalcDate()" disabled></select>/
 <select id="expireDate" name="expireDate" disabled></select> 
 <select id="expireHour" name="expireHour" disabled></select> <input type="hidden" name="expire_time" disabled><input type="checkbox" name="bExpire" onclick="changeExpire()"></td>

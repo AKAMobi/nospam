@@ -50,7 +50,7 @@ if (!isset($_REQUEST['id'])){
 		}
 	
 		if ($i<$mail_count){
-			echo _("Password Modify Success!")."<br>";
+			echo _("Password Modify Succeed!")."<br>";
 		} else {
 			echo _("Error: Cannot find Email Account Info: ").$_REQUEST['id']."<br>";
 		}		

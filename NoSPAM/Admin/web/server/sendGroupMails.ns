@@ -261,7 +261,7 @@ $linkpath='';
  
 	}
 @unlink($attachdir . "/.mail");
-	echo _("Send Success !");
+	echo _("Send Succeed !");
 	return false;
 }
 

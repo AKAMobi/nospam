@@ -393,7 +393,7 @@ function flushdb()
 	$Option = $_GET['option'];
 	$name = $_GET['name'];
 	if(($ret=wi("clean_DynamicEngineKey $Option",$result))==0)
-		echo _("Flush Database")." "._("Success");
+		echo _("Flush Database")." "._("Succeed");
 	else
 		echo _("Flush Database")." $name "._("Fail").", "._("ErrNo: ").$ret;
 }

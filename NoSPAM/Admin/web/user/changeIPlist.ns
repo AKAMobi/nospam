@@ -49,7 +49,7 @@ function changeIPList() {
 	if ($result!=OK) {
 		errorReturn(_("Other Error, need DEBUG"), $_SERVER['REQUEST_URI']);
 	}
-		echo _("Management IP List Modify Success!");
+		echo _("Management IP List Modify Succeed!");
 		return true;
 	}
 	

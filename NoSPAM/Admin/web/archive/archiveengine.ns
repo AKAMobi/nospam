@@ -10,9 +10,9 @@ if($_POST["ArchiveEngine"]){
 	$spamconf->setParam("ArchiveEngine",$_POST["ArchiveEngine"],"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Commit Succeed! ");
 	else
-		echo _("Config Modify Fail, ErrNo: ").$ret;
+		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -34,7 +34,7 @@ if($_POST["ArchiveEngine"]){
     <input type="radio" name="ArchiveEngine" value="N"<? if(!$bArchive) echo " checked"; ?>>
     <?=_("Off")?></label>
     <br>
-    <input type="submit" name="submit" value="<?=_("Modify")?>">
+    <input type="submit" name="submit" value="<?=_("Commit")?>">
   </p>
 </form>
 </body>

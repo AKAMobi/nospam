@@ -30,7 +30,7 @@ if($_POST["Commit"] == _("Commit")){
 	$spamconf->setParam("ArchiveType",$type,"ArchiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_ArchiveEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification Succeed! ");
 	else
 		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
@@ -41,7 +41,7 @@ if($_POST["Commit"] == _("Commit")){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=_("Selected Archive")?></title>
+<title><?=_("Optional Audit")?></title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script>
 function change(bFlag)
@@ -86,11 +86,11 @@ function flush()
   <p>
     <label>
     <input type="radio" onclick="change(true)" name="ArchiveSwitch" value="All"<? if(in_array("All",$type)) echo" checked"; ?>>
-    <?=_("Archive All")?></label>
+    <?=_("Full Audit")?></label>
     <br>
     <label>
     <input type="radio" onclick="change(false)" name="ArchiveSwitch" value="Custom"<? if(!in_array("All",$type)) echo" checked"; ?>>
-    <?=_("Selected Audit")?></label>
+    <?=_("Optional Audit")?></label>
     <br>
     <hr>
     <p>
@@ -107,14 +107,14 @@ function flush()
     </p>
     <p>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content Matched")?><br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content not Matched")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Content Unmatched")?><br>
 <!--blockquote>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="UserRule" <?if(in_array("UserRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include User Defined Rules")?><br>
     <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeU" value="GARule" <?if(in_array("GARule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("include Auto-Download Rules")?><br>
 </blockquote-->
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Send to a given Email Address")?><br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>><?=_("Send to a specific Email Address")?><br>
     <TEXTAREA name="ArchiveAddress" cols="20" rows="10"<?if(!in_array("Address",$type)) echo " disabled";?>><?=str_replace(",","\n",$addr)?></TEXTAREA>
     </p>
     <input type="submit" name="Commit" value="<?=_("Commit")?>">

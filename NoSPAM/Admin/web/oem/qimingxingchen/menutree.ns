@@ -181,9 +181,9 @@ if($ContentEngine > 0){
 	var d = new WebFXTreeItem('<?=_("Content Filter Engine")?>');
 	tree.add(d);
 	d.add(new WebFXTreeItem('<?=_("SwitchBoard")?>','content/contentengine.ns','main'));
-	d.add(new WebFXTreeItem('<?=_("Rules Management")?>','content/rulemanage.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Rule Management")?>','content/rulemanage.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("Rule Group")?>','content/category.ns','main'));
-	d.add(new WebFXTreeItem('<?=_("Rules List")?>','content/ruleprint.ns','main'));
+	d.add(new WebFXTreeItem('<?=_("Rule List")?>','content/ruleprint.ns','main'));
 	d.add(new WebFXTreeItem('<?=_("User Define File Type")?>','content/filetypes.ns','main'));
 <?php
 	}

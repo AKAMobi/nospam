@@ -60,7 +60,7 @@ function changeUserPasswd() {
 	if ($result!=OK) {
 		errorReturn(_("Other Error, need DEBUG"), $_SERVER['PHP_SELF']);
 	}
-		echo _("Password Modify Success!");
+		echo _("Password Modify Succeed!");
 		return true;
 	} 
 	

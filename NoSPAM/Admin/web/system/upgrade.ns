@@ -170,10 +170,10 @@ function upgrade()
 	
 	switch ($ret){
 		case 0:
-		echo _("Update Success!");
+		echo _("Update Succeed!");
 		break;
 		case 1:
-		echo _("Update Success, need Reboot system.");
+		echo _("Update Succeed, need reboot system.");
 		break;
 		default:
 		echo _("Update Fail!");

@@ -72,7 +72,7 @@ if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 		}
 	}
 	setSessionVal('AdminID',$id);
-	LogAction(_("Admin Login"),_("Login"),"","",_("Success"));
+	LogAction(_("Admin Login"),_("Login"),"","",_("Succeed"));
 	header("Refresh: 0;URL=frames.ns");
 
 	exit();

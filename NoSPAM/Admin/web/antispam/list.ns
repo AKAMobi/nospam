@@ -285,7 +285,7 @@ function modify()
 <input type="hidden" name="type" value="modify">
 <input type="hidden" name="oKey" value="<?=$_GET["key"]?>">
 <table width="50%" border="1" align="center">
-<caption><?=_("Add")?><?=$title?></caption>
+<caption><?=_("Modify")?> <?=$title?></caption>
 <tr>
 	<th scope="row"><?=$column?>£º</th>
 	<td align="left"><input type="text" name="key" value="<?=$_GET["key"]?>"></td>

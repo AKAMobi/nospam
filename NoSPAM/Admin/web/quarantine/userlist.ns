@@ -38,7 +38,7 @@ if($_POST["act"]){
                         $param = 'QuarantineUserListImport '.$tmpFile;
                         $ret = wi ($param, $result);
                         if ($ret==0) {
-                            echo _("Modification Success! ");
+                            echo _("Modification Succeed! ");
                             echo '<br/><br/>';
                             if (is_array($result)) {
                                 foreach ($result as $line)
@@ -90,7 +90,7 @@ if($_POST["act"]){
             $spamconf->setParam("NoSuchUserAction",$_POST['NoSuchUserAction'],"QuarantineEngine");
             $spamconf->save();
             if(($ret=wi("QuarantineUpdate",$result))==0)
-        		echo _("Modification Success! ");
+        		echo _("Modification Succeed! ");
         	else
         		echo _("Config Commit Fail, ErrNo: ").$ret;
             

@@ -6,7 +6,7 @@ unset($_SESSION['AdminID']);
 unset($_SESSION['Privilidge']);
 */
 session_start();
-LogAction(_("Admin Login"),_("Logout"),"","",_("Success"));
+LogAction(_("Admin Login"),_("Logout"),"","",_("Succeed"));
 
 session_unset();
 session_destroy();
@@ -27,7 +27,7 @@ header("Refresh: 0;URL=/admin/");
 <br>
 <br>
 <div align="center">
-<?=_("Logout Successfully. Please Close This Browser Window") ?>
+<?=_("Logout Succeed. Please Close This Browser Window") ?>
 </div>
 </body>
 </html>

@@ -23,7 +23,7 @@ if($_POST["SpamAction"]){
 	$spamconf->setParam("MaybeSpamTag",$_POST["MaybeSpamTag"],"SpamEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_SpamEngine",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification Succeed! ");
 	else
 		echo _("Config Commit Fail, ErrNo: ").$ret;
 }else{
@@ -44,6 +44,8 @@ if($_POST["SpamAction"]){
 </head>
 
 <body>
+<?=_("Spam Treatment")?>
+<p>
 <form name="form1" method="post" action="">
   <p>
     <label>

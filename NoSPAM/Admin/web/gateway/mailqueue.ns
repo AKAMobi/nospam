@@ -266,6 +266,6 @@ function dellall()
 	if(($ret=wi("MailQueue_delAll",$result)) != 0)
 		echo _("Error when Delete Mail Queue, ErrNo: ").$ret;
 	else
-		echo _("Flush Queue")." "._("Success");
+		echo _("Flush Queue")." "._("Succeed");
 }
 ?>

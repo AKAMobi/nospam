@@ -16,7 +16,7 @@ if($_POST["Commit"] == _("Commit")){
 	$spamconf->setParam("IPMaxLoginRetry",$_POST['IPMaxLoginRetry'],"System");
 	$spamconf->setParam("DenyTimeAfterMaxLogin",$_POST['DenyTimeAfterMaxLogin'],"System");
 	$spamconf->save();
-	echo _("Modification Success! ");
+	echo _("Modification Succeed! ");
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>

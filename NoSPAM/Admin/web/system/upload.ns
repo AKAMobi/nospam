@@ -37,5 +37,5 @@ if($_GET["file"] != "license"){
 }
 
 rename($filename."new",$filename);
-echo _("Upload Success!");
+echo _("Upload Succeed!");
 ?>

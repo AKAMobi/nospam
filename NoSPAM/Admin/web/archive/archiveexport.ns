@@ -15,7 +15,7 @@ if($_GET["action"]){
 		exit;
 	}else if ($_GET["action"]=="clean"){
         	if(($ret=wi("Archive_clean_all",$result))==0)
-		echo _("Modification Success! ");
+		echo _("Modification Succeed! ");
         	else    
 		echo _("Config Modify Fail, ErrNo: ").$ret;
 	}
