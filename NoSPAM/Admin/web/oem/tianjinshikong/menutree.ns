@@ -656,6 +656,12 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 		</TD>
 	</TR>
 	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/analyze.ns">ÒýÇæ·ÖÎö</A>
+		</TD>
+	</TR>
+
+	<TR>
 	  <TD bgColor="#e9f0fa" height="2"></TD>
 	</TR>
 	<TR>

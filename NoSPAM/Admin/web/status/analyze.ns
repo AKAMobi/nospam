@@ -16,7 +16,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>邮件系统状态分析图</H1><BR>
+<H1>系统引擎分析图</H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
 <HR>
 
