@@ -103,6 +103,13 @@ sub start_System
 {
 	my $ret;
 
+	# Check License;
+	my $AM = new AKA::Mail;
+	if ( ! $AM->check_license_file ){
+		return 250;
+	}
+
+
 	# update hostname to provent dns query
 	&reset_Network_update_hostname;
 
