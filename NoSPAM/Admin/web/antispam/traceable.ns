@@ -86,11 +86,10 @@ function formReset()
 	s2.setValue(form1.slider2.defaultValue);
 	if(bTemp)
 		bStop = true;
-	/*if(form1.TraceY.defaultChecked)
+	if(form1.TraceY.defaultChecked)
 		change(false);
 	else
 		change(true);
-	*/
 }
 </script>
 <link type="text/css" rel="StyleSheet" href="../css/winclassic.css" />
@@ -166,7 +165,7 @@ function formReset()
   </p>
   <p>
     <input type="reset" name="reset" value="<?=_("Reset")?>">
-	<input type="button" value="<?=_("Recommend")?>" onclick="change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
+	<input type="button" value="<?=_("Recommend")?>" onclick="form1.TraceY.checked=true;form1.TraceN.check=false;change(false);form1.option1.checked=true;form1.option2.checked=true;form1.option3.checked=true;s1.setValue(22*8);s2.setValue(16*8);">
     <input type="submit" name="submit" value="<?=_("Submit")?>">
   </p>
 </form>
