@@ -1,4 +1,4 @@
-diff -ruNa qmail-1.03.orig/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
+iff -ruNa qmail-1.03.orig/qmail-smtpd.c qmail-1.03/qmail-smtpd.c
 --- qmail-1.03.orig/qmail-smtpd.c	1998-06-15 18:53:16.000000000 +0800
 +++ qmail-1.03/qmail-smtpd.c	2004-02-28 20:35:31.000000000 +0800
 @@ -414,6 +414,7 @@
