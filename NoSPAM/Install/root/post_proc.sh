@@ -26,3 +26,5 @@ chown qmaild.qmail var/qmail/control/*.pem
 chmod 700 var/qmail/control/*.pem
 
 chmod 755 home/wmail -R
+
+chown nospam /home/NoSPAM/var/sqlite -R
