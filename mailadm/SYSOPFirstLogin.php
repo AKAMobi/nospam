@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>初始化<?php echo SYSOPID; ?>密码</TITLE>
+<TITLE>初始化<?php echo SYSOPID; ?>@<?php echo DOMAIN; ?>密码</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
@@ -59,7 +59,7 @@ if ((!isset($_SESSION['SYSOPFirstLogin'])) && ($_SESSION['SYSOPFirstLogin']=='TR
 <tbody>
 <tr>
 <td>系统最高管理员账号</td>
-<td><?php echo SYSOPID; ?></td>
+<td><?php echo SYSOPID; ?>@<?php echo DOMAIN; ?></td>
 </tr>
 <tr>
 	<td>输入新密码</td>
