@@ -79,6 +79,7 @@ my $iputil = new AKA::IPUtil;
 my $action_map = { 
 	 	  'start_System' => [\&start_System, "Init system on boot" ]
 	 	, 'System_patch' => [\&System_patch, "patch system by upgrad pkg" ]
+	 	, 'SystemEngine_reset' => [\&SystemEngine_reset, "reset system hook" ]
 
 		, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
 		, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
@@ -289,7 +290,10 @@ sub System_patch
 		unlink '/root/post_patch';
 	}
 
-	&record( $patch_file, $PISOVER, $PATCH_VER, $PTIME, $PINFO );
+	if ( -e '/RECORD' ){
+		&record( $patch_file, $PISOVER, $PATCH_VER, $PTIME, $PINFO );
+		unlink '/RECORD';
+	}
 
 	my $REBOOT=0;
 	if ( -e '/REBOOT' ){
@@ -1488,6 +1492,25 @@ sub _file_update_service_localname
 }
 
 
+sub SystemEngine_reset
+{
+	my $ret = 0;
+	my $hook_file = '/service/smtpd/env/QMAILQUEUE';
+	my $ihook_file = '/service/ismtpd/env/QMAILQUEUE';
+	my $qns_binary = '/home/NoSPAM/bin/qns_loader';
+
+	if ( uc $conf->{config}->{System}->{Engine} ne 'N' ){
+		$ret = write_file( $qns_binary, $hook_file );
+		$ret = write_file( $qns_binary, $ihook_file );
+	}else{	# È¡Ïû engine hook
+		$ret = unlink $hook_file;
+		$ret = unlink $ihook_file;
+	}
+
+	system ( 'svc -t /service/smtpd /service/ismtpd' );
+
+	return 0;
+}
 
 sub _file_update_ismtp_relay
 {
