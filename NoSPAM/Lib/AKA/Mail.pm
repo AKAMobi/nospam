@@ -275,7 +275,7 @@ my $logstr;
 s/\0/\\0/g;
 $logstr .= "fd1: $_\n";
 
-$self->{zlog}->debug ( $logstr );
+#$self->{zlog}->debug ( $logstr );
 
 	$self->{mail_info};
 }
@@ -612,7 +612,7 @@ sub quarantine_action($$$$)
 
 	my ($emlfile,$mailfrom,$mailto,$size,$subject);
 	$emlfile = $self->{mail_info}->{aka}->{emlfilename};
-	$mailfrom = $self->{mail_info}->{aka}->{mail_from};
+	$mailfrom = $self->{mail_info}->{aka}->{returnpath};
 	$mailto = $self->{mail_info}->{aka}->{recips};
 	$subject = $self->{mail_info}->{aka}->{subject};
 	$size = $self->{mail_info}->{aka}->{size};
@@ -1925,7 +1925,10 @@ sub get_mail_base_info
 					$mail_from = '';
 				}
 			}
-			$still_headers = 0 if (/^(\r|\r\n|\n)$/);
+
+			# $still_headers = 0 if (/^(\r|\r\n|\n)$/); 
+			# 空行不应该是 ^\r\n$，应该是 /^$/
+			$still_headers = 0 if (/^$/);
 		}
 		last unless $still_headers;
 	}
