@@ -73,7 +73,7 @@ function change(bState)
 </head>
 
 <body>
-<form name="form1" method="post" onreset="formReset();">
+<form name="form1" method="post">
   <p>贝叶斯识别开关：<br>
     <label>
     <input id="idBayesY" type="radio" name="BayesEnabled" value="Y"<? if($bBayes) echo " checked" ?> onclick="change(false)">
