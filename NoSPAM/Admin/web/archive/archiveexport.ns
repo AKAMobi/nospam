@@ -24,6 +24,7 @@ if($_GET["action"]){
 </head>
 
 <body>
+当前审计邮件大小：<?php passthru ( "du -sh " . ARCHIVEDIR . " | awk '{print $1}'" ); ?><p>
 <input type="button" value="下载" onclick="window.open('archiveexport.ns?action=download','_blank')">
 <input type="button" value="清空" onclick="document.location.href='archiveexport.ns?action=clean';">
 <?
