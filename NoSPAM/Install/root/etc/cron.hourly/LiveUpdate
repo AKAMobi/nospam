@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#run=`ps -e | grep ns | grep -v grep | wc -l`;
+run=`ps -e | grep freshclam | grep -v grep | wc -l`;
+
+#echo $run
+date >> /var/log/freshclam
+if [ $run -eq 0 ]; then
+	freshclam >> /var/log/freshclam 2>&1
+	echo "upgrade OK" >> /var/log/freshclam 2>&1
+else
+	echo "last process is still running, exiting." >> /var/log/freshclam
+fi
