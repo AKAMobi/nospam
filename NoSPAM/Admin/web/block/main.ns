@@ -50,7 +50,7 @@ elseif ($doAction == 3) {
 		case 0:
 			break;
 		default:
-			html_error_quit (array (_("System error")), 0,1 ,1);
+			html_error (array (_("System error")), 0,1 ,1);
 	}
 }
 else
