@@ -63,13 +63,25 @@ $action = $config->get_action_rule($rule_id);
 $keywordscount = count($keywords);
 $sizescount = count($sizes);
 $attachmentscount = count($attachments);
+$rule_logic = $rule->has_attribute("rule_logic")? $rule->get_attribute("rule_logic"):"AND";
+$keyword_logic = $rule->has_attribute("keyword_logic")? $rule->get_attribute("keyword_logic"):"AND";
+$size_logic = $rule->has_attribute("size_logic")? $rule->get_attribute("size_logic"):"AND";
+$attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("attach_logic"):"AND";
+$expireTime = $rule->get_attribute("expire_time");
 ?>
 <html>
 <head>
+<script>
+d = new Date(0);
+d.setFullYear(<?=substr($expireTime,0,4)?>);
+d.setMonth(<?=intval(substr($expireTime,4,2))-1?>);
+d.setDate(<?=substr($expireTime,6,2)?>);
+d.setHours(<?=substr($expireTime,8,2)?>);
+</script>
 <script language="javascript" src="../js/rulemodify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body>
+<body onload="initSelect()">
 <form action="rulemodify.ns?id=<?=$rule_id?>" method="POST" name="ParamForm">
 <input type="hidden" name="formAction"/>
 <table border="0" align="center" width="100%">
@@ -103,9 +115,12 @@ if(!$Category[$category_id])
 	<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?><input type="hidden" name="create_time" value="<?=$rule->get_attribute("create_time")?>" /></td>
 	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
-<?/*?>
 <tr>
-	<td>报警级别：<select name="alarmlevel">
+	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
+<select id="expireDate" name="expireDate"></select>日
+<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td><?/*报警级别：<select name="alarmlevel">
 <?
 					for($j=1;$j<=4;$j++){
 						echo "<option value=\"".$j."\"";
@@ -114,16 +129,19 @@ if(!$Category[$category_id])
 						echo ">".$j;
 					}
 ?>
-				  </select>
-	</td>
+				  </select>*/?></td>
+</tr>
+<tr>
+	<td><?/*实时上报：<select name="realtime_upload"><option value="YES"<?if ($rule->has_attribute("realtime_upload") && $rule->get_attribute("realtime_upload") == "YES") echo " selected";?>>是<option value="NO"<?if (!$rule->has_attribute("realtime_upload") || $rule->get_attribute("realtime_upload") == "NO") echo " selected";?>>否</select>*/?></td>
 	<td></td>
 </tr>
-<?*/?>
 </table><br>
+规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($rule_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($rule_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($rule_logic == "NOT") echo " selected";?>>否</select><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
 <div align="center">
 <input type="hidden" name="KeywordNum" value="<?=$keywordscount?>" />
+关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($keyword_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($keyword_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($keyword_logic == "NOT") echo " selected";?>>否</select><br>
 <?
 	if($keywordscount > 0){
 		$i = 1;
@@ -188,6 +206,7 @@ if(!$Category[$category_id])
 <legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
 <div align="center">
 <input type="hidden" name="SizeNum" value="<?=$sizescount?>" />
+数值规则间逻辑关系：<select name="size_logic"><option value="AND"<?if ($size_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($size_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($size_logic == "NOT") echo " selected";?>>否</select><br>
 <?
 	if($sizescount > 0){
 		$i = 1;
@@ -231,6 +250,7 @@ if($sizescount > 0){
 <legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
 <div align="center">
 <input type="hidden" name="AttachmentNum" value="<?=$attachmentscount?>" />
+附件规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($attach_logic == "AND") echo " selected";?>>与<option value="OR"<?if ($attach_logic == "OR") echo " selected";?>>或<option value="NOT"<?if ($attach_logic == "NOT") echo " selected";?>>否</select><br>
 <?
 	if($attachmentscount > 0){
 		$i = 1;
@@ -239,7 +259,7 @@ if($sizescount > 0){
 <fieldset style="border-style: double; width: 90%">
 <legend><input type="checkbox" name="AttachmentDel<?=$i?>" value="YES" />第<?=$i?>条</legend>
 可以不选<input type="checkbox"<? if($attachment->has_attribute("filename")) echo " checked";?> onclick="changeState(FileName<?=$i?>)" />限制文件名：<input type="text" name="FileName<?=$i?>" value="<?=utf8_decode($attachment->get_attribute("filename"))?>" <? if(!$attachment->has_attribute("filename")) echo "disabled"; ?>/>
-可以不选<input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / >限制文件类型：<select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype")) echo "disabled"; ?>/>
+可以不选<input type="checkbox"<? if($attachment->has_attribute("filetype")) echo " checked";?> onclick="changeState(FileType<?=$i?>)" / >限制文件类型：<select name="FileType<?=$i?>" <? if(!$attachment->has_attribute("filetype") || !array_key_exists($attachment->has_attribute("filetype"),$FileType)) echo "disabled"; ?>/>
 <?
 			$blank = true;
 			foreach($FileType as $key=>$value){
@@ -309,7 +329,6 @@ function modify()
 	global $Actions, $KeyPos, $KeyMatchType, $SizePos, $FileType, $rule_id, $bContentFilter, $Category;
 
 	$formAction = $_POST["formAction"];
-
 	switch($formAction){
 		case "AddKeyword":
             $keywordscount = $_POST["KeywordNum"]+1;
@@ -367,10 +386,13 @@ function modify()
 ?>
 <html>
 <head>
+<script>
+d = new Date(<?=$_POST['expire_time']?>);
+</script>
 <script language="javascript" src="../js/rulemodify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body>
+<body onload="initSelect()">
 <form action="rulemodify.ns?id=<?=$rule_id?><? if($_GET["action"]=="add") echo "&action=add"; ?>" method="POST" name="ParamForm">
 <input type="hidden" name="formAction"/>
 <table border="0" align="center" width="100%">
@@ -404,26 +426,33 @@ if(!$Category[$_POST["category_id"]])
     <td>建立时间：<?=FormatTime($_POST["create_time"])?><input type="hidden" name="create_time" value="<?=$_POST["create_time"]?>" /></td>
     <td>更新时间：<?=date("Y-m-d H:i:s");?></td>
 </tr>
-<?/*?>
 <tr>
-    <td>报警级别：<select name="alarmlevel">
+	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
+<select id="expireDate" name="expireDate"></select>日
+<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td><?/*报警级别：<select name="alarmlevel">
 <?
-                    for($j=1;$j<=4;$j++){
-                        echo "<option value=\"".$j."\"";
-                        if($_POST["alarmlevel"]==$j)
-                            echo " selected";
-                        echo ">".$j;
-                    }
+					for($j=1;$j<=4;$j++){
+						echo "<option value=\"".$j."\"";
+						if($_POST["alarmlevel"]==$j)
+							echo " selected";
+						echo ">".$j;
+					}
 ?>
-                  </select>
-    </td>
-    <td></td>
-</tr><?*/?>
+				  </select>*/?></td>
+</tr>
+<tr>
+	<td><?/*实时上报：<select name="realtime_upload"><option value="YES"<?if ($_POST["realtime_upload"] == "YES") echo " selected";?>>是<option value="NO"<?if ($_POST["realtime_upload"] == "NO") echo " selected";?>>否</select>*/?></td>
+	<td></td>
+</tr>
 </table><br>
+规则间逻辑关系：<select name="rule_logic"><option value="AND"<?if ($_POST['rule_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['rule_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['rule_logic'] == "NOT") echo " selected";?>>否</select><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
 <div align="center">
 <input type="hidden" name="KeywordNum" value="<?=$keywordscount?>" />
+关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND"<?if ($_POST['keyword_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['keyword_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['keyword_logic'] == "NOT") echo " selected";?>>否</select><br>
 <?
 	if($keywordscount > 0){
 		$ii = 1;
@@ -522,8 +551,9 @@ if(!$Category[$_POST["category_id"]])
 </fieldset>
 <fieldset>
 <legend><b>数值规则</b> 共<?=$sizescount?>条 </legend>
-<input type="hidden" name="SizeNum" value="<?=$sizescount?>" />
 <div align="center">
+<input type="hidden" name="SizeNum" value="<?=$sizescount?>" />
+数值规则间逻辑关系：<select name="size_logic"><option value="AND"<?if ($_POST['size_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['size_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['size_logic'] == "NOT") echo " selected";?>>否</select><br>
 <?
     if($sizescount > 0){
         $ii = 1;
@@ -581,8 +611,9 @@ if($sizescount > 0){
 </fieldset>
 <fieldset>
 <legend><b>附件规则</b> 共<?=$attachmentscount?>条 </legend>
-<input type="hidden" name="AttachmentNum" value="<?=$attachmentscount?>" />
 <div align="center">
+<input type="hidden" name="AttachmentNum" value="<?=$attachmentscount?>" />
+附件规则间逻辑关系：<select name="attach_logic"><option value="AND"<?if ($_POST['attach_logic'] == "AND") echo " selected";?>>与<option value="OR"<?if ($_POST['attach_logic'] == "OR") echo " selected";?>>或<option value="NOT"<?if ($_POST['attach_logic'] == "NOT") echo " selected";?>>否</select><br>
 <?
     if($attachmentscount > 0){
         $ii = 1;
@@ -845,8 +876,12 @@ function saveParams()
 	else
 		$newrule->set_attribute("create_time",$oldrule->get_attribute("create_time"));
 	$newrule->set_attribute("update_time",date("YmdHis"));
+	$newrule->set_attribute("expire_time",date("YmdHis",intval($_POST['expire_time'])));
 	//$newrule->set_attribute("alarmlevel",$_POST["alarmlevel"]);
 	$newrule->set_attribute("alarmlevel",1);
+	//$newrule->set_attribute("realtime_upload",$_POST["realtime_upload"]);
+	$newrule->set_attribute("realtime_upload","NO");
+	$newrule->set_attribute("rule_logic",$_POST["rule_logic"]);
 
 	//rule_action
 	$action = $config->createNode("rule_action");
@@ -855,6 +890,7 @@ function saveParams()
 	$newrule->append_child($action);
 
 	//rule_keyword
+	$newrule->set_attribute("keyword_logic",$_POST["keyword_logic"]);
 	for($i = 1; $i <= $_POST["KeywordNum"]; $i++){
 		$keyword = $config->createNode("rule_keyword");
 		$keyword->set_attribute("keyword",utf8_encode($_POST["Keyword".$i]));
@@ -866,6 +902,7 @@ function saveParams()
 	}
 
 	//size
+	$newrule->set_attribute("size_logic",$_POST["size_logic"]);
     for($i = 1; $i <= $_POST["SizeNum"]; $i++){
         $size = $config->createNode("size");
 		$size->set_attribute("key",$_POST["SizePos".$i]);
@@ -874,6 +911,7 @@ function saveParams()
     }
 
 	//attachment
+	$newrule->set_attribute("attach_logic",$_POST["attach_logic"]);
     for($i = 1; $i <= $_POST["AttachmentNum"]; $i++){
         $attachment = $config->createNode("attachment");
         $attachment->set_attribute("sizevalue",$_POST["AttachSize".$i]);
@@ -899,10 +937,13 @@ function add()
 ?>
 <html>
 <head>
+<script>
+d = new Date();
+</script>
 <script language="javascript" src="../js/rulemodify.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body>
+<body onload="initSelect()">
 <form action="rulemodify.ns?action=add" method="POST" name="ParamForm">
 <input type="hidden" name="formAction"/>
 <table border="0" align="center" width="100%">
@@ -931,16 +972,24 @@ if(count($Category) > 0){
     <td>建立时间：<?=date("Y-m-d H:i:s",$time)?><input type="hidden" name="create_time" value="<?=date("YmdHis",$time)?>" /></td>
     <td>更新时间：<?=date("Y-m-d H:i:s",$time)?></td>
 </tr>
-<!--<tr>
-    <td>报警级别：<select name="alarmlevel">
-<option value="1">1<option value="2">2<option value="3">3<option value="4">4</select>
-    </td>
-    <td></td>
-</tr>//-->
+<tr>
+	<td>过期时间：<select id="expireYear" name="expireYear" onchange="recalcDate()"></select>年
+<select id="expireMonth" name="expireMonth" onchange="recalcDate()"></select>月
+<select id="expireDate" name="expireDate"></select>日
+<select id="expireHour" name="expireHour"></select>时<input type="hidden" name="expire_time"></td>
+	<td><?/*报警级别：<select name="alarmlevel">
+<option value="1">1<option value="2">2<option value="3">3<option value="4">4</select>*/?></td>
+</tr>
+<tr>
+	<td><?/*实时上报：<select name="realtime_upload"><option value="NO">否<option value="YES">是</select>*/?></td>
+	<td></td>
+</tr>
 </table><br>
+规则间逻辑关系：<select name="rule_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <fieldset>
 <legend><b>关键字及IP规则</b> 共0条 </legend>
 <div align="center">
+关键字规则间逻辑关系：<select name="keyword_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <input type="hidden" name="KeywordNum" value="0" />
 <br><br>
 <input type="button" value="添加" onclick="submitForm('AddKeyword')" />
@@ -950,6 +999,7 @@ if(count($Category) > 0){
 <legend><b>数值规则</b> 共0条 </legend>
 <input type="hidden" name="SizeNum" value="0" />
 <div align="center">
+数值规则间逻辑关系：<select name="size_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <br><br>
 <input type="button" value="添加" onclick="submitForm('AddSize')" />
 </div><br>
@@ -958,6 +1008,7 @@ if(count($Category) > 0){
 <legend><b>附件规则</b> 共0条 </legend>
 <input type="hidden" name="AttachmentNum" value="0" />
 <div align="center">
+附件规则间逻辑关系：<select name="attach_logic"><option value="AND">与<option value="OR">或<option value="NOT">否</select><br>
 <br><br>
 <input type="button" value="添加" onclick="submitForm('AddAttachment')" />
 </div><br>

@@ -15,5 +15,11 @@ if ( !defined("CONST_DEFINED") ){
 	define("PAGENUM",10);
 	define("NOSPAM_VERSION","2");
 	define("ARCHIVEDIR","/home/vpopmail/domains/localhost.localdomain/archive");
+	define("ACTIONLOG","/home/NoSPAM/log/access_log");
+	define("IPDENYLIST","/home/NoSPAM/etc/deny.list");
+	define("DEFAULTIPDENYTIME",15);
+	define("LOGINFAILLIST","/home/NoSPAM/etc/loginfail.list");
+	define("DEFAULTLOGINMAXRETRYCOUNTSAMEID",5);
+	define("DEFAULTLOGINMAXRETRYCOUNTDIFFID",15);
 }
 ?>

@@ -41,18 +41,59 @@ $action = $config->get_action_rule($rule_id);
 	<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
 	<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 </tr>
-<?if($bPolice){?>
 <tr>
-	<td>报警级别：<?=$rule->get_attribute("alarmlevel")?></td>
+	<td>过期时间：<?=FormatTime($rule->get_attribute("expire_time"))?></td>
+	<td><?if($bPolice){?>报警级别：<?=$rule->get_attribute("alarmlevel")?><?}?></td>
+</tr>
+<?if ($bPolice){?>
+<tr>
+	<td>实时上报：<?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "是":"否"):"否"?></td>
 	<td></td>
 </tr>
 <?}?>
 </table>
+<p>
+规则间逻辑关系：<?
+if (!$rule->has_attribute("rule_logic")) {
+	echo "与";
+} else {
+	switch ($rule->get_attribute("rule_logic")){
+		case "NOT":
+		echo "否";
+		break;
+		case "OR":
+		echo "或";
+		break;
+		case "AND":
+		default:
+		echo "与";
+	}
+}
+?>
+</p>
 <p style="font-size: 12px"><b>关键字及IP规则</b><br>
 <?
 if(count($keywords) == 0){
 	echo "无";
 }else{
+?>
+关键字规则内部逻辑关系：<?
+	if (!$rule->has_attribute("keyword_logic")) {
+		echo "与";
+	} else {
+		switch ($rule->get_attribute("keyword_logic")){
+			case "NOT":
+			echo "否";
+			break;
+			case "OR":
+			echo "或";
+			break;
+			case "AND":
+			default:
+			echo "与";
+		}
+	}
+	echo "<br>";
 	$i = 1;
 	foreach($keywords as $keyword){
 		echo $i."、"."匹配位置：".$KeyPos[$keyword->get_attribute("key")];
@@ -68,6 +109,24 @@ if(count($keywords) == 0){
 if(count($sizes) == 0){
     echo "无";
 }else{
+?>
+数值规则内部逻辑关系：<?
+	if (!$rule->has_attribute("size_logic")) {
+		echo "与";
+	} else {
+		switch ($rule->get_attribute("size_logic")){
+			case "NOT":
+			echo "否";
+			break;
+			case "OR":
+			echo "或";
+			break;
+			case "AND":
+			default:
+			echo "与";
+		}
+	}
+	echo "<br>";
     $i = 1;
     foreach($sizes as $size){
         echo $i."、"."匹配位置：".$SizePos[$size->get_attribute("key")];
@@ -82,6 +141,24 @@ if(count($sizes) == 0){
 if(count($attachments) == 0){
     echo "无";
 }else{
+?>
+附件规则内部逻辑关系：<?
+	if (!$rule->has_attribute("attach_logic")) {
+		echo "与";
+	} else {
+		switch ($rule->get_attribute("attach_logic")){
+			case "NOT":
+			echo "否";
+			break;
+			case "OR":
+			echo "或";
+			break;
+			case "AND":
+			default:
+			echo "与";
+		}
+	}
+	echo "<br>";
     $i = 1;
     foreach($attachments as $attachment){
         echo $i."、"."限制文件名：".utf8_decode($attachment->get_attribute("filename"));

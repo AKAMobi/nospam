@@ -1,7 +1,5 @@
 <?php
-
-require_once('inc/vpopadm.inc.ns');
-
+require_once('inc/include.ns');
 
 if ((!isset($_REQUEST['adminID'])) || (!isset($_REQUEST['password'])) ){
 ?>
@@ -10,6 +8,12 @@ if ((!isset($_REQUEST['adminID'])) || (!isset($_REQUEST['password'])) ){
 	exit();
 }
 
+$loginblacklist = new LoginBlackList();
+
+if ( $loginblacklist->isDenied($_SERVER['REMOTE_ADDR']) ){
+	$deniedTime = $loginblacklist->getDeniedTime($_SERVER['REMOTE_ADDR']);
+	errorReturn("由于到达最大错误登录次数，当前IP：".$_SERVER['REMOTE_ADDR']."被封禁到".date("Y-m-d H:i:s",$deniedTime),"/admin/");
+}
 
 $id=$_REQUEST['adminID'];
 $passwd=$_REQUEST['password'];
@@ -17,18 +21,21 @@ $result=isPasswordRight($id,$passwd);
 
 
 if ( ($result==ERR_FORMAT_PASSWORD) || ($result==ERR_WRONGPASSWORD) ){
-	errorReturn("密码错误,请重新输入","/admin/");
+	$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
+	errorReturn("用户名或密码错误,请重新输入","/admin/");
 }
 
-if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) )
-		errorReturn("无此管理员账号,请重新输入","/admin/");
-
+if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
+	$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
+	errorReturn("用户名或密码错误,请重新输入","/admin/");
+}
 	if ($id==SYSOPID) {
-		$_SESSION['Privilidge']=PERM_ADMIN_MAX;
+		setSessionVal('Privilidge',PERM_ADMIN_MAX);
 	} else {
 		$result=getAdminInfo($id);
 		if ($result['$returnCode']!=OK){
-			errorReturn("无此管理员账号,请重新输入","/admin/");
+			$loginblacklist->addLoginfailList($_SERVER['REMOTE_ADDR'],$id);
+			errorReturn("用户名或密码错误,请重新输入","/admin/");
 		}else{
 			if(!havePerm($result['privilidge'],PERM_ADMIN_LOGIN))
 				errorReturn("该账号登陆权限被禁止","/admin");
@@ -61,11 +68,10 @@ if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) )
 						errorReturn("该账号不能从此IP地址登录","/admin");
 				}
 			}
-			
-			$_SESSION['Privilidge']=$result['privilidge'];
+			setSessionVal('Privilidge',$result['privilidge']);
 		}
 	}
-	$_SESSION['AdminID']=$id;
+	setSessionVal('AdminID',$id);
 	header("Refresh: 0;URL=frames.ns");
 
 	exit();

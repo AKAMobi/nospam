@@ -1,4 +1,6 @@
 <?
+require_once('functions.ns');
+
 $KeyPos[1] = "主题";
 $KeyPos[2] = "发件人";
 $KeyPos[3] = "收件人";
@@ -64,8 +66,11 @@ if(file_exists(FILETYPE)){
 	$fp = fopen(FILETYPE,"r"); 
 	$content = trim(fread($fp, filesize(FILETYPE)));
 	fclose($fp);
-	$filetypes = explode("\n",$content);
-	if(strlen($content) > 0){
+	$tmpArray = explode("\n",$content);
+	$MaxTypeID = intval($tmpArray[0]);
+	$filetypes = array_slice($tmpArray,1);
+	unset($tmpArray);
+	if(count($filetypes) > 0){
 		foreach($filetypes as $sfiletype){
 			list($id,$note,$ext) = explode("\t",$sfiletype);
 			$FileType[$id] = array($note,$ext);
@@ -87,7 +92,9 @@ $bAntiSpam = $spamconf->getParam("NoSPAMEngine","SpamEngine") == "Y";
 $bContentFilter = $spamconf->getParam("ContentFilterEngine","ContentEngine") == "Y";
 $bDynamic = $spamconf->getParam("DynamicEngine","DynamicEngine") == "Y";
 $bArchive = $spamconf->getParam("ArchiveEngine","ArchiveEngine") == "Y";
-
+$iUserMaxLoginRetry = $spamconf->hasParam("UserMaxLoginRetry","System")? intval($spamconf->getParam("UserMaxLoginRetry","System")):DEFAULTLOGINMAXRETRYCOUNTSAMEID;
+$iIPMaxLoginRetry = $spamconf->hasParam("IPMaxLoginRetry","System")? intval($spamconf->getParam("IPMaxLoginRetry","System")):DEFAULTLOGINMAXRETRYCOUNTDIFFID;
+$iDenyTimeAfterMaxLogin = $spamconf->hasParam("DenyTimeAfterMaxLogin","System")? intval($spamconf->getParam("DenyTimeAfterMaxLogin","System")):DEFAULTIPDENYTIME;
 
 $Switchable = false;
 $intServerGateway = "Gateway";
@@ -98,6 +105,9 @@ $sFactoryName = "";
 $sExpire = "";
 $bForSell = false;
 $Version = "";
+$MaxUser = 0;
+$MaxDomain = 0;
+$MaxQuota = 0;
 if(file_exists(LICENSE)){
 	$license = new License;
 	$Switchable = $license->Switchable();
@@ -109,8 +119,14 @@ if(file_exists(LICENSE)){
 	$sExpire = $license->ExpireDate();
 	$bForSell = $license->isForSell();
 	$Version = $license->getVersion();
+	$MaxUser = $license->getMaxUser();
+	$MaxDomain = $license->getMaxDomain();
+	$MaxQuota = $license->getMaxQuota();
 }
 
 $ServerMode = $Switchable? $spamconf->getParam("ServerGateway","System"):$intServerGateway;
+
+$AdminID = getSessionVal('AdminID');
+$Privilege = getSessionVal('Privilidge');
 
 ?>

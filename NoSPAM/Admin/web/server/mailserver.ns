@@ -309,20 +309,67 @@ function save()
 		return;
 	}
 
-	global $spamconf;
+	global $spamconf,$MaxUser,$MaxDomain,$MaxQuota;
 	
 	$bModify = isset($_POST["modify"]);
 	$domain = trim($_POST["Domain"]);
+	$Section = $spamconf->params["MailServer"];
+	$TotalUser = $TotalQuota = 0;
+	$vDomains = array();
+	
+	foreach ($Section as $key=>$value){
+		if(preg_match("/VirtualDomain_(.+)_(?:Admin|Quota|MaxUser|Memo)/",$key,$matches)){
+			if (in_array($matches[1],$vDomains))
+				continue;
+			else
+				array_push($vDomains,$matches[1]);
+		}
+	}
+	
+	$TotalDomain = count($vDomains);
+	if ( $TotalDomain> 0){
+		foreach ($vDomains as $value){
+			$TotalUser += intval($Section["VirtualDomain_{$value}_MaxUser"]);
+			$TotalQuota += intval($Section["VirtualDomain_{$value}_Quota"]);
+		}
+	}
 	
 	if(!$bModify){
-		if( $spamconf->hasParam("VirtualDomain_{$domain}_Quota","MailServer") ){
+		if ($TotalDomain == $MaxDomain){
+			echo "最大虚拟邮件域数量已达上限";
+			return;
+		}
+		if(array_key_exists("VirtualDomain_{$domain}_Quota",$Section)){
 			echo "该邮件域已存在！";
 			return;
 		}
-		if($domain == "localhost" || $domain == "localhost.localdomain"){
-			errorReturn("系统保留域，不可添加！",$_SERVER['PHP_SELF']);
+	}
+	
+	if ($MaxUser != 0){
+		if (intval($_POST["MaxUser"]) <= 0){
+			echo "最大用户数必须设置为正整数";
 			return;
 		}
+		if ($MaxUser < ($TotalUser + intval($_POST["MaxUser"]))){
+			echo "虚拟域用户数量超过上限";
+			return;
+		}
+	}
+	
+	if ($MaxQuota != 0){
+		if (intval($_POST["Quota"]) <= 0){
+			echo "用户空间限额必须设置为正整数";
+			return;
+		}
+		if ($MaxUser < ($TotalQuota + intval($_POST["Quota"])*intval($_POST["QuotaUnit"]))){
+			echo "虚拟域用户空间限额数量超过上限";
+			return;
+		}
+	}
+	
+	if($domain == "localhost" || $domain == "localhost.localdomain"){
+		errorReturn("系统保留域，不可添加！",$_SERVER['PHP_SELF']);
+		return;
 	}
 	
 	$spamconf->setParam("VirtualDomain_{$domain}_Admin",$_POST["Admin"],"MailServer");

@@ -33,6 +33,7 @@ define("PERM_ADMIN_SYSTEM",			0x00000400);
 define("PERM_ADMIN_ADMIN",			0x00000800);
 define("PERM_ADMIN_SERVER",			0x00001000);
 define("PERM_ADMIN_ARCHIVE",		0x00002000);
+define("PERM_ADMIN_AUDIT",			0x00004000);
 
 define("PERM_ADMIN_MAX",0xFFFFFFFF);
 
@@ -46,15 +47,17 @@ function havePerm($privilidge,$PermVal){
 }
 
 function adminPerm($PermVal){
-	if (isset($_SESSION['Privilidge'])) {
-		return havePerm($_SESSION['Privilidge'],$PermVal);
+	global $Privilege;
+	if (isset($Privilege)) {
+		return havePerm($Privilege,$PermVal);
 	} else {
 		return false;
 	}
 }
 
 function getAdminID(){
-	return $_SESSION['AdminID'];
+	global $AdminID;
+	return $AdminID;
 }
 
 //ÅÐ¶ÏIDÊÇ·ñºÏ·¨

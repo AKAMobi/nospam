@@ -64,6 +64,7 @@ class XMLConfig
 		$doc -> append_child($newroot);
 		$str = $doc->dump_mem(true,"ISO-8859-1");
 		savetofile($str,$this->file);
+		LogAction("规则数据库","修改","");
 	}
 }
 
@@ -251,18 +252,26 @@ class ConfFile
 
 	function setParam($key,$value,$section = "")
 	{
-		if($this->bSection)
+		if($this->bSection){
+			$oldValue = $this->params[$section][$key];
 			$this->params[$section][$key] = $value;
-		else
+			LogAction("配置文件","更改","(".$section.")".$key,$oldValue,$value);
+		}else{
+			$oldValue = $this->params[$key];
 			$this->params[$key] = $value;
+			LogAction("配置文件","更改",$key,$oldValue,$value);
+		}
 	}
 	
 	function delParam($key, $section = "")
 	{
-		if($this->bSection)
+		if($this->bSection){
 			unset($this->params[$section][$key]);
-		else
+			LogAction("配置文件","删除","(".$section.")".$key);
+		}else{
 			unset($this->params[$key]);
+			LogAction("配置文件","删除",$key);
+		}
 	}
 	
 	function hasParam($key, $section = "")
@@ -444,6 +453,173 @@ class License
 	function getVersion()
 	{
 		return $this->params["Version"];
+	}
+	
+	function getMaxUser()
+	{
+		if (!array_key_exists('MailServerMaxUser',$this->params))
+			return 1;
+		return intval($this->params['MailServerMaxUser']);
+	}
+
+	function getMaxDomain()
+	{
+		if (!array_key_exists('MailServerMaxDomain',$this->params))
+			return 1;
+		return intval($this->params['MailServerMaxDomain']);
+	}
+
+	function getMaxQuota()
+	{
+		if (!array_key_exists('MailServerMaxQuota',$this->params))
+			return 1;
+		return intval($this->params['MailServerMaxQuota']);
+	}
+}
+
+class LoginBlackList
+{
+	var $aBlockList = array();
+	var $aLoginfailListID = array();
+	var $aLoginfailListIP = array();
+	
+	function LoginBlackList()
+	{
+		if (!file_exists(IPDENYLIST)){
+			fclose(fopen(IPDENYLIST,"w"));
+		}
+		$fp = fopen(IPDENYLIST,"r");
+		while ($line = fgets($fp,1024)){
+			list($ip, $time) = explode(" ",$line);
+			$this->aBlockList[$ip] = intval($time);
+		}
+		fclose($fp);
+
+		if (!file_exists(LOGINFAILLIST)){
+			fclose(fopen(LOGINFAILLIST,"w"));
+		}
+		$fp = fopen(LOGINFAILLIST,"r");
+		while ($line = fgets($fp,1024)){
+			list($id, $ip, $time) = explode(" ",$line);
+			if (!array_key_exists($ip.":".$id, $this->aLoginfailListID))
+				$this->aLoginfailListID[$ip.":".$id] = array();
+			array_push($this->aLoginfailListID[$ip.":".$id], intval($time));
+
+			if (!array_key_exists($ip, $this->aLoginfailListIP))
+				$this->aLoginfailListIP[$ip] = array();
+			array_push($this->aLoginfailListIP[$ip], intval($time));
+		}
+		fclose($fp);
+	}
+	
+	function isDenied($sIP)
+	{
+		if (!array_key_exists($sIP, $this->aBlockList))
+			return false;
+		
+		if (time() > $this->aBlockList[$sIP]){
+			unset($this->aBlockList[$sIP]);
+			$this->saveBlockList();
+			return false;
+		}
+
+		LogAction("用户登录","黑名单用户尝试登录",$sIP);
+		return true;
+	}
+	
+	function getDeniedTime($sIP)
+	{
+		if (!$this->isDenied($sIP))
+			return 0;
+		return $this->aBlockList[$sIP];
+	}
+	
+	function addBlockList($sIP)
+	{
+		global $iDenyTimeAfterMaxLogin;
+		
+		$this->aBlockList[$sIP] = time() + 60 * $iDenyTimeAfterMaxLogin;
+		$this->saveBlockList();
+		LogAction("用户登录","加入IP黑名单",$sIP);
+	}
+	
+	function saveBlockList()
+	{
+		$str = "";
+		if (count($this->aBlockList) > 0){
+			foreach ($this->aBlockList as $key=>$value){
+				$str .= $key." ".$value."\n";
+			}
+		}
+		savetofile($str,IPDENYLIST);
+	}
+	
+	function addLoginfailList($sIP, $sID)
+	{
+		global $iDenyTimeAfterMaxLogin,$iUserMaxLoginRetry,$iIPMaxLoginRetry;
+		
+		$bBlock = false;
+		$time = time();
+		if (array_key_exists($sIP.":".$sID,$this->aLoginfailListID)){
+			if ($time <= (min($this->aLoginfailListID[$sIP.":".$sID]) + 60 * 5)){
+				if (count($this->aLoginfailListID[$sIP.":".$sID]) > ($iUserMaxLoginRetry-1)){
+					$bBlock = true;
+				}
+			}
+		}
+				
+		if (!$Block && array_key_exists($sIP,$this->aLoginfailListIP)){
+			if ($time <= (min($this->aLoginfailListIP[$sIP]) + 60 * 5)){
+				if (count($this->aLoginfailListIP[$sIP]) > ($iIPMaxLoginRetry-1)){
+					$bBlock = true;
+				}
+			}
+		}
+
+		LogAction("用户登录","登录失败",$sID);
+
+		if ($bBlock){
+			$this->addBlockList($sIP);
+			unset(
+				$this->aLoginfailListID[$sIP.":".$sID],
+				$this->aLoginfailListIP[$sIP]
+			);
+			$this->saveLoginfailList();
+		}else{
+			$filter = create_function('$value','return $value > '.($time - 60 * 5).';');
+			$tmpArray = array();
+			if (array_key_exists($sIP.":".$sID,$this->aLoginfailListID)){
+				$tmpArray = 
+					array_filter($this->aLoginfailListID[$sIP.":".$sID], $filter);
+			}
+			array_push($tmpArray,$time);
+			$this->aLoginfailListID[$sIP.":".$sID] = $tmpArray;
+			$tmpArray = array();
+			if (array_key_exists($sIP,$this->aLoginfailListIP)){
+				$tmpArray = 
+					array_filter($this->aLoginfailListIP[$sIP], $filter);
+			}
+			array_push($tmpArray,$time);
+			$this->aLoginfailListIP[$sIP] = $tmpArray;
+			$this->saveLoginfailList();
+		}
+	}
+	
+	function saveLoginfailList()
+	{
+		$str = "";
+		if (count($this->aLoginfailListID) > 0){
+			foreach ($this->aLoginfailListID as $key=>$value){
+				list($ip, $id) = explode(":", $key);
+				if (array_key_exists($ip, $this->aLoginfailListIP)){
+					foreach ($value as $time){
+							if (in_array($time, $this->aLoginfailListIP[$ip]))
+								$str .= $id." ".$ip." ".$time."\n";
+					}
+				}
+			}
+		}
+		savetofile($str,LOGINFAILLIST);
 	}
 }
 ?>

@@ -1,9 +1,11 @@
 <?php
-require_once('inc/vpopadm.inc.ns');
+require_once('inc/include.ns');
 
+/*
 unset($_SESSION['AdminID']);
 unset($_SESSION['Privilidge']);
-
+*/
+session_start();
 session_unset();
 session_destroy();
 

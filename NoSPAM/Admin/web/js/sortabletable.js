@@ -399,6 +399,7 @@ SortableTable.toDate = function (s) {
 	if(typeof parts[1] != "undefined"){
 		d.setHours(parts2[0]);
 		d.setMinutes(parts2[1]);
+		d.setSeconds(parts2[2]);
 	}
 	return d.valueOf();
 };

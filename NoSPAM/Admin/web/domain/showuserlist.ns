@@ -151,7 +151,7 @@ for( $i = $start ; $i < $end ; $i++,$j++)
 <?
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-		<td><input type="checkbox" name="id[]" value="<?=$UserList[$i]["id"]?>"></td>
+		<td><?if ($UserList[$i]["id"] != "postmaster"){?><input type="checkbox" name="id[]" value="<?=$UserList[$i]["id"]?>"><?}?></td>
 <?
 	}
 ?>
@@ -172,7 +172,7 @@ for( $i = $start ; $i < $end ; $i++,$j++)
 ?>
 		<td>
 			<input type="button" value="±à¼­" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=modify&id={$UserList[$i]["id"]}'"?>">
-			<input type="button" value="É¾³ý" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=del&id={$UserList[$i]["id"]}'"?>">
+			<?if ($UserList[$i]["id"] != "postmaster"){?><input type="button" value="É¾³ý" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=del&id={$UserList[$i]["id"]}'"?>"><?}?>
 		</td>
 <?
 	}

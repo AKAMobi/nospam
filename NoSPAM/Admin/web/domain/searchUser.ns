@@ -1,5 +1,5 @@
 <?php
-require_once('../inc/vpopadm.inc.ns');
+require_once('../inc/include.ns');
 
 	if (!adminPerm(PERM_ADMIN_DOMAIN) ){
 ?>

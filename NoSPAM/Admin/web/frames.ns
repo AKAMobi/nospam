@@ -1,7 +1,6 @@
 <?php
-//require_once('inc/vpopadm.inc.ns');
-session_start();
-if (!isset($_SESSION['AdminID'])){
+require_once('inc/include.ns');
+if (!isset($AdminID)){
 ?>
 	<p>ÇëÕý³£<A HREF="/admin/">µÇÂ¼</a>£¡</p>
 <?php

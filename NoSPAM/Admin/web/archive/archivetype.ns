@@ -92,23 +92,23 @@ function flush()
     <br>
     <hr>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeS" value="Spam" onclick="form1.ArchiveTypeNS.checked=false;"<?if(in_array("Spam",$type)) echo " checked";if($type == "All") echo " disabled";?>>垃圾邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNS" value="NotSpam" onclick="form1.ArchiveTypeS.checked=false;"<?if(in_array("NotSpam",$type)) echo " checked";if($type == "All") echo " disabled";?>>非垃圾邮件
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeS" value="Spam" onclick="form1.ArchiveTypeNS.checked=false;"<?if(in_array("Spam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>垃圾邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNS" value="NotSpam" onclick="form1.ArchiveTypeS.checked=false;"<?if(in_array("NotSpam",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>非垃圾邮件
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeV" value="Virus" onclick="form1.ArchiveTypeNV.checked=false;"<?if(in_array("Virus",$type)) echo " checked";if($type == "All") echo " disabled";?>>病毒邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNV" value="NotVirus" onclick="form1.ArchiveTypeV.checked=false;"<?if(in_array("NotVirus",$type)) echo " checked";if($type == "All") echo " disabled";?>>非病毒邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeV" value="Virus" onclick="form1.ArchiveTypeNV.checked=false;"<?if(in_array("Virus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>病毒邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNV" value="NotVirus" onclick="form1.ArchiveTypeV.checked=false;"<?if(in_array("NotVirus",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>非病毒邮件<br>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeE" value="Excessive" onclick="form1.ArchiveTypeNE.checked=false;"<?if(in_array("Excessive",$type)) echo " checked";if($type == "All") echo " disabled";?>>动态超限邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNE" value="NotExcessive" onclick="form1.ArchiveTypeE.checked=false;"<?if(in_array("NotExcessive",$type)) echo " checked";if($type == "All") echo " disabled";?>>未动态超限邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeE" value="Excessive" onclick="form1.ArchiveTypeNE.checked=false;"<?if(in_array("Excessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>动态超限邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNE" value="NotExcessive" onclick="form1.ArchiveTypeE.checked=false;"<?if(in_array("NotExcessive",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>未动态超限邮件<br>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if($type == "All") echo " disabled";?>>匹配规则的邮件<br>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if($type == "All") echo " disabled";?>>未匹配规则的邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeR" value="MatchRule" onclick="form1.ArchiveTypeNR.checked=false;"<?if(in_array("MatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>匹配规则的邮件<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeNR" value="NotMatchRule" onclick="form1.ArchiveTypeR.checked=false;"<?if(in_array("NotMatchRule",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>未匹配规则的邮件<br>
     </p>
     <p>
-    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if($type == "All") echo " disabled";?>>发往特定地址<br>
+    <input type="checkbox" name="ArchiveType[]" id="ArchiveTypeA" value="Address" onclick="form1.ArchiveAddress.disabled=!this.checked;"<?if(in_array("Address",$type)) echo " checked";if(in_array("All", $type)) echo " disabled";?>>发往特定地址<br>
     <TEXTAREA name="ArchiveAddress" cols="20" rows="10"<?if(!in_array("Address",$type)) echo " disabled";?>><?=str_replace(",","\n",$addr)?></TEXTAREA>
     </p>
     <input type="submit" name="Submit" value="修改">

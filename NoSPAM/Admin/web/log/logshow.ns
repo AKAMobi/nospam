@@ -27,10 +27,11 @@ else
 	$pages = $total%$pagenum? intval(($total/$pagenum)+1):intval(($total/$pagenum));
 
 $page = $_GET["page"];
+if($page > $pages || $page == -1)
+	$page = $pages;
+
 if(!$page || $page < 1)
 	$page = 1;
-if($page > $pages)
-	$page = $pages;
 
 $pos = $pagenum*$page>$total?$total:$pagenum*$page;
 $start = ($pos-$pagenum+1)>0? ($pos-$pagenum+1):1;
@@ -246,7 +247,7 @@ if($pages > 10000){
 	else
 		echo ">>>>&nbsp;";
 }
-echo "<a href='logshow.ns?page=$pages&pagenum=$pagenum' title='最后一页'>->></a>&nbsp;";
+echo "<a href='logshow.ns?page=-1&pagenum=$pagenum' title='最后一页'>->></a>&nbsp;";
 echo "共".$pages."页，";
 ?>
 <script>

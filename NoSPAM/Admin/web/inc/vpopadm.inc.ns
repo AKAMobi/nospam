@@ -1,6 +1,4 @@
 <?php
-session_start(); 
-
 function getDomain(){
 	return "localhost.localdomain";
 	#return substr($_SERVER['SERVER_NAME'],5);

@@ -49,6 +49,10 @@ foreach($rules as $rule){
 	$keywordscount = count($keywords);
 	$sizescount = count($sizes);
 	$attachmentscount = count($attachments);
+	$rule_logic = $rule->has_attribute("rule_logic")? $rule->get_attribute("rule_logic"):"AND";
+	$keyword_logic = $rule->has_attribute("keyword_logic")? $rule->get_attribute("keyword_logic"):"AND";
+	$size_logic = $rule->has_attribute("size_logic")? $rule->get_attribute("size_logic"):"AND";
+	$attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("attach_logic"):"AND";
 ?>
 <table border="1" width="100%">
 <tr><td align="center">
@@ -65,19 +69,53 @@ foreach($rules as $rule){
 		<td>建立时间：<?=FormatTime($rule->get_attribute("create_time"))?></td>
 		<td>更新时间：<?=FormatTime($rule->get_attribute("update_time"))?></td>
 	</tr>
-	<?if($bPolice){?>
 	<tr>
-		<td>报警级别：<?=$rule->get_attribute("alarmlevel")?></td>
+		<td>过期时间：<?=FormatTime($rule->get_attribute("expire_time"))?></td>
+		<td><?if($bPolice){?>报警级别：<?=$rule->get_attribute("alarmlevel")?><?}?></td>
+	</tr>
+	<?if ($bPolice){?>
+	<tr>
+		<td>实时上报：<?=$rule->has_attribute("realtime_upload")? ($rule->get_attribute("realtime_upload") == "YES" ? "是":"否"):"否"?></td>
 		<td></td>
 	</tr>
 	<?}?>
 	</table>
+	<br>
+规则间逻辑关系：<?
+	switch ($rule_logic){
+		case "NOT":
+		echo "否";
+		break;
+		case "OR":
+		echo "或";
+		break;
+		case "AND":
+		default:
+		echo "与";
+	}
+?>
 	<br>
 	<fieldset style="width: 95%">
 	<legend><b>关键字及IP规则</b> 共<?=$keywordscount?>条 </legend>
 	<div align="center">
 <?
 	if($keywordscount > 0){
+?>
+关键字规则内部逻辑关系：<?
+	switch ($keyword_logic){
+		case "NOT":
+		echo "否";
+		break;
+		case "OR":
+		echo "或";
+		break;
+		case "AND":
+		default:
+		echo "与";
+	}
+?>
+	<br>
+<?
 		$i = 1;
 		foreach($keywords as $keyword){
 ?>
@@ -102,6 +140,22 @@ foreach($rules as $rule){
 	<div align="center">
 <?
 	if($sizescount > 0){
+?>
+数值规则内部逻辑关系：<?
+	switch ($size_logic){
+		case "NOT":
+		echo "否";
+		break;
+		case "OR":
+		echo "或";
+		break;
+		case "AND":
+		default:
+		echo "与";
+	}
+?>
+	<br>
+<?
 		$i = 1;
 		foreach($sizes as $size){
 ?>
@@ -123,6 +177,22 @@ foreach($rules as $rule){
 	<div align="center">
 <?
 	if($attachmentscount > 0){
+?>
+附件规则内部逻辑关系：<?
+	switch ($attach_logic){
+		case "NOT":
+		echo "否";
+		break;
+		case "OR":
+		echo "或";
+		break;
+		case "AND":
+		default:
+		echo "与";
+	}
+?>
+	<br>
+<?
 		$i = 1;
 		foreach($attachments as $attachment){
 ?>

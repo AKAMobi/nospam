@@ -1,4 +1,7 @@
 <?
+require_once('const.ns');
+require_once('params.ns');
+
 function FormatTime($str)
 {
 	//20040114101246 -> 2004-01-14 10:12:46
@@ -7,7 +10,7 @@ function FormatTime($str)
 
 function wi($param, &$result)
 {
-	exec(WI." check_License License.dat",$tmpResult,$tmpRet);
+/*	exec(WI." check_License License.dat",$tmpResult,$tmpRet);
 	
 	if ($tmpRet != 0){
 ?>
@@ -17,7 +20,7 @@ location.href='/admin/system/serialno.ns';
 </script>
 <?
 		return -1;
-	}
+	}*/
 
 	exec(WI." ".$param,$result,$ret);
 	return $ret;
@@ -110,5 +113,44 @@ function unhtmlentities ($string)
 	$trans_tbl = get_html_translation_table(HTML_ENTITIES); 
 	$trans_tbl = array_flip ($trans_tbl); 
 	return strtr ($string, $trans_tbl); 
-} 
+}
+
+function getSessionVal($key)
+{
+	session_start();
+	if (array_key_exists($key, $_SESSION))
+		$ret = $_SESSION[$key];
+	else
+		$ret = null;
+	session_write_close();
+	
+	return $ret;
+}
+
+function setSessionVal($key, $value)
+{
+	session_start();
+	$_SESSION[$key] = $value;
+	session_write_close();
+}
+
+function LogAction($func, $action, $option, $oldValue = "", $newValue = "")
+{
+	global $AdminID;
+
+	$str = "[".date("Y-m-d H:m:s")."] [".$AdminID."] [".$_SERVER['REMOTE_ADDR']."] [".$func."] [".$option."] [".$action;
+	$str .= "] [".$oldValue."] [".$newValue."]\n";
+
+	$fp = fopen(ACTIONLOG.".lock","w");
+	if( flock($fp, LOCK_EX) ){
+		$fp1 = fopen(ACTIONLOG,"a");
+		if(fwrite($fp1,$str) != strlen($str))
+			echo ("无法写入文件，磁盘已满？");
+		fclose($fp1);
+		flock($fp, LOCK_UN);
+	}else{
+		echo "无法锁定文件！";
+	}
+	fclose($fp);
+}
 ?>

@@ -6,7 +6,7 @@ if(!adminPerm(PERM_ADMIN_LOG))
 ?>
 <html>
 <head>
-
+<META http-equiv=content-type content="text/html; charset=gb2312">
 <script>
 function initSelect()
 {
