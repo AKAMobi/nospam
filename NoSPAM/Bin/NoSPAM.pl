@@ -673,7 +673,7 @@ sub reset_Network_update_ismtp_relay
 	close FD;
 
 	@relays = grep (!/^$/, @relays);
-	@relays = grep (!/^$IP/, @relays);
+	@relays = grep (!/^$IP:/, @relays);
 	unshift( @relays, "$IP:allow,RELAYCLIENT=\"\"\n" );
 
 	my $content = join('',@relays);

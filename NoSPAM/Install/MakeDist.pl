@@ -31,7 +31,15 @@ foreach $pkg ( @pkgs ){
 			last;
 		}
 	}
-	`cp -Ra * ../tmp` if ( $not_tarball );
+	`cp -Raf * ../tmp` if ( $not_tarball );
+	chdir '..';
+	
+	chdir 'tmp';
+	if ( -f 'post_proc.sh' ){
+		print "Setting file mod & permissions for $pkg...\n";
+		`sh post_proc.sh`;
+		unlink 'post_proc.sh';
+	}
 	chdir '..';
 }
 
@@ -60,5 +68,5 @@ unlink "ns-$NSVER.i386.rpm";
 rename "ns-$NSVER.i386.rpm.zip", "ns-$NSVER.i386.rpm";
 chdir '..';
 print "Clean tmp files...\n";
-`rm -fr tmp`;
+#`rm -fr tmp`;
 
