@@ -12,6 +12,7 @@
 #include <time.h>
 
 #include <string>
+#include <fstream>
 
 #include <socket++/sockinet.h>
 
@@ -23,9 +24,11 @@
 using namespace boost::filesystem;
 
 
-#define BUF_LEN 4096
+#define BUF_LEN 2048
 #define EML_DIR "/home/NoSPAM/spool/working"
 #define EML_PREFIX "emlfile.gw.nospam"
+
+std::ofstream zlog("/var/log/cpp.debug");
 
 class qmail_hdrs
 {
@@ -38,11 +41,14 @@ class qmail_hdrs
 
 		qmail_hdrs( char *p, size_t n=0)
 		{
+			//printf ( "p=%s\n", p );
 			len = n;
 			for ( size_t i=0; i<n; i++ ){
-				hdrs[i] = p[n];
+				hdrs[i] = p[i];
+				//printf ( "i:%d, hdrs[i]:%d\n", i, hdrs[i] );
 			}
 
+			//dump();
 			invalid_len = 5;
 			memcpy ( invalid_hdrs, "F\0T\0\0", invalid_len ) ;
 		}
@@ -59,7 +65,29 @@ class qmail_hdrs
 			return false;
 		}
 
+		void dump()
+		{
+			printf ("qmail_hdrs: p=%s, len=%d\n", hdrs, len );
+			cout << "[" ;
+			for ( size_t i=0; i<len; i++ ){
+				if ( 0==hdrs[i] ){
+					cout << "\\0";
+				}else{
+					cout << hdrs[i];
+				}
+			}
+			cout << "]" << endl;
+		}
+
+
 };
+
+void qns_err( const char* smtp_msg, int exit_code )
+{
+	cerr << smtp_msg << "\r\n";
+	exit(exit_code);
+}
+
 
 string dump_stdin_to_file()
 {
@@ -67,37 +95,40 @@ string dump_stdin_to_file()
 	unsigned char buffer[BUF_LEN];
 	int fd;
 
-	char tmp_emlfile[128];
-	char new_emlfile[128];
-	char file_id[128];
+	char tmp_emlfile[128+1];
+	char new_emlfile[128+1];
+	char file_id[128+1];
 
 	snprintf ( file_id, 128, "%s.%d.%d", EML_PREFIX, (int)time(0), getpid() );
+	file_id[128]=0;
 	snprintf ( tmp_emlfile, 128, "%s/tmp/%s", EML_DIR, file_id );
+	tmp_emlfile[128]=0;
 	snprintf ( new_emlfile, 128, "%s/new/%s", EML_DIR, file_id );
+	new_emlfile[128]=0;
 
 	//printf ( "%s\n", emlfile );
 
-  /*
-   * XXX we should do it
-   * if (-f "$scandir/$wmaildir/tmp/$file_id" || -f "$scandir/$wmaildir/new/$file_id") {
-    &error_condition("$file_id exists, try again later");
-  }
-  */
+	/*
+	 * XXX we should do it
+	 * if (-f "$scandir/$wmaildir/tmp/$file_id" || -f "$scandir/$wmaildir/new/$file_id") {
+	 &error_condition("$file_id exists, try again later");
+	 }
+	 */
 	fd = TEMP_FAILURE_RETRY( open(tmp_emlfile,O_WRONLY|O_CREAT, S_IRWXU|S_IROTH ) );
 
 	if ( fd<0 ){
-		fprintf ( stderr, "443 qns_loader can't open file\r\n" );
+		qns_err ( "443 qns_loader can't open file.", 150 );
 		exit (150);
 	}
 
 	while( (len = (TEMP_FAILURE_RETRY( read(0,buffer,BUF_LEN))) ) ){
 		if( len < 0 ){
-			fprintf ( stderr, "443 qns_loader can't read file\r\n" );
+			qns_err ( "443 qns_loader can't read file.", 150 );
 			exit (150);
 		}
 		len = TEMP_FAILURE_RETRY ( write ( fd, buffer, len) );
 		if( len < 0 ){
-			fprintf ( stderr, "443 qns_loader can't write file\r\n" );
+			qns_err ( "443 qns_loader can't write file.", 150 );
 			exit (150);
 		}
 	}
@@ -119,34 +150,41 @@ int net_process( string &result,
 	try {
 		io->connect ("127.0.0.1", "40307", "tcp");
 	} catch ( ... ) {
-		result = "443 connect to Engine failure.";
-		return -1;
+		qns_err ( "443 Engine temporarily unavailable.", 150 );
+		return 150;
 	}
-	
-cout << relayclient << "," << tcpremoteip << "," << tcpremoteinfo << "," << emlfile << "," << hdrs->len << endl;
+
+	zlog << relayclient << "," << tcpremoteip << "," << tcpremoteinfo << "," << emlfile << "," << endl;
+
 	io << relayclient << endl;
 	io << tcpremoteip << endl;
 	io << tcpremoteinfo << endl;
 	io << emlfile << endl;
-	//io << hdrs << endl;
-	io<<"ft"<<endl;
 
-	char smtp_code[40+1], smtp_info[256+1], exit_code[4+1];
-	io.getline( smtp_code, 40 );
+	//hdrs->dump();
+	io.write ( hdrs->hdrs, hdrs->len );
+	io << endl;
+
+	char smtp_code[4+1], smtp_info[256+1], exit_code[4+1];
+	io.getline( smtp_code, 4 );
+	smtp_code[4] = 0;
 	io.getline( smtp_info, 256 );
+	smtp_info[256] = 0;
 	io.getline( exit_code, 4 );
+	exit_code[4] = 0;
 
-cout << "smtp_code: [" << smtp_code << "] smtp_info: [" << smtp_info << "] exit_code [" << exit_code << "]" << endl;
+	zlog << "smtp_code: [" << smtp_code << "] smtp_info: [" << smtp_info << "] exit_code [" << exit_code << "]" << endl;
 	result = smtp_code;
 	result += " ";
-        result += smtp_info;
+	result += smtp_info;
 
 	int ret;
 	try {
 		//ret = lexical_cast<int>exit_code;
 		ret = atoi(exit_code);
 	} catch (...) {
-		ret = -1;
+		result = "443 系统内部临时不可用";
+		ret = 150;
 	}
 
 	remove ( emlfile );
@@ -159,54 +197,29 @@ qmail_hdrs* grab_envelope_hdrs()
 	size_t n;
 
 	n = read( 1, buf, sizeof(buf) );
-	qmail_hdrs *hdrs = new qmail_hdrs ( buf, n );
-	//if ( -1==n )
-
-	return hdrs;
+	return new qmail_hdrs ( buf, n );
 }
 
-
-void debug ( char* msg )
-{
-	;
-}
 
 void qmail_parent_check ()
 {
-  pid_t ppid = getppid();
+	pid_t ppid = getppid();
 
-  if ( 1==ppid )  {
-    debug("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too...");
-    exit(111); 
-  }
+	if ( 1==ppid )  {
+		zlog << "\n!!!!!!!!!!!!!!!!!!!!!!!!!q_s_c: Whoa! parent process is dead! (ppid=$ppid) Better die too..." << endl ;
+		exit(111); 
+	}
 }
 
 
-void qns_err( char* const smtp_msg, int exit_code )
+int main ()
 {
-	cerr << smtp_msg << "\r\n";
-	exit(exit_code);
-}
-
-int old_main( int argc, char* argv[] )
-{
-
-	dump_stdin_to_file();
-
 	setuid ( 0 );
 	setgid ( 0 );
 
 	seteuid ( 0 );
 	setegid ( 0 );
 
-	//execvp( QNS_BINARY, argv );
-
-	fprintf ( stderr, "443 qns_loader error\n" );
-	return 150;
-}
-
-int main ()
-{
 
 	string relayclient,tcpremoteinfo,tcpremoteip;
 
@@ -228,43 +241,40 @@ int main ()
 	if ( TCPREMOTEIP && strlen (TCPREMOTEIP) )
 		tcpremoteip = TCPREMOTEIP;
 
-	//goto LABEL;
-	cout << tcpremoteinfo << "," << relayclient << endl;
+	//	goto LABEL;
+	zlog << tcpremoteinfo << "," << relayclient << endl;
 
 	emlfile = dump_stdin_to_file();
-	//cout << "file_id: " << file_id << endl;
-	
+	zlog << "file_id: " << emlfile << endl;
+
 	if ( !exists( emlfile ) ){
 		qns_err("443 ns can't get file.", 150);
 	}
 
 	hdrs = grab_envelope_hdrs();
 	if ( !hdrs->valid() ) {
-	  debug("g_e_h: no sender and no recips.");
-	  //unlink(emlfile.c_str())
-	  remove(emlfile);
-	  qns_err("443 ns can't get hdr.", 150);
+		zlog << "g_e_h: no sender and no recips." << endl;
+		//unlink(emlfile.c_str())
+		remove(emlfile);
+		qns_err("443 ns can't get hdr.", 150);
 	}
-for ( size_t i=0; i<hdrs->len; i++ ){
-	if ( 0==hdrs->hdrs[i] ){
-		cout << "\\0";
-	}else{
-		cout << hdrs->hdrs[i];
-	}
-}
-cout << endl;
+
 	qmail_parent_check();
-LABEL:
+	//LABEL:
+	//hdrs->dump();
 	ret = net_process( result, relayclient, tcpremoteip, tcpremoteinfo, emlfile, hdrs );
-	//ret = net_process( result, "127.0.0.2", "192.168.0.1", "", "/tmp/php.err", "Fzixia@zixia.net\0Tzixia@vmware.zixia.net\0\0");
+	//hdrs = new qmail_hdrs ( "Fzixia@zixia.net\0Tzixia@vmware.zixia.net\0\0", 42);
+	//ret = net_process( result, "127.0.0.2", "192.168.0.1", "", "/tmp/zixia.eml", hdrs );
 
 	if ( -1==ret ){
 		cerr << result << "\r\n";
 		exit (111);
 	}
-
-	cerr << "[" << result << "]\r\n";
-	exit ( ret );
+	else if ( 0!=ret ){
+		qns_err ( result.c_str(), ret );
+		exit ( ret );
+	}
+	exit (0);
 }
 
 
