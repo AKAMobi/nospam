@@ -63,12 +63,10 @@ extern char *crypt(const char *, const char *);
 #endif
 #include	"htmllibdir.h"
 
-#if 0
-#ifdef	WEBPASS_CHANGE_VCHKPW
+// by lfan, recaculate quota
 #include "vpopmail.h"
 #include "vauth.h"
-#endif
-#endif
+#include "maildir/maildirquota.h"
 
 #if	HAVE_SYSLOG_H
 #include	<syslog.h>
@@ -2505,6 +2503,21 @@ time_t	timeouthard=TIMEOUTHARD;
 				if (pref_autopurge > 0) maildir_autopurge();
 
 				sqpcp_login(ubuf, p);
+				// by lfan, correct maildirsize error
+				{
+					struct vqpasswd *mypw;
+					if ( (mypw = vauth_getpw( u, u2 )) != NULL ) {
+						struct maildirsize quotainfo;
+						char buf[1024];
+						int rc;
+						sprintf( buf, "%sS", mypw->pw_shell );
+						if( maildir_openquotafile_init( &quotainfo, ".", buf) == 0 )
+						{
+							maildir_checkquota( &quotainfo, 0, 0 );
+							maildir_closequotafile(&quotainfo);
+						}
+					}
+				}
 
 				//by lfan
 				//http_redirect_argss("&form=folders", "", "");
