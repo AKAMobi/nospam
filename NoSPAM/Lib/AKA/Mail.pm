@@ -7,6 +7,7 @@
 
 
 package AKA::Mail;
+use strict;
 
 use MIME::Base64; 
 use MIME::QuotedPrint; 
@@ -133,6 +134,7 @@ sub server
 			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
 			if ( $self->check_conffile_update() ){
 				close $server;
+				#kill 9, $$;
 				exit;
 			}
 			; # goto accept
@@ -220,7 +222,7 @@ $logstr .= "emlfilename: [$_]\n";
 	$self->{mail_info}->{aka}->{emlfilename} = $_;
 
 	$_ = <$socket>; chomp;
-$logstr .= "$fd1: $_\n";
+$logstr .= "fd1: $_\n";
 	$self->{mail_info}->{aka}->{fd1} = $_;
 
 $self->{zlog}->log ( $logstr );
@@ -534,7 +536,6 @@ sub qmail_requeue {
 	select(EOUT);$|=1;
 	select(EIN);$|=1;
 
-	$elapsed_time = tv_interval ($self->{start_time}, [gettimeofday]);
 	local $SIG{PIPE} = 'IGNORE';
 
 	my $pid = fork;
@@ -575,7 +576,7 @@ sub qmail_requeue {
 	# We should now have queued the message.  Let's find out the exit status
 	# of qmail-queue.
 	waitpid ($pid, 0);
-	$xstatus =($? >> 8);
+	my $xstatus =($? >> 8);
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
@@ -590,11 +591,11 @@ sub write_queue
 	my $aka = $self->{mail_info}->{aka};
 	my $config = $self->{conf}->{config};
 
-	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
+	open (QMQ, "|/var/qmail/bin/qmail-queue")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue (#4.3.0) - $!");
 	#open (QMQ, "|/tmp/qq.pl")|| return $self->close_smtp (451, "Unable to open pipe to qmailqueue [$xstatus] (#4.3.0) - $!");
-	($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
+	my ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
 	my $elapsed_time = tv_interval ( $self->{start_time}, [gettimeofday]);
-	$findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
+	my $findate = POSIX::strftime( "%d %b ",$sec,$min,$hour,$mday,$mon,$year);
 	$findate .= sprintf "%02d %02d:%02d:%02d -0000", $year+1900, $hour, $min, $sec;
 
 	print QMQ "Received: from " . $aka->{returnpath} . " by " 
@@ -602,8 +603,9 @@ sub write_queue
 		. " with noSPAM-" . $self->{conf}->{licconf}->{Version} .  "\n";
 	print QMQ " Processed in $elapsed_time secs; $findate\n";
 
-	my ($pf_action, $pf_param) = ( $aka->{engine}->{content}->{action}, 
-					$aka->{engine}->{content}->{desc} );
+	my ($pf_action, $pf_param, $pf_desc) = ( $aka->{engine}->{content}->{action}, 
+					$aka->{engine}->{content}->{desc}, 
+					$aka->{engine}->{content}->{result} );
 	my ($pf_hdr_key,$pf_hdr_done);
 	if (  ACTION_ADDHDR<=$pf_action && ACTION_CHGHDR>=$pf_action ){
 		$pf_hdr_done = 0;
@@ -703,7 +705,7 @@ sub write_queue
 		print QMQ;
 	}
 	close(QMQ); #||&$self->close_smtp("Unable to close pipe to $qmailqueue (#4.3.0) - $!");
-	$xstatus = ( $? >> 8 );
+	my $xstatus = ( $? >> 8 );
 	if ( $xstatus > 10 && $xstatus < 41 ) {
 		return $self->close_smtp(553, "mail server permanently rejected message. (#5.3.0) - $!",$xstatus);
 	} elsif ($xstatus > 0) {
@@ -838,7 +840,7 @@ sub archive_engine
 
 	my $start_time = [gettimeofday];
 
-	my $emlfile = $self->{mail_info}->{aka}->{emlfile};
+	my $emlfile = $self->{mail_info}->{aka}->{emlfilename};
 	my $is_spam = $self->{mail_info}->{aka}->{engine}->{spam}->{result};
 	my $is_virus = $self->{mail_info}->{aka}->{engine}->{antivirus}->{result};
 	my $is_overrun = $self->{mail_info}->{aka}->{engine}->{dynamic}->{result};
@@ -858,9 +860,9 @@ sub archive_engine
 	}
 
 	my @archivetype = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveType}};
-foreach ( @archivetype ){
-	$self->{zlog}->debug( "archivetype: $_" );
-}
+#foreach ( @archivetype ){
+#	$self->{zlog}->debug( "archivetype: $_" );
+#}
 	unless ( @archivetype ){
 		$self->{mail_info}->{aka}->{engine}->{archive} = {	
 			result	=>0,
@@ -875,25 +877,40 @@ foreach ( @archivetype ){
 
 
 
-	my $archive_address = $self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress};
+	my @archive_address = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress}};
 	my $need_archive = 0;
-	if ( ! grep('All',@archivetype) ){
-		#选择性归档：全部/特定地址/垃圾/非垃圾/匹配了规则的 Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
-		$need_archive=1 if ( !$need_archive && grep('Spam',@archivetype) && $is_spam );
-		$need_archive=1 if ( !$need_archive && grep('NotSpam',@archivetype) && (!$is_spam) );
 
-		$need_archive=1 if ( !$need_archive && grep('Virus',@archivetype) && $is_Virus );
-		$need_archive=1 if ( !$need_archive && grep('NotVirus',@archivetype) && (!$is_Virus) );
+	#选择性归档：全部/特定地址/垃圾/非垃圾/匹配了规则的 Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
+	$need_archive=1 if ( !$need_archive && grep(/^All$/,@archivetype) );
+#$self->{zlog}->debug ( "archive: [$need_archive] [" . !$need_archive . "] [" . grep('Spam',@archivetype) . "] [" . $is_spam . "]");
+#$self->{zlog}->debug ( "archive All: [$need_archive]" );
 
-		$need_archive=1 if ( !$need_archive && grep('Excessive',@archivetype) && ($is_overrun) );
-		$need_archive=1 if ( !$need_archive && grep('NotExcessive',@archivetype) && (!$is_overrun) );
+	$need_archive=1 if ( !$need_archive && grep(/^Spam$/,@archivetype) && $is_spam );
+#$self->{zlog}->debug ( "archive Spam: [$need_archive] [$is_spam]" );
+	$need_archive=1 if ( !$need_archive && grep(/^NotSpam$/,@archivetype) && (!$is_spam) );
+#$self->{zlog}->debug ( "archive NotSpam: [$need_archive] [$is_spam]" );
 
-		$need_archive=1 if ( !$need_archive && grep('MatchRule',@archivetype) && ($is_matchrule) );
-		$need_archive=1 if ( !$need_archive && grep('NotMatchRule',@archivetype) && (!$is_matchrule) );
+	$need_archive=1 if ( !$need_archive && grep(/^Virus$/,@archivetype) && $is_virus );
+	$need_archive=1 if ( !$need_archive && grep(/^NotVirus$/,@archivetype) && (!$is_virus) );
 
-		
-		$need_archive=1 if ( !$need_archive && grep('Address',@archivetype)
-					&& length($archive_address) && grep($archive_address,split(/,/,$recips)) );
+	$need_archive=1 if ( !$need_archive && grep(/^Excessive$/,@archivetype) && ($is_overrun) );
+	$need_archive=1 if ( !$need_archive && grep(/^NotExcessive$/,@archivetype) && (!$is_overrun) );
+
+	$need_archive=1 if ( !$need_archive && grep(/^MatchRule$/,@archivetype) && ($is_matchrule) );
+	$need_archive=1 if ( !$need_archive && grep(/^NotMatchRule$/,@archivetype) && (!$is_matchrule) );
+
+	
+	if ( !$need_archive && grep(/^Address$/,@archivetype) && @archive_address){
+		my ( $recip, $archive_addr );
+		ARCHIVE_ADDR_LOOP: 
+		foreach $recip ( split(/,/,$recips) ){
+			foreach $archive_addr ( @archive_address ){
+				if ( $archive_addr eq $recip ){
+					$need_archive=1 ;
+					last ARCHIVE_ADDR_LOOP;
+				}
+			}
+		}
 	}
 
 	unless ( $need_archive ){
