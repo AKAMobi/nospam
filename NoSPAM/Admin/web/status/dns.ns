@@ -16,8 +16,13 @@ if(!adminPerm(PERM_ADMIN_LOG))
 </head>
 <body>
 
-<H1>DNS 系统状态</H1><BR>
+<H1>DNS 运行状态</H1><BR>
 <!-- Begin `Daily' Graph (5 Minute -->
+1 Query: 查询一次得到结果<br>
+Above 1: 查询了多台DNS才得到结果<p>
+No Record: 没有查到DNS子记录<br>
+No Domain: 没有查到DNS域名记录<br>
+Failure: 查询失败
 <HR>
 <H3>每日 图表 (5 分钟 平均)</H3>
 <IMG VSPACE=10 ALIGN=TOP 
