@@ -117,7 +117,7 @@ function print_attachments_link ($fileName, $struct, $depth, &$idArr) {
     }
 }
 
-function get_mail_body ($struct, &$content, &$useHtml, &$find) {
+function get_mail_body ($struct, &$content, &$find, &$useHtml) {
     for ($i = 0; $i < sizeof ($struct); $i ++) {
         if ($find) break;
         $obj = $struct[$i];
@@ -130,12 +130,14 @@ function get_mail_body ($struct, &$content, &$useHtml, &$find) {
         elseif (strcasecmp ($obj->disposition, 'attachment')==0) {
             continue;
         }    
-        else {
-            if (strcasecmp ($obj->ctype_primary, 'text')==0 && strcasecmp ($obj->ctype_secondary, 'plain')==0 && $useHtml)
+        elseif (strcasecmp ($obj->ctype_primary, 'text')==0) {
+            if (strcasecmp ($obj->ctype_secondary, 'plain')==0 && $useHtml)
                 continue;
             $find = 1;
             $content = $obj;
         }
+        else
+            ;
     }
     return $find;
 }
@@ -153,10 +155,11 @@ function print_mail_body ($fileName, $structure) {
     }
     elseif (strcasecmp ($priCtype, 'multipart')==0) {
         $find = 0;
-        $useHtml = (strcasecmp ($structure->ctype_secondary, 'alternative')==0);
+        $useHtml = (strcasecmp ($structure->ctype_secondary, 'alternative')==0)?1:0;
         if (!get_mail_body ($structure->parts, $content, $find, $useHtml))
             return;
-        print_mail_body ($fileName, $content);
+        if ($find)
+            print_mail_body ($fileName, $content);
     }
     else {
         echo '<a target="_blank" href="'.get_file_url ($fileName, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'µã»÷²é¿´').'</a>';
