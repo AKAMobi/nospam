@@ -179,14 +179,14 @@ sub is_overrun_rate_per_XXX
 	$deny_sec ||= $self->{define}->{DefaultDenyTime};
 
 	# 0 means unlimited
-	return (0,'通过动态检测') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
+	return (0,'通过') if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	# zero means UNLIMITED
 	#return (0,'无限制') if ( 0==$num || 0==$sec );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );
-		return (0,'引擎参数不足');
+		return (0,'参数不足');
 	}
 
 
@@ -195,7 +195,7 @@ sub is_overrun_rate_per_XXX
 
 	if ( ! $self->attach ){
 		$self->{zlog}->fatal ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't attach" );
-		return (0,'引擎加载失败');
+		return (0,'加载失败');
 	}
 
 	# protect our timer
@@ -348,7 +348,7 @@ sub check_quota_exceed_ex
         }
 
 	# we still have quota!
-	return (0,'通过动态检测');
+	return (0,'通过');
 }
 
 

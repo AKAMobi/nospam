@@ -364,7 +364,7 @@ sub process
 			};
 	
 			if ( $engine eq 'content' ){
-				$mail_info->{aka}->{resp}->{smtp_info} -> $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
+				$mail_info->{aka}->{resp}->{smtp_info} = $self->{mail_info}->{aka}->{engine}->{$engine}->{desc} 
 								|| 'This message was rejected.';
 			}elsif ( $engine eq 'dynamic' ){
 					$mail_info->{aka}->{resp}->{smtp_code} = 451;

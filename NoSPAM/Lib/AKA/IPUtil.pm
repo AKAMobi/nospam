@@ -27,6 +27,64 @@ sub new
 	return $self;
 }
 
+sub ipbitmask2broadcast
+{
+	my $self = shift;
+	my $ip = shift;
+	my $bitmask = shift;
+
+	my $ip_long = $self->ip2int($ip);
+
+	# convert from 31 to 01111111111111111111111111111111
+	$bitmask = substr( ('0' x $bitmask) . ('1' x 32), 0, 32 );
+	$bc_long_mask = $self->bin2dec($bitmask);
+
+	my $broadcast_long = $ip_long | $bc_long_mask;
+
+	return $self->int2ip($broadcast_long);
+}
+
+
+
+sub bitmask2netmask
+{
+	my $self = shift;
+	my $bitmask = shift;
+
+	# convert from 31 to 11111111111111111111111111111110
+	$bitmask = substr( ('1' x $bitmask) . ('0' x 32), 0, 32 );
+
+	$mask1 = $self->bin2dec( substr( $bitmask, 0, 8 ) );
+	$mask2 = $self->bin2dec( substr( $bitmask, 8, 8 ) );
+	$mask3 = $self->bin2dec( substr( $bitmask, 16, 8 ) );
+	$mask4 = $self->bin2dec( substr( $bitmask, 24, 8 ) );
+
+	return "$mask1.$mask2.$mask3.$mask4";
+}
+
+
+sub bin2dec {
+	my $self = shift;
+	my $bin = shift;
+
+        unpack("N", pack("B32", substr('0' x 32 . $bin, -32)));
+}
+
+sub int2ip
+{
+	my $self = shift;
+	my $int = shift;
+
+	my $bin = unpack ( 'B32', pack('N', $int) );
+
+	$ip1 = $self->bin2dec ( substr ( $bin, 0, 8) );
+	$ip2 = $self->bin2dec ( substr ( $bin, 8, 8) );
+	$ip3 = $self->bin2dec ( substr ( $bin, 16, 8) );
+	$ip4 = $self->bin2dec ( substr ( $bin, 24, 8) );
+
+	return "$ip1.$ip2.$ip3.$ip4";
+}
+
 sub ip2int{
         my $self = shift;
         my $ip = shift ; 
