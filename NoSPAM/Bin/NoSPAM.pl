@@ -7,7 +7,7 @@
 # Email: zixia@zixia.net
 # Date: 2004-04-15
 #
-# Copyright 2004. All rights reserved.
+# Copyright (c) 2004. 北京阿卡信息技术有限公司 All rights reserved.
 # $Id$
 #
 # FIXME 现在函数的返回值很混乱，一部分函数返回0位正常（成功），一部分函数返回1为正常（成功）
