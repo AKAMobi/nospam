@@ -3,7 +3,7 @@
 # (Cron version -- $Id$)
 */10 * * * * (~nospam/bin/NoSPAM UpdateRule >> /var/log/police.cron 2>&1)
 #*/10 * * * * (~ssh/bin/UploadLog >> /var/log/police.cron 2>&1)
-0 4 * * * (/var/qmail/bin/ns-queue -z>>/var/log/police.cron 2>&1)
+0 4 * * * (~nospam/bin/NoSPAM ZombieFile_clean > /dev/null 2>&1)
 0 4 * * * (cat /dev/null > /var/log/police.cron)
 0 4 * * * (cat /dev/null > /var/log/NoSPAM.debug)
 0 4 * * * (cat /dev/null > /var/log/maillog)

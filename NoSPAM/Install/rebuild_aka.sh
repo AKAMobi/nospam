@@ -43,11 +43,12 @@ find aka/usr/lib/perl5/site_perl/5.8.0/AKA | grep pm$ | grep -v CVS | grep -v Lo
 #
 ########3
 echo "Deleting old file..."
-rm -fvr aka/home/NoSPAM/bin/{NoSPAM,smtp_auth_proxy,UpdateRule,UploadLog}
+rm -fvr aka/home/NoSPAM/bin/{NoSPAM,ns-daemon,smtp_auth_proxy,UpdateRule,UploadLog}
 rm -fvr aka/root/post_install
 
 echo "Copying source files..."
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/home/NoSPAM/bin/NoSPAM.pl
+cpperl ${SOURCEHOME}/Bin/ns-daemon.pl aka/home/NoSPAM/bin/ns-daemon.pl
 cpperl ${SOURCEHOME}/Bin/smtp_auth_proxy.pl aka/home/NoSPAM/bin/smtp_auth_proxy.pl
 chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
