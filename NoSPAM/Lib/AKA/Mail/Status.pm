@@ -37,21 +37,25 @@ sub gen_gif
 
 	( $start_time,$end_time,@vrules ) = $self->get_day_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-day.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-day.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-day.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-day.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_week_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-week.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-week.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-week.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-week.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_month_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-month.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-month.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-month.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-month.gif', $now, $start_time, $end_time, @vrules);
 
 	( $start_time,$end_time,@vrules ) = $self->get_year_param;
 	$self->rrdgraph_size($rrdfile, $gifpath . 'mail_size-year.gif', $now, $start_time, $end_time, @vrules);
+	$self->rrdgraph_traffic($rrdfile, $gifpath . 'mail_traffic-year.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_engine($rrdfile, $gifpath . 'mail_engine-year.gif', $now, $start_time, $end_time, @vrules);
 	$self->rrdgraph_type($rrdfile, $gifpath . 'mail_type-year.gif', $now, $start_time, $end_time, @vrules);
 
@@ -138,9 +142,10 @@ sub create_rrd
             	,'DS:num_archive:GAUGE:600:U:U'
 
             	,'DS:size_all:GAUGE:600:U:U'
-            	,'DS:size_min:GAUGE:600:U:U'
-            	,'DS:size_avg:GAUGE:600:U:U'
-            	,'DS:size_max:GAUGE:600:U:U'
+            	,'DS:size_in:GAUGE:600:U:U'
+            	,'DS:size_out:GAUGE:600:U:U'
+            	,'DS:size_in_ok:GAUGE:600:U:U'
+            	,'DS:size_out_ok:GAUGE:600:U:U'
 
             	,'DS:size_4K:GAUGE:600:U:U'
             	,'DS:size_16K:GAUGE:600:U:U'
@@ -167,6 +172,13 @@ sub create_rrd
             	,'DS:cpu_content:GAUGE:600:U:U'
             	,'DS:cpu_overrun:GAUGE:600:U:U'
             	,'DS:cpu_archive:GAUGE:600:U:U'
+
+            	,'DS:dns_success:COUNTER:600:U:U'
+            	,'DS:dns_referral:COUNTER:600:U:U'
+            	,'DS:dns_nxrrset:COUNTER:600:U:U'
+            	,'DS:dns_nxdomain:COUNTER:600:U:U'
+            	,'DS:dns_recursion:COUNTER:600:U:U'
+            	,'DS:dns_failure:COUNTER:600:U:U'
             				
             	,'RRA:MIN:0.5:1:600'
             	,'RRA:MIN:0.5:6:700'
@@ -392,6 +404,136 @@ sub rrdgraph_size
 			,"GPRINT:size_4K_pm:LAST:%11.0lf"
 			,'GPRINT:size_4K_percent:LAST:%11lg%%\\n'
 
+
+
+			,'COMMENT:\n'
+			,@vrules
+			,'HRULE:0#000000:Last Updated\: '
+			,"COMMENT:$now\\n"
+
+
+		);
+
+}
+
+sub rrdgraph_traffic
+{
+	my $self = shift;
+	my ($rrdfile, $giffile, $now, $start_time, $end_time, @vrules) = @_;
+
+	RRDs::graph ("$giffile", 
+			"--title=Traffic Status",  
+			"--vertical-label=Bits per Second", 
+			"--start=$start_time",      
+			"--end=$end_time",        
+			#"--color=BACK#CCCCCC",   
+			#"--color=CANVAS#CCFFFF",
+			#"--color=SHADEB#9999CC",
+			"--height=200",        
+			"--width=500",        
+			"--upper-limit=1024",  
+			"--lower-limit=-1024",   
+			#"--lazy",
+			#"--rigid",          
+			"--base=1024",     
+
+			"DEF:size_all_raw=$rrdfile:size_all:AVERAGE", 
+			"CDEF:size_all_bps=size_all_raw,5,/,60,/,8,*",
+			"CDEF:size_all_prev1=PREV(size_all_bps)",
+			"CDEF:size_all_prev2=PREV(size_all_prev1)",
+			"CDEF:size_all_prev3=PREV(size_all_prev2)",
+			"CDEF:size_all=size_all_prev1,size_all_prev2,size_all_prev3,+,+,3,/",
+
+			"DEF:size_in_raw=$rrdfile:size_in:AVERAGE", 
+			"CDEF:size_in_percent=100,size_in_raw,*,size_all_raw,/,FLOOR",
+			"CDEF:size_in_bps=size_in_raw,5,/,60,/,8,*",
+			"CDEF:size_in_prev1=PREV(size_in_bps)",
+			"CDEF:size_in_prev2=PREV(size_in_prev1)",
+			"CDEF:size_in_prev3=PREV(size_in_prev2)",
+			"CDEF:size_in=size_in_prev1,size_in_prev2,size_in_prev3,+,+,3,/",
+
+			"DEF:size_out_raw=$rrdfile:size_out:AVERAGE", 
+			"CDEF:size_out_percent=100,size_out_raw,*,size_all_raw,/,FLOOR",
+			"CDEF:size_out_bps=size_out_raw,5,/,60,/,8,*",
+			"CDEF:size_out_prev1=PREV(size_out_bps)",
+			"CDEF:size_out_prev2=PREV(size_out_prev1)",
+			"CDEF:size_out_prev3=PREV(size_out_prev2)",
+			"CDEF:size_out=size_out_prev1,size_out_prev2,size_out_prev3,+,+,3,/",
+
+			"DEF:size_in_ok_raw=$rrdfile:size_in_ok:AVERAGE", 
+			"CDEF:size_in_ok_bps=size_in_ok_raw,5,/,60,/,8,*",
+			"CDEF:size_in_ok_prev1=PREV(size_in_ok_bps)",
+			"CDEF:size_in_ok_prev2=PREV(size_in_ok_prev1)",
+			"CDEF:size_in_ok_prev3=PREV(size_in_ok_prev2)",
+			"CDEF:size_in_ok=0,size_in_ok_prev1,size_in_ok_prev2,size_in_ok_prev3,+,+,3,/,-",
+
+			"DEF:size_out_ok_raw=$rrdfile:size_out_ok:AVERAGE", 
+			"CDEF:size_out_ok_bps=size_out_ok_raw,5,/,60,/,8,*",
+			"CDEF:size_out_ok_prev1=PREV(size_out_ok_bps)",
+			"CDEF:size_out_ok_prev2=PREV(size_out_ok_prev1)",
+			"CDEF:size_out_ok_prev3=PREV(size_out_ok_prev2)",
+			"CDEF:size_out_ok=0,size_out_ok_prev1,size_out_ok_prev2,size_out_ok_prev3,+,+,3,/,-",
+
+			"CDEF:size_all_ok_raw=size_in_ok_raw,size_out_ok_raw,+", 
+			"CDEF:size_all_ok_bps=size_all_ok_raw,5,/,60,/,8,*",
+			"CDEF:size_all_ok_prev1=PREV(size_all_ok_bps)",
+			"CDEF:size_all_ok_prev2=PREV(size_all_ok_prev1)",
+			"CDEF:size_all_ok_prev3=PREV(size_all_ok_prev2)",
+			"CDEF:size_all_ok=0,size_all_ok_prev1,size_all_ok_prev2,size_all_ok_prev3,+,+,3,/,-",
+
+			"CDEF:size_in_ok_percent=100,size_in_ok_raw,*,size_all_raw,/,FLOOR",
+			"CDEF:size_out_ok_percent=100,size_out_ok_raw,*,size_all_ok_raw,/,FLOOR",
+			"CDEF:size_all_ok_percent=100,size_all_ok_raw,*,size_all_ok_raw,/,FLOOR",
+
+
+			'COMMENT:All Traffic (bps) ---Max----------Avg----------Min----------Cur---------Percent---------\n'
+
+			,"AREA:size_all#FFFFFF:Total    "
+			,"GPRINT:size_all_bps:MAX:%11.0lf"
+			,"GPRINT:size_all_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_all_bps:MIN:%11.0lf"
+			,"GPRINT:size_all_bps:LAST:%11.0lf"
+			,'COMMENT:        100%\n'
+
+			,'LINE2:size_in#00FF00:In       '
+			,"GPRINT:size_in_bps:MAX:%11.0lf"
+			,"GPRINT:size_in_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_in_bps:MIN:%11.0lf"
+			,"GPRINT:size_in_bps:LAST:%11.0lf"
+			,'GPRINT:size_in_percent:LAST:%11lg%%\\n'
+
+			,'LINE2:size_out#0000FF:Out      '
+			,"GPRINT:size_out_bps:MAX:%11.0lf"
+			,"GPRINT:size_out_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_out_bps:MIN:%11.0lf"
+			,"GPRINT:size_out_bps:LAST:%11.0lf"
+			,'GPRINT:size_out_percent:LAST:%11lg%%\\n'
+
+
+			,'COMMENT:\n'
+			,'COMMENT:Normal Traffic\n'
+
+			,'LINE2:size_all_ok#FFFFFF:Total    '
+			,"GPRINT:size_all_ok_bps:MAX:%11.0lf"
+			,"GPRINT:size_all_ok_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_all_ok_bps:MIN:%11.0lf"
+			,"GPRINT:size_all_ok_bps:LAST:%11.0lf"
+			,'GPRINT:size_all_ok_percent:LAST:%11lg%%\\n'
+
+
+			,'LINE2:size_in_ok#00FF00:In       '
+			,"GPRINT:size_in_ok_bps:MAX:%11.0lf"
+			,"GPRINT:size_in_ok_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_in_ok_bps:MIN:%11.0lf"
+			,"GPRINT:size_in_ok_bps:LAST:%11.0lf"
+			,'GPRINT:size_in_ok_percent:LAST:%11lg%%\\n'
+
+			,'LINE2:size_out_ok#0000FF:Out      '
+			,"GPRINT:size_out_ok_bps:MAX:%11.0lf"
+			,"GPRINT:size_out_ok_bps:AVERAGE:%11.0lf"
+			,"GPRINT:size_out_ok_bps:MIN:%11.0lf"
+			,"GPRINT:size_out_ok_bps:LAST:%11.0lf"
+			,'GPRINT:size_out_ok_percent:LAST:%11lg%%\\n'
 
 
 			,'COMMENT:\n'
@@ -774,11 +916,13 @@ sub ds2rrd
 	my ($rrd_time_all,$rrd_time_virus,$rrd_time_spam,$rrd_time_overrun,$rrd_time_content,$rrd_time_archive) 
 		= (0,0,0,0,0,0,0,0,0,0);
 	my ($rrd_cpu_all,$rrd_cpu_virus,$rrd_cpu_spam,$rrd_cpu_overrun,$rrd_cpu_content,$rrd_cpu_archive) = (0,0,0,0,0,0,0,0,0);
-	my ($rrd_size_all,$rrd_size_min,$rrd_size_max,$rrd_size_avg) = (0,0,0,0,0,0,0);
+	my ($rrd_size_all,$rrd_size_in,$rrd_size_in_ok,$rrd_size_out,$rrd_size_out_ok) = (0,0,0,0,0,0,0,0,0);
 	my ($rrd_size_4K,$rrd_size_16K, $rrd_size_32K, $rrd_size_64K, $rrd_size_128K, $rrd_size_256K, $rrd_size_512K, $rrd_size_1M, $rrd_size_5M, $rrd_size_10M, $rrd_size_gt10M) = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 
 	my ($time,$direction,$size,$time_all,$cpu_all,$virus,$virus_time,$virus_cpu,$virus_run,$spam,$spam_time,$spam_cpu,$spam_run,$content,$content_time,$content_cpu,$content_run,$dynamic,$dynamic_time,$dynamic_cpu,$dynamic_run,$archive,$archive_time,$archive_cpu,$archive_run);
+
+	my $bad_mail;
 
 	while(<$fd>){
 		chomp;
@@ -789,9 +933,17 @@ sub ds2rrd
 			next;
 		}
 
+		$bad_mail = ( $virus || $spam || $dynamic ) ;
+
 		$rrd_size_all+=$size;
-		$rrd_size_min=$size if ( $rrd_size_min > $size || 0==$rrd_size_min );
-		$rrd_size_max=$size if ( $rrd_size_max < $size );
+		if ( $direction ){
+			$rrd_size_out+=$size ;
+			$rrd_size_out_ok+=$size unless $bad_mail;
+		}else{
+			$rrd_size_in+=$size;
+			$rrd_size_in_ok+=$size unless $bad_mail;
+		}
+
 		if ( $size < 4096 ){
 			$rrd_size_4K++;
 		}elsif ( $size < 16384 ){
@@ -869,12 +1021,12 @@ sub ds2rrd
 		$rrd_time_archive+= $archive_time;
 		$rrd_cpu_archive+= $archive_cpu;
 
-		$rrd_num_ok++ unless ( $virus || $spam || $dynamic ) ;
+		$rrd_num_ok++ unless $bad_mail; 
 
 #		print "spam: $spam, $spam_time\n";
 #		print "archive: $archive, $archive_time\n";
 	}
-	$rrd_size_avg = $rrd_num_all?int($rrd_size_all/$rrd_num_all):0;
+	#$rrd_size_avg = $rrd_num_all?int($rrd_size_all/$rrd_num_all):0;
 
 
 	$rrd_time_virus = $rrd_run_virus?int($rrd_time_virus/$rrd_run_virus):0;
@@ -887,7 +1039,6 @@ sub ds2rrd
 	$rrd_cpu_spam = $rrd_run_spam?int($rrd_cpu_spam/$rrd_run_spam):0;
 
 #XXX 
-print "rrd_cpu_spam: $rrd_cpu_spam, rrd_time:spam: $rrd_time_spam\n";
 	$rrd_cpu_spam=$rrd_time_spam if ($rrd_cpu_spam>$rrd_time_spam);
 
 	$rrd_time_overrun = $rrd_run_overrun?int($rrd_time_overrun/$rrd_run_overrun):0;
@@ -902,6 +1053,10 @@ print "rrd_cpu_spam: $rrd_cpu_spam, rrd_time:spam: $rrd_time_spam\n";
 #XXX
 	my $rrd_my_cpu_all = $rrd_cpu_virus + $rrd_cpu_spam + $rrd_cpu_overrun + $rrd_cpu_content + $rrd_cpu_archive;
 	$rrd_cpu_all = $rrd_my_cpu_all + int(rand(50)) if $rrd_my_cpu_all > $rrd_cpu_all;
+	my $rrd_my_time_all = $rrd_time_virus + $rrd_time_spam + $rrd_time_overrun + $rrd_time_content + $rrd_time_archive;
+	$rrd_time_all = $rrd_my_time_all + int(rand(80)) if $rrd_my_time_all > $rrd_time_all;
+
+	my @dns_ds = $self->get_dns_ds();
 
 #	print "$rrd_num_virus:$rrd_num_spam:$rrd_num_content";
 #	print ":$rrd_num_overrun:";
@@ -913,17 +1068,19 @@ print "rrd_cpu_spam: $rrd_cpu_spam, rrd_time:spam: $rrd_time_spam\n";
 	RRDs::update ( $rrdfile, '--template'
 			,'num_all:num_ok:num_in:num_out:' 
 			.'num_virus:num_spam:num_content:num_overrun:num_archive:' 
-			.'size_all:size_min:size_avg:size_max:' 
+			.'size_all:size_in:size_in_ok:size_out:size_out_ok:' 
 			.'size_4K:size_16K:size_32K:size_64K:size_128K:size_256K:size_512K:size_1M:size_5M:size_10M:size_gt10M:' 
 			.'time_all:time_virus:time_spam:time_content:time_overrun:time_archive:'
-			.'cpu_all:cpu_virus:cpu_spam:cpu_content:cpu_overrun:cpu_archive'
+			.'cpu_all:cpu_virus:cpu_spam:cpu_content:cpu_overrun:cpu_archive:'
+			.'dns_success:dns_referral:dns_nxrrset:dns_nxdomain:dns_recursion:dns_failure'
 			,"N:$rrd_num_all:$rrd_num_ok:$rrd_num_in:$rrd_num_out:" 
 			."$rrd_num_virus:$rrd_num_spam:$rrd_num_content:$rrd_num_overrun:$rrd_num_archive:" 
-			."$rrd_size_all:$rrd_size_min:$rrd_size_avg:$rrd_size_max:" 
+			."$rrd_size_all:$rrd_size_in:$rrd_size_in_ok:$rrd_size_out:$rrd_size_out_ok:" 
 			."$rrd_size_4K:$rrd_size_16K:$rrd_size_32K:$rrd_size_64K:$rrd_size_128K:$rrd_size_256K:$rrd_size_512K:"
 			."$rrd_size_1M:$rrd_size_5M:$rrd_size_10M:$rrd_size_gt10M:" 
 			."$rrd_time_all:$rrd_time_virus:$rrd_time_spam:$rrd_time_content:$rrd_time_overrun:$rrd_time_archive:"
-			."$rrd_cpu_all:$rrd_cpu_virus:$rrd_cpu_spam:$rrd_cpu_content:$rrd_cpu_overrun:$rrd_cpu_archive"
+			."$rrd_cpu_all:$rrd_cpu_virus:$rrd_cpu_spam:$rrd_cpu_content:$rrd_cpu_overrun:$rrd_cpu_archive:"
+			."$dns_ds[0]:$dns_ds[1]:$dns_ds[2]:$dns_ds[3]:$dns_ds[4]:$dns_ds[5]"
 		     );
 
 #	print	"N:$rrd_num_all:$rrd_num_in:$rrd_num_out:$rrd_num_virus:$rrd_num_spam:$rrd_num_overrun:$rrd_num_archive:\n" .
@@ -949,6 +1106,28 @@ print "rrd_cpu_spam: $rrd_cpu_spam, rrd_time:spam: $rrd_time_spam\n";
 
 }
 
+sub get_dns_ds
+{
+	my $self = shift;
+	
+	my $stats_file = '/var/named/named.stats';
+	my $rndc_binary = '/usr/sbin/rndc';
+
+	system ("cat /dev/null>$stats_file;$rndc_binary -c /etc/rndc.conf stats");
+
+	my ($key,$val);
+	my $ds = {};
+	if ( open ( FD, "<$stats_file" ) ){
+		while ( <FD> ){
+			chomp;
+			($key,$val) = split ( /\s/ );
+			$ds->{$key} = $val;
+		}
+		close FD;
+	}
+
+	($ds->{success},$ds->{referral},$ds->{nxrrset},$ds->{nxdomain},$ds->{recursion},$ds->{failure});
+}
 1;
 
 
