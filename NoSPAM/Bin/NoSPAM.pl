@@ -141,6 +141,9 @@ my $action_map = {
 		,'reboot' => [\&reboot, ""]
 		,'shutdown' => [\&shutdown, ""]
 
+		,'QuarantineUserListImport' => [\&QuarantineUserListImport, "<import file> : one email address per line"]
+		,'QuarantineUserListEmpty' => [\&QuarantineUserListEmpty, " : clean email address user db"]
+		,'QuarantineUserListExport' => [\&QuarantineUserListExport, " : one email address per line"]
 		,'QuarantineGetInfo' => [\&QuarantineGetInfo , "<email address> <password>"]
 		,'QuarantineProcessMail' => [\&QuarantineProcessMail , " : use stdin & stdout"]
 
@@ -784,6 +787,49 @@ sub QuarantineProcessMail
 			return undef;
 		}
 	}
+}
+
+sub QuarantineUserListEmpty
+{
+	use AKA::Mail::DB;
+	my $AMD = new AKA::Mail::DB;
+	$AMD->user_email_clean();
+	return 0;
+}
+
+sub QuarantineUserListExport
+{
+	use AKA::Mail::DB;
+	my $AMD = new AKA::Mail::DB;
+	$AMD->user_email_list();
+	return 0;
+}
+
+sub QuarantineUserListImport 
+{
+	my $import_file = shift @param;
+
+	use AKA::Mail::DB;
+	my $AMD = new AKA::Mail::DB;
+	my ($sth_del, $sth_ins) = $AMD->user_email_add_prepare;
+
+	my $email;
+	if ( open(FD, "<$import_file") ){
+		while (<FD>){
+			chomp;
+			if ( /(\S+)\@(\S+)/ ){
+				$AMD->user_email_add_execute($sth_del,$sth_ins,"$1\@$2")
+			}else{
+				$AMD->{zlog}->fatal ( "Quarantine User Add: [$_] is not a valid email" );
+			}
+		}
+		$sth_del->finish;
+		$sth_ins->finish;
+	}else{
+		$AMD->{zlog}->fatal ( "QuarantineUserListImport: [$import_file] open failure: [$!]" );
+		return -1;
+	}
+	return 0;
 }
 
 sub QuarantineGetInfo 
