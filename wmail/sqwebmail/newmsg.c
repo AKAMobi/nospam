@@ -342,7 +342,8 @@ void newmsg_init(const char *folder, const char *pos)
 	const char	*previewlab=getarg("PREVIEWLAB");
 	const char	*forwardsep=getarg("FORWARDLAB");
 	const char	*savedraft=getarg("SAVEDRAFT");
-	const char	*uploadlab=getarg("ATTACHMENTS");
+	const char	*uploadlab=getarg("UPLOAD");
+	const char	*attachedlab=getarg("ATTACHMENTS");
 	const char	*replysalutation=getarg("SALUTATION");
 	const char	*checkspellingdone=getarg("SPELLCHECKDONE");
 	const char	*checkspelling=getarg("CHECKSPELLING");
@@ -606,10 +607,6 @@ void newmsg_init(const char *folder, const char *pos)
 	       pref_noarchive ? "":" CHECKED",
 	       getarg("PRESERVELAB"));
 
-	printf("<INPUT CLASS=\"mybtn\" TYPE=SUBMIT NAME=doattachments VALUE=\"");
-        printf(uploadlab, attachcnt);
-        printf("\">&nbsp;");
-
 	if (access(NODSN, R_OK))
 		printf("<TR><TD COLSPAN=2 ALIGN=RIGHT><INPUT TYPE=CHECKBOX "
 		       "NAME=dsn></TD><TD>%s</TD></TR>\n",
@@ -655,8 +652,14 @@ void newmsg_init(const char *folder, const char *pos)
 	//	previewlab);
 	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=sendmsg onclick=\"return check();\" VALUE=\"%s\">&nbsp;",
 		sendlab);
-	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=savedraft VALUE=\"%s\">",
+	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=savedraft VALUE=\"%s\">&nbsp;",
 		savedraft);
+
+        printf("<INPUT CLASS=\"mybtn\" TYPE=SUBMIT NAME=doattachments VALUE=\"");
+	printf(uploadlab);
+	printf("\">&nbsp;");
+	printf(attachedlab, attachcnt);
+	
 #ifdef	ISPELL
 	printf("<INPUT TYPE=SUBMIT NAME=startspellchk VALUE=\"%s\">",
 		checkspelling);

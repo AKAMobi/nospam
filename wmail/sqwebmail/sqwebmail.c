@@ -1168,33 +1168,11 @@ static void do_output_form_loop(FILE *f)
 			spell_show();
 		}
 #endif
-#ifdef	BANNERPROG
+		// modified by lfan, Display copyright
 		else if (strcmp(kw, "B") == 0)
 		{
-			char banargbuf[31];
-			int	i=0;
-			int	wait_stat;
-			pid_t	p, p2;
-				if ((c=getc(f)) != '{')
-					ungetc(c, f);
-				else	while ((c=getc(f)), isalnum(c))
-						if (i < sizeof(banargbuf)-1)
-							banargbuf[i++]=c;
-				banargbuf[i]=0;
-				fflush(stdout);
-				if ( (p=fork()) == 0 )
-				{
-					execl(BANNERPROG, BANNERPROG,
-						sqwebmail_formname,
-						banargbuf, (char *)0);
-					_exit(0);
-				}
-				if (p > 0)
-					while ((p2=wait(&wait_stat)) > 0 &&
-						p2 != p)
-						;
+			printf("<br><br><center class=csmtype>Powered by <a href=\"http://wmail.aka.cn\" target=_blank>WMail</a>&copy;</Center>");
 		}
-#endif
 		else if (strcmp(kw, "h") == 0)
 		{
 			FILE *fp=fopen(LOGINDOMAINLIST, "r");
