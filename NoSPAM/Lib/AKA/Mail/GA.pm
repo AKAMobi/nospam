@@ -9,6 +9,7 @@
 package AKA::Mail::GA;
 
 use XML::Simple;
+use POSIX qw(strftime);
 use strict;
 
 sub new
@@ -84,6 +85,7 @@ sub check_match
 	use AKA::Mail::GA::GAISC;
 	$AMG = new AKA::Mail::GA::GAISC;
 
+#$self->{zlog}->debug( "GA::check_match run" );
 	$AMG->check_match($mail_info) if ( $AMG->isEnabled() );
 }
 

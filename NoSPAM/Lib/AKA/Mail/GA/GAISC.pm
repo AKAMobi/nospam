@@ -88,7 +88,7 @@ sub check_match
 
 	$self->make_log( $mail_info );
 
-	my $rule_info = $mail_info->{rule_info};
+	my $rule_info = $mail_info->{aka}->{rule_info};
 	
 	if ( 1==$rule_info->{alarmlevel} ){
 		$self->feed_alert( $self->make_alert($mail_info) );
@@ -150,7 +150,7 @@ sub start_daemon_process
 		return $self->SUPER::start_daemon_process();
 	}
 
-	$self->GAISC_get_ftp_info();
+	# XXX by zixia: for test file $self->GAISC_get_ftp_info();
 	return $self->GAISC_server;
 	
 }
@@ -174,10 +174,16 @@ sub mail_info_to_file
 		return undef;
 	}
 
+#use Data::Dumper;
+#$self->{zlog}->debug ( Dumper($mail_info) );
 	my $dirname = { 'ALT' => 'alert', 'LOG' => 'log' };
-	srand $$;
 
-	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . int(rand*9999) . '.' . $type;
+	srand $$;
+      	my $serialno = rand;
+        $serialno = sprintf ( "%04d", int($serialno * 9999) );
+        #$serialno = int ( $serialno );
+
+	my $filename = '/home/ssh/' . $dirname->{$type} . '/' . $self->{zlog}->get_time_stamp . $serialno . '.' . lc($type);
 
 	my $mimedata;
 	if ( open ( FD, '<' . $mail_info->{aka}->{emlfilename} ) ){
@@ -189,7 +195,8 @@ sub mail_info_to_file
 		$self->{zlog}->fatal ( "GA::GAISC::mail_info_to_file can't write file [$filename]" );
 		return undef;
 	} 
-	print FD "GAISC.$type.Rule=" . $mail_info->{rule_info}->{rule_id} . '0x0D0x0A';
+
+	print FD "GAISC.$type.Rule=" . $mail_info->{aka}->{rule_info}->{rule_id} . '0x0D0x0A';
 	print FD "GAISC.$type.Time=". $self->{zlog}->get_time_stamp . '0x0D0x0A';
 	print FD "GAISC.$type.From=". $mail_info->{head}->{from} . '0x0D0x0A';
 	print FD "GAISC.$type.To=". $mail_info->{head}->{to} . '0x0D0x0A';
