@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-24 23:58+0800\n"
+"POT-Creation-Date: 2004-07-31 01:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -40,6 +40,15 @@ msgstr "安全策略"
 msgid "System rejects your mail."
 msgstr "系统拒收您的邮件。"
 
+msgid "OFF"
+msgstr "未启用"
+
+msgid "User does not exist"
+msgstr "用户不存在"
+
+msgid "registered user"
+msgstr "登记用户"
+
 msgid "not run"
 msgstr "未运行"
 
@@ -49,9 +58,6 @@ msgstr "【黑名单】"
 #, perl-brace-format
 msgid "[VIRUS {result}]"
 msgstr "【病毒 {result}】"
-
-msgid "OFF"
-msgstr "未启用"
 
 msgid "Need not check outgoing mail"
 msgstr "内向外未检查"

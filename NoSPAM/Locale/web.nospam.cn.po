@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-24 23:58+0800\n"
+"POT-Creation-Date: 2004-07-31 01:37+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -42,54 +42,6 @@ msgstr "修改成功"
 msgid "Config Modify Fail, ErrNo: "
 msgstr "修改失败，错误代码："
 
-msgid "Spam Treatment"
-msgstr "垃圾处理"
-
-msgid "Tag & Pass"
-msgstr "标记后通过"
-
-msgid "Perm. Reject"
-msgstr "永久弹回"
-
-msgid "Drop"
-msgstr "直接丢弃"
-
-msgid "Tag on header"
-msgstr "在邮件头上打标记"
-
-msgid "Tag on Subject"
-msgstr "在主题上打标记"
-
-msgid "Tag Reason on header"
-msgstr "在邮件头标记原因"
-
-msgid "Spam Subject Tag Text: "
-msgstr "垃圾邮件的主题标记："
-
-msgid "Recommend: "
-msgstr "推荐值："
-
-msgid "[Spam]"
-msgstr "【垃圾邮件】"
-
-msgid "Likely Spam Subject Tag Text: "
-msgstr "疑似垃圾的主题标记："
-
-msgid "[Likely Spam]"
-msgstr "【疑似垃圾】"
-
-msgid "Default"
-msgstr "缺省"
-
-msgid "Recommend"
-msgstr "推荐值"
-
-msgid "Modify"
-msgstr "修改"
-
-msgid "ALERT: AntiSpam Engine is OFF"
-msgstr "注意：反垃圾引擎未启动"
-
 msgid "Noise Reduce"
 msgstr "降噪"
 
@@ -105,11 +57,17 @@ msgstr "关闭"
 msgid "Intelligent Factor: "
 msgstr "智能因数："
 
+msgid "Recommend: "
+msgstr "推荐值："
+
 msgid "Reset"
 msgstr "恢复"
 
 msgid "Submit"
 msgstr "提交"
+
+msgid "ALERT: AntiSpam Engine is OFF"
+msgstr "注意：反垃圾引擎未启动"
 
 msgid "Bayes Filter"
 msgstr "贝叶斯过滤器"
@@ -242,6 +200,9 @@ msgstr "邮件地址"
 
 msgid "Parameter Error! "
 msgstr "参数错误！"
+
+msgid "Modify"
+msgstr "修改"
 
 msgid "Select"
 msgstr "选择"
@@ -430,6 +391,51 @@ msgid "Note: From Left to Right is Spam, Likely Spam, NonSpam"
 msgstr ""
 "注：从左到垃圾邮件刻度间为垃圾邮件，两刻度间为疑似垃圾，疑似垃圾刻度右边为非"
 "垃圾邮件"
+
+msgid "Recommend"
+msgstr "推荐值"
+
+msgid "Spam Treatment"
+msgstr "垃圾处理"
+
+msgid "Accept"
+msgstr "通过"
+
+msgid "Tag & Accept"
+msgstr "标记通过"
+
+msgid "Quarantine"
+msgstr "隔离"
+
+msgid "Reject"
+msgstr "拒绝"
+
+msgid "Drop"
+msgstr "直接丢弃"
+
+msgid "Tag on header"
+msgstr "在邮件头上打标记"
+
+msgid "Tag on Subject"
+msgstr "在主题上打标记"
+
+msgid "Tag Reason on header"
+msgstr "在邮件头标记原因"
+
+msgid "Spam Subject Tag Text: "
+msgstr "垃圾邮件的主题标记："
+
+msgid "[Spam]"
+msgstr "【垃圾邮件】"
+
+msgid "Likely Spam Subject Tag Text: "
+msgstr "疑似垃圾的主题标记："
+
+msgid "[Likely Spam]"
+msgstr "【疑似垃圾】"
+
+msgid "Default"
+msgstr "缺省"
 
 msgid "Sorry, This Product has no Archive Engine License"
 msgstr "对不起，本系统没有归档引擎License"
@@ -650,12 +656,6 @@ msgstr "可以不选"
 msgid "Some Data Format is incorrect"
 msgstr "有不符合格式的数据项"
 
-msgid "Reject"
-msgstr "拒绝"
-
-msgid "Quarantine"
-msgstr "隔离"
-
 msgid "Strip Attachment"
 msgstr "剥离附件"
 
@@ -664,9 +664,6 @@ msgstr "延迟处理"
 
 msgid "NOOP"
 msgstr "无操作"
-
-msgid "Accept"
-msgstr "接受"
 
 msgid "Add Recipient"
 msgstr "添加收件人"
@@ -1244,41 +1241,6 @@ msgstr "关机"
 msgid "Reboot"
 msgstr "重启"
 
-msgid "Get SerialNo Error!"
-msgstr "获取序列号时出现错误！"
-
-msgid "SerialNo & License"
-msgstr "序列号和许可证"
-
-msgid ""
-"This Product has not get valid License, Please contact with your product "
-"provider."
-msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
-
-msgid "Upload License"
-msgstr "许可证上载"
-
-msgid "This Product License is OK! "
-msgstr "本设备 License 许可正确！"
-
-msgid "The License is not match your product Version!"
-msgstr "License版本错误！"
-
-msgid "Manufacturer: "
-msgstr "发行厂商："
-
-msgid "License Expire: "
-msgstr "许可证过期时间："
-
-msgid "Product Release"
-msgstr "正式销售版"
-
-msgid "Demo Release"
-msgstr "非正式销售版"
-
-msgid "Download License"
-msgstr "许可证下载"
-
 msgid "SMTP Connect Timeout"
 msgstr "SMTP 连接超时"
 
@@ -1335,6 +1297,41 @@ msgstr "本地并发投递数"
 
 msgid "Remote Deliver Concurrency"
 msgstr "远程并发投递数"
+
+msgid "Get SerialNo Error!"
+msgstr "获取序列号时出现错误！"
+
+msgid "SerialNo & License"
+msgstr "序列号和许可证"
+
+msgid "This Product License is OK! "
+msgstr "本设备 License 许可正确！"
+
+msgid "The License is not match your product Version!"
+msgstr "License版本错误！"
+
+msgid "Manufacturer: "
+msgstr "发行厂商："
+
+msgid "License Expire: "
+msgstr "许可证过期时间："
+
+msgid "Product Release"
+msgstr "正式销售版"
+
+msgid "Demo Release"
+msgstr "非正式销售版"
+
+msgid "Download License"
+msgstr "许可证下载"
+
+msgid ""
+"This Product has not get valid License, Please contact with your product "
+"provider."
+msgstr "本设备尚无可用的 License 许可，请联系销售商获取 License 许可文件。"
+
+msgid "Upload License"
+msgstr "许可证上载"
 
 msgid "Change Admin Passwd"
 msgstr "修改口令"
@@ -1586,6 +1583,12 @@ msgstr "病毒邮件的主题标记："
 
 msgid "[Virus]"
 msgstr "【病毒邮件】"
+
+msgid "Tag & Pass"
+msgstr "标记后通过"
+
+msgid "Perm. Reject"
+msgstr "永久弹回"
 
 msgid "Sorry, This Product has no Standalone Server Mode License"
 msgstr "对不起，本系统没有独立服务器模式License"
@@ -1902,15 +1905,6 @@ msgstr "许可证已经失效"
 msgid "VenusTech AntiSpam System"
 msgstr "天澄反邮件垃圾系统 管理系统"
 
-msgid "a1top_01_en.jpg"
-msgstr "a1top_01.jpg"
-
-msgid "Customer Evaluation (Non-Sales)Edition"
-msgstr "客户试用体验（非销售）版"
-
-msgid " Expired"
-msgstr "过期"
-
 msgid "Input"
 msgstr "请您首先输入"
 
@@ -1946,6 +1940,12 @@ msgstr "独立服务器设置"
 
 msgid "User Management"
 msgstr "用户管理"
+
+msgid "Quarantine Engine"
+msgstr "隔离引擎"
+
+msgid "Quarantine User DB"
+msgstr "隔离用户库"
 
 msgid "Overrun Limit Engine"
 msgstr "动态限制引擎"
@@ -2010,6 +2010,15 @@ msgstr "外网流量图"
 msgid "Log Stat."
 msgstr "日志统计"
 
+msgid "a1top_01_en.jpg"
+msgstr "a1top_01.jpg"
+
+msgid "Customer Evaluation (Non-Sales)Edition"
+msgstr "客户试用体验（非销售）版"
+
+msgid " Expired"
+msgstr "过期"
+
 msgid "Introduction"
 msgstr "介绍"
 
@@ -2027,6 +2036,114 @@ msgstr "该账号登陆权限被禁止"
 
 msgid "This User can not Login from this IP"
 msgstr "该账号不能从此IP地址登录"
+
+msgid "Quarantine Mail"
+msgstr "隔离邮件"
+
+msgid "Sorry, This Product has no Quarantine Filter Engine License"
+msgstr "对不起，本系统没有隔离引擎License"
+
+msgid "Can't export quarantine user list file"
+msgstr "无法导出隔离用户列表文件"
+
+msgid "Can't move temp file"
+msgstr "临时文件错误"
+
+msgid "User list file is too large"
+msgstr "用户列表文件太大"
+
+msgid "User list file was not entirely uploaded"
+msgstr ""
+
+msgid "No file upload"
+msgstr ""
+
+msgid "No file selected"
+msgstr ""
+
+msgid "Quarantine engin can't support this method"
+msgstr ""
+
+msgid "QuarantineEnginUserList"
+msgstr "隔离用户列表"
+
+msgid "Upload quarantine user file"
+msgstr "上载用户列表文件"
+
+msgid "One mail address a line, data will merge into that before"
+msgstr "每行一个邮件地址，新上载数据将和系统数据合并"
+
+msgid "Empty user list database before new data add"
+msgstr "添加新用户数据前先清空系统数据库"
+
+msgid "Auto register when user first login"
+msgstr "用户登录时自动登记用户"
+
+msgid "Enable"
+msgstr "开启"
+
+msgid "Disable"
+msgstr "关闭"
+
+msgid "LDAP server IP"
+msgstr "LDAP服务器IP"
+
+msgid "LDAP server port"
+msgstr "LDAP服务器端口"
+
+msgid "LDAP root DN"
+msgstr ""
+
+msgid "LDAP root password"
+msgstr "LDAP root 口令"
+
+msgid "LDAP search base DN"
+msgstr ""
+
+msgid "LDAP Time Out"
+msgstr "LDAP服务器超时"
+
+msgid "QuarantineEngineUserList"
+msgstr "隔离用户列表"
+
+msgid "Disabled"
+msgstr "关闭"
+
+msgid "LDAP"
+msgstr ""
+
+msgid "QuarantineUserList"
+msgstr "隔离用户列表"
+
+msgid "When the address that incurrent mail will forword to is not exist"
+msgstr "收件人不在隔离用户数据库中时的系统动作"
+
+msgid "Forward"
+msgstr "通过"
+
+msgid "Unkonwn quarantine time out action"
+msgstr ""
+
+msgid "Quarantine Engine Settings"
+msgstr "隔离引擎设置"
+
+msgid "Quarantine Time out"
+msgstr "隔离队列超时"
+
+msgid "Hour(s)"
+msgstr "小时"
+
+msgid "Day(s)"
+msgstr "天"
+
+msgid "Quarantine time out action"
+msgstr "隔离队列超时动作"
+
+msgid "Tag"
+msgstr "标记通过"
+
+#~ msgid "QuarantineEngine"
+#~ msgstr "隔离"
 
 #~ msgid "Protect Mail Domain"
 #~ msgstr "邮件域保护设定"
