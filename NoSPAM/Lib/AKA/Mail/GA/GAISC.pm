@@ -4,6 +4,13 @@ package AKA::Mail::GA::GAISC;
 
 use strict;
 
+use vars qw(@ISA);
+use AKA::Mail::GA;
+@ISA=qw(AKA::Mail::GA);
+
+use AKA::Mail::Conf;
+use AKA::Mail::Log;
+
 use Errno;
 use POSIX qw(strftime);
 use IO::Socket;
@@ -50,53 +57,56 @@ sub new
 
 	my $parent = shift;
 
+	#$self = $self->SUPER::new($parent);
+
+	$self->init();
+
 	$self->{parent} = $parent;
-	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf;
-	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log;
-	
+	$self->{zlog} = $parent->{zlog} || new AKA::Mail::Log($self);
+	$self->{conf} = $parent->{conf} || new AKA::Mail::Conf($self);
+
 	$self->{define}->{archivedir} = "/home/vpopmail/domains/localhost.localdomain/archive/Maildir/";
+	$self->{define}->{GAISC_conffile} = "/home/NoSPAM/etc/GAISC.conf";
+	$self->{GAISC} = $self->get_conf();
+	
+	$self->init();
 
 	return $self;
 }
 
+sub test
+{
+	my $self = shift;
 
-my $self = {};
-$self->{GAISC} = &get_conf;
-
-#&test_ftp;
-
-
-my $socket = &_connect_ga;
-
-my $result;
-
-close $socket;
-$socket = &_connect_ga;
-$result = GAISC_get_ftp_info();
-print "ftp info: \n" . Dumper ( $result );
+	my $result = $self->GAISC_get_ftp_info();
+	print "ftp info: \n" . Dumper ( $result );
 
 
-$result  = GAISC_get_alt_result( '200007230945560001.alt' );
-print "alt result: $result \n";
+	$result  = $self->GAISC_get_alt_result( '200007230945560001.alt' );
+	print "alt result: $result \n";
 
-close $socket;
-$socket = &_connect_ga;
-$result  = GAISC_get_log_result( '200007230945560001.log' );
-print "log result: $result \n";
+	my $socket = $self->_connect_ga;
+	$result  = $self->GAISC_get_log_result( '200007230945560001.log' );
+	print "log result: $result \n";
 
-exit;
+	exit;
 
-GAISC_server();
+	$self->GAISC_server();
+}
 
 sub get_conf
 {
-        my $C = Config::Tiny->read( 'GAISC.conf' );
+	my $self = shift;
+
+        my $C = Config::Tiny->read( $self->{define}->{GAISC_conffile} );
 	return $C->{_};
 }
 
 sub _get_action
 {
+	my $self = shift;
 
+	# XXX ref code with $self?
 	return {	(CATE_MAILRULE_NOTIFY)	=> \&GAISC_resp_rule_update,
 			(CATE_LOGRULE_NOTIFY)	=> \&GAISC_resp_log_update,
 			(CATE_PING)		=> \&GAISC_resp_ping
@@ -104,20 +114,61 @@ sub _get_action
 }
 
 
+sub start_daemon_process
+{
+	my $self = shift;
+
+	$self->GAISC_get_ftp_info();
+	$self->GAISC_server;
+}
+
+sub update_rule
+{
+	# suppress GA compain
+	# GAISC update rule is passiveness
+}
+
+sub feed_log
+{
+	# TODO get all logfile match the given condition.
+}
+
+sub feed_alert
+{
+	# TODO get all logfile match the given condition.
+}
+
+sub make_log
+{
+	my $self = shift;
+
+	# TODO copy file to ssh/log, and return filepathname
+}
+
+sub make_alert
+{
+	my $self = shift;
+
+	# TODO gen alert file, and return filepathname
+}
+
 
 sub GAISC_server
 {
+	my $self = shift;
+
 	my $server = new IO::Socket::INET( LocalAddr => $self->{GAISC}->{LocalIP},
 					LocalPort => $self->{GAISC}->{LocalPort},
 					Proto => 'tcp',
 					Type => SOCK_STREAM,
 					ReuseAddr => 1,
 					Listen => SOMAXCONN
-			) || die "Could not create INET socket: $! $@\n";
+			) || return $self->{zlog}->fatal( "Could not create INET socket: $! $@\n" );
 
-	my $client ;
+	$self->{zlog}->log( "GA::GAISC_server start to listen " 
+			. $self->{GAISC}->{LocalIP} . ':' 
+			. $self->{GAISC}->{LocalPort} );
 
-	my $pid;
 
 	use POSIX ":sys_wait_h";
 
@@ -138,11 +189,12 @@ sub GAISC_server
 		}
 	}
 =cut
-	$pid = 0;
+	my $client ;
+	my $pid;
 
-	while ( 0==$pid ){
+	local $SIG{CHLD} = 'IGNORE';
 
-		$client = $server->accept;
+	while ( $client = $server->accept() ){
 		#print "I'm the $childnum th child\n";
 
 		if (!$client) {
@@ -152,57 +204,79 @@ sub GAISC_server
 				next;
 			} else {
 				sleep 1;
-				warn "accept failed: $!\n";
-				next;
+				# daemontools should restart me
+				$self->{zlog}->fatal ( "GA::GAISC::server accept failed: $!" );
+				die "accept failed: $!\n";
 			}
 		}
 
-		$client->autoflush(1);
+=pod
+		$pid = fork();
 
-		my($port, $ip) = sockaddr_in($client->peername);
-		my $name = gethostbyaddr($ip, AF_INET);
+		if ( $pid > 0 ) { #parent
+			close $client;
+		}elsif ( 0==$pid ){ # child
+			close $server;
+=cut
+			$client->autoflush(1);
 
-		$ip = inet_ntoa($ip);
-		$name ||= $ip;
+			my($port, $ip) = sockaddr_in($client->peername);
+			#my $name = gethostbyaddr($ip, AF_INET);
+			$ip = inet_ntoa($ip);
+			#$name ||= $ip;
+			$self->{zlog}->debug ( "GA::GAISC::server got client from ip: [" . $ip . "]" );
 
-
-		&process_protocol( $client );
-		close $client;
+			$self->process_protocol( $client );
+			shutdown ($client, 2);
+			close $client;
+=pod
+		}else{ #err
+			$self->{zlog}->fatal ( "GA::GAISC::server fork return < 0? [$pid]" );
+			die "fork failed: $!\n";
+		}
+=cut
 	}
+
+	$self->{zlog}->fatal ( "GA::GAISC::server accept failed? [$!]" );
+	shutdown ($server, 2);
+	close $server;
 }
 
 sub process_protocol
 {
+	my $self = shift;
+
 	my $socket = shift;
 
 	my $GAISC = $socket->getline;
 
-	print "CLNT: $GAISC";
 	chomp $GAISC;
+	$self->{zlog}->debug( "CLNT: $GAISC" );
 
 	#GAISC 000000DZYJ 0987654321 20040417212923 0000000095 DZYJ,21,test,test,E
-	my $pkg = _parse_GAISC ( $GAISC );
+	my $pkg = $self->_parse_GAISC ( $GAISC );
 
-	my $proto_action = _get_action();
+	my $proto_action = $self->_get_action();
 
-print Dumper ( $proto_action );
-	print "got GAISC data_cate: [" . $pkg->{data_cate} . "]\n";
+	$self->{zlog}->debug(  Dumper ( $proto_action ) );
+	$self->{zlog}->debug ( "got GAISC data_cate: [" . $pkg->{data_cate} . "]" );
 
 	if ( defined $proto_action->{$pkg->{data_cate}} ){
-	print "defined cate!\n";
-		&{$proto_action->{$pkg->{data_cate}}}($socket, $pkg);
+		&{$proto_action->{$pkg->{data_cate}}}($self, $socket, $pkg);
 	}else{
-		print "unknown GAISC data_cate: [" . $pkg->{data_cate} . "]\n";
+		$self->{zlog}->fatal( "unknown GAISC data_cate: [" . $pkg->{data_cate} . "]" );
 	}
 
 }
 
 sub _parse_GAISC
 {
+	my $self = shift;
+
 	my $GAISC = shift;
 
 	unless ( $GAISC =~ /^(.{5})(.{10})(.{10})(.{14})(.{10})(.+),E/ ){
-		print "ERR: $GAISC\n";
+		$self->{zlog}->fatal ( "GA::AGISC::_parse_GAISC ERR: $GAISC" );
 		return undef;
 	}
 
@@ -219,18 +293,25 @@ sub _parse_GAISC
 
 sub get_timestamp
 {
+	my $self = shift;
+
 	strftime "%Y%m%d%H%M%S", localtime;
 }
 
 sub _connect_ga
 {
+	my $self = shift;
+
         my $socket = IO::Socket::INET->new(Proto =>"tcp",
                                 Timeout => 10,
                                 PeerAddr =>$self->{GAISC}->{ServerIP}, 
                                 PeerPort =>$self->{GAISC}->{ServerPort}
                                  ) ;
 	unless ( $socket && $socket->connected ){
-		die "connect failure";
+		$self->{zlog}->fatal( "GA::GAISC connect_ga IP: [" 
+			. $self->{GAISC}->{ServerIP} . "] Port: [" 
+			. $self->{GAISC}->{ServerPort} . "] failure" );
+		return undef;
 	}
 
 	$socket;
@@ -238,21 +319,22 @@ sub _connect_ga
 
 sub GAISC_get_ftp_info
 {
+	my $self = shift;
 
 	my $pkg = { data_cate => CATE_REQ_LINK,
 			data => $self->{GAISC}->{LocalIP} . ',' . $self->{GAISC}->{LocalPort} . ','
 		};
 
-	$pkg = _make_pkg ( $pkg );
+	$pkg = $self->_make_pkg ( $pkg );
 
-	my $socket = _connect_ga;
-	_send_pkg ( $socket, $pkg );
-	$pkg = _recv_pkg ( $socket );
+	my $socket = $self->_connect_ga;
+	$self->_send_pkg ( $socket, $pkg );
+	$pkg = $self->_recv_pkg ( $socket );
 	close $socket;
 
 	return undef unless $pkg->{data} =~ /([^,]+),([^,]+),([^,]+),([^,]+)/ ;
 
-	_update_config( {	FTPDir => $1,
+	$self->_update_config( {	FTPDir => $1,
 				FTPPort => $2,
 				FTPUser => $3,
 				FTPPass => $4
@@ -267,18 +349,19 @@ sub GAISC_get_ftp_info
 
 sub GAISC_get_alt_result
 {
-	my @alt_files = @_;
+	my $self = shift;
 
+	my @alt_files = @_;
 
 	my $pkg = { data_cate => CATE_ALTDATA_NOTIFY,
 			data => join(',',@alt_files) . ','
 		};
 
-	$pkg = _make_pkg ( $pkg );
+	$pkg = $self->_make_pkg ( $pkg );
 
-	my $socket = _connect_ga;;
-	_send_pkg ( $socket, $pkg );
-	$pkg = _recv_pkg ( $socket );
+	my $socket = $self->_connect_ga;;
+	$self->_send_pkg ( $socket, $pkg );
+	$pkg = $self->_recv_pkg ( $socket );
 	close $socket;
 
 	if ( $pkg->{data} eq DATA_SUCC ){
@@ -286,7 +369,7 @@ sub GAISC_get_alt_result
 	}elsif ( $pkg->{data} eq DATA_FAIL ){
 		return 0;
 	}else{ # unknown data
-		print "unknown data of alt result\n";
+		$self->{zlog}->fatal ( "GA::GAISC::GAISC_get_alt_result: unknown data [" . $pkg->{data} . "] of alt result" );
 		return 0;
 	}
 		
@@ -294,17 +377,19 @@ sub GAISC_get_alt_result
 
 sub GAISC_get_log_result
 {
+	my $self = shift;
+
 	my @log_files = @_;
 
 	my $pkg = { data_cate => CATE_LOGDATA_NOTIFY,
 			data => join(',',@log_files) . ','
 		};
 
-	$pkg = _make_pkg ( $pkg );
+	$pkg = $self->_make_pkg ( $pkg );
 
-	my $socket = _connect_ga;
-	_send_pkg ( $socket, $pkg );
-	$pkg = _recv_pkg ( $socket );
+	my $socket = $self->_connect_ga;
+	$self->_send_pkg ( $socket, $pkg );
+	$pkg = $self->_recv_pkg ( $socket );
 	close $socket;
 
 	if ( $pkg->{data} eq DATA_SUCC ){
@@ -312,7 +397,7 @@ sub GAISC_get_log_result
 	}elsif ( $pkg->{data} eq DATA_FAIL ){
 		return 0;
 	}else{ # unknown data
-		print "unknown data of alt result\n";
+		$self->{zlog}->fatal ( "GA::GAISC::GAISC_get_log_result: unknown data [" . $pkg->{data} . "] of log result" );
 		return 0;
 	}
 	
@@ -320,26 +405,199 @@ sub GAISC_get_log_result
 
 sub GAISC_resp_rule_update
 {
+	my $self = shift;
+
 	my $socket = shift;
 	my $pkg = shift;
 
 	my @rule_files = split ( ',', $pkg->{data} );
 
-print Dumper ( $pkg );
-	print "center rule_file: $_\n" foreach @rule_files;
+	$self->{zlog}->debug( Dumper ( @rule_files ) );
 
-	$pkg = {	data_cate	=> CATE_MAILRULE_RESULT,
-			data		=> DATA_SUCC
-		};
+	$self->{zlog}->debug ( "center rule_file: " . join(',',@rule_files) );
 
-	$pkg = _make_pkg( $pkg );
-	_send_pkg( $socket, $pkg );
+
+
+	my $ruledir = $self->{define}->{ruledir};
+
+	my $err = 0;
+
+	my $ftp = $self->_connect_ftp();
+	$err = 1 unless $ftp;
+
+	$self->{files} = ();
+	$self->ftp_get_file( $ftp, '/dzyj/rule/', $ruledir, @rule_files ) unless $err;
+
+	my ($rule_add_modify, $rule_del) = $self->parse_rule_to_filterdb( $self->{files} );
+
+	if ( $self->merge_new_rule ( $rule_add_modify, $rule_del ) ){
+		$pkg->{data} = DATA_SUCC;
+	}else{
+		$pkg->{data} = DATA_FAIL;
+	}
+
+	$pkg = { data_cate	=> CATE_MAILRULE_RESULT };
+	$pkg = $self->_make_pkg( $pkg );
+
+	$self->_send_pkg( $socket, $pkg );
+
+	unlink @{$self->{files}};
 
 	return 1;
 }
 
+sub parse_rule_to_filterdb
+{
+	my $self = shift;
+	my @rule_files = @_;
+
+	my ( $rule_add_modify, $rule_del ) = ();
+
+	# TODO
+	my ($type, $db, $ruleid, $rule_info) = ();
+	foreach my $file ( @rule_files ){
+		($type, $db) = $self->_file2pkg( $file );
+		if ( 'ruleaddmodify' eq lc $type ){
+			($ruleid, $rule_info) = $self->_pkg2filter ( $db );
+			$rule_add_modify->{rule}->{$ruleid} = $rule_info;
+		}else{
+			$rule_del->{$ruleid} = '1';
+		}
+	}
+
+	( $rule_add_modify, $rule_del );
+}
+
+
+sub _file2pkg
+{
+	my $self = shift;
+	my $file = shift;
+
+	unless ( open ( FD, "<$file" ) ){
+#TODO
+	}
+
+	my $type = lc <FD>;
+	chomp $type;
+
+	my $db = {};
+	while ( <FD> ){
+		chomp;
+		if ( /^GAISC\.RUL\.(.+)=(.+)/ ){
+			$db->{lc $1} = $2;
+		}
+	}
+
+	close FD;
+
+	($type,$db);
+}
+
+sub _pkg2filter
+{
+	my $self = shift;
+	my $pkg = shift;
+
+	my $keyword_keymap = { 1 => 1
+			,2 => 2
+			,3 => 3
+			,4 => 4
+			,5 => 5
+			,6 => 6
+			,7 => 7
+			,8 => 8
+			,9 => 8 
+			,10 => 4
+			,11 => 9 };
+
+	my $keyword_logicmap = { '00' => 'OR'
+		, '01' => 'AND' };
+
+	my $action_map = { 1 => 1
+			,2 => 6
+			,3 => 7
+			,4 => 5
+			,5 => 5 };
+
+	my $alarmlevel_map = { 1 => 4,
+				2 => 0 };
+
+	my $rule_info = {};
+	my $ruleid;
+
+	$rule_info->{rule_keyword}->{type} = 0;
+
+	my $val;
+	while ( ($_,$val) = each ( %{$pkg} ) ){
+		print "$_, $val\n";
+		if ( /^ruleid$/ ){
+			$ruleid = $val;
+		}elsif( /^time$/ ){
+			$rule_info->{create_time} = $val;
+		}elsif( /^expiretime$/ ){
+			$rule_info->{expire_time} = $val;
+		}elsif( /^infolenth$/ ){
+			$rule_info->{size}->{size_value} = $val;
+		}elsif( /^infotype$/ ){
+			for ( my $n=0; $n<length($val); $n++ ){
+				if ( '1' eq substr($val, $n, 1) ){
+					$rule_info->{size}->{key} = $n+1;
+					last;
+				}
+			}
+		#}elsif( /^keyword$/ ){
+			#foreach ( split(/,/,$val) ){
+			#	$rule_info->{rule_keyword}->{keyword}
+			#}
+		}elsif( /^rulekeytype$/ ){
+			for ( my $n=0; $n<length($val); $n++ ){
+				if ( '1' eq substr($val,$n,1) ){
+					$rule_info->{rule_keyword}->{key} = $keyword_keymap->{$val};
+					last;
+				}
+			}
+		}elsif( /^keywordtype$/ ){
+			$rule_info->{keyword_logic} = $keyword_logicmap->{$val};
+		}elsif( /^decode$/ ){
+			$rule_info->{rule_keyword}->{decode} = int($val);
+		}elsif( /^rule$/ ){
+			if ( 2==length($val) ){
+				$rule_info->{rule_action}->{action} = $action_map->{substr($val,0,1)};
+				$rule_info->{alarmlevel} = $alarmlevel_map->{substr($val,1,1)};
+			}
+		}elsif( /^alertrule$/ ){
+			$rule_info->{rule_comment} = $val;
+		}
+	}
+
+	if ( length($pkg->{keyword}) ){
+		my @keywords = split (/,/, $pkg->{keyword});
+		if ( $#keywords > 0 ){
+			my $rule_keyword = $rule_info->{rule_keyword};
+			delete $rule_info->{rule_keyword};
+
+			foreach my $keyword ( @keywords ){
+				my $new_rule_keyword = {};
+				foreach my $key ( keys %{$rule_keyword} ){
+					$new_rule_keyword->{$key} = $rule_keyword->{$key};
+				}
+				$new_rule_keyword->{keyword} = $keyword;
+				push ( @{$rule_info->{rule_keyword}}, $new_rule_keyword );
+			}
+		}else{
+			$rule_info->{rule_keyword}->{keyword} = $keywords[0];
+		}
+	}
+
+	($ruleid, $rule_info);
+}
+
+
 sub GAISC_resp_log_update
 {
+	my $self = shift;
+
 	my $socket = shift;
 	my $pkg = shift;
 
@@ -357,26 +615,28 @@ sub GAISC_resp_log_update
 		};
 			
 
-print Dumper($log_req);
+	$self->{zlog}->debug ( Dumper($log_req) );
 
 	$pkg = {	data_cate	=> CATE_LOGRULE_RESULT,
 			data		=> DATA_SUCC
 		};
 
-	$pkg = _make_pkg( $pkg );
-	_send_pkg( $socket, $pkg );
+	$pkg = $self->_make_pkg( $pkg );
+	$self->_send_pkg( $socket, $pkg );
 
 	return 1;
 }
 
 sub GAISC_resp_ping
 {
+	my $self = shift;
+
 	my $socket = shift;
 	my $pkg = shift;
 
 	return undef unless $pkg->{data} =~ /([^,]+),([^,]+),([^,]+),([^,]+)/ ;
 
-	_update_config( {	FTPDir => $1,
+	$self->_update_config( {	FTPDir => $1,
 			FTPPort => $2,
 			FTPUser => $3,
 			FTPPass => $4
@@ -387,31 +647,35 @@ sub GAISC_resp_ping
 		};
 
 
-	$pkg = _make_pkg ( $pkg );
-	_send_pkg ( $socket, $pkg );
+	$pkg = $self->_make_pkg ( $pkg );
+	$self->_send_pkg ( $socket, $pkg );
 }
 
 sub _update_config
 {
+	my $self = shift;
+
 	my $config = shift;
 	
-        my $C = Config::Tiny->read( 'GAISC.conf' );
-
+        my $C = Config::Tiny->read( $self->{define}->{GAISC_conffile} );
 	foreach ( keys %$config ){
 		$C->{_}->{$_} = $config->{$_};
 	}
 
-	return $C->write('GAISC.conf');
+	return $C->write($self->{define}->{GAISC_conffile});
 
-	$self->{GAISC} = &get_conf;
+	$self->{GAISC} = $self->get_conf;
 }
+
 sub _make_pkg
 {
+	my $self = shift;
+
 	my $req = shift;
 	my $def_req = {	data_id => $self->{GAISC}->{DataIdentifier},
 			sys_id => $self->{GAISC}->{SystemIdentifier},
 			gw_id => $self->{GAISC}->{GatewayIdentifier},
-			timestamp => &get_timestamp,
+			timestamp => $self->get_timestamp,
 			data_cate => CATE_REQ_LINK,
 			data => ''
 	};
@@ -423,6 +687,8 @@ sub _make_pkg
 
 sub _send_pkg
 {
+	my $self = shift;
+
 	my $socket = shift;
 	my $pkg = shift;
 
@@ -432,6 +698,8 @@ sub _send_pkg
 
 sub _recv_pkg
 {
+	my $self = shift;
+
 	my $socket = shift;
 
 	my $resp = $socket->getline;
@@ -450,38 +718,54 @@ sub _recv_pkg
 
 sub _connect_ftp
 {
-	print Dumper($self->{GAISC});
+	my $self = shift;
+
+#	print Dumper($self->{GAISC});
 	my $ftp = Net::FTP->new( $self->{GAISC}->{ServerIP}, Port=>$self->{GAISC}->{FTPPort}, Debug => 0);
 
 	unless ( $ftp ){
-		die "connect failure";
+		$self->{zlog}->fatal ( "GA::GAISC::_connect_ftp to IP: [" 
+			. $self->{GAISC}->{ServerIP} . "] Port: [" 
+			. $self->{GAISC}->{FTPPort} . "] failure" );
+		return undef;
 	}
 
-	$ftp->login( $self->{GAISC}->{FTPUser},
-			$self->{GAISC}->{FTPPass}
-		);
-	$ftp->cwd( '/' . $self->{GAISC}->{FTPDir} );
+	unless ( $ftp->login( $self->{GAISC}->{FTPUser},
+			$self->{GAISC}->{FTPPass} ) ){
+		$self->{zlog}->fatal ( "GA::GAISC::_connect_ftp login user: ["
+			. $self->{GAISC}->{FTPUser} . "] pass: ["
+			. $self->{GAISC}->{FTPPass} . "] failure!" );
+		return undef;
+	}
+			
+	unless ( $ftp->cwd( '/' . $self->{GAISC}->{FTPDir} ) ){
+		$self->{zlog}->fatal ( "GA::GAISC::_connect_ftp cwd to path: ["
+			. $self->{GAISC}->{FTPDir} . "] failure!" );
+	}
 
 	$ftp;
 }
 
 sub ftp_put_file
 {
-	my $ftp = shift;
-	my ($path, @files) = @_;
+	my $self = shift;
 
-	if ( ! $ftp->cwd( $path ) ){
+	my ($ftp, $path, @files) = @_;
+
+
+	unless ( $ftp->cwd( $path ) ){
 		$ftp->delete ( $path );
-		if ( ! $ftp->mkdir ( $path, 1 ) ){
-			die "mkdir $path failure!";
+		unless ( $ftp->mkdir ( $path, 1 ) ){
+			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file mkdir [$path] failure!" );
+			return undef;
 		}
 		$ftp->cwd ( $path );
 	}
 
 	foreach ( @files ){
-		print "putting $_\n";
+		$self->{zlog}->debug( "GA::GAISC::ftp_put_file putting $_" );
 		if ( ! $ftp->put($_) ){
-			die "put file [$_] fialure!" ;
+			$self->{zlog}->fatal ( "GA::GAISC::ftp_put_file put file [$_] to [$path] fialure!" );
 		}
 	}
 	return 1;
@@ -489,20 +773,24 @@ sub ftp_put_file
 
 sub ftp_get_file
 {
-	my $ftp = shift;
-	my ($path, @files) = @_;
+	my $self = shift;
+	my ($ftp, $remote_dir, $local_dir, @files) = @_;
 
-	if ( ! $ftp->cwd( $path ) ){
-		die "cwd to $path failure!";
+	if ( ! $ftp->cwd( $remote_dir ) ){
+		$self->{zlog}->debug( "GA::GAISC::ftp_get_file: cwd to [$remote_dir] failure!" );
+		return undef;
 	}
 
-	chdir '/tmp/ln';
+	#chdir $ruledir or 
+	#	return $self->{zlog}->fatal ( "GA::GAISC::ftp_get_file lcd to [$ruledir] failure!" );
 
 	foreach ( @files ){
-		print "getting $_\n";
-		if ( ! $ftp->get($_) ){
-			die "put file [$_] fialure!" ;
+		$self->{zlog}->debug ( "GA::GAISC::ftp_get_file getting $_" );
+		if ( ! $ftp->get($_, "$local_dir/$_") ){
+			$self->{zlog}->debug( "GA::GAISC::ftp_get_file: get file [$_] to [$local_dir] failure!" );
+			next;
 		}
+		push ( @{$self->{files}}, "$local_dir/$_" );
 	}
 
 	return 1;
@@ -510,10 +798,12 @@ sub ftp_get_file
 
 sub test_ftp
 {
-	my $ftp = _connect_ftp();
+	my $self = shift;
+
+	my $ftp = $self->_connect_ftp();
 	#ftp_put_file( $ftp, ".", "GAISC.conf" );
 
-	ftp_put_file ( $ftp, "xixi/haha/hoho", "data" );
+	$self->ftp_put_file ( $ftp, "xixi/haha/hoho", "data" );
 
 	$ftp->quit;
 }
