@@ -489,27 +489,37 @@ sub check_re_match
 		return 0;
 	}
 
+
 	if ( 0==$match_type ){
 		#×Ö·û´®Ä£ºýÆ¥Åä
 #print "in [$content] find [$match_keyword], result: " . "[" . index($content,$match_keyword) . "]\n\n\n";
 		#return ( -1 != rindex($content,$match_keyword) );
+		my $result;
+#$match_keyword = join('',split(/\W/,$match_keyword) );
+#$match_keyword=~s/([\x80-\xFF])/chr(ord($1))/eg;
+#$content=~s/([\x80-\xFF])/chr(ord($1))/eg;
+#print "re: " . ($match_keyword=~/([\x80-\xFF])/) . "\n";
+
 		if ( $match_case_sensitive ){
-			return ( $content=~/\Q$match_keyword/ );
+			$result = $content=~/\Q$match_keyword/;
+		}else{
+			$result = $content=~/\Q$match_keyword/ ;
 		}
-		return ( $content=~/\Q$match_keyword/i );
+#print "[$match_case_sensitive], [$content]".length($content) .", [$match_keyword]".length($match_keyword) ."[$result]\n";
+		return $result;
 	}elsif( 1==$match_type ){
 		#ÕýÔòÆ¥Åä
 		if ( $match_case_sensitive ){
 			return ( $content=~/$match_keyword/ );
 		}
-		return ( $content=~/$match_keyword/i );
+		return ( $content=~/$match_keyword/ );
 	}elsif( 9==$match_type ){
 		#×Ö·û´®¾«È·Æ¥Åä
 		#return ( -1 != index($content,$match_keyword) );
 		if ( $match_case_sensitive ){
 			return ( $content=~/^\Q$match_keyword\E$/ );
 		}
-		return ( $content=~/^\Q$match_keyword\E$/i );
+		return ( $content=~/^\Q$match_keyword\E$/ );
 	}
 
 }
