@@ -26,17 +26,17 @@ if($_POST["Submit"]==_("Modify")){
         die (_("Unkonwn quarantine time out action"));
     $spamconf->setParam("TimeOut",$quarantineTimeOut,"QuarantineEngine");
     $spamconf->setParam("TimeOutAction",$QuarantineTimeOutAction,"QuarantineEngine");
-    if(($ret=wi("reset_ContentEngine",$result))==0)
+    $spamconf->save();
+    if(($ret=wi("QuarantineUpdate",$result))==0)
 		echo _("Modification Success! ");
 	else
 		echo _("Config Modify Fail, ErrNo: ").$ret;
     
 }else{
+    $quarantineEnginTimeOut = intval ($spamconf->getParam("TimeOut", "QuarantineEngine"));
+    $quarantineEnginTimeOutAction = $spamconf->getParam("TimeOutAction", "QuarantineEngine");
 
 	if(adminPerm(PERM_ADMIN_WRITE)){
-        $quarantineEnginTimeOut = 3600*10*24;//intval ($spamconf->getParam("TimeOut", "QuarantineEngin"));
-        $quarantineEnginTimeOutAction = $spamconf->getParam("TimeOutAction", "QuarantineEngin");
-
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -75,10 +75,10 @@ function doSwitchTime() {
     <label>
     <?=_("Quarantine time out action")?>
     <select name="QuarantineTimeOutAction">
-    <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'checked'; ?>><?=_("Drop")?></option>
-    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'checked'; ?>><?=_("Reject")?></option>
-    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'checked'; ?>><?=_("Tag")?></option>
-    <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'checked'; ?>><?=_("Forward")?></option>
+    <option value="D" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'D')) echo 'selected'; ?>><?=_("Drop")?></option>
+    <option value="R" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'R')) echo 'selected'; ?>><?=_("Reject")?></option>
+    <option value="T" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'T')) echo 'selected'; ?>><?=_("Tag")?></option>
+    <option value="F" <?php if (!strcmp ($quarantineEnginTimeOutAction, 'F')) echo 'selected'; ?>><?=_("Forward")?></option>
     </select>
     </label>
     <br><br/>
