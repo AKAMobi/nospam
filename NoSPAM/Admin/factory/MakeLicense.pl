@@ -1,15 +1,20 @@
 #!/usr/bin/perl -w
 
-$prodno = $ARGV[0];
+use POSIX qw(strftime);
+
+my $prodno = $ARGV[0];
 die "pls provide prodno\n" unless $prodno ;
+
+my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
 
 $License = <<_LICENSE_;
 ForSell=No
+GenerateDate=$now
 ExpireDate=2004-8-1
 Version=2
 
-FactoryName=ËÄÎ¬ÊÀ¼Í
-ProductName=iXRay
+FactoryName=
+ProductName=noSPAM
 ProductSN=$prodno
 
 ServerGatewaySwitchable=Y
