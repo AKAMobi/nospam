@@ -53,7 +53,7 @@ sub get_action
 
 	my $mail_info = $self->{parser}->get_mail_info ( $fh );
 
-	my ($rule_info,$is_user_rule) = $self->{ruler}->get_match_rule ( $mail_info );
+	my ($is_user_rule, $rule_info) = $self->{ruler}->get_match_rule ( $mail_info );
 	
 	my ( $action, $param, $rule_id );
 
