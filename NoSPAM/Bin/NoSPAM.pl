@@ -437,9 +437,15 @@ _POD_
 	&MailBaseSetting_reset;
 	&SystemEngine_reset;
 
+	&PerformanceTune;
 	# 检查 locale list/Razor register等一次性的工作，在rc.local中
 
 	return $err;
+}
+
+sub PerformanceTune
+{
+	system ('/sbin/hdparm -m 16 -p -W 1 -u 1 -c 3 -d 1 -X 66 /dev/hda > /dev/null 2>&1');
 }
 
 sub SA_update
