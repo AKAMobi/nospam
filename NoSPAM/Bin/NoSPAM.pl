@@ -1218,7 +1218,10 @@ sub _netfilter_set_fw
 
 	$ret ||= system( "$iptables -A INPUT -s " 
 			. $conf->{config}->{Network}->{IP}
-			. "/24 -j ACCEPT" );
+			. "/24 -p tcp --dport 40022 -j ACCEPT" );
+	$ret ||= system( "$iptables -A INPUT -s " 
+			. $conf->{config}->{Network}->{IP}
+			. "/24 -p tcp --dport 40023 -j ACCEPT" );
 
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 25 -j ACCEPT" );
 	$ret ||= system( "$iptables -A INPUT -p tcp --dport 26 -j ACCEPT" );
