@@ -122,7 +122,7 @@ static void preview_show_func_s(const char *p, size_t n)
 
 void preview_start()
 {
-	printf("<PRE CLASS=\"message-text-plain\">");
+	printf("<TT CLASS=\"message-text-plain\">");
 	filter_start(FILTER_FOR_PREVIEW, &preview_show_func_s);
 }
 
@@ -135,7 +135,7 @@ int preview_callback(const char *ptr, size_t cnt, void *voidptr)
 void preview_end()
 {
 	filter_end();
-	printf("</PRE>\n");
+	printf("</TT>\n");
 }
 
 #if 0
@@ -394,7 +394,6 @@ void newmsg_init(const char *folder, const char *pos)
 	draftmessagefilename= draftmessage ?
 				 maildir_find(DRAFTS, draftmessage):0;
 
-	/* by lfan, disable preview
 	if (*(p=cgi("previewmsg")))
 	{
 #ifdef	ISPELL
@@ -420,7 +419,6 @@ void newmsg_init(const char *folder, const char *pos)
 
 		printf("<TABLE WIDTH=\"100%%\" BORDER=0 CELLSPACING=0 CELLPADDING=6><TR><TD><HR WIDTH=\"80%%\"></TD></TR></TABLE>\n");
 	}
-	*/
 
 	printf("<INPUT TYPE=HIDDEN NAME=form VALUE=\"donewmsg\">\n");
 	newmsg_hiddenheader("pos", pos);
@@ -652,6 +650,8 @@ void newmsg_init(const char *folder, const char *pos)
 	//	previewlab);
 	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=sendmsg onclick=\"return check();\" VALUE=\"%s\">&nbsp;",
 		sendlab);
+	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=previewmsg VALUE=\"%s\">&nbsp;",
+		previewlab);
 	printf("<INPUT CLASS=mybtn TYPE=SUBMIT NAME=savedraft VALUE=\"%s\">&nbsp;",
 		savedraft);
 
@@ -702,17 +702,19 @@ int	wait_stat;
 
 void sendmsg_done()
 {
-	/* by lfan, add send OK function
-	if ( *cgi("pos"))
-		http_redirect_argss("&form=readmsg&pos=%s", cgi("pos"), "");
-	else
-		http_redirect_argss("&form=folders", "", "");
-	*/
-
-	if ( *cgi("pos") )
-		http_redirect_argss("&form=sendok&pos=%s", cgi("pos"), "");
-	else
-		http_redirect_argss("&form=sendok&pos=%s", "-1", "");
+	/* by lfan, add send OK function */
+	if (*cgi("savedraft")) {
+		if ( *cgi("pos"))
+			http_redirect_argss("&form=readmsg&pos=%s", cgi("pos"), "");
+		else
+			http_redirect_argss("&form=folders", "", "");
+	}
+	else {
+		if ( *cgi("pos") )
+			http_redirect_argss("&form=sendok&pos=%s", cgi("pos"), "");
+		else
+			http_redirect_argss("&form=sendok&pos=%s", "-1", "");
+	}
 }
 
 static int dosendmsg(const char *origdraft)
@@ -1014,7 +1016,7 @@ const	char *draftmessage=cgi("draftmessage");
 		return;
 	}
 #endif
-	if (*ispreviewmsg())
+	if (*ispreviewmsg()||cgi("return"))
 	{
 		output_form("newmsg.html");
 		return;

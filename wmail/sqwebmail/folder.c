@@ -790,7 +790,7 @@ void folder_nextprev()
 
 	/* FORWARD AS ATTACHMENT*/
 	/* by lfan
-	printf("<TD CLASS=\"message-menu-button\"><A HREF=\"");
+	printf("<TD CLASS=\"message-menu-button\" WIDTH=60><A HREF=\"");
 	output_scriptptrget();
 	output_mimegpgfilename();
 	printf("&pos=%ld&forwardatt=1&form=newmsg\">%s</A></TD>\n",
@@ -2403,7 +2403,7 @@ static void showtextplain(FILE *fp, struct rfc2045 *rfc, struct rfc2045id *id)
 	struct rfc2646tohtml *flowtohtml=0;
 
 	id=id;
-
+/*
 	if (is_preview_mode())
 	{
 		const char *cb=rfc2045_getattr(rfc->content_type_attr,
@@ -2417,7 +2417,7 @@ static void showtextplain(FILE *fp, struct rfc2045 *rfc, struct rfc2045id *id)
 			return;
 		}
 	}
-
+*/
 	rfc2045_mimeinfo(rfc, &dummy, &dummy, &mime_charset);
 
 	if (strcasecmp(mime_charset, sqwebmail_content_charset) &&

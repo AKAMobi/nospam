@@ -9,19 +9,24 @@
 </head>
 
 <!--
-
+[#$DSPFMT_DATE=%Y年%b%d日, %p %I:%M:%S#]
+[#$DSPHDR_FROM=&nbsp;发件人#]
+[#$DSPHDR_TO= &nbsp;收件人#] 
+[#$DSPHDR_CC=&nbsp;抄送#]
+[#$DSPHDR_SUBJECT= 主题#]
+[#$DSPHDR_DATE= 日期#]
 [#$TOLAB=收件:#]
 [#$CCLAB=抄送:#]
 [#$BCCLAB=暗送:#]
 [#$SUBJECTLAB=主题:#]
 [#$MESSAGELAB=内容:#]
 [#$SENDLAB=&nbsp;发送&nbsp;#]
-[#$PREVIEWLAB=预览#]
+[#$PREVIEWLAB=&nbsp;预览&nbsp;#]
 [#$FORWARDLAB=---------- 转发的邮件 ----------#]
 [#$SAVEDRAFT=存为草稿#]
 [#$UPLOAD=添加附件#]
 [#$ATTACHMENTS=<FONT class=ctype>%d 个附件</FONT>#]
-[#$SALUTATION=%s writes:#]
+[#$SALUTATION=%s的信件内容:#]
 [#$SPELLCHECKDONE=<B CLASS="spellcheckdone">拼写检查完成</B>#]
 [#$CHECKSPELLING=检查拼写#]
 [#$QUOTAERR=<font color="#FF0000" class="error">错误: 您超过了信箱空间配额</font>#]
@@ -65,7 +70,7 @@ function check() {
 
 <form method="post" name="msg" action="[#p#]">
 [#P#]
-<table align=center width="90%" border="0" cellspacing="0" cellpadding="3" bgcolor=#93BEE2>
+<table align=center width="90%" border="0" cellspacing="0" cellpadding="3" bgcolor=#93BEE2 class=ctype>
   <tr> 
     <td> 
       [#W#]

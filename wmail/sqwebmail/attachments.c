@@ -1063,7 +1063,7 @@ int	quotaflag=0;
 			tokensave();
 		}
 	}
-	else if (*cgi("previewmsg"))
+	else if (*cgi("return"))
 	{
 		cgi_put("draft", draft);
 		newmsg_do(folder);
