@@ -112,7 +112,7 @@ sub is_overrun_rate_per_subject
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return (0,'ÒıÇæÎ´ÏŞÖÆ') if ( !$num || !$sec );
+	return (0,'ÒıÇæÎ´ÅäÖÃ') if ( !defined $num || !defined $sec );
 
 	# is  overrun?
 	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec, $deny_sec );
@@ -138,7 +138,7 @@ sub is_overrun_rate_per_mailfrom
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 
 	# 0 or undef means no limit
-	return (0,'ÒıÇæÎ´ÏŞÖÆ') if ( !$num || !$sec );
+	return (0,'ÒıÇæÎ´ÅäÖÃ') if ( !defined $num || !defined $sec );
 	
 	# is overrun?
 	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec, $deny_sec );
@@ -163,7 +163,7 @@ sub is_overrun_rate_per_ip
 	($num, $sec, $deny_sec) = ( $1,$2,$3 );
 	
 	# 0 or undef means no limit
-	return (0,'ÒıÇæÎ´ÏŞÖÆ') if ( !$num || !$sec );
+	return (0,'ÒıÇæÎ´ÅäÖÃ') if ( ! defined $num || ! defined $sec );
 
 	# is overrun?
 	return $self->is_overrun_rate_per_XXX ( 'IP', $ip, $num, $sec, $deny_sec );
