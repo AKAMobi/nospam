@@ -1,0 +1,48 @@
+<?
+require_once("inc/include.ns");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title><?=_("Introduction") ?></title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<p><?php echo $ProductName; ?></p>
+<?
+if( ($ret=wi("get_Serial",$result))==0 ){
+	$serial = trim(implode("",$result));
+	echo _("The Product Serial No: ")."$serial<br>";
+}else{
+	echo _("Get Serial No Error! ErrNo: ")."$ret<br>";
+}
+if(!file_exists(LICENSE)){
+	header("Refresh: 0;URL=/admin/system/serialno.ns");
+	echo "<p>"._("This Product has not get valid License, Please contact with your product provider.")."</p>";
+}else{
+	$result = "";
+	if(($ret=wi("check_License License.dat",$result))==0){	
+		$LicenseInfo = trim(implode("",$result));
+		echo $LicenseInfo;
+		if($Version == NOSPAM_VERSION){
+			echo "<p>"._("This Product License is OK! ")."</p>";
+		}else{
+			echo "<p>"._("The License is not match your product Version!")."</p>";
+		}
+?>
+<p>
+<?=_("Manufacturer: ").$sFactoryName?><br>
+<?=_("License Expire: ").$sExpire?><br>
+<?= $bForSell? _("Product Release"):_("Demo Release")?>
+</p>
+<?
+	}else{
+		header("Refresh: 0;URL=/admin/system/serialno.ns");
+		echo "<h2>"._("The License has expired")."</h2>";
+	}
+}
+?>
+</body>
+</html>
