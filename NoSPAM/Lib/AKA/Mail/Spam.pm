@@ -10,6 +10,8 @@ package AKA::Mail::Spam;
 use AKA::Mail::Conf;
 use AKA::IPUtil;
 
+use Net::DNS;
+
 sub new
 {
 	my $class = shift;
@@ -32,6 +34,18 @@ sub test_spam
 	# TODO: finish it
 }
 
+# cache dns resolver;
+sub get_dns_resolver
+{
+	my $self = shift;
+
+	return $self->{resolver} if ( $self->{resolver} );
+
+	$self->{resolver} = Net::DNS::Resolver->new;
+	
+	return $self->{resolver};
+}
+
 # 
 # 检查可追查性
 # return ( 0=un-traceable, 1=traceable, 2=strict_traceable )
@@ -46,15 +60,14 @@ sub is_traceable
 	}
 
 	if ( ! $smtp_ip || ! $from_domain ){
-		$self->{zlog}->fatal ( "Spam::check_traceable can't get smtp_ip & domain info." );
+		$self->{zlog}->fatal ( "Spam::is_traceable can't get smtp_ip & domain info." );
 		return 0;
 	}
-	$self->{zlog}->debug ( "Spam::check_traceable smtp ip: $smtp_ip from_domain $from_domain");
+	$self->{zlog}->debug ( "Spam::is_traceable smtp ip: $smtp_ip from_domain $from_domain");
 	
-	use Net::DNS;
-	my $res = Net::DNS::Resolver->new;
+	my $res = $self->get_dns_resolver;
 	if ( ! $res ){
-		$self->{zlog}->fatal ( "Spam::check_traceable can't new Resolver $!" );
+		$self->{zlog}->fatal ( "Spam::is_traceable can't new Resolver $!" );
 		return 0;
 	}
 
@@ -72,7 +85,7 @@ sub is_traceable
 
 	# TODO: add HAND support
 
-	$self->{zlog}->debug ( "Spam::check_traceable mx & a list: " . join( ",", @mx_n_a) . " TraceType; " . join(',',@TraceType) );
+	$self->{zlog}->debug ( "Spam::is_traceable mx & a list: " . join( ",", @mx_n_a) . " TraceType; " . join(',',@TraceType) );
 
 	#my $client_net;
 	#$client_net = &ip_to_net_compare( $smtp_ip );
@@ -85,7 +98,7 @@ sub is_traceable
 	my $strict_traceable_mask = $self->{conf}->{config}->{TraceMaybeSpamMask};
 
 	foreach my $mx_a_ip ( @mx_n_a ){
-		$self->{zlog}->debug ( "Mail::Spam::check_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
+		$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
 
 		#&ip_to_net_compare ( $mx_a_ip );
 
@@ -95,7 +108,7 @@ sub is_traceable
 
 		if ( !$strict_traceable ){
 			if ( $self->{iputil}->is_ip_in_range($mx_a_ip,"$smtp_ip/$strict_traceable_mask") ){
-				$self->{zlog}->debug ( "Mail::Spam::check_traceable $smtp_ip is strict traceable at $mx_a_ip of $from_domain, mask $strict_traceable_mask" );
+				$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is strict traceable at $mx_a_ip of $from_domain, mask $strict_traceable_mask" );
 				$strict_traceable = 1;
 				$traceable = 1;
 				last;
@@ -104,7 +117,7 @@ sub is_traceable
 
 		if ( !$traceable ){
 			if ( $self->{iputil}->is_ip_in_range($mx_a_ip,"$smtp_ip/$traceable_mask") ){
-				$self->{zlog}->debug ( "Mail::Spam::check_traceable $smtp_ip is traceable at $mx_a_ip of $from_domain, mask $traceable_mask" );
+				$self->{zlog}->debug ( "Mail::Spam::is_traceable $smtp_ip is traceable at $mx_a_ip of $from_domain, mask $traceable_mask" );
 				$traceable = 1;
 			} 
 		}
@@ -352,7 +365,7 @@ sub spam_checker
 	}elsif ( &is_black_addr($self,$from_addr) ){
 		$is_spam = 3;
 		$reason = "地址黑名单";
-	}elsif ( 'Y' eq uc $slef->{conf}->{config}->{Traceable} ){
+	}elsif ( 'Y' eq uc $self->{conf}->{config}->{Traceable} ){
 		# 只有启用了可追查性检查时才判断
 		my $traceable = &is_traceable( $self, $smtp_ip, $email_domain );
 
