@@ -1,0 +1,59 @@
+<?
+require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_LOG))
+	die("您没有访问该网页的权限。");
+
+?>
+<html>
+<head>
+<title>邮件引擎运行时间分析</title>
+<META HTTP-EQUIV="Refresh" CONTENT="300">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" content="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 03 May 2004 05:25:08 GMT">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+
+<H1>邮件引擎运行时间分析图</H1><BR>
+<!-- Begin `Daily' Graph (5 Minute -->
+Real Time: 实际运行时间<br>
+CPU Time: 占用CPU时间<br>
+<p>
+All Engines: 所有引擎运行时间<br>
+AntiSPAM: 反垃圾引擎<br>
+Audit: 审计引擎<br>
+Dynamic: 动态限制引擎<br>
+Content: 内容过滤引擎<br>
+AntiVirus: 反病毒引擎
+<HR>
+<H2>每日 图表 (5 分钟 平均)</H2><BR>
+<IMG VSPACE=10 WIDTH=600 ALIGN=TOP 
+     SRC="mail_engine-day.gif" ALT="day">
+<!-- End `Daily' Graph (5 Minute -->
+
+<!-- Begin `Weekly' Graph (30 Minute -->
+<HR>
+<H2>每周 图表 (30 分钟 平均)</H2><BR>
+<IMG VSPACE=10 WIDTH=600 ALIGN=TOP 
+     SRC="mail_engine-week.gif" ALT="week">
+<!-- End `Weekly' Graph (30 Minute -->
+
+<!-- Begin `Monthly' Graph (2 Hour -->
+<HR>
+<H2>每月 图表 (2 小时 平均)</H2><BR>
+<IMG VSPACE=10 WIDTH=600 ALIGN=TOP 
+     SRC="mail_engine-month.gif" ALT="month">
+<!-- End `Monthly' Graph (2 Hour -->
+
+<!-- Begin `Yearly' Graph (1 Day -->
+<HR>
+<H2>每年 图表 (1 天 平均)</H2><BR>
+<IMG VSPACE=10 WIDTH=600 ALIGN=TOP 
+     SRC="mail_engine-year.gif" ALT="year">
+<!-- End `Yearly' Graph (1 Day -->
+</BODY>
+
+</body>
+</html>
