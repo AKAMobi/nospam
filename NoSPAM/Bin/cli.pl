@@ -60,4 +60,5 @@ exit 0;
 sub restore_default()
 {
 	system ( 'cat /home/NoSPAM/etc/NoSPAM.default.conf > /home/NoSPAM/etc/NoSPAM.conf; chown nospam /home/NoSPAM/etc/NoSPAM.conf' );
+	system ( 'cat /home/NoSPAM/etc/ADMINFILE.default > /home/vpopmail/domains/localhost.localdomain/ADMINFILE; chown nospam /home/vpopmail/domains/localhost.localdomain/ADMINFILE' );
 }

@@ -462,7 +462,7 @@ _POD_
 	return $err;
 }
 
-sub reset_Locale;
+sub reset_Locale
 {
 	my $locale_cfg = "/etc/mrtg/mrtg.cfg.$language";
 	my $default_cfg = "/etc/mrtg/mrtg.cfg";
