@@ -1941,6 +1941,7 @@ sub _file_update_rcpthosts
 	
 	my $content = join("\n",@Domains);
 	$content =~ s/^$//g;
+	$content .= "\n";
 
 	return write_file($content, '/var/qmail/control/rcpthosts');
 }
