@@ -1,0 +1,64 @@
+<?
+require_once("../inc/include.ns");
+
+if($SpamEngine <= 0)
+	die("对不起，本系统没有开启垃圾邮件引擎功能");
+
+if(!adminPerm(PERM_ADMIN_SPAM))
+	die("您没有访问该网页的权限。");
+
+if($_POST["Engine"]){
+	if(!adminPerm(PERM_ADMIN_WRITE))
+		die("你无权进行更改操作");
+	$spamconf->setParam("NoSPAMEngine",$_POST["Engine"],"SpamEngine");
+	$spamconf->save();
+	if(($ret=wi("reset_SpamEngine",$result))==0)
+		echo "修改成功";
+	else
+		echo "修改失败";
+}else{
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>职能内容分析</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+<?
+if(adminPerm(PERM_ADMIN_WRITE)){
+?>
+本功能目前没有参数可以设置，也无法单独关闭
+<!--form name="form1" method="post" action="">
+  <p>
+    <label>
+    <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?>>
+    开启</label>
+    <br>
+    <label>
+    <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?>>
+    关闭</label>
+    <br>
+    <input type="submit" name="Submit" value="修改">
+  </p>
+</form-->
+<?
+}else{
+?>
+    <label>
+    <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?> disabled>
+    开启</label>
+    <br>
+    <label>
+    <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> disabled>
+    关闭</label>
+<?
+}
+?>
+</body>
+</html>
+<?
+}
+?>
