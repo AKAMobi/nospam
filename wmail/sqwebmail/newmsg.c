@@ -699,10 +699,17 @@ int	wait_stat;
 
 void sendmsg_done()
 {
+	/* by lfan, add send OK function
 	if ( *cgi("pos"))
 		http_redirect_argss("&form=readmsg&pos=%s", cgi("pos"), "");
 	else
 		http_redirect_argss("&form=folders", "", "");
+	*/
+
+	if ( *cgi("pos") )
+		http_redirect_argss("&form=sendok&pos=%s", cgi("pos"), "");
+	else
+		http_redirect_argss("&form=sendok&pos=%s", "-1", "");
 }
 
 static int dosendmsg(const char *origdraft)

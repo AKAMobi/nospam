@@ -1463,6 +1463,19 @@ static void do_output_form_loop(FILE *f)
                         date_buf[len]=0;
                         printf(date_buf);			
 		}
+		// by lfan, display send ok return addr
+		else if (strcmp(kw, "WATERNIGHT") == 0 )
+		{
+			char buf[1024];
+			
+			if( strcmp( cgi("pos"), "-1" ) == 0 ) {
+				sprintf( buf, "&form=folders" );
+			}
+			else {
+				sprintf( buf, "&form=readmsg&pos=%s", cgi("pos") );
+			}
+			printf(buf);
+		}
 		else if (strncmp(kw, "radio:", 6) == 0)
 		{
 		const char *name=strtok(kw+6, ":");
