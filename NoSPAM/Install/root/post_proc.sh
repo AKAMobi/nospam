@@ -19,3 +19,4 @@ ln -s /home/NoSPAM/bin/NoSPAM etc/rc.d/rc3.d/S11NoSPAM_start_System
 ln -s /var/qmail/control/servercert.pem var/qmail/control/clientcert.pem
 chown qmaild.qmail var/qmail/control/*.pem
 chmod 700 /var/qmail/control/*.pem
+

@@ -19,9 +19,15 @@ qmai-remote concur 并发 120 的硬编码 506 now
 解决启明星辰的SMTPS问题
 named 无法出国问题
 
+2004-05-08
+smtp_proxy 的完善
+
 check rule  match err ( old err , find it out )
 In,Out都打tag的合理性论证
 VLAN LVS
 
 网景
 完成CLI
+lilo降级
+网卡缺省down
+
