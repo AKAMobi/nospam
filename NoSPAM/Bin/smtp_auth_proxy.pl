@@ -6,14 +6,13 @@ use POSIX qw(strftime);
 # to disable any debug information to appear. 
 # basicaly, for License reason. ;)
 # 2004-03-12 Ed
+
 open (NSOUT, ">&=2");
-close (STDERR);
+close STDERR;
 
-
-my $logit = $ARGV[0];
+my $logit = shift @ARGV;
 $logit = 0 if ( ! defined $logit || $logit ne "log" );
 
-zlog ( "user: , pass: " );
 my ($user, $pass, $challenge) = &get_info();
 
 my @stop_users = ( 'zixia', 'ed', 'cy', 'lizh' );
@@ -25,54 +24,43 @@ foreach ( @stop_users ){
         }
 }
 
-
-sub zlog
-{
-	return unless $logit;
-	my $what = shift;
-
-	my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
-	if ( open ( WFD, ">>/var/log/chkpw" ) ){
-		print WFD "$now $what\n";
-		close ( WFD );
-	}
-}
-
-
-
 my $REMOTE_SMTP = &get_remote_smtp_ip($user);
+
 if ( ! $REMOTE_SMTP || !length($REMOTE_SMTP ) ){
+#	exit &local_auth( "zixia\@test.com\0zixia\0\0" );
+	exit &local_auth( "$user\0$pass\0$challenge\0" );
 	exit 20;
 }
-$smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
+$smtp = Net::SMTP_auth->new($REMOTE_SMTP);
 
 my $remote_ip = $ENV{'TCPREMOTEIP'};
 if ( ! $smtp->auth('LOGIN', $user, $pass) ){
-	zlog ("$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
+	zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP failed.");
 	exit 20;
 }
 
-zlog ("$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.");
+zlog ($logit, "$user, " . ($nolog?"***":$pass) . ", $challenge auth from $remote_ip to $REMOTE_SMTP succ.");
 exit 0;
 
 #################################################
 sub get_info
 {
         my ($user, $pass, $challenge);
-        my $buf = ' ' x 1024;
+        my $buf = ' ' x 128;
 
-        unless ( open ( FD, "<&3" ) ){
-		print NSOUT "only talk with qmail-smtpd!\n";
+        unless ( open ( FD, "<&=3" ) ){
+		print NSOUT "only talk with qmail-smtpd!\r\n";
 		exit -1;
 	}
-        $n = read ( FD, $buf, 1024 );
+        $n = read ( FD, $buf, 128 );
         close ( FD );
+	close ( '&=3' );
 
         if ( $buf =~ /\0/ ){
                 ($user,$pass,$challenge) = split ( /\0/, $buf );
         }else{
-            	zlog ("error: $n, $buf");
+            	zlog ($logit, "error: $n, $buf");
         }
 
         ($user,$pass,$challenge);
@@ -94,34 +82,84 @@ sub get_remote_smtp_ip
         }
 
         my $line;
+        my @lines;
         my $ip = "";
         my $domain = "";
 
         if ( open( FD, "</var/qmail/control/smtproutes") ){
-                while ( $line = <FD> ){
-                        chomp $line;
-
-                        if ( $line=~/^([^:]+):(\d+\.\d+\.\d+\.\d+)/ ){
-                           ($domain,$ip) = ($1,$2);
-                        }else{
-                           print NSOUT  "501 auth exchange cancelled (#5.0.1)\n";
-			   exit -1;
-                        }
-
-                        if ( !$user_domain ){
-                           last;
-                        }
-                        if ( $domain eq $user_domain ){
-                           last;
-                        }
-                }
+		@lines = <FD>;
                 close FD;
-        }
+	}
 
-        if ( ! $ip ){
-                print NSOUT "501 auth exchange cancelled (#5.0.2)\n";
-		exit -1;
-        }
-        return $ip;
+	foreach $line ( @lines ){
+		chomp $line;
+
+		if ( $line=~/^([^:]+):(\d+\.\d+\.\d+\.\d+)/ ){
+			($domain,$ip) = ($1,$2);
+		}else{
+			print NSOUT  "501 auth exchange cancelled (#5.0.1)\r\n";
+			exit -1;
+		}
+
+		if ( $user_domain && ($domain eq $user_domain) ){
+			if ( ! $ip ){
+				print NSOUT "501 auth exchange cancelled (#5.0.2)\r\n";
+				exit -1;
+			}
+			return $ip;
+		}
+	}
+        return undef;
 }
+
+
+sub local_auth
+{
+	my $auth_info = shift;
+
+#	my $str = $auth_info;
+#	$str =~ s/\0/\\0/g;
+#	zlog( 1, $str );
+
+	$^F = 3;
+
+	unless ( pipe(EOUT,EIN) ) {
+		print NSOUT "535 Unable to create a pipe. - $!\r\n";
+		return 150;
+	} 
+
+	select(EOUT);$|=1;
+	select(EIN);$|=1;
+
+	$SIG{PIPE} = 'IGNORE';
+
+#print NSOUT "fileno: " . fileno(EOUT) . "\n";
+	unless ( 3==fileno(EOUT) ){
+		print NSOUT "535 Unable to create a right pipe.\r\n";
+		return 150;
+	}
+
+	print EIN $auth_info;
+	close EIN;
+
+#print NSOUT "exec $ARGV[0]\n";
+	exec { $ARGV[0] } @ARGV or print NSOUT "535 Unable to exec for auth! $!\r\n";
+
+	exit 150;
+}
+
+sub zlog
+{
+	my $dolog = shift;
+	my $what = shift;
+
+	return unless $dolog;
+
+	my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	if ( open ( WFD, ">>/var/log/chkpw" ) ){
+		print WFD "$now $what\n";
+		close ( WFD );
+	}
+}
+
 

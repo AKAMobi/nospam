@@ -1439,10 +1439,11 @@ sub _file_update_service_localname
 	# get all ip which we should relay it, on port 26.
 	my $ret = 0; 
 
-	my $content = $conf->{config}->{Network}->{Hostname} || 'localhost';
+	my $content = $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.aka.cn';
 
 	$ret = write_file($content, '/service/smtpd/env/LOCALNAME');
 	$ret ||= write_file($content, '/service/ismtpd/env/LOCALNAME');
+	$ret ||= write_file($content, '/service/pop3d/env/LOCALNAME');
 
 
 	return ERR_SYSTEM_CALL if system('cd /service/ismtpd;make>/dev/null 2>&1;/usr/bin/svc -t /service/smtpd /service/ismtpd');
