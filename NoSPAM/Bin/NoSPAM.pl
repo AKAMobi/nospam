@@ -753,10 +753,38 @@ sub clean_Log
 
 sub QuarantineQueuePurge
 {
-	my $queue_life_day = ($conf->{config}->{QuarantineEngine}->{TimeOut} || 0) / 86400; # 60*60 * 24
+	use AKA::Mail::Controler;
+	my $AMC = new AKA::Mail::Controler;
+
+	my $queue_life_sec = $conf->{config}->{QuarantineEngine}->{TimeOut} || 0;
+	my $queue_life_day = $queue_life_sec / 86400; # 60*60 * 24
+	my $timeout_action = $conf->{config}->{QuarantineEngine}->{TimeOutAction} || 'D';
 	$queue_life_day ||= 1;
 
-	`find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day -exec rm -fr {} \\;`;
+	my @timeout_list = `find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day | grep -v "\.info$"`;
+	if ( 'D' eq uc $timeout_action ){
+		my @info_list = map ( "$_.info", @timeout_list );
+		unlink @timeout_list;
+		unlink @info_list;;
+		my $cnt = @info_list;
+		$zlog->debug ( "wi::QuarantineQueuePurge purge $cnt mails, timeout val $queue_life_sec" );
+	}elsif ( 'F' eq uc $timeout_action ){
+		my $info;
+		foreach ( @timeout_list ){
+			$info = $AMC->get_quarantine_info($_);
+			$AMC->send_mail_file_by_queue( $info->{from}, $info->{to}, $_ );
+			unlink $_; unlink "$_.info";
+		}
+	}elsif ( 'T' eq uc $timeout_action ){
+		my ($from,$to);
+		foreach ( @timeout_list ){
+			my $info = $AMC->get_quarantine_info($_);
+			$AMC->send_mail_file_by_queue( $info->{from}, $info->{to}, $_ );
+			unlink $_; unlink "$_.info";
+		}
+	}else{
+		$zlog->debug ( "wi::QuarantineQueuePurge got unknown TimeOutAction: [$timeout_action]" );
+	}
 }
 
 sub QuarantineProcessMail
@@ -773,11 +801,13 @@ sub QuarantineProcessMail
 			if ( $action eq 'D' ){
 				# file will be unlinked after all action
 			}elsif ( $action eq 'F' ){
-				my ($from,$to) = _get_quarantine_info($file);
-				$AMC->send_mail_file_by_queue( $from, $to, $file );
+				my $info = $AMC->get_quarantine_info($file);
+				$AMC->send_mail_file_by_queue( $info->{from}, $info->{to}, $file, 
+						{ 'reason' => $info->{'reason'},
+						 'desc' => $info->{'desc'} }	 );
 			}
 			unlink $file; unlink "$file.info";
-			print "$no,0\n";
+			print STDOUT "$no,0\n";
 		}else{
 			$zlog->fatal ( "wi QuarantineProcessMail can't parse input: [$_]" );
 			next;
@@ -785,21 +815,6 @@ sub QuarantineProcessMail
 	}
 	return 0;
 
-	sub _get_quarantine_info
-	{
-		my $file = shift;
-
-		my ($from,$to);
-		if ( open (FD,"<$file.info") ){
-			$from = <FD>; chomp $from;
-			$to = <FD>; chomp $to;
-			close FD;
-			return ($from,$to);
-		}else{
-			$zlog->fatal ( "wi QuarantineProcessMail::_get_quarantine_info can't open file [$file]" );
-			return undef;
-		}
-	}
 }
 
 sub QuarantineUserListEmpty
@@ -865,7 +880,7 @@ sub QuarantineGetInfo
 		return 0;
 	}else{
 		print "Auth with [$email]:[$passwd]\@$smtp_ip fail!\n";
-		return -1;
+		return 255;
 	}
 
 	sub get_remote_smtp_ip
