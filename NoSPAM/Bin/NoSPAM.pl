@@ -367,7 +367,7 @@ sub reset_Network_set_arp_single_mailsrv
 	return 0;
 }
 
-sub reset_Network_set_arp
+sub reset_Network_set_arp_multi_mailsrv
 {
 	my $ret;
 
@@ -395,7 +395,7 @@ sub reset_Network_set_arp
 
 	return 0;
 }
-sub reset_Network_set_route
+sub reset_Network_set_route_multi_mailsrv
 {
 	my $ret;
 	#出口网关：NoSPAM.conf::MailServerGateway
@@ -679,13 +679,25 @@ sub reset_Network
 	&reset_Network_down_eth;
 	&reset_Network_clean_netfilter;
 
+	# 是管理一台，还是管理一个网段
+	# 注意！是完全不一样的！
+	# XXX TODO
+	my $MailServerGroup = 'N';
+
 	my $ret = 0;
 
 	# Start up network settings.
 	$ret ||= 10 if ( &reset_Network_set_sysctl );
 	$ret ||= 20 if ( &reset_Network_up_eth($mode) );
-	$ret ||= 30 if ( &reset_Network_set_arp($mode) );
-	$ret ||= 40 if ( &reset_Network_set_route($mode) );
+
+	if ( 'Y' eq $MailServerGroup ){
+		$ret ||= 30 if ( &reset_Network_set_arp_multi_mailsrv($mode) );
+		$ret ||= 40 if ( &reset_Network_set_route_multi_mailsrv($mode) );
+	}else{
+		$ret ||= 30 if ( &reset_Network_set_arp_single_mailsrv($mode) );
+		$ret ||= 40 if ( &reset_Network_set_route_single_mailsrv($mode) );
+	}
+
 	$ret ||= 50 if ( &reset_Network_set_netfilter($mode) );
 
 	$ret ||= 60 if ( &reset_Network_update_hostname($mode) );
@@ -695,7 +707,6 @@ sub reset_Network
 		$zlog->fatal( "NoSPAM Util::reset_Network set network params failure!" );
 		return $ret;
 	}
-
 
 	return 0;
 }
