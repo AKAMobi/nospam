@@ -36,7 +36,7 @@ if($_POST["Submit"]=="修改"){
     <br>
     <label>
     <input type="radio" name="RefuseVirus" value="Y"<? if($RefuseVirus=="Y") echo " checked"; ?>>
-    直接退回病毒邮件</label>
+    直接丢弃病毒邮件</label>
     <br>
     <input type="submit" name="Submit" value="修改">
   </p>
