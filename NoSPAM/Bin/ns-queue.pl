@@ -67,7 +67,7 @@ my $hostname='gw.nospam.aka.cn';
 #my $hostname=`/bin/hostname -f`; #could get via call I suppose...
 #chomp $hostname;
 
-my $MAXTIME=3*60;
+my $MAXTIME=20;
 
 #Want debugging? Enable this and read $scandir/qmail-queue.log
 my $DEBUG='1';
