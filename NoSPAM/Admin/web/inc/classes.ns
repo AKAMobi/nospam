@@ -907,11 +907,12 @@ class EmailUser {
 			list ($x, $x, $x, $time, $pid, $info) = explode ('.', $file);
 			if (strcmp ($info, QUARANTINEINFOSUFFIX)==0) { // mail infor file
 				$this->fullMailList[$pid.$time]['INFO'] = substr ($file, strlen(QUARANTINEFILEPREFIX));
+			    $this->fullMailList[$pid.$time]['TIME'] = $time;
+				$this->fullMailList[$pid.$time]['FILE'] = $time.'.'.$pid;
+				$this->fullMailList[$pid.$time]['PID']  = $pid;
 			}
 			else {
-				$this->fullMailList[$pid.$time]['TIME'] = $time;
-				$this->fullMailList[$pid.$time]['FILE'] = substr ($file, strlen (QUARANTINEFILEPREFIX));
-				$this->fullMailList[$pid.$time]['PID'] = $pid;
+				
 			}
 		}
 		closedir ($dh);
