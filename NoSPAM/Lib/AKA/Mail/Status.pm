@@ -1213,7 +1213,7 @@ sub ds2rrd
 
 		$bad_mail = ( $virus || $spam || $dynamic ) ;
 
-		$rrd_size_all+=$size;
+		$rrd_size_all+=($size||0);
 		if ( $direction ){
 			$rrd_size_out+=$size ;
 			$rrd_size_out_ok+=$size unless $bad_mail;

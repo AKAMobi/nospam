@@ -1051,7 +1051,7 @@ sub spam_engine
 	}
 
 	unless ( length($client_smtp_ip) && length($returnpath) ){
-		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
+		#$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
 
 		$self->{mail_info}->{aka}->{engine}->{spam} = { result	=> RESULT_SPAM_MAYBE,
 								desc 	=> 'ВЮЪ§ВЛзу',
