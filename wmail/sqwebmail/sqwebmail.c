@@ -2419,6 +2419,18 @@ time_t	timeouthard=TIMEOUTHARD;
 			strcpy(ubuf, u);
 			if (*u2)
 				strcat(strcat(ubuf, "@"), u2);
+			else if( strchr(ubuf, '@') == 0 ) {
+				// by lfan, add default domain
+				char domain[256];
+				bzero( domain, 256 );
+				vset_default_domain( domain );
+				if( strlen(domain) > 0 ) {
+					free(ubuf);
+					ubuf=malloc(strlen(u)+strlen(domain)+2);
+					strcpy(ubuf, u);
+					strcat(strcat(ubuf, "@"), domain);
+				}
+			}
 
 			maildir_cache_start();
 			if (*p && (mailboxid=login(ubuf, p, &can_changepwd))
@@ -2433,17 +2445,26 @@ time_t	timeouthard=TIMEOUTHARD;
 				// add by lfan, support concurrent login
 				time(&current_time);	
 				p=read_sqconfig(".", IPFILE, &last_time);
-				if( p && (last_time + timeouthard > current_time) ) {
+				if( p && (last_time + timeouthard >= current_time) ) {
 					char	*pp;
+					time_t  timeoutsoft=TIMEOUTSOFT;
+
+					pp=getenv("SQWEBMAIL_TIMEOUTSOFT");
+
+					if (pp && *pp)
+						timeoutsoft=atoi(pp);
 				
 					if( (pp=strdup(p)) && (p=strtok(pp, " ")) 
 						&& (strcmp(p, ip_addr) == 0 || strcmp(p, "none") == 0)
-						&& (p=strtok(NULL, " ")) ) 
+						&& (p=strtok(NULL, " "))  
+						&& read_sqconfig(".", TIMESTAMP, &last_time)
+						&& last_time + timeoutsoft >= current_time )
 					{
 						sqwebmail_sessiontoken=strdup(p);
 						free(pp);
 					}
-					
+					else
+						sqwebmail_sessiontoken=random128();
 				}
 				else
 					sqwebmail_sessiontoken=random128();
@@ -2536,7 +2557,7 @@ time_t	timeouthard=TIMEOUTHARD;
 					} else {
 						p = 0;
 						p1 = u;
-						p2 = 0;
+						p2 = "";
 					}
 					if ( (mypw = vauth_getpw( p1, p2 )) != NULL ) {
 						struct maildirsize quotainfo;
