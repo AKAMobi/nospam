@@ -49,8 +49,8 @@ engine_pot:
 	--keyword=N__ --language=perl ${SRC_FILES} 
 
 merge:
-	msgmerge engine.nospam.cn.po engine.nospam.cn.pot -o engine.nospam.cn.pox
-	msgmerge web.nospam.cn.po web.nospam.cn.pot -o web.nospam.cn.pox
+	msgmerge --sort-output engine.nospam.cn.po engine.nospam.cn.pot -o engine.nospam.cn.pox
+	msgmerge --sort-output web.nospam.cn.po web.nospam.cn.pot -o web.nospam.cn.pox
 
 po:
 	rm -f engine.nospam.cn.pot engine.nospam.cn.po

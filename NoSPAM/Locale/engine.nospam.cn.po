@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM v2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-02 00:39+0800\n"
+"POT-Creation-Date: 2004-10-06 17:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: AKA <ed@aka.cn>\n"
@@ -15,212 +15,33 @@ msgstr ""
 "Content-Type: text/plain; charset=GBK\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "CPU is not licensed"
-msgstr "处理器未授权"
-
-msgid "Hareward system OK"
-msgstr "硬件系统已授权"
-
-msgid "License expired"
-msgstr "当前许可证无效或已经过期！"
-
-#, perl-brace-format
-msgid "License will expired after {days_left} days."
-msgstr "许可证将在 {days_left} 天后过期。"
-
-msgid "Sorry, System had no valid license now, It still can't work.\n"
-msgstr "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n"
-
-msgid "Sorry, due to "
-msgstr "对不起，由于 "
-
-msgid "Security Policy"
-msgstr "安全策略"
-
-msgid "System rejects your mail."
-msgstr "系统拒收您的邮件。"
-
-msgid "OFF"
-msgstr "未启用"
-
-msgid "User does not exist"
-msgstr "用户不存在"
-
-msgid "registered user"
-msgstr "登记用户"
-
-msgid "not run"
-msgstr "未运行"
-
-msgid "[Black List]"
-msgstr "【黑名单】"
-
-#, perl-brace-format
-msgid "[VIRUS {result}]"
-msgstr "【病毒 {result}】"
-
-msgid "Need not check outgoing mail"
-msgstr "内向外未检查"
-
-msgid "Need not check incoming mail"
-msgstr "外向内未检查"
-
-msgid "This mail is not in circle of check"
-msgstr "采样抽签未中"
-
-msgid "not set"
-msgstr "未设置"
-
-msgid "not fit condition"
-msgstr "未符合条件"
-
-msgid "internal error"
-msgstr "内部错误"
-
-msgid "submmited"
-msgstr "已提交"
-
-msgid "AntiSpam Engine"
-msgstr "垃圾识别引擎"
-
-msgid "Traceable"
-msgstr "可追查性检查"
-
-msgid "Authorized user"
-msgstr "认证用户"
-
-msgid "Sender must as same as auth user"
-msgstr "发信人非身份认证用户"
-
-msgid "outgoing mail is not limited"
-msgstr "内向外未限制"
-
-msgid "incoming mail is not limited"
-msgstr "外向内未限制"
-
-msgid "Sender white list"
-msgstr "发信人白名单"
-
-msgid "Mail sender"
-msgstr "发信人"
-
-msgid "Mail subject whitelist"
-msgstr "邮件主题白名单"
-
-msgid "Mail"
-msgstr "邮件"
-
-msgid "whitelist"
-msgstr "白名单"
-
-msgid "Overrun check was passed"
-msgstr "通过动态监测"
-
-msgid "Outgoing mail need not filter"
-msgstr "内向外未过滤"
-
-msgid "Incoming mail need not filter"
-msgstr "外向内未过滤"
-
-msgid "Maximum size exceeds"
-msgstr "尺寸超过配置最大值"
-
-msgid "System has no valid license now"
-msgstr "本设备尚无可用许可证"
-
-msgid "License error "
-msgstr "许可证错误"
-
-msgid "License is valid!"
-msgstr "许可证有效！"
-
-msgid "User Whitelist"
-msgstr "用户自定义白名单"
-
-msgid "User Blacklist"
-msgstr "用户自定义黑名单"
-
-msgid "Updating"
-msgstr "更新中"
-
-msgid "[Spam]"
-msgstr "【垃圾邮件】"
-
-msgid "[LikelySpam]"
-msgstr "【疑似垃圾】"
-
-msgid "need param"
-msgstr "无参数"
-
-msgid "passed"
-msgstr "通过"
-
-msgid "db failure"
-msgstr "加载失败"
+msgid " overrun"
+msgstr "超限"
 
 #, perl-brace-format
 msgid " overrun deny {wait_time} minutes."
 msgstr "发送超限，还需{wait_time}分钟解封"
 
-msgid " overrun"
-msgstr "超限"
-
 msgid " passed"
 msgstr "通过"
 
-msgid "bounced mail"
-msgstr "退信"
+msgid "AntiSpam Engine"
+msgstr "垃圾识别引擎"
 
-msgid "IP WhiteList"
-msgstr "IP白名单"
+msgid "Authorized user"
+msgstr "认证用户"
 
-msgid "Domain WhiteList"
-msgstr "域名白名单"
-
-msgid "Sender WhiteList"
-msgstr "发信人白名单"
-
-msgid "IP BlackList"
-msgstr "IP黑名单"
-
-msgid "Domain BlackList"
-msgstr "域名黑名单"
-
-msgid "Sender BlackList"
-msgstr "发信人黑名单"
-
-msgid "Traceable check"
-msgstr "可追查性检查"
-
-msgid "Can't create directory for upgrade"
-msgstr "无法建立升级目录"
-
-msgid "Please specify upgrade package name."
-msgstr "请指定升级包文件名。"
-
-msgid "Can't read upgrade package file"
-msgstr "无法访问升级包文件。"
+msgid "CPU is not licensed"
+msgstr "处理器未授权"
 
 msgid "Can't analyze upgrade package"
 msgstr "无法分析升级包。"
 
-msgid "Upgrade package filename error."
-msgstr "升级包文件名错误。"
+msgid "Can't create directory for upgrade"
+msgstr "无法建立升级目录"
 
-msgid "Upgrade package version mismatch with current system."
-msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
-
-msgid "System version higher then current upgrade package, can't downgrade."
-msgstr "系统已经安装过更高的升级包，无法降级。"
-
-msgid "System internal error"
-msgstr "系统内部错误"
-
-msgid "Upgrade package checksum error"
-msgstr "升级包校验和错误"
-
-msgid "upgrade successfully."
-msgstr "升级完成。"
+msgid "Can't read upgrade package file"
+msgstr "无法访问升级包文件。"
 
 msgid "Can't record upgrade log"
 msgstr "无法记录升级信息"
@@ -228,14 +49,193 @@ msgstr "无法记录升级信息"
 msgid "Can't record upgrade package information"
 msgstr "无法记录升级包信息"
 
+msgid "Connection flood"
+msgstr "连接频率"
+
+msgid "Domain BlackList"
+msgstr "域名黑名单"
+
+msgid "Domain WhiteList"
+msgstr "域名白名单"
+
+msgid "Hareward system OK"
+msgstr "硬件系统已授权"
+
+msgid "IP BlackList"
+msgstr "IP黑名单"
+
+msgid "IP WhiteList"
+msgstr "IP白名单"
+
+msgid "Incoming mail need not filter"
+msgstr "外向内未过滤"
+
+msgid "License error "
+msgstr "许可证错误"
+
+msgid "License expired"
+msgstr "当前许可证无效或已经过期！"
+
 msgid "License is not valide or already expires"
 msgstr "当前许可证无效或已经过期！"
 
-msgid "User flood"
-msgstr "用户重复"
+msgid "License is valid!"
+msgstr "许可证有效！"
+
+#, perl-brace-format
+msgid "License will expired after {days_left} days."
+msgstr "许可证将在 {days_left} 天后过期。"
+
+msgid "Mail"
+msgstr "邮件"
 
 msgid "Mail flood"
 msgstr "邮件重复"
 
-msgid "Connection flood"
-msgstr "连接频率"
+msgid "Mail sender"
+msgstr "发信人"
+
+msgid "Mail subject whitelist"
+msgstr "邮件主题白名单"
+
+msgid "Maximum size exceeds"
+msgstr "尺寸超过配置最大值"
+
+msgid "Need not check incoming mail"
+msgstr "外向内未检查"
+
+msgid "Need not check outgoing mail"
+msgstr "内向外未检查"
+
+msgid "OFF"
+msgstr "未启用"
+
+msgid "Outgoing mail need not filter"
+msgstr "内向外未过滤"
+
+msgid "Overrun check was passed"
+msgstr "通过动态监测"
+
+msgid "Please specify upgrade package name."
+msgstr "请指定升级包文件名。"
+
+msgid "Security Policy"
+msgstr "安全策略"
+
+msgid "Sender BlackList"
+msgstr "发信人黑名单"
+
+msgid "Sender WhiteList"
+msgstr "发信人白名单"
+
+msgid "Sender must as same as auth user"
+msgstr "发信人非身份认证用户"
+
+msgid "Sender white list"
+msgstr "发信人白名单"
+
+msgid "Sorry, System had no valid license now, It still can't work.\n"
+msgstr "对不起，本系统目前尚未获得正确的License许可，可能暂时无法工作。\n"
+
+msgid "Sorry, due to "
+msgstr "对不起，由于 "
+
+msgid "System has no valid license now"
+msgstr "本设备尚无可用许可证"
+
+msgid "System internal error"
+msgstr "系统内部错误"
+
+msgid "System rejects your mail."
+msgstr "系统拒收您的邮件。"
+
+msgid "System version higher then current upgrade package, can't downgrade."
+msgstr "系统已经安装过更高的升级包，无法降级。"
+
+msgid "This mail is not in circle of check"
+msgstr "采样抽签未中"
+
+msgid "Traceable"
+msgstr "可追查性检查"
+
+msgid "Traceable check"
+msgstr "可追查性检查"
+
+msgid "Updating"
+msgstr "更新中"
+
+msgid "Upgrade package checksum error"
+msgstr "升级包校验和错误"
+
+msgid "Upgrade package filename error."
+msgstr "升级包文件名错误。"
+
+msgid "Upgrade package version mismatch with current system."
+msgstr "当前系统无法使用本升级包，请确认升级包版本匹配当前系统。"
+
+msgid "User Blacklist"
+msgstr "用户自定义黑名单"
+
+msgid "User Whitelist"
+msgstr "用户自定义白名单"
+
+msgid "User does not exist"
+msgstr "用户不存在"
+
+msgid "User flood"
+msgstr "用户重复"
+
+msgid "[Black List]"
+msgstr "【黑名单】"
+
+msgid "[LikelySpam]"
+msgstr "【疑似垃圾】"
+
+msgid "[Spam]"
+msgstr "【垃圾邮件】"
+
+#, perl-brace-format
+msgid "[VIRUS {result}]"
+msgstr "【病毒 {result}】"
+
+msgid "bounced mail"
+msgstr "退信"
+
+msgid "db failure"
+msgstr "加载失败"
+
+msgid "incoming mail is not limited"
+msgstr "外向内未限制"
+
+msgid "internal error"
+msgstr "内部错误"
+
+msgid "need param"
+msgstr "无参数"
+
+msgid "not fit condition"
+msgstr "未符合条件"
+
+msgid "not run"
+msgstr "未运行"
+
+msgid "not set"
+msgstr "未设置"
+
+msgid "outgoing mail is not limited"
+msgstr "内向外未限制"
+
+msgid "passed"
+msgstr "通过"
+
+msgid "registered user"
+msgstr "登记用户"
+
+msgid "submmited"
+msgstr "已提交"
+
+msgid "upgrade successfully."
+msgstr "升级完成。"
+
+msgid "whitelist"
+msgstr "白名单"
