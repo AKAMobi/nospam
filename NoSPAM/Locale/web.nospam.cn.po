@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noSPAM V2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-13 02:26+0800\n"
+"POT-Creation-Date: 2004-07-18 20:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Ed Li <zixia@zixia.net>\n"
 "Language-Team: Ed Li <zixia@zixia.net>\n"
@@ -951,9 +951,8 @@ msgstr "总邮件数"
 msgid "Normal Mails"
 msgstr "正常邮件数"
 
-#, fuzzy
 msgid "Overrun Mails"
-msgstr "动态超限邮件"
+msgstr "动态超限邮件数"
 
 msgid "Virus Mails"
 msgstr "病毒邮件数"
@@ -1909,13 +1908,16 @@ msgstr "升级更新"
 msgid "System Mode"
 msgstr "运行模式"
 
-msgid "Change Password"
+msgid "Changing Password"
 msgstr "修改口令"
 
-msgid "Protect Mail Domain"
-msgstr "邮件域保护设定"
+msgid "IP Restriction"
+msgstr "IP限制"
 
-msgid "Queue Monitor"
+msgid "Mail Domain Protection"
+msgstr "邮件域用户管理"
+
+msgid "Mail Queue Monitor"
 msgstr "邮件队列监管"
 
 msgid "Mail Server Setting"
@@ -1956,6 +1958,9 @@ msgstr "规则管理"
 
 msgid "Rule Group"
 msgstr "类别管理"
+
+msgid "Mail Audit Engine"
+msgstr "审计引擎"
 
 msgid "Too Huge Mail"
 msgstr "超大邮件提醒"
@@ -2007,6 +2012,9 @@ msgstr "该账号登陆权限被禁止"
 
 msgid "This User can not Login from this IP"
 msgstr "该账号不能从此IP地址登录"
+
+#~ msgid "Protect Mail Domain"
+#~ msgstr "邮件域保护设定"
 
 #~ msgid "Continuous IP Match"
 #~ msgstr "连续IP匹配"
