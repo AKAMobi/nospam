@@ -7,15 +7,15 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die("您没有访问该网页的权限。");
 
-if($_POST["RBLEnabled"]){
+if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行更改操作");
 
-	if($_POST["RBLEnabled"]=="Y"){
-		$spamconf->setParam("RBLEnabled","Y","SpamEngine");
+	if($_POST["RBLDisabled"]=="N"){
+		$spamconf->setParam("RBLDisabled","N","SpamEngine");
 		$spamconf->setParam("RBLTimeout",$_POST["RBLTimeout"],"SpamEngine");
 	}else{
-		$spamconf->setParam("RBLEnabled","N","SpamEngine");
+		$spamconf->setParam("RBLDisabled","Y","SpamEngine");
 	}
 	$spamconf->save();
 	if(($ret=wi("SA_update",$result))==0)
@@ -23,7 +23,7 @@ if($_POST["RBLEnabled"]){
 	else
 		echo "修改失败，错误代码：".$ret;
 }else{
-	$bRBL = ($spamconf->getParam("RBLEnabled","SpamEngine")=="Y")? true:false;
+	$bRBLDisabled = ($spamconf->getParam("RBLDisabled","SpamEngine")=="Y")? true:false;
 	$iRBLTimeout = $spamconf->getParam("RBLTimeout","SpamEngine");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -52,17 +52,17 @@ function change(bState)
 <form name="form1" method="post">
   <p>超级RBL开关：<br>
     <label>
-    <input id="idRBLEnabledY" type="radio" name="RBLEnabled" value="Y"<? if($bRBL) echo " checked" ?> onclick="change(false)">
+    <input id="idRBLDisabledN" name="RBLDisabled" type="radio" value="N"<? if(!$bRBLDisabled) echo " checked" ?> onclick="change(false)">
   开启</label><br>
     <label>
-    <input id="idRBLEnabledN" name="RBLEnabled" type="radio" value="N"<? if(!$bRBL) echo " checked" ?> onclick="change(true)">
+    <input id="idRBLDisabledY" type="radio" name="RBLDisabled" value="Y"<? if($bRBLDisabled) echo " checked" ?> onclick="change(true)">
   关闭</label>
     <p>
 
-    RBL查询超时：<input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if(!$bRBL) echo " disabled";?> >秒 推荐值：15秒<br>
+    RBL查询超时：<input size=4 name="RBLTimeout" type="input" id="idRBLTimeout" value="<?=$iRBLTimeout?>" <? if($bRBLDisabled) echo " disabled";?> >秒 推荐值：15秒<br>
 
     <input type="reset" name="reset" value="恢复">
-    <input type="submit" name="submit" value="提交">
+    <input type="submit" name="isSubmit" value="提交">
   </p>
 </form>
 <p>
