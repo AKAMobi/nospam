@@ -87,7 +87,8 @@ Legend2[SMTP]: Working Conn.
 LegendI[SMTP]: SMTP Conn.:
 LegendO[SMTP]: Working Conn.:
 
-Target[MEM]: memTotalReal.0&memCached.0:nospam@localhost - memAvailReal.0&ipv6Forwarding.0:nospam@localhost
+#Target[MEM]: memTotalReal.0&memCached.0:nospam@localhost - memAvailReal.0&ipv6Forwarding.0:nospam@localhost
+Target[MEM]: memTotalReal.0&memCached.0:nospam@localhost - memAvailReal.0&ipv6Forwarding.0:nospam@localhost - memCached.0&ipv6Forwarding.0:nospam@localhost
 # - memCached.0&ipv6Forwarding.0:nospam@localhost
 Xsize[MEM]: 500 
 MaxBytes[MEM]: 4194304
@@ -97,9 +98,9 @@ ShortLegend[MEM]: B
 kMG[MEM]: K,M,G,T,P,X 
 kilo[MEM]:1024 
 YLegend[MEM]: Memory Usage 
-Legend1[MEM]: Total
+Legend1[MEM]: System Memory
 Legend2[MEM]: Cache
-LegendI[MEM]: Total:
+LegendI[MEM]: System Memory:
 LegendO[MEM]: Cache:
 Options[MEM]: growright,gauge,nopercent 
 
