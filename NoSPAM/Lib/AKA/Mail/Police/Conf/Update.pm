@@ -67,7 +67,7 @@ sub read_rule {
 	my $path;
 	$path = $self->{conf}->{define}->{home} . "/rule/";
 
-	$self->{conf}->{zlog}->log ("using \"$path\" for check rule");
+	$self->{zlog}->log ("using \"$path\" for check rule");
 
 	my $xs = get_update_xml_simple($self);
 #_get_xml_simple($self) or die "can't load xml simple";

@@ -61,10 +61,10 @@ sub sign_key
 {
 	my ($self, $file) = @_;
 	my $sign_binary = $self->{conf}->{define}->{sign_binary};
-	my $sign_opts = " " . $self->{conf}->{define}->{msp_sign_key};
+	my $sign_opts = " " . $self->{conf}->{define}->{msp_pri_key};
 
 
-	if ( ! -f $sign_binary ){
+	if ( ! -e $sign_binary ){
 		warn "cannot find sign_binary: \"$sign_binary\"\n";
 		return 0;
 	}

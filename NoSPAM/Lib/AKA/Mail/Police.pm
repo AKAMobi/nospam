@@ -38,8 +38,9 @@ sub new
 	#my $number = shift || 5;
 
 # Put these arguments inside class members
-	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
 	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
+	$self->{conf} ||= new AKA::Mail::Police::Conf($self);
+	$self->{verify} ||= new AKA::Mail::Police::Verify($self);
 
 # Return $self so the user can use it.
 	return $self;

@@ -8,6 +8,8 @@
 
 package AKA::Mail::Police::Conf;
 
+use AKA::Mail::Police::Log;
+
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -66,6 +68,7 @@ sub check_n_update
 	my $self = shift;
 
 	$self->{update} ||= new AKA::Mail::Police::Conf::Update($self);
+	$self->{zlog} ||= new AKA::Mail::Police::Log($self);
 
 	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
 	if ( $newfilenum > 0 ){
@@ -111,7 +114,7 @@ sub merge_new_rule
 
 	my $filterdb = &get_filter_db;
 
-	my $lastest_rule_id;
+	my ($last_rule_id,$last_rule_time);
 
 	for my $rule_id ( sort { $rule_add_modify->{$a}->{update_time} cmp 
 					$rule_add_modify->{$b}->{update_time} }
@@ -119,7 +122,8 @@ sub merge_new_rule
 		$self->{zlog}->log ( "add/modifying rule id: [$rule_id] to filterdb" );
 		$filterdb->{'rule-add-modify'}->{'rule'}->{$rule_id} =  $rule_add_modify->{"$rule_id"};
 #push ( @{$filterdb->{'rule-add-modify'}->{'rule'}}, $rule_id, $rule_add_modify->{"$rule_id"} );
-		$lastest_rule_id = $rule_id;
+		$last_rule_id = $rule_id;
+		$last_rule_time = $rule_add_modify->{$rule_id}->{update_time};
 	}
 
 	for my $rule_id ( keys %{$rule_del} ){
@@ -132,12 +136,13 @@ sub merge_new_rule
 # 改变$转义、缩进
 	$Data::Dumper::Useperl = 1;
 	$Data::Dumper::Indent = 1;
-	print Dumper($filterdb);
+	#print Dumper($filterdb);
 
 
 	$new_filterdb = $xs->XMLout($filterdb);
 
 
+	my $filterdb_file = $self->{define}->{filterdb};
 	$new_filterdb_file = $filterdb_file . ".new";
 
 	open ( WDB, ">$new_filterdb_file" ) or die "can't open [$new_filterdb_file] for writting";
@@ -156,7 +161,7 @@ sub merge_new_rule
 
 	my $rule_count;
 	$rule_count = keys %{$filterdb->{'rule-add-modify'}->{rule}};
-	$self->rebirth_update( $rule_count, $last_rule_id );
+	$self->rebirth_update( $rule_count, $last_rule_id, $last_rule_time );
 
 	return 1;
 }
@@ -164,13 +169,13 @@ sub rebirth_update
 {
 	my $self = shift;
 
-	my ( $rule_count, $last_rule_id )  = @_;
+	my ( $rule_count, $last_rule_id, $last_rule_time )  = @_;
 
 	my $updatedb = {};
 
 	$updatedb->{rule_update}->{rule_sum}->{updatetime} = $self->{zlog}->get_time_stamp();
 	$updatedb->{rule_update}->{rule_sum}->{count} = $rule_count;
-	$updatedb->{rule_update}->{rule_sum}->{last_rule_time} = $self->{zlog}->get_time_stamp();
+	$updatedb->{rule_update}->{rule_sum}->{last_rule_time} = $last_rule_time;
 	$updatedb->{rule_update}->{rule_sum}->{last_rule_id} = $last_rule_id;
 
 	my $xs = get_filterdb_xml_simple();
@@ -190,8 +195,8 @@ sub rebirth_update
 	$self->{zlog}->log( "renaming [$updatedb_file" . ".new] to [$updatedb_file]..." );
 	rename ( $updatedb_file . ".new" , $updatedb_file ) or die "can't rename [$updatedb_file" . ".new] to [$updatedb_file]";
 
-	my $sign = $self->{parent}->{verify} || new AKA::Mail::Police::Verify;
-	if ( ! $sign->sign ( $updatedb_file ) ){
+	my $sign = $self->{police}->{verify} || new AKA::Mail::Police::Verify($self);
+	if ( ! $sign->sign_key ( $updatedb_file ) ){
 		$self->{zlog}->log ( "pf: sign updatedb file [$updatedb_file] error." );
 	}
 }
