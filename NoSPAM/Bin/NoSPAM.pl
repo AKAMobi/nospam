@@ -51,7 +51,7 @@ if ( ! defined $action ){
 	&usage;
 	exit -1;
 }elsif( defined $action_map->{$action}[0] ){
-	$zlog->debug("NoSPAM Util:: $action @param");
+	$zlog->debug("NoSPAM Util::$action " . join(" ",@param) );
 	my $lock = &get_lock( "/home/NoSPAM/var/run/lock/$action" );
 	my $ret = &{$action_map->{$action}[0]};
 	&release_lock($lock);
