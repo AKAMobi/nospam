@@ -172,6 +172,41 @@ sub log_csv {
 	}else{
 		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
 	}
+
+	if ( open ( LFD, ">>/var/log/NoSPAM.rrdds" ) ){
+		flock(LFD,LOCK_EX);
+		seek(LFD, 0, 2);
+		print LFD time
+			. ',' . (	( 	(defined $aka->{RELAYCLIENT} && 1==$aka->{RELAYCLIENT})
+							|| 
+						length($aka->{TCPREMOTEINFO})
+					) ?'1':'0' 
+				)
+			. ',' . $aka->{size} 
+			. ',' . $aka->{runtime}
+
+			. ',' . $engine->{antivirus}->{result}
+				. ',' . $engine->{antivirus}->{runtime}
+
+			. ',' . $engine->{spam}->{result} 
+				. ',' . $engine->{spam}->{runtime}
+
+			. ',' . ($engine->{content}->{result}||'')
+				. ',' . $engine->{content}->{runtime}
+				
+			. ',' . $engine->{dynamic}->{result} 
+				. ',' . $engine->{dynamic}->{runtime} 
+
+			. ',' . $engine->{archive}->{result} 
+				. ',' . $engine->{archive}->{runtime} 
+
+			. "\n";
+
+		flock(LFD,LOCK_UN);
+		close(LFD);
+	}else{
+		&debug ( "AKA_mail_engine::log open NoSPAM.csv failure." );
+	}
 }
 
 END

@@ -752,6 +752,16 @@ sub log_engine
 	my $self = shift;
 
 	$self->{zlog}->log_csv ( $self->{mail_info} );
+#
+# rrdtool data source
+#
+#
+my $mail_type = {	'virus'		=>	0x000000001
+			'spam'
+			'content'
+			'dynamic'
+			,
+	$self->{zlog}->log_ds ( $self->{mail_info} );
 }
 
 sub antivirus_engine
@@ -767,7 +777,7 @@ sub antivirus_engine
 
 				enabled	=> 0,
 				runned	=> 1,
-				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 			} );
 	}
 
@@ -785,7 +795,7 @@ sub antivirus_engine
 
                   			enabled => 1,
                      			runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return;
 		}
@@ -801,7 +811,7 @@ sub antivirus_engine
 
 					enabled => 1,
 					runned  => 1,
-					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return;
 		}
@@ -823,7 +833,7 @@ sub antivirus_engine
 
 					enabled => 1,
 					runned  => 1,
-					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return;
 		
@@ -870,7 +880,7 @@ sub archive_engine
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
-                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 	}
@@ -886,7 +896,7 @@ sub archive_engine
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
-                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 	}
@@ -939,7 +949,7 @@ sub archive_engine
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
-                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 	}
@@ -951,7 +961,7 @@ sub archive_engine
 			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 1,
-                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 	}
@@ -964,7 +974,7 @@ sub archive_engine
 			action	=>ACTION_PASS,
                		enabled => 1,
                		runned  => 1,
-                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                      	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 	};
 
 	return;
@@ -990,7 +1000,7 @@ sub spam_engine
 							action	=>ACTION_PASS,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 
@@ -1004,7 +1014,7 @@ sub spam_engine
 								action	=> ACTION_PASS,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 		return;
 	}
@@ -1018,7 +1028,7 @@ sub spam_engine
 			? ACTION_REJECT : ACTION_PASS ) ,
                       				enabled => 1,
                       				runned  => 1,
-                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 	};
 
 	$self->{mail_info}->{aka}->{drop} = 1 if $self->{mail_info}->{aka}->{engine}->{spam}->{action};
@@ -1054,7 +1064,7 @@ sub dynamic_engine
 	
                                 	enabled => 0,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			
 		};
 		return;
@@ -1074,7 +1084,7 @@ sub dynamic_engine
 
                   			enabled => 1,
                      			runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return;
 		}
@@ -1090,7 +1100,7 @@ sub dynamic_engine
 
 					enabled => 1,
 					runned  => 1,
-					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return;
 		}
@@ -1119,7 +1129,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 				};
 				return ;
 			}
@@ -1134,7 +1144,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return ;
 		}
@@ -1151,7 +1161,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 				};
 				return ;
 			}
@@ -1166,7 +1176,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return ;
 		}
@@ -1185,7 +1195,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 				};
 				return ;
 			}
@@ -1200,7 +1210,7 @@ sub dynamic_engine
 	
                                 	enabled => 1,
        	                         	runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return ;
 		}
@@ -1213,7 +1223,7 @@ sub dynamic_engine
 
 		enabled => 1,
 		runned  => 1,
-		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+		runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 	};
 	return ;
 }
@@ -1257,7 +1267,7 @@ sub content_engine_is_enabled
 
                                	enabled => 1,
                         	runned  => 1,
-                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 		};
 	
 		return 0;
@@ -1277,7 +1287,7 @@ sub content_engine_is_enabled
 
                   			enabled => 1,
                      			runned  => 1,
-                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                                	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return 0;
 		}
@@ -1293,7 +1303,7 @@ sub content_engine_is_enabled
 
 					enabled => 1,
 					runned  => 1,
-					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+					runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return 0;
 		}
@@ -1310,7 +1320,7 @@ sub content_engine_is_enabled
 
                                	enabled => 1,
                         	runned  => 1,
-                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))/1000
+                              	runtime => int(1000*tv_interval ($start_time, [gettimeofday]))
 			};
 			return 0;
 		}
