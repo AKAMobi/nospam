@@ -110,6 +110,11 @@ sub new
 
 }
 
+sub get_language
+{
+	return shift->{conf}->{licconf}->{Language} || 'zh_CN';
+}
+
 sub server
 {
 	my $self = shift;
@@ -891,7 +896,7 @@ sub write_queue
 				if ( 'Y' eq uc $config->{AntiVirusEngine}->{TagSubject} ){
 					if ( $aka->{engine}->{antivirus}->{result} ){
 						$tagged_subj = ( $config->{AntiVirusEngine}->{VirusTag}
-								|| __("[VIRUS ") . $aka->{engine}->{antivirus}->{result} .  __("]") 
+								|| __x("[VIRUS {result}]", result=>$aka->{engine}->{antivirus}->{result})
 							) . ' ' . $tagged_subj; 
 					}
 				}

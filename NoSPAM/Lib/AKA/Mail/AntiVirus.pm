@@ -85,7 +85,7 @@ sub catch_virus
 	}else{
 		# XXX pass virus for performance problem
 		return ( {	result	=> 0,
-				desc => '¸üÐÂÖÐ',
+				desc => __("Updating"),
 				action =>  0,
 
 				enabled	=> 1,

@@ -239,7 +239,8 @@ sub check_expiredate($$)
 
 	my $days_left = int(($expire_time-$now_time)/86400)+1;
 
-	return ( 1, "<b><font color='red'>" . __("License will expired after ") . $days_left . __(" days, please upload valid license.") . "</font></b>") if ( $days_left < 30 );
+	return ( 1, "<b><font color='red'>" . __x("License will expired after {days_left} days.", days_left=>$days_left) . "</font></b>") if ( $days_left < 30 );
+	#return ( 1, "<b><font color='red'>" . __("License will expired after ") . $days_left . __(" days, please upload valid license.") . "</font></b>") if ( $days_left < 30 );
 
 	return ( 1,undef );
 }

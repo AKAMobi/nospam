@@ -122,8 +122,8 @@ sub init_config
 	$config->{SpamEngine}->{BlackIPList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{BlackIPList} );
 	$config->{SpamEngine}->{WhiteIPList} = cut_comma_to_array_ref( $self,$config->{SpamEngine}->{WhiteIPList} );
 
-	$config->{SpamEngine}->{SpamTag} ||= "¡¾À¬»øÓÊ¼þ¡¿";
-	$config->{SpamEngine}->{MaybeSpamTag} ||= "¡¾ÒÉËÆÀ¬»ø¡¿";
+	$config->{SpamEngine}->{SpamTag} ||= __("[Spam]");
+	$config->{SpamEngine}->{MaybeSpamTag} ||= __("[MaybeSpam]");
 
 	$config->{SpamEngine}->{RefuseSpam} ||= "N";
 
