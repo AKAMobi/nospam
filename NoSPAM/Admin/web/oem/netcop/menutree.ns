@@ -36,12 +36,11 @@ function popmenu(ss,ii)
 </SCRIPT>
 </head>
 
-<body leftMargin="0" topMargin="0">
+<body text="#333333" link="#6666aa" alink="#aa6666" vlink="#6666aa" bgcolor="#ffffff" leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
 <table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
 <TR>
-<TD class="mu" height="20">
-	&nbsp;&nbsp;<A title="管理选项" href="javascript:;">管理</A>
-</TD>
+    <TD class=mu height=20 background=images/menutop.gif>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title=管理选项 
+      href="javascript:;">管理</A> </TD>
 </TR>
 <TR>
 	<TD bgColor="#cccccc" height="2"></TD>
