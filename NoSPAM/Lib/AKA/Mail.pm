@@ -257,24 +257,15 @@ sub net_process
 	alarm $old_alarm;
 #print "after eval recv, before process\n";
 
-$self->{zlog}->debug( "mail_info.req\@srv\n"
-	. Dumper ($self->{mail_info}->{aka} )
-	. "<<<<processing...>>>" );
+#$self->{zlog}->debug( "mail_info.req\@srv\n"
+#	. Dumper ($self->{mail_info}->{aka} )
+#	. "<<<<processing...>>>" );
 
 	#
 	# Main process function
 	#
 	$self->process ( $self->{mail_info} );
 
-#print "after process, before send\n";
-$self->{zlog}->debug( "smtp_code: [" . $smtp_code . "]\n"
-	. "smtp_info: [" . $smtp_info . "]\n"
-	. "exit_code: [" . $exit_code . "]" );
-
-	my ($smtp_code,$smtp_info,$exit_code);
-	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code};
-	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info};
-	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code};
 
 	eval {
 		$old_alarm_sig = $SIG{ALRM};
@@ -292,7 +283,7 @@ $self->{zlog}->debug( "smtp_code: [" . $smtp_code . "]\n"
 	alarm $old_alarm;
 		
 #print "after send \n";
-$self->{zlog}->debug ( "mail_info.resp\@srv\n" . Dumper ($self->{mail_info}->{aka}) );
+#$self->{zlog}->debug ( "mail_info.resp\@srv\n" . Dumper ($self->{mail_info}->{aka}) );
 	
 }
 
@@ -300,6 +291,17 @@ sub send_mail_info
 {
 	my $self = shift;
 	my $socket = shift;
+
+	my ($smtp_code,$smtp_info,$exit_code);
+	$smtp_code = $self->{mail_info}->{aka}->{resp}->{smtp_code};
+	$smtp_info = $self->{mail_info}->{aka}->{resp}->{smtp_info};
+	$exit_code = $self->{mail_info}->{aka}->{resp}->{exit_code};
+
+#print "after process, before send\n";
+#$self->{zlog}->debug( "net_process after process smtp_code: [" . $smtp_code . "]\n"
+#	. "smtp_info: [" . $smtp_info . "]\n"
+#	. "exit_code: [" . $exit_code . "]" );
+
 
 	if ( $self->{license_ok} ){
 		print $socket $smtp_code . "\n";
@@ -451,19 +453,19 @@ sub action_rcpts
 	my $aka = $self->{mail_info}->{aka};
 
 	if ( $aka->{engine}->{content}->{enabled} ){
-		$_ = $aka->{engine}->{content}->{action};
-		return unless $_;
+		my $action = $aka->{engine}->{content}->{action};
+		return unless $action;
 
 		my $pf_param = $aka->{engine}->{content}->{desc};
 		my $env_recips = $aka->{env_recips};
 
-		if ( ACTION_ADDRCPT eq $_ ){
+		if ( ACTION_ADDRCPT eq $action ){
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->{zlog}->debug("pf_a: addrcpt param is: [$pf_param] invalid email address.");
 				return;
 			}
 			$env_recips = "T$pf_param\0" . $env_recips;
-		}elsif ( ACTION_DELRCPT eq $_ ){
+		}elsif ( ACTION_DELRCPT eq $action ){
 			# 9、delrcpt 删除指定收件人（该动作只允许在信封收件人的信头规则中使用）。无参数
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->{zlog}->debug("pf_a: delrcpt param is: [$pf_param] invalid email address.");
@@ -475,9 +477,10 @@ sub action_rcpts
 			if ( 3>length($env_recips) ){
 				# only one recip, should be droped after delrcpt
 				$self->cleanup;
-				exit 0;
+				# XXX by zixia 2004-04-24 
+				# why exit 0;
 			}# 即使是一个地址，结尾也是两个\0
-		}elsif ( ACTION_CHGRCPT eq $_ ){
+		}elsif ( ACTION_CHGRCPT eq $action ){
 			# 10、chgrcpt 改变指定的收件人为新的收件人（该动作只允许在信封收件人的信头规则中使用）。
 			#     带一个字符串参数，内容为新的收件人邮件地址
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
