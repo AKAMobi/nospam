@@ -512,6 +512,8 @@ fT= gFld("<b>邮件系统管理</b>", "");
 		insDoc(aux1,gLnk(0,"域名黑名单","controlBadDomain.php"));
 		insDoc(aux1,gLnk(0,"域名白名单","controlGoodDomain.php"));
 		insDoc(aux1,gLnk(0,"地址黑名单","controlBadAccount.php"));
+		insDoc(aux1,gLnk(0,"Open Relay Deny","controlOpenRelay.php"));
+		insDoc(aux1,gLnk(0,"RSS功能","controlRSS.php"));
 <?php
 }
 ?>
