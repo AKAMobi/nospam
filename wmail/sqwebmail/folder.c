@@ -2362,6 +2362,7 @@ size_t	n;
 		{
 			n= p+1 - showtextplain_buf.ptr;
 			showtextplain_oneline(showtextplain_buf.ptr, n);
+			puts("<br>\n");
 			buf_trimleft(&showtextplain_buf, n);
 		}
 	}
@@ -2430,8 +2431,7 @@ static void showtextplain(FILE *fp, struct rfc2045 *rfc, struct rfc2045id *id)
 
 	buf_init(&showtextplain_buf);
 
-	//if (isflowed)
-	if( 1 )
+	if (isflowed)
 	{
 		flowtohtml=rfc2646tohtml_alloc(filter_flowed, NULL);
 
@@ -2480,10 +2480,11 @@ static void showtextplain(FILE *fp, struct rfc2045 *rfc, struct rfc2045id *id)
 	showtextplainfunc(0, 0);
 	buf_free(&showtextplain_buf);
 
-	if (isflowed)
+	// by lfan
+	//if (isflowed)
 		printf("</TT><BR>\n");
-	else
-		printf("</PRE></TT><BR>\n");
+	//else
+	//	printf("</PRE></TT><BR>\n");
 }
 
 static void showdsn(FILE *fp, struct rfc2045 *rfc, struct rfc2045id *id)
