@@ -1,0 +1,222 @@
+<?
+require_once("../inc/include.ns");
+
+if(!adminPerm(PERM_ADMIN_AUDIT))
+	die("您没有访问该网页的权限。");
+
+$grep = "/bin/grep";
+$tail = "/usr/bin/tail";
+$wc = "/usr/bin/wc";
+$total = intval(exec("$wc -l ".ACTIONLOG));
+
+$pagenum = $_GET["pagenum"];
+if(!$pagenum || $pagenum < 1)
+	$pagenum = PAGENUM;
+
+if($total == 0)
+	$pages = 1;
+else
+	$pages = $total%$pagenum? intval(($total/$pagenum)+1):intval(($total/$pagenum));
+
+$page = $_GET["page"];
+if($page > $pages || $page == -1)
+	$page = $pages;
+
+if(!$page || $page < 1)
+	$page = 1;
+	
+$pos = $pagenum*$page>$total?$total:$pagenum*$page;
+if ($pagenum*$page<$total)
+	$start = ($pos-$pagenum+1)>0? ($pos-$pagenum+1):1;
+else
+	$start = $pagenum+1;
+
+if($pos < $total/2){
+	exec("$grep -m $pos ] ".ACTIONLOG." | $tail -n $pagenum",$lines);
+}else{
+	if ($pagenum*$page<$total)
+		exec("$tail -n ".($total-$pos+$pagenum)." ".ACTIONLOG." | $grep -m $pagenum ]",$lines);
+	else
+		exec("$tail -n ".($total-$pagenum)." ".ACTIONLOG." | $grep -m $pagenum ]",$lines);
+}
+?>
+<html>
+<head>
+<META http-equiv=content-type content="text/html; charset=gb2312">
+<title>操作日志审计</title>
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link type="text/css" rel="StyleSheet" href="../css/sortabletable.css" />
+<script type="text/javascript" src="../js/sortabletable.js"></script>
+</head>
+<body>
+<table class="sort-table" id="table-1" cellspacing="0" border="0">
+<caption><h3>操作日志审计</h3></caption>
+<thead>
+<tr>
+	<td>序号</td>
+	<td>时间</td>
+	<td>管理员</td>
+	<td>IP地址</td>
+	<td>更改文件</td>
+	<td>更改选项</td>
+	<td>动作</td>
+	<td>旧值</td>
+	<td>新值</td>
+</tr>
+</thead>
+<tbody>
+<?
+if (count($lines) > 0){
+	$i = 1;
+	foreach ($lines as $line){
+		$className = $i%2? "RuleTB1":"RuleTB2";
+		$values = explode("] [",$line);
+?>
+<tr class="<?=$className?>">
+	<td><?=$start?></td>
+	<td><?=substr($values[0],1)?></td>
+	<td><?=$values[1]?></td>
+	<td><?=$values[2]?></td>
+	<td><?=$values[3]?></td>
+	<td><?=$values[4]?></td>
+	<td><?=$values[5]?></td>
+	<td><?=$values[6]?></td>
+	<td><?=substr($values[7],0,-1)?></td>
+</tr>
+<?
+		$start++;$i++;
+	}
+}
+?>
+</tbody>
+<tfoot>
+<tr>
+	<td colspan="9">
+<?
+echo "<a href='javascript:go(1)' title='第一页'><<-</a>&nbsp;";
+if($pages > 10000){
+	$temp10000 = $page%10000? intval($page/10000):intval($page/10000)-1;
+	if($temp10000 > 0)
+		echo "<a href='javascript:go(".(($temp10000-1)*10000).")' title='前万页'><<<<</a>&nbsp;";
+	else
+		echo "<<<<&nbsp;";
+}
+if($pages > 1000){
+	$temp1000 = $page%1000? intval($page/1000):intval($page/1000)-1;
+	if($temp1000 > 0)
+		echo "<a href='javascript:go(".(($temp1000-1)*1000).")' title='前千页'><<<</a>&nbsp;";
+	else
+		echo "<<<&nbsp;";
+}
+if($pages > 100){
+	$temp100 = $page%100? intval($page/100):intval($page/100)-1;
+	if($temp100 > 0)
+		echo "<a href='javascript:go(".(($temp100-1)*100).")' title='前百页'><<</a>&nbsp;";
+	else
+		echo "<<&nbsp;";
+}
+if($pages > 10){
+	$temp10 = $page%10? intval($page/10):intval($page/10)-1;
+	if($temp10 > 0)
+		echo "<a href='javascript:go(".(($temp10-1)*10).")' title='前十页'><</a>&nbsp;";
+	else
+		echo "<&nbsp;";
+}
+$i = $temp10*10+1;$j=0;
+while($j<10 && $i <= $pages){
+	if($i==$page)
+		echo "$i&nbsp;";
+	else
+		echo "<a href='javascript:go({$i})'>{$i}</a>&nbsp;";
+	$j++;$i++;
+}
+if($pages > 10){
+	if(($temp10+1)*10 < $pages)
+		echo "<a href='javascript:go(".(($temp10+1)*10+1).")' title='后十页'>></a>&nbsp;";
+	else
+		echo ">&nbsp;";
+}
+if($pages > 100){
+	if(($temp100+1)*100 < $pages)
+		echo "<a href='javascript:go(".(($temp100+1)*100+1).")' title='后百页'>>></a>&nbsp;";
+	else
+		echo ">>&nbsp;";
+}
+if($pages > 1000){
+	if(($temp1000+1)*1000 < $pages)
+		echo "<a href='javascript:go(".(($temp1000+1)*1000+1).")' title='后千页'>>>></a>&nbsp;";
+	else
+		echo ">>>&nbsp;";
+}
+if($pages > 10000){
+	if(($temp10000+1)*10000 < $pages)
+		echo "<a href='javascript:go(".(($temp10000+1)*10000+1).")' title='后万页'>>>>></a>&nbsp;";
+	else
+		echo ">>>>&nbsp;";
+}
+echo "<a href='javascript:go(-1)' title='最后一页'>->></a>&nbsp;";
+echo "共".$pages."页，";
+?>
+每页<select name="pagenum">
+<?
+for($i=10;$i<=60;$i+=10){
+	if($i==$pagenum)
+		echo "<option value='$i' selected>$i";
+	else
+		echo "<option value='$i'>$i";
+}
+?>
+</select>条记录，第
+<input type="text" size="5" name="page" value="<?=$page?>">页<input type="button" value="跳转" onclick="go(document.all.page.value)">
+	</td>
+</tr>
+</tfoot>
+</table>
+<script>
+var st = new SortableTable(document.getElementById("table-1"),
+		["Number","Date", "String", "IP", "String", "String", "String", "String", "String"]);
+function addClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var l = p.length;
+	for (var i = 0; i < l; i++) {
+		if (p[i] == sClassName)
+			return;
+	}
+	p[p.length] = sClassName;
+	el.className = p.join(" ");
+
+}
+function removeClassName(el, sClassName) {
+	var s = el.className;
+	var p = s.split(" ");
+	var np = [];
+	var l = p.length;
+	var j = 0;
+	for (var i = 0; i < l; i++) {
+		if (p[i] != sClassName)
+			np[j++] = p[i];
+	}
+	el.className = np.join(" ");
+}
+st.onsort = function () {
+	var rows = st.tBody.rows;
+	var l = rows.length;
+	for (var i = 0; i < l; i++) {
+		removeClassName(rows[i], i % 2 ? "RuleTB1" : "RuleTB2");
+		addClassName(rows[i], i % 2 ? "RuleTB2" : "RuleTB1");
+	}
+};
+function go(p)
+{
+	if(p=="" || isNaN(p)){
+		alert("页数必须为数字！");
+		return;
+	}
+	
+	n = document.all.pagenum.value;
+	location.href="<?=$_SERVER['PHP_SELF']?>?page="+p+"&pagenum="+n;
+}
+</script>
+</body>
+</html>
