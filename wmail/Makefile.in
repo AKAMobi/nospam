@@ -683,7 +683,7 @@ mimegpg: gpglib/mimegpg
 install-exec-local: install-userdb-script
 	$(mkinstalldirs) $(DESTDIR)$(cgibindir)
 	test -w $(DESTDIR)$(cgibindir) || exit 0; \
-		$(INSTALL_PROGRAM) sqwebmail/wmail \
+		$(INSTALL_PROGRAM) sqwebmail/sqwebmail \
 			$(DESTDIR)$(cgibindir)/wmail ; \
 		test -w /etc || continue ; \
 			chown root $(DESTDIR)$(cgibindir)/wmail ; \
