@@ -7,30 +7,75 @@ if($SpamEngine <= 0)
 if(!adminPerm(PERM_ADMIN_SPAM))
 	die("您没有访问该网页的权限。");
 
-if($_POST["Engine"]){
+$SATests = array(	'DATE' => array ('S'=>'日期检查', 'L'=>'包括时期是否合法，是否和当前时间相差太远，是否不符合RFC')
+		, 'DRUG' => array ('S'=>'药品检查', 'L'=>'检查常见的药品广告（主要为性用品广告）')
+		, 'FAKE' => array ('S'=>'虚假信息检查', 'L'=>'检查明显虚假的信息')
+		, 'FORGED' => array ('S'=>'伪造信息检查', 'L'=>'检查邮件是否被垃圾发送者伪装成其他的邮件客户端和Web邮件')
+		, 'FREE' => array ('S'=>'免费声明检查', 'L'=>'检查垃圾邮件中是否包含声明免费的信息')
+		, 'FROM' => array ('S'=>'检查发送地址', 'L'=>'检查发件地址是否具有垃圾邮件常用的地址特征')
+		, 'HELO' => array ('S'=>'检查HELO信息', 'L'=>'检查每一次RELAY的HELO是否有垃圾邮件的特征')
+		, 'HTML' => array ('S'=>'检查邮件HTML内容', 'L'=>'邮件是否使用了垃圾发送者常用的HTML内容/特征')
+		, 'MIME' => array ('S'=>'检查邮件MIME内容', 'L'=>'在MIME编码中检查垃圾邮件特征')
+		, 'MSGID' => array ('S'=>'检查邮件的Message-ID', 'L'=>'察看是否符合垃圾特征，是否合法')
+		, 'RATWARE' => array ('S'=>'检查发送软件类型', 'L'=>'通过提取邮件特征，察看是否发自常用的垃圾发送软件')
+		, 'SUBJ' => array ('S'=>'察看邮件主题', 'L'=>'通过主题察看是否邮件包含垃圾邮件常见内容')
+		, 'X_' => array ('S'=>'察看邮件头X-Header', 'L'=>'通过X-Header邮件头检查垃圾邮件')
+	);
+
+
+if($_POST["isSubmit"]){
 	if(!adminPerm(PERM_ADMIN_WRITE))
 		die("你无权进行更改操作");
-	$spamconf->setParam("NoSPAMEngine",$_POST["Engine"],"SpamEngine");
+
+	$DisableList = $SATests;
+	foreach ( $SATests as $RuleKey=>$RuleDesc ){
+		if (array_key_exists($RuleKey, $_POST))
+			unset ($DisableList[$RuleKey]);
+		else
+			$DisableList[$RuleKey] = $SATests[$RuleKey]['S'];
+	}
+
+	$spamconf->setList("DisabledTests",$DisableList,"SpamEngine");
 	$spamconf->save();
-	if(($ret=wi("reset_SpamEngine",$result))==0)
+
+	if(($ret=wi("SA_update",$result))==0)
 		echo "修改成功";
 	else
 		echo "修改失败";
 }else{
+
+	$DisabledTests = $spamconf->getList("DisabledTests","SpamEngine");
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>职能内容分析</title>
+<title>智能内容分析</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
+对邮件内容进行分析<p>
 <?
-if(adminPerm(PERM_ADMIN_WRITE)){
+foreach ( $SATests as $RuleKey=>$RuleDesc ){
 ?>
-本功能目前没有参数可以设置，也无法单独关闭
+<form name="form1" method="post">
+	<input type="checkbox" 
+		name="<?=$RuleKey?>" id="id<?=$RuleKey?>" 
+		<? if (!array_key_exists ($RuleKey, $DisabledTests))
+			echo "checked"; 
+		?>
+	> 
+	<?=$RuleDesc['S']?> <br> <?=$RuleDesc['L']?><p>
+<?
+}
+?>
+  <p>
+    <input type="reset" name="reset" value="恢复">
+    <input type="submit" name="isSubmit" value="提交">
+  </p>
+</form>
 <!--form name="form1" method="post" action="">
   <p>
     <label>
@@ -44,19 +89,6 @@ if(adminPerm(PERM_ADMIN_WRITE)){
     <input type="submit" name="Submit" value="修改">
   </p>
 </form-->
-<?
-}else{
-?>
-    <label>
-    <input type="radio" name="Engine" value="Y"<? if($bAntiSpam) echo" checked"; ?> disabled>
-    开启</label>
-    <br>
-    <label>
-    <input type="radio" name="Engine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> disabled>
-    关闭</label>
-<?
-}
-?>
 </body>
 </html>
 <?
