@@ -1,0 +1,736 @@
+<?php
+require_once("inc/include.ns");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>系统菜单</title>
+<link type="text/css" rel="stylesheet" href="css/menu.css">
+<SCRIPT language=JavaScript>
+<!--
+function popmenu(ss,ii)
+{
+	os = document.getElementById(ss);
+	oi = document.getElementById(ii);
+	if (os.style.display=="none"){
+		tds = document.body.getElementsByTagName("td");
+		imgs = document.body.getElementsByTagName("img");
+		for (i = 0; i < tds.length; i++){
+			if (tds[i].id.indexOf("Aux") != -1)
+				tds[i].style.display = "none";
+		}
+		for (i = 0; i < imgs.length; i++){
+			if (imgs[i].id.indexOf("img") != -1)
+				imgs[i].src = "images/s1.gif";
+		}
+		os.style.display = "";
+		oi.src = "images/s2.gif";
+	} else {
+		os.style.display = "none";
+		oi.src = "images/s1.gif";
+	}
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css">
+A {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: navy; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: crimson; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: orangered; TEXT-DECORATION: none
+}
+P {
+	MARGIN: 2px
+}
+.channel {
+	FONT-SIZE: 10pt; CURSOR: hand
+}
+.n1 {
+	FONT-SIZE: 12px; COLOR: #142479; FONT-STYLE: normal; FONT-FAMILY: "宋体"
+}
+.n2 {
+	FONT-SIZE: 12px; COLOR: #003399; FONT-STYLE: normal; FONT-FAMILY: "宋体"
+}
+.fu {
+	BORDER-RIGHT: #233549 2px solid; BORDER-TOP: #b2d6f6 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #b2d6f6 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #233549 2px solid; BACKGROUND-COLOR: #8ec1ff
+}
+.mu {
+	BORDER-RIGHT: #8e9f88 2px solid; BORDER-TOP: #effee0 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #effee0 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #8e9f88 2px solid; BACKGROUND-COLOR: #e0feda
+}
+.mu2 {
+	BORDER-RIGHT: #5b5743 2px solid; BORDER-TOP: #fffde3 2px solid; FONT-SIZE: 12px; BORDER-LEFT: #fffde3 2px solid; CURSOR: hand; COLOR: #003399; BORDER-BOTTOM: #5b5743 2px solid; BACKGROUND-COLOR: #fffbc2
+}
+BODY {
+	MARGIN: 0px 3px
+}
+</STYLE>
+</head>
+
+<body bgColor="#cccccc" leftMargin="0" topMargin="0">
+<table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
+<TR>
+<TD class="mu" height="20">
+	&nbsp;&nbsp;<A title="管理选项" href="javascript:;">管理</A>
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux1','img1')" class="mu2" height="20">
+	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;系统管理
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux1" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/serialno.ns">本设备序列号</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/upgrade.ns">升级更新</A>
+		</TD>
+	</TR>
+	<TR>
+		<TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/gatewaymode.ns">运行模式</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/network.ns">网络设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/basesettings.ns">SMTP参数</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/configmanage.ns">配置管理</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/systemtime.ns">系统时间</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="system/reboot.ns">系统重启关机</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux2','img2')" class="mu2" height="20">
+	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;管理员
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux2" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="user/showadminlist.ns">管理员列表</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="user/loginblacklist.ns">登录限制设置</A>
+		</TD>
+	</TR>
+	<TR>
+		<TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="user/changePasswd.ns">修改自己的密码</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="user/changeIPlist.ns">修改IP限制列表</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux3','img3')" class="mu2" height="20">
+	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;透明网关模式
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux3" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux4','img4')" class="mu2" height="20">
+	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX转发模式
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux4" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="gateway/protectdomain.ns">邮件域保护设定</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="gateway/mailqueue.ns">邮件队列监管</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux5','img5')" class="mu2" height="20">
+	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;独立服务器模式
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux5" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/mailserver.ns">独立服务器设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/mailqueue.ns">邮件队列监管</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/showuserlist.ns">用户管理</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/searchUser.ns">查找用户</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/groupsControl.ns">用户组管理</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="server/sendGroupMails.ns">群发邮件</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux6','img6')" class="mu2" height="20">
+	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;动态限制引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux6" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/dynengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/connperip.ns">同时连接数</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/sendrateperfrom.ns">用户重复限制</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/sendratepersubject.ns">邮件重复限制</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/connrateperip.ns">连接频率</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="dynamic/realtime.ns">实时管理</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux7','img7')" class="mu2" height="20">
+	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;病毒识别引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux7" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="antivirus/virusengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antivirus/recognize.ns">病毒识别</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antivirus/tagparam.ns">标记参数</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antivirus/refusevirus.ns">转发设置</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux8','img8')" class="mu2" height="20">
+	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;垃圾邮件引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux8" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/spamengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=WhiteIP">IP白名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=WhiteDomain">邮件域名白名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=WhiteFrom">邮件帐号白名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=BlackIP">IP黑名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=BlackDomain">邮件域名黑名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/list.ns?option=BlackFrom">邮件帐号黑名单</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/traceable.ns">可追查性检查</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/tagparam.ns">标记参数</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="antispam/refusespam.ns">转发设置</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux9','img9')" class="mu2" height="20">
+	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;内容过滤引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux9" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="content/contentengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="content/rulemanage.ns">规则管理</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="content/category.ns">类别管理</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="content/ruleprint.ns">列印规则</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="content/filetypes.ns">文件类型</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux10','img10')" class="mu2" height="20">
+	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;邮件审计引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux10" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="archive/archiveengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="archive/archivetype.ns">选择性审计</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux11','img11')" class="mu2" height="20">
+	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;智能交互引擎
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux11" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="interactive/interengine.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="interactive/bigmail.ns">超大邮件提醒</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="interactive/exmail.ns">过量邮件提醒</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux12','img12')" class="mu2" height="20">
+	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;日志监控
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux12" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="status/status.html">系统状态</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="log/logshow.ns">日志显示</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="log/logstat.ns">日志统计</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="log/logexport.ns">日志导出统计</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="log/logflush.ns">日志清空删除</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="log/audit.ns">操作日志审计</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD onclick="popmenu('Aux13','img13')" class="mu2" height="20">
+	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;公安网络监管
+</TD>
+</TR>
+<TR>
+	<TD bgColor="#cccccc" height="2"></TD>
+</TR>
+<TR>
+<TD id="Aux13" style="DISPLAY: none" height="2">
+	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#f3fef6" border="0">
+	<TR>
+		<TD align="center">
+		<A target="main" href="gasupervise/basesettings.ns">基本设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="gasupervise/msp.ns">MSP设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="gasupervise/gaisc.ns">GAISC设置</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+	<TR>
+		<TD align="center">
+		<A target="main" href="gasupervise/export.ns">四部委交换格式</A>
+		</TD>
+	</TR>
+	</TABLE>
+</TD>
+</TR>
+<TR>
+<TD class="mu2" height="20">
+	<A target="_top" href="logout.ns">退出系统</A>
+</TD>
+</TR>
+</table>
+</body>
+</html>
