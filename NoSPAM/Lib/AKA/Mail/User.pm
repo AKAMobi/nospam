@@ -33,6 +33,8 @@ sub is_user_exist($$)
 	my $self = shift;
 	my $email = shift;
 	
+	#XXX
+	return 1;
 	return $self->{db}->user_email_exist( $email );
 }
 

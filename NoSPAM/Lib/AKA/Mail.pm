@@ -632,7 +632,7 @@ sub quarantine_engine
 	my $start_time = [gettimeofday];
 
 	my $userlistdb = $self->{conf}->{config}->{QuarantineEngine}->{UserListDB};
-	if ( 'Disabled' eq $userlistdb ){
+	if ( (!defined $userlistdb) || ('Disabled' eq $userlistdb) ){
 		$self->{mail_info}->{aka}->{engine}->{quarantine} = ( { 	
 			result 	=> 0,
 			desc	=> __("OFF"),

@@ -43,7 +43,8 @@ sub quarantine
 	my $sdir = $self->{define}->{sysdir};
 
 	my ($filename, $infoname);
-	$mailfile =~ m#[^/]+$#;
+$self->{zlog}->debug ( "Quarantine::quarantine get mailfrom: [$mailfrom] mailto: [$mailto]" );
+	$mailfile =~ m#([^/]+)$#;
 	$filename = $1;
 	$infoname = "$1.info";
 
@@ -52,15 +53,16 @@ sub quarantine
 		if ( open ( FD, ">$qdir/$sdir/$infoname" ) ){
 			print FD $info_content;
 			close FD;
-			link ($filename, "$qdir/$sdir/$filename");
-			unlink ($filename);
+			link ($mailfile, "$qdir/$sdir/$filename");
+			unlink ($mailfile);
 		}else{
 			$self->{zlog}->fatal ( "Mail::Quarantine::quarantine write info file [$qdir/$sdir/$infoname] error." );
 			return undef;
 		}
 	}elsif ( $q_type eq AKA::Mail::Conf::QUARANTINE_USER ){
 		my ($user,$domain);
-		if ( $mailfrom=~/(\S+)\@(\S+)/ ){
+		($mailto) = split(/,/,$mailto); # XXX 只给一个人隔离
+		if ( $mailto=~/(\S+)\@(\S+)/ ){
 			($user,$domain) = ($1,$2);
 		}else{
 			$self->{zlog}->fatal ( "AKA::Mail::Quarantine::quarantine can't parse email address: [$mailfrom]" );
@@ -78,8 +80,8 @@ sub quarantine
 			$self->{zlog}->fatal ( "Mail::Quarantine::quarantine write info file [$qdir/$domain/$user/$infoname] error." );
 			return undef;
 		}
-		link ($filename, "$qdir/$domain/$user/$filename");
-		unlink ($filename);
+		link ($mailfile, "$qdir/$domain/$user/$filename");
+		unlink ($mailfile);
 	}else{
 		$self->{zlog}->fatal ( "Mail::Quarantine::quarantine got unknown q_type: [$q_type]" );
 		return undef;

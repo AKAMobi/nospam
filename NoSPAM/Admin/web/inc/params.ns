@@ -153,6 +153,7 @@ $Actions[10] = _("Replace Receiptor");
 $Actions[11] = _("Add Header");
 $Actions[12] = _("Del Header");
 $Actions[13] = _("Replace Header");
+$Actions[14] = _("Tag & Accept");
 
 
 ?>
