@@ -233,6 +233,7 @@ function add()
 		return -1;
 	}
 	global $ServerMode;
+	global $InteractiveEngine;
 ?>
 <HTML>
 <HEAD>
@@ -269,7 +270,14 @@ function add()
         <tr> <td><?=_("AntiSpam")?></td> <td><input type="checkbox" name="Spam"></td> </tr>
         <tr> <td><?=_("AntiVirus")?></td> <td><input type="checkbox" name="Virus"></td> </tr>
         <tr> <td><?=_("Content Filter")?></td> <td><input type="checkbox" name="Content"></td> </tr>
+
+<?php
+if($InteractiveEngine > 0 ){
+?>
         <tr> <td><?=_("Interactive")?></td> <td><input type="checkbox" name="Interactive"></td> </tr>
+<?
+}
+?>
         <tr> <td><?=_("Audit")?></td> <td><input type="checkbox" name="Archive"></td> </tr>
         <tr> <td><?=_("Log")?></td> <td><input type="checkbox" name="Log"></td> </tr>
         <tr> <td><?=_("Operation Log Management")?></td> <td><input type="checkbox" name="Audit"></td> </tr>
