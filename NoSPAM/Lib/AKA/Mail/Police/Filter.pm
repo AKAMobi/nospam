@@ -68,7 +68,7 @@ sub get_action
 	}
 
 
-	$self->{zlog}->log ( "pf: return action [$action] param [$param]" );
+	$self->{zlog}->debug ( "pf: return action [$action] param [$param]" );
 
 	if ( 1==$action ){ 
 		$param ||= 'This message was rejected';

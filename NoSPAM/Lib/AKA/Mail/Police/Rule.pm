@@ -47,7 +47,7 @@ sub get_match_rule
 	my $rule_id = check_all_rule( $self, $mail_info );
 
 	if ( $rule_id ){
-		$self->{zlog}->log( "pf: rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
+		$self->{zlog}->debug( "pf: rule id $rule_id info: \n" . Dumper($self->{filterdb}->{$rule_id}) ), 
 		return $self->{filterdb}->{$rule_id};
 	}
 	return undef;
@@ -76,7 +76,7 @@ sub check_all_rule
 	my $has_rule;
 	foreach my $rule_id ( keys %{$self->{filterdb}} ){
 		next if ( ! $rule_id );
-		$self->{zlog}->log ( "pf: checking rule id: $rule_id..." );
+		$self->{zlog}->debug ( "pf: checking rule id: $rule_id..." );
 
 		$has_rule = 0;
 		if ( $self->{filterdb}->{$rule_id}->{attachment} ){
@@ -94,7 +94,7 @@ sub check_all_rule
 			$has_rule = 1;
 		}
 		if ( $has_rule ){
-			$self->{zlog}->log ( "pf: rule id $rule_id MATCH!" );
+			$self->{zlog}->debug ( "pf: rule id $rule_id MATCH!" );
 			return $rule_id;
 		}
 	}	
@@ -219,7 +219,7 @@ sub check_size_value
 		$size_low = $1;
 		$size_high = $2;
 	}elsif ( defined $match_filesize ){
-		$self->{zlog}->log ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
+		$self->{zlog}->fatal ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
 		return 0;
 	}
 
@@ -267,7 +267,7 @@ sub check_ip_range
 	my ( $ip_long, $start_long, $end_long );
 
 	if ( !defined $ip_range ){ 
-		$self->{zlog}->log ( "error: check_ip_range no range found!" );
+		$self->{zlog}->fatal ( "error: check_ip_range no range found!" );
 		return 0;
 	}
 
@@ -295,7 +295,7 @@ sub check_ip_range
 		return ( $ip_long == $match_long );
 	}
 
-	$self->{zlog}->log ( "error: check_ip_range got invalid ip range: [$ip_range]" );
+	$self->{zlog}->fatal ( "error: check_ip_range got invalid ip range: [$ip_range]" );
 	# got no match!
 	return 0;
 }
@@ -311,7 +311,7 @@ sub check_single_size_rule
 	$match_size = $rule->{sizevalue};
 
 	if ( ! $match_key || ! $match_size ){
-		$self->{zlog}->log ( "error: cannot find SIZE KEY & SIZEVALUE: [$match_size]" );
+		$self->{zlog}->fatal ( "error: cannot find SIZE KEY & SIZEVALUE: [$match_size]" );
 		return 0;
 	}
 
@@ -329,7 +329,7 @@ sub check_single_size_rule
 		return ( check_size_value( $self, $mail_info->{attachment_num}, $match_size ) );
 	}
 	
-	$self->{zlog}->log ( "error: unimplement size key: [$match_key]" );
+	$self->{zlog}->fatal ( "error: unimplement size key: [$match_key]" );
 	return 0;
 } 
 
@@ -339,7 +339,7 @@ sub check_re_match
 	my ( $content, $re, $is_re ) = @_;
 
 	if ( ! defined $re || ! defined $is_re ){
-		$self->{zlog}->log ( "error: check_regex not enough param." );
+		$self->{zlog}->fatal ( "error: check_regex not enough param." );
 		return 0;
 	}
 
@@ -390,7 +390,7 @@ sub check_single_keyword_rule
 		return check_ip_range( $self, $mail_info->{head}->{sender_ip}, $match_keyword );
 	}
 	
-	$self->{zlog}->log ( "error: check_single_keyword_rule find unknown key value [$match_key]." );
+	$self->{zlog}->fatal ( "error: check_single_keyword_rule find unknown key value [$match_key]." );
 
 	return 0;
 } 
