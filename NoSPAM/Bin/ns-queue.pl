@@ -405,9 +405,6 @@ sub qmail_requeue {
     print QMQ "Received: from $returnpath by $hostname by uid $uid with noSPAM-${VERSION} \n";
     print QMQ " Processed in $elapsed_time secs); $findate\n";
 
-#    if ( ! $AKA_is_spam ){
-#    	print QMQ "X-Spam-Status: $sa_comment\n" if ($sa_comment ne "");  
-#    }
 
     my ($pf_hdr_key,$pf_hdr_done);
     if (  11<=$pf_action && 13>=$pf_action ){
