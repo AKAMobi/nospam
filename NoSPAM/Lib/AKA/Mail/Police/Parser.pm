@@ -1,3 +1,9 @@
+#
+# 北京互联网接警中心邮件过滤器
+# Company: AKA Information & Technology Co., Ltd.
+# Author: Ed Lee
+# EMail: zixia@zixia.net
+# Date: 2004-02-10
 
 package AKA::Mail::Police::Parser;
 
@@ -23,7 +29,7 @@ sub new
 
 	bless $self, $class;
 
-	my ($police, $mail) = @_;
+	my ($police) = @_;
 
 	$self->{police} = $police;
 
@@ -46,21 +52,59 @@ sub get_mail_info
 
 	my ( $type, $subtype, $body_content );
 
-	my $entity = $self->{mime_parser}->parse(\*STDIN);
+	my $entity = $self->{mime_parser}->parse($fh);
+	$self->{entity} = $entity;
 
-	&get_head_info( $entity->head );
-	&get_body_info( $entity->body );
-	
+	&get_head_info( $self,$entity->head );
+
+       
+	my @Parts = $entity->parts;
+        
+	$partnum = @Parts;
+        
+	foreach my $blob (@Parts) {
+		&get_body_info( $self,$blob );
+	}
+        
+
+	return $self->{mail_info};
+}
+
+sub print
+{
+	my ($self, $fh) = @_;
+
+	if ( ! defined $self->{mime_parser} ) { return; }
+
+	$self->{entity}->print($fh);
+
+	# 只能 print 一次
+	$self->{mime_parser}->filer->purge;
+
+	undef $self->{mail_info};
+	undef $self->{entity};
 }
 
 sub get_head_info
 {
 	my ($self, $head) = @_;
 
-	$self->{mail_info}->{head}->{content} = $head->as_string || "";
-	$self->{mail_info}->{head}->{size} = length( $self->{mail_ifno}->{head}->{content} );
+	if ( ! defined $head ){
+		$slef->{zlog}->log( "error: get_head_info no head found?" );;
+		return;
+	}
+
+	my $content = $head->stringify || "";
+	$self->{mail_info}->{head}->{content} = $content;
+	$self->{mail_info}->{head}->{size} = length( $content );
+
+	#FIXME: here make a copy of head instead of make change of original entity;
+	#my $head_decoded = $head;
+	#$head = $head_decoded;
+	#undef $head_decoded;
 
 	$head->decode;
+	$head->unfold;
 
 	$self->{mail_info}->{haed}->{from} = $head->get('From');
 	$self->{mail_info}->{haed}->{to} = $head->get('To');
@@ -68,10 +112,19 @@ sub get_head_info
 	$self->{mail_info}->{haed}->{subject} = $head->get('Subject');
 
 	# FIXME 正确取得 sender_ip & server_ip
-	$self->{mail_info}->{haed}->{sender_ip} = $head->get('Received');
-	# FIXME 正确取得 sender_ip & server_ip
-	$self->{mail_info}->{haed}->{server_ip} = $self->{mail_info}->{haed}->{sender_ip};
-	
+	my @receiveds = $head->get("Received");
+	my $server_ip = 1;
+	for ( @receiveds ){
+		if ( /(\d+\.\d+\.\d+\.\d+)/ ){
+			if ( $server_ip ){
+				$self->{mail_info}->{haed}->{server_ip} = $1;
+				$self->{mail_info}->{haed}->{sender_ip} = $1;
+				$server_ip = 0;
+			}else{
+				$self->{mail_info}->{haed}->{sender_ip} = $1;
+			}
+		}
+	}
 }
 
 sub get_body_info
@@ -85,19 +138,25 @@ sub get_body_info
         my $disposition = $blob->head->mime_attr("Content-Disposition");
 
         my $head = $blob->head;
+
+	# FIXME: here make a copy of head instead of make change of original entity;
+	#my $head_decoded = $head;
+	#$head = $head_decoded;
+	#undef $head_decoded;
+
         $head->decode;
 
         my $body = $blob->bodyhandle;
 
         if ($body = $blob->bodyhandle) {
                 if (defined $disposition && $disposition =~ /attachment/) {
-                        $police->{zlog}->log ("    Atachment: " . $body->path );
+                        $self->{zlog}->log ("    Atachment: " . $body->path );
                 }
                 $path = $body->path;
                 $filename = $head->recommended_filename ;
                 if ( !defined $filename ){
                         $filename = $path;
-                        $filename =~ s/^.*\/$prefix\-//g;
+                        $filename =~ s/^.*\/$$\-//g;
                 }
                 $size = ($path ? (-s $path) : '???');
 		#print "faint, [$size], [$path], [$filename] [$type / $subtype ]\n";
@@ -109,13 +168,13 @@ sub get_body_info
 		
 		if ( ($type eq "text" && $subtype eq "plain") || 
 				1 == $load_binary ){
-			$self->{mail_info}->{body}->{content} = load_file ( $path, $size );
+			$self->{mail_info}->{body}->{content} = load_file ( $self,$path, $size );
 		}
 
 			
         } else {  
                 foreach my $part ($blob->parts) {
-                        &get_body_info( $part );
+                        &get_body_info( $self,$part );
                 }
         }
 
@@ -129,19 +188,16 @@ sub load_file
 	$data = ' ' x $size;
 
 	open ( FD, "<$path" ) or return "";
+	binmode FD;
 	read ( FD, $data, $size );
 	close ( FD );
 
 	return $data;
 }
 
-sub DESTROY
-{
-	my $self = shift;
-
-	# 删除临时文件
-	$self->{mime_parser}->filter->purge;
-	delete $self->{mime_parser};
-}
+#sub DESTROY
+#{
+#	# 删除临时文件
+#}
 
 1;

@@ -1,5 +1,10 @@
-# File : MyLog.pm
 #
+# 北京互联网接警中心邮件过滤器
+# Company: AKA Information & Technology Co., Ltd.
+# Author: Ed Lee
+# EMail: zixia@zixia.net
+# Date: 2004-02-10
+
 
 package AKA::Mail::Police::Log;
 
