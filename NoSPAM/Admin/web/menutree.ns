@@ -20,13 +20,7 @@ if (document.getElementById) {
 	var a = new WebFXTreeItem('系统管理','help/system.htm','main');
 	tree.add(a);
 	a.add(new WebFXTreeItem('本设备序列号','system/serialno.ns', 'main'));
-<?
-if($Swichable){
-?>
-	a.add(new WebFXTreeItem('系统运行模式','system/gatewaymode.ns','main'));
-<?
-}
-?>
+	a.add(new WebFXTreeItem('网关运行模式','system/gatewaymode.ns','main'));
 	a.add(new WebFXTreeItem('网络设置','system/network.ns','main'));
 	a.add(new WebFXTreeItem('配置管理','system/configmanage.ns','main'));
 	a.add(new WebFXTreeItem('系统时间','system/systemtime.ns','main'));
@@ -97,7 +91,13 @@ if($ServerMode == "Server"){
 
 	var g = new WebFXTreeItem('日志监控','help/log.htm','main');
 	tree.add(g);
-	g.add(new WebFXTreeItem('流量监控','log/traffic.htm','main'));
+	var gs = new WebFXTreeItem('系统状态','status/status.html','main');
+        g.add(gs);
+	  gs.add( new WebFXTreeItem('内网流量','status/internalnet.html','main') );
+	  gs.add( new WebFXTreeItem('外网流量','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('CPU负载','status/cpu.html','main') );
+	  gs.add( new WebFXTreeItem('内存使用','status/mem.html','main') );
+	  gs.add( new WebFXTreeItem('磁盘IO','status/hdio.html','main') );
 	g.add(new WebFXTreeItem('日志显示','log/logshow.ns','main'));
 	g.add(new WebFXTreeItem('日志统计','log/logstat.ns','main'));
 	g.add(new WebFXTreeItem('日志导出统计','log/logexport.ns','main'));
