@@ -18,6 +18,11 @@ open (NSOUT, ">&=2");
 close (STDERR);
 open (STDERR, ">/dev/null") or die "can't reopen STDERR";
 
+#
+# we run post_install and exit if this is a post_install script.
+#
+exit &post_install if ( $0 eq 'post_install' );
+
 
 my $arp_binary = "/sbin/arp";
 my $arping_binary = "/sbin/arping";
@@ -50,36 +55,41 @@ my $iputil = new AKA::IPUtil;
 
 &reset_Network_update_smtproutes_gateway;
 my $action_map = { 
-			'start_System' => [\&start_System, "Init system on boot" ]
-			, 'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ]
+	'start_System' => [\&start_System, "Init system on boot" ]
+		, 'init_IPC' => [\&init_IPC, "Init Dynamic Engine memory" ]
 
-			, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
-			, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
-			, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item1> <Item2> ... : Del a item of a NameSpace from AMD' ]
-			, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
+		, 'get_DynamicEngineDBKey' => [\&get_DynamicEngineDBKey, " : Get All NameSpace from AMD" ]
+		, 'get_DynamicEngineDBData' => [\&get_DynamicEngineDBData, '<NameSpace> : Get All Data of a NameSpace from AMD' ]
+		, 'del_DynamicEngineKeyItem' => [\&del_DynamicEngineKeyItem, '<NameSpace> <Item1> <Item2> ... : Del a item of a NameSpace from AMD' ]
+		, 'clean_DynamicEngineKey' => [\&clean_DynamicEngineKey, '<NameSpace> : clean a NameSpace data of AMD' ]
 
-			, 'Archive_get_exchangedata' => [\&Archive_get_exchangedata, ' : get from archive, print GA format' ]
-			, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
+		, 'Archive_get_exchangedata' => [\&Archive_get_exchangedata, ' : get from archive, print GA format' ]
+		, 'Archive_clean_all' => [\&Archive_clean_all, ' : delete all archives from archive account' ]
 
-			,'reset_Network' => [\&reset_Network, ""]
-			,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
-			,'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""]
+		,'reset_Network' => [\&reset_Network, ""]
+		,'reset_ConnPerIP' => [\&reset_ConnPerIP, ""]
+		,'reset_ConnRatePerIP' => [\&reset_ConnRatePerIP, ""]
 
-			,'get_GW_Mode' => [\&get_GW_Mode, ""]
-			,'set_GW_Mode' => [\&set_GW_Mode, ""]
+		,'get_GW_Mode' => [\&get_GW_Mode, ""]
+		,'set_GW_Mode' => [\&set_GW_Mode, ""]
 
-			,'get_Serial' => [\&get_Serial, ""]
-			,'check_License' => [\&check_License, ""]
+		,'get_Serial' => [\&get_Serial, ""]
+		,'check_License' => [\&check_License, ""]
 
-			,'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"]
-			,'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"]
-			,'get_LogSimpleAnaylize' => [\&get_LogSimpleAnaylize, "startTime endTime"]
+		,'get_LogHead' => [\&get_LogHead, "get NoSPAM.csv head"]
+		,'clean_Log' => [\&clean_Log, "cat /dev/null > /var/log/NoSPAM.csv"]
+		,'get_LogSimpleAnaylize' => [\&get_LogSimpleAnaylize, "startTime endTime"]
 
-			,'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"]
-			,'reboot' => [\&reboot, ""]
-			,'shutdown' => [\&shutdown, ""]
+		,'UpdateRule' => [\&UpdateRule, " : Update MSP1.8 Rule"]
+		,'UploadLog' => [\&UploadLog, " : Upload MSP1.8 Log"]
 
-		};
+		,'reset_DateTime' => [\&reset_DateTime, "param1: YYYY-mm-DD HH:MM:SS"]
+		,'reboot' => [\&reboot, ""]
+		,'shutdown' => [\&shutdown, ""]
+
+		,'heartbeat_siwei' => [\&heartbeat_siwei, " : TAP watchdog heartbeat"]
+
+};
 
 #use Data::Dumper;
 #print Dumper( $intconf );
@@ -94,9 +104,9 @@ if ( ! defined $action ){
 	exit -1;
 }elsif( defined $action_map->{$action}[0] ){
 	$zlog->debug("NoSPAM Util::$action( " . join(",",@param) . " )" );
-	#my $lock = &get_lock( "/home/NoSPAM/var/run/lock/$action" );
+#my $lock = &get_lock( "/home/NoSPAM/var/run/lock/$action" );
 	my $ret = &{$action_map->{$action}[0]};
-	#&release_lock($lock);
+#&release_lock($lock);
 	exit $ret;
 }else{
 	$zlog->fatal( "NoSPAM System Util unsuport action: $action( " . join(',',@param) . " )" );
@@ -109,26 +119,85 @@ if ( ! defined $action ){
 exit -1;
 
 #############################
+sub post_install
+{
+
+	my $NSVER = shift @ARGV;
+	$NSVER or die "err param!\n";
+
+	my $OEM = shift @ARGV || 'aka';
+
+	my $cmd;
+	$cmd ="
+		PKGNAME=ns-$NSVER.i386.rpm
+		OEMNAME=$OEM
+		";
+
+	$cmd .='
+cd / 
+unzip -p -P zixia@noSPAM_OKBoy_GNULinux! /mnt/cdrom/RedHat/RPMS/${PKGNAME} | tar x 
+
+for file in /etc/lilo.*.conf; do
+lilo -C $file
+rm -f $file
+done
+
+cd /home/NoSPAM/admin/
+mv index.${OEMNAME}.ns index.ns
+mv images/Logo_${OEMNAME}.gif images/Logo.gif
+rm -f index.*.ns images/Logo_*.gif
+cd -
+
+chkconfig --level 3 named on
+chkconfig --level 3 httpd on
+chkconfig --level 3 snmpd on
+chkconfig --level 3 clamd on
+chkconfig --level 3 iptables off
+chkconfig --level 3 gpm off
+chkconfig --level 3 keytable off
+chkconfig --level 3 kudzu off
+chkconfig --level 3 nfslock off
+chkconfig --level 3 nfs off
+chkconfig --level 3 portmap off
+chkconfig --level 3 pcmcia off
+chkconfig --level 3 random off
+chkconfig --level 3 rawdevices off
+chkconfig --level 3 rhnsd off
+chkconfig --level 3 xinetd off
+chkconfig --level 3 autofs off
+chkconfig --level 3 netfs off
+
+chmod 000 /etc/cron.daily/makewhatis.cron
+chmod 000 /etc/cron.weekly/makewhatis.cron
+chmod 000 /etc/cron.daily/rpm
+chmod 000 /etc/cron.daily/slocate.cron
+
+unlink /root/post_install
+';
+	system ( "$cmd" );
+	exit;
+}
+
 sub start_System
 {
 	my $ret;
 
-	# Check License;
+# Check License;
 	my $AM = new AKA::Mail;
 	if ( ! $AM->check_license_file ){
 		return 250;
 	}
 
 
-	# update hostname to provent dns query
+# update hostname to provent dns query
 	&reset_Network_update_hostname;
 
 	$ret = &reset_Network;
 	$ret ||= &reset_ConnPerIP;
-	
-	# Share Memory for Dynamic Engine.
-	# now we use file system db
-	# $ret ||= &init_IPC;
+
+# Share Memory for Dynamic Engine.
+# now we use file system db
+# $ret ||= &init_IPC;
 
 	$zlog->log("NoSPAM System Restarted, Util init ret $ret" );
 
@@ -154,15 +223,16 @@ sub usage
 	print NSOUT <<_USAGE_;
 
 $prog <action> [action params ...]
-  action could be:
+
+action could be:
 _USAGE_
-	foreach ( sort keys %{$action_map} ){
-		print NSOUT "    $_ ";
-		if ( defined $action_map->{$_}[1] ){
-			print NSOUT "$action_map->{$_}[1]";
+		foreach ( sort keys %{$action_map} ){
+			print NSOUT "    $_ ";
+			if ( defined $action_map->{$_}[1] ){
+				print NSOUT "$action_map->{$_}[1]";
+			}
+			print NSOUT "\n";
 		}
-		print NSOUT "\n";
-	}
 	print NSOUT "\n";
 }
 
@@ -197,7 +267,7 @@ sub get_licenseconf
 sub get_intconf
 {
 	my $intconf;
-	
+
 	my $intconf_file = $conf->{define}->{intconffile};
 
 	open ( ICFD, "<$intconf_file" ) or die "NoSPAM Util can't open internal config file\n";
@@ -251,16 +321,16 @@ sub reset_Network_clean_netfilter
 
 	$ret = system( $iptables, '-F', 'INPUT' );
 	return -10 if ( $ret );
-	
+
 	$ret = system( $iptables, '-F', 'FORWARD' );
 	return -11 if ( $ret );
-	
+
 	$ret = system( "$iptables -t nat -F PREROUTING" );
 	return -12 if ( $ret );
-	
+
 	$ret = system( $iptables, '-P', 'INPUT', 'ACCEPT' );
 	return -13 if ( $ret );
-	
+
 	return 0;
 }
 
@@ -295,8 +365,8 @@ sub reset_Network_set_netfilter
 	return -32 if ( $ret );
 	$ret = system( "$iptables -A INPUT -p tcp --dport 80 -j ACCEPT" );
 	return -34 if ( $ret );
-	#$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 110', '-j ACCEPT' );
-	#return -34 if ( $ret );
+#$ret = system( $iptables, '-A', 'INPUT', '-p tcp', '--dport 110', '-j ACCEPT' );
+#return -34 if ( $ret );
 	$ret = system( "$iptables -A INPUT -p tcp --dport 443 -j ACCEPT" );
 	return -38 if ( $ret );
 
@@ -310,30 +380,30 @@ sub reset_Network_set_netfilter
 	return -50 if ( $ret );
 
 	$ret = system( "$iptables -A FORWARD ". 
-		'-s '. $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
-		' -j ACCEPT' );
+			'-s '. $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
+			' -j ACCEPT' );
 	return -60 if ( $ret );
 	$ret = system( "$iptables -A FORWARD " . 
-		"-d ". $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
-		' -j ACCEPT' );
+			"-d ". $conf->{config}->{MailServerIP} . '/' . $conf->{config}->{MailServerNetMask} . 
+			' -j ACCEPT' );
 	return -61 if ( $ret );
 
-	#print( "$iptables -t nat -A PREROUTING -i eth1 -p tcp " .
-	#	"-d " . $conf->{config}->{MailServerIP} .
-	#	"--dport 25 -j DNAT --to " .
-	#	$intconf->{MailGatewayInternalIP} . ":25" );
+#print( "$iptables -t nat -A PREROUTING -i eth1 -p tcp " .
+#	"-d " . $conf->{config}->{MailServerIP} .
+#	"--dport 25 -j DNAT --to " .
+#	$intconf->{MailGatewayInternalIP} . ":25" );
 
 	$ret = system( "$iptables -t nat -A PREROUTING -i eth1 -p tcp " .
-		" -d " . $conf->{config}->{MailServerIP} .
-		" --dport 25 -j DNAT --to " .
-		$intconf->{MailGatewayInternalIP} . ":25" );
+			" -d " . $conf->{config}->{MailServerIP} .
+			" --dport 25 -j DNAT --to " .
+			$intconf->{MailGatewayInternalIP} . ":25" );
 	return -70 if ( $ret );
 
-	# for internal mail user
+# for internal mail user
 	$ret = system( "$iptables -t nat -A PREROUTING -i eth0 -p tcp " .
-		" -s " . $conf->{config}->{MailServerIP} .
-		" --dport 25 -j DNAT --to " .
-		$intconf->{MailGatewayInternalIP} . ":26" );
+			" -s " . $conf->{config}->{MailServerIP} .
+			" --dport 25 -j DNAT --to " .
+			$intconf->{MailGatewayInternalIP} . ":26" );
 
 
 	return 0;
@@ -347,36 +417,36 @@ sub reset_Network_up_eth
 
 
 	if ( 'Server' eq $mode ){
-		#服务器IP：NoSPAM.conf::MailGatewayIP
-		#服务器网络掩码：NoSPAM.conf::MailServerNetMask
+#服务器IP：NoSPAM.conf::MailGatewayIP
+#服务器网络掩码：NoSPAM.conf::MailServerNetMask
 		$ret = system( $ip_binary, "ad", "ad", 
-			$conf->{config}->{MailGatewayIP} . "/" . $conf->{config}->{MailServerNetMask} , 
-			"dev", "eth1" );
+				$conf->{config}->{MailGatewayIP} . "/" . $conf->{config}->{MailServerNetMask} , 
+				"dev", "eth1" );
 		return -21 if ( $ret );
 
 		$ret = system( $ip_binary, "link", "set", "eth1", "up" );
 		return -31 if ( $ret );
 	}else{ # 'Gateway'
-		#本网关内口IP：NoSPAM.intconf::MailGatewayInternalIP
+#本网关内口IP：NoSPAM.intconf::MailGatewayInternalIP
 		$ret = system( $ip_binary, "address", "ad", 
-			$intconf->{MailGatewayInternalIP} . "/" . $intconf->{MailGatewayInternalMask} , 
-			"dev", "eth0" );
+				$intconf->{MailGatewayInternalIP} . "/" . $intconf->{MailGatewayInternalMask} , 
+				"dev", "eth0" );
 		return -20 if ( $ret );
 		$ret = system( $ip_binary, "link", "set", "eth0", "up" );
 		return -30 if ( $ret );
 
-		#本网关外口IP：NoSPAM.conf::MailGatewayIP
+#本网关外口IP：NoSPAM.conf::MailGatewayIP
 		$ret = system( $ip_binary, "address", "ad", 
-			$conf->{config}->{MailGatewayIP} . "/" . $conf->{config}->{MailServerNetMask} , 
-			"dev", "eth1" );
+				$conf->{config}->{MailGatewayIP} . "/" . $conf->{config}->{MailServerNetMask} , 
+				"dev", "eth1" );
 		return -22 if ( $ret );
 		$ret = system( $ip_binary, "link", "set", "eth1", "up" );
 		return -32 if ( $ret );
 	}
 
-	# no need waste time to do this. by zixia
-	#$ret = system ( "ifdown lo && ifup lo" );
-	#return -40 if $ret;
+# no need waste time to do this. by zixia
+#$ret = system ( "ifdown lo && ifup lo" );
+#return -40 if $ret;
 
 	return 0;
 }
@@ -392,7 +462,7 @@ sub reset_Network_set_arp_backend
 
 	$ret = system ( "$arping_binary -A -c 1 -I $dev -s $src $dst>/dev/null2>&1" );
 	return -2 if ( $ret );
-	
+
 	return 0;
 }
 
@@ -407,17 +477,17 @@ sub reset_Network_set_arp_single_mailsrv
 	($NetB = $MailServerIP) =~ s/\d+$//;
 
 	my $local_net_ip;
-	#first, we arp internal net: eth0
+#first, we arp internal net: eth0
 	foreach ( 1 ... 255 ){
 		$local_net_ip = $NetB . $_;
 		next if ( $local_net_ip eq $MailServerIP );
-       		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
+		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
 
 		$ret = &reset_Network_set_arp_backend( 'eth0', $local_net_ip, $MailServerIP );
 		return -1 if ( $ret );
 	}
 
-	#second, we arp external net: eth1
+#second, we arp external net: eth1
 	$ret = &reset_Network_set_arp_backend( 'eth1', $MailServerIP, $conf->{config}->{MailServerGateway} );
 	return -2 if ( $ret );
 
@@ -436,17 +506,17 @@ sub reset_Network_set_arp_multi_mailsrv
 	($NetB = $MailServerIP) =~ s/\d+$//;
 
 	my $local_net_ip;
-	#first, we arp internal net: eth0
+#first, we arp internal net: eth0
 	foreach ( 1 ... 255 ){
 		$local_net_ip = $NetB . $_;
-		#next if ( $local_net_ip eq $MailServerIP );
-       		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
+#next if ( $local_net_ip eq $MailServerIP );
+		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
 
 		$ret = &reset_Network_set_arp_backend( 'eth1', $local_net_ip, $MailServerIP );
 		return -1 if ( $ret );
 	}
 
-	#second, we arp external net: eth1
+#second, we arp external net: eth1
 	$ret = &reset_Network_set_arp_backend( 'eth0', $MailServerGateway, $MailServerIP );
 	return -2 if ( $ret );
 
@@ -455,7 +525,7 @@ sub reset_Network_set_arp_multi_mailsrv
 sub reset_Network_set_route_multi_mailsrv
 {
 	my $ret;
-	#出口网关：NoSPAM.conf::MailServerGateway
+#出口网关：NoSPAM.conf::MailServerGateway
 	$ret = system( $ip_binary, "route", "replace", "default", "via", $conf->{config}->{MailServerGateway}, "dev", "eth1" );
 	return -1 if ( $ret );
 
@@ -471,11 +541,11 @@ sub reset_Network_set_route_multi_mailsrv
 	foreach ( 1 ... 255 ){
 		$local_net_ip = $NetB . $_;
 		next if ( $local_net_ip eq $MailServerGateway );
-       		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
+		next if ( ! $iputil->is_ip_in_range( $local_net_ip, "$MailServerIP/$MailServerNetMask" ) );
 
 		$ret = system( $ip_binary, "route", "add", 
-			$local_net_ip.'/32',
-			"dev", "eth0" );
+				$local_net_ip.'/32',
+				"dev", "eth0" );
 
 		return -1 if ( $ret );
 	}
@@ -486,14 +556,14 @@ sub reset_Network_set_route_multi_mailsrv
 sub reset_Network_set_route_single_mailsrv
 {
 	my $ret;
-	#出口网关：NoSPAM.conf::MailServerGateway
+#出口网关：NoSPAM.conf::MailServerGateway
 	$ret = system( $ip_binary, "route", "replace", "default", "via", $conf->{config}->{MailServerGateway}, "dev", "eth1" );
 	return -1 if ( $ret );
 
-	#邮件服务器IP：NoSPAM.conf::MailServerIP
+#邮件服务器IP：NoSPAM.conf::MailServerIP
 	$ret = system( $ip_binary, "route", "add", 
-		$conf->{config}->{MailServerIP}.'/32',
-		"dev", "eth0" );
+			$conf->{config}->{MailServerIP}.'/32',
+			"dev", "eth0" );
 	return -2 if ( $ret );
 
 	return 0;
@@ -557,7 +627,7 @@ sub reset_Network_update_hostname
 	$ret = write_file ( $content, "/etc/hosts" );
 	return 20 if $ret;
 
-	#邮件主机名称：NoSPAM.conf::MailServerHostname
+#邮件主机名称：NoSPAM.conf::MailServerHostname
 	$ret = system( $hostname_binary, $conf->{config}->{MailServerHostname} );
 	return -10 if ( $ret );
 
@@ -593,7 +663,7 @@ sub reset_Network_update_ismtp_relay
 	my $IP = $conf->{config}->{MailServerIP} ;
 
 	return 0 unless $IP;
-	
+
 	return 10 unless open FD, "</service/ismtpd/tcp";
 
 	my @relays = <FD>;
@@ -602,7 +672,7 @@ sub reset_Network_update_ismtp_relay
 	@relays = grep (!/^$/, @relays);
 	@relays = grep (!/^$IP/, @relays);
 	unshift( @relays, "$IP:allow,RELAYCLIENT=\"\"\n" );
-	
+
 	my $content = join('',@relays);
 	$ret = write_file($content, '/service/ismtpd/tcp');
 
@@ -617,7 +687,7 @@ sub reset_Network_update_rcpthosts
 
 	my $Domain = $conf->{config}->{MailServerHostname} ;
 	$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
-	
+
 	return 10 unless open FD, "</var/qmail/control/rcpthosts";
 
 	my @domains = <FD>;
@@ -626,7 +696,7 @@ sub reset_Network_update_rcpthosts
 	@domains = grep (!/^$/, @domains);
 	@domains = grep (!/^$Domain$/, @domains);
 	unshift( @domains, "$Domain\n" );
-	
+
 	my $content = join('',@domains);
 
 	return write_file($content, '/var/qmail/control/rcpthosts');
@@ -638,7 +708,7 @@ sub reset_Network_update_smtproutes
 
 	return &reset_Network_update_smtproutes_gateway if ( 'Gateway' eq $mode );
 
-	# TODO server mode
+# TODO server mode
 
 	return 0;
 }
@@ -661,9 +731,9 @@ sub write_file
 	return 30 unless open ( LFD, ">$filename.new" );
 
 	print LFD $content;
-	
+
 	unless ( close LFD ){
-		# disk full?
+# disk full?
 		unlink "$filename.new";
 		return 40;
 	}
@@ -683,8 +753,8 @@ sub reset_Network_update_smtproutes_gateway
 
 	my $ret=0;
 
-	# no need to do this here: get real email domain 
-	#$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
+# no need to do this here: get real email domain 
+#$Domain = $1 if ( $Domain=~/^[^\.]*mail[^\.]*\.(.+)/ );
 
 	return 10 unless ( $Domain && $IP );
 
@@ -696,7 +766,7 @@ sub reset_Network_update_smtproutes_gateway
 	@smtproutes = grep (!/^$/, @smtproutes);
 	@smtproutes = grep (!/^$Domain:$IP/, @smtproutes);
 	unshift( @smtproutes, "$Domain:$IP\n" );
-	
+
 	my $content = join('',@smtproutes);
 
 	$ret = write_file( $content, "/var/qmail/control/smtproutes" );
@@ -709,7 +779,7 @@ sub get_lock
 {
 	my $filename = shift;
 
-	#$filename = $1 if ( $filename=~m#([^/]+)$# );
+#$filename = $1 if ( $filename=~m#([^/]+)$# );
 
 	if ( !open( LOCKFD, ">$filename.lock" ) ){
 		$zlog->debug("NoSPAM Util::get_lock can't get lock of $filename.lock");
@@ -720,9 +790,9 @@ sub get_lock
 	use Fcntl ':flock'; # import LOCK_* constants
 
 #print "lock $filename 2\n";
-    	if ( !flock(LOCKFD,LOCK_EX) ){
-		return 0;
-	}
+		if ( !flock(LOCKFD,LOCK_EX) ){
+			return 0;
+		}
 #print "lock $filename 3\n";
 	return \*LOCKFD;
 }
@@ -746,7 +816,7 @@ sub reset_Network
 {
 	$zlog->debug("NoSPAM Util::reset_Network ");
 
-	# Check License;
+# Check License;
 	my $AM = new AKA::Mail;
 	if ( ! $AM->check_license_file ){
 		return 250;
@@ -757,20 +827,20 @@ sub reset_Network
 	$mode = 'Gateway' if ( 'Server' ne $mode );
 
 
-	# clean network settings, arp & route should disapear after down_eth
-	#&reset_Network_clean_arp;
-	#&reset_Network_clean_route;
+# clean network settings, arp & route should disapear after down_eth
+#&reset_Network_clean_arp;
+#&reset_Network_clean_route;
 	&reset_Network_down_eth;
 	&reset_Network_clean_netfilter;
 
-	# 是管理一台，还是管理一个网段
-	# 注意！是完全不一样的！
-	# XXX TODO
+# 是管理一台，还是管理一个网段
+# 注意！是完全不一样的！
+# XXX TODO
 	my $MailServerGroup = $conf->{config}->{MailServerGroup} || 'N';
 
 	my $ret = 0;
 
-	# Start up network settings.
+# Start up network settings.
 	$ret ||= 10 if ( &reset_Network_set_sysctl );
 	$ret ||= 20 if ( &reset_Network_up_eth($mode) );
 
@@ -801,15 +871,15 @@ sub reset_ConnPerIP
 
 	$zlog->debug("NoSPAM Util::reset_ConnPerIP to $ParalConn");
 
-	# delete link to input
+# delete link to input
 	if ( system("$iptables -D INPUT -j ConnPerIP>/dev/null 2>&1") ) {
-		# It's ok.
+# It's ok.
 	}
 
-	# 0 means no limit
+# 0 means no limit
 	return if ( 0==$ParalConn );
 
-	# flush, create it if not exist
+# flush, create it if not exist
 	if ( system("$iptables -F ConnPerIP") ) {
 		if ( system("$iptables -N ConnPerIP") ) {
 			return 10;
@@ -819,7 +889,7 @@ sub reset_ConnPerIP
 	if ( system("$iptables -I INPUT -j ConnPerIP") ) {
 		return 20;
 	}
-	
+
 	if ( system("$iptables -I ConnPerIP -i eth1 -p tcp --syn --dport 25 -m connlimit --connlimit-above $ParalConn -j REJECT") ){
 		return 21;
 	}
@@ -830,35 +900,6 @@ sub reset_ConnPerIP
 sub reset_ConnRatePerIP
 {
 	my $ConnRate = $conf->{config}->{ConnRatePerIP} || 0;
-
-	$zlog->debug("NoSPAM Util::reset_ConnRatePerIP to $ConnRate");
-
-=pod
-	now to do it in perl module.
-
-	# delete link to input
-	if ( system("$iptables -D INPUT -j ConnRatePerIP") ) {
-		# It's ok.
-	}
-
-	# 0 means no limit
-	return if ( 0==$ConnRate );
-
-	# flush, create it if not exist
-	if ( system("$iptables -F ConnRatePerIP") ) {
-		if ( system("$iptables -N ConnRatePerIP") ) {
-			return -10;
-		}
-	}
-
-	if ( system("$iptables -I INPUT -j ConnRatePerIP") ) {
-		return -20;
-	}
-	
-	if ( system("$iptables -I ConnRatePerIP -p tcp --syn --dport 25 -m iplimit --iplimit-above $ParaConn -j REJECT >/dev/null 2>&1") ){
-		return -21;
-	}
-=cut
 
 	return 0;
 }
@@ -877,10 +918,10 @@ sub get_GW_Mode
 
 sub set_GW_Mode
 {
-	
+
 	$zlog->debug("NoSPAM Util::set_GW_Mode ");
-	
-	# need reboot.
+
+# need reboot.
 	return 0;
 }
 
@@ -896,7 +937,7 @@ sub get_LogHead
 
 sub get_Serial
 {
-	
+
 	my $AL = new AKA::License;
 	print $AL->get_prodno, "\n";
 	return 0;
@@ -908,11 +949,11 @@ sub check_License
 
 	my $LicenseHTML;
 	if ( $LicenseHTML = $AM->check_license_file ){
-		# VALID license!
+# VALID license!
 		print "$LicenseHTML";
 		return 0;
 	}
-	# INVALID license!
+# INVALID license!
 	print "<h1>许可证无效！</h1>";
 	return -1;
 }
@@ -957,7 +998,7 @@ sub get_DynamicEngineDBKey
 			'From' => '用户重复'
 			,'Subject' => '邮件重复'
 			,'IP' => '连接频率'
-			);
+		    );
 
 	my @EName = $AMD->get_dynamic_info_ns_name;
 
@@ -1122,5 +1163,98 @@ sub Archive_clean_all
 	$AMA->clean_archive_files;
 
 	return 0;
+}
+
+sub UpdateRule
+{
+	use AKA::Mail::Police;
+
+	use Data::Dumper;
+# 改变$转义、缩进
+	$Data::Dumper::Useperl = 1;
+	$Data::Dumper::Indent = 1;
+
+
+	my $police = new AKA::Mail::Police;
+
+	my $rule_num = $police->{conf}->check_n_update() ;
+
+	$police->{zlog}->debug ( "check_n_update: [" . $rule_num . "] rules\n" );
+	print ( "check_n_update: [" . $rule_num . "] rules\n" );
+}
+
+sub UploadLog
+{
+	`date >> /var/log/police.cron`;
+	my $log_dir = "/home/ssh/log/";
+	my $srv_ssh_pri_key = "/home/ssh/.ssh/id_rsa";
+
+
+	my @log_files = &get_log_files_in_dir( $log_dir );
+
+	my $log_num = @log_files;
+	if ( $log_num > 0 ){
+		my $files = join ( " ", grep { !/eml/} @log_files );
+
+		system( "scp -i $srv_ssh_pri_key $files siwei\@219.238.174.68:log/ >> /var/log/police.cron 2>&1" );
+		print "Transfering $files\n";
+		unlink @log_files;
+	}
+	exit 0;
+
+################
+	sub get_log_files_in_dir {
+		my ($dir) = @_;
+
+		opendir(LOG_DIR, $dir) or warn "cannot opendir $dir: $!\n";
+#my @files = readdir(LOG_DIR);
+		my @logfiles = grep { /\.log/ && -f "$dir/$_" } readdir(LOG_DIR);
+		closedir LOG_DIR;
+
+		opendir(LOG_DIR, $dir) or warn "cannot opendir $dir: $!\n";
+		my @emlfiles = grep { /\.eml/ && -f "$dir/$_" } readdir(LOG_DIR);
+		closedir LOG_DIR;
+
+		my @allfiles = ();
+		push ( @allfiles, @emlfiles );
+		push ( @allfiles, @logfiles );
+
+		return map { "$dir/$_" } @allfiles;     # sort numerically
+	}
+
+}
+
+sub heartbeat_siwei
+{
+
+	$| = 1;
+	use Device::SerialPort 0.05;
+	use Time::HiRes qw(usleep);
+
+	use strict;
+
+	my $file = "/dev/ttyS0";
+
+	my $ob = Device::SerialPort->new ($file) || die "Can't open $file: $!";
+
+	$ob->baudrate(19200)    || die "fail setting baudrate";
+	$ob->parity("none")     || die "fail setting parity";
+	$ob->databits(8)        || die "fail setting databits";
+	$ob->stopbits(1)        || die "fail setting stopbits";
+	$ob->handshake("none")  || die "fail setting handshake";
+
+	$ob->write_settings || die "no settings";
+
+# 3: Prints Prompts to Port and Main Screen
+
+	$ob->error_msg(1);              # use built-in error messages
+		$ob->user_msg(1);
+
+	my $in = 1;
+	while ($in) {
+		$ob->write("#sw#");
+		usleep(200000);
+		print int($in++/5),"\n";
+	}
 }
 
