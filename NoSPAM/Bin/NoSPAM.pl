@@ -790,7 +790,9 @@ sub QuarantineQueuePurge
 sub QuarantineProcessMail
 {
 	use AKA::Mail::Controler;
+	use AKA::Mail::Quarantine;
 	my $AMC = new AKA::Mail::Controler;
+	my $AMQ = new AKA::Mail::Quarantine;
 
 	my ($no,$file,$action);
 	while ( <STDIN> ){
@@ -801,10 +803,17 @@ sub QuarantineProcessMail
 			if ( $action eq 'D' ){
 				# file will be unlinked after all action
 			}elsif ( $action eq 'F' ){
-				my $info = $AMC->get_quarantine_info($file);
-				$AMC->send_mail_file_by_queue( $info->{from}, $info->{to}, $file, 
+				$zlog->debug ( "wi QuarantineProcessMail accept : [$no][$file][$action]" );
+				my $info;
+				eval { 
+					$info = $AMQ->get_quarantine_info($file);
+					$zlog->debug ( "wi QuarantineProcessMail accept info: " . Dumper($info) );
+					$AMC->send_mail_file_by_queue( $info->{from}, $info->{to}, $file, 
 						{ 'reason' => $info->{'reason'},
 						 'desc' => $info->{'desc'} }	 );
+				}; if ( $@ ){
+					$zlog->fatal ( "wi QuarantineProcessMail can't send_mail_file_by_queue: [$@]" );
+				}
 			}
 			unlink $file; unlink "$file.info";
 			print STDOUT "$no,0\n";
@@ -827,7 +836,7 @@ sub QuarantineUserListEmpty
 
 sub QuarantineUserListExport
 {
-	use AKA::Mail::DB;
+	se AKA::Mail::DB;
 	my $AMD = new AKA::Mail::DB;
 	$AMD->user_email_list();
 	return 0;
@@ -853,6 +862,8 @@ sub QuarantineUserListImport
 		}
 		$sth_del->finish;
 		$sth_ins->finish;
+		close (FD);
+		unlink $import_file;
 	}else{
 		$AMD->{zlog}->fatal ( "QuarantineUserListImport: [$import_file] open failure: [$!]" );
 		return -1;
