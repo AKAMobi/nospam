@@ -16,9 +16,10 @@ $eTime = date("Y年m月d日H时",intval($e));
 $tmpTotal = $result[0];
 $tmpMaybe = $result[1];
 $tmpSPAM = $result[2];
-$tmpFrom = $result[3];
-$tmpIP = $result[4];
-$tmpRule = $result[5];
+$tmpVirus = $result[3];
+$tmpFrom = $result[4];
+$tmpIP = $result[5];
+$tmpRule = $result[6];
 
 list($dummy, $Total) = explode(":",$tmpTotal);
 $Total = intval(trim($Total));
@@ -26,6 +27,8 @@ list($dummy, $Maybe) = explode(":",$tmpMaybe);
 $Maybe = intval(trim($Maybe));
 list($dummy, $SPAM) = explode(":",$tmpSPAM);
 $SPAM = intval(trim($SPAM));
+list($dummy, $Virus) = explode(":",$tmpVirus);
+$Virus = intval(trim($Virus));
 
 list($dummy, $FromList) = explode(":",$tmpFrom);
 $FromList = explode(",",trim($FromList));
@@ -69,9 +72,10 @@ arsort($TopRule,SORT_NUMERIC);
 <p>由<?=$sTime?>至<?=$eTime?>的日志统计结果：</p>
 <p>
 总邮件数：<?=$Total?>封<br>
+病毒邮件数：<?=$Virus?>封<br>
 疑似垃圾邮件数：<?=$Maybe?>封<br>
 垃圾邮件数：<?=$SPAM?>封
-正常邮件数：<?=$Total-$Maybe-$SPAM?>封
+正常邮件数：<?=$Total-$Virus-$Maybe-$SPAM?>封
 </p>
 <p>
 发件人地址的发邮件数Top10：
