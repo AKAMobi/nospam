@@ -44,7 +44,7 @@ sub get_checksum
 	my $data = shift;
 
 	my $checksum = md5_base64( 'okboy' . $data . 'zixia' . $data . '@2004-03-07' );
-$self->{zlog}->log ("get sum for [$data], result: $checksum"); 
+#$self->{zlog}->log ("get sum for [$data], result: $checksum"); 
 	return $checksum;
 }
 
