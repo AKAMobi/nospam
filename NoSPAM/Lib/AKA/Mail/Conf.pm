@@ -36,8 +36,10 @@ sub new
 
 	$self->{define}->{home} = "/home/NoSPAM/";
 	$self->{define}->{conffile} = $self->{define}->{home} . "/etc/NoSPAM.conf";
+	$self->{define}->{intconffile} = $self->{define}->{home} . "/etc/NoSPAM.intconf";
+	$self->{define}->{licensefile} = $self->{define}->{home} . "/etc/License.dat";
 
-	$self->{zlog} = $parent->{zlog};
+	#$self->{zlog} = $parent->{zlog};
 
 	$self->init_config();
 

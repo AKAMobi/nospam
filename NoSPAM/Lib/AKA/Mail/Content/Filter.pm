@@ -229,6 +229,7 @@ sub print
 {
 	my $self = shift;
 	my $action = shift;
+
 	if ( $action != 1 && $action != 2 && $action != 3 ){
 		$self->{parser}->print ( \*STDOUT );
 	}
