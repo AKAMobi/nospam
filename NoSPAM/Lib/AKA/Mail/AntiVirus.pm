@@ -31,7 +31,7 @@ sub new
 
 	$self->{define}->{host} = '127.0.0.1';
 	$self->{define}->{port} = 3310;
-	$self->{define}->{status_file} = '/home/NoSPAM/var/run/clamd';
+	$self->{define}->{status_file} = '/home/NoSPAM/var/run/clamd.';
 
 	return $self;
 
@@ -73,13 +73,9 @@ sub catch_virus
 {
 
 	my $self = shift;
-
 	my $file = shift;
 
   	my $start_time=[gettimeofday];
-  	
-
-
 
 	my $result;
 
@@ -97,8 +93,8 @@ sub catch_virus
 				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 			});
 
-		$result = $self->check_file_clamscan( $file );
-		$self->{zlog}->debug ( "catch_virus use clamscan" ); #, result: [$result]" );
+#		$result = $self->check_file_clamscan( $file );
+#		$self->{zlog}->debug ( "catch_virus use clamscan" ); #, result: [$result]" );
 	}
 
 	if ( $result =~ m#ERROR$# ){
@@ -179,21 +175,27 @@ sub check_file_socket_tcp
 	#$self->{zlog}->debug ( "check_file_socket_tcp before init_socket." );
 	my $conn = $self->init_socket;
 	#$self->{zlog}->debug ( "check_file_socket_tcp after init_socket." );
-	return '' unless $conn;
+	unless ( $conn ){
+		$self->{zlog}->fatal ( "Mail::AntiVirus::check_file_socket_tcp init_socket failure $!" );
+		return undef;
+	}
 
 	#print $conn "SESSION\n";
 
+	my ($old_alarm_sig,$old_alarm);
+
 	eval {
-		$SIG{ALRM} = sub { die "CLAMAV DIE" };
-		alarm 3;
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
+		$old_alarm = alarm 3;
 		print $conn "PING\n";
 		$result = <$conn>;
 		chomp $result;
-
-		alarm 0;
 	};
-
 	my $alarm_status=$@;
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
+	alarm $old_alarm;
+	
 	if ($alarm_status and $alarm_status ne "" ) { 
 		$self->{zlog}->debug ( "PING timeout" );
 		#if ($alarm_status eq "CLAMAV DIE") {
@@ -202,25 +204,41 @@ sub check_file_socket_tcp
 			$self->{zlog}->fatal ( "check_file_socket_tcp still can't PING after a restart." );
 			return '';
 		}
+		shutdown ( $conn, 2 );
 		close $conn;
 		return $self->check_file_socket_tcp ( $file, 1 );
 	}
 
 	if ( $result ne 'PONG' ){
 		$self->{zlog}->fatal ( "PING return not PONG[$result]" );
+		shutdown ( $conn, 2 );
 		close $conn;
 		return '';
 	}
 
+	shutdown ( $conn, 2 );
 	close $conn;
 
-	$conn = $self->init_socket;
-	print $conn "SCAN $file\n";
-	$result = <$conn>; 
-	chomp $result;
+	eval {
+		$old_alarm_sig = $SIG{ALRM};
+		local $SIG{ALRM} = sub { die "CLAMAV DIE" };
+		$old_alarm = alarm 10;
 
+		$conn = $self->init_socket;
+		print $conn "SCAN $file\n";
+		$result = <$conn>; 
+		chomp $result;
+	};
+	$alarm_status=$@;
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
+	alarm $old_alarm;
+	if ($alarm_status and $alarm_status ne "" ) { 
+		$self->{zlog}->fatal ( "check_file_socket_tcp SCAN file tcp timeout(10)." );
+	}
+	
 	#print $conn "END\n";
 	#<$conn>;
+	shutdown ( $conn, 2 );
 	close $conn;
 
 	return $result;

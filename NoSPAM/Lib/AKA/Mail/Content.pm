@@ -14,7 +14,7 @@ use AKA::Mail::Content::Parser;
 use AKA::Mail::Content::Verify;
 use MIME::Base64;
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
-# FIXME: use strict;
+use strict;
 #use Exporter;
 #use vars qw(@ISA @EXPORT);
 
@@ -48,7 +48,9 @@ sub new
 	return $self;
 }
 
-# must return mail_info
+#
+# Main Process, must return mail_info
+#
 sub process
 {
 	my $self = shift;
@@ -129,6 +131,7 @@ sub get_rule
 
 
 # added by zixia, 2004-04-18
+=pod
 sub do_action
 {
 	my $self = shift;
@@ -227,6 +230,7 @@ sub do_action
 	}	
 
 }
+=cut
 
 sub log_match
 {

@@ -48,6 +48,7 @@ sub net_process
 	$mail_info->{aka}->{resp}->{exit_code} = <$socket>;
 	chomp $mail_info->{aka}->{resp}->{exit_code};
 	
+	shutdown ( $socket, 2 ) ;
 	close $socket;
 
 	$mail_info;

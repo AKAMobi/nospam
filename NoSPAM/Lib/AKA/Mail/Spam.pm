@@ -69,8 +69,13 @@ sub is_traceable
 	
 	my $res = $self->get_dns_resolver;
 	if ( ! $res ){
-		$self->{zlog}->fatal ( "Spam::is_traceable can't new Resolver $!" );
-		return 0;
+		$self->{zlog}->debug ( "Spam::is_traceable can't get Resolver $!, we new one" );
+		undef $self->{resolver};
+		$res = $self->get_dns_resolver;
+		if ( ! $res ){
+			$self->{zlog}->fatal ( "Spam::is_traceable can't new Resolver $!" );
+			return 0;
+		}
 	}
 
 	my @TraceType = @{$self->{conf}->{config}->{SpamEngine}->{TraceType}};
@@ -98,12 +103,11 @@ sub is_traceable
 	my $traceable = 0;
 	my $strict_traceable = 0;
 
-	my $traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceSpamMask};
-	my $strict_traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceMaybeSpamMask};
+	my $traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceSpamMask} || 24;
+	my $strict_traceable_mask = $self->{conf}->{config}->{SpamEngine}->{TraceMaybeSpamMask} || 22;
 
 	foreach my $mx_a_ip ( @mx_n_a ){
 		#$self->{zlog}->debug ( "Mail::Spam::is_traceable check if $mx_a_ip is traceable for domain $from_domain ?" );
-
 		if ( $traceable && $strict_traceable ){
 			last;
 		}

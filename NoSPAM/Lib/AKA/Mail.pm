@@ -134,6 +134,7 @@ sub server
 		$pid = fork();
 
 		if ( $pid > 0 ){ #parent
+			close $client;
 			# 如果检查到配置文件更新，则直接退出，由supervise负责重起
 			if ( $self->check_conffile_update() ){
 				shutdown ( $server, 2 );
@@ -149,7 +150,12 @@ sub server
 			close $client;
 			exit;
 		}else{ #err
-			$self->{zlog}->fatal ( "Mail::server fork return < 0? [$pid]" );
+			shutdown ( $server, 2 );
+			shutdown ( $client, 2 );
+			close $server;
+			close $client;
+			$self->{zlog}->fatal ( "Mail::server fork return < 0? [$pid] exiting..." );
+			die "fork failed: $!\n";
 		}
 	}
 }
@@ -287,7 +293,7 @@ sub net_process
 		#$self->cleanup;
 		return;
 	}
-	$SIG{ALRM} = $old_alarm_sig;
+	$SIG{ALRM} = $old_alarm_sig || 'IGNORE';
 	alarm $old_alarm;
 		
 #print "after send \n";
@@ -465,7 +471,7 @@ sub init_engine_info
 	$self->{mail_info}->{aka}->{engine}->{content} = {	
 			result	=>0,
 			desc	=>'未运行',
-			action	=>ACTION_NULL,
+			action	=>ACTION_PASS,
                		enabled => 0,
                		runned  => 0,
                       	runtime => 0
@@ -794,7 +800,8 @@ sub antivirus_engine
 	my $start_time = [gettimeofday];
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{AntiVirusEngine}->{AntiVirusEngine} ){
-		return ( { 	result 	=> 0,
+		$self->{mail_info}->{aka}->{engine}->{antivirus} = ( { 	
+				result 	=> 0,
 				desc	=> '未启用',
 				action 	=> 0, 
 
@@ -802,6 +809,7 @@ sub antivirus_engine
 				runned	=> 1,
 				runtime	=> int(1000*tv_interval ($start_time, [gettimeofday]))
 			} );
+		return;
 	}
 
 	#
@@ -1016,6 +1024,14 @@ sub spam_engine
 						$self->{mail_info}->{aka}->{returnpath} );
 
 	if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{NoSPAMEngine} ){
+		$self->{mail_info}->{aka}->{engine}->{spam} = {	result	=>RESULT_SPAM_NOT,
+							desc	=>'未启用',
+							action	=>ACTION_PASS,
+                      				enabled => 0,
+                      				runned  => 1,
+                                		runtime => int(1000*tv_interval ($start_time, [gettimeofday])),
+						dns_query_time => 0
+		};
 		return;
 	}
 
@@ -1034,8 +1050,8 @@ sub spam_engine
 
 	}
 
-	if ( ! $client_smtp_ip || ! $returnpath ){
-		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ ) );
+	unless ( length($client_smtp_ip) && length($returnpath) ){
+		$self->{zlog}->debug ( "Mail::spam_engine can't get param: " . join ( ",", @_ )  . ", subject: " . $self->{mail_info}->{aka}->{subject} . ", from: " . $self->{mail_info}->{aka}->{returnpath} . ".");
 
 		$self->{mail_info}->{aka}->{engine}->{spam} = { result	=> RESULT_SPAM_MAYBE,
 								desc 	=> '参数不足',
