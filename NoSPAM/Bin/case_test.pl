@@ -17,7 +17,7 @@ $action ||= shift @ARGV;
 my @param = @ARGV;
 
 my $action_map = { 
-	'export_archive' => [\&test_ext_dat, "µ¼³ö¹«°²½»»»¸ñÊ½µÄarchive mail" ]
+	'export_archive' => [\&test_ext_dat, "å¯¼å‡ºå…¬å®‰äº¤æ¢æ ¼å¼çš„archive mail" ]
 		, 'list_queue' => [\&test_queue, "List qmail queue" ]
 		, 'pfc' => [\&pfc, "Police Filter Client" ]
 };
@@ -63,7 +63,7 @@ sub pfc
 	use AKA::Mail::Police;
 
 	use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 	$Data::Dumper::Useperl = 1;
 	$Data::Dumper::Indent = 1;
 

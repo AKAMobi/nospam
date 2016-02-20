@@ -5,7 +5,7 @@ require_once('vpopadm.inc.php');
 
 if ((!isset($_REQUEST['adminID'])) || (!isset($_REQUEST['password'])) ){
 ?>
-	<p>ÇëÕý³£<A HREF="index.php">µÇÂ¼</a>£¡</p>
+	<p>è¯·æ­£å¸¸<A HREF="index.php">ç™»å½•</a>ï¼</p>
 <?php
 	exit();
 }
@@ -17,13 +17,13 @@ $result=isPasswordRight($id,$passwd);
 
 
 if ( ($result==ERR_FORMAT_PASSWORD) || ($result==ERR_WRONGPASSWORD) ){
-	errorReturn("ÃÜÂë´íÎó,ÇëÖØÐÂÊäÈë","index.php");
+	errorReturn("å¯†ç é”™è¯¯,è¯·é‡æ–°è¾“å…¥","index.php");
 }
 
 $isSYSOPFirstLogin=false;
 if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 	if ($id!=SYSOPID) {
-		errorReturn("ÎÞ´Ë¹ÜÀíÔ±ÕËºÅ,ÇëÖØÐÂÊäÈë","index.php");
+		errorReturn("æ— æ­¤ç®¡ç†å‘˜è´¦å·,è¯·é‡æ–°è¾“å…¥","index.php");
 	} else {
 		$isSYSOPFirstLogin=true;
 	}
@@ -39,7 +39,7 @@ if ($isSYSOPFirstLogin){
 	} else {
 		$result=getAdminInfo($id);
 		if ($result['$returnCode']!=OK){
-			errorReturn("ÎÞ´Ë¹ÜÀíÔ±ÕËºÅ,ÇëÖØÐÂÊäÈë","index.php");
+			errorReturn("æ— æ­¤ç®¡ç†å‘˜è´¦å·,è¯·é‡æ–°è¾“å…¥","index.php");
 		}else {
 			$_SESSION['Privilidge']=$result['privilidge'];
 		}

@@ -79,7 +79,7 @@ function change(bState)
     <input type="radio" name="SpamEngine" value="N"<? if(!$bAntiSpam) echo" checked"; ?> onclick="change(true)">
     <?=_("Off")?>
  <hr align="left" width="400">
-  <p><b><?=_("Traceable")?></b>£º
+  <p><b><?=_("Traceable")?></b>ï¼š
     <input type="radio" id="idTraceEngineY" name="TraceEngine" value="Y"
 	<?	if(!$bAntiSpam) echo" disabled "; 
 		if($bTraceEngine) echo" checked "; 

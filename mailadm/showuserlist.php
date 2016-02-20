@@ -4,7 +4,7 @@ require_once('vpopadm.inc.php');
 	if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
@@ -12,7 +12,7 @@ require_once('vpopadm.inc.php');
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÏÔÊ¾ÓÃ»§ÁĞ±í</TITLE>
+<TITLE>æ˜¾ç¤ºç”¨æˆ·åˆ—è¡¨</TITLE>
 <style>
 .userAccount {color: #0000FF;text-decoration: underline; font-size: x-small;}
 .userAccount_on {color: #0000FF;text-decoration: none; font-size: x-small;}
@@ -65,11 +65,11 @@ function clearSortOrder(){
 function showSortOrder(cols){
 	var s=sortOrder(cols);
 	if (s==1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ı";
+		document.all.item("oSortOn_"+cols).innerHTML="â†“";
 		return ;
 	}
 	if (s==-1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ü";
+		document.all.item("oSortOn_"+cols).innerHTML="â†‘";
 		return ;
 	}
 	document.all.item("oSortOn_"+cols).innerHTML="";
@@ -79,10 +79,10 @@ function sort(cols){
 	var s=sortOrder(cols); 
 	var temp=new String(userlist.sort);
 	var re;
-	if ((window.event!=null) && (window.event.ctrlKey) ){  //°´ÏÂÁËctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	if ((window.event!=null) && (window.event.ctrlKey) ){  //æŒ‰ä¸‹äº†ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			userlist.sort+="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols+";","i");
 				userlist.Sort=temp.replace(re,"");
@@ -92,11 +92,11 @@ function sort(cols){
 			}
 		}
 
-	} else { //Î´°´ÏÂctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	} else { //æœªæŒ‰ä¸‹ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			clearSortOrder();
 			userlist.sort="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols,"i");
 				userlist.Sort=temp.replace(re,"+"+cols);
@@ -149,11 +149,11 @@ function clearFilter() {
 			<form>
 			<table border="0" style="font-size:x-small">
 			<thead>
-			<th align="center">×Ö¶Î¹ıÂË</th>
+			<th align="center">å­—æ®µè¿‡æ»¤</th>
 			</thead>
 			<tr>
 			<td nowrap>
-			±¾×Ö¶ÎÓ¦°üº¬£º<input type="text" id="oFilterValue" name="filterValue">
+			æœ¬å­—æ®µåº”åŒ…å«ï¼š<input type="text" id="oFilterValue" name="filterValue">
 			</td>
 			</tr>
 			<tr>
@@ -161,10 +161,10 @@ function clearFilter() {
 			<table border="0">
 			<tr>
 			<td>
-			<input type="button" onclick="doFilter(oFilterValue.value);" value="Ó¦ÓÃ¹ıÂËÌõ¼ş">
+			<input type="button" onclick="doFilter(oFilterValue.value);" value="åº”ç”¨è¿‡æ»¤æ¡ä»¶">
 			</td>
 			<td>
-			<input type="button" onclick="clearFilter();" value="Çå³ıÏÖÓĞ¹ıÂËÌõ¼ş">
+			<input type="button" onclick="clearFilter();" value="æ¸…é™¤ç°æœ‰è¿‡æ»¤æ¡ä»¶">
 			</td>
 			</tr>
 			</table>
@@ -177,17 +177,17 @@ function clearFilter() {
 <DIV align="center">
 <table border="1" datasrc="#userlist" id="oUserInfo" width="99%">
 <thead>
-<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÕËºÅ</span><span id="oSortOn_account"></span></th>
-<TH><span onclick="return sort('name');"  oncontextmenu="filter('name');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§ĞÕÃû</span><span id="oSortOn_name"></span></th>
-<TH><span onclick="return sort('unit');"  oncontextmenu="filter('unit');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§µ¥Î»</span><span id="oSortOn_unit"></span></th>
-<TH><span onclick="return sort('department');"  oncontextmenu="filter('department');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§²¿ÃÅ</span><span id="oSortOn_department"></span></th>
-<TH><span onclick="return sort('station');"  oncontextmenu="filter('station');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§¸ÚÎ»</span><span id="oSortOn_station"></span></th>
-<TH><span onclick="return sort('idCode');"  oncontextmenu="filter('idCode');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§Éí·İºÅÂë</span><span id="oSortOn_idCode"></span></th>
-<TH><span onclick="return sort('createTime');"  oncontextmenu="filter('createTime');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÕËºÅ½¨Á¢Ê±¼ä</span><span id="oSortOn_createTime"></span></th>
-<TH><span onclick="return sort('quota');"  oncontextmenu="filter('quota');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÈİÁ¿ÏŞÖÆ</span><span id="oSortOn_quota"></span></th>
-<TH><span onclick="return sort('isPublic');"  oncontextmenu="filter('isPublic');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">¶ÔÍâÏÔÊ¾</span><span id="oSortOn_isPublic" ></span></th>
-<TH><span onclick="return sort('note');"  oncontextmenu="filter('note');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">±¸×¢</span><span id="oSortOn_note"></span></th>
-<TH><span onclick="return sort('groups');"  oncontextmenu="filter('groups');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÓÃ»§×é<span><span id="oSortOn_groups"></span></th>
+<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">è´¦å·</span><span id="oSortOn_account"></span></th>
+<TH><span onclick="return sort('name');"  oncontextmenu="filter('name');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·å§“å</span><span id="oSortOn_name"></span></th>
+<TH><span onclick="return sort('unit');"  oncontextmenu="filter('unit');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·å•ä½</span><span id="oSortOn_unit"></span></th>
+<TH><span onclick="return sort('department');"  oncontextmenu="filter('department');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·éƒ¨é—¨</span><span id="oSortOn_department"></span></th>
+<TH><span onclick="return sort('station');"  oncontextmenu="filter('station');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·å²—ä½</span><span id="oSortOn_station"></span></th>
+<TH><span onclick="return sort('idCode');"  oncontextmenu="filter('idCode');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·èº«ä»½å·ç </span><span id="oSortOn_idCode"></span></th>
+<TH><span onclick="return sort('createTime');"  oncontextmenu="filter('createTime');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">è´¦å·å»ºç«‹æ—¶é—´</span><span id="oSortOn_createTime"></span></th>
+<TH><span onclick="return sort('quota');"  oncontextmenu="filter('quota');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å®¹é‡é™åˆ¶</span><span id="oSortOn_quota"></span></th>
+<TH><span onclick="return sort('isPublic');"  oncontextmenu="filter('isPublic');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å¯¹å¤–æ˜¾ç¤º</span><span id="oSortOn_isPublic" ></span></th>
+<TH><span onclick="return sort('note');"  oncontextmenu="filter('note');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å¤‡æ³¨</span><span id="oSortOn_note"></span></th>
+<TH><span onclick="return sort('groups');"  oncontextmenu="filter('groups');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç”¨æˆ·ç»„<span><span id="oSortOn_groups"></span></th>
 </thead>
 <tbody>
 <td onclick="return chooseUser()" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';"><span datafld="account"></span></td>

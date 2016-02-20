@@ -159,7 +159,7 @@ function add_email_to_list_form () {
 <input type="hidden" name="type" value="<?php echo $currentUser->listType; ?>" />
 <input type="hidden" name="act" value="add" />
 <center>
-<?=_("Add email to list")?>£º 
+<?=_("Add email to list")?>ï¼š 
 <?=_("Email")?>: 
 <input type="text" name="addemail" />
 &nbsp;<?=_("Type")?>: 

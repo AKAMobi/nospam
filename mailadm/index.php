@@ -12,20 +12,20 @@ if (isset($_SESSION['AdminID'])) {
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>WMailÓÊ¼þ¹ÜÀíÏµÍ³</TITLE>
+<HTML><HEAD><TITLE>WMailé‚®ä»¶ç®¡ç†ç³»ç»Ÿ</TITLE>
 <META http-equiv=content-type content="text/html; charset=gb2312">
 <SCRIPT>
 
 <!--//
-var alertinput="ÇëÄúÊ×ÏÈÊäÈë£º\n";
+var alertinput="è¯·æ‚¨é¦–å…ˆè¾“å…¥ï¼š\n";
 
 function login() 
 {
 	var mesg = "";
 	
-	if(document.logon.adminID.value == "") mesg += "¹ÜÀíÔ±ÕËºÅ\n";
+	if(document.logon.adminID.value == "") mesg += "ç®¡ç†å‘˜è´¦å·\n";
 	
-	if(document.logon.password.value == "") mesg += "ÃÜÂë\n";
+	if(document.logon.password.value == "") mesg += "å¯†ç \n";
 	
 	if(mesg != ""){
 		
@@ -77,14 +77,14 @@ INPUT {
             <TABLE class=csmtype cellSpacing=0 cellPadding=2 border=0>
               <TBODY>
               <TR>
-                <TD  align=right><B>¹ÜÀíÔ±ÕËºÅ:</B> </TD>
+                <TD  align=right><B>ç®¡ç†å‘˜è´¦å·:</B> </TD>
                 <TD><INPUT class = myinput style="FONT-FAMILY: tahoma" size=10 
-                  name=adminID> &nbsp;&nbsp;<B>ÃÜÂë:</B> 
+                  name=adminID> &nbsp;&nbsp;<B>å¯†ç :</B> 
                   <INPUT class = myinput style="FONT-FAMILY: tahoma" type=password 
                   size=10 name=password>
 				  </TD></TR>
               <TR>
-                <TD align=middle colSpan=2><INPUT class = mybtn type=submit value=µÇÂ¼> 
+                <TD align=middle colSpan=2><INPUT class = mybtn type=submit value=ç™»å½•> 
                 </TD></TR></TBODY></TABLE></TD></TR>
         <TR>
           <TD width="100%">
@@ -100,7 +100,7 @@ INPUT {
                     <TBODY>
                     <TR>
                       <TD class=csmtype vAlign=center align=middle 
-                        width="100%">»¶Ó­Ê¹ÓÃ<a href="http://wmail.aka.cn/">WMailÓÊ¼þ</a>¹ÜÀíÏµÍ³ </TD></TR></TBODY></TABLE></TD></TR>
+                        width="100%">æ¬¢è¿Žä½¿ç”¨<a href="http://wmail.aka.cn/">WMailé‚®ä»¶</a>ç®¡ç†ç³»ç»Ÿ </TD></TR></TBODY></TABLE></TD></TR>
               <TR>
                 <TD height=28></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-      <P class=ctype align=center>°æÈ¨ËùÓÐ:¡¡<a href="http://www.aka.cn/">±±¾©°¢¿¨ÐÅÏ¢¼¼ÊõÓÐÏÞ¹«Ë¾</a></P></FORM></TD></TR></TBODY></TABLE></BODY></HTML>
+      <P class=ctype align=center>ç‰ˆæƒæ‰€æœ‰:ã€€<a href="http://www.aka.cn/">åŒ—äº¬é˜¿å¡ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸</a></P></FORM></TD></TR></TBODY></TABLE></BODY></HTML>

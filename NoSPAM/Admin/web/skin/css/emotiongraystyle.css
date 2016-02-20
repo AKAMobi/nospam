@@ -4,7 +4,7 @@ A:hover{TEXT-DECORATION: underline;Color:#4455aa}
 BODY{
 FONT-SIZE: 12px;
 COLOR: #000000;
-FONT-FAMILY:  ËÎÌå;
+FONT-FAMILY:  å®‹ä½“;
 background-color: #FFFFFF; 
 scrollbar-face-color: #DEE3E7;
 scrollbar-highlight-color: #FFFFFF;
@@ -16,7 +16,7 @@ scrollbar-darkshadow-color: #98AAB1;
 background-image: url(../skin/blue/kabg.gif);
 }
 TD{
-font-family: ËÎÌå;
+font-family: å®‹ä½“;
 font-size: 12px;
 line-height: 15px;
 }
@@ -78,7 +78,7 @@ background-color: #efefef;
 	TEXT-DECORATION: underline;}
 
 input,select,Textarea{
-font-family:Tahoma,Verdana,ËÎÌå; font-size: 12px; line-height: 15px;}
+font-family:Tahoma,Verdana,å®‹ä½“; font-size: 12px; line-height: 15px;}
 }
 .normalTextSmall 
 { 

@@ -55,7 +55,7 @@ $attach_logic = $rule->has_attribute("attach_logic")? $rule->get_attribute("atta
         <td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
     </tr>
 	<tr>
-		<td><?=_("Expiring Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"ÎŞ"?></td>
+		<td><?=_("Expiring Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"æ— "?></td>
 		<td><?if($bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
 	</tr>
 	<?if ($bPolice){?>

@@ -4,7 +4,7 @@ require_once("../inc/include.ns");
 if (!adminPerm(PERM_ADMIN_DOMAIN) ){
 ?>
 <br>
-��û�з��ʸ���ҳ��Ȩ�ޡ�<br>
+您没有访问该网页的权限。<br>
 <?php
 } else {
 
@@ -12,7 +12,7 @@ $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
 unset($adminInfo);
 if($domains == "")
-	die("��Ŀǰû���κ��ʼ������Ȩ��");
+	die("你目前没有任何邮件域管理权限");
 
 $aDomains = explode(",", $domains);
 $count = count($aDomains);
@@ -35,11 +35,11 @@ $_COOKIE["MailDomain"] = $currentDomain;
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>Ⱥ���ż�</TITLE>
+<TITLE>群发信件</TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <BODY>
-<div>�ʼ���
+<div>邮件域：
 <?
 	if($count == 1)
 		echo $currentDomain;
@@ -60,7 +60,7 @@ $_COOKIE["MailDomain"] = $currentDomain;
 ?>
 </div>
 <DIV align="center">
-<h2>Ⱥ���ż�</h2>
+<h2>群发信件</h2>
 <?php
 
 if ($_POST['action']=='send') {
@@ -199,7 +199,7 @@ if ($fp1!=FALSE) {
 }
 $fp2=fopen($attachdir . "/.mail","w");
 if ($fp2==FALSE) {
-	echo "�޷������ż���";
+	echo "无法建立信件！";
 	exit(0);
 }
 // get MIME formatted message headers and body
@@ -224,7 +224,7 @@ $linkpath='';
 			$user_maildir= $user_maildir. "/Maildir/new/";
 			$user_mailname= $user_maildir.$mail_name; 
 			if ($isSendAll) {	
-				echo "���͸�".$user_account;
+				echo "发送给".$user_account;
 				if ($iscopy) {
 					@copy($attachdir . "/.mail", $user_mailname);
 					$linkpath=$user_mailname;
@@ -257,7 +257,7 @@ $linkpath='';
  
 	}
 @unlink($attachdir . "/.mail");
-	echo "���ͳɹ���";
+	echo "发送成功！";
 	return false;
 }
 
@@ -292,11 +292,11 @@ function showMenu(){
     
 	if ($group_count<=0) {
 ?>
-	Ŀǰ�����û��鶨�壡
+	目前尚无用户组定义！
 <?php
 	} else {
 ?>
-��ָ�������͵��û���,����ѡ�����ż�������ȫ���û���
+请指定待发送的用户组,若不选择则信件将发给全部用户：
 <select id="oGroupList" size=10 multiple>
 <?php
 	for ($i=0;$i<$group_count;$i++){
@@ -314,15 +314,15 @@ function showMenu(){
 	function doSend(){
         var dot=false;
 		if (oForm.oContent.value=='') {
-			alert('Ⱥ���ż�����Ϊ��!');
+			alert('群发信件内容为空!');
 			return false;
 		}
 		if (oForm.oTitle.value=='') {
-			alert('Ⱥ���ż�����Ϊ��!');
+			alert('群发信件标题为空!');
 			return false;
 		}
 		if (oForm.oMailbox.value=='') {
-			alert('����Ա��ַΪ��!');
+			alert('管理员地址为空!');
 			return false;
 		}
 		if (typeof(oGroupList) != "undefined") {
@@ -348,16 +348,16 @@ function showMenu(){
 <input type="hidden" name="sendAll" id="oSendAll" value="true">
 <table>
 <tr>
-<td>����Ա����</td><td><input type="text" name="mailbox" id="oMailbox"></td>
+<td>管理员邮箱</td><td><input type="text" name="mailbox" id="oMailbox"></td>
 </tr>
 <tr>
-<td>Ⱥ���ʼ�����</td><td><input type="text" name="title" id="oTitle"></td>
+<td>群发邮件标题</td><td><input type="text" name="title" id="oTitle"></td>
 </tr>
 <tr>
-<td>Ⱥ���ż�����</td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
+<td>群发信件内容</td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
 </tr>
 </table>
-<input type="button" value="����Ⱥ���ż�" onclick="doSend();">
+<input type="button" value="发送群体信件" onclick="doSend();">
 <script language="JavaScript">
 <!--
    function GoAttachWindow(){     
@@ -375,7 +375,7 @@ function showMenu(){
    }  
 -->
 </script>
-<input type="button" value="���Ӹ���" onclick="GoAttachWindow()");
+<input type="button" value="添加附件" onclick="GoAttachWindow()");
 </form>
 <?php
 }

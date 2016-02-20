@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -17,7 +17,7 @@ use AKA::Mail::Content::Conf;
 #@EXPORT=("function1", "function2", "function3");
 
 use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 $Data::Dumper::Useperl = 1;
 $Data::Dumper::Indent = 1;
 
@@ -81,7 +81,7 @@ sub load_user_filter_db
 	
 	$self->{user_filterdb} = $self->{content_conf}->get_user_filter_db();
 
-	# µÃµ½ÒÔ rule_id Îª key µÄ±í
+	# å¾—åˆ°ä»¥ rule_id ä¸º key çš„è¡¨
 	$self->{user_filterdb} = $self->{user_filterdb}->{'rule-add-modify'}->{rule};
 }
 
@@ -94,7 +94,7 @@ sub load_GA_filter_db
 	
 	$self->{filterdb} = $self->{content_conf}->get_filter_db();
 
-	# µÃµ½ÒÔ rule_id Îª key µÄ±í
+	# å¾—åˆ°ä»¥ rule_id ä¸º key çš„è¡¨
 	$self->{filterdb} = $self->{filterdb}->{'rule-add-modify'}->{rule};
 }
 
@@ -125,7 +125,7 @@ sub check_all_rule_backend
 
 	my $has_rule;
 	my ($rule_logic,$attach_logic,$size_logic,$keyword_logic);
-	# ¹æÔò¼ì²éË³Ğò£ºÒÔruleÓÉĞ¡µ½´óÎªĞò£¬ÒÀ´Î¼ì²é
+	# è§„åˆ™æ£€æŸ¥é¡ºåºï¼šä»¥ruleç”±å°åˆ°å¤§ä¸ºåºï¼Œä¾æ¬¡æ£€æŸ¥
 #use Data::Dumper;
 #$self->{zlog}->debug ( Dumper(%{$self->{$which_db}}) );
 
@@ -144,8 +144,8 @@ sub check_all_rule_backend
 		$has_rule = 0;
 #$self->{zlog}->debug ( "pf: checking user rule id: $rule_id before attach... has_rule=$has_rule" );
 		if ( $self->{$which_db}->{$rule_id}->{attachment} ){
-			# Èç¹ûÓĞÏà¹ØµÄ rule£¬Ôò±ØĞëÆ¥Åä²Å¿ÉÄÜ·ûºÏ
-			# ²»Æ¥ÅäÔò next
+			# å¦‚æœæœ‰ç›¸å…³çš„ ruleï¼Œåˆ™å¿…é¡»åŒ¹é…æ‰å¯èƒ½ç¬¦åˆ
+			# ä¸åŒ¹é…åˆ™ next
 			if ( 'OR' eq $rule_logic ){
 				return $rule_id if $self->check_attachment_rule ( $which_db, $rule_id, $mail_info, $attach_logic );
 			}elsif ( 'NOT' eq $rule_logic ){
@@ -200,16 +200,16 @@ sub check_attachment_rule
 	my $self = shift;
 	my ($which_db,$rule_id,$mail_info,$match_logic) = @_;
 
-	# Ã»ÓĞ¸½¼ş£¬Ôò²»Æ¥ÅäÈÎºÎ¸½¼ş¹æÔò
+	# æ²¡æœ‰é™„ä»¶ï¼Œåˆ™ä¸åŒ¹é…ä»»ä½•é™„ä»¶è§„åˆ™
 	if ( ! $mail_info->{attachment} ) { return 0; }
 
 	my $attachment_rule = $self->{$which_db}->{$rule_id}->{attachment};
 
-	# Èç¹ûÃ»ÓĞ¹æÔò£¬ÔòÈÏÎªÆ¥Åä³É¹¦
+	# å¦‚æœæ²¡æœ‰è§„åˆ™ï¼Œåˆ™è®¤ä¸ºåŒ¹é…æˆåŠŸ
 	return 1 if ( ! $attachment_rule );
 
 	if ( 'HASH' ne ref $attachment_rule ){
-		#¶àÌõ
+		#å¤šæ¡
 		foreach my $sub_attachment_rule ( @{$attachment_rule} ){
 			if ( 'OR' eq $match_logic ){
 				return 1 if ( check_single_attachment_rule ( $self, $sub_attachment_rule, $mail_info ) );
@@ -245,7 +245,7 @@ sub check_size_rule
 	return if ( ! $size_rule );
 
 	if ( 'HASH' ne ref $size_rule ){
-		#¶àÌõ
+		#å¤šæ¡
 		foreach my $sub_size_rule ( @{$size_rule} ){
 			if ( 'OR' eq $match_logic ){
 				return 1 if ( check_single_size_rule ( $self, $sub_size_rule, $mail_info ) );
@@ -281,7 +281,7 @@ sub check_keyword_rule
 
 #$self->{zlog}->debug ( "RULE: ENTER: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
 	if ( 'ARRAY' eq ref $keyword_rule ){
-		#¶àÌõ
+		#å¤šæ¡
 		foreach my $sub_keyword_rule ( @{$keyword_rule} ){
 			if ( 'OR' eq $match_logic ){
 #$self->{zlog}->debug ( "RULE: logic: check keyword rule " . $rule_id  . ' of logic ' . $match_logic );  
@@ -348,7 +348,7 @@ sub check_single_attachment_rule
 } 
 
 #
-# bytes,[NUMBER-NUMBER]£¬0±íÊ¾²»×÷ÏŞÖÆ
+# bytes,[NUMBER-NUMBER]ï¼Œ0è¡¨ç¤ºä¸ä½œé™åˆ¶
 #
 sub check_size_value
 {
@@ -367,7 +367,7 @@ sub check_size_value
 #	}elsif ( defined $match_filesize ){
 #		$self->{zlog}->fatal ( "error: cannot parse  SIZEVALUE: [$match_size] to number-number" );
 #		return 0;
-	}elsif ( $match_size=~/(\d+)/ ){	# Èç¹ûÊÇÖ»ÓĞÒ»¸öÊı×Ö£¬ÔòÆ¥Åä +- 30%
+	}elsif ( $match_size=~/(\d+)/ ){	# å¦‚æœæ˜¯åªæœ‰ä¸€ä¸ªæ•°å­—ï¼Œåˆ™åŒ¹é… +- 30%
 		return ( $size>($1*0.7) && $size<($1*1.3) );
 	}
 
@@ -402,9 +402,9 @@ sub ip2int{
 }
 
 #
-#	1 Ò»¸ö¾ßÌåµÄIP£¬Èç£º"202.116.12.34"
-# 	2 ÓÃ¼õºÅ"-"Á¬½ÓÁ½¸öIPÖµ£¬±íÊ¾Ò»¸öÁ¬ĞøµÄIP¶Î£¨°üÀ¨Á½¸ö¶Ïµã£©£¬Èç£º"202.116.22.1-202.116.22.24"
-#	3 ÓÃĞ±¸Ü"/"·Ö¸ôµÄÒ»¸öIPÖµºÍÒ»¸öÊı×Ö¡£Èç£º"202.116.22.0/24"±íÊ¾202.116.22.*
+#	1 ä¸€ä¸ªå…·ä½“çš„IPï¼Œå¦‚ï¼š"202.116.12.34"
+# 	2 ç”¨å‡å·"-"è¿æ¥ä¸¤ä¸ªIPå€¼ï¼Œè¡¨ç¤ºä¸€ä¸ªè¿ç»­çš„IPæ®µï¼ˆåŒ…æ‹¬ä¸¤ä¸ªæ–­ç‚¹ï¼‰ï¼Œå¦‚ï¼š"202.116.22.1-202.116.22.24"
+#	3 ç”¨æ–œæ "/"åˆ†éš”çš„ä¸€ä¸ªIPå€¼å’Œä¸€ä¸ªæ•°å­—ã€‚å¦‚ï¼š"202.116.22.0/24"è¡¨ç¤º202.116.22.*
 #
 sub check_ip_range
 {
@@ -420,10 +420,10 @@ sub check_ip_range
 	}
 
 	if ( $ip_range =~ /^(\d+\.\d+\.\d+\.\d+)$/ ){
-		#	1 Ò»¸ö¾ßÌåµÄIP£¬Èç£º"202.116.12.34"
+		#	1 ä¸€ä¸ªå…·ä½“çš„IPï¼Œå¦‚ï¼š"202.116.12.34"
 		return ( $ip eq $1 );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\-(\d+\.\d+\.\d+\.\d+)/ ){
-		# 	2 ÓÃ¼õºÅ"-"Á¬½ÓÁ½¸öIPÖµ£¬±íÊ¾Ò»¸öÁ¬ĞøµÄIP¶Î£¨°üÀ¨Á½¸ö¶Ïµã£©£¬Èç£º"202.116.22.1-202.116.22.24"
+		# 	2 ç”¨å‡å·"-"è¿æ¥ä¸¤ä¸ªIPå€¼ï¼Œè¡¨ç¤ºä¸€ä¸ªè¿ç»­çš„IPæ®µï¼ˆåŒ…æ‹¬ä¸¤ä¸ªæ–­ç‚¹ï¼‰ï¼Œå¦‚ï¼š"202.116.22.1-202.116.22.24"
 		my ( $ip_start, $ip_end ) = ( $1, $2 );
 
 		$ip_long = ip2int($self, $ip);
@@ -432,7 +432,7 @@ sub check_ip_range
 
 		return ( ($ip_long >= $start_long) && ($ip_long <= $end_long) );
 	}elsif ( $ip_range =~ /(\d+\.\d+\.\d+\.\d+)\/(\d+)/ ){
-		#	3 ÓÃĞ±¸Ü"/"·Ö¸ôµÄÒ»¸öIPÖµºÍÒ»¸öÊı×Ö¡£Èç£º"202.116.22.0/24"±íÊ¾202.116.22.*
+		#	3 ç”¨æ–œæ "/"åˆ†éš”çš„ä¸€ä¸ªIPå€¼å’Œä¸€ä¸ªæ•°å­—ã€‚å¦‚ï¼š"202.116.22.0/24"è¡¨ç¤º202.116.22.*
 		my $bits = 32-$2;
 		my $match_long = ip2int($self, $1);
 		$ip_long = ip2int($self, $ip);
@@ -463,22 +463,22 @@ sub check_single_size_rule
 		return 0;
 	}
 
-	if ( 1==$match_key ){ # È«ÎÄ´óĞ¡
+	if ( 1==$match_key ){ # å…¨æ–‡å¤§å°
 		my $mail_size;
 		$mail_size = $mail_info->{body_size} + $mail_info->{head_size};
 		return ( check_size_value( $self, $mail_size, $match_size ) );
-	}elsif ( 2==$match_key ){ # ĞÅÍ·
+	}elsif ( 2==$match_key ){ # ä¿¡å¤´
 		return ( check_size_value( $self, $mail_info->{head_size}, $match_size ) );
-	}elsif ( 3==$match_key ){ # ĞÅÌå
+	}elsif ( 3==$match_key ){ # ä¿¡ä½“
 		return ( check_size_value( $self, $mail_info->{body_size}, $match_size ) );
-	}elsif ( 4==$match_key ){ # ¸½¼ş
+	}elsif ( 4==$match_key ){ # é™„ä»¶
 		return ( check_size_value( $self, $mail_info->{attachment_size}, $match_size ) );
-	}elsif ( 5==$match_key ){ # ¸½¼ş¸öÊı
+	}elsif ( 5==$match_key ){ # é™„ä»¶ä¸ªæ•°
 		return ( check_size_value( $self, $mail_info->{attachment_num}, $match_size ) );
 	#
-	# ÒÔÏÂÊÇ¶Ô MSP1.8 µÄÀ©Õ¹ 
+	# ä»¥ä¸‹æ˜¯å¯¹ MSP1.8 çš„æ‰©å±• 
 	#
-	}elsif ( 150==$match_key ){ # To+Cc+Bcc ¸öÊı 
+	}elsif ( 150==$match_key ){ # To+Cc+Bcc ä¸ªæ•° 
 		return ( check_size_value( $self, $mail_info->{head}->{to_cc_bcc_num}, $match_size ) );
 	}
 	
@@ -487,116 +487,4 @@ sub check_single_size_rule
 } 
 
 #
-# ¼ì²é£º1¡¢Ä£ºı£¬2¡¾«È·£¬3¡¢ÕıÔòÆ¥Åä
-#
-sub check_re_match
-{
-	my $self = shift;
-	my ( $content, $match_keyword, $match_type, $match_case_sensitive ) = @_;
-
-	if ( ! defined $match_keyword || ! defined $match_type || ! defined $content ){
-		#$self->{zlog}->fatal ( "error: check_regex not enough param. re: $re, is_re: $is_re, content: $content" );
-		return 0;
-	}
-
-
-	if ( 0==$match_type ){
-		#×Ö·û´®Ä£ºıÆ¥Åä
-#print "in [$content] find [$match_keyword], result: " . "[" . index($content,$match_keyword) . "]\n\n\n";
-		#return ( -1 != rindex($content,$match_keyword) );
-		my $result;
-#$match_keyword = join('',split(/\W/,$match_keyword) );
-#$match_keyword=~s/([\x80-\xFF])/chr(ord($1))/eg;
-#$content=~s/([\x80-\xFF])/chr(ord($1))/eg;
-#print "re: " . ($match_keyword=~/([\x80-\xFF])/) . "\n";
-
-		if ( $match_case_sensitive ){
-			$result = $content=~/\Q$match_keyword/;
-		}else{
-			$result = $content=~/\Q$match_keyword/ ;
-		}
-#print "[$match_case_sensitive], [$content]".length($content) .", [$match_keyword]".length($match_keyword) ."[$result]\n";
-		return $result;
-	}elsif( 1==$match_type ){
-		#ÕıÔòÆ¥Åä
-		if ( $match_case_sensitive ){
-			return ( $content=~/$match_keyword/ );
-		}
-		return ( $content=~/$match_keyword/ );
-	}elsif( 9==$match_type ){
-		#×Ö·û´®¾«È·Æ¥Åä
-		#return ( -1 != index($content,$match_keyword) );
-		if ( $match_case_sensitive ){
-			return ( $content=~/^\Q$match_keyword\E$/ );
-		}
-		return ( $content=~/^\Q$match_keyword\E$/ );
-	}
-
-}
-
-sub check_single_keyword_rule
-{
-	my $self = shift;
-	my ( $rule, $mail_info ) = @_;
-
-	my ( $match_key, $match_decode, $match_case_sensitive, $match_type, $match_keyword );
-	$match_key = $rule->{key};
-	$match_type = $rule->{type};
-	$match_keyword = $rule->{keyword};
-	$match_case_sensitive = $rule->{case_sensitive};
-	$match_decode = $rule->{decode};
-
-
-	# XXX fix it, or find out reason.
-	if ( ! length($mail_info->{body_text}) ){
-		$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type mail_info has no body_text" );
-#use Data::Dumper;
-#$self->{zlog}->fatal ( Dumper($mail_info) );
-		#$self->{zlog}->fatal( "match_key: $match_key, match_keyword: $match_keyword, match_type: $match_type " . $mail_info->{head}->{subject} . ", " . $mail_info->{head}->{from} . ", " . $mail_info->{head}->{from} )
-	}
-	if ( 1==$match_key ){ #1Ö÷Ìâ°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{head}->{subject}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 2==$match_key ){ #2·¢¼şÈË°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{head}->{from}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 3==$match_key ){ #3ÊÕ¼şÈË°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{head}->{to}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 4==$match_key ){ #4³­ËÍÈË°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{head}->{cc}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 5==$match_key ){ #5ĞÅÍ·°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 6==$match_key ){ #6ĞÅÌå°üº¬¹Ø¼ü×Ö
-		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive );
-	}elsif ( 7==$match_key ){ #7È«ÎÄ°üº¬¹Ø¼ü×Ö
-		return (    	    check_re_match ( $self, $mail_info->{head}->{content}, $match_keyword, $match_type, $match_case_sensitive )
-				||  check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive )
-			);
-	}elsif ( 8==$match_key ){ #8¸½¼ş°üº¬¹Ø¼ü×Ö
-		#FIXME µ±Ç°ÊÇÆ¥ÅäÎÄ¼şÃû¶ø²»ÊÇÄÚÈİ
-		foreach my $filename ( keys %{$mail_info->{body}} ){
-			if ( check_re_match ( $self, $filename, $match_keyword, $match_type, $match_case_sensitive ) ){
-				return 1;
-			}
-		}
-		#
-		# FIXME Æ¥ÅäÎÄ¼şÃûºó£¬Æ¥ÅäËùÓĞµÄÎÄ±¾ÀàĞÍµÄ¸½¼ş£»
-		#
-		return check_re_match ( $self, $mail_info->{body_text}, $match_keyword, $match_type, $match_case_sensitive );
-		# return 0;
-	}elsif ( 9==$match_key ){ #9¿Í»§¶ËIPÎªÖ¸¶¨Öµ»òÔÚÖ¸¶¨·¶Î§ÄÚ
-		return check_ip_range( $self, $mail_info->{head}->{server_ip}, $match_keyword );
-	}elsif ( 10==$match_key ){ #10Ô´¿Í»§¶ËIP£¨ÓÊ¼şÖĞ±êÊ¶µÄÆğÊ¼µÄIPµØÖ·£©ÎªÖ¸¶¨Öµ»òÔÚÖ¸¶¨·¶Î§ÄÚ
-		return check_ip_range( $self, $mail_info->{head}->{sender_ip}, $match_keyword );
-	}
-	
-	$self->{zlog}->fatal ( "error: check_single_keyword_rule find unknown key value [$match_key]." );
-
-	return 0;
-} 
-
-#
-#sub DESTROY
-#{
-#	# É¾³ıÁÙÊ±ÎÄ¼ş
-#}
-
-1;
+# æ£€æŸ¥ï¼š1ã€æ¨¡ç³Šï¼Œ2ã€

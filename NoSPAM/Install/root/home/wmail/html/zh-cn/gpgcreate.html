@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>������Կ</title>
+  <title>创建密钥</title>
   <link rel="stylesheet" type="text/css" href="[#SQWEBMAILCSS#]">
   <meta name="MSSmartTagsPreventParsing" content="TRUE">
 </head>
@@ -10,8 +10,8 @@
 <body>
 <!--
 
-[#$BADARGS=<font color="#E00000" class="error">���Ϸ��Ĳ��� - ������һ��Ψһ�����ƺͺϷ���Email��ַ�� ������������Ǳ����õġ�</FONT>#]
-[#$PASSPHRASEFAIL=<p class="error">���� - �����﷨���зǷ��ַ�����������δ����﷨��һ�¡�</p>#]
+[#$BADARGS=<font color="#E00000" class="error">不合法的参数 - 请输入一个唯一的名称和合法的Email地址。 大多数标点符号是被禁用的。</FONT>#]
+[#$PASSPHRASEFAIL=<p class="error">错误 - 传递语法中有非法字符或输入的两次传递语法不一致。</p>#]
 
 -->
  
@@ -31,7 +31,7 @@
             <tr>
               <td align="left" width="100%" valign="middle" class="pageheader">
 			  [#@logo.gif, width="263" height="39" alt="mail logo" align="absmiddle" border="0"@@#]
-			  ������Կ
+			  创建密钥
 			  </td>
               <td align="right" valign="middle"><b>[#G#]</b></td>
             </tr>
@@ -49,12 +49,12 @@
 </table>
 </center>
 
-<p>���Եȣ������Ҫ��ȥ 5-10 ����ʱ�䣬������Կ�������֮ǰ�����κ���Ϣ��</p>
+<p>请稍等，这可能要花去 5-10 分钟时间，请在密钥创建完成之前忽略任何信息。</p>
 <hr noshade size="1" color="#000000">
 [#GPGCREATE#]
 <hr>
 
-<p><a href="[#s#]&amp;form=gpg">��Կ������ɣ�����</a></p>
+<p><a href="[#s#]&amp;form=gpg">密钥建立完成，继续</a></p>
 
 </body>
 </html>

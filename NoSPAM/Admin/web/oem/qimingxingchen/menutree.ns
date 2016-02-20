@@ -197,8 +197,8 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	var i = new WebFXTreeItem('<?=_("Interactive")?>');
 	tree.add(i);
 	i.add(new WebFXTreeItem('<?=_("Switch Board")?>','interactive/interengine.ns','main'));
-	i.add(new WebFXTreeItem('<?=_("Too Huge Mail")?>超大邮件提醒','interactive/bigmail.ns','main'));
-	i.add(new WebFXTreeItem('<?=_("Too Many Mails")?>过量邮件提醒','interactive/exmail.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("Too Huge Mail")?>瓒呭ぇ閭欢鎻愰啋','interactive/bigmail.ns','main'));
+	i.add(new WebFXTreeItem('<?=_("Too Many Mails")?>杩囬噺閭欢鎻愰啋','interactive/exmail.ns','main'));
 <?
 }
 

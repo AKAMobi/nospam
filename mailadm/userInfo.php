@@ -6,7 +6,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÕË»§ĞÅÏ¢</TITLE>
+<TITLE>è´¦æˆ·ä¿¡æ¯</TITLE>
 </HEAD>
 <style>
 table {font-size:x-small;}
@@ -25,7 +25,7 @@ function userInfo() {
 		if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
@@ -36,7 +36,7 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
 
 if (!isset($_REQUEST['id'])){
 ?>
-	´íÎó:Î´Ö¸¶¨ÓÃ»§ÕËºÅ£¡
+	é”™è¯¯:æœªæŒ‡å®šç”¨æˆ·è´¦å·ï¼
 <?
 	return false;
 } 
@@ -44,7 +44,7 @@ if (!isset($_REQUEST['id'])){
     $h_user_profile = fopen ($user_profile,"a+"); 
    
     if ($h_user_profile == NULL ){
-        echo "´íÎó£ºÓÃ»§Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		return false;
     }
    
@@ -115,49 +115,49 @@ if (!isset($_REQUEST['id'])){
 <tbody>
 <tr class="title" align="center">
 <td colspan="2">
-ÓÃ»§ĞÅÏ¢
+ç”¨æˆ·ä¿¡æ¯
 </td>
 </tr>
 <tr>
-<td >ÕËºÅ</td>
+<td >è´¦å·</td>
 <td><? echo $user_account; ?></td>
 </tr>
 <tr>
-<td>ĞÕÃû</td>
+<td>å§“å</td>
 <td><? echo $user_name; ?></td>
 </tr>
 <tr>
-<td>µ¥Î»</td>
+<td>å•ä½</td>
 <td><? echo $unit; ?></td>
 </tr>
 <tr>
-<td>²¿ÃÅ</td>
+<td>éƒ¨é—¨</td>
 <td><? echo $department; ?></td>
 </tr>
 <tr>
-<td>¸ÚÎ»</td>
+<td>å²—ä½</td>
 <td><? echo $station; ?></td>
 </tr>
 <tr>
-<td>Ö¤¼şºÅÂë</td>
+<td>è¯ä»¶å·ç </td>
 <td><? echo $id_code; ?></td>
 </tr>
 <tr>
-<td>ÕËºÅ½¨Á¢Ê±¼ä</td>
+<td>è´¦å·å»ºç«‹æ—¶é—´</td>
 <td><? echo $create_time; ?></td>
 </tr>
 <tr>
-<td>ÓÊÏäÈİÁ¿</td>
+<td>é‚®ç®±å®¹é‡</td>
 <td><? echo $user_quota_num; ?> MB</td>
 </tr>
 <tr>
-<td>¶ÔÍâ¹«¿ª£¿</td>
+<td>å¯¹å¤–å…¬å¼€ï¼Ÿ</td>
 <td><? echo $is_public; ?></td>
 </tr><tr>
-<td valign="top">ËùÊôÓÃ»§×é</td>
+<td valign="top">æ‰€å±ç”¨æˆ·ç»„</td>
 <td align="left"><?php
 	if ($group=='') {
-		echo 'ÎŞ';
+		echo 'æ— ';
 	} else {
 		$groups=explode(',', $group);
 		foreach( $groups as $groupi) {
@@ -166,7 +166,7 @@ if (!isset($_REQUEST['id'])){
 	}
 	?></td>
 </tr>
-<td>±¸×¢</td>
+<td>å¤‡æ³¨</td>
 <td><? echo $note; ?></td>
 </tr>
 <SCRIPT language="JScript">
@@ -177,7 +177,7 @@ function changeUserPasswd(){
 	document.location.href="changeUserPasswd.php?id=<? echo $_REQUEST['id'] ?>";
 }
 function deleteUser(){
-	var reply=confirm("ÕæµÄÒªÉ¾³ıÓÃ»§<? echo $user_account; ?>Âğ£¿");
+	var reply=confirm("çœŸçš„è¦åˆ é™¤ç”¨æˆ·<? echo $user_account; ?>å—ï¼Ÿ");
 	if (reply) {
 		document.location.href="deleteUser.php?id=<? echo $_REQUEST['id'] ?>";
 	}
@@ -188,9 +188,9 @@ function deleteUser(){
 <td colspan="2">
 <table width="450">
 <tr>
-<td align="center"><INPUT type="button" value="ĞŞ¸Ä´ËÓÃ»§ĞÅÏ¢" onclick="return modifyUserInfo();"></td>
-<td align="center"><input type="button" value="ĞŞ¸Ä´ËÓÃ»§ÃÜÂë" onclick="return changeUserPasswd();"></td>
-<td align="center"><INPUT type="button" value="É¾³ı´ËÓÃ»§" onclick="deleteUser();"></td>
+<td align="center"><INPUT type="button" value="ä¿®æ”¹æ­¤ç”¨æˆ·ä¿¡æ¯" onclick="return modifyUserInfo();"></td>
+<td align="center"><input type="button" value="ä¿®æ”¹æ­¤ç”¨æˆ·å¯†ç " onclick="return changeUserPasswd();"></td>
+<td align="center"><INPUT type="button" value="åˆ é™¤æ­¤ç”¨æˆ·" onclick="deleteUser();"></td>
 </tr>
 </table>
 </td></tr>
@@ -198,7 +198,7 @@ function deleteUser(){
 <?
 	} else {
 ?>
-	´íÎó£ºÎ´ÕÒµ½ÕËºÅÎª<? echo $_REQUEST['id'] ;?>µÄÓÃ»§ĞÅÏ¢
+	é”™è¯¯ï¼šæœªæ‰¾åˆ°è´¦å·ä¸º<? echo $_REQUEST['id'] ;?>çš„ç”¨æˆ·ä¿¡æ¯
 <?
 	}
 }

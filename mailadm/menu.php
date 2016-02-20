@@ -4,7 +4,7 @@
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÊ¼şÕË»§¹ÜÀí²Ëµ¥</TITLE>
+<TITLE>é‚®ä»¶è´¦æˆ·ç®¡ç†èœå•</TITLE>
 <link rel="stylesheet" href="newstyle.css" type="text/css">
 </HEAD>
 <head>
@@ -413,7 +413,7 @@ function gLnk(target, description, linkData)
  
   if (target==0) 
   { 
-  	if(description=="ÍË³öÏµÍ³") fullLink = "'"+linkData+"' target=\"_top\""
+  	if(description=="é€€å‡ºç³»ç»Ÿ") fullLink = "'"+linkData+"' target=\"_top\""
   	fullLink = "'"+linkData+"' target=\"xbody\"" 
   } 
   else 
@@ -458,77 +458,77 @@ USETEXTLINKS = 1
 
   
 
-fT= gFld("<b>ÓÊ¼şÏµÍ³¹ÜÀí</b>", "");
+fT= gFld("<b>é‚®ä»¶ç³»ç»Ÿç®¡ç†</b>", "");
 <?php 
 	if (adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"ÓÃ»§ÁĞ±í","http://<?php echo $_SERVER['SERVER_NAME']; ?>/mailadm/showuserlist.php"));
+	insDoc(fT, gLnk(0,"ç”¨æˆ·åˆ—è¡¨","http://<?php echo $_SERVER['SERVER_NAME']; ?>/mailadm/showuserlist.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"Ìí¼ÓĞÂÓÃ»§","adduser.php"));
+	insDoc(fT, gLnk(0,"æ·»åŠ æ–°ç”¨æˆ·","adduser.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"²éÕÒÓÃ»§","searchUser.php"));
+	insDoc(fT, gLnk(0,"æŸ¥æ‰¾ç”¨æˆ·","searchUser.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"ÓÃ»§×é¹ÜÀí","groupsControl.php"));
+	insDoc(fT, gLnk(0,"ç”¨æˆ·ç»„ç®¡ç†","groupsControl.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"Èº·¢ĞÅ¼ş","sendGroupMails.php"));
+	insDoc(fT, gLnk(0,"ç¾¤å‘ä¿¡ä»¶","sendGroupMails.php"));
 <?php
 }
 ?>
 <?php
         if (adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
-        insDoc(fT, gLnk(0,"¹ÜÀíÔ±ÕËºÅÁĞ±í","http://<?php echo $_SERVER['SERVER_NAME']; ?>/mailadm/showadminlist.php"));
+        insDoc(fT, gLnk(0,"ç®¡ç†å‘˜è´¦å·åˆ—è¡¨","http://<?php echo $_SERVER['SERVER_NAME']; ?>/mailadm/showadminlist.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
-	insDoc(fT, gLnk(0,"Ìí¼Ó¹ÜÀíÔ±ÕËºÅ","addAdmin.php"));
-  aux1 = insFld(fT, gFld("·´À¬»øÓÊ¼ş",""));
-		insDoc(aux1,gLnk(0,"SMTP×ª·¢ÉèÖÃ","controlSmtproute.php"));
-		insDoc(aux1,gLnk(0,"AS-SMTPÉèÖÃ","controlMFCheck.php"));
-		insDoc(aux1,gLnk(0,"IPºÚÃûµ¥","controlBlackIP.php"));
-		insDoc(aux1,gLnk(0,"IP°×Ãûµ¥","controlWhiteIP.php"));
-		insDoc(aux1,gLnk(0,"ÓòÃûºÚÃûµ¥","controlBadDomain.php"));
-		insDoc(aux1,gLnk(0,"ÓòÃû°×Ãûµ¥","controlGoodDomain.php"));
-		insDoc(aux1,gLnk(0,"µØÖ·ºÚÃûµ¥","controlBadAccount.php"));
+	insDoc(fT, gLnk(0,"æ·»åŠ ç®¡ç†å‘˜è´¦å·","addAdmin.php"));
+  aux1 = insFld(fT, gFld("ååƒåœ¾é‚®ä»¶",""));
+		insDoc(aux1,gLnk(0,"SMTPè½¬å‘è®¾ç½®","controlSmtproute.php"));
+		insDoc(aux1,gLnk(0,"AS-SMTPè®¾ç½®","controlMFCheck.php"));
+		insDoc(aux1,gLnk(0,"IPé»‘åå•","controlBlackIP.php"));
+		insDoc(aux1,gLnk(0,"IPç™½åå•","controlWhiteIP.php"));
+		insDoc(aux1,gLnk(0,"åŸŸåé»‘åå•","controlBadDomain.php"));
+		insDoc(aux1,gLnk(0,"åŸŸåç™½åå•","controlGoodDomain.php"));
+		insDoc(aux1,gLnk(0,"åœ°å€é»‘åå•","controlBadAccount.php"));
 		insDoc(aux1,gLnk(0,"Open Relay Deny","controlOpenRelay.php"));
-		insDoc(aux1,gLnk(0,"RSS¹¦ÄÜ","controlRSS.php"));
+		insDoc(aux1,gLnk(0,"RSSåŠŸèƒ½","controlRSS.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_BASIC) ){
 ?>	
-	insDoc(fT, gLnk(0,"ĞŞ¸ÄÃÜÂë","changePasswd.php"));
+	insDoc(fT, gLnk(0,"ä¿®æ”¹å¯†ç ","changePasswd.php"));
 <?php
 }
 ?>
 <?php 
 	if (adminPerm(PERM_ADMIN_BASIC) ){
 ?>	
-	insDoc(fT, gLnk(2,"<a href=logout.php target=_top>ÍË³öÏµÍ³"));
+	insDoc(fT, gLnk(2,"<a href=logout.php target=_top>é€€å‡ºç³»ç»Ÿ"));
 <?php
 }
 ?>

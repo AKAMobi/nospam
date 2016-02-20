@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>Anti-Spam SMTPÉèÖÃ</TITLE>
+<TITLE>Anti-Spam SMTPè®¾ç½®</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -22,7 +22,7 @@ function doConfig(){
 		if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
@@ -32,7 +32,7 @@ function doConfig(){
 
 	$handle=fopen("/var/qmail/control/mfcheck","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®ï¼<br>";
 		return false;
 	}
 	fputs($handle,$_POST['type']);
@@ -40,7 +40,7 @@ function doConfig(){
 
 	$handle=fopen("/var/qmail/control/mxcheckrefuse","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®ï¼<br>";
 		return false;
 	}
 	fputs($handle,isset($_POST['refuse'])?"1":"0");
@@ -49,7 +49,7 @@ function doConfig(){
 }
 
 if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
-	echo "ÉèÖÃĞŞ¸Ä³É¹¦£¡<br>";
+	echo "è®¾ç½®ä¿®æ”¹æˆåŠŸï¼<br>";
 } else {
 	if ( ! file_exists("/var/qmail/control/mfcheck") ){
 		fclose( fopen("/var/qmail/control/mfcheck","w") );
@@ -90,11 +90,11 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 <INPUT type="hidden" name="doConfig">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="2" class=title><b>ÉèÖÃAnti-Spam SMTP²ÎÊı</b></td>
+<td colspan="2" class=title><b>è®¾ç½®Anti-Spam SMTPå‚æ•°</b></td>
 </tr>
 <tr>
-	<td colspan="2">Anti-Spam¼¶±ğÉè¶¨£º<?php 
-	$note=array("ÎŞ","µÍ","¸ß(ÍÆ¼ö)","ºÜ¸ß","×î¸ß");
+	<td colspan="2">Anti-Spamçº§åˆ«è®¾å®šï¼š<?php 
+	$note=array("æ— ","ä½","é«˜(æ¨è)","å¾ˆé«˜","æœ€é«˜");
 	for ($i=0;$i<5;$i++) {
 ?>
 <input type=radio name="type" value="<?php echo $i ;?>" <?php if ($config==$i) echo "checked"?>><?php echo $note[$i]; ?>
@@ -105,11 +105,11 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 </tr>
 <tr>
 	<td colspan=2>
-	<input type=checkbox name="refuse" <?php if ($config2) echo "checked"; ?>>Ö±½Ó¾ÜÊÕ¿ÉÒÉĞÅ¼ş</input>
+	<input type=checkbox name="refuse" <?php if ($config2) echo "checked"; ?>>ç›´æ¥æ‹’æ”¶å¯ç–‘ä¿¡ä»¶</input>
 	</td>
 </tr>
 <tr align="center" >
-	<td colspan=2><input type=submit name="adduser" value="  ĞŞ  ¸Ä  ">
+	<td colspan=2><input type=submit name="adduser" value="  ä¿®  æ”¹  ">
 	</td>
 </tr>
 </table>

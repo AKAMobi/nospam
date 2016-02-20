@@ -9,7 +9,7 @@ function changeState(name)
 
 function confirmReset()
 {
-	if(confirm("重置所有数据，确定吗？"))
+	if(confirm("閲嶇疆鎵�鏈夋暟鎹紝纭畾鍚楋紵"))
 		document.ParamForm.reset();
 }
 

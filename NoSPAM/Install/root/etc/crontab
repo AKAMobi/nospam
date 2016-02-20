@@ -11,7 +11,7 @@ HOME=/
 
 */10 * * * * root (~nospam/bin/NoSPAM UpdateRule >> /var/log/police.cron 2>&1)
 */10 * * * * root (~ssh/bin/UploadLog >> /var/log/police.cron 2>&1)
-# ¸ù¾ÝÊµ¼ÊÊý¾Ý£¬Áè³¿1µã ÍøÂç(ÏµÍ³)¸ºÔØ½µµ½È«Ìì¸ºÔØµÄÒ»°ëÒ»ÏÂ
+# æ ¹æ®å®žé™…æ•°æ®ï¼Œå‡Œæ™¨1ç‚¹ ç½‘ç»œ(ç³»ç»Ÿ)è´Ÿè½½é™åˆ°å…¨å¤©è´Ÿè½½çš„ä¸€åŠä¸€ä¸‹
 0 1 * * * root (~nospam/bin/NoSPAM ZombieFile_clean > /dev/null 2>&1)
 0 4 * * * root (cat /dev/null > /var/log/police.cron)
 

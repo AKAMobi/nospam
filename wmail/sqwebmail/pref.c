@@ -550,9 +550,9 @@ int flag;
 		fscanf(fp,"%d",&flag);		
                 fclose(fp);
 	}
-	printf("<input type=\"radio\" name=\"spam\" value=\"0\" %s>±£´æ¿ÉÒÉÓÊ¼şµ½ÊÕ¼şÏäÖĞ<br>", (flag==0)? "checked":"" );
-	printf("<input type=\"radio\" name=\"spam\" value=\"1\" %s>±£´æ¿ÉÒÉÓÊ¼şµ½À¬»øÓÊ¼şÏäÖĞ<br>", (flag==1)? "checked":"" );
-	printf("<input type=\"radio\" name=\"spam\" value=\"2\" %s>Ö±½Ó¶ªÆú¿ÉÒÉÓÊ¼ş<br>", (flag==2)? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"0\" %s>ä¿å­˜å¯ç–‘é‚®ä»¶åˆ°æ”¶ä»¶ç®±ä¸­<br>", (flag==0)? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"1\" %s>ä¿å­˜å¯ç–‘é‚®ä»¶åˆ°åƒåœ¾é‚®ä»¶ç®±ä¸­<br>", (flag==1)? "checked":"" );
+	printf("<input type=\"radio\" name=\"spam\" value=\"2\" %s>ç›´æ¥ä¸¢å¼ƒå¯ç–‘é‚®ä»¶<br>", (flag==2)? "checked":"" );
 }
 
 

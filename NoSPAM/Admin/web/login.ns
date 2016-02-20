@@ -12,7 +12,7 @@ $loginblacklist = new LoginBlackList();
 if ( $loginblacklist->isDenied($_SERVER['REMOTE_ADDR']) ){
 	$deniedTime = $loginblacklist->getDeniedTime($_SERVER['REMOTE_ADDR']);
 	// gettext demo by zixia:
-	//errorReturn("ÓÉÓÚµ½´ï×î´ó´íÎóµÇÂ¼´ÎÊı£¬µ±Ç°IP£º".$_SERVER['REMOTE_ADDR']. "±»·â½ûµ½".date("Y-m-d H:i:s",$deniedTime),"/admin/");
+	//errorReturn("ç”±äºåˆ°è¾¾æœ€å¤§é”™è¯¯ç™»å½•æ¬¡æ•°ï¼Œå½“å‰IPï¼š".$_SERVER['REMOTE_ADDR']. "è¢«å°ç¦åˆ°".date("Y-m-d H:i:s",$deniedTime),"/admin/");
 	errorReturn( _("Due to login attempts exceed maximum times, current IP:") . $_SERVER['REMOTE_ADDR'] . _("will not be permitted login untill ") . date("Y-m-d H:i:s",$deniedTime), "/admin/");
 }
 

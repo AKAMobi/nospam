@@ -4,17 +4,17 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>�û������</TITLE>
+<TITLE>用户组管理</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
-<h2>�û������</h2>
+<h2>用户组管理</h2>
 <?php
 
 if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 <br>
-��û�з��ʸ���ҳ��Ȩ�ޡ�<br>
+您没有访问该网页的权限。<br>
 <?php
 } else {
 if ($_POST['action']=='delete') {
@@ -44,7 +44,7 @@ function modifyGroup($oldgroupname,$newgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "�����û��������ļ��޷��򿪡�<br>";
+        echo "错误：用户组数据文件无法打开。<br>";
 		exit(-1);
     }
    
@@ -63,8 +63,8 @@ function modifyGroup($oldgroupname,$newgroupname){
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
 ?>
-�û�������<?php echo $newgroupname ;?>�Ѵ��ڣ�<br>
-�޸��û���ʧ�ܡ�<br>
+用户组名：<?php echo $newgroupname ;?>已存在！<br>
+修改用户组失败。<br>
 <?php
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
@@ -103,7 +103,7 @@ function deleteGroup($oldgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "�����û��������ļ��޷��򿪡�<br>";
+        echo "错误：用户组数据文件无法打开。<br>";
 		exit(-1);
     }
    
@@ -155,7 +155,7 @@ function addGroup($newgroupname){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"a+");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "�����û��������ļ��޷��򿪡�<br>";
+        echo "错误：用户组数据文件无法打开。<br>";
 		exit(-1);
     }
    
@@ -174,8 +174,8 @@ function addGroup($newgroupname){
 		if ($groupname!=''){
 			if (!strcmp($groupname,$newgroupname)) {
 ?>
-�û�������<?php echo $newgroupname ;?>�Ѵ��ڣ�<br>
-�������û���ʧ�ܡ�<br>
+用户组名：<?php echo $newgroupname ;?>已存在！<br>
+添加新用户组失败。<br>
 <?php
 			   	flock($h_groupdefine_profile, LOCK_UN);
    	
@@ -213,7 +213,7 @@ function showGroups(){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "�����û��������ļ��޷��򿪡�<br>";
+        echo "错误：用户组数据文件无法打开。<br>";
 		exit(-1);
     }
    
@@ -238,11 +238,11 @@ function showGroups(){
     
 	if ($group_count<=0) {
 ?>
-	Ŀǰ�����û��鶨�壡
+	目前尚无用户组定义！
 <?php
 	} else {
 ?>
-�����û����б���
+现有用户组列表：
 <select id="oGroupList" size=10 >
 <?php
 	for ($i=0;$i<$group_count;$i++){
@@ -269,10 +269,10 @@ function showGroups(){
 <form action="<?php echo $_SERVER['PHP_SELF'] ; ?>" method="POST" id="oForm">
 <input type="hidden" name="group" id="oGroup">
 <input type="hidden" name="action" id="oAction">
-�û�������<input type="text" name="newGroup">
-<input type="button" value="ɾ��" onclick="doIt('delete');">
-<input type="button" value="����" onclick="doIt('add');">
-<input type="button" value="�޸�" onclick="doIt('modify');">
+用户组名：<input type="text" name="newGroup">
+<input type="button" value="删除" onclick="doIt('delete');">
+<input type="button" value="添加" onclick="doIt('add');">
+<input type="button" value="修改" onclick="doIt('modify');">
 </form>
 <?php
 }

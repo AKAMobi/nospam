@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>пч╦дук╩╖пео╒</TITLE>
+<TITLE>Д©╝Ф■╧Х╢╕Ф┬╥Д©║Ф│╞</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
@@ -15,7 +15,7 @@ function modifyUserInfo() {
 		if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 		<br>
-		дЗц╩сп╥цнй╦цмЬрЁ╣дх╗оч║ё<br>
+		Ф┌╗Ф╡║Ф°┴Х╝©И≈╝Х╞╔Г╫▒И║╣Г └Ф²┐И≥░Ц─┌<br>
 <?php
 		return false;
 	}
@@ -26,16 +26,16 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
 
 if (!isset($_REQUEST['id'])){
 ?>
-	╢МнС:н╢ж╦╤╗сц╩╖ук╨её║
+	И■≥Х╞╞:Ф°╙Ф▄┤Е╝ Г■╗Ф┬╥Х╢╕Е▐╥О╪│
 <?
 	return false;
 } 
 
-	if ( isset($_REQUEST["modifyUserInfo"])){ //й╣╪йпч╦дсц╩╖пео╒
+	if ( isset($_REQUEST["modifyUserInfo"])){ //Е╝·И≥┘Д©╝Ф■╧Г■╗Ф┬╥Д©║Ф│╞
 	    $h_user_profile = fopen ($user_profile,"a+");
 	   
 	    if ($h_user_profile == NULL ){
-	        echo "╢МнСё╨сц╩╖йЩ╬щнд╪Чнч╥╗╢Р©╙║ё<br>";
+	        echo "И■≥Х╞╞О╪ Г■╗Ф┬╥Ф∙╟Ф█╝Ф√┤Д╩╤Ф≈═ФЁ∙Ф┴⌠Е╪─Ц─┌<br>";
 			return false;
 	    }
    
@@ -133,21 +133,21 @@ if (!isset($_REQUEST['id'])){
 	
 		if ($i<$mail_count){
 ?>
-	ук╨епео╒пч╦дЁи╧╕ё║<br>
+	Х╢╕Е▐╥Д©║Ф│╞Д©╝Ф■╧Ф┬░Е┼÷О╪│<br>
 <?
 		} else {
 ?>
-	╢МнСё╨н╢ур╣╫ук╨ен╙<? echo $_REQUEST['id'] ;?>╣дсц╩╖пео╒<br>
+	И■≥Х╞╞О╪ Ф°╙Ф┴╬Е┬╟Х╢╕Е▐╥Д╦╨<? echo $_REQUEST['id'] ;?>Г └Г■╗Ф┬╥Д©║Ф│╞<br>
 <?
 		}		
 		return true;
 	} 
 	
-	//отй╬сц╩╖пео╒
+	//Ф≤╬Г╓╨Г■╗Ф┬╥Д©║Ф│╞
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "╢МнСё╨сц╩╖йЩ╬щнд╪Чнч╥╗╢Р©╙║ё<br>";
+        echo "И■≥Х╞╞О╪ Г■╗Ф┬╥Ф∙╟Ф█╝Ф√┤Д╩╤Ф≈═ФЁ∙Ф┴⌠Е╪─Ц─┌<br>";
 		return false;
     }
    
@@ -216,50 +216,50 @@ if (!isset($_REQUEST['id'])){
 <table>
 <tbody>
 <tr>
-<td>ук╨е</td>
+<td>Х╢╕Е▐╥</td>
 <INPUT type="hidden" name="id" value="<? echo $user_account; ?>">
 <td><? echo $user_account; ?></td>
 </tr>
 <tr>
-<td>пуцШ</td>
+<td>Е╖⌠Е░█</td>
 <td><input type="text" name="user_name" value="<? echo $user_name; ?>"></td>
 </tr>
 <tr>
-<td>╣╔н╩</td>
+<td>Е█∙Д╫█</td>
 <td><input type="text" name="user_unit" value="<? echo $unit; ?>"></td>
 </tr>
 <tr>
-<td>╡©це</td>
+<td>И┐╗И≈╗</td>
 <td><input type="text" name="user_department" value="<? echo $department; ?>"></td>
 </tr>
 <tr>
-<td>╦зн╩</td>
+<td>Е╡≈Д╫█</td>
 <td><input type="text" name="user_station" value="<? echo $station; ?>"></td>
 </tr>
 <tr>
-<td>ж╓╪Ч╨ебК</td>
+<td>Х╞│Д╩╤Е▐╥Г═│</td>
 <td><input type="text" name="user_id_code" value="<? echo $id_code; ?>"></td>
 </tr>
 <tr>
-<td>ук╨е╫╗а╒й╠╪Д</td>
+<td>Х╢╕Е▐╥Е╩╨Г╚▀Ф≈╤И≈╢</td>
 <td><? echo $create_time; ?></td>
 </tr>
 <tr>
-<td>сйоДхща©</td>
+<td>И┌╝Г╝╠Е╝╧И┤▐</td>
 <td><input type="text" name="user_box_size" value="<? echo $user_quota_num; ?> ">MB</td>
 </tr>
 <tr>
-	<td colspan=2><input type=checkbox name="user_is_public" <? echo ($is_public?'checked':''); ?>>╤тмБотй╬</td>
+	<td colspan=2><input type=checkbox name="user_is_public" <? echo ($is_public?'checked':''); ?>>Е╞╧Е╓√Ф≤╬Г╓╨</td>
 </tr>
 <tr>
-<td>сц╩╖кЫйТвИ</td>
+<td>Г■╗Ф┬╥Ф┴─Е╠·Г╩└</td>
 <td><select id="oGroupList" size=5 multiple><? 
 	$groupdefine_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . GROUPFILE;
    
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "╢МнСё╨сц╩╖вИйЩ╬щнд╪Чнч╥╗╢Р©╙║ё<br>";
+        echo "И■≥Х╞╞О╪ Г■╗Ф┬╥Г╩└Ф∙╟Ф█╝Ф√┤Д╩╤Ф≈═ФЁ∙Ф┴⌠Е╪─Ц─┌<br>";
 		exit(-1);
     }
    
@@ -293,7 +293,7 @@ if (!isset($_REQUEST['id'])){
 	?></select></td>
 </tr>
 <tr>
-	<td>╠╦в╒</td>
+	<td>Е╓┤ФЁ╗</td>
 	<td><input type=text name="user_note" value="<? echo $note ?>"></td>
 </tr>
 </tbody>
@@ -315,12 +315,12 @@ function doModify(){
 }
 </script>
 <input type="hidden" name="groups" id="oGroups" >
-<INPUT type="button" value="лА╫╩пч╦дпео╒" onclick="doModify();">
+<INPUT type="button" value="Ф▐░Д╨╓Д©╝Ф■╧Д©║Ф│╞" onclick="doModify();">
 </form>
 <?
 	} else {
 ?>
-	╢МнСё╨н╢ур╣╫ук╨ен╙<? echo $_REQUEST['id'] ;?>╣дсц╩╖пео╒
+	И■≥Х╞╞О╪ Ф°╙Ф┴╬Е┬╟Х╢╕Е▐╥Д╦╨<? echo $_REQUEST['id'] ;?>Г └Г■╗Ф┬╥Д©║Ф│╞
 <?
 	}
 }

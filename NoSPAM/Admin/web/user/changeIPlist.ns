@@ -21,9 +21,9 @@ function changeIPList() {
 
 	$id=getAdminID();
 
-	if ( isset($_REQUEST["changeIPList"])){ //实际修改用户信息
+	if ( isset($_REQUEST["changeIPList"])){ //瀹為檯淇敼鐢ㄦ埛淇℃伅
 
-	switch($_REQUEST['iprule']){				//IP地址列表
+	switch($_REQUEST['iprule']){				//IP鍦板潃鍒楄〃
 		case "PERMIT":
 		$iplist = "+".str_replace("\n",",",str_replace("\r","",trim($_REQUEST['iplist'])));
 		break;

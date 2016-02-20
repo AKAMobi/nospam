@@ -4,7 +4,7 @@ require_once('vpopadm.inc.php');
 	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
@@ -12,7 +12,7 @@ require_once('vpopadm.inc.php');
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÏÔÊ¾¹ÜÀíÔ±ÁĞ±í</TITLE>
+<TITLE>æ˜¾ç¤ºç®¡ç†å‘˜åˆ—è¡¨</TITLE>
 <style>
 .userAccount {color: #0000FF;text-decoration: underline; font-size: x-small;}
 .userAccount_on {color: #0000FF;text-decoration: none; font-size: x-small;}
@@ -56,11 +56,11 @@ function clearSortOrder(){
 function showSortOrder(cols){
 	var s=sortOrder(cols);
 	if (s==1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ı";
+		document.all.item("oSortOn_"+cols).innerHTML="â†“";
 		return ;
 	}
 	if (s==-1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ü";
+		document.all.item("oSortOn_"+cols).innerHTML="â†‘";
 		return ;
 	}
 	document.all.item("oSortOn_"+cols).innerHTML="";
@@ -70,10 +70,10 @@ function sort(cols){
 	var s=sortOrder(cols); 
 	var temp=new String(userlist.sort);
 	var re;
-	if ((window.event!=null) && (window.event.ctrlKey) ){  //°´ÏÂÁËctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	if ((window.event!=null) && (window.event.ctrlKey) ){  //æŒ‰ä¸‹äº†ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			userlist.sort+="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols+";","i");
 				userlist.Sort=temp.replace(re,"");
@@ -83,11 +83,11 @@ function sort(cols){
 			}
 		}
 
-	} else { //Î´°´ÏÂctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	} else { //æœªæŒ‰ä¸‹ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			clearSortOrder();
 			userlist.sort="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols,"i");
 				userlist.Sort=temp.replace(re,"+"+cols);
@@ -140,11 +140,11 @@ function clearFilter() {
 			<form>
 			<table border="0" style="font-size:x-small">
 			<thead>
-			<th align="center">×Ö¶Î¹ıÂË</th>
+			<th align="center">å­—æ®µè¿‡æ»¤</th>
 			</thead>
 			<tr>
 			<td nowrap>
-			±¾×Ö¶ÎÓ¦°üº¬£º<input type="text" id="oFilterValue" name="filterValue">
+			æœ¬å­—æ®µåº”åŒ…å«ï¼š<input type="text" id="oFilterValue" name="filterValue">
 			</td>
 			</tr>
 			<tr>
@@ -152,10 +152,10 @@ function clearFilter() {
 			<table border="0">
 			<tr>
 			<td>
-			<input type="button" onclick="doFilter(oFilterValue.value);" value="Ó¦ÓÃ¹ıÂËÌõ¼ş">
+			<input type="button" onclick="doFilter(oFilterValue.value);" value="åº”ç”¨è¿‡æ»¤æ¡ä»¶">
 			</td>
 			<td>
-			<input type="button" onclick="clearFilter();" value="Çå³ıÏÖÓĞ¹ıÂËÌõ¼ş">
+			<input type="button" onclick="clearFilter();" value="æ¸…é™¤ç°æœ‰è¿‡æ»¤æ¡ä»¶">
 			</td>
 			</tr>
 			</table>
@@ -168,18 +168,18 @@ function clearFilter() {
 <DIV align="center">
 <table border="1" datasrc="#userlist" id="oUserInfo" width="99%">
 <thead>
-<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">¹ÜÀíÔ±ÕËºÅ</span><span id="oSortOn_account"></span></th>
-<TH><span onclick="return sort('note');"  oncontextmenu="filter('note');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">±¸×¢</span><span id="oSortOn_note"></span></th>
-<TH>ĞŞ¸ÄÃÜÂë</th>
-<TH>ĞŞ¸ÄÈ¨ÏŞ</th>
-<TH>É¾³ı</th>
+<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ç®¡ç†å‘˜è´¦å·</span><span id="oSortOn_account"></span></th>
+<TH><span onclick="return sort('note');"  oncontextmenu="filter('note');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å¤‡æ³¨</span><span id="oSortOn_note"></span></th>
+<TH>ä¿®æ”¹å¯†ç </th>
+<TH>ä¿®æ”¹æƒé™</th>
+<TH>åˆ é™¤</th>
 </thead>
 <tbody>
 <td ><span datafld="account"></span></td>
 <td><span datafld="note"></span></td>
-<td><A datafld="changePasswdURL" class=a6>ĞŞ¸ÄÃÜÂë</a></td>
-<td><A datafld="modifyPrivilidgeURL" class=a6>ĞŞ¸ÄÈ¨ÏŞ</a></td>
-<td><A datafld="deleteURL" class=a6>É¾³ı</a></td>
+<td><A datafld="changePasswdURL" class=a6>ä¿®æ”¹å¯†ç </a></td>
+<td><A datafld="modifyPrivilidgeURL" class=a6>ä¿®æ”¹æƒé™</a></td>
+<td><A datafld="deleteURL" class=a6>åˆ é™¤</a></td>
 </tbody>
 </table>
 </div>

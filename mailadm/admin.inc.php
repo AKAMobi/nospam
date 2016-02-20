@@ -1,11 +1,11 @@
 <?php
 
 
-define("ADMINFILE","ADMINFILE"); //ÓÃÓÚ±£´æ¹ÜÀíÔ±ĞÅÏ¢µÄÊı¾İÎÄ¼ş
+define("ADMINFILE","ADMINFILE"); //ç”¨äºä¿å­˜ç®¡ç†å‘˜ä¿¡æ¯çš„æ•°æ®æ–‡ä»¶
 
-define("SYSOPID", "SYSOP"); //×î¸ß¹ÜÀíÔ±ID
+define("SYSOPID", "SYSOP"); //æœ€é«˜ç®¡ç†å‘˜ID
 
-//·µ»ØÖµ¶¨Òå
+//è¿”å›å€¼å®šä¹‰
 define("OK",0);
 define("ERR_NOSUCHID",-100);
 
@@ -43,29 +43,29 @@ function getAdminID(){
 	return $_SESSION['AdminID'];
 }
 
-//ÅĞ¶ÏIDÊÇ·ñºÏ·¨
+//åˆ¤æ–­IDæ˜¯å¦åˆæ³•
 function isIDFormatOK($id){
 	return ereg( "^[A-Za-z][_0-9A-Za-z\.]*$", $id );
 }
 
-//ÅĞ¶ÏPasswordÊÇ·ñºÏ·¨
+//åˆ¤æ–­Passwordæ˜¯å¦åˆæ³•
 function isPasswordFormatOK($passwd){
 	return eregi( "^[0-9a-z]+$", $passwd );
 }
 
-//ÅĞ¶ÏÈ¨ÏŞÊÇ·ñºÏ·¨
+//åˆ¤æ–­æƒé™æ˜¯å¦åˆæ³•
 function isPrivilidgeFormatOK($privilidge){
 	return intval($privilidge);
 }
 
-//ÅĞ¶Ï±¸×¢ÊÇ·ñºÏ·¨
+//åˆ¤æ–­å¤‡æ³¨æ˜¯å¦åˆæ³•
 function isNoteFormatOK($note){
 	return ereg("^[^:]*$", $note);
 }
 
 
 
-//Ìí¼Ó¹ÜÀíÔ±
+//æ·»åŠ ç®¡ç†å‘˜
 function addAdmin($id, $passwd, $privilidge, $note){
 	global $AdminDataFile;
 
@@ -89,7 +89,7 @@ function addAdmin($id, $passwd, $privilidge, $note){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -101,7 +101,7 @@ function addAdmin($id, $passwd, $privilidge, $note){
 	    $adminInfo = fgets($hAdminProfile,1024); 
 	    list ($adminId, $adminEncodedPasswd,$Privilidge,$Note) = explode( ':', $adminInfo);
 	    if (!strcmp($adminId,$id)){
-	    	echo "´íÎó£ºÓÃ»§idÒÑ´æÔÚ£¡<br>";
+	    	echo "é”™è¯¯ï¼šç”¨æˆ·idå·²å­˜åœ¨ï¼<br>";
 		   	flock($hAdminProfile, LOCK_UN);
 	    	return ERR_IDEXIST;
 	    }
@@ -126,7 +126,7 @@ function addAdmin($id, $passwd, $privilidge, $note){
 }
 
 
-//ÅĞ¶ÏÊäÈëÃÜÂëÊÇ·ñÕıÈ·
+//åˆ¤æ–­è¾“å…¥å¯†ç æ˜¯å¦æ­£ç¡®
 function isPasswordRight($id, $passwd){
 		global $AdminDataFile;
 
@@ -140,7 +140,7 @@ function isPasswordRight($id, $passwd){
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -179,14 +179,14 @@ function isPasswordRight($id, $passwd){
 
 }
 
-//¶ÁÈ¡¹ÜÀíÔ±ĞÅÏ¢
+//è¯»å–ç®¡ç†å‘˜ä¿¡æ¯
 function getAdminInfo($id){
 	global $AdminDataFile;
 
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -230,7 +230,7 @@ function setPassword($id, $passwd){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -306,7 +306,7 @@ function getAdminList(){
     $hAdminProfile = fopen ($AdminDataFile,"r");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -345,7 +345,7 @@ function modifyAdminPrivilidge($id,$Perm){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -426,7 +426,7 @@ function deleteAdmin($id){
     $hAdminProfile = fopen ($AdminDataFile,"a+");
    
     if ($hAdminProfile == NULL ){
-        echo "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 

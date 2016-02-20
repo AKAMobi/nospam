@@ -4,7 +4,7 @@ require_once('../inc/include.ns');
 if (!adminPerm(PERM_ADMIN_DOMAIN) ){
 ?>
 	<br>
-	ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+	æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 	return false;
 }
@@ -13,7 +13,7 @@ $adminInfo = getAdminInfo(getAdminID());
 $domains = trim($adminInfo["domain"]);
 unset($adminInfo);
 if($domains == "")
-	die("ÄãÄ¿Ç°Ã»ÓĞÈÎºÎÓÊ¼şÓò¹ÜÀíÈ¨ÏŞ");
+	die("ä½ ç›®å‰æ²¡æœ‰ä»»ä½•é‚®ä»¶åŸŸç®¡ç†æƒé™");
 
 $aDomains = explode(",", $domains);
 $count = count($aDomains);
@@ -79,13 +79,13 @@ function info()
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÊ¼şÓòÓÃ»§ÁĞ±í</TITLE>
+<TITLE>é‚®ä»¶åŸŸç”¨æˆ·åˆ—è¡¨</TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="../css/sortabletable.css">
 <script type="text/javascript" src="../js/sortabletable.js"></script>
 </head>
 <BODY>
-<div>ÓÊ¼şÓò£º
+<div>é‚®ä»¶åŸŸï¼š
 <?
 	if($count == 1)
 		echo $currentDomain;
@@ -108,32 +108,32 @@ function info()
 <DIV align="center">
 <form action="?MailDomain=<?=$currentDomain?>&action=del" name="form1" method="post">
 <table class="sort-table" id="table-1" cellspacing="0" width="100%" border="0">
-<caption>ÓÊ¼şÓòÓÃ»§ÁĞ±í</caption>
+<caption>é‚®ä»¶åŸŸç”¨æˆ·åˆ—è¡¨</caption>
 <thead>
 <tr>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>Ñ¡Ôñ</td>
+	<td>é€‰æ‹©</td>
 <?
 }
 ?>
-	<td>ĞòºÅ</td>
-	<td>ÕËºÅ</td>
-	<td>ÓÃ»§ĞÕÃû</td>
-	<td>ÓÃ»§µ¥Î»</td>
-	<td>ÓÃ»§²¿ÃÅ</td>
-	<td>ÓÃ»§¸ÚÎ»</td>
-	<td>ÓÃ»§Éí·İºÅÂë</td>
-	<td>ÕËºÅ½¨Á¢Ê±¼ä</td>
-	<td>ÈİÁ¿ÏŞÖÆ</td>
-	<td>¶ÔÍâÏÔÊ¾</td>
-	<td>±¸×¢</td>
-	<td>ÓÃ»§×é</td>
+	<td>åºå·</td>
+	<td>è´¦å·</td>
+	<td>ç”¨æˆ·å§“å</td>
+	<td>ç”¨æˆ·å•ä½</td>
+	<td>ç”¨æˆ·éƒ¨é—¨</td>
+	<td>ç”¨æˆ·å²—ä½</td>
+	<td>ç”¨æˆ·èº«ä»½å·ç </td>
+	<td>è´¦å·å»ºç«‹æ—¶é—´</td>
+	<td>å®¹é‡é™åˆ¶</td>
+	<td>å¯¹å¤–æ˜¾ç¤º</td>
+	<td>å¤‡æ³¨</td>
+	<td>ç”¨æˆ·ç»„</td>
 <?
 if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	<td>²Ù×÷</td>
+	<td>æ“ä½œ</td>
 <?
 }
 ?>
@@ -171,8 +171,8 @@ for( $i = $start ; $i < $end ; $i++,$j++)
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
 		<td>
-			<input type="button" value="±à¼­" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=modify&id={$UserList[$i]["id"]}'"?>">
-			<?if ($UserList[$i]["id"] != "postmaster"){?><input type="button" value="É¾³ı" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=del&id={$UserList[$i]["id"]}'"?>"><?}?>
+			<input type="button" value="ç¼–è¾‘" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=modify&id={$UserList[$i]["id"]}'"?>">
+			<?if ($UserList[$i]["id"] != "postmaster"){?><input type="button" value="åˆ é™¤" onclick="<?="location.href='{$_SERVER['PHP_SELF']}?MailDomain={$currentDomain}&action=del&id={$UserList[$i]["id"]}'"?>"><?}?>
 		</td>
 <?
 	}
@@ -195,8 +195,8 @@ function jump()
 <tr>
 <td align="center">
 <?if(adminPerm(PERM_ADMIN_WRITE)){?>
-<input type="button" value="Ìí¼Ó" onclick="location.href='<?=$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&action=add"?>'">
-<input type="submit" name="submit" value="ÅúÁ¿É¾³ı">
+<input type="button" value="æ·»åŠ " onclick="location.href='<?=$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&action=add"?>'">
+<input type="submit" name="submit" value="æ‰¹é‡åˆ é™¤">
 <?}?>
 </td>
 <td align="right">
@@ -220,7 +220,7 @@ else
 	echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page=".($page+1)."&pagenum={$pagenum}'>&gt;</a>&nbsp;";
 echo "<a href='".$_SERVER['PHP_SELF']."?MailDomain={$currentDomain}&page={$pages}&pagenum={$pagenum}'>&gt;&gt;</a>&nbsp;";
 ?>
-ÌøÖÁµÚ<select name="oPage" id="oPage" onchange="jump()">
+è·³è‡³ç¬¬<select name="oPage" id="oPage" onchange="jump()">
 <?
 for($i = 1; $i <= $pages; $i++){
 	if($i == $page)
@@ -229,7 +229,7 @@ for($i = 1; $i <= $pages; $i++){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>Ò³£¬Ã¿Ò³<select name="oPagenum" id="oPagenum" onchange="jump()">
+</select>é¡µï¼Œæ¯é¡µ<select name="oPagenum" id="oPagenum" onchange="jump()">
 <?
 for($i = 10; $i < 60; $i+=10){
 	if($i == $pagenum)
@@ -238,7 +238,7 @@ for($i = 10; $i < 60; $i+=10){
 		echo "<option value='$i'>$i";
 }
 ?>
-</select>Ìõ¼ÇÂ¼
+</select>æ¡è®°å½•
 </td>
 </tr>
 </table>
@@ -293,14 +293,14 @@ st.onsort = function () {
 function add()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "¶Ô²»Æğ£¬ÄãÎŞÈ¨½øĞĞĞŞ¸Ä²Ù×÷";
+		echo "å¯¹ä¸èµ·ï¼Œä½ æ— æƒè¿›è¡Œä¿®æ”¹æ“ä½œ";
 		return -1;
 	}
 ?>
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÊ¼şÓòÓÃ»§¹ÜÀí</TITLE>
+<TITLE>é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†</TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -308,57 +308,57 @@ function add()
 <form action="?MailDomain=<?=$_REQUEST["MailDomain"]?>&action=save" method="post">
 <table border=0>
 <tr align="center">
-<td colspan="2" class=title><b>Ìí¼ÓĞÂÓÃ»§</b></td>
+<td colspan="2" class=title><b>æ·»åŠ æ–°ç”¨æˆ·</b></td>
 </tr>
 <tr>
-	<td>ĞÂÕÊºÅÃû£º<input type=text name="user_id">
+	<td>æ–°å¸å·åï¼š<input type=text name="user_id">
 	</td>
-	<td>ÇëÊ¹ÓÃĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸¼°Êı×ÖÆğÕÊºÅÃû£¬±ØĞëÊ¹ÓÃÓ¢ÎÄ×ÖÄ¸¿ªÍ·¡£</td>
+	<td>è¯·ä½¿ç”¨å°å†™è‹±æ–‡å­—æ¯åŠæ•°å­—èµ·å¸å·åï¼Œå¿…é¡»ä½¿ç”¨è‹±æ–‡å­—æ¯å¼€å¤´ã€‚</td>
 </tr>
 <tr>
-	<td>ÊäÈëÃÜÂë£º<input type=password name="passwd1"></td>
-	<td>ÇëÊ¹ÓÃ´óĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸ºÍÊı×Ö×÷ÎªÓÊ¼şÃÜÂë¡£</td>
+	<td>è¾“å…¥å¯†ç ï¼š<input type=password name="passwd1"></td>
+	<td>è¯·ä½¿ç”¨å¤§å°å†™è‹±æ–‡å­—æ¯å’Œæ•°å­—ä½œä¸ºé‚®ä»¶å¯†ç ã€‚</td>
 </tr>
 <tr>
-	<td>È·ÈÏÃÜÂë£º<input type=password name="passwd2"></td>
-	<td>ÇëÔÙ´ÎÊäÈëÃÜÂë£¬Á½´ÎÃÜÂë±ØĞëÏàÍ¬¡£</td>
+	<td>ç¡®è®¤å¯†ç ï¼š<input type=password name="passwd2"></td>
+	<td>è¯·å†æ¬¡è¾“å…¥å¯†ç ï¼Œä¸¤æ¬¡å¯†ç å¿…é¡»ç›¸åŒã€‚</td>
 </tr>
 <tr>
-	<td>ÓÃ»§ĞÕÃû£º<input type=text name="user_name"></td>
-	<td>ÓÃ»§µÄĞÕÃû¡£</td>
+	<td>ç”¨æˆ·å§“åï¼š<input type=text name="user_name"></td>
+	<td>ç”¨æˆ·çš„å§“åã€‚</td>
 </tr>
 <tr>
-	<td>ÓÃ»§µ¥Î»£º<input type=text name="user_unit"></td>
-	<td>ÓÃ»§ËùÔÚµÄµ¥Î»¡£</td>
+	<td>ç”¨æˆ·å•ä½ï¼š<input type=text name="user_unit"></td>
+	<td>ç”¨æˆ·æ‰€åœ¨çš„å•ä½ã€‚</td>
 </tr>
 <tr>
-	<td>ÓÃ»§²¿ÃÅ£º<input type=text name="user_department"></td>
-	<td>ÓÃ»§ËùÔÚµÄ²¿ÃÅ¡£</td>
+	<td>ç”¨æˆ·éƒ¨é—¨ï¼š<input type=text name="user_department"></td>
+	<td>ç”¨æˆ·æ‰€åœ¨çš„éƒ¨é—¨ã€‚</td>
 </tr>
 <tr>
-	<td>ÓÃ»§¸ÚÎ»£º<input type=text name="user_station"></td>
-	<td>ÓÃ»§µÄ¸ÚÎ»¡£</td>
+	<td>ç”¨æˆ·å²—ä½ï¼š<input type=text name="user_station"></td>
+	<td>ç”¨æˆ·çš„å²—ä½ã€‚</td>
 </tr>
 <tr>
-	<td>ÓÃ»§Ö¤¼şºÅÂë£º<input type=text name="user_id_code"></td>
-	<td>ÓÃ»§µÄÖ¤¼şºÅÂë¡£</td>
+	<td>ç”¨æˆ·è¯ä»¶å·ç ï¼š<input type=text name="user_id_code"></td>
+	<td>ç”¨æˆ·çš„è¯ä»¶å·ç ã€‚</td>
 </tr>
 <tr>
-	<td>ÓÊÏä´óĞ¡£¨M£©£º<input type=text name="user_box_size"></td>
-	<td>ÓÃ»§µÄÓÊÏä´óĞ¡¡£</td>
+	<td>é‚®ç®±å¤§å°ï¼ˆMï¼‰ï¼š<input type=text name="user_box_size"></td>
+	<td>ç”¨æˆ·çš„é‚®ç®±å¤§å°ã€‚</td>
 </tr>
 <tr>
-	<td><input type=checkbox name="user_is_public">¶ÔÍâÏÔÊ¾</td>
-	<td>ÊÇ·ñ¹«¿ª¶ÔÍâÏÔÊ¾ÔÚ¹«¹²ÓÊ¼şÁĞ±íÖĞ</td>
+	<td><input type=checkbox name="user_is_public">å¯¹å¤–æ˜¾ç¤º</td>
+	<td>æ˜¯å¦å…¬å¼€å¯¹å¤–æ˜¾ç¤ºåœ¨å…¬å…±é‚®ä»¶åˆ—è¡¨ä¸­</td>
 </tr>
 <tr>
-	<td>±¸×¢£º<input type=text name="user_note"></td>
+	<td>å¤‡æ³¨ï¼š<input type=text name="user_note"></td>
 	<td></td>
 </tr>
 <tr align="center" >
-	<td colspan=2><input type=submit name="adduser" value="  È·  ÈÏ  ">
+	<td colspan=2><input type=submit name="adduser" value="  ç¡®  è®¤  ">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  Çå  ³ı  ">
+	<input type=reset value="  æ¸…  é™¤  ">
 	</td>
 </tr>
 </table>
@@ -371,7 +371,7 @@ function add()
 function modify()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "¶Ô²»Æğ£¬ÄãÎŞÈ¨½øĞĞĞŞ¸Ä²Ù×÷";
+		echo "å¯¹ä¸èµ·ï¼Œä½ æ— æƒè¿›è¡Œä¿®æ”¹æ“ä½œ";
 		return -1;
 	}
 	
@@ -380,7 +380,7 @@ function modify()
 	$user_id = $_REQUEST['id'];
 	$userinfo_list = getUserList($currentDomain,true);
 	if (!array_key_exists($user_id,$userinfo_list)){
-		echo "ÓÃ»§ÕËºÅ²»´æÔÚ";
+		echo "ç”¨æˆ·è´¦å·ä¸å­˜åœ¨";
 		return -1;
 	}
 	
@@ -390,7 +390,7 @@ function modify()
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÊ¼şÓòÓÃ»§¹ÜÀí</TITLE>
+<TITLE>é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†</TITLE>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -400,50 +400,50 @@ function modify()
 <table>
 <tbody>
 <tr>
-<td>ÕËºÅ<INPUT type="hidden" name="user_id" value="<? echo $user_id; ?>"></td>
+<td>è´¦å·<INPUT type="hidden" name="user_id" value="<? echo $user_id; ?>"></td>
 <td><? echo $user_id; ?></td>
 </tr>
 <tr>
-	<td>ÊäÈëÃÜÂë£º</td>
-	<td><input type=password name="passwd1">Èô²»ĞŞ¸ÄÇëÁô¿Õ£¬ÇëÊ¹ÓÃ´óĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸ºÍÊı×Ö×÷ÎªÓÊ¼şÃÜÂë¡£</td>
+	<td>è¾“å…¥å¯†ç ï¼š</td>
+	<td><input type=password name="passwd1">è‹¥ä¸ä¿®æ”¹è¯·ç•™ç©ºï¼Œè¯·ä½¿ç”¨å¤§å°å†™è‹±æ–‡å­—æ¯å’Œæ•°å­—ä½œä¸ºé‚®ä»¶å¯†ç ã€‚</td>
 </tr>
 <tr>
-	<td>È·ÈÏÃÜÂë£º</td>
-	<td><input type=password name="passwd2">Èô²»ĞŞ¸ÄÇëÁô¿Õ£¬ÇëÔÙ´ÎÊäÈëÃÜÂë£¬Á½´ÎÃÜÂë±ØĞëÏàÍ¬¡£</td>
+	<td>ç¡®è®¤å¯†ç ï¼š</td>
+	<td><input type=password name="passwd2">è‹¥ä¸ä¿®æ”¹è¯·ç•™ç©ºï¼Œè¯·å†æ¬¡è¾“å…¥å¯†ç ï¼Œä¸¤æ¬¡å¯†ç å¿…é¡»ç›¸åŒã€‚</td>
 </tr>
 <tr>
-<td>ĞÕÃû</td>
+<td>å§“å</td>
 <td><input type="text" name="user_name" value="<? echo $userinfo['name']; ?>"></td>
 </tr>
 <tr>
-<td>µ¥Î»</td>
+<td>å•ä½</td>
 <td><input type="text" name="user_unit" value="<? echo $userinfo['unit']; ?>"></td>
 </tr>
 <tr>
-<td>²¿ÃÅ</td>
+<td>éƒ¨é—¨</td>
 <td><input type="text" name="user_department" value="<? echo $userinfo['department']; ?>"></td>
 </tr>
 <tr>
-<td>¸ÚÎ»</td>
+<td>å²—ä½</td>
 <td><input type="text" name="user_station" value="<? echo $userinfo['station']; ?>"></td>
 </tr>
 <tr>
-<td>Ö¤¼şºÅÂë</td>
+<td>è¯ä»¶å·ç </td>
 <td><input type="text" name="user_id_code" value="<? echo $userinfo['id_code']; ?>"></td>
 </tr>
 <tr>
-<td>ÕËºÅ½¨Á¢Ê±¼ä</td>
+<td>è´¦å·å»ºç«‹æ—¶é—´</td>
 <td><? echo $userinfo['create_time']; ?></td>
 </tr>
 <tr>
-<td>ÓÊÏäÈİÁ¿</td>
+<td>é‚®ç®±å®¹é‡</td>
 <td><input type="text" name="user_box_size" value="<? echo $userinfo['quota']; ?>">MB</td>
 </tr>
 <tr>
-	<td colspan=2><input type=checkbox name="user_is_public" <? if ($userinfo['is_public']=='Y') echo "checked";?>>¶ÔÍâÏÔÊ¾</td>
+	<td colspan=2><input type=checkbox name="user_is_public" <? if ($userinfo['is_public']=='Y') echo "checked";?>>å¯¹å¤–æ˜¾ç¤º</td>
 </tr>
 <tr>
-<td>ÓÃ»§ËùÊô×é</td>
+<td>ç”¨æˆ·æ‰€å±ç»„</td>
 <td><select id="oGroupList" size=5 multiple><? 
 	$groupdefine_profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . GROUPFILE;
 	if (!file_exists($groupdefine_profile)){
@@ -483,7 +483,7 @@ function modify()
 	?></select></td>
 </tr>
 <tr>
-	<td>±¸×¢</td>
+	<td>å¤‡æ³¨</td>
 	<td><input type=text name="user_note" value="<? echo $userinfo['note'] ?>"></td>
 </tr>
 </tbody>
@@ -505,7 +505,7 @@ function doModify(){
 }
 </script>
 <input type="hidden" name="groups" id="oGroups" >
-<INPUT type="button" value="Ìá½»ĞŞ¸ÄĞÅÏ¢" onclick="doModify();">
+<INPUT type="button" value="æäº¤ä¿®æ”¹ä¿¡æ¯" onclick="doModify();">
 </form>
 </body>
 </html>
@@ -515,86 +515,86 @@ function doModify(){
 function save()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "¶Ô²»Æğ£¬ÄãÎŞÈ¨½øĞĞĞŞ¸Ä²Ù×÷";
+		echo "å¯¹ä¸èµ·ï¼Œä½ æ— æƒè¿›è¡Œä¿®æ”¹æ“ä½œ";
 		return -1;
 	}
 	
 	global $currentDomain,$spamconf;
 	
 	$bModify = isset($_POST['modify']);
-//ÅĞ¶ÏÓÃ»§ĞÅÏ¢ÌîĞ´ÊÇ·ñÍêÕû£º
+//åˆ¤æ–­ç”¨æˆ·ä¿¡æ¯å¡«å†™æ˜¯å¦å®Œæ•´ï¼š
 	if (!isset($_REQUEST['user_id'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if (!$bModify && !isset($_REQUEST['passwd1'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!$bModify && !isset($_REQUEST['passwd2'])){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_name'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ĞÕÃû<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å§“å<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_unit'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ËùÔÚµ¥Î»<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·æ‰€åœ¨å•ä½<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_department'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ËùÔÚ²¿ÃÅ<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·æ‰€åœ¨éƒ¨é—¨<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_station'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§¸ÚÎ»<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å²—ä½<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_id_code'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§Ö¤¼şºÅÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·è¯ä»¶å·ç <br>";
 		return false;
 	}
 
 	if (!isset($_REQUEST['user_box_size'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÊÏä´óĞ¡<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥é‚®ç®±å¤§å°<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_note'])){ 
-		echo "´íÎó£ºÎ´ÊäÈë±¸×¢<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥å¤‡æ³¨<br>";
 		return false;
 	}
 
 	if ($_REQUEST['user_id']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if (!$bModify && $_REQUEST['passwd1']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!$bModify && $_REQUEST['passwd2']==''){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if ($_REQUEST['user_name']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ĞÕÃû<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å§“å<br>";
 		return false;
 	}
     if ( !ereg("^[0-9]+$", $_REQUEST['user_box_size'])){
-    	echo "´íÎó£ºÓÃ»§ÓÊÏä´óĞ¡Î´Ö¸¶¨»òÆä²»ÊÇÓĞĞ§Êı×Ö¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·é‚®ç®±å¤§å°æœªæŒ‡å®šæˆ–å…¶ä¸æ˜¯æœ‰æ•ˆæ•°å­—â€œ:â€<br>";
     	return false;
     }
 
-	$user_id = $_REQUEST['user_id'];		//ÓÃ»§ID
+	$user_id = $_REQUEST['user_id'];		//ç”¨æˆ·ID
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
-	$user_name = $_REQUEST['user_name'];	//ÓÃ»§ĞÕÃû
-	$user_unit = $_REQUEST['user_unit'];		//ÓÃ»§µ¥Î»
-	$user_department = $_REQUEST['user_department']; 	//ÓÃ»§²¿ÃÅ
-	$user_station = $_REQUEST['user_station']; 		//ÓÃ»§¸ÚÎ»
-	$user_id_code = $_REQUEST['user_id_code'];		//ÓÃ»§Ö¤¼şºÅÂë
-	$user_note = $_REQUEST['user_note'];		//ÓÃ»§Ö¤¼şºÅÂë
+	$user_name = $_REQUEST['user_name'];	//ç”¨æˆ·å§“å
+	$user_unit = $_REQUEST['user_unit'];		//ç”¨æˆ·å•ä½
+	$user_department = $_REQUEST['user_department']; 	//ç”¨æˆ·éƒ¨é—¨
+	$user_station = $_REQUEST['user_station']; 		//ç”¨æˆ·å²—ä½
+	$user_id_code = $_REQUEST['user_id_code'];		//ç”¨æˆ·è¯ä»¶å·ç 
+	$user_note = $_REQUEST['user_note'];		//ç”¨æˆ·è¯ä»¶å·ç 
 	$user_is_public = isset($_REQUEST['user_is_public']);
 	$user_box_size = 1024 * 1024 * (intval($_REQUEST['user_box_size']) );
 
@@ -619,44 +619,44 @@ function save()
 		$user_id_code=' ';
 	}
     if (!ereg( "^[a-z][_0-9a-z\.]*$", $user_id )) { //
-        echo "´íÎó£ºÓÃ»§IDÖĞº¬ÓĞ·Ç·¨×Ö·û<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·IDä¸­å«æœ‰éæ³•å­—ç¬¦<br>";
         return false;
     }
     if (!$bModify && !eregi( "^[0-9a-z]+$", $passwd1 )) {
-    	echo  "´íÎó£ºÃÜÂëÖĞº¬ÓĞ·Ç·¨×Ö·û<br>";
+    	echo  "é”™è¯¯ï¼šå¯†ç ä¸­å«æœ‰éæ³•å­—ç¬¦<br>";
     	return false;
     }
     if ( $passwd1 != $passwd2 ) {
-    	echo "´íÎó£ºÁ½´ÎÊäÈëµÄÃÜÂë²»Æ¥Åä<br>";
+    	echo "é”™è¯¯ï¼šä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒ¹é…<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]+$", $user_name)){
-    	echo "´íÎó£ºÓÃ»§ĞÕÃûÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å§“åä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
 
     if ( !ereg("^[^:]*$", $user_unit)){
-    	echo "´íÎó£ºÓÃ»§µ¥Î»ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å•ä½ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_department)){
-    	echo "´íÎó£ºÓÃ»§²¿ÃÅÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·éƒ¨é—¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_station)){
-    	echo "´íÎó£ºÓÃ»§¸ÚÎ»ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å²—ä½ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_id_code)){
-    	echo "´íÎó£ºÓÃ»§Ö¤¼şºÅÂëÖĞº¬ÓĞ·Ç·¨×Ö·û¡°£º¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·è¯ä»¶å·ç ä¸­å«æœ‰éæ³•å­—ç¬¦â€œï¼šâ€<br>";
     	return false;
     }
     if ( !ereg("^[^:]*$", $user_note)){
-    	echo "´íÎó£º±¸×¢ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°£º¡±<br>";
+    	echo "é”™è¯¯ï¼šå¤‡æ³¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œï¼šâ€<br>";
     	return false;
     }
 
@@ -664,20 +664,20 @@ function save()
 
     if ($bModify){
     	if (!array_key_exists($user_id, $user_list)){
-    		echo "´íÎóµÄÕÊºÅ";
+    		echo "é”™è¯¯çš„å¸å·";
     		return -1;
     	}
     }else{
     	$MaxUserCount = intval($spamconf->getParam("VirtualDomain_{$currentDomain}_MaxUser","MailServer"));
 	    if ($MaxUserCount > 0){
     		if (count($user_list) == $MaxUserCount){
-    			echo "ÓÃ»§ÊıÁ¿ÒÑ´ïÉÏÏŞ";
+    			echo "ç”¨æˆ·æ•°é‡å·²è¾¾ä¸Šé™";
     			return -1;
     		}
 		}
 		
     	if (array_key_exists($user_id, $user_list)){
-    		echo "ÏàÍ¬µÄÕÊºÅÒÑ´æÔÚ";
+    		echo "ç›¸åŒçš„å¸å·å·²å­˜åœ¨";
     		return -1;
     	}
     }
@@ -685,7 +685,7 @@ function save()
     $MaxQuota = intval($spamconf->getParam("VirtualDomain_{$currentDomain}_Quota","MailServer"));
     if ($MaxQuota > 0){
     	if ($user_box_size == 0){
-    		echo "±ØĞëÉèÖÃÓÃ»§ÏŞ¶î";
+    		echo "å¿…é¡»è®¾ç½®ç”¨æˆ·é™é¢";
     		return -1;
     	}
     	$TotalQuota = 0;
@@ -695,7 +695,7 @@ function save()
     		}
     	}
     	if (($TotalQuota+$user_box_size) > intval($spamconf->getParam("VirtualDomain_{$currentDomain}_Quota","MailServer"))){
-    		echo "×ÜÓÃ»§¿Õ¼äÏŞ¶î³¬¹ıÉÏÏŞ";
+    		echo "æ€»ç”¨æˆ·ç©ºé—´é™é¢è¶…è¿‡ä¸Šé™";
     		return -1;
     	}
 	}
@@ -719,10 +719,10 @@ function save()
     	system( VPOPMAILHOME.'bin/vmoduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' > /dev/null', $result );
     	if ($passwd1 != "")
     		system( VPOPMAILHOME.'bin/vpasswd '.$user_id."@".$currentDomain.' '.$passwd1.' > /dev/null', $result );
-    	LogAction("ÓÊ¼şÓòÓÃ»§¹ÜÀí","ĞŞ¸ÄÓÃ»§ĞÅÏ¢",$user_id."@".$currentDomain);
+    	LogAction("é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†","ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯",$user_id."@".$currentDomain);
     }else{
     	system( VPOPMAILHOME .'bin/vadduser -c "'.$user_name.'" -q '.$user_box_size.' '.$user_id."@".$currentDomain.' "'.$passwd1.'" > /dev/null', $result );
-    	LogAction("ÓÊ¼şÓòÓÃ»§¹ÜÀí","Ìí¼ÓĞÂÓÃ»§",$user_id."@".$currentDomain);
+    	LogAction("é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†","æ·»åŠ æ–°ç”¨æˆ·",$user_id."@".$currentDomain);
     }
     
     $profile = VPOPMAILHOME . 'domains/' . $currentDomain . '/' . USERPROFILE;
@@ -738,13 +738,13 @@ function save()
 function del()
 {
 	if(!adminPerm(PERM_ADMIN_WRITE)){
-		echo "¶Ô²»Æğ£¬ÄãÎŞÈ¨½øĞĞĞŞ¸Ä²Ù×÷";
+		echo "å¯¹ä¸èµ·ï¼Œä½ æ— æƒè¿›è¡Œä¿®æ”¹æ“ä½œ";
 		return -1;
 	}
 
 	if (!isset($_REQUEST['id'])){
 ?>
-	´íÎó:Î´Ö¸¶¨ÓÃ»§ÕËºÅ£¡
+	é”™è¯¯:æœªæŒ‡å®šç”¨æˆ·è´¦å·ï¼
 <?
 		return false;
 	} 
@@ -802,7 +802,7 @@ function del()
 			unset($id[$key]);
 			unset($userinfo_list[$user_account]);
 			system( VPOPMAILHOME . "bin/vdeluser " . $user_account . '@' . $currentDomain . ' > /dev/null' , $del_result );
-			LogAction("ÓÊ¼şÓòÓÃ»§¹ÜÀí","É¾³ıÕËºÅ",$user_account . '@' . $currentDomain);
+			LogAction("é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†","åˆ é™¤è´¦å·",$user_account . '@' . $currentDomain);
 		}
 	}
 
@@ -824,7 +824,7 @@ function del()
 		header("Location: ".$_SERVER['PHP_SELF']);
 	} else {
 ?>
-	´íÎó£ºÎ´ÕÒµ½ÕËºÅÎª<?=implode(",",$id)?>µÄÓÃ»§ĞÅÏ¢<br>
+	é”™è¯¯ï¼šæœªæ‰¾åˆ°è´¦å·ä¸º<?=implode(",",$id)?>çš„ç”¨æˆ·ä¿¡æ¯<br>
 <?
 	}
 }
@@ -856,7 +856,7 @@ function getUserList($domain, $bAssoc)
 	    								"create_time" => $create_time,
 										"is_public" => $isPublic,
 										"note" => $note,
-										"group"=> str_replace(',', '£¬', $group))
+										"group"=> str_replace(',', 'ï¼Œ', $group))
 	    );
 	}
 	fclose($h_user_profile);

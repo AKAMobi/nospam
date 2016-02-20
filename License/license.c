@@ -12,7 +12,7 @@
 #include <errno.h>
 
 /*
- * µ×²ã½Ó¿Ú£¬¸ºÔğÈ¡»ØÍø¿¨µÄ MAC Êı¾İ
+ * åº•å±‚æ¥å£ï¼Œè´Ÿè´£å–å›ç½‘å¡çš„ MAC æ•°æ®
  */
 unsigned char * get_mac_serial( char* result )
 {
@@ -61,7 +61,7 @@ unsigned char * get_mac_serial( char* result )
 }
 
 /*
- * µ×²ã½Ó¿Ú£¬¸ºÔğÈ¡»ØÓ²ÅÌĞòÁĞºÅ
+ * åº•å±‚æ¥å£ï¼Œè´Ÿè´£å–å›ç¡¬ç›˜åºåˆ—å·
  */
 unsigned char* get_hd_serial(unsigned char* result) {
 	static char *sealcode = "IENCOASI2304KJASDIWE234984ALSKDWMZXOIUDWD";
@@ -91,7 +91,7 @@ unsigned char* get_hd_serial(unsigned char* result) {
 }
 
 /*
- * ÉÏ²ã½Ó¿Ú£¬Õâ¸öº¯Êı·µ»ØÓ²¼şÊ¶±ğºÅ
+ * ä¸Šå±‚æ¥å£ï¼Œè¿™ä¸ªå‡½æ•°è¿”å›ç¡¬ä»¶è¯†åˆ«å·
  */
 unsigned char * get_prodno ( unsigned char* prodno )
 {
@@ -111,7 +111,7 @@ unsigned char * get_prodno ( unsigned char* prodno )
 }
 
 /*
- * ´«Èë License ÎÄ¼şÊı¾İ£¬·µ»ØÎÄ¼şÊı¾İµÄĞ£ÑéÖµ
+ * ä¼ å…¥ License æ–‡ä»¶æ•°æ®ï¼Œè¿”å›æ–‡ä»¶æ•°æ®çš„æ ¡éªŒå€¼
  */
 unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* license_ex )
 {
@@ -133,7 +133,7 @@ unsigned char * get_license_ex ( unsigned char* license_dat, unsigned char* lice
 
 
 /*
- * ´«ÈëÓ²¼şÊ¶±ğºÅ£¬Éú³É License ºÅ
+ * ä¼ å…¥ç¡¬ä»¶è¯†åˆ«å·ï¼Œç”Ÿæˆ License å·
  */
 unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 {
@@ -153,7 +153,7 @@ unsigned char * get_license ( unsigned char* prodno, unsigned char* license )
 }
 
 /*
- * ¼ì²é license ÊÇ·ñÎª ±¾µØprodno µÄlicense
+ * æ£€æŸ¥ license æ˜¯å¦ä¸º æœ¬åœ°prodno çš„license
  */
 int check_license_match ( unsigned char* license )
 {
@@ -172,7 +172,7 @@ int check_license_match ( unsigned char* license )
 
 
 /*
- * ¼ì²é license_ex Ğ£ÑéºÍÊÇ·ñ³É¹¦
+ * æ£€æŸ¥ license_ex æ ¡éªŒå’Œæ˜¯å¦æˆåŠŸ
  */
 int check_license_ex_match ( unsigned char* license_file, unsigned char* license_ex )
 {
@@ -189,7 +189,7 @@ int check_license_ex_match ( unsigned char* license_file, unsigned char* license
 }
 
 /*
- * ´«Èë License ÎÄ¼ş£¬¼ì²éÎÄ¼şÊÇ·ñºÏ·¨£»
+ * ä¼ å…¥ License æ–‡ä»¶ï¼Œæ£€æŸ¥æ–‡ä»¶æ˜¯å¦åˆæ³•ï¼›
  */
 int check_license_file ( const char* filepath )
 {

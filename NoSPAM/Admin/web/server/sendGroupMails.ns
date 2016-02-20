@@ -229,7 +229,7 @@ $linkpath='';
 			$user_maildir= $user_maildir. "/Maildir/new/";
 			$user_mailname= $user_maildir.$mail_name; 
 			if ($isSendAll) {	
-				echo "·¢ËÍ¸ø".$user_account;
+				echo "å‘é€ç»™".$user_account;
 				if ($iscopy) {
 					@copy($attachdir . "/.mail", $user_mailname);
 					$linkpath=$user_mailname;

@@ -24,7 +24,7 @@ if (!isset($_REQUEST['id'])){
 	return false;
 } 
 
-	if ( isset($_REQUEST["changeUserPasswd"])){ //实际修改用户信息
+	if ( isset($_REQUEST["changeUserPasswd"])){ //瀹為檯淇敼鐢ㄦ埛淇℃伅
 
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
@@ -57,7 +57,7 @@ if (!isset($_REQUEST['id'])){
 		return true;
 	} 
 	
-	//显示用户信息
+	//鏄剧ず鐢ㄦ埛淇℃伅
 
 	$user_list = file( $passwd_file );
  	

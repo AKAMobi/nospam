@@ -1,66 +1,66 @@
 2003-06-10	Fan Lin <lfan@lfan.net>
 	folder.c maildir.c folder.html
-			ÔÚä¯ÀÀÓÊ¼şÊ±Ôö¼Ó¸½¼ş±êÊ¶
-	folder.c	¸ü¸ÄÏÔÊ¾ÓÊÏäÈİÁ¿²»×¼È·µÄÎÊÌâ£¨¸ĞĞ»ÍøÓÑwait£©
-	attachment.c	½â¾öÖĞÎÄ¸½¼şÔÚOEÏÂÂÒÂëµÄ´íÎó
+			åœ¨æµè§ˆé‚®ä»¶æ—¶å¢åŠ é™„ä»¶æ ‡è¯†
+	folder.c	æ›´æ”¹æ˜¾ç¤ºé‚®ç®±å®¹é‡ä¸å‡†ç¡®çš„é—®é¢˜ï¼ˆæ„Ÿè°¢ç½‘å‹waitï¼‰
+	attachment.c	è§£å†³ä¸­æ–‡é™„ä»¶åœ¨OEä¸‹ä¹±ç çš„é”™è¯¯
 	
 2003-06-10	Fan Lin <lfan@lfan.net>
-	attachment.html	ĞŞÕıÉÏÒ»°æ±¾Ìí¼Ó¸½¼şÊ±²»ÄÜ·µ»ØµÄbug
-	install		ĞŞ¸Ä°²×°½Å±¾£¬Ö§³ÖÖ¸¶¨°²×°Ä¿Â¼
+	attachment.html	ä¿®æ­£ä¸Šä¸€ç‰ˆæœ¬æ·»åŠ é™„ä»¶æ—¶ä¸èƒ½è¿”å›çš„bug
+	install		ä¿®æ”¹å®‰è£…è„šæœ¬ï¼Œæ”¯æŒæŒ‡å®šå®‰è£…ç›®å½•
 	maildirfilter2.c pref.c mailfilter.c
-			µ÷Õû.qmailÎÄ¼şÎ»ÖÃ£¬ÔöÇ¿×ª·¢¹¦ÄÜ
-	cginocache.c	½ûÖ¹ä¯ÀÀÆ÷cacheÓÊ¼şÄÚÈİ
-	sqwebmail.c	µ÷Õûsession£¬½«Æä´æ´¢µ½cookieÖĞ
-	rfc2045reply.c	¶à´Î»Ø¸´Ê±²»»á³öÏÖ¶à¸öRe: Re:...µÄÏÖÏó
+			è°ƒæ•´.qmailæ–‡ä»¶ä½ç½®ï¼Œå¢å¼ºè½¬å‘åŠŸèƒ½
+	cginocache.c	ç¦æ­¢æµè§ˆå™¨cacheé‚®ä»¶å†…å®¹
+	sqwebmail.c	è°ƒæ•´sessionï¼Œå°†å…¶å­˜å‚¨åˆ°cookieä¸­
+	rfc2045reply.c	å¤šæ¬¡å›å¤æ—¶ä¸ä¼šå‡ºç°å¤šä¸ªRe: Re:...çš„ç°è±¡
 
 2003-06-05	Fan Lin <lfan@lfan.net>
-	sqwebmail.c	ĞŞÕı×¢ÏúºóÈÔÄÜÍ¨¹ıURL·ÃÎÊĞÅÏäµÄ°²È«ÎÊÌâ
+	sqwebmail.c	ä¿®æ­£æ³¨é”€åä»èƒ½é€šè¿‡URLè®¿é—®ä¿¡ç®±çš„å®‰å…¨é—®é¢˜
 
 2003-05-30	Fan Lin <lfan@lfan.net>
 	makemime.c attachment.c
-			½â¾ö¸½¼şÖĞÎÄÃûÔÚÄ³Ğ©ÓÊ¼şÏµÍ³ÏÂÎŞ·¨Ê¶±ğµÄÎÊÌâ
+			è§£å†³é™„ä»¶ä¸­æ–‡ååœ¨æŸäº›é‚®ä»¶ç³»ç»Ÿä¸‹æ— æ³•è¯†åˆ«çš„é—®é¢˜
 	attachment.c folder.c newmsg.c attachment.html newmsg.html
-			Ö§³ÖÓÊ¼şÔ¤ÀÀ
-	folder.c	ĞŞÕı´æ´¢²İ¸åÊ±³öÏÖµÄ·¢ËÍ³É¹¦
+			æ”¯æŒé‚®ä»¶é¢„è§ˆ
+	folder.c	ä¿®æ­£å­˜å‚¨è‰ç¨¿æ—¶å‡ºç°çš„å‘é€æˆåŠŸ
 
 2003-05-26	Fan Lin <lfan@lfan.net>
-	newmsg_create.c ½â¾ö·¢¼şÈËÖØ¸´±àÂëµÄÎÊÌâ
-	sqwebmail.c	Ö§³ÖÄ¬ÈÏÓòÃû£¬ĞŞÕıµÇÂ¼¹ıÆÚµÄbug
-	folder.c	½â¾ö¶ÁÈ¡ÓÊ¼şÊ±É¾³ıºócacheÃ»ÓĞË¢ĞÂµÄÎÊÌâ
+	newmsg_create.c è§£å†³å‘ä»¶äººé‡å¤ç¼–ç çš„é—®é¢˜
+	sqwebmail.c	æ”¯æŒé»˜è®¤åŸŸåï¼Œä¿®æ­£ç™»å½•è¿‡æœŸçš„bug
+	folder.c	è§£å†³è¯»å–é‚®ä»¶æ—¶åˆ é™¤åcacheæ²¡æœ‰åˆ·æ–°çš„é—®é¢˜
 	readmsg.html newmsg.html
-			Ôö¼ÓÉÙÁ¿ÖĞÎÄ·­Òë
+			å¢åŠ å°‘é‡ä¸­æ–‡ç¿»è¯‘
 
 2003-05-18	Fan Lin <lfan@lfan.net>
-	folder.c	ÓÅ»¯ÎÄ±¾ĞÅ¼şµÄÏÔÊ¾
-	sqwebmail.c	Ö§³ÖquotaÉèÖÃÎª20M£¬1000KÕâÑùµÄĞÎÊ½
-			¸ü¸ÄÕÊºÅ¶àµÇÂ¼µÄÒ»¸öbug
-	*.html		ÃÀ¹Û´íÎóÏÔÊ¾£¬ĞŞ¸Ä²¿·ÖJavaScript´íÎó
-	cgi.c		¸ü¸ÄÌáÊ¾
+	folder.c	ä¼˜åŒ–æ–‡æœ¬ä¿¡ä»¶çš„æ˜¾ç¤º
+	sqwebmail.c	æ”¯æŒquotaè®¾ç½®ä¸º20Mï¼Œ1000Kè¿™æ ·çš„å½¢å¼
+			æ›´æ”¹å¸å·å¤šç™»å½•çš„ä¸€ä¸ªbug
+	*.html		ç¾è§‚é”™è¯¯æ˜¾ç¤ºï¼Œä¿®æ”¹éƒ¨åˆ†JavaScripté”™è¯¯
+	cgi.c		æ›´æ”¹æç¤º
 
 2003-05-15	Fan Lin <lfan@lfan.net>
 	newmsg.c sqwebmail.c sendok.html sendok*.gif
-			Ìí¼Ó·¢ĞÅ³É¹¦½çÃæ
+			æ·»åŠ å‘ä¿¡æˆåŠŸç•Œé¢
 	newmsg.c newmsg.html
-			ĞŞ¸ÄÌí¼Ó¸½¼ş
-	sqwebmail.c	Ìí¼Ó°æÈ¨ĞÅÏ¢ÏÔÊ¾
+			ä¿®æ”¹æ·»åŠ é™„ä»¶
+	sqwebmail.c	æ·»åŠ ç‰ˆæƒä¿¡æ¯æ˜¾ç¤º
 	maildirquota.c sqwebmail.c
-			Ã¿´ÎµÇÂ¼ÖØĞÂ¼ÆËãquota£¬½â¾öpop3ÊÕ¼ş
-			ÒÔºóquota¼ÆËãµÄ´íÎó
-	sqwebmail.c	Ö§³ÖÕÊºÅµÄ¶à¸ö´°¿ÚµÇÂ¼
-			È¥µôÁËÎ´Ê¹ÓÃµÄÈÕÀúÄ£¿é
+			æ¯æ¬¡ç™»å½•é‡æ–°è®¡ç®—quotaï¼Œè§£å†³pop3æ”¶ä»¶
+			ä»¥åquotaè®¡ç®—çš„é”™è¯¯
+	sqwebmail.c	æ”¯æŒå¸å·çš„å¤šä¸ªçª—å£ç™»å½•
+			å»æ‰äº†æœªä½¿ç”¨çš„æ—¥å†æ¨¡å—
 
 
 2003-05-08      Fan Lin <lfan@lfan.net>
 	rfc2646create.c folder.c
-			·¢ĞÅÖĞÎÄÂÒÂëµÃbugºÍÏÔÊ¾±êÌâµÃ°ë¸ö×Ö·ûÎÊÌâ
-	mailfilter.c	Éú³É¹ıÂËÎÄ¼şµÄbug
+			å‘ä¿¡ä¸­æ–‡ä¹±ç å¾—bugå’Œæ˜¾ç¤ºæ ‡é¢˜å¾—åŠä¸ªå­—ç¬¦é—®é¢˜
+	mailfilter.c	ç”Ÿæˆè¿‡æ»¤æ–‡ä»¶çš„bug
 
 2003-05-07	Fan Lin <lfan@lfan.net>
-	folder.c	½â¾öÓÊÏä¸Õ´´½¨Ê±Ã»ÓĞQuotaĞÅÏ¢µÄÎÊÌâ
+	folder.c	è§£å†³é‚®ç®±åˆšåˆ›å»ºæ—¶æ²¡æœ‰Quotaä¿¡æ¯çš„é—®é¢˜
 	Makefile.in configure
-			°²×°bugµÄĞŞ¸Ä
+			å®‰è£…bugçš„ä¿®æ”¹
 
 2003-05-04	Fan Lin <lfan@lfan.net>
-	newmsg.html newmsg.c Ã»ÓĞÊÕ¼şÈË²»»á±¨´í
-	folder.c	¸½¼şÖĞÎÄÃû²»ÄÜÕı³£ÏÔÊ¾
-			MIME½âÂëÊ±²»ÄÜÊ¶±ğboundary
+	newmsg.html newmsg.c æ²¡æœ‰æ”¶ä»¶äººä¸ä¼šæŠ¥é”™
+	folder.c	é™„ä»¶ä¸­æ–‡åä¸èƒ½æ­£å¸¸æ˜¾ç¤º
+			MIMEè§£ç æ—¶ä¸èƒ½è¯†åˆ«boundary

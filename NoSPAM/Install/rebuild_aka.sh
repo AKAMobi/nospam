@@ -5,7 +5,7 @@ cpperl()
 {
 	echo "cpperl $1 to $2..."
 	echo '#!/usr/bin/perl -X -I/home/NoSPAM' > $2;
-	# Õâ¸öµ¼ÖÂ ns-queue Ã»ÓĞÊä³öÁË£¿echo 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
+	# è¿™ä¸ªå¯¼è‡´ ns-queue æ²¡æœ‰è¾“å‡ºäº†ï¼Ÿecho 'open (NSOUT, ">&=2"); open(STDERR,">/dev/null");' >> $2;
 	echo 'my $AKA_noSPAM_release = 1;' >> $2;
 	cat $1 >> $2;
 }
@@ -80,7 +80,7 @@ chmod 755 aka/home/NoSPAM/bin/*.pl
 cpperl ${SOURCEHOME}/Bin/NoSPAM.pl aka/root/post_install.pl
 chmod 755 aka/root/*.pl
 
-# 2004-05-23 qns_loaer.cpp Ìæ»»µô qns_loader.c & ns-queue.pl
+# 2004-05-23 qns_loaer.cpp æ›¿æ¢æ‰ qns_loader.c & ns-queue.pl
 #cpperl ${SOURCEHOME}/Bin/ns-queue.pl aka/var/qmail/bin/ns-queue.pl
 #chmod 755 aka/var/qmail/bin/ns-queue.pl
 

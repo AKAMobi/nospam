@@ -11,12 +11,12 @@ function init()
 	document.logon.username.focus();
 }
 
-var alertinput = "ÇëÊäÈë:\n\n";	
+var alertinput = "è¯·è¾“å…¥:\n\n";	
 
 function login() {
 	var mesg = "";
-	if(document.logon.username.value == "") mesg += "ÓÃ»§\n";
-	if(document.logon.password.value == "") mesg += "ÃÜÂë\n";
+	if(document.logon.username.value == "") mesg += "ç”¨æˆ·\n";
+	if(document.logon.password.value == "") mesg += "å¯†ç \n";
 	if(mesg != ""){
 		mesg = alertinput + mesg;
 		alert(mesg);
@@ -40,17 +40,17 @@ function login() {
               <br>
               <table border="0" cellspacing="0" cellpadding="2" class=csmtype>
                 <tr>
-                  <td align="right"><b>ÓÃ»§:&nbsp;&nbsp;</b> </td>
+                  <td align="right"><b>ç”¨æˆ·:&nbsp;&nbsp;</b> </td>
                   <td>
                     <input class=myinput type="text" name="username" size="10" style='font-family:tahoma'>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<b>ÃÜÂë:&nbsp;&nbsp;</b>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>å¯†ç :&nbsp;&nbsp;</b>
                     <input type="password" name="password" class=myinput size="10" style='font-family:tahoma'> 
                   </td>
                 </tr>
                 <tr>
                   <td colspan=2 align="center">
-			<input type="checkbox" name="nosecure" >µÇÂ¼ºó²»°ó¶¨IP
-                    <input type="submit" name="do.login" value="µÇÂ¼" class=mybtn>
+			<input type="checkbox" name="nosecure" >ç™»å½•åä¸ç»‘å®šIP
+                    <input type="submit" name="do.login" value="ç™»å½•" class=mybtn>
                   </td>
                 </tr>
               </table>
@@ -67,7 +67,7 @@ function login() {
                     <table width="80%" height="85%" cellspacing cellpadding style="border: 1 solid #336699">
                       <tr>
                         <td width="100%" valign="middle" align="center" class=csmtype> 
-                          ²»ÕıÈ·µÄÓÃ»§ºÍÃÜÂë 
+                          ä¸æ­£ç¡®çš„ç”¨æˆ·å’Œå¯†ç  
                         </td>
                       </tr>
                     </table>

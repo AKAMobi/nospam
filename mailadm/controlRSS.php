@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>RSS¹¦ÄÜÉèÖÃ</TITLE>
+<TITLE>RSSåŠŸèƒ½è®¾ç½®</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -22,7 +22,7 @@ function doConfig(){
 	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 		?>
 			<br>
-			ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+			æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 			<?php
 			return false;
 	}
@@ -31,14 +31,14 @@ function doConfig(){
 	}
 	$handle=fopen("/var/qmail/control/rsslist","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®ï¼<br>";
 		return false;
 	}
 	fputs($handle,str_replace("\r","",$_POST['content']));
 	fclose($handle);
 	$handle=fopen("/var/qmail/control/rsscontrol","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®ï¼<br>";
 		return false;
 	}
 	fputs($handle,($_POST['OpenRelay']=='true')?'1':'0');
@@ -47,7 +47,7 @@ function doConfig(){
 }
 
 if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
-	echo "ÉèÖÃ±£´æ³É¹¦£¡<br>";
+	echo "è®¾ç½®ä¿å­˜æˆåŠŸï¼<br>";
 } else {
 	if ( ! file_exists("/var/qmail/control/rsscontrol") ){
 		fclose( fopen("/var/qmail/control/rsscontrol","w") );
@@ -84,12 +84,12 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 		<INPUT type="hidden" name="doConfig">
 		<table border=0>
 		<tr align="center" bgcolor=#6fa6e6>
-		<td colspan="2" class=title><b>ÉèÖÃRSS¹¦ÄÜ</b></td>
+		<td colspan="2" class=title><b>è®¾ç½®RSSåŠŸèƒ½</b></td>
 		</tr>
-		<td colspan="2"><input type="checkbox" name="OpenRelay" value="true" <?php if ($config) echo "checked" ;?> >´ò¿ªRSS¹¦ÄÜ
+		<td colspan="2"><input type="checkbox" name="OpenRelay" value="true" <?php if ($config) echo "checked" ;?> >æ‰“å¼€RSSåŠŸèƒ½
 		</td>
 		<tr>
-		<td colspan="2">RSSÁĞ±í·şÎñÆ÷µØÖ·ÁĞ±í
+		<td colspan="2">RSSåˆ—è¡¨æœåŠ¡å™¨åœ°å€åˆ—è¡¨
 		</td>
 		</tr>
 		<tr>
@@ -97,7 +97,7 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 		</td>
 		</tr>
 		<tr align="center" >
-		<td colspan=2><input type=submit name="adduser" value="  ĞŞ  ¸Ä  ">
+		<td colspan=2><input type=submit name="adduser" value="  ä¿®  æ”¹  ">
 		</td>
 		</tr>
 		</table>

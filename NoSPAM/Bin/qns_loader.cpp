@@ -1,6 +1,6 @@
 /*
- * ±±¾©°¢¿¨ĞÅÏ¢¼¼ÊõÓĞÏŞ¹«Ë¾°æÈ¨ËùÓĞ
- * ±£ÁôÒ»ÇĞÈ¨Á¦
+ * åŒ—äº¬é˜¿å¡ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸ç‰ˆæƒæ‰€æœ‰
+ * ä¿ç•™ä¸€åˆ‡æƒåŠ›
  * 2004-05-21
  */
 #include <stdio.h>
@@ -33,7 +33,7 @@ using namespace std;
 #define EML_PREFIX "emlfile.gw.nospam"
 #define UNIXSOCKETFILE "/home/NoSPAM/.ns"
 
-// Email´ÅÅÌÎÄ¼ş
+// Emailç£ç›˜æ–‡ä»¶
 string emlfile;
 ptime start_time(microsec_clock::local_time());
 time_duration io_duration;
@@ -239,7 +239,7 @@ int net_process( string &result,
 		//ret = lexical_cast<int>exit_code;
 		ret = atoi(exit_code);
 	} catch (...) {
-		result = "443 ÏµÍ³ÄÚ²¿ÁÙÊ±²»¿ÉÓÃ";
+		result = "443 ç³»ç»Ÿå†…éƒ¨ä¸´æ—¶ä¸å¯ç”¨";
 		ret = 150;
 	}
 
@@ -330,14 +330,14 @@ int main ()
 
 	log ( string("net_process ret[") + lexical_cast<string>(ret) + "], result:[" + result + "]" );
 
-	if ( -1==ret ){ // ³öÏÖ´íÎó
+	if ( -1==ret ){ // å‡ºç°é”™è¯¯
 		qns_err_n_exist ( result.c_str(), 111 );
 	}
-	else if ( 0!=ret ){ // ĞèÒªÓĞĞÅÏ¢·µ»Ø¸øsmtpd
+	else if ( 0!=ret ){ // éœ€è¦æœ‰ä¿¡æ¯è¿”å›ç»™smtpd
 		qns_err_n_exist ( result.c_str(), ret );
 	}
 
-	//ÎŞĞèĞÅÏ¢£¬Í¶µİÕı³£
+	//æ— éœ€ä¿¡æ¯ï¼ŒæŠ•é€’æ­£å¸¸
 	qns_err_n_exist ( "", 0 );
 }
 

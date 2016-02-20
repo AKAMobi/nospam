@@ -18,15 +18,15 @@ if (isset($AdminID)) {
 <SCRIPT language="javascript">
 
 <!--//
-var alertinput="ÇëÄúÊ×ÏÈÊäÈë£º\n";
+var alertinput="è¯·æ‚¨é¦–å…ˆè¾“å…¥ï¼š\n";
 
 function login() 
 {
 	var mesg = "";
 	
-	if(document.logon.adminID.value == "") mesg += "¹ÜÀíÔ±ÕËºÅ\n";
+	if(document.logon.adminID.value == "") mesg += "ç®¡ç†å‘˜è´¦å·\n";
 	
-	if(document.logon.password.value == "") mesg += "ÃÜÂë\n";
+	if(document.logon.password.value == "") mesg += "å¯†ç \n";
 	
 	if(mesg != ""){
 		
@@ -58,7 +58,7 @@ body {
 <div align="center">
   <table border="0" cellpadding="0" cellspacing="0" width="535">
     <!--DWLayoutTable-->
-    <!-- fwtable fwsrc="Î´ÃüÃû-1.png" fwbase="admin.jpg" fwstyle="Dreamweaver" fwdocid = "1271189962" fwnested="0" -->
+    <!-- fwtable fwsrc="æœªå‘½å-1.png" fwbase="admin.jpg" fwstyle="Dreamweaver" fwdocid = "1271189962" fwnested="0" -->
     <tr>
       <td height="1" colspan="2"><img src="images/spacer.gif" width="531" height="1" border="0" alt=""></td>
     </tr>

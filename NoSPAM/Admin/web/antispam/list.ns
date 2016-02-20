@@ -332,7 +332,7 @@ function add()
 <table width="50%" border="1" align="center">
 <caption><?=_("Add")?><?=_("Blacklist & Whitelist")?></caption>
 <tr>
-	<th scope="row"><?=_("Type")?>£º</th>
+	<th scope="row"><?=_("Type")?>ï¼š</th>
 	<td align="left">
 	<select name="option">
 	<?php
@@ -344,7 +344,7 @@ function add()
 	</td>
 </tr>
 <tr>
-	<th scope="row"><?=_("Key")?>£º</th>
+	<th scope="row"><?=_("Key")?>ï¼š</th>
 	<td align="left"><input type="text" name="key"></td>
 </tr>
 <tr>
@@ -379,7 +379,7 @@ function modify()
 <table width="50%" border="1" align="center">
 <caption><?=_("Modify")?> <?_($item[0])?></caption>
 <tr>
-	<th scope="row"><?=_("Key")?>£º</th>
+	<th scope="row"><?=_("Key")?>ï¼š</th>
 	<td align="left"><input type="text" name="key" value="<?=$item[1]?>"></td>
 </tr>
 <tr>

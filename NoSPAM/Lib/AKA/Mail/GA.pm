@@ -1,5 +1,5 @@
 #
-# »¥ÁªÍø½Ó¾¯ÖĞĞÄ»ùÀà
+# äº’è”ç½‘æ¥è­¦ä¸­å¿ƒåŸºç±»
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -121,7 +121,7 @@ sub make_alert
 }
 
 ############################################################################
-# ÉÏÃæÊÇ¹«¹²¶ÔÍâµÄ½Ó¿Ú£¬ÏÂÃæÊÇ¶ÔÄÚµÄ¹¦ÄÜº¯Êı
+# ä¸Šé¢æ˜¯å…¬å…±å¯¹å¤–çš„æ¥å£ï¼Œä¸‹é¢æ˜¯å¯¹å†…çš„åŠŸèƒ½å‡½æ•°
 ############################################################################
 
 sub get_received_str
@@ -199,7 +199,7 @@ $self->{zlog}->debug( "GA::merge del rule id: $rule_id\n" );
 	}
 #	$ keys %{$filterdb->{'rule-add-modify'}->{'rule'}} )
 
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 	#use Data::Dumper;
 	#$Data::Dumper::Useperl = 1;
 	#$Data::Dumper::Indent = 1;

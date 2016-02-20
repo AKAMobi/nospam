@@ -1,8 +1,8 @@
 #
-# Copyright (c) 2004 ±±¾©°¢¿¨ĞÅÏ¢¼¼ÊõÓĞÏŞ¹«Ë¾
+# Copyright (c) 2004 åŒ—äº¬é˜¿å¡ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸
 # $Id$
 #
-# ÓÊ¼şÍø¹ØÒıÇæ×Ü¹Ü
+# é‚®ä»¶ç½‘å…³å¼•æ“æ€»ç®¡
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -172,7 +172,7 @@ sub server
 
 		if ( $pid > 0 ){ #parent
 			close $client;
-			# Èç¹û¼ì²éµ½ÅäÖÃÎÄ¼ş¸üĞÂ£¬ÔòÖ±½ÓÍË³ö£¬ÓÉsupervise¸ºÔğÖØÆğ
+			# å¦‚æœæ£€æŸ¥åˆ°é…ç½®æ–‡ä»¶æ›´æ–°ï¼Œåˆ™ç›´æ¥é€€å‡ºï¼Œç”±superviseè´Ÿè´£é‡èµ·
 			if ( $self->check_conffile_update() ){
 				shutdown ( $server, 2 );
 				close $server;
@@ -231,9 +231,9 @@ sub check_conffile_update
 		}else{
 			$mtime = (stat( $self->{conffile_list}->{$conf_name} ))[9];
 			if ( $mtime > $self->{load_time}->{$conf_name} ){
-				# Èç¹ûÎÄ¼ş±È¼ÓÔØÊ±¿ÌĞÂ
+				# å¦‚æœæ–‡ä»¶æ¯”åŠ è½½æ—¶åˆ»æ–°
 				if ( $mtime > time ){
-					# ÎÄ¼şĞŞ¸ÄÊ±¼äÊÇÎ´À´£¿
+					# æ–‡ä»¶ä¿®æ”¹æ—¶é—´æ˜¯æœªæ¥ï¼Ÿ
 					$self->{zlog}->debug ( "Mail::check_conffile_update found $conf_name => " 
 						. $self->{conffile_list}->{$conf_name} 
 						. " modified in the feature? update it to now" );
@@ -273,7 +273,7 @@ my $logstr;
 
 	$_ = <STDIN>; s/\r|\r\n|\n//g;
 
-	s/\s+//g; # È¥µôÓÊ¼şµØÖ·ÖĞµÄ¿Õ¸ñ, for ÆôÃ÷ĞÇ³½µÄ´íÎóµØÖ·²¾
+	s/\s+//g; # å»æ‰é‚®ä»¶åœ°å€ä¸­çš„ç©ºæ ¼, for å¯æ˜æ˜Ÿè¾°çš„é”™è¯¯åœ°å€ç°¿
 	
 	$self->{mail_info}->{aka}->{fd1} = $_;
 s/\0/\\0/g;
@@ -290,7 +290,7 @@ sub net_process_ex
 {
 	my $self = shift;
 
-	# ÖØĞÂ³õÊ¼»¯£»
+	# é‡æ–°åˆå§‹åŒ–ï¼›
 	$self->{mail_info} = {};
 	        
     # reset SIGCHLD to SIG_DFL, so that we can use system(), open ("foo|"),
@@ -332,7 +332,7 @@ sub send_mail_info_ex
 		print STDOUT $exit_code . "\n";
 #	}else{
 #		print STDOUT "553\n";
-#		print STDOUT "¶Ô²»Æğ£¬±¾ÏµÍ³Ä¿Ç°ÉĞÎ´»ñµÃÕıÈ·µÄLicenseĞí¿É£¬¿ÉÄÜÔİÊ±ÎŞ·¨¹¤×÷¡£\n";
+#		print STDOUT "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿç›®å‰å°šæœªè·å¾—æ­£ç¡®çš„Licenseè®¸å¯ï¼Œå¯èƒ½æš‚æ—¶æ— æ³•å·¥ä½œã€‚\n";
 #		print STDOUT "150\n";
 #	}
 }
@@ -472,13 +472,13 @@ sub process
 	$mail_info->{aka}->{start_time} = $self->{start_time};
 	$mail_info->{aka}->{last_cputime} = $self->{last_cputime};
 
-	# ÉèÖÃÒıÇæÔËĞĞµÄ½á¹ûÊı¾İÈ±Ê¡Öµ
+	# è®¾ç½®å¼•æ“è¿è¡Œçš„ç»“æœæ•°æ®ç¼ºçœå€¼
 	$self->init_engine_info();
 
-	# »ñÈ¡ÎÄ¼ş³ß´çºÍ±êÌâ£¬·¢¼şÈËÊÕ¼şÈË(envelop)µÈ»ù±¾ĞÅÏ¢
+	# è·å–æ–‡ä»¶å°ºå¯¸å’Œæ ‡é¢˜ï¼Œå‘ä»¶äººæ”¶ä»¶äºº(envelop)ç­‰åŸºæœ¬ä¿¡æ¯
 	$self->get_mail_base_info;
 
-	# Èç¹ûLicense¹ıÆÚ£¬ÔòÖ±½Ó½«ĞÅ¼şÍ¶µİ
+	# å¦‚æœLicenseè¿‡æœŸï¼Œåˆ™ç›´æ¥å°†ä¿¡ä»¶æŠ•é€’
 	goto REQUEUE unless ( $self->{license_ok} );
 
 	my ($user,$system,$cuser,$csystem) = times;
@@ -498,7 +498,7 @@ sub process
 	$self->{mail_info}->{aka}->{engine}->{antivirus}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
 	$last_cputime = $user+$system+$cuser+$csystem;
 
-	# by Ed 2004-06-14 dynamic ¾Ü¾øµÄÓÊ¼ş¾Í²»±Ø½øĞĞºóĞø´¦Àí¡£
+	# by Ed 2004-06-14 dynamic æ‹’ç»çš„é‚®ä»¶å°±ä¸å¿…è¿›è¡Œåç»­å¤„ç†ã€‚
 	$self->dynamic_engine()		unless $self->{mail_info}->{aka}->{drop};
 	($user,$system,$cuser,$csystem) = times;
 	$self->{mail_info}->{aka}->{engine}->{dynamic}->{cputime} = int(1000*($user+$system+$cuser+$csystem - $last_cputime));
@@ -534,7 +534,7 @@ sub process
 	$self->log_engine();
 
 
-	# ´¦ÀíÓÊ¼ş¶¯×÷£¬´ó¼Ò¶¼ÓĞµÄ¶¯×÷
+	# å¤„ç†é‚®ä»¶åŠ¨ä½œï¼Œå¤§å®¶éƒ½æœ‰çš„åŠ¨ä½œ
 	foreach my $engine ( keys %{$mail_info->{aka}->{engine}} ){
 		next unless $_ = $self->{mail_info}->{aka}->{engine}->{$engine}->{action};
 		next if ( $_ eq AKA::Mail::Conf::ACTION_PASS );
@@ -567,8 +567,8 @@ sub process
 			$mail_info->{aka}->{resp}->{exit_code} = 0;
 			return $mail_info;
 		}elsif ( $_ eq AKA::Mail::Conf::ACTION_QUARANTINE ){
-			# spam & antivirus ÊÇÓÃ»§¸ôÀë
-			# content ÊÇ¹ÜÀíÔ±¸ôÀë
+			# spam & antivirus æ˜¯ç”¨æˆ·éš”ç¦»
+			# content æ˜¯ç®¡ç†å‘˜éš”ç¦»
 			my $quarantine_type;
 			my ($q_reason,$q_desc);
 
@@ -603,7 +603,7 @@ REQUEUE:
 	# ACTION_ADDHDR / ACTION_DELHDR / ACTION_CHGHDR
 	$self->qmail_requeue();
 
-	# ÇåÀí
+	# æ¸…ç†
 	$self->cleanup();
 
 	return $self->{mail_info};
@@ -621,7 +621,7 @@ sub quarantine_action($$$$)
 	$subject = $self->{mail_info}->{aka}->{subject};
 	$size = $self->{mail_info}->{aka}->{size};
 
-	# ¼ì²éÃ¿Ò»¸öÊÕ¼şÈËÊÇ·ñÎª×¢²áÓÃ»§£¬·ñÔò²»±£´æ¸ôÀë
+	# æ£€æŸ¥æ¯ä¸€ä¸ªæ”¶ä»¶äººæ˜¯å¦ä¸ºæ³¨å†Œç”¨æˆ·ï¼Œå¦åˆ™ä¸ä¿å­˜éš”ç¦»
 	foreach ( split(/,/,$mailto) ){
 		if ( $self->{mail_info}->{aka}->{engine}->{quarantine}->{q_users}->{$_} ){
 			$self->{quarantine}->quarantine( $q_type, $emlfile, $mailfrom, $_, $subject, $size, $q_reason, $q_desc);
@@ -633,13 +633,13 @@ sub quarantine_engine
 {
 	my $self = shift;
 
-	# Èç¹ûÊÇÓÉÄÚÏòÍâ·¢ĞÅÔò²»¼ì²éÊÕ¼şÈË
+	# å¦‚æœæ˜¯ç”±å†…å‘å¤–å‘ä¿¡åˆ™ä¸æ£€æŸ¥æ”¶ä»¶äºº
 	return if ( (defined $self->{mail_info}->{aka}->{RELAYCLIENT} && '1' eq $self->{mail_info}->{aka}->{RELAYCLIENT})
                          ||
               length($self->{mail_info}->{aka}->{TCPREMOTEINFO}) );
 
 	my $recips = $self->{mail_info}->{aka}->{recips};
-	my @emails = split(/,/,$recips); 	# Èç¹ûÓĞ¶à¸öÊÕ¼şÈË£¬Ö»ÅĞ¶ÏµÚÒ»¸ö
+	my @emails = split(/,/,$recips); 	# å¦‚æœæœ‰å¤šä¸ªæ”¶ä»¶äººï¼Œåªåˆ¤æ–­ç¬¬ä¸€ä¸ª
 
 	my $start_time = [gettimeofday];
 
@@ -682,7 +682,7 @@ sub quarantine_engine
 				} );
 			}else{
 				#
-				# Õı³£×ª·¢
+				# æ­£å¸¸è½¬å‘
 				#
 				if ('F' ne $nosuchuseraction){
 					$self->{zlog}->fatal ( "AKA::Mail::quaratine_engine found unknown NoSucnUserAction, treat it as F)orward" );
@@ -797,7 +797,7 @@ sub action_rcpts
 			}
 			$env_recips = "T$pf_param\0" . $env_recips;
 		}elsif ( AKA::Mail::Conf::ACTION_DELRCPT eq $action ){
-			# 9¡¢delrcpt É¾³ıÖ¸¶¨ÊÕ¼şÈË£¨¸Ã¶¯×÷Ö»ÔÊĞíÔÚĞÅ·âÊÕ¼şÈËµÄĞÅÍ·¹æÔòÖĞÊ¹ÓÃ£©¡£ÎŞ²ÎÊı
+			# 9ã€delrcpt åˆ é™¤æŒ‡å®šæ”¶ä»¶äººï¼ˆè¯¥åŠ¨ä½œåªå…è®¸åœ¨ä¿¡å°æ”¶ä»¶äººçš„ä¿¡å¤´è§„åˆ™ä¸­ä½¿ç”¨ï¼‰ã€‚æ— å‚æ•°
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->{zlog}->debug("pf_a: delrcpt param is: [$pf_param] invalid email address.");
 				return;
@@ -810,10 +810,10 @@ sub action_rcpts
 				$self->cleanup;
 				# XXX by zixia 2004-04-24 
 				# why exit 0;
-			}# ¼´Ê¹ÊÇÒ»¸öµØÖ·£¬½áÎ²Ò²ÊÇÁ½¸ö\0
+			}# å³ä½¿æ˜¯ä¸€ä¸ªåœ°å€ï¼Œç»“å°¾ä¹Ÿæ˜¯ä¸¤ä¸ª\0
 		}elsif ( AKA::Mail::Conf::ACTION_CHGRCPT eq $action ){
-			# 10¡¢chgrcpt ¸Ä±äÖ¸¶¨µÄÊÕ¼şÈËÎªĞÂµÄÊÕ¼şÈË£¨¸Ã¶¯×÷Ö»ÔÊĞíÔÚĞÅ·âÊÕ¼şÈËµÄĞÅÍ·¹æÔòÖĞÊ¹ÓÃ£©¡£
-			#     ´øÒ»¸ö×Ö·û´®²ÎÊı£¬ÄÚÈİÎªĞÂµÄÊÕ¼şÈËÓÊ¼şµØÖ·
+			# 10ã€chgrcpt æ”¹å˜æŒ‡å®šçš„æ”¶ä»¶äººä¸ºæ–°çš„æ”¶ä»¶äººï¼ˆè¯¥åŠ¨ä½œåªå…è®¸åœ¨ä¿¡å°æ”¶ä»¶äººçš„ä¿¡å¤´è§„åˆ™ä¸­ä½¿ç”¨ï¼‰ã€‚
+			#     å¸¦ä¸€ä¸ªå­—ç¬¦ä¸²å‚æ•°ï¼Œå†…å®¹ä¸ºæ–°çš„æ”¶ä»¶äººé‚®ä»¶åœ°å€
 			if ( ! $pf_param=~/^[\w\d\.-_=+]+\@[\w\d\.-_=+]+$/ ){
 				$self->debug("pf_a: chgrcpt param is: [$pf_param] invalid email address.");
 				return;
@@ -876,7 +876,7 @@ sub qmail_requeue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		# Net::Server::PreFork ½« STDIN/STDOUT Ó³Éä³ÉÁËsocketµÄË÷Òı£¬ÕâÀïĞèÒªÖØĞÂ½«Á½¸öÎÄ¼şÃèÊö·û¶ÀÁ¢³öÀ´£¬È»ºó²Å¿ÉÒÔreopen
+		# Net::Server::PreFork å°† STDIN/STDOUT æ˜ å°„æˆäº†socketçš„ç´¢å¼•ï¼Œè¿™é‡Œéœ€è¦é‡æ–°å°†ä¸¤ä¸ªæ–‡ä»¶æè¿°ç¬¦ç‹¬ç«‹å‡ºæ¥ï¼Œç„¶åæ‰å¯ä»¥reopen
 		open(DUMMYIN, '</dev/null') || die "Can't close STDIN [$!]";
 		open(DUMMYOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
 		*STDIN = *DUMMYIN;
@@ -988,21 +988,21 @@ sub write_queue
 		if ($still_headers) {
 			if ( !$pf_hdr_done && (AKA::Mail::Conf::ACTION_ADDHDR<=$pf_action || AKA::Mail::Conf::ACTION_CHGHDR>=$pf_action) ){
 				if ( AKA::Mail::Conf::ACTION_ADDHDR==$pf_action ){
-					# 11¡¢addhdr Ìí¼ÓĞÅÍ·¼ÍÂ¼¡£´øÒ»¸ö×Ö·û´®²ÎÊı£¬ÄÚÈİÎªĞÂµÄĞÅÍ·¼ÇÂ¼
+					# 11ã€addhdr æ·»åŠ ä¿¡å¤´çºªå½•ã€‚å¸¦ä¸€ä¸ªå­—ç¬¦ä¸²å‚æ•°ï¼Œå†…å®¹ä¸ºæ–°çš„ä¿¡å¤´è®°å½•
 					print QMQ "$pf_param\n";
 					$pf_hdr_done = 1;
 				}elsif ( AKA::Mail::Conf::ACTION_DELHDR==$pf_action ){
-						# 12¡¢delhdr É¾³ıĞÅÍ·¼ÍÂ¼£¬É¾³ıÆ¥Åäµ½Ö¸¶¨ĞÅÍ·¹æÔòµÄĞÅÍ·¼ÇÂ¼
-						#     £¨¸Ã¶¯×÷Ö»ÔÊĞíÔÚĞÅÍ·¹æÔòÖĞÊ¹ÓÃ£©¡£ÎŞ²ÎÊı
+						# 12ã€delhdr åˆ é™¤ä¿¡å¤´çºªå½•ï¼Œåˆ é™¤åŒ¹é…åˆ°æŒ‡å®šä¿¡å¤´è§„åˆ™çš„ä¿¡å¤´è®°å½•
+						#     ï¼ˆè¯¥åŠ¨ä½œåªå…è®¸åœ¨ä¿¡å¤´è§„åˆ™ä¸­ä½¿ç”¨ï¼‰ã€‚æ— å‚æ•°
 					if ( /^$pf_hdr_key: / ){
-						#FIXME Èç¹ûÊÇÕÛĞĞµÄheader£¬ĞèÒªÌØ±ğ´¦Àí
+						#FIXME å¦‚æœæ˜¯æŠ˜è¡Œçš„headerï¼Œéœ€è¦ç‰¹åˆ«å¤„ç†
 						$pf_hdr_done = 1;
 						next;
 					}
 				}elsif ( AKA::Mail::Conf::ACTION_CHGHDR==$pf_action ){
-					# 13¡¢chghdr ĞŞ¸ÄĞÅÍ·¼ÍÂ¼£¬½«Æ¥Åäµ½Ö¸¶¨ĞÅÍ·¹æÔòµÄĞÅÍ·¼ÇÂ¼»»³ÉĞÂµÄĞÅÍ·¼ÇÂ¼
-					#    £¨¸Ã¶¯×÷Ö»ÔÊĞíÔÚĞÅÍ·¹æÔòÖĞÊ¹ÓÃ£©¡£
-					#    ´øÒ»¸ö×Ö·û´®²ÎÊı£¬ÄÚÈİÎªĞÂµÄĞÅÍ·¼ÇÂ¼
+					# 13ã€chghdr ä¿®æ”¹ä¿¡å¤´çºªå½•ï¼Œå°†åŒ¹é…åˆ°æŒ‡å®šä¿¡å¤´è§„åˆ™çš„ä¿¡å¤´è®°å½•æ¢æˆæ–°çš„ä¿¡å¤´è®°å½•
+					#    ï¼ˆè¯¥åŠ¨ä½œåªå…è®¸åœ¨ä¿¡å¤´è§„åˆ™ä¸­ä½¿ç”¨ï¼‰ã€‚
+					#    å¸¦ä¸€ä¸ªå­—ç¬¦ä¸²å‚æ•°ï¼Œå†…å®¹ä¸ºæ–°çš„ä¿¡å¤´è®°å½•
 					if ( /^$pf_hdr_key: / ){
 						chomp $pf_param;
 						$_ = $pf_param . "\n";
@@ -1100,7 +1100,7 @@ sub cleanup {
 
 	$self->{content}->clean;
 
-	#XXX ÎŞÓÃ£¿
+	#XXX æ— ç”¨ï¼Ÿ
 	#chdir("/home/NoSPAM/spool/");
 
 	#rmdir($ENV{'TMPDIR'});
@@ -1136,12 +1136,12 @@ sub antivirus_engine
 	}
 
 	#
-	# ÅĞ¶Ï±£»¤·½Ïò
+	# åˆ¤æ–­ä¿æŠ¤æ–¹å‘
 	#
 	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
-		# ÊÇ¡°ÓÉÄÚÏòÍâ¡±
+		# æ˜¯â€œç”±å†…å‘å¤–â€
 		if ( $self->{conf}->{config}->{AntiVirusEngine}->{ProtectDirection}!~/Out/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÄÚÏòÍâ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å†…å‘å¤–â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {	
 					result	=>0,
 					desc	=>__("Need not check outgoing mail"),
@@ -1155,9 +1155,9 @@ sub antivirus_engine
 		}
 
 	}else{
-		# ÊÇ¡°ÓÉÍâÏòÄÚ¡±
+		# æ˜¯â€œç”±å¤–å‘å†…â€
 		if ( $self->{conf}->{config}->{AntiVirusEngine}->{ProtectDirection}!~/In/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÍâÏòÄÚ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å¤–å‘å†…â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{antivirus} = {
 					result  => 0,
 					desc	=>__("Need not check incoming mail") ,
@@ -1173,7 +1173,7 @@ sub antivirus_engine
 	}
 
 	#
-	# ³éÑù¼ì²é
+	# æŠ½æ ·æ£€æŸ¥
 	#
 	if ( 'Y' eq uc $self->{conf}->{config}->{AntiVirusEngine}->{SampleCheck} ){
 		#my $random1_100 = int(rand(98)+1);
@@ -1199,7 +1199,7 @@ sub antivirus_engine
 
 
 	$self->{mail_info}->{aka}->{drop} ||= $self->if_action_is_drop ( $self->{mail_info}->{aka}->{engine}->{antivirus}->{action} );
-	#$self->{mail_info}->{aka}->{drop_info} ||= '553 ÓÊ¼ş°üº¬²¡¶¾ ' . $self->{mail_info}->{aka}->{engine}->{antivirus}->{desc};
+	#$self->{mail_info}->{aka}->{drop_info} ||= '553 é‚®ä»¶åŒ…å«ç—…æ¯’ ' . $self->{mail_info}->{aka}->{engine}->{antivirus}->{desc};
 }
 
 
@@ -1275,9 +1275,9 @@ sub archive_engine
 	}
 
 	my @archive_address = @{$self->{conf}->{config}->{ArchiveEngine}->{ArchiveAddress}};
-	my $need_archive = 1;	# ËùÓĞµÄÌõ¼ş±ØĞëÂú×ã²Å»áÉó¼Æ
+	my $need_archive = 1;	# æ‰€æœ‰çš„æ¡ä»¶å¿…é¡»æ»¡è¶³æ‰ä¼šå®¡è®¡
 
-	#Ñ¡ÔñĞÔ¹éµµ£ºÈ«²¿/ÌØ¶¨µØÖ·/À¬»ø/·ÇÀ¬»ø/Æ¥ÅäÁË¹æÔòµÄ Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
+	#é€‰æ‹©æ€§å½’æ¡£ï¼šå…¨éƒ¨/ç‰¹å®šåœ°å€/åƒåœ¾/éåƒåœ¾/åŒ¹é…äº†è§„åˆ™çš„ Address,Spam,NotSpam,MatchRule,NotMatchRule,Virus,NotVirus
 	if ( !grep(/^All$/,@archivetype) ){
 		$need_archive=0 if ( $need_archive && grep(/^Spam$/,@archivetype) && (!$run_spam || !$is_spam) );
 		$need_archive=0 if ( $need_archive && grep(/^NotSpam$/,@archivetype) && (!$run_spam || $is_spam) );
@@ -1373,12 +1373,12 @@ sub spam_engine
 		$is_spam = AKA::Mail::Conf::RESULT_SPAM_NOT;
 		$reason = __("OFF");
 	}
-	elsif ( $self->{mail_info}->{aka}->{RELAYCLIENT} ) { # ÄÚ²¿RELAY
+	elsif ( $self->{mail_info}->{aka}->{RELAYCLIENT} ) { # å†…éƒ¨RELAY
 		$is_spam = AKA::Mail::Conf::RESULT_SPAM_NOT;
 		$reason = __("Traceable");
 
 	}
-	elsif ( $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){ # ÈÏÖ¤ÓÃ»§
+	elsif ( $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){ # è®¤è¯ç”¨æˆ·
 		my $auth_user = $self->{mail_info}->{aka}->{TCPREMOTEINFO};
 
 		$auth_user .= '@' . $self->{conf}->{config}->{MailServer}->{MailHostName}
@@ -1388,7 +1388,7 @@ sub spam_engine
 		$reason = __("Authorized user");
 
 		if ( ($auth_user ne $returnpath) &&
-				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # ÄÚ²¿¿É×·²é
+				( ('Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine}) &&  # å†…éƒ¨å¯è¿½æŸ¥
 				  ($self->{conf}->{config}->{SpamEngine}->{TraceProtectDirection}=~/Out/i) ) ){ 
 			$is_spam = AKA::Mail::Conf::RESULT_SPAM_MAYBE;
 			$reason = __("Sender must as same as auth user");
@@ -1406,11 +1406,11 @@ sub spam_engine
 		# A blank MAIL FROM: is typically used for error mail, 
 		# and error mail typically would not be sent to multiple recipients.
 	#	$is_spam = AKA::Mail::Conf::RESULT_SPAM_MAYBE;
-	#	$reason = 'ÓÊ¼ş¸ñÊ½Î±Ôì';
+	#	$reason = 'é‚®ä»¶æ ¼å¼ä¼ªé€ ';
 	#}
-	else{ #ÓÉÍâÏòÄÚ
+	else{ #ç”±å¤–å‘å†…
 
-		# ¼ì²éÓÃ»§°×Ãûµ¥
+		# æ£€æŸ¥ç”¨æˆ·ç™½åå•
 		my $is_user_whitelist = 0;
 		my $is_user_blacklist = 0;
 		if ( length($returnpath) ){
@@ -1454,12 +1454,12 @@ sub spam_engine
 	#
 	if ( $is_spam ) {
 		local $_ = uc $self->{conf}->{config}->{SpamEngine}->{SpamAction};
-		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1¡¢reject 
-		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2¡¢drop
-		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3¡¢quarantine
-		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7¡¢accept
-		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14¡¢tag & accept
-		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 ÅäÖÃ³ö´íÀ²
+		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1ã€reject 
+		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2ã€drop
+		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3ã€quarantine
+		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7ã€accept
+		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14ã€tag & accept
+		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 é…ç½®å‡ºé”™å•¦
 	}else{
 		$action = AKA::Mail::Conf::ACTION_ACCEPT;
 	}
@@ -1496,7 +1496,7 @@ sub get_sa_result
 {
 	my $self = shift;
 
-	# ¼ì²é SA ÊÇ·ñ¿ªÆô
+	# æ£€æŸ¥ SA æ˜¯å¦å¼€å¯
 	return undef if ( 'Y' ne uc $self->{conf}->{config}->{SpamEngine}->{SmartEngine} );
 
 	# SpamAssassin, default max size 150KB
@@ -1539,7 +1539,7 @@ sub dynamic_engine
 
 
 	#
-	# ÒıÇæ¿ª¹Ø
+	# å¼•æ“å¼€å…³
 	#
 	if ( 'Y' ne uc $self->{conf}->{config}->{DynamicEngine}->{DynamicEngine} ){
 		$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -1556,12 +1556,12 @@ sub dynamic_engine
 	}
 
 	#
-	# ÅĞ¶Ï±£»¤·½Ïò
+	# åˆ¤æ–­ä¿æŠ¤æ–¹å‘
 	#
 	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
-		# ÊÇ¡°ÓÉÄÚÏòÍâ¡±
+		# æ˜¯â€œç”±å†…å‘å¤–â€
 		if ( $self->{conf}->{config}->{DynamicEngine}->{ProtectDirection}!~/Out/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÄÚÏòÍâ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å†…å‘å¤–â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {	
 					result	=>0,
 					desc	=>__("outgoing mail is not limited"),
@@ -1575,9 +1575,9 @@ sub dynamic_engine
 		}
 
 	}else{
-		# ÊÇ¡°ÓÉÍâÏòÄÚ¡±
+		# æ˜¯â€œç”±å¤–å‘å†…â€
 		if ( $self->{conf}->{config}->{DynamicEngine}->{ProtectDirection}!~/In/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÍâÏòÄÚ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å¤–å‘å†…â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
 					result  => 0,
 					desc	=> __("incoming mail is not limited"),
@@ -1594,17 +1594,17 @@ sub dynamic_engine
 
 
 	#
-	# ÅĞ¶Ï¶¯Ì¬
+	# åˆ¤æ–­åŠ¨æ€
 	#
 	# we check what we has seen
 	#if ( ! $subject || ! $mailfrom || ! $ip ){
 		#$self->{zlog}->debug ( "Mail::dynamic_engine can't get param: " . join ( ",", @_ ) );
 
-	#	($is_overrun,$reason) = (0, "¶¯Ì¬ÏŞÖÆÒıÇæ²ÎÊı²»×ã" );
+	#	($is_overrun,$reason) = (0, "åŠ¨æ€é™åˆ¶å¼•æ“å‚æ•°ä¸è¶³" );
 	#}
 
 	if ( $mailfrom ){
-		# ¼ì²é°×Ãûµ¥
+		# æ£€æŸ¥ç™½åå•
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteFromList}} ){
 			if ( $_ eq $mailfrom ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -1619,7 +1619,7 @@ sub dynamic_engine
 				return ;
 			}
 		}
-		# µİ½»ºóÌ¨´¦Àí
+		# é€’äº¤åå°å¤„ç†
 		($is_overrun,$reason) = $self->{dynamic}->is_overrun_rate_per_mailfrom( $mailfrom );
 		if ( $is_overrun ){
 			$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -1637,7 +1637,7 @@ sub dynamic_engine
 	}
 
 	if ( $subject ){
-		# ¼ì²é°×Ãûµ¥
+		# æ£€æŸ¥ç™½åå•
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteSubjectList}} ){
 			if ( $_ eq $subject ){
 				$self->{mail_info}->{aka}->{engine}->{dynamic} = {
@@ -1670,7 +1670,7 @@ sub dynamic_engine
 	}
 
 	if ( $ip ){
-		# ¼ì²é°×Ãûµ¥
+		# æ£€æŸ¥ç™½åå•
 		use AKA::IPUtil;
 		my $AI = new AKA::IPUtil;
 		foreach ( @{$self->{conf}->{config}->{DynamicEngine}->{WhiteIPRateList}} ){
@@ -1756,12 +1756,12 @@ sub content_engine_is_enabled
 	}
 
 	#
-	# ÅĞ¶Ï±£»¤·½Ïò
+	# åˆ¤æ–­ä¿æŠ¤æ–¹å‘
 	#
 	if ( $self->{mail_info}->{aka}->{RELAYCLIENT} || $self->{mail_info}->{aka}->{TCPREMOTEINFO} ){
-		# ÊÇ¡°ÓÉÄÚÏòÍâ¡±
+		# æ˜¯â€œç”±å†…å‘å¤–â€
 		if ( $self->{conf}->{config}->{ContentEngine}->{ProtectDirection}!~/Out/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÄÚÏòÍâ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å†…å‘å¤–â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{content} = {	
 					result	=>0,
 					desc	=>__("Outgoing mail need not filter"),
@@ -1775,9 +1775,9 @@ sub content_engine_is_enabled
 		}
 
 	}else{
-		# ÊÇ¡°ÓÉÍâÏòÄÚ¡±
+		# æ˜¯â€œç”±å¤–å‘å†…â€
 		if ( $self->{conf}->{config}->{ContentEngine}->{ProtectDirection}!~/In/ ){
-			# Ã»ÓĞÏŞÖÆ¡°ÓÉÍâÏòÄÚ¡±µÄÓÊ¼ş
+			# æ²¡æœ‰é™åˆ¶â€œç”±å¤–å‘å†…â€çš„é‚®ä»¶
 			$self->{mail_info}->{aka}->{engine}->{content} = {
 					result  => 0,
 					desc	=> __("Incoming mail need not filter"),
@@ -1932,7 +1932,7 @@ sub get_mail_base_info
 			}
 
 			# $still_headers = 0 if (/^(\r|\r\n|\n)$/); 
-			# ¿ÕĞĞ²»Ó¦¸ÃÊÇ ^\r\n$£¬Ó¦¸ÃÊÇ /^$/
+			# ç©ºè¡Œä¸åº”è¯¥æ˜¯ ^\r\n$ï¼Œåº”è¯¥æ˜¯ /^$/
 			$still_headers = 0 if (/^$/);
 		}
 		last unless $still_headers;
@@ -1966,11 +1966,11 @@ sub get_mail_base_info
 	$self->{mail_info}->{aka}->{subject} = $subject;
 	$self->{mail_info}->{aka}->{size} = -s $self->{mail_info}->{aka}->{emlfilename};
 
-	$self->{mail_info}->{aka}->{returnpath} = $returnpath; # Õâ¸öÊÇ smtp Ğ­ÒéÖĞµÄ MAIL FROM: (.+)
+	$self->{mail_info}->{aka}->{returnpath} = $returnpath; # è¿™ä¸ªæ˜¯ smtp åè®®ä¸­çš„ MAIL FROM: (.+)
 
-	# MTA µÄÍËĞÅÊÇÃ»ÓĞEnvelope fromµÄ£¬ËùÒÔ²»¿ÉÒÔÕâÑù¡£
+	# MTA çš„é€€ä¿¡æ˜¯æ²¡æœ‰Envelope fromçš„ï¼Œæ‰€ä»¥ä¸å¯ä»¥è¿™æ ·ã€‚
 	# $self->{mail_info}->{aka}->{returnpath} ||= $mail_from || $return_path; # XXX is this no problem?
-	#$self->{mail_info}->{aka}->{return_path} = $return_path; # Õâ¸öÊÇÓÊ¼şÍ·ÖØµÄReturn-Path
+	#$self->{mail_info}->{aka}->{return_path} = $return_path; # è¿™ä¸ªæ˜¯é‚®ä»¶å¤´é‡çš„Return-Path
 
 	$self->{mail_info}->{aka}->{mail_from} = $mail_from;
 	$self->{mail_info}->{aka}->{recips} = $recips;

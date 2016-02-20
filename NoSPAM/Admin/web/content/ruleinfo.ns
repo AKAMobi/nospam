@@ -72,7 +72,7 @@ if (!$rule->has_attribute("rule_logic")) {
 <p style="font-size: 12px"><b><?=_("Keyword and IP rules")?></b><br>
 <?
 if(count($keywords) == 0){
-	echo "ÎÞ";
+	echo "æ— ";
 }else{
 ?>
 <?=_("Sub-Rules logic")?>: <?
@@ -92,7 +92,7 @@ if(count($keywords) == 0){
 	echo "<br>";
 	$i = 1;
 	foreach($keywords as $keyword){
-		echo $i."¡¢"._("Match Position").": ".$KeyPos[$keyword->get_attribute("key")];
+		echo $i."ã€"._("Match Position").": ".$KeyPos[$keyword->get_attribute("key")];
 		echo ", "._("Match Type").": ".$KeyMatchType[$keyword->get_attribute("type")];
 		echo ", "._("Filter Content").": ".utf8_decode($keyword->get_attribute("keyword"))."<br>";
 		$i++;
@@ -103,7 +103,7 @@ if(count($keywords) == 0){
 <p style="font-size: 12px"><b><?=("Number Rule")?></b><br>
 <?
 if(count($sizes) == 0){
-    echo "ÎÞ";
+    echo "æ— ";
 }else{
 ?>
 <?=_("Sub-Rules logic")?>: <?
@@ -123,7 +123,7 @@ if(count($sizes) == 0){
 	echo "<br>";
     $i = 1;
     foreach($sizes as $size){
-        echo $i."¡¢"._("Match Position").": ".$SizePos[$size->get_attribute("key")];
+        echo $i."ã€"._("Match Position").": ".$SizePos[$size->get_attribute("key")];
 		echo ", "._("Size Value").": ".$size->get_attribute("sizevalue")."<br>";
 		$i++;
     }
@@ -153,7 +153,7 @@ if(count($attachments) == 0){
 	echo "<br>";
     $i = 1;
     foreach($attachments as $attachment){
-        echo $i."¡¢"._("Filename Must be").": ".utf8_decode($attachment->get_attribute("filename"));
+        echo $i."ã€"._("Filename Must be").": ".utf8_decode($attachment->get_attribute("filename"));
 		echo ", "._("File Ext Must be").": ".$FileType[$attachment->get_attribute("filetype")][0];
 		echo ", "._("Size Value").": ".$attachment->get_attribute("sizevalue")."<br>";
 		$i++;

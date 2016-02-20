@@ -356,14 +356,14 @@ class NoSPAMConf extends ConfFile
 				foreach($aParam as $key=>$note){
 					if(!checkipaddr($key,true))
 						die("IP ".$key._("Format Error"));
-					$temp[$i] = trim($key)."#".trim(str_replace(",","£¬",$note));
+					$temp[$i] = trim($key)."#".trim(str_replace(",","ï¼Œ",$note));
 					$i++;
 				}
 			}
 		}else{
 			if(count($aParam) > 0){
 				foreach($aParam as $key=>$note){
-					$temp[$i] = trim($key)."#".trim(str_replace(",","£¬",$note));
+					$temp[$i] = trim($key)."#".trim(str_replace(",","ï¼Œ",$note));
 					$i++;
 				}
 			}

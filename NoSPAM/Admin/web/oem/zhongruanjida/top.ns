@@ -10,9 +10,9 @@ require_once("inc/include.ns");
 <tr><td height=160 width=800 background=images/topbar.jpg>
 
 <table>
-<tr><td width=670></td><td valign=top>ÓÃ»§£º
-<?=getAdminID()?><br><?=$bForSell? "ÕýÊ½ÏúÊÛ°æ":"·ÇÏúÊÛ°æ"?><br>
-<?if($sExpire!="") echo "{$sExpire}¹ýÆÚ";?></td>
+<tr><td width=670></td><td valign=top>ç”¨æˆ·ï¼š
+<?=getAdminID()?><br><?=$bForSell? "æ­£å¼é”€å”®ç‰ˆ":"éžé”€å”®ç‰ˆ"?><br>
+<?if($sExpire!="") echo "{$sExpire}è¿‡æœŸ";?></td>
 </tr>
 </table>
 </td>

@@ -47,8 +47,8 @@ $rules = $config->get_rules($start,$end,$sort,$order);
 $url = $readonly? "ruledetail.ns":"rulemodify.ns";
 
 $orderFlag["unsorted"] = "";
-$orderFlag["asc"] = "<font color='red'>¡ý</font>";
-$orderFlag["desc"] = "<font color='red'>¡ü</font>";
+$orderFlag["asc"] = "<font color='red'>â†“</font>";
+$orderFlag["desc"] = "<font color='red'>â†‘</font>";
 
 $Flag = array();
 $Flag[$sort] = $orderFlag[$order];

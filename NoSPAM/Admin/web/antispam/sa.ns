@@ -8,31 +8,31 @@ if(!adminPerm(PERM_ADMIN_SPAM))
 	die(_("You have no permission to access this page"));
 
 $SATests = array(	'DATE' => array ('S'=>_("Date Check"), 'L'=>_("Checking if the date is legal, if it is too far from current time, if it is not consistent with RFC."))
-		//'ÈÕÆÚ¼ì²é', 'L'=>'°üÀ¨Ê±ÆÚÊÇ·ñºÏ·¨£¬ÊÇ·ñºÍµ±Ç°Ê±¼äÏà²îÌ«Ô¶£¬ÊÇ·ñ²»·ûºÏRFC')
+		//'æ—¥æœŸæ£€æŸ¥', 'L'=>'åŒ…æ‹¬æ—¶æœŸæ˜¯å¦åˆæ³•ï¼Œæ˜¯å¦å’Œå½“å‰æ—¶é—´ç›¸å·®å¤ªè¿œï¼Œæ˜¯å¦ä¸ç¬¦åˆRFC')
 		, 'DRUG' => array ('S'=>_("Drug Check"), 'L'=>_("Checking drug advertisement(mainly AD for sex tools)"))
-		//, 'DRUG' => array ('S'=>'Ò©Æ·¼ì²é', 'L'=>'¼ì²é³£¼ûµÄÒ©Æ·¹ã¸æ£¨Ö÷ÒªÎªÐÔÓÃÆ·¹ã¸æ£©')
+		//, 'DRUG' => array ('S'=>'è¯å“æ£€æŸ¥', 'L'=>'æ£€æŸ¥å¸¸è§çš„è¯å“å¹¿å‘Šï¼ˆä¸»è¦ä¸ºæ€§ç”¨å“å¹¿å‘Šï¼‰')
 		, 'FAKE' => array ('S'=>_("Bogus Information Check"), 'L'=>_("Checking obvious bogus information"))
-		//, 'FAKE' => array ('S'=>'Ðé¼ÙÐÅÏ¢¼ì²é', 'L'=>'¼ì²éÃ÷ÏÔÐé¼ÙµÄÐÅÏ¢')
+		//, 'FAKE' => array ('S'=>'è™šå‡ä¿¡æ¯æ£€æŸ¥', 'L'=>'æ£€æŸ¥æ˜Žæ˜¾è™šå‡çš„ä¿¡æ¯')
 		, 'FORGED' => array ('S'=>_("Forged Information Check"), 'L'=>_("Checking if the email is forged to normail email or webmail"))
-		//, 'FORGED' => array ('S'=>'Î±ÔìÐÅÏ¢¼ì²é', 'L'=>'¼ì²éÓÊ¼þÊÇ·ñ±»À¬»ø·¢ËÍÕßÎ±×°³ÉÆäËûµÄÓÊ¼þ¿Í»§¶ËºÍWebÓÊ¼þ')
+		//, 'FORGED' => array ('S'=>'ä¼ªé€ ä¿¡æ¯æ£€æŸ¥', 'L'=>'æ£€æŸ¥é‚®ä»¶æ˜¯å¦è¢«åžƒåœ¾å‘é€è€…ä¼ªè£…æˆå…¶ä»–çš„é‚®ä»¶å®¢æˆ·ç«¯å’ŒWebé‚®ä»¶')
 		, 'FREE' => array ('S'=>_("Free Declaration Check"), 'L'=>_("Checking if the email contains free declaration information"))
-		//, 'FREE' => array ('S'=>'Ãâ·ÑÉùÃ÷¼ì²é', 'L'=>'¼ì²éÀ¬»øÓÊ¼þÖÐÊÇ·ñ°üº¬ÉùÃ÷Ãâ·ÑµÄÐÅÏ¢')
+		//, 'FREE' => array ('S'=>'å…è´¹å£°æ˜Žæ£€æŸ¥', 'L'=>'æ£€æŸ¥åžƒåœ¾é‚®ä»¶ä¸­æ˜¯å¦åŒ…å«å£°æ˜Žå…è´¹çš„ä¿¡æ¯')
 		, 'FROM' => array ('S'=>_("Sending Address Check"), 'L'=>_("Checking if the email sending address has character usually used by spam"))
-		//, 'FROM' => array ('S'=>'¼ì²é·¢ËÍµØÖ·', 'L'=>'¼ì²é·¢¼þµØÖ·ÊÇ·ñ¾ßÓÐÀ¬»øÓÊ¼þ³£ÓÃµÄµØÖ·ÌØÕ÷')
+		//, 'FROM' => array ('S'=>'æ£€æŸ¥å‘é€åœ°å€', 'L'=>'æ£€æŸ¥å‘ä»¶åœ°å€æ˜¯å¦å…·æœ‰åžƒåœ¾é‚®ä»¶å¸¸ç”¨çš„åœ°å€ç‰¹å¾')
 		, 'HELO' => array ('S'=>_("HELO Information Check"), 'L'=>_("Checking if every HELO information of RELAY has character usually used by spam"))
-		//, 'HELO' => array ('S'=>'¼ì²éHELOÐÅÏ¢', 'L'=>'¼ì²éÃ¿Ò»´ÎRELAYµÄHELOÊÇ·ñÓÐÀ¬»øÓÊ¼þµÄÌØÕ÷')
+		//, 'HELO' => array ('S'=>'æ£€æŸ¥HELOä¿¡æ¯', 'L'=>'æ£€æŸ¥æ¯ä¸€æ¬¡RELAYçš„HELOæ˜¯å¦æœ‰åžƒåœ¾é‚®ä»¶çš„ç‰¹å¾')
 		, 'HTML' => array ('S'=>_("HTML Content Check"), 'L'=>_("Checking if the email uses HTML content/character usually used by spam"))
-		//, 'HTML' => array ('S'=>'¼ì²éÓÊ¼þHTMLÄÚÈÝ', 'L'=>'ÓÊ¼þÊÇ·ñÊ¹ÓÃÁËÀ¬»ø·¢ËÍÕß³£ÓÃµÄHTMLÄÚÈÝ/ÌØÕ÷')
+		//, 'HTML' => array ('S'=>'æ£€æŸ¥é‚®ä»¶HTMLå†…å®¹', 'L'=>'é‚®ä»¶æ˜¯å¦ä½¿ç”¨äº†åžƒåœ¾å‘é€è€…å¸¸ç”¨çš„HTMLå†…å®¹/ç‰¹å¾')
 		, 'MIME' => array ('S'=>_("MIME Content Check"), 'L'=>_("Checking spam character in MIME code"))
-		//, 'MIME' => array ('S'=>'¼ì²éÓÊ¼þMIMEÄÚÈÝ', 'L'=>'ÔÚMIME±àÂëÖÐ¼ì²éÀ¬»øÓÊ¼þÌØÕ÷')
+		//, 'MIME' => array ('S'=>'æ£€æŸ¥é‚®ä»¶MIMEå†…å®¹', 'L'=>'åœ¨MIMEç¼–ç ä¸­æ£€æŸ¥åžƒåœ¾é‚®ä»¶ç‰¹å¾')
 		, 'MSGID' => array ('S'=>_("Message-ID Check"), 'L'=>_("Checking if Message-ID has spam character, if it is legal"))
-		//, 'MSGID' => array ('S'=>'¼ì²éÓÊ¼þµÄMessage-ID', 'L'=>'²ì¿´ÊÇ·ñ·ûºÏÀ¬»øÌØÕ÷£¬ÊÇ·ñºÏ·¨')
+		//, 'MSGID' => array ('S'=>'æ£€æŸ¥é‚®ä»¶çš„Message-ID', 'L'=>'å¯Ÿçœ‹æ˜¯å¦ç¬¦åˆåžƒåœ¾ç‰¹å¾ï¼Œæ˜¯å¦åˆæ³•')
 		, 'RATWARE' => array ('S'=>_("Mail Sending Software Check"), 'L'=>_("Checking if the email was sent by some spam generator against email character"))
-		//, 'RATWARE' => array ('S'=>'¼ì²é·¢ËÍÈí¼þÀàÐÍ', 'L'=>'Í¨¹ýÌáÈ¡ÓÊ¼þÌØÕ÷£¬²ì¿´ÊÇ·ñ·¢×Ô³£ÓÃµÄÀ¬»ø·¢ËÍÈí¼þ')
+		//, 'RATWARE' => array ('S'=>'æ£€æŸ¥å‘é€è½¯ä»¶ç±»åž‹', 'L'=>'é€šè¿‡æå–é‚®ä»¶ç‰¹å¾ï¼Œå¯Ÿçœ‹æ˜¯å¦å‘è‡ªå¸¸ç”¨çš„åžƒåœ¾å‘é€è½¯ä»¶')
 		, 'SUBJ' => array ('S'=>_("Subject Check"), 'L'=>_("Checking if the email contains spam information against its subject"))
-		//, 'SUBJ' => array ('S'=>'²ì¿´ÓÊ¼þÖ÷Ìâ', 'L'=>'Í¨¹ýÖ÷Ìâ²ì¿´ÊÇ·ñÓÊ¼þ°üº¬À¬»øÓÊ¼þ³£¼ûÄÚÈÝ')
+		//, 'SUBJ' => array ('S'=>'å¯Ÿçœ‹é‚®ä»¶ä¸»é¢˜', 'L'=>'é€šè¿‡ä¸»é¢˜å¯Ÿçœ‹æ˜¯å¦é‚®ä»¶åŒ…å«åžƒåœ¾é‚®ä»¶å¸¸è§å†…å®¹')
 		, 'X_' => array ('S'=>_("X-Header Check"), 'L'=>_("Checking spam against email X-Header"))
-		//, 'X_' => array ('S'=>'²ì¿´ÓÊ¼þÍ·X-Header', 'L'=>'Í¨¹ýX-HeaderÓÊ¼þÍ·¼ì²éÀ¬»øÓÊ¼þ')
+		//, 'X_' => array ('S'=>'å¯Ÿçœ‹é‚®ä»¶å¤´X-Header', 'L'=>'é€šè¿‡X-Headeré‚®ä»¶å¤´æ£€æŸ¥åžƒåœ¾é‚®ä»¶')
 	);
 
 
@@ -81,7 +81,7 @@ foreach ( $SATests as $RuleKey=>$RuleDesc ){
 			echo "checked"; 
 		?>
 	> 
-	<b><?=$RuleDesc['S']?></b> £º <?=$RuleDesc['L']?><p>
+	<b><?=$RuleDesc['S']?></b> ï¼š <?=$RuleDesc['L']?><p>
 <?
 }
 ?>

@@ -35,7 +35,7 @@ static void genkey(const char *d)
 	gpg_genkey(d, &unicode_ISO8859_1,
 		   "John Smith",
 		   "john@example.com",
-		   "Dummy ISO-8859 Tëëst key",
+		   "Dummy ISO-8859 Tè…šst key",
 		   1024,
 		   2048,
 		   12,

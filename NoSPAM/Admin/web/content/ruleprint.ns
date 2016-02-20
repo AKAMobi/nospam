@@ -71,7 +71,7 @@ foreach($rules as $rule){
 		<td><?=_("Update Time")?>: <?=FormatTime($rule->get_attribute("update_time"))?></td>
 	</tr>
 	<tr>
-		<td><?=_("Expire Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"ÎÞ"?></td>
+		<td><?=_("Expire Time")?>: <?=($rule->has_attribute("expire_time"))? FormatTime($rule->get_attribute("expire_time")):"æ— "?></td>
 		<td><?if($bPolice){?><?=_("Alarm Level")?>: <?=$rule->get_attribute("alarmlevel")?><?}?></td>
 	</tr>
 	<?if ($bPolice){?>

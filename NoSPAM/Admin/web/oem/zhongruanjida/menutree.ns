@@ -6,7 +6,7 @@ require_once("inc/include.ns");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÏµÍ³²Ëµ¥</title>
+<title>ç³»ç»Ÿèœå•</title>
 <link type="text/css" rel="stylesheet" href="css/style.css">
 <SCRIPT language=JavaScript>
 <!--
@@ -39,8 +39,8 @@ function popmenu(ss,ii)
 <body text="#333333" link="#6666aa" alink="#aa6666" vlink="#6666aa" bgcolor="#ffffff" leftmargin="0" rightmargin="0" topmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
 <table class="n1" cellSpacing="0" cellPadding="0" width="100%" border="0">
 <TR>
-    <TD class=mu height=20 background=images/menutop.gif>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title=¹ÜÀíÑ¡Ïî 
-      href="javascript:;">¹ÜÀí</A> </TD>
+    <TD class=mu height=20 background=images/menutop.gif>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<A title=ç®¡ç†é€‰é¡¹ 
+      href="javascript:;">ç®¡ç†</A> </TD>
 </TR>
 <TR>
 	<TD bgColor="#cccccc" height="2"></TD>
@@ -50,7 +50,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux1','img1')" height="20">
-	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ÏµÍ³¹ÜÀí
+	<IMG id="img1" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ç³»ç»Ÿç®¡ç†
 </TD>
 </TR>
 <TR>
@@ -61,7 +61,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">±¾Éè±¸ĞòÁĞºÅ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/serialno.ns">æœ¬è®¾å¤‡åºåˆ—å·</A>
 		</TD>
 	</TR>
 	<TR>
@@ -69,7 +69,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/upgrade.ns">Éı¼¶¸üĞÂ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/upgrade.ns">å‡çº§æ›´æ–°</A>
 		</TD>
 	</TR>
 	<TR>
@@ -78,7 +78,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	<?if($Switchable){?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/gatewaymode.ns">ÔËĞĞÄ£Ê½</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/gatewaymode.ns">è¿è¡Œæ¨¡å¼</A>
 		</TD>
 	</TR>
 	<?}?>
@@ -87,7 +87,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/network.ns">ÍøÂçÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/network.ns">ç½‘ç»œè®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -95,7 +95,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/basesettings.ns">SMTP²ÎÊı</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/basesettings.ns">SMTPå‚æ•°</A>
 		</TD>
 	</TR>
 	<TR>
@@ -103,7 +103,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/configmanage.ns">ÅäÖÃ¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/configmanage.ns">é…ç½®ç®¡ç†</A>
 		</TD>
 	</TR>
 	<TR>
@@ -111,7 +111,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/systemtime.ns">ÏµÍ³Ê±¼ä</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/systemtime.ns">ç³»ç»Ÿæ—¶é—´</A>
 		</TD>
 	</TR>
 	<TR>
@@ -119,7 +119,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/reboot.ns">ÏµÍ³ÖØÆô¹Ø»ú</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="system/reboot.ns">ç³»ç»Ÿé‡å¯å…³æœº</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -128,7 +128,7 @@ if(adminPerm(PERM_ADMIN_SYSTEM)){
 <?}?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux2','img2')" height="20">
-	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;¹ÜÀíÔ±
+	<IMG id="img2" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ç®¡ç†å‘˜
 </TD>
 </TR>
 <TR>
@@ -142,7 +142,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/showadminlist.ns">¹ÜÀíÔ±ÁĞ±í</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/showadminlist.ns">ç®¡ç†å‘˜åˆ—è¡¨</A>
 		</TD>
 	</TR>
 	<TR>
@@ -150,7 +150,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/loginblacklist.ns">µÇÂ¼ÏŞÖÆÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/loginblacklist.ns">ç™»å½•é™åˆ¶è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -159,7 +159,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 <?}?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changePasswd.ns">ĞŞ¸Ä×Ô¼ºµÄÃÜÂë</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changePasswd.ns">ä¿®æ”¹è‡ªå·±çš„å¯†ç </A>
 		</TD>
 	</TR>
 	<TR>
@@ -167,7 +167,7 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changeIPlist.ns">ĞŞ¸ÄIPÏŞÖÆÁĞ±í</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="user/changeIPlist.ns">ä¿®æ”¹IPé™åˆ¶åˆ—è¡¨</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -179,7 +179,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux3','img3')" height="20">
-	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;Í¸Ã÷Íø¹ØÄ£Ê½
+	<IMG id="img3" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;é€æ˜ç½‘å…³æ¨¡å¼
 </TD>
 </TR>
 <TR>
@@ -190,7 +190,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">ÓÊ¼şÓò±£»¤Éè¶¨</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">é‚®ä»¶åŸŸä¿æŠ¤è®¾å®š</A>
 		</TD>
 	</TR>
 	<TR>
@@ -198,7 +198,7 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">ÓÊ¼ş¶ÓÁĞ¼à¹Ü</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -213,7 +213,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux4','img4')" height="20">
-	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MX×ª·¢Ä£Ê½
+	<IMG id="img4" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;MXè½¬å‘æ¨¡å¼
 </TD>
 </TR>
 <TR>
@@ -224,7 +224,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">ÓÊ¼şÓò±£»¤Éè¶¨</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/protectdomain.ns">é‚®ä»¶åŸŸä¿æŠ¤è®¾å®š</A>
 		</TD>
 	</TR>
 	<TR>
@@ -232,7 +232,7 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">ÓÊ¼ş¶ÓÁĞ¼à¹Ü</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -247,7 +247,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux5','img5')" height="20">
-	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;¶ÀÁ¢·şÎñÆ÷Ä£Ê½
+	<IMG id="img5" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ç‹¬ç«‹æœåŠ¡å™¨æ¨¡å¼
 </TD>
 </TR>
 <TR>
@@ -258,7 +258,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">¶ÀÁ¢·şÎñÆ÷ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/mailserver.ns">ç‹¬ç«‹æœåŠ¡å™¨è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -266,7 +266,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">ÓÊ¼ş¶ÓÁĞ¼à¹Ü</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gateway/mailqueue.ns">é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡</A>
 		</TD>
 	</TR>
 	<TR>
@@ -274,7 +274,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/showuserlist.ns">ÓÃ»§¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/showuserlist.ns">ç”¨æˆ·ç®¡ç†</A>
 		</TD>
 	</TR>
 	<TR>
@@ -282,7 +282,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/searchUser.ns">²éÕÒÓÃ»§</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/searchUser.ns">æŸ¥æ‰¾ç”¨æˆ·</A>
 		</TD>
 	</TR>
 	<TR>
@@ -290,7 +290,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/groupsControl.ns">ÓÃ»§×é¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/groupsControl.ns">ç”¨æˆ·ç»„ç®¡ç†</A>
 		</TD>
 	</TR>
 	<TR>
@@ -298,7 +298,7 @@ if($MailServer > 0 && strstr($ServerMode,"Server")){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/sendGroupMails.ns">Èº·¢ÓÊ¼ş</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="server/sendGroupMails.ns">ç¾¤å‘é‚®ä»¶</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -313,7 +313,7 @@ if($DynamicEngine > 0){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux6','img6')" height="20">
-	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;¶¯Ì¬ÏŞÖÆÒıÇæ
+	<IMG id="img6" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;åŠ¨æ€é™åˆ¶å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -324,7 +324,7 @@ if($DynamicEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/dynengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -332,7 +332,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connperip.ns">Í¬Ê±Á¬½ÓÊı</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connperip.ns">åŒæ—¶è¿æ¥æ•°</A>
 		</TD>
 	</TR>
 	<TR>
@@ -340,7 +340,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendrateperfrom.ns">ÓÃ»§ÖØ¸´ÏŞÖÆ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendrateperfrom.ns">ç”¨æˆ·é‡å¤é™åˆ¶</A>
 		</TD>
 	</TR>
 	<TR>
@@ -348,7 +348,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendratepersubject.ns">ÓÊ¼şÖØ¸´ÏŞÖÆ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/sendratepersubject.ns">é‚®ä»¶é‡å¤é™åˆ¶</A>
 		</TD>
 	</TR>
 	<TR>
@@ -356,7 +356,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connrateperip.ns">Á¬½ÓÆµÂÊ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/connrateperip.ns">è¿æ¥é¢‘ç‡</A>
 		</TD>
 	</TR>
 	<TR>
@@ -364,7 +364,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/realtime.ns">ÊµÊ±¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="dynamic/realtime.ns">å®æ—¶ç®¡ç†</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -378,7 +378,7 @@ if($DynamicEngine > 0){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux7','img7')" height="20">
-	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;²¡¶¾Ê¶±ğÒıÇæ
+	<IMG id="img7" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ç—…æ¯’è¯†åˆ«å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -389,7 +389,7 @@ if($DynamicEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/virusengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -397,7 +397,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/recognize.ns">²¡¶¾Ê¶±ğ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/recognize.ns">ç—…æ¯’è¯†åˆ«</A>
 		</TD>
 	</TR>
 	<TR>
@@ -405,7 +405,7 @@ if($DynamicEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/treatment.ns">²¡¶¾´¦Àí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antivirus/treatment.ns">ç—…æ¯’å¤„ç†</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -419,7 +419,7 @@ if($SpamEngine > 0){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux8','img8')" height="20">
-	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;À¬»øÓÊ¼şÒıÇæ
+	<IMG id="img8" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;åƒåœ¾é‚®ä»¶å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -430,7 +430,7 @@ if($SpamEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/spamengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -438,7 +438,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteIP">IP°×Ãûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteIP">IPç™½åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -446,7 +446,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteDomain">ÓÊ¼şÓòÃû°×Ãûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteDomain">é‚®ä»¶åŸŸåç™½åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -454,7 +454,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteFrom">ÓÊ¼şÕÊºÅ°×Ãûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=WhiteFrom">é‚®ä»¶å¸å·ç™½åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -462,7 +462,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackIP">IPºÚÃûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackIP">IPé»‘åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -470,7 +470,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackDomain">ÓÊ¼şÓòÃûºÚÃûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackDomain">é‚®ä»¶åŸŸåé»‘åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -478,7 +478,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackFrom">ÓÊ¼şÕÊºÅºÚÃûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/list.ns?option=BlackFrom">é‚®ä»¶å¸å·é»‘åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -486,7 +486,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/traceable.ns">¿É×·²éĞÔ¼ì²é</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/traceable.ns">å¯è¿½æŸ¥æ€§æ£€æŸ¥</A>
 		</TD>
 	</TR>
 	<TR>
@@ -494,16 +494,7 @@ if($SpamEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/bayes.ns">±´Ò¶Ë¹¹ıÂËÆ÷</A>
-		</TD>
-	</TR>
-	<TR>
-	  <TD bgColor="#e9f0fa" height="2"></TD>
-	</TR>
-
-	<TR>
-		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/rbl.ns">ÖÇÄÜÊµÊ±ºÚÃûµ¥</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/bayes.ns">è´å¶æ–¯è¿‡æ»¤å™¨</A>
 		</TD>
 	</TR>
 	<TR>
@@ -512,7 +503,7 @@ if($SpamEngine > 0){
 
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/netcheck.ns">ÖÇÄÜ¼¯ÖĞ·ÖÎö</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/rbl.ns">æ™ºèƒ½å®æ—¶é»‘åå•</A>
 		</TD>
 	</TR>
 	<TR>
@@ -521,7 +512,16 @@ if($SpamEngine > 0){
 
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/sa.ns">ÖÇÄÜÄÚÈİ·ÖÎö</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/netcheck.ns">æ™ºèƒ½é›†ä¸­åˆ†æ</A>
+		</TD>
+	</TR>
+	<TR>
+	  <TD bgColor="#e9f0fa" height="2"></TD>
+	</TR>
+
+	<TR>
+		<TD align="left">
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/sa.ns">æ™ºèƒ½å†…å®¹åˆ†æ</A>
 		</TD>
 	</TR>
 	<TR>
@@ -531,7 +531,7 @@ if($SpamEngine > 0){
 
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/awl.ns">ÖÇÄÜ½µÔëÏµÍ³</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/awl.ns">æ™ºèƒ½é™å™ªç³»ç»Ÿ</A>
 		</TD>
 	</TR>
 	<TR>
@@ -540,7 +540,7 @@ if($SpamEngine > 0){
 
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">À¬»ø´¦Àí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="antispam/treatment.ns">åƒåœ¾å¤„ç†</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -555,7 +555,7 @@ if($ContentEngine > 0){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux9','img9')" height="20">
-	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ÄÚÈİ¹ıÂËÒıÇæ
+	<IMG id="img9" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;å†…å®¹è¿‡æ»¤å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -566,7 +566,7 @@ if($ContentEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/contentengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -574,7 +574,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/rulemanage.ns">¹æÔò¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/rulemanage.ns">è§„åˆ™ç®¡ç†</A>
 		</TD>
 	</TR>
 	<TR>
@@ -582,7 +582,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/category.ns">Àà±ğ¹ÜÀí</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/category.ns">ç±»åˆ«ç®¡ç†</A>
 		</TD>
 	</TR>
 	<TR>
@@ -590,7 +590,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/ruleprint.ns">ÁĞÓ¡¹æÔò</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/ruleprint.ns">åˆ—å°è§„åˆ™</A>
 		</TD>
 	</TR>
 	<TR>
@@ -598,7 +598,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/filetypes.ns">ÎÄ¼şÀàĞÍ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="content/filetypes.ns">æ–‡ä»¶ç±»å‹</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -611,7 +611,7 @@ if($ContentEngine > 0){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux10','img10')" height="20">
-	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ÓÊ¼şÉó¼ÆÒıÇæ
+	<IMG id="img10" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;é‚®ä»¶å®¡è®¡å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -622,7 +622,7 @@ if($ContentEngine > 0){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archiveengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -630,7 +630,7 @@ if($ContentEngine > 0){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archivetype.ns">Ñ¡ÔñĞÔÉó¼Æ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="archive/archivetype.ns">é€‰æ‹©æ€§å®¡è®¡</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -643,7 +643,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux11','img11')" height="20">
-	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ÖÇÄÜ½»»¥ÒıÇæ
+	<IMG id="img11" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;æ™ºèƒ½äº¤äº’å¼•æ“
 </TD>
 </TR>
 <TR>
@@ -654,7 +654,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/interengine.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -662,7 +662,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/bigmail.ns">³¬´óÓÊ¼şÌáĞÑ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/bigmail.ns">è¶…å¤§é‚®ä»¶æé†’</A>
 		</TD>
 	</TR>
 	<TR>
@@ -670,7 +670,7 @@ if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/exmail.ns">¹ıÁ¿ÓÊ¼şÌáĞÑ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="interactive/exmail.ns">è¿‡é‡é‚®ä»¶æé†’</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -683,7 +683,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 <TR class="TableTitle2" >
 <TD onclick="popmenu('Aux12','img12')" height="20">
-	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;ÈÕÖ¾¼à¿Ø
+	<IMG id="img12" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;æ—¥å¿—ç›‘æ§
 </TD>
 </TR>
 <TR>
@@ -697,12 +697,12 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.ns">ÏµÍ³×´Ì¬</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/status.ns">ç³»ç»ŸçŠ¶æ€</A>
 		</TD>
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/analyze.ns">ÒıÇæ·ÖÎö</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="status/analyze.ns">å¼•æ“åˆ†æ</A>
 		</TD>
 	</TR>
 
@@ -711,7 +711,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logshow.ns">ÈÕÖ¾ÏÔÊ¾</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logshow.ns">æ—¥å¿—æ˜¾ç¤º</A>
 		</TD>
 	</TR>
 	<TR>
@@ -719,7 +719,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logstat.ns">ÈÕÖ¾Í³¼Æ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logstat.ns">æ—¥å¿—ç»Ÿè®¡</A>
 		</TD>
 	</TR>
 	<TR>
@@ -727,7 +727,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logexport.ns">ÈÕÖ¾µ¼³öÍ³¼Æ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logexport.ns">æ—¥å¿—å¯¼å‡ºç»Ÿè®¡</A>
 		</TD>
 	</TR>
 	<TR>
@@ -738,7 +738,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logflush.ns">ÈÕÖ¾Çå¿ÕÉ¾³ı</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/logflush.ns">æ—¥å¿—æ¸…ç©ºåˆ é™¤</A>
 		</TD>
 	</TR>
 	<TR>
@@ -751,7 +751,7 @@ if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/audit.ns">²Ù×÷ÈÕÖ¾Éó¼Æ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="log/audit.ns">æ“ä½œæ—¥å¿—å®¡è®¡</A>
 		</TD>
 	</TR>
 <?
@@ -766,7 +766,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
 <TR class="TableTitle2">
 <TD onclick="popmenu('Aux13','img13')" height="20">
-	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;¹«°²ÍøÂç¼à¹Ü
+	<IMG id="img13" height="13" src="images/s1.gif" width="12" align="absMiddle">&nbsp;&nbsp;å…¬å®‰ç½‘ç»œç›‘ç®¡
 </TD>
 </TR>
 <TR>
@@ -777,7 +777,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	<TABLE class="n2" cellSpacing="0" cellPadding="0" width="100%" bgColor="#d0d070" border="0">
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">»ù±¾ÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/basesettings.ns">åŸºæœ¬è®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -785,7 +785,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/msp.ns">MSPÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/msp.ns">MSPè®¾ç½®</A>
 		</TD>
 	</TR>
 	<TR>
@@ -793,7 +793,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<!--TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISCÉèÖÃ</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/gaisc.ns">GAISCè®¾ç½®</A>
 		</TD>
 	</TR-->
 	<TR>
@@ -801,7 +801,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 	</TR>
 	<TR>
 		<TD align="left">
-		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/export.ns">ËÄ²¿Î¯½»»»¸ñÊ½</A>
+		&nbsp;&nbsp;&nbsp;&nbsp;<A target="main" href="gasupervise/export.ns">å››éƒ¨å§”äº¤æ¢æ ¼å¼</A>
 		</TD>
 	</TR>
 	</TABLE>
@@ -812,7 +812,7 @@ if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
 <TR>
 <TD height="20">
-	<A target="_top" href="logout.ns">ÍË³öÏµÍ³</A>
+	<A target="_top" href="logout.ns">é€€å‡ºç³»ç»Ÿ</A>
 </TD>
 </TR>
 </table>

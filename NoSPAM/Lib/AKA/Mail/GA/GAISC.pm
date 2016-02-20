@@ -726,9 +726,9 @@ sub parse_logreq_to_filterdb
 			req_mail_data	=> $log_reqs[7]
 		};
 			
-	# Ä£ºıÆ¥Åä
+	# æ¨¡ç³ŠåŒ¹é…
 	$rule_info->{rule_keyword}->{type} = 0;
-	# È«ÎÄ¼ìË÷
+	# å…¨æ–‡æ£€ç´¢
 	$rule_info->{rule_keyword}->{key} = 7;
 	$rule_info->{id_type} = 'GAISC';
 	$rule_info->{update_time} = $self->{zlog}->get_time_stamp();
@@ -755,7 +755,7 @@ sub parse_logreq_to_filterdb
 
 	$rule_info->{keyword_logic} = $log_req->{keyword_logic};
 
-	# ½âÂë
+	# è§£ç 
 	$rule_info->{rule_keyword}->{decode} = 1;
 
 	$rule_info->{rule_comment} = $log_req->{req_mail_data};

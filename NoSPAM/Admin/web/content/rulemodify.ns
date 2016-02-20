@@ -133,7 +133,7 @@ if(!$Category[$category_id])
 <select id="expireMonth" name="expireMonth" onchange="recalcDate()"<?if (!$bExpire) echo " disabled";?>></select>/
 <select id="expireDate" name="expireDate"<?if (!$bExpire) echo " disabled";?>></select> 
 <select id="expireHour" name="expireHour"<?if (!$bExpire) echo " disabled";?>></select> <input type="hidden" name="expire_time"<?if (!$bExpire) echo " disabled";?>><input type="checkbox" name="bExpire" onclick="changeExpire()"<?if ($bExpire) echo " checked";?>></td>
-	<td><?/*±®æØº∂±£∫<select name="alarmlevel">
+	<td><?/*Êä•Ë≠¶Á∫ßÂà´Ôºö<select name="alarmlevel">
 <?
 					for($j=1;$j<=4;$j++){
 						echo "<option value=\"".$j."\"";
@@ -145,14 +145,14 @@ if(!$Category[$category_id])
 				  </select>*/?></td>
 </tr>
 <tr>
-	<td><?/* µ ±…œ±®£∫<select name="realtime_upload"><option value="YES"<?if ($rule->has_attribute("realtime_upload") && $rule->get_attribute("realtime_upload") == "YES") echo " selected";?>> «<option value="NO"<?if (!$rule->has_attribute("realtime_upload") || $rule->get_attribute("realtime_upload") == "NO") echo " selected";?>>∑Ò</select>*/?></td>
+	<td><?/*ÂÆûÊó∂‰∏äÊä•Ôºö<select name="realtime_upload"><option value="YES"<?if ($rule->has_attribute("realtime_upload") && $rule->get_attribute("realtime_upload") == "YES") echo " selected";?>>ÊòØ<option value="NO"<?if (!$rule->has_attribute("realtime_upload") || $rule->get_attribute("realtime_upload") == "NO") echo " selected";?>>Âê¶</select>*/?></td>
 	<td></td>
 </tr>
 </table><br>
 <?=_("Rules logic")?>: <select name="rule_logic"><option value="AND"<?if ($rule_logic == "AND") echo " selected";?>> AND <option value="OR"<?if ($rule_logic == "OR") echo " selected";?>> OR <option value="NOT"<?if ($rule_logic == "NOT") echo " selected";?>> NOT </select><br>
 <fieldset>
 <legend><b><?=_("Keyword and IP rules")?>: </b> <?=$keywordscount?><?=_(" items")?> <?if($keywordscount > 0){?>
-, <?=_("Sub-Rules logic")?>: <select name="keyword_logic"><option value="AND"<?if ($keyword_logic == "AND") echo " selected";?>>°°AND <option value="OR"<?if ($keyword_logic == "OR") echo " selected";?>> OR <option value="NOT"<?if ($keyword_logic == "NOT") echo " selected";?>> NOT </select><br>
+, <?=_("Sub-Rules logic")?>: <select name="keyword_logic"><option value="AND"<?if ($keyword_logic == "AND") echo " selected";?>>„ÄÄAND <option value="OR"<?if ($keyword_logic == "OR") echo " selected";?>> OR <option value="NOT"<?if ($keyword_logic == "NOT") echo " selected";?>> NOT </select><br>
 <?}?></legend>
 <div align="center">
 <input type="hidden" name="KeywordNum" value="<?=$keywordscount?>" />
@@ -448,7 +448,7 @@ if(!$Category[$_POST["category_id"]])
 <select id="expireMonth" name="expireMonth" onchange="recalcDate()" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select>/
 <select id="expireDate" name="expireDate" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select> 
 <select id="expireHour" name="expireHour" <?if (!isset($_POST['bExpire'])) echo " disabled";?>></select> <input type="hidden" name="expire_time" <?if (!isset($_POST['bExpire'])) echo " disabled";?>><input type="checkbox" name="bExpire" onclick="changeExpire()"<?if (isset($_POST['bExpire'])) echo " checked";?>></td>
-	<td><?/*±®æØº∂±£∫<select name="alarmlevel">
+	<td><?/*Êä•Ë≠¶Á∫ßÂà´Ôºö<select name="alarmlevel">
 <?
 					for($j=1;$j<=4;$j++){
 						echo "<option value=\"".$j."\"";
@@ -460,7 +460,7 @@ if(!$Category[$_POST["category_id"]])
 				  </select>*/?></td>
 </tr>
 <tr>
-	<td><?/* µ ±…œ±®£∫<select name="realtime_upload"><option value="YES"<?if ($_POST["realtime_upload"] == "YES") echo " selected";?>> «<option value="NO"<?if ($_POST["realtime_upload"] == "NO") echo " selected";?>>∑Ò</select>*/?></td>
+	<td><?/*ÂÆûÊó∂‰∏äÊä•Ôºö<select name="realtime_upload"><option value="YES"<?if ($_POST["realtime_upload"] == "YES") echo " selected";?>>ÊòØ<option value="NO"<?if ($_POST["realtime_upload"] == "NO") echo " selected";?>>Âê¶</select>*/?></td>
 	<td></td>
 </tr>
 </table><br>
@@ -989,7 +989,7 @@ if(count($Category) > 0){
 ?>
               </select>
     </td>
-    <td><!--±‡∫≈¿‡–Õ£∫<select name="id_type">
+    <td><!--ÁºñÂè∑Á±ªÂûãÔºö<select name="id_type">
                     <option value="asc">ASC
                     <option value="msp">MSP
                   </select>//-->
@@ -1004,11 +1004,11 @@ if(count($Category) > 0){
 <select id="expireMonth" name="expireMonth" onchange="recalcDate()" disabled></select>/
 <select id="expireDate" name="expireDate" disabled></select> 
 <select id="expireHour" name="expireHour" disabled></select> <input type="hidden" name="expire_time" disabled><input type="checkbox" name="bExpire" onclick="changeExpire()"></td>
-	<td><?/*±®æØº∂±£∫<select name="alarmlevel">
+	<td><?/*Êä•Ë≠¶Á∫ßÂà´Ôºö<select name="alarmlevel">
 <option value="1">1<option value="2">2<option value="3">3<option value="4">4</select>*/?></td>
 </tr>
 <tr>
-	<td><?/* µ ±…œ±®£∫<select name="realtime_upload"><option value="NO">∑Ò<option value="YES"> «</select>*/?></td>
+	<td><?/*ÂÆûÊó∂‰∏äÊä•Ôºö<select name="realtime_upload"><option value="NO">Âê¶<option value="YES">ÊòØ</select>*/?></td>
 	<td></td>
 </tr>
 </table><br>

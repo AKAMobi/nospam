@@ -19,7 +19,7 @@ function changeUserPasswd() {
 		return false;
 	}
 
-	if ( isset($_REQUEST["changeUserPasswd"])){ //实际修改用户信息
+	if ( isset($_REQUEST["changeUserPasswd"])){ //瀹為檯淇敼鐢ㄦ埛淇℃伅
 
 	$passwd= $_REQUEST['passwd'];
 	$passwd1 = $_REQUEST['passwd1'];						

@@ -1,11 +1,11 @@
 <?php
 require_once("functions.ns");
 
-define("ADMINFILE","ADMINFILE"); //ÓÃÓÚ±£´æ¹ÜÀíÔ±ÐÅÏ¢µÄÊý¾ÝÎÄ¼þ
+define("ADMINFILE","ADMINFILE"); //ç”¨äºŽä¿å­˜ç®¡ç†å‘˜ä¿¡æ¯çš„æ•°æ®æ–‡ä»¶
 
-define("SYSOPID", "admin"); //×î¸ß¹ÜÀíÔ±ID
+define("SYSOPID", "admin"); //æœ€é«˜ç®¡ç†å‘˜ID
 
-//·µ»ØÖµ¶¨Òå
+//è¿”å›žå€¼å®šä¹‰
 define("OK",0);
 define("ERR_NOSUCHID",-100);
 
@@ -62,27 +62,27 @@ function getAdminID(){
 	return $AdminID;
 }
 
-//ÅÐ¶ÏIDÊÇ·ñºÏ·¨
+//åˆ¤æ–­IDæ˜¯å¦åˆæ³•
 function isIDFormatOK($id){
 	return ereg( "^[A-Za-z][_0-9A-Za-z\.]*$", $id );
 }
 
-//ÅÐ¶ÏPasswordÊÇ·ñºÏ·¨
+//åˆ¤æ–­Passwordæ˜¯å¦åˆæ³•
 function isPasswordFormatOK($passwd){
 	return eregi( "^[0-9a-z]+$", $passwd );
 }
 
-//ÅÐ¶ÏÈ¨ÏÞÊÇ·ñºÏ·¨
+//åˆ¤æ–­æƒé™æ˜¯å¦åˆæ³•
 function isPrivilidgeFormatOK($privilidge){
 	return intval($privilidge);
 }
 
-//ÅÐ¶Ï±¸×¢ÊÇ·ñºÏ·¨
+//åˆ¤æ–­å¤‡æ³¨æ˜¯å¦åˆæ³•
 function isNoteFormatOK($note){
 	return ereg("^[^:]*$", $note);
 }
 
-//ÅÐ¶ÏIP¸ñÊ½ÊÇ·ñºÏ·¨
+//åˆ¤æ–­IPæ ¼å¼æ˜¯å¦åˆæ³•
 function isIpFormatOK($sip){
 	$ip=trim($sip);
 	if($ip=="")
@@ -100,12 +100,12 @@ function isIpFormatOK($sip){
 	return true;
 }
 
-//ÅÐ¶ÏÓòÃû¸ñÊ½ÊÇ·ñºÏ·¨
+//åˆ¤æ–­åŸŸåæ ¼å¼æ˜¯å¦åˆæ³•
 function isDomainFormatOK($sDomain){
 	return true;
 }
 
-//Ìí¼Ó¹ÜÀíÔ±
+//æ·»åŠ ç®¡ç†å‘˜
 function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
 	global $AdminDataFile;
 
@@ -173,7 +173,7 @@ function addAdmin($id, $passwd, $privilidge, $note, $ip, $domain){
 }
 
 
-//ÅÐ¶ÏÊäÈëÃÜÂëÊÇ·ñÕýÈ·
+//åˆ¤æ–­è¾“å…¥å¯†ç æ˜¯å¦æ­£ç¡®
 function isPasswordRight($id, $passwd){
 		global $AdminDataFile;
 
@@ -226,7 +226,7 @@ function isPasswordRight($id, $passwd){
 
 }
 
-//¶ÁÈ¡¹ÜÀíÔ±ÐÅÏ¢
+//è¯»å–ç®¡ç†å‘˜ä¿¡æ¯
 function getAdminInfo($id){
 	global $AdminDataFile;
 

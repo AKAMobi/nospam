@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 	if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 		<br>
-		��û�з��ʸ���ҳ��Ȩ�ޡ�<br>
+		您没有访问该网页的权限。<br>
 <?php
 		exit(0);
 	}
@@ -16,7 +16,7 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "�����û������ļ��޷��򿪡�<br>";
+        echo "错误：用户数据文件无法打开。<br>";
 		exit(-1);
     }
    
@@ -39,7 +39,7 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
 	    								"create_time" => $create_time,
 										"is_public" => $isPublic,
 										"note" => $note,
-										"group"=> str_replace(',', '��', $group))
+										"group"=> str_replace(',', '，', $group))
 	    );
 	}
 

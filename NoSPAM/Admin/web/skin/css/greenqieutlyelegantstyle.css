@@ -4,7 +4,7 @@ A:hover{TEXT-DECORATION: underline;Color:darkseagreen}
 BODY{
 FONT-SIZE: 12px;
 COLOR: #000000;
-FONT-FAMILY:  ËÎÌå;
+FONT-FAMILY:  å®‹ä½“;
 background-color: #FFFFFF; 
 scrollbar-face-color: #dbeedd;
 scrollbar-highlight-color: #FFFFFF;
@@ -15,7 +15,7 @@ scrollbar-track-color: #f3faf4;
 scrollbar-darkshadow-color: #f3faf4;
 }
 TD{
-font-family: ËÎÌå;
+font-family: å®‹ä½“;
 font-size: 12px;
 line-height: 15px;
 }
@@ -77,7 +77,7 @@ background-color: #dbeedd;
  TEXT-DECORATION: underline;}
 
 input,select,Textarea{
-font-family:Tahoma,Verdana,ËÎÌå; font-size: 12px; line-height: 15px;}
+font-family:Tahoma,Verdana,å®‹ä½“; font-size: 12px; line-height: 15px;}
 }
 .normalTextSmall 
 { 

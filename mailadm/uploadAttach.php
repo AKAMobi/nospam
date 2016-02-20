@@ -4,16 +4,16 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>Õ³Ìù¸½¼ş</TITLE>
+<TITLE>ç²˜è´´é™„ä»¶</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
-<h2>Õ³Ìù¸½¼ş</h2>
+<h2>ç²˜è´´é™„ä»¶</h2>
 <?php
 if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 <br>
-ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 } else {
 function sizestring($size)
@@ -132,15 +132,15 @@ window.onerror = SymError;
 //-->
 </script>
 
-<style type="text/css">.txt01 {  font-family: "ËÎÌå"; font-size: 12px}
-.txt02 {  font-family: "ËÎÌå"; font-size: 12px; color: #770260}
-.txt-b01 { font-family: "ËÎÌå"; font-size: 12px; color: #770260 ; background-color: #C7A9EF; border-color: #C7A9EF #5C034A #551A49 #C9B3E7; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}
-.txt-b02 { font-family: "ËÎÌå"; font-size: 12px; color: #000000; background-color: #F5EAF9}
-.txt-b03 { font-family: "ËÎÌå"; font-size: 12px; color: #770260; background-color: #F5EAF9}
-.form01 {  font-family: "ËÎÌå"; font-size: 12px; height: 20px; letter-spacing: 3px}
+<style type="text/css">.txt01 {  font-family: "å®‹ä½“"; font-size: 12px}
+.txt02 {  font-family: "å®‹ä½“"; font-size: 12px; color: #770260}
+.txt-b01 { font-family: "å®‹ä½“"; font-size: 12px; color: #770260 ; background-color: #C7A9EF; border-color: #C7A9EF #5C034A #551A49 #C9B3E7; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}
+.txt-b02 { font-family: "å®‹ä½“"; font-size: 12px; color: #000000; background-color: #F5EAF9}
+.txt-b03 { font-family: "å®‹ä½“"; font-size: 12px; color: #770260; background-color: #F5EAF9}
+.form01 {  font-family: "å®‹ä½“"; font-size: 12px; height: 20px; letter-spacing: 3px}
 .form02 {  font-size: 12px}
 a:hover {  color: #FF0000; text-decoration: none}
-.title01 { font-family: "ºÚÌå"; font-size: 16px; color: #770260 ; letter-spacing: 5px}
+.title01 { font-family: "é»‘ä½“"; font-size: 16px; color: #770260 ; letter-spacing: 5px}
 </style>
 
 <body bgcolor="#FFFFFF"  >
@@ -151,18 +151,18 @@ if ($action=="add") {
 		@mkdir($attachdir);
 		$tmpfilename=tempnam($attachdir,"att");
 		if (isset($filesizes[$act_attachname])) {
-			echo "´æÔÚÍ¬ÃûÎÄ¼ş£¡";
+			echo "å­˜åœ¨åŒåæ–‡ä»¶ï¼";
 		} else {
 			if (is_uploaded_file($_FILES['attachfile']['tmp_name'])) {
 				move_uploaded_file($_FILES['attachfile']['tmp_name'], 
 					$tmpfilename);
-				 /* ÌîĞ´ .index*/
+				 /* å¡«å†™ .index*/
 				if (($fp=@fopen($attachdir . "/.index", "a"))==FALSE) {
 						unlink($attachdir . "/" . $act_attachname);
 				} else {
 					fputs($fp,$tmpfilename . " " . $act_attachname . "\n");
 					fclose($fp);
-					echo "ÎÄ¼şÉÏÔØ³É¹¦£¡";
+					echo "æ–‡ä»¶ä¸Šè½½æˆåŠŸï¼";
 					$filenames[] = $act_attachname;
 					$filesizes[$act_attachname] = filesize($tmpfilename);
 					$totalsize+=$filesizes[$act_attachname];
@@ -171,23 +171,23 @@ if ($action=="add") {
 					break;
 				}
 			}
-			echo "±£´æ¸½¼şÎÄ¼şÊ§°Ü£¡";
+			echo "ä¿å­˜é™„ä»¶æ–‡ä»¶å¤±è´¥ï¼";
 		}
 		break;
 	case UPLOAD_ERR_INI_SIZE:
 	case UPLOAD_ERR_FORM_SIZE:
-		echo "ÎÄ¼ş³¬¹ıÔ¤¶¨µÄ´óĞ¡" . sizestr(ATTACHMAXSIZE) . "×Ö½Ú";
+		echo "æ–‡ä»¶è¶…è¿‡é¢„å®šçš„å¤§å°" . sizestr(ATTACHMAXSIZE) . "å­—èŠ‚";
 		break;
 	case UPLOAD_ERR_PARTIAL:
-		echo "ÎÄ¼ş´«Êä³ö´í£¡";
+		echo "æ–‡ä»¶ä¼ è¾“å‡ºé”™ï¼";
 		break;
 	case UPLOAD_ERR_NO_FILE:
-		echo "Ã»ÓĞÎÄ¼şÉÏ´«£¡";
+		echo "æ²¡æœ‰æ–‡ä»¶ä¸Šä¼ ï¼";
 		break;
 	case 100:
-		echo "ÎŞĞ§µÄÎÄ¼şÃû£¡";
+		echo "æ— æ•ˆçš„æ–‡ä»¶åï¼";
 	default:
-		echo "Î´Öª´íÎó";
+		echo "æœªçŸ¥é”™è¯¯";
 	}
 	echo "<br />";
 }
@@ -200,7 +200,7 @@ function addsubmit() {
   var obj=document.forms[0].elements["attachfile"];
   if (!obj) return true;
   if (obj.value == ""){
-	alert('Äú»¹Ã»Ñ¡ÔñÉÏ´«µÄ¸½¼ş');
+	alert('æ‚¨è¿˜æ²¡é€‰æ‹©ä¸Šä¼ çš„é™„ä»¶');
  	return false;
   } else {
         e2="uploadAttach.php?act=add";
@@ -218,7 +218,7 @@ function deletesubmit() {
 
 function clickclose() {
 	if (document.forms[0].elements["attachfile"].value == "") return window.close();
-	else if (confirm("ÄúÌîĞ´ÁËÎÄ¼şÃû£¬µ«Ã»ÓĞÉÏÔØ¡£ÊÇ·ñÈ·ÈÏ¹Ø±Õ£¿")==true) return window.close();
+	else if (confirm("æ‚¨å¡«å†™äº†æ–‡ä»¶åï¼Œä½†æ²¡æœ‰ä¸Šè½½ã€‚æ˜¯å¦ç¡®è®¤å…³é—­ï¼Ÿ")==true) return window.close();
 	return false;
 }
 <!--
@@ -231,7 +231,7 @@ function clickclose() {
       <td height="2"> 
         <table border="0">
           <tr> 
-            <td colspan="2" height="13" class="txt02"> <font>1¡¢µã¡°<font color="#FF0000">ä¯ÀÀ</font>¡±°´Å¥£¬ÕÒµ½ÄúËùÒªÕ³ÌùµÄ¸½¼şÎÄ¼ş£º</font> 
+            <td colspan="2" height="13" class="txt02"> <font>1ã€ç‚¹â€œ<font color="#FF0000">æµè§ˆ</font>â€æŒ‰é’®ï¼Œæ‰¾åˆ°æ‚¨æ‰€è¦ç²˜è´´çš„é™„ä»¶æ–‡ä»¶ï¼š</font> 
             </td>
           </tr>
           <tr> 
@@ -246,26 +246,26 @@ function clickclose() {
       <td> 
         <table border="0" width="500">
           <tr> 
-            <td width="420" class="txt02">2¡¢Ñ¡¶¨Ò»¸öÎÄ¼şºó£¬µã¡°<font color="#FF0000">Õ³Ìù</font>¡±°´Å¥£¬½«¸ÃÎÄ¼şÌùµ½ÎÄÕÂÉÏ:</td>
+            <td width="420" class="txt02">2ã€é€‰å®šä¸€ä¸ªæ–‡ä»¶åï¼Œç‚¹â€œ<font color="#FF0000">ç²˜è´´</font>â€æŒ‰é’®ï¼Œå°†è¯¥æ–‡ä»¶è´´åˆ°æ–‡ç« ä¸Š:</td>
             <td width="80"> 
               <input type="button" width="61"
-          height="21" value="Õ³Ìù" border="0" onclick="addsubmit()" class="form01" >
+          height="21" value="ç²˜è´´" border="0" onclick="addsubmit()" class="form01" >
             </td>
           </tr>
         </table>
       </td>
     </tr>
     <tr> 
-      <td class="txt02"> 3¡¢ÈçÓĞ¶à¸ö¸½¼şÎÄ¼şÒªÕ³Ìù£¬ÖØ¸´1¡¢2²½Öè£»</td>
+      <td class="txt02"> 3ã€å¦‚æœ‰å¤šä¸ªé™„ä»¶æ–‡ä»¶è¦ç²˜è´´ï¼Œé‡å¤1ã€2æ­¥éª¤ï¼›</td>
     </tr>
     <tr> 
       <td> 
         <table border="0" width="500">
           <tr> 
-            <td width="420" class="txt02">4¡¢ËùÓĞµÄ¸½¼şÕ³ÌùÍê±Ïºó£¬µã¡°<font color="#FF0000">Íê³É</font>¡±°´Å¥·µ»Ø¡£</td>
+            <td width="420" class="txt02">4ã€æ‰€æœ‰çš„é™„ä»¶ç²˜è´´å®Œæ¯•åï¼Œç‚¹â€œ<font color="#FF0000">å®Œæˆ</font>â€æŒ‰é’®è¿”å›ã€‚</td>
             <td width="80"> 
               <input type="button"  width="61"
-          height="21" value="Íê³É" border="0" onclick="return clickclose()" class="form01">
+          height="21" value="å®Œæˆ" border="0" onclick="return clickclose()" class="form01">
             </td>
           </tr>
         </table>
@@ -284,7 +284,7 @@ function clickclose() {
       </select>
       </font></td>
     <td width="77"> 
-      <input type="button" width="61" height=21 value="É¾³ı" onclick="return deletesubmit()" class="form01">
+      <input type="button" width="61" height=21 value="åˆ é™¤" onclick="return deletesubmit()" class="form01">
     </td>
   </tr>
 </table>
@@ -292,8 +292,8 @@ function clickclose() {
     <tr><td>
         <table border="0" width="500">
           <tr> 
-            <td width="200" class="txt01" align="right">ÏÖÔÚ¸½¼şÎÄ¼ş×ÜÁ¿Îª£º</td>
-            <td width="300" class="txt01"><font color="#FF0000"><b>&nbsp;&nbsp;<?php echo sizestring($totalsize); ?>×Ö½Ú</b></font></td>
+            <td width="200" class="txt01" align="right">ç°åœ¨é™„ä»¶æ–‡ä»¶æ€»é‡ä¸ºï¼š</td>
+            <td width="300" class="txt01"><font color="#FF0000"><b>&nbsp;&nbsp;<?php echo sizestring($totalsize); ?>å­—èŠ‚</b></font></td>
   	</tr>
   	</table>
   </td></tr>
@@ -302,7 +302,7 @@ function clickclose() {
 </table>
 <div align="center"> 
   <center>
-    <p>¡¡</p>
+    <p>ã€€</p>
   </center>
 </div></form>
 <?php

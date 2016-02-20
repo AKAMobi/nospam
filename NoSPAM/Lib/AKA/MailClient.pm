@@ -1,6 +1,6 @@
 # Ed Li 2004-06-13
-# ÒÑ¾­±» C++ qns_loader.cpp È¡´ú
-# ±¾ÎÄ¼şÒÑ±»·ÏÆú
+# å·²ç»è¢« C++ qns_loader.cpp å–ä»£
+# æœ¬æ–‡ä»¶å·²è¢«åºŸå¼ƒ
 #
 
 package AKA::MailClient;

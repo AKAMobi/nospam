@@ -119,9 +119,9 @@ package Date::Language::German;
 use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW);
 @ISA = qw(Date::Language);
 
-@MoY  = qw(Januar Februar März April Mai Juni
+@MoY  = qw(Januar Februar Mé‹œz April Mai Juni
 	   Juli August September Oktober November Dezember);
-@MoYs = qw(Jan Feb Mär Apr Mai Jun Jul Aug Sep Oct Nov Dez);
+@MoYs = qw(Jan Feb Mé‹œ Apr Mai Jun Jul Aug Sep Oct Nov Dez);
 @DoW  = qw(Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag);
 @DoWs = qw(Son Mon Die Mit Don Fre Sam);
 
@@ -154,8 +154,8 @@ use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW);
 @MoY  = qw(Januar Februar Mars April Mai Juni
 	   Juli August September Oktober November Desember);
 @MoYs = qw(Jan Feb Mar Apr Mai Jun Jul Aug Sep Okt Nov Des);
-@DoW  = qw(Søndag Mandag Tirsdag Onsdag Torsdag Fredag Lørdag Søndag);
-@DoWs = qw(Søn Man Tir Ons Tor Fre Lør Søn);
+@DoW  = qw(Sé´‘dag Mandag Tirsdag Onsdag Torsdag Fredag Lé´•dag Sé´‘dag);
+@DoWs = qw(Sé´‘ Man Tir Ons Tor Fre Lé´• Sé´‘);
 
 @AMPM =   @{Date::Language::English::AMPM};
 @Dsuf =   @{Date::Language::English::Dsuf};
@@ -215,9 +215,9 @@ package Date::Language::Austrian;
 use vars qw(@ISA @DoW @DoWs @MoY @MoYs @AMPM @Dsuf %MoY %DoW);
 @ISA = qw(Date::Language);
 
-@MoY  = qw(Jänner Feber März April Mai Juni
+@MoY  = qw(Jé‹˜ner Feber Mé‹œz April Mai Juni
 	   Juli August September Oktober November Dezember);
-@MoYs = qw(Jän Feb Mär Apr Mai Jun Jul Aug Sep Oct Nov Dez);
+@MoYs = qw(Jé‹˜ Feb Mé‹œ Apr Mai Jun Jul Aug Sep Oct Nov Dez);
 @DoW  = qw(Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag);
 @DoWs = qw(Son Mon Die Mit Don Fre Sam);
 

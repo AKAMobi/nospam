@@ -1,4 +1,4 @@
 <?php
-	echo mail("roy@zixia.net", "the subject", "²âÊÔ",
+	echo mail("roy@zixia.net", "the subject", "æµ‹è¯•",
      "From: roy@zixia.net\r\n");
 ?>

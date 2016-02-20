@@ -509,12 +509,12 @@ function save()
 		return false;
 	}
 	
-	$user_id = $_REQUEST['user_id'];		//ÓÃ»§ID
+	$user_id = $_REQUEST['user_id'];		//ç”¨æˆ·ID
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
 
-	$user_note = $_REQUEST['user_note'];		//ÓÃ»§Ö¤¼şºÅÂë
-	switch($_REQUEST['iprule']){				//IPµØÖ·ÁĞ±í
+	$user_note = $_REQUEST['user_note'];		//ç”¨æˆ·è¯ä»¶å·ç 
+	switch($_REQUEST['iprule']){				//IPåœ°å€åˆ—è¡¨
 		case "PERMIT":
 		$iplist = "+".str_replace("\n",",",str_replace("\r","",trim($_REQUEST['iplist'])));
 		break;
@@ -626,7 +626,7 @@ function save()
 
 	$success = $bModify? _("Modify"):_("Add");
 	if ($result==OK){
-		echo _("Admin")." {$_REQUEST['user_id']} "._("Success")." {$success}£¡"."<br>";
+		echo _("Admin")." {$_REQUEST['user_id']} "._("Success")." {$success}ï¼"."<br>";
 		LogAction(_("Administrator"),"{$success}"._("Admin"),$_REQUEST['user_id']);
 	}else{
 		echo "{$success}"._("Fail");

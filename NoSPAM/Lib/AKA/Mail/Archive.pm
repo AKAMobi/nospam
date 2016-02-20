@@ -1,5 +1,5 @@
 #
-# 北京互联网接警中心邮件过滤器
+# 鍖椾含浜掕仈缃戞帴璀︿腑蹇冮偖浠惰繃婊ゅ櫒
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net

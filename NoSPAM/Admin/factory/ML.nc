@@ -19,15 +19,15 @@ GenerateDate=$now
 ExpireDate=2004-9-30
 Version=2
 
-FactoryName=±±¾©Íø¾¯´´ĞÂĞÅÏ¢°²È«¼¼ÊõÓĞÏŞ¹«Ë¾
-ProductName=Íø¾¯ÓÊÍ¨Éñ  NETCOP-MFS-100
+FactoryName=åŒ—äº¬ç½‘è­¦åˆ›æ–°ä¿¡æ¯å®‰å…¨æŠ€æœ¯æœ‰é™å…¬å¸
+ProductName=ç½‘è­¦é‚®é€šç¥  NETCOP-MFS-100
 ProductSN=$prodno
 Language=zh_CN
 
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay
 
-LicenseHTML=<b>¿Í»§ÊÔÓÃÌåÑé(·ÇÏúÊÛ)°æ</b>
+LicenseHTML=<b>å®¢æˆ·è¯•ç”¨ä½“éªŒ(éé”€å”®)ç‰ˆ</b>
 
 MailGateway=100
 MailServer=100
@@ -40,7 +40,7 @@ ArchiveEngine=100
 GAInterface=100
 
 
-#¶ÀÁ¢·şÎñÆ÷µÄLicenseÏŞÖÆ£»
+#ç‹¬ç«‹æœåŠ¡å™¨çš„Licenseé™åˆ¶ï¼›
 MailServerMaxUser=1000
 MailServerMaxDomain=10
 MailServerMaxQuota=3000000000

@@ -3607,7 +3607,7 @@ void folder_showtransfer()
 	if (
 		strcmp(sqwebmail_folder, TRASH) == 0 || 
 		strcmp(sqwebmail_folder, SPAM) == 0
-	) printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddelall VALUE=\"È«²¿É¾³ý\"> ");
+	) printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddelall VALUE=\"å…¨éƒ¨åˆ é™¤\"> ");
 	printf("<INPUT TYPE=SUBMIT CLASS=\"mybtn\" NAME=cmddel VALUE=\"%s\"> ",
 		strcmp(sqwebmail_folder, TRASH) == 0
 		? purgelab:deletelab );

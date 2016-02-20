@@ -31,8 +31,8 @@ SetEnv[InternalNet]: MRTG_INT_IP="10.4.3.7" MRTG_INT_DESCR="eth0"
 Xsize[InternalNet]: 500 
 MaxBytes[InternalNet]: 12500000
 #kmg[InternalNet]: kb/s, Mb/s, Gb/s
-Title[InternalNet]: ÏµÍ³ÄÚÍøÁ÷Á¿
-PageTop[InternalNet]: <H1>ÄÚÍøÁ÷Á¿Í¼</H1>
+Title[InternalNet]: ç³»ç»Ÿå†…ç½‘æµé‡
+PageTop[InternalNet]: <H1>å†…ç½‘æµé‡å›¾</H1>
 
 ### Interface 3 >> Descr: 'eth1' | Name: '' | Ip: '192.168.79.250' | Eth: '00-0c-29-95-a7-b5' ###
 
@@ -40,94 +40,94 @@ Target[ExternalNet]: 3:nospam@localhost:
 SetEnv[ExternalNet]: MRTG_INT_IP="192.168.0.150" MRTG_INT_DESCR="eth1"
 Xsize[ExternalNet]: 500 
 MaxBytes[ExternalNet]: 12500000
-Title[ExternalNet]: ÏµÍ³ÍâÍøÁ÷Á¿
-PageTop[ExternalNet]: <H1>ÍâÍøÁ÷Á¿Í¼</H1>
+Title[ExternalNet]: ç³»ç»Ÿå¤–ç½‘æµé‡
+PageTop[ExternalNet]: <H1>å¤–ç½‘æµé‡å›¾</H1>
 
 ###cpu status 
 Target[CPU]:ssCpuRawUser.0&ipv6Forwarding.0:nospam@localhost + ssCpuRawSystem.0&ssCpuRawSystem.0:nospam@localhost + ssCpuRawNice.0&ssCpuRawNice.0:nospam@localhost
 Xsize[CPU]: 500 
 MaxBytes[CPU]: 100 
-Title[CPU]: ÏµÍ³CPU¸ºÔØ
-PageTop[CPU]:<H1>CPU¸ºÔØÍ¼</H1> 
+Title[CPU]: ç³»ç»ŸCPUè´Ÿè½½
+PageTop[CPU]:<H1>CPUè´Ÿè½½å›¾</H1> 
 Unscaled[CPU]: ymwd
 ShortLegend[CPU]: %
 YLegend[CPU]: CPU Load in %
-Legend1[CPU]: CPU ¸ºÔØ
-Legend2[CPU]: ºËĞÄ¸ºÔØ
-LegendI[CPU]: CPU ¸ºÔØ: 
-LegendO[CPU]: ºËĞÄ¸ºÔØ: 
+Legend1[CPU]: CPU è´Ÿè½½
+Legend2[CPU]: æ ¸å¿ƒè´Ÿè½½
+LegendI[CPU]: CPU è´Ÿè½½: 
+LegendO[CPU]: æ ¸å¿ƒè´Ÿè½½: 
 Options[CPU]: growright,nopercent 
 
 Target[SMTP]: ucdavis.57.101.1&ucdavis.57.101.2:nospam@localhost 
 Options[SMTP]: nopercent,growright,gauge,noinfo 
-Title[SMTP]: SMTPÁ¬½Ó×´Ì¬ 
+Title[SMTP]: SMTPè¿æ¥çŠ¶æ€ 
 Xsize[SMTP]: 500 
-PageTop[SMTP]: <H1>SMTPÁ¬½Ó×´Ì¬Í¼</H1>
+PageTop[SMTP]: <H1>SMTPè¿æ¥çŠ¶æ€å›¾</H1>
 MaxBytes[SMTP]: 1000000 
 YLegend[SMTP]: # Conns 
-ShortLegend[SMTP]: ¸öÁ¬½Ó
-Legend1[SMTP]: SMTPÁ¬½ÓÊı 
-Legend2[SMTP]: ¹¤×÷Á¬½ÓÊı
-LegendI[SMTP]: SMTPÁ¬½ÓÊı: 
-LegendO[SMTP]: ¹¤×÷Á¬½ÓÊı:
+ShortLegend[SMTP]: ä¸ªè¿æ¥
+Legend1[SMTP]: SMTPè¿æ¥æ•° 
+Legend2[SMTP]: å·¥ä½œè¿æ¥æ•°
+LegendI[SMTP]: SMTPè¿æ¥æ•°: 
+LegendO[SMTP]: å·¥ä½œè¿æ¥æ•°:
 
 
 Target[TCP]: ucdavis.56.101.1&ucdavis.56.101.2:nospam@localhost 
 Options[TCP]: nopercent,growright,gauge,noinfo 
-Title[TCP]: TCPÁ¬½Ó×´Ì¬ 
+Title[TCP]: TCPè¿æ¥çŠ¶æ€ 
 Xsize[TCP]: 500 
-PageTop[TCP]: <H1>TCPÁ¬½Ó×´Ì¬Í¼</H1>
+PageTop[TCP]: <H1>TCPè¿æ¥çŠ¶æ€å›¾</H1>
 MaxBytes[TCP]: 1000000 
 YLegend[TCP]: # Conns 
-ShortLegend[TCP]: ¸öÁ¬½Ó
-Legend1[TCP]: TCP Á¬½ÓÊı 
-Legend2[TCP]: ¸¨ÖúÁ¬½ÓÊı
-LegendI[TCP]: TCP Á¬½ÓÊı: 
-LegendO[TCP]: ¸¨ÖúÁ¬½ÓÊı:
+ShortLegend[TCP]: ä¸ªè¿æ¥
+Legend1[TCP]: TCP è¿æ¥æ•° 
+Legend2[TCP]: è¾…åŠ©è¿æ¥æ•°
+LegendI[TCP]: TCP è¿æ¥æ•°: 
+LegendO[TCP]: è¾…åŠ©è¿æ¥æ•°:
 
 #Target[MEM]: memTotalReal.0&memCached.0:nospam@localhost - memAvailReal.0&ipv6Forwarding.0:nospam@localhost
 Target[MEM]: memTotalReal.0&memCached.0:nospam@localhost - memAvailReal.0&ipv6Forwarding.0:nospam@localhost - memCached.0&ipv6Forwarding.0:nospam@localhost
 # - memCached.0&ipv6Forwarding.0:nospam@localhost
 Xsize[MEM]: 500 
 MaxBytes[MEM]: 4194304
-Title[MEM]:ÏµÍ³ÄÚ´æÊ¹ÓÃ×´Ì¬
-PageTop[MEM]:<H1>ÄÚ´æÊ¹ÓÃ×´Ì¬Í¼</H1> 
+Title[MEM]:ç³»ç»Ÿå†…å­˜ä½¿ç”¨çŠ¶æ€
+PageTop[MEM]:<H1>å†…å­˜ä½¿ç”¨çŠ¶æ€å›¾</H1> 
 ShortLegend[MEM]: B
 kMG[MEM]: K,M,G,T,P,X 
 kilo[MEM]:1024 
 YLegend[MEM]: Memory Usage 
-Legend1[MEM]: ÏµÍ³ÄÚ´æÕ¼ÓÃ 
-Legend2[MEM]: CacheÊ¹ÓÃ
-LegendI[MEM]: ÏµÍ³ÄÚ´æÕ¼ÓÃ:
-LegendO[MEM]: CacheÊ¹ÓÃ:
+Legend1[MEM]: ç³»ç»Ÿå†…å­˜å ç”¨ 
+Legend2[MEM]: Cacheä½¿ç”¨
+LegendI[MEM]: ç³»ç»Ÿå†…å­˜å ç”¨:
+LegendO[MEM]: Cacheä½¿ç”¨:
 Options[MEM]: growright,gauge,nopercent 
 
 Target[HDIO]: ucdavis.55.101.1&ucdavis.55.101.2:nospam@localhost
 Xsize[HDIO]: 500 
 MaxBytes[HDIO]: 1000000
-Title[HDIO]: ÏµÍ³Íâ´æ¸ºÔØ
-PageTop[HDIO]:<H1>Íâ´æ¸ºÔØÍ¼</H1> 
+Title[HDIO]: ç³»ç»Ÿå¤–å­˜è´Ÿè½½
+PageTop[HDIO]:<H1>å¤–å­˜è´Ÿè½½å›¾</H1> 
 ShortLegend[HDIO]: B/s
 kmg[HDIO]: K,M,G,T,P,X
 kilo[HDIO]:1024
 YLegend[HDIO]: IO Load
-Legend1[HDIO]: Íâ´æ¶ÁËÙÂÊ
-Legend2[HDIO]: Íâ´æĞ´ËÙÂÊ
-LegendI[HDIO]: Íâ´æ¶ÁËÙÂÊ:
-LegendO[HDIO]: Íâ´æĞ´ËÙÂÊ:
+Legend1[HDIO]: å¤–å­˜è¯»é€Ÿç‡
+Legend2[HDIO]: å¤–å­˜å†™é€Ÿç‡
+LegendI[HDIO]: å¤–å­˜è¯»é€Ÿç‡:
+LegendO[HDIO]: å¤–å­˜å†™é€Ÿç‡:
 Options[HDIO]: growright,gauge,nopercent,withzeroes
 
 Target[HDFREE]:dskPercent.1&dskPercent.2:nospam@localhost
 MaxBytes[HDFREE]: 100
 Xsize[HDFREE]: 500 
-Title[HDFREE]: Íâ´æÊ¹ÓÃÂÊ
-PageTop[HDFREE]: <H1>Íâ´æÊ¹ÓÃÂÊÍ¼</H1>
+Title[HDFREE]: å¤–å­˜ä½¿ç”¨ç‡
+PageTop[HDFREE]: <H1>å¤–å­˜ä½¿ç”¨ç‡å›¾</H1>
 Unscaled[HDFREE]: ymwd
 ShortLegend[HDFREE]: %
 YLegend[HDFREE]: Storage in %
-Legend1[HDFREE]: ¹¤×÷Çø
-Legend2[HDFREE]: ÈÕÖ¾Çø
-LegendI[HDFREE]: ¹¤×÷Çø:
-LegendO[HDFREE]: ÈÕÖ¾Çø:
+Legend1[HDFREE]: å·¥ä½œåŒº
+Legend2[HDFREE]: æ—¥å¿—åŒº
+LegendI[HDFREE]: å·¥ä½œåŒº:
+LegendO[HDFREE]: æ—¥å¿—åŒº:
 Options[HDFREE]: growright,gauge,nopercent
 

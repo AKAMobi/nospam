@@ -27,7 +27,7 @@ Language=zh_CN
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,Server,MXRelay,Tailer
 
-LicenseHTML=<b>¿Í»§ÊÔÓÃÌåÑé(·ÇÏúÊÛ)°æ</b>
+LicenseHTML=<b>å®¢æˆ·è¯•ç”¨ä½“éªŒ(éé”€å”®)ç‰ˆ</b>
 
 MailGateway=100
 MailServer=100

@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -68,7 +68,7 @@ sub new
 
 # Return $self so the user can use it.
 
-	# PreFork Ä£Ê½ÏÂÍ³¼Æ cputime ĞèÒª×÷²î
+	# PreFork æ¨¡å¼ä¸‹ç»Ÿè®¡ cputime éœ€è¦ä½œå·®
 	$self->{last_cputime} ||= 0;
 
 	return $self;

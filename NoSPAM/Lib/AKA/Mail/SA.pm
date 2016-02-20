@@ -1,5 +1,5 @@
 #
-# SpamAssassin·´À¬»øÅÐ¶ÏÒýÇæ
+# SpamAssassinååžƒåœ¾åˆ¤æ–­å¼•æ“Ž
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Li
 # EMail: zixia@zixia.net
@@ -243,12 +243,12 @@ sub get_local_cf_content
 	my $local_cf_hash = {};
 	my $local_cf_content;
 
-	# ³ö³§ÉèÖÃµÄ SA SCORE Öµ
+	# å‡ºåŽ‚è®¾ç½®çš„ SA SCORE å€¼
 	my $factory_score;
 
 	my ($key,$val);
 
-	# ÌáÈ¡ËùÓÐ³ö³§ÉèÖÃµÄ SA SCORE
+	# æå–æ‰€æœ‰å‡ºåŽ‚è®¾ç½®çš„ SA SCORE
 	while ( ($key,$val)=each %{$saconf} ){
 		if ( $key eq 'FactoryScore' ){
 			$factory_score = $val;
@@ -257,7 +257,7 @@ sub get_local_cf_content
 		$local_cf_hash->{$key} = $val;
 	}
 
-	# ¶ÔNoSPAM.confÖÐµÄºÍSpamAssassinÏà¹ØµÄÅäÖÃ½øÐÐ×ª»»
+	# å¯¹NoSPAM.confä¸­çš„å’ŒSpamAssassinç›¸å…³çš„é…ç½®è¿›è¡Œè½¬æ¢
 	while ( ($key,$val)=each %{$spamconf} ){
 		if ( defined $conf_map->{$key} ){
 			$local_cf_hash->{$conf_map->{$key}} = _get_conf_bool($val);

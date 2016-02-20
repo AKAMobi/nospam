@@ -11,8 +11,8 @@ require_once("inc/include.ns");
 <tr>
 	<td align="left"><img src="images/Logo.gif" width="100" height="80" alt="logo" align="middle">
 		<font size=+1><? echo $ProductName; ?></font></td>
-	<td align="right" valian="bottom">ÓÃ»§£º<?=getAdminID()?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$bForSell? "ÕýÊ½ÏúÊÛ°æ":"·ÇÏúÊÛ°æ"?>
-	<?if($sExpire!="") echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sExpire}¹ýÆÚ";?></td>
+	<td align="right" valian="bottom">ç”¨æˆ·ï¼š<?=getAdminID()?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$bForSell? "æ­£å¼é”€å”®ç‰ˆ":"éžé”€å”®ç‰ˆ"?>
+	<?if($sExpire!="") echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$sExpire}è¿‡æœŸ";?></td>
 </tr>
 </table>
 </body>

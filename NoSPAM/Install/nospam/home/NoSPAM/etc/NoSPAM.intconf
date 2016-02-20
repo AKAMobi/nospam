@@ -9,7 +9,7 @@ SpamAssassinMaxMailSize=131072
 ## Optional Score Increases
 FactoryScore=HTML_COMMENT_8BITS#0,UPPERCASE_25_50#0,UPPERCASE_50_75#0,UPPERCASE_75_100#0,CHINA_HEADER#0,CHINA_URI#0,BODY_8BITS#0,MIME_BASE64_TEXT#0,HEAD_ILLEGAL_CHARS#0,SUBJ_ILLEGAL_CHARS#0,DCC_CHECK#4.000,RAZOR2_CHECK#2.500,BAYES_99#4.300,BAYES_90#3.500,BAYES_80#3.000
 
-# ÏµÍ³ÄÚÖÃ£¬²»ĞèĞŞ¸Ä
+# ç³»ç»Ÿå†…ç½®ï¼Œä¸éœ€ä¿®æ”¹
 dns_available=yes
 
 use_bayes_rules=1
@@ -36,10 +36,10 @@ dcc_dccifd_path=/etc/dcc/dccifd
 auto_whitelist_path=/home/NoSPAM/sa/auto-whitelist
 auto_whitelist_file_mode=0700
 
-# ÏµÍ³×Ô¶¯¸ù¾İÅäÖÃĞŞ¸Ä£¬ÎŞÓÃ»§½çÃæ
+# ç³»ç»Ÿè‡ªåŠ¨æ ¹æ®é…ç½®ä¿®æ”¹ï¼Œæ— ç”¨æˆ·ç•Œé¢
 #trusted_networks=211.151.91.27/24
 
-# ½çÃæÉÏ¿ÉÒÔĞŞ¸Ä
+# ç•Œé¢ä¸Šå¯ä»¥ä¿®æ”¹
 
 # DCC
 use_dcc=1

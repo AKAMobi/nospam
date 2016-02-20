@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -21,7 +21,7 @@ use Date::Parse;
 #@EXPORT=("function1", "function2", "function3");
 
 #use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 
@@ -50,7 +50,7 @@ sub new
 	$self->{prefix} = "AMCF";
 
 
-	# ÎÄ¼şÀàĞÍ
+	# æ–‡ä»¶ç±»å‹
 	$self->{filetype}->{compress} = [ 'zip','rar',
 					  'tgz', 'gz','bz2' ];
 	$self->{filetype_num}->{compress} = 1;
@@ -84,7 +84,7 @@ sub load_user_filetype
 	}
 
 
-	# µÚÒ»ĞĞÊÇÒÑÓÃµÄ×î´óºÅÂë
+	# ç¬¬ä¸€è¡Œæ˜¯å·²ç”¨çš„æœ€å¤§å·ç 
 	<FD>;
 
 	my ( $num, $type, $exts, @exts );
@@ -150,7 +150,7 @@ sub print
 
 	$self->{entity}->print($fh);
 
-	# Ö»ÄÜ print Ò»´Î
+	# åªèƒ½ print ä¸€æ¬¡
 	$self->clean;
 	undef $self->{mail_info};
 	undef $self->{entity};
@@ -196,7 +196,7 @@ sub get_head_info
 	$self->{mail_info}->{head_size} = length( $content );
 
 
-	# TO/CC/BCC ×Ü¹²½ÓÊÕµÄÈËÊı
+	# TO/CC/BCC æ€»å…±æ¥æ”¶çš„äººæ•°
 	my ($to,$from,$cc,$bcc);
 	my $num_receivers = 0;
 
@@ -233,7 +233,7 @@ sub get_head_info
 	$self->{mail_info}->{head}->{subject} = $head->get('Subject');
 	chomp $self->{mail_info}->{head}->{subject};
 
-	# FIXME ÕıÈ·È¡µÃ sender_ip & server_ip
+	# FIXME æ­£ç¡®å–å¾— sender_ip & server_ip
 	my @receiveds = $head->get("Received");
 	my $server_ip = 1;
 	my $relay;
@@ -339,10 +339,10 @@ sub get_body_info
 
 		$self->{mail_info}->{body}->{$filename}->{size} = $size;
 
-		#FIXME: »ñÈ¡±àÂëµÄbody size
+		#FIXME: è·å–ç¼–ç çš„body size
 		$self->{mail_info}->{body_size} += $size;
 			
-		# »ñÈ¡ÎÄ¼şÀàĞÍ
+		# è·å–æ–‡ä»¶ç±»å‹
 		$self->{mail_info}->{body}->{$filename}->{typeclass} = get_attachment_type( $self,$filename );
 
         } else {  
@@ -371,7 +371,7 @@ sub get_attachment_type
 		}
 	}
 			
-	# ÆäËûÀàĞÍÎÄ¼ş
+	# å…¶ä»–ç±»å‹æ–‡ä»¶
 	return 6;
 }
 
@@ -1089,7 +1089,7 @@ sub extract_ipv4_addr_from_string {
 
 #sub DESTROY
 #{
-#	# É¾³ıÁÙÊ±ÎÄ¼ş
+#	# åˆ é™¤ä¸´æ—¶æ–‡ä»¶
 #}
 
 1;

@@ -1,17 +1,17 @@
 <?
 require_once("../inc/include.ns");
 if($InteractiveEngine <= 0)
-	die("¶Ô²»Æð£¬±¾ÏµÍ³Ã»ÓÐ¿ªÆô±¾¹¦ÄÜ");
+	die("å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰å¼€å¯æœ¬åŠŸèƒ½");
 
 if(!adminPerm(PERM_ADMIN_INTERACTIVE))
-	die("ÄúÃ»ÓÐ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏÞ¡£");
+	die("æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚");
 
-if($_POST["Submit"]=="ÐÞ¸Ä"){
+if($_POST["Submit"]=="ä¿®æ”¹"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("ÄãÎÞÈ¨½øÐÐÐÞ¸Ä²Ù×÷");
+		die("ä½ æ— æƒè¿›è¡Œä¿®æ”¹æ“ä½œ");
 	if($_POST["WarnExMail"]=="Y"){
 		if(!is_numeric($_POST["MinNum"]))
-			die("ÓÊ¼þÊýÄ¿ÇëÊäÈëÊý×Ö");
+			die("é‚®ä»¶æ•°ç›®è¯·è¾“å…¥æ•°å­—");
 		$spamconf->setParam("WarnExcessiveMail","Y","InteractiveEngine");
 		$spamconf->setParam("WarnMinimumMailNum",intval($_POST["MinNum"]),"InteractiveEngine");
 		savetofile($_POST["Content"],WARNEXMAIL);
@@ -20,9 +20,9 @@ if($_POST["Submit"]=="ÐÞ¸Ä"){
 	}
 	$spamconf->save();
 	if(($ret=wi("reset_WarnExcessiveMail",$result))==0)
-		echo "ÐÞ¸Ä³É¹¦";
+		echo "ä¿®æ”¹æˆåŠŸ";
 	else
-		echo "ÐÞ¸ÄÊ§°Ü£¬´íÎó´úÂë£º".$ret;
+		echo "ä¿®æ”¹å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š".$ret;
 }else{
 	$bWarnExMail = ($spamconf->getParam("WarnExcessiveMail","InteractiveEngine")=="Y");
 	$iMinNum = $spamconf->getParam("WarnMinimumMailNum","InteractiveEngine");
@@ -38,7 +38,7 @@ if($_POST["Submit"]=="ÐÞ¸Ä"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>¹ýÁ¿ÓÊ¼þÌáÐÑ</title>
+<title>è¿‡é‡é‚®ä»¶æé†’</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script language="javascript">
 function change()
@@ -58,24 +58,24 @@ function change()
 <body>
 <center><font size="+3"><?=_("Interactive")?>-<?=_("Too Many Mails")?></font></center>
 <form name="form1" method="post" action="">
-<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> onclick="change()">¿ªÆô¹ýÁ¿ÓÊ¼þÌáÐÑ¹¦ÄÜ</p>
+<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> onclick="change()">å¼€å¯è¿‡é‡é‚®ä»¶æé†’åŠŸèƒ½</p>
 <p>
-·¢¼þÈË·¢ËÍ×î¶àÓÊ¼þÊýÄ¿£¨³¬¹ý´ËÊýÄ¿Ôò´¥·¢ÌáÐÑ¶¯×÷£©£º
-<input type="text" name="MinNum" value="<?=$iMinNum?>"<?if(!$bWarnExMail) echo " disabled";?>>·â
+å‘ä»¶äººå‘é€æœ€å¤šé‚®ä»¶æ•°ç›®ï¼ˆè¶…è¿‡æ­¤æ•°ç›®åˆ™è§¦å‘æé†’åŠ¨ä½œï¼‰ï¼š
+<input type="text" name="MinNum" value="<?=$iMinNum?>"<?if(!$bWarnExMail) echo " disabled";?>>å°
 </p>
 <p>
-ÌáÐÑÐÅ¼ãÄÚÈÝ£º<br>
+æé†’ä¿¡ç¬ºå†…å®¹ï¼š<br>
 <textarea  cols="90" rows="20" name="Content"<?if(!$bWarnExMail) echo " disabled";?>><?=$sContent?></textarea>
 </p>
 <p>
-    <input type="submit" name="Submit" value="ÐÞ¸Ä">
+    <input type="submit" name="Submit" value="ä¿®æ”¹">
 </p>
 </form>
 <?
 if(!$bInteractive){
 ?>
 <script>
-alert("×¢Òâ£ºÖÇÄÜ½»»¥ÒýÇæÎ´¿ªÆô£¡");
+alert("æ³¨æ„ï¼šæ™ºèƒ½äº¤äº’å¼•æ“Žæœªå¼€å¯ï¼");
 </script>
 <?
 }
@@ -89,24 +89,24 @@ alert("×¢Òâ£ºÖÇÄÜ½»»¥ÒýÇæÎ´¿ªÆô£¡");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>¹ýÁ¿ÓÊ¼þÌáÐÑ</title>
+<title>è¿‡é‡é‚®ä»¶æé†’</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
-<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> disabled>¿ªÆô³¬´óÓÊ¼þÌáÐÑ¹¦ÄÜ</p>
+<p><input type="checkbox" value="Y" name="WarnExMail"<?if($bWarnExMail) echo " checked";?> disabled>å¼€å¯è¶…å¤§é‚®ä»¶æé†’åŠŸèƒ½</p>
 <p>
-·¢¼þÈË·¢ËÍ×î¶àÓÊ¼þÊýÄ¿£¨³¬¹ý´ËÊýÄ¿Ôò´¥·¢ÌáÐÑ¶¯×÷£©£º<?=$iMinNum?>·â
+å‘ä»¶äººå‘é€æœ€å¤šé‚®ä»¶æ•°ç›®ï¼ˆè¶…è¿‡æ­¤æ•°ç›®åˆ™è§¦å‘æé†’åŠ¨ä½œï¼‰ï¼š<?=$iMinNum?>å°
 </p>
 <p>
-ÌáÐÑÐÅ¼ãÄÚÈÝ£º<br>
+æé†’ä¿¡ç¬ºå†…å®¹ï¼š<br>
 <textarea  cols="90" rows="20" name="Content" disabled><?=$sContent?></textarea>
 </p>
 <?
 if(!$bInteractive){
 ?>
 <script>
-alert("×¢Òâ£ºÖÇÄÜ½»»¥ÒýÇæÎ´¿ªÆô£¡");
+alert("æ³¨æ„ï¼šæ™ºèƒ½äº¤äº’å¼•æ“Žæœªå¼€å¯ï¼");
 </script>
 <?
 }

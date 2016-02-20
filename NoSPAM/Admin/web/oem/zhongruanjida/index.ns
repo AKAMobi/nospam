@@ -17,15 +17,15 @@ if (isset($AdminID)) {
 <SCRIPT>
 
 <!--//
-var alertinput="ÇëÄúÊ×ÏÈÊäÈë£º\n";
+var alertinput="è¯·æ‚¨é¦–å…ˆè¾“å…¥ï¼š\n";
 
 function login() 
 {
 	var mesg = "";
 	
-	if(document.logon.adminID.value == "") mesg += "¹ÜÀíÔ±ÕËºÅ\n";
+	if(document.logon.adminID.value == "") mesg += "ç®¡ç†å‘˜è´¦å·\n";
 	
-	if(document.logon.password.value == "") mesg += "ÃÜÂë\n";
+	if(document.logon.password.value == "") mesg += "å¯†ç \n";
 	
 	if(mesg != ""){
 		
@@ -43,7 +43,7 @@ function login()
 //-->
 
 </SCRIPT>
-<title>·´À¬»øÓÊ¼şÏµÍ³</title>
+<title>ååƒåœ¾é‚®ä»¶ç³»ç»Ÿ</title>
 <style type="text/css">
 <!--
 OL,UL,P,BODY,TD,TR,TH,FORM { font-family: verdana,arial,helvetica,sans-serif; font-size:x-small; color: #333333; }
@@ -60,9 +60,9 @@ TD { text-align: left}
 <FORM name=logon onsubmit="return login();" action="login.ns" method=post>
 <table>
 <tr><td height=200></td></tr>
-<tr><td height=50 colspan=3><center>¹ÜÀíÔ±ÕÊºÅ<br><input type="text" name="adminID" VALUE=""></center></td></tr>
-<tr><td height=50 colspan=3><center>ÃÜ Âë<br><input type="password" name="password" VALUE=""></center></td></tr>
-<tr><td height=50><input type="submit" name="submit" value="µÇ Â¼"></td><td width=100></td><td><input type="reset" name="cancel" value="È¡ Ïû"></td></tr>
+<tr><td height=50 colspan=3><center>ç®¡ç†å‘˜å¸å·<br><input type="text" name="adminID" VALUE=""></center></td></tr>
+<tr><td height=50 colspan=3><center>å¯† ç <br><input type="password" name="password" VALUE=""></center></td></tr>
+<tr><td height=50><input type="submit" name="submit" value="ç™» å½•"></td><td width=100></td><td><input type="reset" name="cancel" value="å– æ¶ˆ"></td></tr>
 </table>
 </center>
 </td></tr>

@@ -26,17 +26,17 @@ my $ISOVER='2.2.3.1';
 my $PATCHVER='88';
 
 #
-# ÖÆ×÷Patch£º
-#	ÉèÖÃºÃÉÏÃæµÄ°æ±¾ÐÅÏ¢
-#	½¨Á¢patchÄ¿Â¼£¬½«ÐèÒª¸üÐÂµÄÎÄ¼þ°´ÕÕÄ¿Â¼¸ñÊ½¿½±´½øÈ¥
-#	ÔÚpatchÄ¿Â¼ÏÂ½¨Á¢£º
-#		VER	¸øÓÃ»§¿´µÄÊÊÓÃ°æ±¾
-#		INFO	Éý¼¶°üÃèÊö£¬µÚÒ»ÐÐÎª¶ÌÃèÊö£¬È»ºóÎª¿ÕÐÐ£¬ºóÃæÎª³¤ÃèÊö
+# åˆ¶ä½œPatchï¼š
+#	è®¾ç½®å¥½ä¸Šé¢çš„ç‰ˆæœ¬ä¿¡æ¯
+#	å»ºç«‹patchç›®å½•ï¼Œå°†éœ€è¦æ›´æ–°çš„æ–‡ä»¶æŒ‰ç…§ç›®å½•æ ¼å¼æ‹·è´è¿›åŽ»
+#	åœ¨patchç›®å½•ä¸‹å»ºç«‹ï¼š
+#		VER	ç»™ç”¨æˆ·çœ‹çš„é€‚ç”¨ç‰ˆæœ¬
+#		INFO	å‡çº§åŒ…æè¿°ï¼Œç¬¬ä¸€è¡Œä¸ºçŸ­æè¿°ï¼Œç„¶åŽä¸ºç©ºè¡Œï¼ŒåŽé¢ä¸ºé•¿æè¿°
 
-#		REBOOT	Èç¹ûÉý¼¶ºóÐèÒªREBOOT£¬Ôò´æÔÚÕâ¸öÎÄ¼þ
-#		root/post_patch	½â°üÍê±ÏºóµÄÖ´ÐÐ½Å±¾
-#		SUM	³ÌÐò×Ô¶¯Éú³É		
-#		TIMESTAMP	³ÌÐò×Ô¶¯Éú³É		
+#		REBOOT	å¦‚æžœå‡çº§åŽéœ€è¦REBOOTï¼Œåˆ™å­˜åœ¨è¿™ä¸ªæ–‡ä»¶
+#		root/post_patch	è§£åŒ…å®Œæ¯•åŽçš„æ‰§è¡Œè„šæœ¬
+#		SUM	ç¨‹åºè‡ªåŠ¨ç”Ÿæˆ		
+#		TIMESTAMP	ç¨‹åºè‡ªåŠ¨ç”Ÿæˆ		
 #
 
 my $PATCHDIR = $ARGV[0] or die "which dir?\n";

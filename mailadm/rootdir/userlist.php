@@ -8,7 +8,7 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "�����û������ļ��޷��򿪡�<br>";
+        echo "错误：用户数据文件无法打开。<br>";
 		exit(-1);
     }
    

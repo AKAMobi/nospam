@@ -55,7 +55,7 @@ sub is_valid_checksum
 {
 	my $self = shift;
 
-	# ²»°üÀ¨ checksum ÄÇĞĞ
+	# ä¸åŒ…æ‹¬ checksum é‚£è¡Œ
 	my ($license_content,$license_checksum) = @_;
 
 	my $right_sum = $self->get_checksum($license_content);
@@ -222,7 +222,7 @@ sub check_expiredate($$)
 	($year,$month,$date) = $expire_date=~/(\d+)\-(\d+)\-(\d+)/;
 	($hour,$minute,$second) = $expire_date=~/(\d+):(\d+):(\d+)/ ;
 
-	# Èç¹ûLicenseÖĞÃ»ÓĞexpire_date»òÕßparseÊ§°Ü£¬ÔòÈÏÎªÎ´¹ıÆÚ
+	# å¦‚æœLicenseä¸­æ²¡æœ‰expire_dateæˆ–è€…parseå¤±è´¥ï¼Œåˆ™è®¤ä¸ºæœªè¿‡æœŸ
 	unless ( $year && $month && $date ){
 		$self->{zlog}->debug ( "License::check_expiredate parse err: [$expire_date] [$year-$month-$date]" );
 		return ( 1, undef ) ;

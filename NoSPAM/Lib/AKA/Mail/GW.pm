@@ -69,29 +69,29 @@ sub get_domain_from_srvip
 {
 }
 
-# ²ÎÊı£º
-#	ĞèÒª¹ÜÀíµÄ domain, ip
-# ¶¯×÷£º
-#	½« ip ¼ÓÈë ismtp tcp
-#	½« domain ¼ÓÈë hosts,morercpthosts,smtproutes
+# å‚æ•°ï¼š
+#	éœ€è¦ç®¡ç†çš„ domain, ip
+# åŠ¨ä½œï¼š
+#	å°† ip åŠ å…¥ ismtp tcp
+#	å°† domain åŠ å…¥ hosts,morercpthosts,smtproutes
 #
 sub add_email_domain
 {
-# Èç¹û zixia.net ÊÇ±¾µØµÄ virtualdomain£¬Ôò¼´Ê¹ zixia.net ÔÚ smtproutes ÖĞ£¬Ò²²»»á±» route ×ß£¬ÈÔÈ»¿ÉÒÔÍ¶µİµ½±¾µØ¡£
+# å¦‚æœ zixia.net æ˜¯æœ¬åœ°çš„ virtualdomainï¼Œåˆ™å³ä½¿ zixia.net åœ¨ smtproutes ä¸­ï¼Œä¹Ÿä¸ä¼šè¢« route èµ°ï¼Œä»ç„¶å¯ä»¥æŠ•é€’åˆ°æœ¬åœ°ã€‚
 }
 
-# ²ÎÊı£º
-#	ĞèÒªÉ¾³ıµÄ domain, ip
-# ¶¯×÷£º
-#	½« ip ´Ó ismtp tcp ÖĞÉ¾³ı
-#	½« domain ´Ó hosts,morercpthosts,smtproutes ÖĞÉ¾³ı
+# å‚æ•°ï¼š
+#	éœ€è¦åˆ é™¤çš„ domain, ip
+# åŠ¨ä½œï¼š
+#	å°† ip ä» ismtp tcp ä¸­åˆ é™¤
+#	å°† domain ä» hosts,morercpthosts,smtproutes ä¸­åˆ é™¤
 #
 sub del_email_domain
 {
 }
 
 #
-# ËÄÎ¬¹«Ë¾µÄtapĞÄÌø
+# å››ç»´å…¬å¸çš„tapå¿ƒè·³
 #
 sub heart_beat_siwei
 {

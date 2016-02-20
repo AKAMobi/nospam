@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÏÔÊ¾ÓÃ»§ÁĞ±í</TITLE>
+<TITLE>æ˜¾ç¤ºç”¨æˆ·åˆ—è¡¨</TITLE>
 <style>
 .userAccount {color: #0000FF;text-decoration: underline; font-size: x-small;}
 .userAccount_on {color: #0000FF;text-decoration: none; font-size: x-small;}
@@ -47,11 +47,11 @@ function clearSortOrder(){
 function showSortOrder(cols){
 	var s=sortOrder(cols);
 	if (s==1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ı";
+		document.all.item("oSortOn_"+cols).innerHTML="â†“";
 		return ;
 	}
 	if (s==-1) {
-		document.all.item("oSortOn_"+cols).innerHTML="¡ü";
+		document.all.item("oSortOn_"+cols).innerHTML="â†‘";
 		return ;
 	}
 	document.all.item("oSortOn_"+cols).innerHTML="";
@@ -61,10 +61,10 @@ function sort(cols){
 	var s=sortOrder(cols); 
 	var temp=new String(userlist.sort);
 	var re;
-	if ((window.event!=null) && (window.event.ctrlKey) ){  //°´ÏÂÁËctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	if ((window.event!=null) && (window.event.ctrlKey) ){  //æŒ‰ä¸‹äº†ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			userlist.sort+="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols+";","i");
 				userlist.Sort=temp.replace(re,"");
@@ -74,11 +74,11 @@ function sort(cols){
 			}
 		}
 
-	} else { //Î´°´ÏÂctrl¼ü
-		if (s==0) { //Ô­ÓĞsortlistÀïÃ»ÓĞ¸Ã×Ö¶Î
+	} else { //æœªæŒ‰ä¸‹ctrlé”®
+		if (s==0) { //åŸæœ‰sortlisté‡Œæ²¡æœ‰è¯¥å­—æ®µ
 			clearSortOrder();
 			userlist.sort="+"+cols+";";
-		} else { //Ô­ÓĞsortlistÀïÓĞ¸Ã×Ö¶Î
+		} else { //åŸæœ‰sortlisté‡Œæœ‰è¯¥å­—æ®µ
 			if (s==-1) { 
 				re=new RegExp("[-]"+cols,"i");
 				userlist.Sort=temp.replace(re,"+"+cols);
@@ -125,16 +125,16 @@ function doFilter(value){
 			<form>
 			<table border="0" style="font-size:x-small">
 			<thead>
-			<th align="center">×Ö¶Î¹ıÂË</th>
+			<th align="center">å­—æ®µè¿‡æ»¤</th>
 			</thead>
 			<tr>
 			<td nowrap>
-			±¾×Ö¶ÎÓ¦°üº¬£º<input type="text" id="oFilterValue" name="filterValue">
+			æœ¬å­—æ®µåº”åŒ…å«ï¼š<input type="text" id="oFilterValue" name="filterValue">
 			</td>
 			</tr>
 			<tr>
 			<td align="center">
-			<input type="button" onclick="doFilter(oFilterValue.value);" value="Ó¦ÓÃ¹ıÂËÌõ¼ş">
+			<input type="button" onclick="doFilter(oFilterValue.value);" value="åº”ç”¨è¿‡æ»¤æ¡ä»¶">
 			</td>
 			</tr>
 			</table>
@@ -144,10 +144,10 @@ function doFilter(value){
 <DIV align="center">
 <table border="1" datasrc="#userlist" id="oUserInfo" width="99%">
 <thead>
-<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ÕËºÅ</span><span id="oSortOn_account"></span></th>
-<TH><span onclick="return sort('name');"  oncontextmenu="filter('name');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">ĞÕÃû</span><span id="oSortOn_name"></span></th>
-<TH><span onclick="return sort('unit');"  oncontextmenu="filter('unit');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">µ¥Î»</span><span id="oSortOn_unit"></span></th>
-<TH><span onclick="return sort('department');"  oncontextmenu="filter('department');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">²¿ÃÅ</span><span id="oSortOn_department"></span></th>
+<TH><span onclick="return sort('account');" oncontextmenu="filter('account');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">è´¦å·</span><span id="oSortOn_account"></span></th>
+<TH><span onclick="return sort('name');"  oncontextmenu="filter('name');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å§“å</span><span id="oSortOn_name"></span></th>
+<TH><span onclick="return sort('unit');"  oncontextmenu="filter('unit');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">å•ä½</span><span id="oSortOn_unit"></span></th>
+<TH><span onclick="return sort('department');"  oncontextmenu="filter('department');" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';">éƒ¨é—¨</span><span id="oSortOn_department"></span></th>
 </thead>
 <tbody>
 <td onclick="return chooseUser()" class="userAccount" onmouseover="this.className='userAccount_on';" onmouseout="this.className='userAccount';"><span datafld="account"></span></td>

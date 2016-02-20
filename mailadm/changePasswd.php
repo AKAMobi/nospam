@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ĞŞ¸ÄÃÜÂëĞÅÏ¢</TITLE>
+<TITLE>ä¿®æ”¹å¯†ç ä¿¡æ¯</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
@@ -17,56 +17,56 @@ function changeUserPasswd() {
 	if (!adminPerm(PERM_ADMIN_BASIC) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
 
 
 
-	if ( isset($_REQUEST["changeUserPasswd"])){ //Êµ¼ÊĞŞ¸ÄÓÃ»§ĞÅÏ¢
+	if ( isset($_REQUEST["changeUserPasswd"])){ //å®é™…ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯
 
 	$passwd= $_REQUEST['passwd'];
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
 
     if ( $passwd1 != $passwd2 ) {
-    	echo "´íÎó£ºÁ½´ÎÊäÈëµÄÃÜÂë²»Æ¥Åä<br>";
+    	echo "é”™è¯¯ï¼šä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒ¹é…<br>";
     	return false;
     }
 
 	$result=isPasswordRight($id,$passwd);
 
 	if ( ($result==ERR_FORMAT_PASSWORD) || ($result==ERR_WRONGPASSWORD) ){
-		errorReturn("ÃÜÂë´íÎó,ÇëÖØĞÂÊäÈë",$_SERVER['PHP_SELF']);
+		errorReturn("å¯†ç é”™è¯¯,è¯·é‡æ–°è¾“å…¥",$_SERVER['PHP_SELF']);
 	}
 
 	if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 		session_unset();
 		session_destroy();
-		errorReturn("ÎŞ´Ë¹ÜÀíÔ±ÕËºÅ,ÇëÖØĞÂÊäÈë",$_SERVER['PHP_SELF']);
+		errorReturn("æ— æ­¤ç®¡ç†å‘˜è´¦å·,è¯·é‡æ–°è¾“å…¥",$_SERVER['PHP_SELF']);
 	} 
 
 	if ($result!=OK) {
-		errorReturn('ÆäËû´íÎó£¬½ĞÏµÍ³¹ÜÀíÔ±À´debug', $_SERVER['PHP_SELF']);
+		errorReturn('å…¶ä»–é”™è¯¯ï¼Œå«ç³»ç»Ÿç®¡ç†å‘˜æ¥debug', $_SERVER['PHP_SELF']);
 	}
 
 	$result=setPassword($id,$passwd1);	
 
 	if ( ($result==ERR_FORMAT_PASSWORD) ){
-		errorReturn("ÃÜÂë¸ñÊ½´íÎó,ÇëÖØĞÂÊäÈë",$_SERVER['PHP_SELF']);
+		errorReturn("å¯†ç æ ¼å¼é”™è¯¯,è¯·é‡æ–°è¾“å…¥",$_SERVER['PHP_SELF']);
 	}
 
 	if ( ($result==ERR_FORMAT_ID) || ($result==ERR_NOSUCHID) ){
 		session_unset();
 		session_destroy();
-		errorReturn("ÎŞ´Ë¹ÜÀíÔ±ÕËºÅ,ÇëÖØĞÂÊäÈë",$_SERVER['PHP_SELF']);
+		errorReturn("æ— æ­¤ç®¡ç†å‘˜è´¦å·,è¯·é‡æ–°è¾“å…¥",$_SERVER['PHP_SELF']);
 	} 
 
 	if ($result!=OK) {
-		errorReturn('ÆäËû´íÎó£¬½ĞÏµÍ³¹ÜÀíÔ±À´debug', $_SERVER['PHP_SELF']);
+		errorReturn('å…¶ä»–é”™è¯¯ï¼Œå«ç³»ç»Ÿç®¡ç†å‘˜æ¥debug', $_SERVER['PHP_SELF']);
 	}
-		echo "ÃÜÂëĞŞ¸Ä³É¹¦£¡";
+		echo "å¯†ç ä¿®æ”¹æˆåŠŸï¼";
 		return true;
 	} 
 	
@@ -76,25 +76,25 @@ function changeUserPasswd() {
 <table>
 <tbody>
 <tr>
-<td>¹ÜÀíÔ±ÕËºÅ</td>
+<td>ç®¡ç†å‘˜è´¦å·</td>
 <td><? echo $id; ?></td>
 </tr>
 <tr>
-	<td>ÊäÈë¾ÉÃÜÂë</td>
+	<td>è¾“å…¥æ—§å¯†ç </td>
 	<td><input type=password name="passwd"></td>
 </tr>
 <tr>
-	<td>ÊäÈëĞÂÃÜÂë</td>
+	<td>è¾“å…¥æ–°å¯†ç </td>
 	<td><input type=password name="passwd1"></td>
 </tr>
 <tr>
-	<td>È·ÈÏĞÂÃÜÂë</td>
+	<td>ç¡®è®¤æ–°å¯†ç </td>
 	<td><input type=password name="passwd2"></td>
 </tr>
 
 </tbody>
 </table>
-<INPUT type="submit" value="Ìá½»ĞŞ¸ÄĞÅÏ¢">
+<INPUT type="submit" value="æäº¤ä¿®æ”¹ä¿¡æ¯">
 </form>
 <?php
 

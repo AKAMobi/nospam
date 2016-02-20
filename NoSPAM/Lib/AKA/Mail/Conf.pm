@@ -1,5 +1,5 @@
 #
-# NoSPAMÍø¹ØÅäÖÃÎÄ¼ş¶ÁÈ¡Ä£¿é
+# NoSPAMç½‘å…³é…ç½®æ–‡ä»¶è¯»å–æ¨¡å—
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -19,7 +19,7 @@ use AKA::Mail::Log;
 #@EXPORT=("function1", "function2", "function3");
 
 #use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 
@@ -52,7 +52,7 @@ use constant	{
 	ACTION_DELHDR		=>	12,
 	ACTION_CHGHDR		=>	13,
 
-	# ±ê¼ÇÍ¨¹ı
+	# æ ‡è®°é€šè¿‡
 	ACTION_TAG		=>	14
 	
 	,QUARANTINE_DROP	=>	0
@@ -225,14 +225,14 @@ sub init_config
 	$self->{config} = $config;
 }
 
-#¶ººÅ·Ö¸îµÄ¹ÜÀíÔ±ÁĞ±í
+#é€—å·åˆ†å‰²çš„ç®¡ç†å‘˜åˆ—è¡¨
 #VirtualDomain_zixia.net_Admin=zixia,qinling
-# Bytes£¬0»òÕß²»´æÔÚkey´ú±í²»ÏŞÖÆ
+# Bytesï¼Œ0æˆ–è€…ä¸å­˜åœ¨keyä»£è¡¨ä¸é™åˆ¶
 #VirtualDomain_zixia.net_Quota=1024000
-#×î¶àÓÃ»§Êı
+#æœ€å¤šç”¨æˆ·æ•°
 #VirtualDomain_zixia.net_MaxUser=100
-#ÓòµÄÀà±ğ£¨·ÖÀà£©
-#VirtualDomain_zixia.net_Cate=¸öÈËÓò
+#åŸŸçš„ç±»åˆ«ï¼ˆåˆ†ç±»ï¼‰
+#VirtualDomain_zixia.net_Cate=ä¸ªäººåŸŸ
 
 sub get_virtual_domain_hash_ref
 {
@@ -267,7 +267,7 @@ sub get_virtual_domain_hash_ref
 
 
 #ProtectDomain_zixia.net_IPPort=202.205.10.7:25
-#ProtectDomain_zixia.net_Cate=¸öÈËÓò
+#ProtectDomain_zixia.net_Cate=ä¸ªäººåŸŸ
 sub get_protectd_domain_hash_ref
 {
 	my $self = shift;

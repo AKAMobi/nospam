@@ -1,5 +1,5 @@
 #
-# noSPAM Êý¾Ý¿â½Ó¿Ú
+# noSPAM æ•°æ®åº“æŽ¥å£
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Li
 # EMail: zixia@zixia.net
@@ -32,7 +32,7 @@ sub connect
 	my $self = shift;
 	
 	# XXX 2004-12-31 by zixia
-	# ÒÔÇ°ºÃÏñ»³ÒÉÖØ¸´Ê¹ÓÃ dbh »áÓÐÎÊÌâ
+	# ä»¥å‰å¥½åƒæ€€ç–‘é‡å¤ä½¿ç”¨ dbh ä¼šæœ‰é—®é¢˜
 	if( defined $self->{dbh} ){
 		if ( $self->{dbh_counter}++ < 100 ){
 			return $self->{dbh} 
@@ -67,11 +67,11 @@ sub create_table($$)
 			);
 
 	my @create_sql = ( 
-			# ¸ôÀëÓÃ»§ÁÐ±í
+			# éš”ç¦»ç”¨æˆ·åˆ—è¡¨
 			'create table UserEmail_TB (
 				Email varchar(64) primary key
 				);'
-			# ÓÃ»§ºÚ¡¢°×Ãûµ¥±í
+			# ç”¨æˆ·é»‘ã€ç™½åå•è¡¨
 			,"create table UserWhiteList_TB ( 
         			AutoID INTEGER PRIMARY KEY, 
         			User VARCHAR(50) NOT NULL, 
@@ -82,7 +82,7 @@ sub create_table($$)
 			,'create index UWL_Email_IDX ON UserWhiteList_TB(Email);'
 			,'create index UWL_User_IDX ON UserWhiteList_TB(User,Domain,Type);'
 
-			# ÓÊ¼þÈÕÖ¾±í
+			# é‚®ä»¶æ—¥å¿—è¡¨
 			,'create table MailLog_TB (
         			AutoID          unsigned long primary key,
         			UnixTime        integer,
@@ -117,7 +117,7 @@ sub create_table($$)
 
 			,'create index MailLog_TimeStamp_IDX on MailLog_TB ( TimeStamp );'
 
-			# ÎªÁË²åÈëÊý¾Ý¿âµÄÐÔÄÜ£¬ÕâÐ©Ë÷ÒýÔÝÊ±²»×ö£¬ÒòÎªÖ»ÓÐ¹ÜÀíÔ±²ì¿´µÄÊ±ºò²ÅÓÐÓÃ¡£
+			# ä¸ºäº†æ’å…¥æ•°æ®åº“çš„æ€§èƒ½ï¼Œè¿™äº›ç´¢å¼•æš‚æ—¶ä¸åšï¼Œå› ä¸ºåªæœ‰ç®¡ç†å‘˜å¯Ÿçœ‹çš„æ—¶å€™æ‰æœ‰ç”¨ã€‚
 			#,'create index MailLog_Direction_IDX on MailLog_TB ( Direction );'
 			#,'create index MailLog_Size_IDX on MailLog_TB ( Size );'
 			#,'create index MailLog_isAudit_IDX on MailLog_TB ( isAudit );'
@@ -196,7 +196,7 @@ sub user_email_clean($)
 
 	$self->connect()->do ( "delete from UserEmail_TB" );
 }
-# ÅÐ¶ÏÓÃ»§emailÊÇ·ñ´æÔÚ
+# åˆ¤æ–­ç”¨æˆ·emailæ˜¯å¦å­˜åœ¨
 sub user_email_exist($$)
 {
 	my $self = shift;
@@ -211,11 +211,11 @@ sub user_email_exist($$)
 	return $count;
 }
 
-# ¼ì²éÊÇ·ñ·¢¼þÈË±»ÊÕ¼þÈËÁÐÈë°×Ãûµ¥
-# Èç¹ûÓÐ¶à¸öÊÕ¼þÈË£¬ÔòÈÎºÎÒ»¸öÊÕ¼þÈË½«·¢¼þÈËÁÐÈë°×Ãûµ¥¼´¿É
-# Èç¹ûÊÇ°×Ãûµ¥£¬·µ»Ø1£¬·ñÔò·µ»Ø0£»
-#	²ÎÊý£º
-#		type: AKA::Mail::Conf::WHITE_LIST or BLACK_LIST£¬ÐèÒªºÍÊý¾Ý¿â¶ËÒ»ÖÂ
+# æ£€æŸ¥æ˜¯å¦å‘ä»¶äººè¢«æ”¶ä»¶äººåˆ—å…¥ç™½åå•
+# å¦‚æžœæœ‰å¤šä¸ªæ”¶ä»¶äººï¼Œåˆ™ä»»ä½•ä¸€ä¸ªæ”¶ä»¶äººå°†å‘ä»¶äººåˆ—å…¥ç™½åå•å³å¯
+# å¦‚æžœæ˜¯ç™½åå•ï¼Œè¿”å›ž1ï¼Œå¦åˆ™è¿”å›ž0ï¼›
+#	å‚æ•°ï¼š
+#		type: AKA::Mail::Conf::WHITE_LIST or BLACK_LISTï¼Œéœ€è¦å’Œæ•°æ®åº“ç«¯ä¸€è‡´
 
 sub is_user_whitelist
 {

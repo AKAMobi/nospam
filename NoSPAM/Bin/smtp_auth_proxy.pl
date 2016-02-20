@@ -50,7 +50,7 @@ if ( grep (/LOGIN/, $smtp->auth_types ()) ){
 		# we have user_raw succeed now!
 		# it is a authed user.
 	}
-}else{ # ÏµÍ³²»Ö§³Ö ESMTP£¬´ò¿ªOpenRelay
+}else{ # ç³»ç»Ÿä¸æ”¯æŒ ESMTPï¼Œæ‰“å¼€OpenRelay
 	&zlog ($logit, "server $REMOTE_SMTP not support ESMTP LOGIN method." );
 }
 
@@ -100,7 +100,7 @@ sub get_remote_smtp_ip
                 $user_domain = $2;
         }
 
-	unless ( length($user_domain) ){ # Èç¹ûÓÃ»§ÊäÈëµÄÊÇ zixia ¶ø²»ÊÇ zixia@zixia.net 2004-05-08 by zixia
+	unless ( length($user_domain) ){ # å¦‚æœç”¨æˆ·è¾“å…¥çš„æ˜¯ zixia è€Œä¸æ˜¯ zixia@zixia.net 2004-05-08 by zixia
 		my $default_domain_file = '/var/qmail/control/me';
 		if ( -s $default_domain_file ){
 			open ( FD, "<$default_domain_file" );

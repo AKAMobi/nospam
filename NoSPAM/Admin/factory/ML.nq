@@ -20,7 +20,7 @@ ProductSN=$prodno
 ServerGatewaySwitchable=N
 ServerGateway=Gateway
 
-LicenseHTML=<b>¿Í»§ÊÔÓÃÌåÑé(·ÇÏúÊÛ)°æ</b>
+LicenseHTML=<b>å®¢æˆ·è¯•ç”¨ä½“éªŒ(éé”€å”®)ç‰ˆ</b>
 
 MailGateway=100
 DynamicEngine=100

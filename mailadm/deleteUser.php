@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ук╩╖и╬ЁЩ</TITLE>
+<TITLE>Х╢╕Ф┬╥Е┬═И≥╓</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
@@ -16,7 +16,7 @@ function deleteUser() {
 		if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 		<br>
-		дЗц╩сп╥цнй╦цмЬрЁ╣дх╗оч║ё<br>
+		Ф┌╗Ф╡║Ф°┴Х╝©И≈╝Х╞╔Г╫▒И║╣Г └Ф²┐И≥░Ц─┌<br>
 <?php
 		return false;
 	}
@@ -27,7 +27,7 @@ $user_profile = VPOPMAILHOME . 'domains/' . DOMAIN . '/' . USERPROFILE;
 
 if (!isset($_REQUEST['id'])){
 ?>
-	╢МнС:н╢ж╦╤╗сц╩╖ук╨её║
+	И■≥Х╞╞:Ф°╙Ф▄┤Е╝ Г■╗Ф┬╥Х╢╕Е▐╥О╪│
 <?
 	return false;
 } 
@@ -35,7 +35,7 @@ if (!isset($_REQUEST['id'])){
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "╢МнСё╨сц╩╖йЩ╬щнд╪Чнч╥╗╢Р©╙║ё<br>";
+        echo "И■≥Х╞╞О╪ Г■╗Ф┬╥Ф∙╟Ф█╝Ф√┤Д╩╤Ф≈═ФЁ∙Ф┴⌠Е╪─Ц─┌<br>";
 		return false;
     }
    
@@ -90,11 +90,11 @@ if (!isset($_REQUEST['id'])){
 	
 	if ($i<$mail_count){
 ?>
-	ук╨еряЁи╧╕и╬ЁЩё║<br>
+	Х╢╕Е▐╥Е╥╡Ф┬░Е┼÷Е┬═И≥╓О╪│<br>
 <?
 	} else {
 ?>
-	╢МнСё╨н╢ур╣╫ук╨ен╙<? echo $_REQUEST['id'] ;?>╣дсц╩╖пео╒<br>
+	И■≥Х╞╞О╪ Ф°╙Ф┴╬Е┬╟Х╢╕Е▐╥Д╦╨<? echo $_REQUEST['id'] ;?>Г └Г■╗Ф┬╥Д©║Ф│╞<br>
 <?
 	}
 }

@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -18,7 +18,7 @@ use AKA::Mail::Log;
 #@EXPORT=("function1", "function2", "function3");
 
 #use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 use AKA::Mail::Content::Conf::Update;
@@ -42,7 +42,7 @@ sub new
 	$self->{define}->{home} = "/home/ssh/";
 	$self->{define}->{tmpdir} = "/home/NoSPAM/spool/tmp/";
 
-	# ÓÃ»§¹ıÂË²ßÂÔ
+	# ç”¨æˆ·è¿‡æ»¤ç­–ç•¥
 	$self->{define}->{user_filterdb} = "/home/NoSPAM/etc/UserFilterRule.xml";
 	$self->{define}->{user_filetype} = "/home/NoSPAM/etc/FileTypes.conf";
 
@@ -66,8 +66,8 @@ sub new
 	return $self;
 }
 
-# ¼ì²é rules/ *.rule£¬¸üĞÂ±¾µØÊı¾İ¿â£¬¼ÇÂ¼Update
-# Èç¹ûÓĞ¸üĞÂ£¬·µ»Ø1£¬·ñÔò·µ»Ø0
+# æ£€æŸ¥ rules/ *.ruleï¼Œæ›´æ–°æœ¬åœ°æ•°æ®åº“ï¼Œè®°å½•Update
+# å¦‚æœæœ‰æ›´æ–°ï¼Œè¿”å›1ï¼Œå¦åˆ™è¿”å›0
 sub check_n_update
 {
 	my $self = shift;
@@ -78,11 +78,11 @@ sub check_n_update
 	my $newfilenum = $self->{update}->check_new_rule() || 0 ;
 	if ( $newfilenum > 0 ){
 		$self->{zlog}->log ( "found $newfilenum new rule file(s), mergeing to local database" );
-# ¸üĞÂÎÄ¼ş
+# æ›´æ–°æ–‡ä»¶
 		$self->merge_new_rule($self->{update}->get_rule_add_modify(),
 				$self->{update}->get_rule_del() );
 		$self->{update}->clean();
-# TODO ÖØÆğ spamd
+# TODO é‡èµ· spamd
 	}
 	return $newfilenum;
 }
@@ -162,7 +162,7 @@ sub merge_new_rule
 	}
 #	$ keys %{$filterdb->{'rule-add-modify'}->{'rule'}} )
 
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 	#use Data::Dumper;
 	#$Data::Dumper::Useperl = 1;
 	#$Data::Dumper::Indent = 1;

@@ -1,5 +1,5 @@
 #
-# RRD ¼à¿ØÍ¼Éú³É
+# RRD ç›‘æ§å›¾ç”Ÿæˆ
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -1280,7 +1280,7 @@ sub ds2rrd
 		$rrd_run_virus++ if $virus_run;
 		$rrd_time_virus+= $virus_time;
 
-		$rrd_cpu_virus+= $virus_cpu*4+int(rand(10));#XXX Ôö¼Ó virus cpu Ê±¼ä
+		$rrd_cpu_virus+= $virus_cpu*4+int(rand(10));#XXX å¢åŠ  virus cpu æ—¶é—´
 
 		$rrd_num_spam++ if $spam;
 		$rrd_run_spam++ if $spam_run;
@@ -1288,7 +1288,7 @@ sub ds2rrd
 
 #print "real spam time: $spam_time\n";
 		#$spam_time = $spam_time % 3000;
-		#if ($spam_time>50){# XXX ÎªÁËºÃ¿´£¬²»È¡ÕæÕıÊ±¼ä
+		#if ($spam_time>50){# XXX ä¸ºäº†å¥½çœ‹ï¼Œä¸å–çœŸæ­£æ—¶é—´
 		#	my $new_spam_time = 50 + int(($spam_time-50)/10);
 		#	$rrd_time_all = $rrd_time_all - ($spam_time-$new_spam_time);
 		#	$spam_time = $new_spam_time;
@@ -1297,7 +1297,7 @@ sub ds2rrd
 		#}
 
 #print "real spam cpu: $spam_cpu\n";
-		my $my_spam_cpu = $spam_cpu*2+int(rand(10));#XXX Ôö¼Óspam cpuÊ±¼ä
+		my $my_spam_cpu = $spam_cpu*2+int(rand(10));#XXX å¢åŠ spam cpuæ—¶é—´
 		$rrd_cpu_spam+= $my_spam_cpu;
 		#$rrd_cpu_spam+= $spam_cpu;
 #print "my spam cpu: $my_spam_cpu\n";

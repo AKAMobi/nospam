@@ -22,7 +22,7 @@ session_destroy();
 <br>
 <br>
 <div align="center">
-�ѳɹ��˳�����رմ˴���
+已成功退出。请关闭此窗口
 </div>
 </body>
 </html>

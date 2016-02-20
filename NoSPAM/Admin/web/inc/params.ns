@@ -39,7 +39,7 @@ $sIntIP = $intConf->getParam("MailGatewayInternalIP");
 $sIntMask = $intConf->getParam("MailGatewayInternalMask");
 
 $spamconf = new NoSPAMConf;
-$bAllEngine = $spamconf->getParam("Engine","System") != "N"; // ÏµÍ³ËùÓÐµÄÒýÇæ¿ª¹Ø
+$bAllEngine = $spamconf->getParam("Engine","System") != "N"; // ç³»ç»Ÿæ‰€æœ‰çš„å¼•æ“Žå¼€å…³
 $bAntiVirus = $spamconf->getParam("AntiVirusEngine","AntiVirusEngine") == "Y";
 $bInteractive = $spamconf->getParam("InteractiveEngine","InteractiveEngine") == "Y";
 $bAntiSpam = $spamconf->getParam("NoSPAMEngine","SpamEngine") == "Y";

@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÃ»§ÁĞ±í</TITLE>
+<TITLE>ç”¨æˆ·åˆ—è¡¨</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -24,14 +24,14 @@ global $DEFAULTMAILBOXSIZE;
 	{
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
 
-//ÅĞ¶ÏÓÃ»§ĞÅÏ¢ÌîĞ´ÊÇ·ñÍêÕû£º
+//åˆ¤æ–­ç”¨æˆ·ä¿¡æ¯å¡«å†™æ˜¯å¦å®Œæ•´ï¼š
 	if (!isset($_REQUEST['data'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÅúÁ¿ÓÃ»§Êı¾İ<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥æ‰¹é‡ç”¨æˆ·æ•°æ®<br>";
 		return false;
 	}
 	$tmp_userlist=split("\n",$_REQUEST['data']);
@@ -50,14 +50,14 @@ global $DEFAULTMAILBOXSIZE;
     
 
 	foreach ($userlist as $user){
-		$user_id = $user['id'];		//ÓÃ»§ID
+		$user_id = $user['id'];		//ç”¨æˆ·ID
 		$passwd = $user['passwd'];						
-	    $user_name = $user['name'];	//ÓÃ»§ĞÕÃû
-		$user_unit = $user['unit'];		//ÓÃ»§µ¥Î»
-		$user_department = $user['department']; 	//ÓÃ»§²¿ÃÅ
-		$user_station = $user['station']; 		//ÓÃ»§¸ÚÎ»
-		$user_id_code = $user['code'];		//ÓÃ»§Ö¤¼şºÅÂë
-		$user_note = '';		//ÓÃ»§Ö¤¼şºÅÂë
+	    $user_name = $user['name'];	//ç”¨æˆ·å§“å
+		$user_unit = $user['unit'];		//ç”¨æˆ·å•ä½
+		$user_department = $user['department']; 	//ç”¨æˆ·éƒ¨é—¨
+		$user_station = $user['station']; 		//ç”¨æˆ·å²—ä½
+		$user_id_code = $user['code'];		//ç”¨æˆ·è¯ä»¶å·ç 
+		$user_note = '';		//ç”¨æˆ·è¯ä»¶å·ç 
 		$user_is_public = 'N';
 		$user_box_size = 1024 * 1024 * intval($user['boxsize']);
 
@@ -78,33 +78,33 @@ global $DEFAULTMAILBOXSIZE;
 			$user_id_code=' ';
 		}
 		if (!ereg( "^[A-Za-z][_0-9A-Za-z\.]*$", $user_id )) { //
-			echo "´íÎó£ºÓÃ»§ID {$user_id} ÖĞº¬ÓĞ·Ç·¨×Ö·û<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·ID {$user_id} ä¸­å«æœ‰éæ³•å­—ç¬¦<br>";
 			return false;
 		}
 
 		
 		if ( !ereg("^[^:]+$", $user_name)){
-			echo "´íÎó£ºÓÃ»§ĞÕÃû {$user_name} ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·å§“å {$user_name} ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
 			return false;
 		}
 
 		if ( !ereg("^[^:]*$", $user_unit)){
-			echo "´íÎó£ºÓÃ»§µ¥Î» {$user_unit} ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·å•ä½ {$user_unit} ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
 			return false;
 		}
 		
 		if ( !ereg("^[^:]*$", $user_department)){
-			echo "´íÎó£ºÓÃ»§²¿ÃÅ {$user_department}ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·éƒ¨é—¨ {$user_department}ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
 			return false;
 		}
 		
 		if ( !ereg("^[^:]*$", $user_station)){
-			echo "´íÎó£ºÓÃ»§¸ÚÎ» {$user_station} ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·å²—ä½ {$user_station} ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
 			return false;
 		}
 		
 		if ( !ereg("^[^:]*$", $user_id_code)){
-			echo "´íÎó£ºÓÃ»§Ö¤¼şºÅÂë {$user_id_code} ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°£º¡±<br>";
+			echo "é”™è¯¯ï¼šç”¨æˆ·è¯ä»¶å·ç  {$user_id_code} ä¸­å«æœ‰éæ³•å­—ç¬¦â€œï¼šâ€<br>";
 			return false;
 		}
 	}
@@ -114,21 +114,21 @@ global $DEFAULTMAILBOXSIZE;
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "´íÎó£ºÓÃ»§Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
    
     flock($h_user_profile, LOCK_EX);
 
 	foreach ($userlist as $user){
-		$user_id = $user['id'];		//ÓÃ»§ID
+		$user_id = $user['id'];		//ç”¨æˆ·ID
 		$passwd = $user['passwd'];						
-	    $user_name = $user['name'];	//ÓÃ»§ĞÕÃû
-		$user_unit = $user['unit'];		//ÓÃ»§µ¥Î»
-		$user_department = $user['department']; 	//ÓÃ»§²¿ÃÅ
-		$user_station = $user['station']; 		//ÓÃ»§¸ÚÎ»
-		$user_id_code = $user['code'];		//ÓÃ»§Ö¤¼şºÅÂë
-		$user_note = '';		//ÓÃ»§Ö¤¼şºÅÂë
+	    $user_name = $user['name'];	//ç”¨æˆ·å§“å
+		$user_unit = $user['unit'];		//ç”¨æˆ·å•ä½
+		$user_department = $user['department']; 	//ç”¨æˆ·éƒ¨é—¨
+		$user_station = $user['station']; 		//ç”¨æˆ·å²—ä½
+		$user_id_code = $user['code'];		//ç”¨æˆ·è¯ä»¶å·ç 
+		$user_note = '';		//ç”¨æˆ·è¯ä»¶å·ç 
 		$user_is_public = 'N';
 		$user_box_size = 1024 * 1024 * intval($user['boxsize']);
 		
@@ -144,7 +144,7 @@ global $DEFAULTMAILBOXSIZE;
 		}
 
 		if ($is_exist){
-			echo $user_name."µÄÕËºÅ".$user_id."ÒÑ´æÔÚ<br>\n";
+			echo $user_name."çš„è´¦å·".$user_id."å·²å­˜åœ¨<br>\n";
 			continue;
 		}
 
@@ -167,13 +167,13 @@ global $DEFAULTMAILBOXSIZE;
 ?>
 <table>
 <thead>
-<th>ÓÃ»§ID</th>
-<th>ÓÃ»§ĞÕÃû</th>
-<th>ÓÃ»§µ¥Î»</th>
-<th>ÓÃ»§²¿ÃÅ</th>
-<th>ÓÃ»§¸ÚÎ»</th>
-<th>ÓÃ»§Ö¤¼şºÅÂë</th>
-<th>ÓÃ»§ÃÜÂë</th>
+<th>ç”¨æˆ·ID</th>
+<th>ç”¨æˆ·å§“å</th>
+<th>ç”¨æˆ·å•ä½</th>
+<th>ç”¨æˆ·éƒ¨é—¨</th>
+<th>ç”¨æˆ·å²—ä½</th>
+<th>ç”¨æˆ·è¯ä»¶å·ç </th>
+<th>ç”¨æˆ·å¯†ç </th>
 </thead>
 <tbody>
 
@@ -198,7 +198,7 @@ global $DEFAULTMAILBOXSIZE;
 }
 
 if ( (isset($_REQUEST['addUser']) && addUser()) ){
-	echo "ÅúÁ¿ÓÃ»§Êı¾İÒÑ¾­³É¹¦µ¼Èë£¡<br>";
+	echo "æ‰¹é‡ç”¨æˆ·æ•°æ®å·²ç»æˆåŠŸå¯¼å…¥ï¼<br>";
 } else {
 	
 ?>
@@ -207,16 +207,16 @@ if ( (isset($_REQUEST['addUser']) && addUser()) ){
 <INPUT type="hidden" name="addUser">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="2" class=title><b>ÅúÁ¿Ìí¼ÓĞÂÓÃ»§</b></td>
+<td colspan="2" class=title><b>æ‰¹é‡æ·»åŠ æ–°ç”¨æˆ·</b></td>
 </tr>
 <tr align="center" >
 	<td colspan=2><textarea name="data" ></textarea>
 	</td>
 </tr>
 <tr align="center" >
-	<td colspan=2><input type=submit name="adduser" value="  È·  ÈÏ  ">
+	<td colspan=2><input type=submit name="adduser" value="  ç¡®  è®¤  ">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  Çå  ³ı  ">
+	<input type=reset value="  æ¸…  é™¤  ">
 	</td>
 </tr>
 </table>

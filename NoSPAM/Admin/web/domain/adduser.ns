@@ -4,7 +4,7 @@ require_once("../inc/vpopadm.inc.ns");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÃ»§ÁĞ±í</TITLE>
+<TITLE>ç”¨æˆ·åˆ—è¡¨</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -23,85 +23,85 @@ function addUser(){
 		if (!adminPerm(PERM_ADMIN_USER) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
 
-//ÅĞ¶ÏÓÃ»§ĞÅÏ¢ÌîĞ´ÊÇ·ñÍêÕû£º
+//åˆ¤æ–­ç”¨æˆ·ä¿¡æ¯å¡«å†™æ˜¯å¦å®Œæ•´ï¼š
 	if (!isset($_REQUEST['user_id'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['passwd1'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!isset($_REQUEST['passwd2'])){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_name'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ĞÕÃû<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å§“å<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_unit'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ËùÔÚµ¥Î»<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·æ‰€åœ¨å•ä½<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_department'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ËùÔÚ²¿ÃÅ<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·æ‰€åœ¨éƒ¨é—¨<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_station'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§¸ÚÎ»<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å²—ä½<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_id_code'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§Ö¤¼şºÅÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·è¯ä»¶å·ç <br>";
 		return false;
 	}
 
 	if (!isset($_REQUEST['user_box_size'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÊÏä´óĞ¡<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥é‚®ç®±å¤§å°<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_note'])){ 
-		echo "´íÎó£ºÎ´ÊäÈë±¸×¢<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥å¤‡æ³¨<br>";
 		return false;
 	}
 
 	if ($_REQUEST['user_id']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if ($_REQUEST['passwd1']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if ($_REQUEST['passwd2']==''){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if ($_REQUEST['user_name']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ĞÕÃû<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å§“å<br>";
 		return false;
 	}
     if ( !ereg("^[0-9]+$", $_REQUEST['user_box_size'])){
-    	echo "´íÎó£ºÓÃ»§ÓÊÏä´óĞ¡Î´Ö¸¶¨»òÆä²»ÊÇÓĞĞ§Êı×Ö¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·é‚®ç®±å¤§å°æœªæŒ‡å®šæˆ–å…¶ä¸æ˜¯æœ‰æ•ˆæ•°å­—â€œ:â€<br>";
     	return false;
     }
 
 	
-	$user_id = $_REQUEST['user_id'];		//ÓÃ»§ID
+	$user_id = $_REQUEST['user_id'];		//ç”¨æˆ·ID
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
-	$user_name = $_REQUEST['user_name'];	//ÓÃ»§ĞÕÃû
-	$user_unit = $_REQUEST['user_unit'];		//ÓÃ»§µ¥Î»
-	$user_department = $_REQUEST['user_department']; 	//ÓÃ»§²¿ÃÅ
-	$user_station = $_REQUEST['user_station']; 		//ÓÃ»§¸ÚÎ»
-	$user_id_code = $_REQUEST['user_id_code'];		//ÓÃ»§Ö¤¼şºÅÂë
-	$user_note = $_REQUEST['user_note'];		//ÓÃ»§Ö¤¼şºÅÂë
+	$user_name = $_REQUEST['user_name'];	//ç”¨æˆ·å§“å
+	$user_unit = $_REQUEST['user_unit'];		//ç”¨æˆ·å•ä½
+	$user_department = $_REQUEST['user_department']; 	//ç”¨æˆ·éƒ¨é—¨
+	$user_station = $_REQUEST['user_station']; 		//ç”¨æˆ·å²—ä½
+	$user_id_code = $_REQUEST['user_id_code'];		//ç”¨æˆ·è¯ä»¶å·ç 
+	$user_note = $_REQUEST['user_note'];		//ç”¨æˆ·è¯ä»¶å·ç 
 	$user_is_public = isset($_REQUEST['user_is_public']);
 	$user_box_size = 1024 * 1024 * (intval($_REQUEST['user_box_size']) );
 
@@ -122,44 +122,44 @@ function addUser(){
 		$user_id_code=' ';
 	}
     if (!ereg( "^[a-z][_0-9a-z\.]*$", $user_id )) { //
-        echo "´íÎó£ºÓÃ»§IDÖĞº¬ÓĞ·Ç·¨×Ö·û<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·IDä¸­å«æœ‰éæ³•å­—ç¬¦<br>";
         return false;
     }
     if (!eregi( "^[0-9a-z]+$", $passwd1 )) {
-    	echo  "´íÎó£ºÃÜÂëÖĞº¬ÓĞ·Ç·¨×Ö·û<br>";
+    	echo  "é”™è¯¯ï¼šå¯†ç ä¸­å«æœ‰éæ³•å­—ç¬¦<br>";
     	return false;
     }
     if ( $passwd1 != $passwd2 ) {
-    	echo "´íÎó£ºÁ½´ÎÊäÈëµÄÃÜÂë²»Æ¥Åä<br>";
+    	echo "é”™è¯¯ï¼šä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒ¹é…<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]+$", $user_name)){
-    	echo "´íÎó£ºÓÃ»§ĞÕÃûÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å§“åä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
 
     if ( !ereg("^[^:]*$", $user_unit)){
-    	echo "´íÎó£ºÓÃ»§µ¥Î»ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å•ä½ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_department)){
-    	echo "´íÎó£ºÓÃ»§²¿ÃÅÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·éƒ¨é—¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_station)){
-    	echo "´íÎó£ºÓÃ»§¸ÚÎ»ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·å²—ä½ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€<br>";
     	return false;
     }
     
     if ( !ereg("^[^:]*$", $user_id_code)){
-    	echo "´íÎó£ºÓÃ»§Ö¤¼şºÅÂëÖĞº¬ÓĞ·Ç·¨×Ö·û¡°£º¡±<br>";
+    	echo "é”™è¯¯ï¼šç”¨æˆ·è¯ä»¶å·ç ä¸­å«æœ‰éæ³•å­—ç¬¦â€œï¼šâ€<br>";
     	return false;
     }
     if ( !ereg("^[^:]*$", $user_note)){
-    	echo "´íÎó£º±¸×¢ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°£º¡±<br>";
+    	echo "é”™è¯¯ï¼šå¤‡æ³¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œï¼šâ€<br>";
     	return false;
     }
 
@@ -168,17 +168,17 @@ function addUser(){
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "´íÎó£ºÓÃ»§Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
    
     flock($h_user_profile, LOCK_EX);
     
-//ÏòvpopmailÏµÍ³ÖĞÌí¼ÓĞÂÓÃ»§
+//å‘vpopmailç³»ç»Ÿä¸­æ·»åŠ æ–°ç”¨æˆ·
    	system( VPOPMAILHOME . 'bin/vadduser -c "' . $user_name . '" -q ' . $user_box_size . ' ' . $user_id . "@" . DOMAIN . ' "'  . $passwd1 . '" > /dev/null', $add_result );
-/* ¼ì²éÌí¼ÓÊÇ·ñ³É¹¦
+/* æ£€æŸ¥æ·»åŠ æ˜¯å¦æˆåŠŸ
    	if ($add_result!=0) {
-   		echo "´íÎó£ºÓÃ»§idÒÑ´æÔÚ<br>";
+   		echo "é”™è¯¯ï¼šç”¨æˆ·idå·²å­˜åœ¨<br>";
 	   	flock($h_user_profile, LOCK_UN);
    		return false;
    	}
@@ -190,7 +190,7 @@ function addUser(){
 	    $userinfo = fgets($h_user_profile,1024); 
 	    list ($id, $unit, $department, $station, $id_code, $create_time , $is_public, $note) = explode( ':', $userinfo);
 	    if (!strcmp($id,$user_id)){
-	    	echo "´íÎó£ºÓÃ»§idÒÑ´æÔÚ£¡<br>";
+	    	echo "é”™è¯¯ï¼šç”¨æˆ·idå·²å­˜åœ¨ï¼<br>";
 		   	flock($h_user_profile, LOCK_UN);
 	    	return false;
 	    }
@@ -216,7 +216,7 @@ function addUser(){
 }
 
 if ( (isset($_REQUEST['addUser']) && addUser()) ){
-	echo "ÓÃ»§ ${_REQUEST['user_id'] }ÒÑ¾­³É¹¦¼ÓÈë£¡<br>";
+	echo "ç”¨æˆ· ${_REQUEST['user_id'] }å·²ç»æˆåŠŸåŠ å…¥ï¼<br>";
 } else {
 
 
@@ -226,40 +226,40 @@ if ( (isset($_REQUEST['addUser']) && addUser()) ){
 <INPUT type="hidden" name="addUser">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="2" class=title><b>Ìí¼ÓĞÂÓÃ»§</b></td>
+<td colspan="2" class=title><b>æ·»åŠ æ–°ç”¨æˆ·</b></td>
 </tr>
 <tr>
-	<td>ĞÂÕÊºÅÃû£º<input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
+	<td>æ–°å¸å·åï¼š<input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
 	</td>
-	<td><font color=#ff0000>ÇëÊ¹ÓÃĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸¼°Êı×ÖÆğÕÊºÅÃû£¬±ØĞëÊ¹ÓÃÓ¢ÎÄ×ÖÄ¸¿ªÍ·¡£</font></td>
+	<td><font color=#ff0000>è¯·ä½¿ç”¨å°å†™è‹±æ–‡å­—æ¯åŠæ•°å­—èµ·å¸å·åï¼Œå¿…é¡»ä½¿ç”¨è‹±æ–‡å­—æ¯å¼€å¤´ã€‚</font></td>
 </tr>
 <tr>
-	<td>ÊäÈëÃÜÂë£º<input type=password name="passwd1"></td>
-	<td><font color=#ff0000>ÇëÊ¹ÓÃ´óĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸ºÍÊı×Ö×÷ÎªÓÊ¼şÃÜÂë¡£</font></td>
+	<td>è¾“å…¥å¯†ç ï¼š<input type=password name="passwd1"></td>
+	<td><font color=#ff0000>è¯·ä½¿ç”¨å¤§å°å†™è‹±æ–‡å­—æ¯å’Œæ•°å­—ä½œä¸ºé‚®ä»¶å¯†ç ã€‚</font></td>
 </tr>
 <tr>
-	<td>È·ÈÏÃÜÂë£º<input type=password name="passwd2"></td>
-	<td><font color=#ff0000>ÇëÔÙ´ÎÊäÈëÃÜÂë£¬Á½´ÎÃÜÂë±ØĞëÏàÍ¬¡£</font></td>
+	<td>ç¡®è®¤å¯†ç ï¼š<input type=password name="passwd2"></td>
+	<td><font color=#ff0000>è¯·å†æ¬¡è¾“å…¥å¯†ç ï¼Œä¸¤æ¬¡å¯†ç å¿…é¡»ç›¸åŒã€‚</font></td>
 </tr>
 <tr>
-	<td>ÓÃ»§ĞÕÃû£º<input type=text name="user_name" value="<? echo $_REQUEST['user_name'] ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§µÄĞÕÃû¡£</font></td>
+	<td>ç”¨æˆ·å§“åï¼š<input type=text name="user_name" value="<? echo $_REQUEST['user_name'] ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·çš„å§“åã€‚</font></td>
 </tr>
 <tr>
-	<td>ÓÃ»§µ¥Î»£º<input type=text name="user_unit" value="<? echo $_REQUEST['user_unit'] ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§ËùÔÚµÄµ¥Î»¡£</font></td>
+	<td>ç”¨æˆ·å•ä½ï¼š<input type=text name="user_unit" value="<? echo $_REQUEST['user_unit'] ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·æ‰€åœ¨çš„å•ä½ã€‚</font></td>
 </tr>
 <tr>
-	<td>ÓÃ»§²¿ÃÅ£º<input type=text name="user_department" value="<? echo $_REQUEST['user_department'] ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§ËùÔÚµÄ²¿ÃÅ¡£</font></td>
+	<td>ç”¨æˆ·éƒ¨é—¨ï¼š<input type=text name="user_department" value="<? echo $_REQUEST['user_department'] ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·æ‰€åœ¨çš„éƒ¨é—¨ã€‚</font></td>
 </tr>
 <tr>
-	<td>ÓÃ»§¸ÚÎ»£º<input type=text name="user_station" value="<? echo $_REQUEST['user_station'] ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§µÄ¸ÚÎ»¡£</font></td>
+	<td>ç”¨æˆ·å²—ä½ï¼š<input type=text name="user_station" value="<? echo $_REQUEST['user_station'] ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·çš„å²—ä½ã€‚</font></td>
 </tr>
 <tr>
-	<td>ÓÃ»§Ö¤¼şºÅÂë£º<input type=text name="user_id_code" value="<? echo $_REQUEST['user_id_code'] ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§µÄÖ¤¼şºÅÂë¡£</font></td>
+	<td>ç”¨æˆ·è¯ä»¶å·ç ï¼š<input type=text name="user_id_code" value="<? echo $_REQUEST['user_id_code'] ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·çš„è¯ä»¶å·ç ã€‚</font></td>
 </tr>
 <tr>
 <?
@@ -269,21 +269,21 @@ if ( (isset($_REQUEST['addUser']) && addUser()) ){
 		$user_box_size=$DEFAULTMAILBOXSIZE;
 	}
 ?>
-	<td>ÓÊÏä´óĞ¡£¨M£©£º<input type=text name="user_box_size" value="<? echo $user_box_size ?>"></td>
-	<td><font color=#ff0000>ÓÃ»§µÄÓÊÏä´óĞ¡¡£</font></td>
+	<td>é‚®ç®±å¤§å°ï¼ˆMï¼‰ï¼š<input type=text name="user_box_size" value="<? echo $user_box_size ?>"></td>
+	<td><font color=#ff0000>ç”¨æˆ·çš„é‚®ç®±å¤§å°ã€‚</font></td>
 </tr>
 <tr>
-	<td><input type=checkbox name="user_is_public" <? echo ($user_is_public?'checked':''); ?>>¶ÔÍâÏÔÊ¾</td>
-	<td><font color=#ff0000>ÊÇ·ñ¹«¿ª¶ÔÍâÏÔÊ¾ÔÚ¹«¹²ÓÊ¼şÁĞ±íÖĞ</font></td>
+	<td><input type=checkbox name="user_is_public" <? echo ($user_is_public?'checked':''); ?>>å¯¹å¤–æ˜¾ç¤º</td>
+	<td><font color=#ff0000>æ˜¯å¦å…¬å¼€å¯¹å¤–æ˜¾ç¤ºåœ¨å…¬å…±é‚®ä»¶åˆ—è¡¨ä¸­</font></td>
 </tr>
 <tr>
-	<td>±¸×¢£º<input type=text name="user_note" value="<? echo $user_note ?>"></td>
+	<td>å¤‡æ³¨ï¼š<input type=text name="user_note" value="<? echo $user_note ?>"></td>
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr align="center" >
-	<td colspan=2><input type=submit name="adduser" value="  È·  ÈÏ  ">
+	<td colspan=2><input type=submit name="adduser" value="  ç¡®  è®¤  ">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  Çå  ³ı  ">
+	<input type=reset value="  æ¸…  é™¤  ">
 	</td>
 </tr>
 </table>

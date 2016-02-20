@@ -1,5 +1,5 @@
 #
-# ·´À¬»øÅĞ¶Ï¶¯Ì¬ÒıÇæ
+# ååƒåœ¾åˆ¤æ–­åŠ¨æ€å¼•æ“
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -37,7 +37,7 @@ sub new
 	$self->{define}->{size} = 1048576;
 	$self->{define}->{glue} = 'SPAM';
 
-	# ÔÚÄÚ´æÖĞ¼ÇÂ¼µÄÓÊ¼şĞÅÏ¢±£Áô×î³¤Ê±¼ä
+	# åœ¨å†…å­˜ä¸­è®°å½•çš„é‚®ä»¶ä¿¡æ¯ä¿ç•™æœ€é•¿æ—¶é—´
 	$self->{define}->{max_time} = 3600;
 
 	$self->{define}->{SendRatePerSubject} = $self->{conf}->{config}->{DynamicEngine}->{SendRatePerSubject} || '0/0/0';
@@ -46,12 +46,12 @@ sub new
 
 	$self->{define}->{DBMFILE} = "/home/NoSPAM/var/run/Dynamic.dbm";
 	$self->{define}->{SyncCacheSize} = '100K';
-	# Çå³ı¹ıÆÚ¼ÇÂ¼µÄÊ±¼ä¼ä¸ô£¬ÃëÎªµ¥Î»
+	# æ¸…é™¤è¿‡æœŸè®°å½•çš„æ—¶é—´é—´éš”ï¼Œç§’ä¸ºå•ä½
 	$self->{define}->{clean_interval} = 600;
-	# ·â½û×î³¤Ê±¼ä£ºÒ»Ìì
+	# å°ç¦æœ€é•¿æ—¶é—´ï¼šä¸€å¤©
 	$self->{define}->{max_deny_time} = 86400;
-	# ·â½û×î³¤Ê±¼ä£ºÒ»Ìì
-	# È±Ê¡³¬ÏŞ·â½ûÊ±¼ä£º1Hour
+	# å°ç¦æœ€é•¿æ—¶é—´ï¼šä¸€å¤©
+	# ç¼ºçœè¶…é™å°ç¦æ—¶é—´ï¼š1Hour
 	$self->{define}->{DefaultDenyTime} = 600;
 
 	$self->{dynamic_info} = {};
@@ -94,7 +94,7 @@ sub dump
 
 }
 
-# ¸ø³ösubject£¬²ì¿´ÊÇ·ñsubject³¬³öÏŞÖÆÆµÂÊ
+# ç»™å‡ºsubjectï¼Œå¯Ÿçœ‹æ˜¯å¦subjectè¶…å‡ºé™åˆ¶é¢‘ç‡
 sub is_overrun_rate_per_subject
 {
 	my $self = shift;
@@ -119,7 +119,7 @@ sub is_overrun_rate_per_subject
 	return $self->is_overrun_rate_per_XXX ( 'Subject', $subject, $num, $sec, $deny_sec );
 }
 
-# ¸ø³ömail_from£¬²ì¿´ÊÇ·ñ´Ëaddress³¬³öÏŞÖÆÆµÂÊ
+# ç»™å‡ºmail_fromï¼Œå¯Ÿçœ‹æ˜¯å¦æ­¤addressè¶…å‡ºé™åˆ¶é¢‘ç‡
 sub is_overrun_rate_per_mailfrom
 {
 	my $self = shift;
@@ -145,7 +145,7 @@ sub is_overrun_rate_per_mailfrom
 	return $self->is_overrun_rate_per_XXX ( 'From', $mail_from, $num, $sec, $deny_sec );
 }
 
-# ¸ø³öip£¬²ì¿´ÊÇ·ñ´Ëip³¬³öÏŞÖÆÆµÂÊ
+# ç»™å‡ºipï¼Œå¯Ÿçœ‹æ˜¯å¦æ­¤ipè¶…å‡ºé™åˆ¶é¢‘ç‡
 sub is_overrun_rate_per_ip
 {
 	my $self = shift;
@@ -171,13 +171,13 @@ sub is_overrun_rate_per_ip
 }
 
 
-# ÔÚ param1 ÎªÃûµÄÊı×éÖĞ£¬ÒÑ param2 Îª key£¬ ²ì¿´ÊÇ·ñÔÚ param4 ÃëÄÚ£¬ param2 µÄ value ÊıÄ¿³¬¹ı param3
+# åœ¨ param1 ä¸ºåçš„æ•°ç»„ä¸­ï¼Œå·² param2 ä¸º keyï¼Œ å¯Ÿçœ‹æ˜¯å¦åœ¨ param4 ç§’å†…ï¼Œ param2 çš„ value æ•°ç›®è¶…è¿‡ param3
 sub is_overrun_rate_per_XXX
 {
 	my $self = shift;
 
 	my ( $namespace, $key, $num, $sec, $deny_sec ) = @_;
-	# by Ed 2004-06-14 ÔÊĞíÓÃ»§²» deny 
+	# by Ed 2004-06-14 å…è®¸ç”¨æˆ·ä¸ deny 
 	#$deny_sec ||= $self->{define}->{DefaultDenyTime};
 	$deny_sec ||= 0;
 
@@ -185,7 +185,7 @@ sub is_overrun_rate_per_XXX
 	return (0,__("passed")) if ( defined $num && defined $sec && ( 0==$num || 0==$sec ) );
 
 	# zero means UNLIMITED
-	#return (0,'ÎŞÏŞÖÆ') if ( 0==$num || 0==$sec );
+	#return (0,'æ— é™åˆ¶') if ( 0==$num || 0==$sec );
 
 	if ( ! $namespace || ! $key || ! $num || ! $sec ){
 		$self->{zlog}->debug ( "AKA::Mail::Dynamic::is_overrun_rate_per_XXX can't get params: [" . join(" ",@_) . "]" );
@@ -193,7 +193,7 @@ sub is_overrun_rate_per_XXX
 	}
 
 
-	# ÏŞÖÆ×î³¤Ê±¼ä²»´óÓÚ1Hour
+	# é™åˆ¶æœ€é•¿æ—¶é—´ä¸å¤§äº1Hour
 	$sec = $self->{define}->{max_time} if ( $sec > $self->{define}->{max_time} );
 
 	if ( ! $self->attach ){
@@ -210,7 +210,7 @@ sub is_overrun_rate_per_XXX
 	my $namespace_obj = $self->{dynamic_info}->{$namespace};
 	$namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} ||= 0;
 
-	# ×î´óÃ¿clean_interval s ÇåÀíÒ»ÏÂÄÚ´æ
+	# æœ€å¤§æ¯clean_interval s æ¸…ç†ä¸€ä¸‹å†…å­˜
 	if ( time - $namespace_obj->{'_AMD_LAST_REFRESH_TIME_'} > $self->{define}->{clean_interval} ){
 		$namespace_obj = $self->refresh_info( $namespace_obj, $sec );
 		# do this out of circle
@@ -220,11 +220,11 @@ sub is_overrun_rate_per_XXX
 	}
 
 
-	# ½«Êı¾İ±£´æÆğÀ´±¸²é 
-	# $namespace_obj ´«µİµÄ is reference, so modify in add_Dynamic_info function will effect in this namespace
+	# å°†æ•°æ®ä¿å­˜èµ·æ¥å¤‡æŸ¥ 
+	# $namespace_obj ä¼ é€’çš„ is reference, so modify in add_Dynamic_info function will effect in this namespace
 	$self->add_dynamic_info( $namespace_obj, $key );
 
-	# ¼ì²éÊÇ·ñ³¬¹ıÏŞ¶î
+	# æ£€æŸ¥æ˜¯å¦è¶…è¿‡é™é¢
 	my ($overrun,$reason) = $self->check_quota_exceed_ex( $namespace_obj, $key, $num, $sec, $deny_sec );
 
 	$self->{dynamic_info}->{$namespace} = $namespace_obj;
@@ -300,7 +300,7 @@ sub add_dynamic_info
 #print STDERR "add_bad_ip: $namespace, $key\n";
 }
 
-# ¼ì²é¸ø¶¨Ê±¼äÄÚµÄ¼ÇÂ¼ÊıÄ¿£¬¿ÉÄÜ»áÓ°ÏìĞÔÄÜ
+# æ£€æŸ¥ç»™å®šæ—¶é—´å†…çš„è®°å½•æ•°ç›®ï¼Œå¯èƒ½ä¼šå½±å“æ€§èƒ½
 sub check_quota_exceed_ex
 {
 	my $self = shift;
@@ -318,7 +318,7 @@ sub check_quota_exceed_ex
 		my $wait_time = $ns_obj_who->{_DENY_TO_} - time;
 		if( $wait_time > 0 ){
 			# change to minute
-			# ÓÉÓÚ³¬¶î£¬»¹Ã»µ½±»½â·âÊ±¼ä£¬ÈÔÈ»·µ»ØOVERRUN£¬²¢ÇÒÔö¼Ó·â½ûÊ±¼ä
+			# ç”±äºè¶…é¢ï¼Œè¿˜æ²¡åˆ°è¢«è§£å°æ—¶é—´ï¼Œä»ç„¶è¿”å›OVERRUNï¼Œå¹¶ä¸”å¢åŠ å°ç¦æ—¶é—´
 			if ( $wait_time > $self->{define}->{max_deny_time} ){
 				$ns_obj_who->{_DENY_TO_} = time + $self->{define}->{max_deny_time};
 				$wait_time = $self->{define}->{max_deny_time};
@@ -356,7 +356,7 @@ sub check_quota_exceed_ex
 }
 
 
-# ¼ì²é DynamicInfo ÖĞËùÓĞ¼ÇÂ¼µÄÊıÄ¿£¬¿ÉÄÜĞÔÄÜ»áºÃÒ»Ğ©
+# æ£€æŸ¥ DynamicInfo ä¸­æ‰€æœ‰è®°å½•çš„æ•°ç›®ï¼Œå¯èƒ½æ€§èƒ½ä¼šå¥½ä¸€äº›
 sub check_quota_exceed
 {
 	my $self = shift;

@@ -1,14 +1,14 @@
 <?php
 
     /**
-     * DB_SQLite ÀàÎÄ¼ş
+     * DB_SQLite ç±»æ–‡ä»¶
      *
-     * @desc SQLite Êı¾İ¿âÀà£¬SQLite Êı¾İ¿âÇı¶¯£¬°üº¬Ò»Ğ©³£ÓÃ·½·¨
+     * @desc SQLite æ•°æ®åº“ç±»ï¼ŒSQLite æ•°æ®åº“é©±åŠ¨ï¼ŒåŒ…å«ä¸€äº›å¸¸ç”¨æ–¹æ³•
      *
      * @author  ShenKong <shenkong@openphp.cn>
      * @version $id
      * @package SPB Forum System
-     * @copyright Äú¿ÉÒÔÊ¹ÓÃ»òÕßĞŞ¸Ä¸ÃÎÄ¼ş£¬µ«ÊÇ²»µÃÉ¾³ıËùÓĞ°æÈ¨ĞÅÏ¢
+     * @copyright æ‚¨å¯ä»¥ä½¿ç”¨æˆ–è€…ä¿®æ”¹è¯¥æ–‡ä»¶ï¼Œä½†æ˜¯ä¸å¾—åˆ é™¤æ‰€æœ‰ç‰ˆæƒä¿¡æ¯
      */
 
     define("DB_GETFETCH_ROW", SQLITE_NUM);
@@ -25,7 +25,7 @@
     class DB_SQLite extends DB
     {
         /**
-         * Êı¾İ¿âÁ¬½ÓºÅ
+         * æ•°æ®åº“è¿æ¥å·
          *
          * @var     string
          * @access  public
@@ -33,7 +33,7 @@
         var $conn   = null;
 
         /**
-         * µ±Ç°Êı¾İ¿â²éÑ¯Óï¾ä
+         * å½“å‰æ•°æ®åº“æŸ¥è¯¢è¯­å¥
          *
          * @var     string
          * @access  public
@@ -41,7 +41,7 @@
         var $query  = null;
 
         /**
-         * Êı¾İ¿â²éÑ¯½á¹û
+         * æ•°æ®åº“æŸ¥è¯¢ç»“æœ
          *
          * @var     string
          * @access  public
@@ -49,7 +49,7 @@
         var $result = null;
 
         /**
-         * ´íÎó×Ö·û´®
+         * é”™è¯¯å­—ç¬¦ä¸²
          *
          * @var     string
          * @access  public
@@ -57,7 +57,7 @@
         var $errStr = null;
 
         /**
-         * ¿ìËÙ²éÑ¯
+         * å¿«é€ŸæŸ¥è¯¢
          *
          * @var     string
          * @access  public
@@ -65,7 +65,7 @@
         var $quick  = false;
 
         /**
-         * Êı¾İ¿â²éÑ¯Óï¾äÊı×é¬Debug ÓÃ
+         * æ•°æ®åº“æŸ¥è¯¢è¯­å¥æ•°ç»„ç¼ebug ç”¨
          *
          * @var     string
          * @access  public

@@ -13,8 +13,8 @@ GenerateDate=$now
 ExpireDate=2005-02-28
 Version=2
 
-FactoryName=ÆôÃ÷ĞÇ³½
-ProductName=Ìì³Î·ÀÀ¬»øÓÊ¼şÏµÍ³
+FactoryName=å¯æ˜æ˜Ÿè¾°
+ProductName=å¤©æ¾„é˜²åƒåœ¾é‚®ä»¶ç³»ç»Ÿ
 ProductSN=$prodno
 Language=zh_CN
 
@@ -22,7 +22,7 @@ Language=zh_CN
 ServerGatewaySwitchable=Y
 ServerGateway=Gateway,MXRelay,Server
 
-LicenseHTML=<b>¿Í»§ÊÔÓÃÌåÑé(·ÇÏúÊÛ)°æ</b>
+LicenseHTML=<b>å®¢æˆ·è¯•ç”¨ä½“éªŒ(éé”€å”®)ç‰ˆ</b>
 
 
 MailGateway=100

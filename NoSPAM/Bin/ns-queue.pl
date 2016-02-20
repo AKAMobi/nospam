@@ -44,7 +44,7 @@ close (STDERR);
 open (STDERR,">/dev/null");
 #open (STDERR,">>/tmp/ns-queue.STDERR");
 
-# Ê±¼ä¼ÇÂ¼
+# æ—¶é—´è®°å½•
 
 delete @ENV{qw(IFS CDPATH ENV BASH_ENV QMAILMFTFILE QMAILINJECT)};
 
@@ -79,11 +79,11 @@ use Time::HiRes qw(gettimeofday tv_interval );
 # CORE DATA STRUCTURE
 my $mail_info;
 
-# ÅÐ¶ÏÊÇ·ñÓÉÄÚÏòÍâ·¢µÄmail
+# åˆ¤æ–­æ˜¯å¦ç”±å†…å‘å¤–å‘çš„mail
 if ( defined $ENV{RELAYCLIENT} ){
 	$mail_info->{aka}->{RELAYCLIENT} = 1; #$ENV{RELAYCLIENT};
 }elsif (defined $ENV{TCPREMOTEINFO}){
-	# Èç¹û¾­¹ýÉí·ÝÈÏÖ¤£¬Ôò TCPREMOTEINFO ÄÚ´æµÄÊÇÓÃ»§Ãû
+	# å¦‚æžœç»è¿‡èº«ä»½è®¤è¯ï¼Œåˆ™ TCPREMOTEINFO å†…å­˜çš„æ˜¯ç”¨æˆ·å
 	$mail_info->{aka}->{TCPREMOTEINFO} = $ENV{TCPREMOTEINFO};
 }
 
@@ -131,7 +131,7 @@ eval {
   &AKA_engine_run;
 
   unless ( defined $mail_info ){
-	&error_condition ( "451 ÒýÇæÉÐÎ´Æô¶¯»ò·¢ÉúÄÚ²¿´íÎó£¬ÇëÁªÏµ¹ÜÀíÔ±¡£", 150 );
+	&error_condition ( "451 å¼•æ“Žå°šæœªå¯åŠ¨æˆ–å‘ç”Ÿå†…éƒ¨é”™è¯¯ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ã€‚", 150 );
   }
 
   if ( length($mail_info->{aka}->{resp}->{smtp_code}) ){

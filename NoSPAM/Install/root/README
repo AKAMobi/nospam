@@ -1,4 +1,4 @@
-Ò»Ğ©±¸×¢
+ä¸€äº›å¤‡æ³¨
 
-Ã¿¸öÄ¿Â¼ÏÂ¶¼ÓĞ post_proc.sh£¬Èç¹ûÓĞ¾ÍÊÇĞèÒªÖ´ĞĞÕâ¸öÀ´½øĞĞÒ»Ğ©È¨ÏŞÉèÖÃ£»
-clamav ĞèÒªĞŞ¸Ä rpm £¬change clamav groupadd to 48, useradd -o to id 48, and  rpmbuild --without milter
+æ¯ä¸ªç›®å½•ä¸‹éƒ½æœ‰ post_proc.shï¼Œå¦‚æœæœ‰å°±æ˜¯éœ€è¦æ‰§è¡Œè¿™ä¸ªæ¥è¿›è¡Œä¸€äº›æƒé™è®¾ç½®ï¼›
+clamav éœ€è¦ä¿®æ”¹ rpm ï¼Œchange clamav groupadd to 48, useradd -o to id 48, and  rpmbuild --without milter

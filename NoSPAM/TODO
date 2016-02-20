@@ -9,35 +9,35 @@ DONE fix netmask bug of ifconfig call
 DONE make ns-qeue daemon
 
 2004-05-03
-DONE Ôö¼ÓvirusµÄµ¯»Ø
+DONE å¢åŠ virusçš„å¼¹å›
 
 2004-05-05
 make server mode work
-qmai-remote concur ²¢·¢ 120 µÄÓ²±àÂë 506 now
+qmai-remote concur å¹¶å‘ 120 çš„ç¡¬ç¼–ç  506 now
 
 2004-05-06
-½â¾öÆôÃ÷ĞÇ³½µÄSMTPSÎÊÌâ
-named ÎŞ·¨³ö¹úÎÊÌâ
+è§£å†³å¯æ˜æ˜Ÿè¾°çš„SMTPSé—®é¢˜
+named æ— æ³•å‡ºå›½é—®é¢˜
 
 2004-05-08
-DONE smtp_proxy µÄÍêÉÆ
-DONE lilo½µ¼¶
-DONE Íø¾°
-DONE Íê³É¼òµ¥CLI
-DONE ĞŞ¸Ä clamd init script µÄÏÔÊ¾
-DONE ÄÚÈİ¹ıÂËÊ§Ğ§£¬Çø·Ö´óĞ¡Ğ´Ê§Ğ§
+DONE smtp_proxy çš„å®Œå–„
+DONE liloé™çº§
+DONE ç½‘æ™¯
+DONE å®Œæˆç®€å•CLI
+DONE ä¿®æ”¹ clamd init script çš„æ˜¾ç¤º
+DONE å†…å®¹è¿‡æ»¤å¤±æ•ˆï¼ŒåŒºåˆ†å¤§å°å†™å¤±æ•ˆ
 
 2004-06-18
-DONE cpp qns_loaderµÄ³¬Ê±´¦Àí
+DONE cpp qns_loaderçš„è¶…æ—¶å¤„ç†
 DONE DNS timeout?
-DONE ¿É×·²éÎóÅĞ
-DONE ¼ì²é razor µÈÊÇ·ñ register
+DONE å¯è¿½æŸ¥è¯¯åˆ¤
+DONE æ£€æŸ¥ razor ç­‰æ˜¯å¦ register
 DONE localedef -f GB2312 -i zh_CN zh_CN.gb2312 
 DONE localedef -f GBK -i zh_CN zh_CN        
 
 
 check rule  match err ( old err , find it out )
-In,Out¶¼´òtagµÄºÏÀíĞÔÂÛÖ¤
+In,Outéƒ½æ‰“tagçš„åˆç†æ€§è®ºè¯
 VLAN LVS
-ĞŞÕû wMail ĞÅÏ¢£¬»¹ÓĞÀ¬»ømaildrop
+ä¿®æ•´ wMail ä¿¡æ¯ï¼Œè¿˜æœ‰åƒåœ¾maildrop
 test

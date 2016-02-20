@@ -26,7 +26,7 @@ function display_mailbox_info () {
     global $currentUser;
 ?>
 <p align="left" class="title">
-<?=_("Login as")?> <?php echo $currentUser->email; ?>    <?=_("Current quarantine emails")?>: <?=_("Total number")?> <?php echo $currentUser->mailCnt; ?> <?=_("mails")?>£¬
+<?=_("Login as")?> <?php echo $currentUser->email; ?>    <?=_("Current quarantine emails")?>: <?=_("Total number")?> <?php echo $currentUser->mailCnt; ?> <?=_("mails")?>ï¼Œ
 <?=_("Display")?> <?php echo $currentUser->start; ?>-<?php echo $currentUser->end; ?> <?=_("mails")?>, 
 <?=_("Used space")?> <?php echo $currentUser->totalSize; ?>
 &nbsp;&nbsp;&nbsp;&nbsp;[<a href="logout.ns"><?=_("Logout")?></a>]

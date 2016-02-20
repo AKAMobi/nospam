@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖÐÐÄÓÊ¼þ¹ýÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æŽ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -25,7 +25,7 @@ use strict;
 #@EXPORT=("function1", "function2", "function3");
 
 #use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 
@@ -102,7 +102,7 @@ sub process
 		$param = $rule_info->{rule_action}->{action_param};
 		$rule_id = $rule_info->{rule_id};
 	}else{
-		# È±Ê¡½ÓÊÕÓÊ¼þ 6¡¢accept ½ÓÊÜ¸ÃÓÊ¼þ£¬Õý³£·Ö·¢¡£ÎÞ²ÎÊý
+		# ç¼ºçœæŽ¥æ”¶é‚®ä»¶ 6ã€accept æŽ¥å—è¯¥é‚®ä»¶ï¼Œæ­£å¸¸åˆ†å‘ã€‚æ— å‚æ•°
 		$action = 6;
 		$param = "";
 		$rule_id = "";
@@ -160,7 +160,7 @@ sub log_match
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'client_ip'} = $mail_info->{head}->{sender_ip};
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'ip_zone'} = 0; #XXX
 
-	# modified by Ed 2004-06-13 »ñÈ¡ÓÊ¼þÔ­Ê¼µÄ³ß´ç
+	# modified by Ed 2004-06-13 èŽ·å–é‚®ä»¶åŽŸå§‹çš„å°ºå¯¸
 	$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'size'} = $mail_info->{aka}->{size} ;
 	#$logdata->{'asc-msp'}->{'log-data'}->{'match_record'}->{'size'} = $mail_info->{head_size} + $mail_info->{body_size}; #FIXME
 
@@ -220,7 +220,7 @@ sub clean
 
 #sub DESTROY
 #{
-#	# É¾³ýÁÙÊ±ÎÄ¼þ
+#	# åˆ é™¤ä¸´æ—¶æ–‡ä»¶
 #}
 
 1;

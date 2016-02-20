@@ -935,7 +935,7 @@ static int auth_ldap_do3(const char *attrname,
 		return -1;
 	}
 #if DEBUG_LDAP
-	syslog(LOG_DAEMON|LOG_CRIT,"Nombre de résulat:    %d\n",ldap_count_entries(my_ldap_fp,result));
+	syslog(LOG_DAEMON|LOG_CRIT,"Nombre de ré–Ÿulat:    %d\n",ldap_count_entries(my_ldap_fp,result));
 #endif
 
 	dn = ldap_get_dn(my_ldap_fp, result);

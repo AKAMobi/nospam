@@ -1,5 +1,5 @@
 #
-# noSPAM ÓÃ»§ÁÐ±í½Ó¿Ú
+# noSPAM ç”¨æˆ·åˆ—è¡¨æŽ¥å£
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Li
 # EMail: zixia@zixia.net
@@ -29,7 +29,7 @@ sub new
 	return $self;
 }
 
-# ²ÎÊý¿ÉÒÔÊÇ emails µÄÊý×é£¬ÒòÎªÒýÇæÓÖ¿ÉÄÜ´¦ÀíµÄÊÇ·¢¸ø¶àÈËµÄÓÊ¼þ
+# å‚æ•°å¯ä»¥æ˜¯ emails çš„æ•°ç»„ï¼Œå› ä¸ºå¼•æ“Žåˆå¯èƒ½å¤„ç†çš„æ˜¯å‘ç»™å¤šäººçš„é‚®ä»¶
 sub is_user_exist
 {
 	my $self = shift;
@@ -50,9 +50,9 @@ sub is_user_exist
 	return $q_users;
 }
 
-# ¼ì²éÊÇ·ñ·¢¼þÈË±»ÊÕ¼þÈËÁÐÈë°×Ãûµ¥
-# Èç¹ûÓÐ¶à¸öÊÕ¼þÈË£¬ÔòÈÎºÎÒ»¸öÊÕ¼þÈË½«·¢¼þÈËÁÐÈë°×Ãûµ¥¼´¿É
-# Èç¹ûÊÇ°×Ãûµ¥£¬·µ»Ø1£¬·ñÔò·µ»Ø0£»
+# æ£€æŸ¥æ˜¯å¦å‘ä»¶äººè¢«æ”¶ä»¶äººåˆ—å…¥ç™½åå•
+# å¦‚æžœæœ‰å¤šä¸ªæ”¶ä»¶äººï¼Œåˆ™ä»»ä½•ä¸€ä¸ªæ”¶ä»¶äººå°†å‘ä»¶äººåˆ—å…¥ç™½åå•å³å¯
+# å¦‚æžœæ˜¯ç™½åå•ï¼Œè¿”å›ž1ï¼Œå¦åˆ™è¿”å›ž0ï¼›
 sub is_user_whitelist($$$)
 {
 	my $self = shift;
@@ -63,9 +63,9 @@ sub is_user_whitelist($$$)
 	return $ret;
 }
 
-# ¼ì²éÊÇ·ñ·¢¼þÈË±»ÊÕ¼þÈËÁÐÈë°×Ãûµ¥
-# Èç¹ûÓÐ¶à¸öÊÕ¼þÈË£¬ÔòÈÎºÎÒ»¸öÊÕ¼þÈË½«·¢¼þÈËÁÐÈë°×Ãûµ¥¼´¿É
-# Èç¹ûÊÇ°×Ãûµ¥£¬·µ»Ø1£¬·ñÔò·µ»Ø0£»
+# æ£€æŸ¥æ˜¯å¦å‘ä»¶äººè¢«æ”¶ä»¶äººåˆ—å…¥ç™½åå•
+# å¦‚æžœæœ‰å¤šä¸ªæ”¶ä»¶äººï¼Œåˆ™ä»»ä½•ä¸€ä¸ªæ”¶ä»¶äººå°†å‘ä»¶äººåˆ—å…¥ç™½åå•å³å¯
+# å¦‚æžœæ˜¯ç™½åå•ï¼Œè¿”å›ž1ï¼Œå¦åˆ™è¿”å›ž0ï¼›
 sub is_user_blacklist($$$)
 {
 	my $self = shift;

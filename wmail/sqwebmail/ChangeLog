@@ -1143,7 +1143,7 @@
 	* folder.c (folder_list): block attempt to delete INBOX (which ends
 	up blowing away preferences).  Problem noted by gourgen@acc.am.
 
-2001-04-24  "Roland Hänel" <rh@ginko.net>  
+2001-04-24  "Roland Hé‹˜el" <rh@ginko.net>  
 
 	* authlib/authmysql: applied patch to replace the remaining
 	hardcoded mysql table field names with configurable values from

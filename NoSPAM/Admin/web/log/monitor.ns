@@ -9,7 +9,7 @@ if(!$_GET["interval"] || !$_GET["line"])
 
 $result=_("Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,Description");
 	$head = explode(",",$result);
-/*Ê±¼ä,ÓÊ¼ş·½Ïò,·¢¼şÈËIP,·¢¼şÈËµØÖ·,ÊÕ¼şÈËµØÖ·,Ö÷Ìâ,À¬»ø¶È,À¬»øÔ­Òò,À¬»ø´¦Àí¶¯×÷ÃèÊö,¶¯×÷ÀàĞÍ,¶¯×÷²ÎÊı¶¯Ì¬ÏŞÖÆ,¶¯Ì¬ÃèÊö
+/*æ—¶é—´,é‚®ä»¶æ–¹å‘,å‘ä»¶äººIP,å‘ä»¶äººåœ°å€,æ”¶ä»¶äººåœ°å€,ä¸»é¢˜,åƒåœ¾åº¦,åƒåœ¾åŸå› ,åƒåœ¾å¤„ç†åŠ¨ä½œæè¿°,åŠ¨ä½œç±»å‹,åŠ¨ä½œå‚æ•°åŠ¨æ€é™åˆ¶,åŠ¨æ€æè¿°
 if(($ret=wi("get_LogHead",$result))==0)
 	$head = explode(",",$result[0]);
 else
@@ -47,35 +47,35 @@ function loadPage()
 <table width="100%" class="RuleTB">
 <tr>
 	<th width="35"><nobr><?=_("No.")?></th>
-	<th nowrap><?=$head[0]?></th><!--Ê±¼ä//-->
-	<th nowrap><?=$head[1]?></th><!--ÓÊ¼ş·½Ïò//-->
-	<th nowrap><?=$head[2]?></th><!--·¢¼şÈËIP//-->
-	<th nowrap><?=$head[3]?></th><!--·¢¼şÈËµØÖ·//-->
-	<th nowrap><?=$head[4]?></th><!--ÊÕ¼şÈËµØÖ·//-->
-	<th nowrap><?=$head[5]?></th><!--Ö÷Ìâ//-->
-	<th nowrap><?=$head[6]?></th><!--³ß´ç//-->
+	<th nowrap><?=$head[0]?></th><!--æ—¶é—´//-->
+	<th nowrap><?=$head[1]?></th><!--é‚®ä»¶æ–¹å‘//-->
+	<th nowrap><?=$head[2]?></th><!--å‘ä»¶äººIP//-->
+	<th nowrap><?=$head[3]?></th><!--å‘ä»¶äººåœ°å€//-->
+	<th nowrap><?=$head[4]?></th><!--æ”¶ä»¶äººåœ°å€//-->
+	<th nowrap><?=$head[5]?></th><!--ä¸»é¢˜//-->
+	<th nowrap><?=$head[6]?></th><!--å°ºå¯¸//-->
 
 <?
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	<th nowrap><?=$head[7]?></th><!--²¡¶¾//-->
-	<th nowrap><?=$head[8]?></th><!--²¡¶¾Ãû//-->
-	<th nowrap><?=$head[9]?></th><!--²¡¶¾´¦Àí//-->
+	<th nowrap><?=$head[7]?></th><!--ç—…æ¯’//-->
+	<th nowrap><?=$head[8]?></th><!--ç—…æ¯’å//-->
+	<th nowrap><?=$head[9]?></th><!--ç—…æ¯’å¤„ç†//-->
 <?}?>
-	<th nowrap><?=$head[10]?></th><!--À¬»ø¶È//-->
-	<th nowrap><?=$head[11]?></th><!--À¬»øÔ­Òò//-->
-	<th nowrap><?=$head[12]?></th><!--À¬»ø´¦Àí//-->
-	<th nowrap><?=$head[13]?></th><!--¶¯×÷ÃèÊö//-->
-	<th nowrap><?=$head[14]?></th><!--¶¯×÷ÀàĞÍ//-->
-	<th nowrap><?=$head[15]?></th><!--¶¯×÷²ÎÊı//-->
-	<th nowrap><?=$head[16]?></th><!--¶¯Ì¬ÏŞÖÆ//-->
-	<th nowrap><?=$head[17]?></th><!--¶¯Ì¬ÃèÊö//-->
+	<th nowrap><?=$head[10]?></th><!--åƒåœ¾åº¦//-->
+	<th nowrap><?=$head[11]?></th><!--åƒåœ¾åŸå› //-->
+	<th nowrap><?=$head[12]?></th><!--åƒåœ¾å¤„ç†//-->
+	<th nowrap><?=$head[13]?></th><!--åŠ¨ä½œæè¿°//-->
+	<th nowrap><?=$head[14]?></th><!--åŠ¨ä½œç±»å‹//-->
+	<th nowrap><?=$head[15]?></th><!--åŠ¨ä½œå‚æ•°//-->
+	<th nowrap><?=$head[16]?></th><!--åŠ¨æ€é™åˆ¶//-->
+	<th nowrap><?=$head[17]?></th><!--åŠ¨æ€æè¿°//-->
 
 <?
 if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	<th nowrap><?=$head[18]?></th><!--Éó¼Æ·ñ//-->
-	<th nowrap><?=$head[19]?></th><!--Éó¼ÆÃèÊö//-->
+	<th nowrap><?=$head[18]?></th><!--å®¡è®¡å¦//-->
+	<th nowrap><?=$head[19]?></th><!--å®¡è®¡æè¿°//-->
 <?}?>
 </tr>
 </tr>

@@ -181,7 +181,7 @@ function DrawAddTable($sList, $sSection, $sTitle, $sColumn, $bAccess)
 <!--caption><?=_("Add")?> <?=$sTitle?></caption-->
 <caption><?=$sTitle?></caption>
 <tr>
-	<th scope="row"><?=$sColumn?>£º</th>
+	<th scope="row"><?=$sColumn?>ï¼š</th>
 	<td align="left"><input type="text" name="key"></td>
 </tr>
 <tr>

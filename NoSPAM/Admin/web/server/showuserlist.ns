@@ -525,7 +525,7 @@ function save()
 	global $currentDomain,$spamconf;
 	
 	$bModify = isset($_POST['modify']);
-//ÅĞ¶ÏÓÃ»§ĞÅÏ¢ÌîĞ´ÊÇ·ñÍêÕû£º
+//åˆ¤æ–­ç”¨æˆ·ä¿¡æ¯å¡«å†™æ˜¯å¦å®Œæ•´ï¼š
 	if (!isset($_REQUEST['user_id'])){ 
 		echo _("Error: Must Input ")._("UserName")."<br>";
 		return false;
@@ -589,15 +589,15 @@ function save()
     	return false;
     }
 
-	$user_id = $_REQUEST['user_id'];		//ÓÃ»§ID
+	$user_id = $_REQUEST['user_id'];		//ç”¨æˆ·ID
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
-	$user_name = $_REQUEST['user_name'];	//ÓÃ»§ĞÕÃû
-	$user_unit = $_REQUEST['user_unit'];		//ÓÃ»§µ¥Î»
-	$user_department = $_REQUEST['user_department']; 	//ÓÃ»§²¿ÃÅ
-	$user_station = $_REQUEST['user_station']; 		//ÓÃ»§¸ÚÎ»
-	$user_id_code = $_REQUEST['user_id_code'];		//ÓÃ»§Ö¤¼şºÅÂë
-	$user_note = $_REQUEST['user_note'];		//ÓÃ»§Ö¤¼şºÅÂë
+	$user_name = $_REQUEST['user_name'];	//ç”¨æˆ·å§“å
+	$user_unit = $_REQUEST['user_unit'];		//ç”¨æˆ·å•ä½
+	$user_department = $_REQUEST['user_department']; 	//ç”¨æˆ·éƒ¨é—¨
+	$user_station = $_REQUEST['user_station']; 		//ç”¨æˆ·å²—ä½
+	$user_id_code = $_REQUEST['user_id_code'];		//ç”¨æˆ·è¯ä»¶å·ç 
+	$user_note = $_REQUEST['user_note'];		//ç”¨æˆ·è¯ä»¶å·ç 
 	$user_is_public = isset($_REQUEST['user_is_public']);
 	$user_box_size = 1024 * 1024 * (intval($_REQUEST['user_box_size']) );
 
@@ -855,7 +855,7 @@ function getUserList($domain, $bAssoc)
 	    								"create_time" => $create_time,
 										"is_public" => $isPublic,
 										"note" => $note,
-										"group"=> str_replace(',', '£¬', $group))
+										"group"=> str_replace(',', 'ï¼Œ', $group))
 	    );
 	}
 	fclose($h_user_profile);

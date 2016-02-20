@@ -1,5 +1,5 @@
 #
-# ·´À¬»øÅĞ¶ÏºËĞÄÒıÇæ
+# ååƒåœ¾åˆ¤æ–­æ ¸å¿ƒå¼•æ“
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -52,7 +52,7 @@ sub get_dns_resolver
 }
 
 # 
-# ¼ì²é¿É×·²éĞÔ
+# æ£€æŸ¥å¯è¿½æŸ¥æ€§
 # return ( 0=un-traceable, 1=traceable, 2=strict_traceable )
 #
 sub is_traceable
@@ -122,11 +122,11 @@ sub is_traceable
 	if ($alarm_status and $alarm_status ne "" ) { 
 		unless ( $mx_n_a[0] ){
 			$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) execeed timeout [$TIMEOUT], we got none from dns, DNS err? treat mail is not spam." );
-#			Èç¹û DNS ³¬Ê±£¬ÎÒÃÇÓ¦¸ÃÅĞ¶ÏÓÊ¼şÎªÕı³£ÓÊ¼ş
+#			å¦‚æœ DNS è¶…æ—¶ï¼Œæˆ‘ä»¬åº”è¯¥åˆ¤æ–­é‚®ä»¶ä¸ºæ­£å¸¸é‚®ä»¶
 			return 2;
 =pod
 			$self->{zlog}->fatal ( "Spam::get_X_from_domain($from_domain,$res) execeed timeout [$TIMEOUT], we got none from dns, DNS err? treat mail is likely spam." );
-#			Èç¹û DNS ³¬Ê±£¬ÎÒÃÇÅĞ¶ÏÓÊ¼şÎªÒÉËÆÀ¬»øÓÊ¼ş
+#			å¦‚æœ DNS è¶…æ—¶ï¼Œæˆ‘ä»¬åˆ¤æ–­é‚®ä»¶ä¸ºç–‘ä¼¼åƒåœ¾é‚®ä»¶
 			return 1;
 =cut
 		}
@@ -154,7 +154,7 @@ sub is_traceable
 			last;
 		}
 
-		# ¼ì²é·´ÏòDNS PTRÊÇ²»ÊÇÖ¸ÏòÓÊ¼ş·¢ËÍÓò
+		# æ£€æŸ¥åå‘DNS PTRæ˜¯ä¸æ˜¯æŒ‡å‘é‚®ä»¶å‘é€åŸŸ
 		if ( !$strict_traceable ){
 			foreach ( @ptr_domain ){
 				if ( /$from_domain/ ){
@@ -406,9 +406,9 @@ sub is_black_addr
 
 ###################################3
 #
-# ¼ì²âSPAMÈë¿Ú£¬
-#	²ÎÊı ( smtp_ip, from_addr )
-#	·µ»Ø ( is_spam, reason )
+# æ£€æµ‹SPAMå…¥å£ï¼Œ
+#	å‚æ•° ( smtp_ip, from_addr )
+#	è¿”å› ( is_spam, reason )
 #		is_spam: 0: NOT spam
 #			 1: Maybe Spam
 #			 2: SPAM
@@ -429,10 +429,10 @@ sub spam_checker
 		return (0, __("bounced mail"),0);
 	}
 
-	# 0: ·ÇÀ¬»ø 
-	# 1: ÒÉËÆÀ¬»ø
-	# 2: À¬»ø
-	# 3: ºÚÃûµ¥
+	# 0: éåƒåœ¾ 
+	# 1: ç–‘ä¼¼åƒåœ¾
+	# 2: åƒåœ¾
+	# 3: é»‘åå•
 	$is_spam = 0;
 
 
@@ -455,7 +455,7 @@ sub spam_checker
 		$is_spam = 3;
 		$reason = __("Sender BlackList");
 	}elsif ( 'Y' eq uc $self->{conf}->{config}->{SpamEngine}->{TraceEngine} ){
-		# Ö»ÓĞÆôÓÃÁË¿É×·²éĞÔ¼ì²éÊ±²ÅÅĞ¶Ï
+		# åªæœ‰å¯ç”¨äº†å¯è¿½æŸ¥æ€§æ£€æŸ¥æ—¶æ‰åˆ¤æ–­
 #use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 #my $start_time = [gettimeofday];
 		my $traceable = &is_traceable( $self, $smtp_ip, $email_domain );

@@ -17,7 +17,7 @@ function siteFile($filename){
 	
 }
 
-function errorReturn($msg,$url){ //ÌáÊ¾´íÎóÐÅÏ¢²¢·µ»Ø$urlÒ³Ãæ
+function errorReturn($msg,$url){ //æç¤ºé”™è¯¯ä¿¡æ¯å¹¶è¿”å›ž$urlé¡µé¢
 ?>
 <script>
 	alert("<?php echo $msg; ?>");

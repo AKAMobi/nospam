@@ -496,11 +496,11 @@ BODY { FONT-SIZE: 12px; COLOR: #ffffff; }
 <base target="main">
 <body bgcolor="#336699" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <!--
-[#$INBOX=ÊÕ¼þÏä#]
-[#$DRAFTS=²Ý¸åÏä#]
-[#$SENT=·¢¼þÏä#]
-[#$TRASH=À¬»øÏä#]
-[#$SPAM=À¬»øÓÊ¼þ#]
+[#$INBOX=æ”¶ä»¶ç®±#]
+[#$DRAFTS=è‰ç¨¿ç®±#]
+[#$SENT=å‘ä»¶ç®±#]
+[#$TRASH=åžƒåœ¾ç®±#]
+[#$SPAM=åžƒåœ¾é‚®ä»¶#]
 [#$SENTICON=sent.gif#]
 [#$DRAFTSICON=draft.gif#]
 [#$TRASHICON=trash.gif#]
@@ -531,20 +531,20 @@ browserVersion = 0;
 selectedFolder = 0;
 
 foldersTree = gFld("[#G#]");
-insDoc(foldersTree, gLnk(0, "ÊÕÓÊ¼þ", "[#s#]&amp;form=folder","new.gif"));
-insDoc(foldersTree, gLnk(0, "·¢ÓÊ¼þ", "[#s#]&amp;newmsg=1&amp;form=newmsg","write.gif"));
-aux1 = insFld(foldersTree, gFld("ÓÊ¼þ¼Ð", "[#s#]&amp;form=folders"));
+insDoc(foldersTree, gLnk(0, "æ”¶é‚®ä»¶", "[#s#]&amp;form=folder","new.gif"));
+insDoc(foldersTree, gLnk(0, "å‘é‚®ä»¶", "[#s#]&amp;newmsg=1&amp;form=newmsg","write.gif"));
+aux1 = insFld(foldersTree, gFld("é‚®ä»¶å¤¹", "[#s#]&amp;form=folders"));
 [#L3#]
-insDoc(foldersTree, gLnk(0, "ÁªÏµÈË", "[#s#]&amp;form=abooklist","address.gif"));
-aux1 = insFld(foldersTree, gFld("ÓÊ¼þÑ¡Ïî", "[#s#]&amp;form=myconfig"));
-insDoc(aux1, gLnk(0,"ÐÞ¸ÄÃÜÂë","[#s#]&amp;form=passwd","cpass.gif"));
-insDoc(aux1, gLnk(0,"Ç©ÃûÉèÖÃ","[#s#]&amp;form=signature","sig.gif"));
-insDoc(aux1, gLnk(0,"»ù±¾²ÎÊý","[#s#]&amp;form=myconfig","pro.gif"));
-insDoc(aux1, gLnk(0,"ÓÊ¼þ×ª·¢","[#s#]&amp;form=forward","rep.gif"));
-insDoc(aux1, gLnk(0,"ÓÊ¼þ¹ýÂË","[#s#]&amp;form=filter&amp;import=1","maillist.gif"));
-insDoc(aux1, gLnk(0,"À¬»øÓÊ¼þ","[#s#]&amp;form=spam","maillist.gif"));
-insDoc(foldersTree, gLnk(0,"°ïÖú","","help.gif"));
-insDoc(foldersTree, gLnk(1,"ÍË³öÏµÍ³", "[#s#]&amp;form=logout","logout.gif"));
+insDoc(foldersTree, gLnk(0, "è”ç³»äºº", "[#s#]&amp;form=abooklist","address.gif"));
+aux1 = insFld(foldersTree, gFld("é‚®ä»¶é€‰é¡¹", "[#s#]&amp;form=myconfig"));
+insDoc(aux1, gLnk(0,"ä¿®æ”¹å¯†ç ","[#s#]&amp;form=passwd","cpass.gif"));
+insDoc(aux1, gLnk(0,"ç­¾åè®¾ç½®","[#s#]&amp;form=signature","sig.gif"));
+insDoc(aux1, gLnk(0,"åŸºæœ¬å‚æ•°","[#s#]&amp;form=myconfig","pro.gif"));
+insDoc(aux1, gLnk(0,"é‚®ä»¶è½¬å‘","[#s#]&amp;form=forward","rep.gif"));
+insDoc(aux1, gLnk(0,"é‚®ä»¶è¿‡æ»¤","[#s#]&amp;form=filter&amp;import=1","maillist.gif"));
+insDoc(aux1, gLnk(0,"åžƒåœ¾é‚®ä»¶","[#s#]&amp;form=spam","maillist.gif"));
+insDoc(foldersTree, gLnk(0,"å¸®åŠ©","","help.gif"));
+insDoc(foldersTree, gLnk(1,"é€€å‡ºç³»ç»Ÿ", "[#s#]&amp;form=logout","logout.gif"));
 initializeDocument();
 clickOnNode(3);
 </script>

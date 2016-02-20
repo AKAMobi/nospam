@@ -155,7 +155,7 @@ function print_mail_body ($mailId, $structure) {
         print_mail_body ($mailId, $content);
     }
     else {
-        echo '<a target="_blank" href="'.get_file_url ($mailId, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'µã»÷²é¿´').'</a>';
+        echo '<a target="_blank" href="'.get_file_url ($mailId, 1, array(0)).'">'.(($structure->ctype_parameters['filename'])?$structure->ctype_parameters['filename']:'ç‚¹å‡»æŸ¥çœ‹').'</a>';
         return;
     }
     

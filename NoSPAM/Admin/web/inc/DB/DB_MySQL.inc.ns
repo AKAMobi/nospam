@@ -1,14 +1,14 @@
 <?php
 
     /**
-     * DB_MySQL ÀàÎÄ¼ş
+     * DB_MySQL ç±»æ–‡ä»¶
      *
-     * @desc MySQL Êı¾İ¿âÀà£¬MySQL Êı¾İ¿âÇı¶¯£¬°üº¬Ò»Ğ©³£ÓÃ·½·¨
+     * @desc MySQL æ•°æ®åº“ç±»ï¼ŒMySQL æ•°æ®åº“é©±åŠ¨ï¼ŒåŒ…å«ä¸€äº›å¸¸ç”¨æ–¹æ³•
      *
      * @author  ShenKong <shenkong@openphp.cn>
      * @version $id
      * @package SPB Forum System
-     * @copyright Äú¿ÉÒÔÊ¹ÓÃ»òÕßĞŞ¸Ä¸ÃÎÄ¼ş£¬µ«ÊÇ²»µÃÉ¾³ıËùÓĞ°æÈ¨ĞÅÏ¢
+     * @copyright æ‚¨å¯ä»¥ä½¿ç”¨æˆ–è€…ä¿®æ”¹è¯¥æ–‡ä»¶ï¼Œä½†æ˜¯ä¸å¾—åˆ é™¤æ‰€æœ‰ç‰ˆæƒä¿¡æ¯
      */
 
     define("DB_GETFETCH_ROW", MYSQL_NUM);
@@ -22,7 +22,7 @@
     class DB_MySQL extends DB
     {
         /**
-         * Êı¾İ¿âÀàĞÍ£¬Ä¿Ç°Îª MySQL MySQLi
+         * æ•°æ®åº“ç±»å‹ï¼Œç›®å‰ä¸º MySQL MySQLi
          *
          * @var     string
          * @access  public
@@ -30,7 +30,7 @@
         var $dbType = null;
 
         /**
-         * Êı¾İ¿âÖ÷»úÃû£¬Èç¹ûÎª SQLite Ö®ÀàµÄ¹À¼Æ¾ÍÓÃ²»×ÅÁË
+         * æ•°æ®åº“ä¸»æœºåï¼Œå¦‚æœä¸º SQLite ä¹‹ç±»çš„ä¼°è®¡å°±ç”¨ä¸ç€äº†
          *
          * @var     string
          * @access  public
@@ -38,7 +38,7 @@
         var $dbHost = null;
 
         /**
-         * Êı¾İ¿âÃû
+         * æ•°æ®åº“å
          *
          * @var     string
          * @access  public
@@ -46,7 +46,7 @@
         var $dbName = null;
 
         /**
-         * Êı¾İ¿âÓÃ»§Ãû
+         * æ•°æ®åº“ç”¨æˆ·å
          *
          * @var     string
          * @access  public
@@ -54,7 +54,7 @@
         var $dbUser = null;
 
         /**
-         * Êı¾İ¿âÃÜÂë
+         * æ•°æ®åº“å¯†ç 
          *
          * @var     string
          * @access  public
@@ -62,7 +62,7 @@
         var $dbPswd = null;
 
         /**
-         * Êı¾İ¿âÁ¬½ÓºÅ
+         * æ•°æ®åº“è¿æ¥å·
          *
          * @var     string
          * @access  public
@@ -70,7 +70,7 @@
         var $conn   = null;
 
         /**
-         * µ±Ç°Êı¾İ¿â²éÑ¯Óï¾ä
+         * å½“å‰æ•°æ®åº“æŸ¥è¯¢è¯­å¥
          *
          * @var     string
          * @access  public
@@ -78,7 +78,7 @@
         var $query  = null;
 
         /**
-         * Êı¾İ¿â²éÑ¯½á¹û
+         * æ•°æ®åº“æŸ¥è¯¢ç»“æœ
          *
          * @var     string
          * @access  public
@@ -86,7 +86,7 @@
         var $result = null;
 
         /**
-         * ´íÎó×Ö·û´®
+         * é”™è¯¯å­—ç¬¦ä¸²
          *
          * @var     string
          * @access  public
@@ -94,7 +94,7 @@
         var $errStr = null;
 
         /**
-         * ¿ìËÙ²éÑ¯
+         * å¿«é€ŸæŸ¥è¯¢
          *
          * @var     string
          * @access  public
@@ -102,7 +102,7 @@
         var $quick  = false;
 
         /**
-         * Êı¾İ¿â²éÑ¯Óï¾äÊı×é£¬Debug ÓÃ
+         * æ•°æ®åº“æŸ¥è¯¢è¯­å¥æ•°ç»„ï¼ŒDebug ç”¨
          *
          * @var     string
          * @access  public
@@ -110,7 +110,7 @@
         var $sqlStr = array();
 
         /**
-         * Êı¾İ¿âÊı¾İ²éÑ¯´ÎÊı
+         * æ•°æ®åº“æ•°æ®æŸ¥è¯¢æ¬¡æ•°
          *
          * @var     string
          * @access  public
@@ -118,7 +118,7 @@
         var $sQueries = 0;
 
         /**
-         * Êı¾İ¿âÊı¾İ¸üĞÂ´ÎÊı
+         * æ•°æ®åº“æ•°æ®æ›´æ–°æ¬¡æ•°
          *
          * @var     string
          * @access  public

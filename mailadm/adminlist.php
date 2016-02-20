@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
 		<br>
-		��û�з��ʸ���ҳ��Ȩ�ޡ�<br>
+		您没有访问该网页的权限。<br>
 <?php
 		exit(0);
 	}

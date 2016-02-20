@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>smtp×ª·¢ÉèÖÃ</TITLE>
+<TITLE>smtpè½¬å‘è®¾ç½®</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -22,7 +22,7 @@ function doConfig(){
 	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 		?>
 			<br>
-			ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+			æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 			<?php
 			return false;
 	}
@@ -31,7 +31,7 @@ function doConfig(){
 	}
 	$handle=fopen("/var/qmail/control/smtproutes","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ#1£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®#1ï¼<br>";
 		return false;
 	}
 	$content = str_replace("\r","",$_POST['content']);
@@ -56,7 +56,7 @@ function doConfig(){
 	
 	$handle=fopen("/var/qmail/control/rcpthosts","r");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ#2£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®#2ï¼<br>";
 		return false;
 	}
 
@@ -85,7 +85,7 @@ function doConfig(){
 
 	$handle=fopen("/var/qmail/control/rcpthosts","w");	
 	if (!$handle) {
-		echo "´íÎó£¬ÎŞ·¨±£´æÉèÖÃ#2£¡<br>";
+		echo "é”™è¯¯ï¼Œæ— æ³•ä¿å­˜è®¾ç½®#2ï¼<br>";
 		return false;
 	}
 	fputs($handle,$rcpthost_content);
@@ -95,7 +95,7 @@ function doConfig(){
 }
 
 if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
-	echo "ÉèÖÃ±£´æ³É¹¦£¡<br>";
+	echo "è®¾ç½®ä¿å­˜æˆåŠŸï¼<br>";
 } else {
 	if ( ! file_exists("/var/qmail/control/smtproutes") ){
 		fclose( fopen("/var/qmail/control/smtproutes","w") );
@@ -115,10 +115,10 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 		<INPUT type="hidden" name="doConfig">
 		<table border=0>
 		<tr align="center" bgcolor=#6fa6e6>
-		<td colspan="2" class=title><b>ÉèÖÃSMTP×ª·¢ÁĞ±í</b></td>
+		<td colspan="2" class=title><b>è®¾ç½®SMTPè½¬å‘åˆ—è¡¨</b></td>
 		</tr>
 		<tr>
-		<td colspan="2">SMTP×ª·¢ÁĞ±í£º
+		<td colspan="2">SMTPè½¬å‘åˆ—è¡¨ï¼š
 		</td>
 		</tr>
 		<tr>
@@ -126,7 +126,7 @@ if ( (isset($_REQUEST['doConfig']) && doConfig()) ){
 		</td>
 		</tr>
 		<tr align="center" >
-		<td colspan=2><input type=submit name="adduser" value="  ĞŞ  ¸Ä  ">
+		<td colspan=2><input type=submit name="adduser" value="  ä¿®  æ”¹  ">
 		</td>
 		</tr>
 		</table>

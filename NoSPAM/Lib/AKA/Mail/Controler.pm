@@ -766,7 +766,7 @@ sub send_mail_file_by_queue {
 		# In child.  Mutilate our file handles.
 		close EIN; 
 
-		# Net::Server::PreFork ½« STDIN/STDOUT Ó³Éä³ÉÁËÍ¬Ò»¸ösocketµÄË÷Òı£¬ÕâÀïĞèÒªÖØĞÂ½«Á½¸öÎÄ¼şÃèÊö·û¶ÀÁ¢³öÀ´£¬È»ºó²Å¿ÉÒÔreopen
+		# Net::Server::PreFork å°† STDIN/STDOUT æ˜ å°„æˆäº†åŒä¸€ä¸ªsocketçš„ç´¢å¼•ï¼Œè¿™é‡Œéœ€è¦é‡æ–°å°†ä¸¤ä¸ªæ–‡ä»¶æè¿°ç¬¦ç‹¬ç«‹å‡ºæ¥ï¼Œç„¶åæ‰å¯ä»¥reopen
 		open(DUMMYIN, '</dev/null') || die "Can't close STDIN [$!]";
 		open(DUMMYOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
 		*STDIN = *DUMMYIN;

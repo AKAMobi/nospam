@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -101,7 +101,7 @@ sub catch_virus
 	if ( !defined $result || $result =~ m#ERROR$# ){
 		$self->{zlog}->fatal ( "AntiVirus return ERROR[$result] for file[$file]" );
 		return ( {	result 	=> 0,
-				desc 	=> 'ÄÚ²¿´íÎó',
+				desc 	=> 'å†…éƒ¨é”™è¯¯',
 				action => 0, 
 
 				enabled	=> 1,
@@ -127,12 +127,12 @@ sub catch_virus
 #$self->{zlog}->debug ( "antivirus: action: [" . $action . "]" );
 	if ( $is_virus ){
 		local $_ = uc $self->{conf}->{config}->{AntiVirusEngine}->{VirusAction};
-		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1¡¢reject 
-		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2¡¢drop
-		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3¡¢quarantine
-		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7¡¢accept
-		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14¡¢tag & accept
-		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 ÅäÖÃ³ö´íÀ²
+		if ( /R/ ) { $action = AKA::Mail::Conf::ACTION_REJECT; } # 1ã€reject 
+		elsif ( /D/ ) { $action = AKA::Mail::Conf::ACTION_DISCARD; } # 2ã€drop
+		elsif ( /Q/ ) { $action = AKA::Mail::Conf::ACTION_QUARANTINE; } # 3ã€quarantine
+		elsif ( /F/ ) { $action = AKA::Mail::Conf::ACTION_ACCEPT; } # 7ã€accept
+		elsif ( /T/ ) { $action = AKA::Mail::Conf::ACTION_TAG; }# 14ã€tag & accept
+		else { $action = AKA::Mail::Conf::ACTION_NULL; } # 6 é…ç½®å‡ºé”™å•¦
 	}else{
 		$action = AKA::Mail::Conf::ACTION_ACCEPT; #(AKA::Mail::ACTION_ACCEPT);
 	}
@@ -295,7 +295,7 @@ sub is_clamd_up
 		return 1;
 	}elsif ( -f $self->{define}->{status_file} . 'ERR' ){
 	        my $mtime = (stat( $self->{define}->{status_file} . 'ERR' ))[9];
-		# Èç¹û´æÔÚERR²¢ÇÒ×îºóĞŞ¸ÄÀëÏÖÔÚ<10min£¬ÔòÈÏÎªdaemon down
+		# å¦‚æœå­˜åœ¨ERRå¹¶ä¸”æœ€åä¿®æ”¹ç¦»ç°åœ¨<10minï¼Œåˆ™è®¤ä¸ºdaemon down
 		if ( time - $mtime < 600 ){
 			$self->{zlog}->debug ( "is_clamd_up find ERR" );
 			return 0;

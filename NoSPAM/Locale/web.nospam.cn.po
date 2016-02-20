@@ -16,34 +16,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid " Error"
-msgstr "´íÎó"
+msgstr "é”™è¯¯"
 
 msgid " Expired"
-msgstr "¹ıÆÚ"
+msgstr "è¿‡æœŸ"
 
 msgid " already exists"
-msgstr "ÒÑ¾­´æÔÚ"
+msgstr "å·²ç»å­˜åœ¨"
 
 msgid " into both white list and black list"
-msgstr "Í¬Ê±ÉèÎª°×Ãûµ¥ÓëºÚÃûµ¥"
+msgstr "åŒæ—¶è®¾ä¸ºç™½åå•ä¸é»‘åå•"
 
 msgid " items"
-msgstr "Ïî"
+msgstr "é¡¹"
 
 msgid " must be number"
-msgstr "±ØĞëÎªÊı×Ö"
+msgstr "å¿…é¡»ä¸ºæ•°å­—"
 
 msgid " records/page"
-msgstr "Ìõ¼ÇÂ¼"
+msgstr "æ¡è®°å½•"
 
 msgid " times"
-msgstr "´Î"
+msgstr "æ¬¡"
 
 msgid ", "
-msgstr "Ò³£¬Ã¿Ò³"
+msgstr "é¡µï¼Œæ¯é¡µ"
 
 msgid "0 means No Limit"
-msgstr "0 ±íÊ¾²»ÏŞÖÆ "
+msgstr "0 è¡¨ç¤ºä¸é™åˆ¶ "
 
 msgid ""
 "1 Query: Get Result in 1 Query<br> Above 1: Get Result in multi Query<p> No "
@@ -55,858 +55,858 @@ msgid "AHBL Abusive Hosts Blocking List"
 msgstr "AHBL Abusive Hosts Blocking List"
 
 msgid "ALERT: AntiSpam Engine is OFF"
-msgstr "×¢Òâ£º·´À¬»øÒıÇæÎ´Æô¶¯"
+msgstr "æ³¨æ„ï¼šååƒåœ¾å¼•æ“æœªå¯åŠ¨"
 
 msgid "ALERT: AntiVirus Engine is OFF"
-msgstr "×¢Òâ£º·´²¡¶¾ÒıÇæÎ´Æô¶¯"
+msgstr "æ³¨æ„ï¼šåç—…æ¯’å¼•æ“æœªå¯åŠ¨"
 
 msgid "ALERT: Audit Engine is OFF"
-msgstr "×¢Òâ£ºÉó¼ÆÒıÇæÎ´Æô¶¯"
+msgstr "æ³¨æ„ï¼šå®¡è®¡å¼•æ“æœªå¯åŠ¨"
 
 msgid "ALERT: Content Filter Engine is OFF"
-msgstr "×¢Òâ£ºÄÚÈİ¹ıÂËÒıÇæÎ´Æô¶¯"
+msgstr "æ³¨æ„ï¼šå†…å®¹è¿‡æ»¤å¼•æ“æœªå¯åŠ¨"
 
 msgid ""
 "ALERT: If current Standalone Mail Server has set Mail Domain, and now "
 "disable Standalone Server Mode, ALL Mail Domain Data and Mails will be "
 "DELETEd! Continue?"
 msgstr ""
-"×¢Òâ£¡Èç¹ûµ±Ç°¶ÀÁ¢·şÎñÆ÷ÉèÖÃÁËÓÊ¼şÓò£¬ÔòÏµÍ³È¡Ïû¶ÀÁ¢·şÎñÆ÷Ä£Ê½£¬ÇĞ»»ºóËùÓĞÓÊ"
-"¼şÓòÊı¾İºÍÓÊ¼ş¶¼½«±»É¾³ı£¡È·ÈÏÂğ£¿"
+"æ³¨æ„ï¼å¦‚æœå½“å‰ç‹¬ç«‹æœåŠ¡å™¨è®¾ç½®äº†é‚®ä»¶åŸŸï¼Œåˆ™ç³»ç»Ÿå–æ¶ˆç‹¬ç«‹æœåŠ¡å™¨æ¨¡å¼ï¼Œåˆ‡æ¢åæ‰€æœ‰é‚®"
+"ä»¶åŸŸæ•°æ®å’Œé‚®ä»¶éƒ½å°†è¢«åˆ é™¤ï¼ç¡®è®¤å—ï¼Ÿ"
 
 msgid "ALERT: Overrun Limit Engine is OFF"
-msgstr "×¢Òâ£º¶¯Ì¬ÏŞÖÆÒıÇæÎ´Æô¶¯"
+msgstr "æ³¨æ„ï¼šåŠ¨æ€é™åˆ¶å¼•æ“æœªå¯åŠ¨"
 
 msgid "Accept"
-msgstr "Í¨¹ı"
+msgstr "é€šè¿‡"
 
 msgid "Account Create Time"
-msgstr "ÕÊºÅ½¨Á¢Ê±¼ä"
+msgstr "å¸å·å»ºç«‹æ—¶é—´"
 
 msgid "Action"
-msgstr "¶¯×÷"
+msgstr "åŠ¨ä½œ"
 
 msgid "Action Parameter"
-msgstr "¶¯×÷²ÎÊı"
+msgstr "åŠ¨ä½œå‚æ•°"
 
 msgid "Action after timeout"
-msgstr "³¬Ê±¶¯×÷²ÎÊı"
+msgstr "è¶…æ—¶åŠ¨ä½œå‚æ•°"
 
 msgid ""
 "Action if the receiver of an inward email does not exist in the Quarantine "
 "Engine User List"
-msgstr "Èç¹ûÓÃ»§²»ÔÚ¸ôÀëÓÃ»§ÁĞ±íÖĞ£¬Ôò²ÉÈ¡ÈçÏÂ¶¯×÷£º"
+msgstr "å¦‚æœç”¨æˆ·ä¸åœ¨éš”ç¦»ç”¨æˆ·åˆ—è¡¨ä¸­ï¼Œåˆ™é‡‡å–å¦‚ä¸‹åŠ¨ä½œï¼š"
 
 msgid "Add"
-msgstr "Ìí¼Ó"
+msgstr "æ·»åŠ "
 
 msgid "Add Attachment"
-msgstr "Ìí¼Ó¸½¼ş"
+msgstr "æ·»åŠ é™„ä»¶"
 
 msgid "Add Fail, ErrNo: "
-msgstr "Ìí¼ÓÊ§°Ü£¬´íÎó´úÂë£º"
+msgstr "æ·»åŠ å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Add Header"
-msgstr "Ôö¼ÓĞÅÍ·¼ÇÂ¼"
+msgstr "å¢åŠ ä¿¡å¤´è®°å½•"
 
 msgid "Add Receiptor"
-msgstr "Ìí¼ÓÊÕ¼şÈË"
+msgstr "æ·»åŠ æ”¶ä»¶äºº"
 
 msgid "Add Recipient"
-msgstr "Ìí¼ÓÊÕ¼şÈË"
+msgstr "æ·»åŠ æ”¶ä»¶äºº"
 
 msgid "Add Success !"
-msgstr "Ìí¼Ó³É¹¦"
+msgstr "æ·»åŠ æˆåŠŸ"
 
 msgid "Add email to list"
-msgstr "Ìí¼Óµ½"
+msgstr "æ·»åŠ åˆ°"
 
 msgid "Add succeeded"
-msgstr "Ìí¼Ó³É¹¦"
+msgstr "æ·»åŠ æˆåŠŸ"
 
 msgid "Add to IP Blocklist"
-msgstr "¼ÓÈëIPºÚÃûµ¥"
+msgstr "åŠ å…¥IPé»‘åå•"
 
 msgid "Add to list"
-msgstr "Ìí¼Óµ½ºÚ°×Ãûµ¥"
+msgstr "æ·»åŠ åˆ°é»‘ç™½åå•"
 
 msgid "Admin"
-msgstr "¹ÜÀíÔ±"
+msgstr "ç®¡ç†å‘˜"
 
 msgid "Admin Account"
-msgstr "¹ÜÀíÔ±ÕÊºÅ"
+msgstr "ç®¡ç†å‘˜å¸å·"
 
 msgid "Admin Email Address"
-msgstr "¹ÜÀíÔ±µØÖ·"
+msgstr "ç®¡ç†å‘˜åœ°å€"
 
 msgid "Admin Email Address is Empty!"
-msgstr "¹ÜÀíÔ±µØÖ·Îª¿Õ!"
+msgstr "ç®¡ç†å‘˜åœ°å€ä¸ºç©º!"
 
 msgid "Admin List"
-msgstr "¹ÜÀíÔ±ÁĞ±í"
+msgstr "ç®¡ç†å‘˜åˆ—è¡¨"
 
 msgid "Admin Login"
-msgstr "¹ÜÀíÔ±µÇÂ¼"
+msgstr "ç®¡ç†å‘˜ç™»å½•"
 
 msgid "Admin Name"
-msgstr "¹ÜÀíÔ±ÕÊºÅ"
+msgstr "ç®¡ç†å‘˜å¸å·"
 
 msgid "Administrator"
-msgstr "¹ÜÀíÔ±"
+msgstr "ç®¡ç†å‘˜"
 
 msgid "After Modify"
-msgstr "ĞÂÖµ"
+msgstr "æ–°å€¼"
 
 msgid "Alarm Level"
-msgstr "±¨¾¯¼¶±ğ"
+msgstr "æŠ¥è­¦çº§åˆ«"
 
 msgid "All & Each Engine running time:"
 msgstr ""
-"Real Time: Êµ¼ÊÔËĞĞÊ±¼ä<br> CPU Time: Õ¼ÓÃCPUÊ±¼ä<br> <p> All Engines: ËùÓĞÒı"
-"ÇæÔËĞĞÊ±¼ä<br> AntiSPAM: ·´À¬»øÒıÇæ<br> Audit: Éó¼ÆÒıÇæ<br> Dynamic: ¶¯Ì¬ÏŞÖÆ"
-"ÒıÇæ<br> Content: ÄÚÈİ¹ıÂËÒıÇæ<br> AntiVirus: ·´²¡¶¾ÒıÇæ"
+"Real Time: å®é™…è¿è¡Œæ—¶é—´<br> CPU Time: å ç”¨CPUæ—¶é—´<br> <p> All Engines: æ‰€æœ‰å¼•"
+"æ“è¿è¡Œæ—¶é—´<br> AntiSPAM: ååƒåœ¾å¼•æ“<br> Audit: å®¡è®¡å¼•æ“<br> Dynamic: åŠ¨æ€é™åˆ¶"
+"å¼•æ“<br> Content: å†…å®¹è¿‡æ»¤å¼•æ“<br> AntiVirus: åç—…æ¯’å¼•æ“"
 
 msgid "All & Each Type of Mail Stat.:"
 msgstr ""
-"Total: ´¦ÀíÓÊ¼ş×ÜÊı <br>Received: ½ÓÊÕÊı <br>Send: ·¢ËÍÊı <br>Normal: Õı³£ÓÊ"
-"¼şÊı<br> Virus: ²¡¶¾Êı <br>Spam: À¬»øÊı <br>MatchRule: Æ¥ÅäÄÚÈİ¹ıÂË¹æÔòÊı "
-"<br>Overrun: ¶¯Ì¬³¬ÏŞÊı <br>Audit: Ìá½»Éó¼ÆÊı"
+"Total: å¤„ç†é‚®ä»¶æ€»æ•° <br>Received: æ¥æ”¶æ•° <br>Send: å‘é€æ•° <br>Normal: æ­£å¸¸é‚®"
+"ä»¶æ•°<br> Virus: ç—…æ¯’æ•° <br>Spam: åƒåœ¾æ•° <br>MatchRule: åŒ¹é…å†…å®¹è¿‡æ»¤è§„åˆ™æ•° "
+"<br>Overrun: åŠ¨æ€è¶…é™æ•° <br>Audit: æäº¤å®¡è®¡æ•°"
 
 msgid "All Audit Email will be sent to this Address."
-msgstr "ËùÓĞµÄÉó¼ÆÓÊ¼ş¶¼½«±»·¢ËÍµ½Õâ¸öÓÊÏä¡£"
+msgstr "æ‰€æœ‰çš„å®¡è®¡é‚®ä»¶éƒ½å°†è¢«å‘é€åˆ°è¿™ä¸ªé‚®ç®±ã€‚"
 
 msgid "All Extenstion List"
-msgstr "È«²¿À©Õ¹ÃûÁĞ±í"
+msgstr "å…¨éƒ¨æ‰©å±•ååˆ—è¡¨"
 
 msgid "All Rights"
-msgstr "È«²¿È¨ÏŞ"
+msgstr "å…¨éƒ¨æƒé™"
 
 msgid "All list"
-msgstr "È«²¿Ãûµ¥"
+msgstr "å…¨éƒ¨åå•"
 
 msgid "Analysis Server"
-msgstr "·ÖÎö·şÎñÆ÷"
+msgstr "åˆ†ææœåŠ¡å™¨"
 
 msgid "Analyze Email Content"
-msgstr "¶ÔÓÊ¼şÄÚÈİ½øĞĞ·ÖÎö"
+msgstr "å¯¹é‚®ä»¶å†…å®¹è¿›è¡Œåˆ†æ"
 
 msgid "AntiSpam"
-msgstr "À¬»øÓÊ¼şÒıÇæ"
+msgstr "åƒåœ¾é‚®ä»¶å¼•æ“"
 
 msgid "AntiSpam Engine"
-msgstr "·´À¬»øÒıÇæ"
+msgstr "ååƒåœ¾å¼•æ“"
 
 msgid "AntiSpam via Head Tag Authorization"
-msgstr "Ê¹ÓÃHeader±ê¼ÇÊÚÈ¨µÄ·½·¨½øĞĞ·´À¬»ø"
+msgstr "ä½¿ç”¨Headeræ ‡è®°æˆæƒçš„æ–¹æ³•è¿›è¡Œååƒåœ¾"
 
 msgid "AntiVirus"
-msgstr "²¡¶¾Ê¶±ğÒıÇæ"
+msgstr "ç—…æ¯’è¯†åˆ«å¼•æ“"
 
 msgid "AntiVirus Engine"
-msgstr "²¡¶¾Ê¶±ğÒıÇæ"
+msgstr "ç—…æ¯’è¯†åˆ«å¼•æ“"
 
 msgid "Archive All"
-msgstr "È«²¿Éó¼Æ"
+msgstr "å…¨éƒ¨å®¡è®¡"
 
 msgid "Attachment"
-msgstr "¸½¼ş"
+msgstr "é™„ä»¶"
 
 msgid "Attachment Counts"
-msgstr "¸½¼ş¸öÊı"
+msgstr "é™„ä»¶ä¸ªæ•°"
 
 msgid "Attachment Extention"
-msgstr "¸½¼şÀ©Õ¹Ãû"
+msgstr "é™„ä»¶æ‰©å±•å"
 
 msgid "Attachment Size"
-msgstr "¸½¼ş´óĞ¡"
+msgstr "é™„ä»¶å¤§å°"
 
 msgid "Attachment rules"
-msgstr "¸½¼ş¹æÔò"
+msgstr "é™„ä»¶è§„åˆ™"
 
 msgid "Attachments"
-msgstr "¸½¼ş"
+msgstr "é™„ä»¶"
 
 msgid "Audio File"
-msgstr "ÉùÒôÎÄ¼ş"
+msgstr "å£°éŸ³æ–‡ä»¶"
 
 msgid "Audit"
-msgstr "ÓÊ¼şÉó¼ÆÒıÇæ"
+msgstr "é‚®ä»¶å®¡è®¡å¼•æ“"
 
 msgid "Audit Address"
-msgstr "Éó¼ÆµØÖ·"
+msgstr "å®¡è®¡åœ°å€"
 
 msgid "Audit Data Management"
-msgstr "Éó¼ÆÊı¾İ¹ÜÀí"
+msgstr "å®¡è®¡æ•°æ®ç®¡ç†"
 
 msgid "Auto register when user first login"
-msgstr "ÓÃ»§µÇÂ¼Ê±×Ô¶¯µÇ¼ÇÓÃ»§"
+msgstr "ç”¨æˆ·ç™»å½•æ—¶è‡ªåŠ¨ç™»è®°ç”¨æˆ·"
 
 msgid "Auto-Download Policy"
-msgstr "¹«°²¼à¹ÜÅäÖÃ"
+msgstr "å…¬å®‰ç›‘ç®¡é…ç½®"
 
 msgid "Auto-Download Policy(Read Only)"
-msgstr "¹«°²¹æÔòÊı¾İÊı¾İ¿â£¨Ö»¶Á£©"
+msgstr "å…¬å®‰è§„åˆ™æ•°æ®æ•°æ®åº“ï¼ˆåªè¯»ï¼‰"
 
 msgid "BSP Bonded Sender Program"
 msgstr "BSP Bonded Sender Program"
 
 msgid "Bayes Filter"
-msgstr "±´Ò¶Ë¹¹ıÂËÆ÷"
+msgstr "è´å¶æ–¯è¿‡æ»¤å™¨"
 
 msgid "Bayes Filter Switch: "
-msgstr "±´Ò¶Ë¹Ê¶±ğ¿ª¹Ø£º"
+msgstr "è´å¶æ–¯è¯†åˆ«å¼€å…³ï¼š"
 
 msgid "Before Modify"
-msgstr "¾ÉÖµ"
+msgstr "æ—§å€¼"
 
 msgid "Black list"
-msgstr "ºÚÃûµ¥"
+msgstr "é»‘åå•"
 
 msgid "Blacklist"
-msgstr "ºÚÃûµ¥"
+msgstr "é»‘åå•"
 
 msgid "Blacklist & Whitelist"
-msgstr "ºÚ°×Ãûµ¥"
+msgstr "é»‘ç™½åå•"
 
 msgid "Block Time: "
-msgstr "³¬ÏŞ·â½ûÊ±¼ä£º"
+msgstr "è¶…é™å°ç¦æ—¶é—´ï¼š"
 
 msgid "Blocked Until"
-msgstr "½â·âÊ±¼ä"
+msgstr "è§£å°æ—¶é—´"
 
 msgid "Body"
-msgstr "ĞÅÌå"
+msgstr "ä¿¡ä½“"
 
 msgid "Bogus Information Check"
-msgstr "Ğé¼ÙĞÅÏ¢¼ì²é"
+msgstr "è™šå‡ä¿¡æ¯æ£€æŸ¥"
 
 msgid "Bridge & MX Relay"
-msgstr "Íø¹ØÖĞ¼Ì¹ÜÀí"
+msgstr "ç½‘å…³ä¸­ç»§ç®¡ç†"
 
 msgid "Bridge Mode"
-msgstr "Í¸Ã÷Íø¹ØÄ£Ê½"
+msgstr "é€æ˜ç½‘å…³æ¨¡å¼"
 
 msgid "CC"
-msgstr "³­ËÍÈË"
+msgstr "æŠ„é€äºº"
 
 msgid "CPU Load"
-msgstr "CPU ¸ºÔØÍ¼"
+msgstr "CPU è´Ÿè½½å›¾"
 
 msgid "Can not update Setting, ErrNo: "
-msgstr "ÎŞ·¨¸üĞÂÉèÖÃ£¬´íÎó´úÂë£º"
+msgstr "æ— æ³•æ›´æ–°è®¾ç½®ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Can't export quarantine user list file"
-msgstr "ÎŞ·¨µ¼³ö¸ôÀëÓÃ»§ÁĞ±íÎÄ¼ş"
+msgstr "æ— æ³•å¯¼å‡ºéš”ç¦»ç”¨æˆ·åˆ—è¡¨æ–‡ä»¶"
 
 msgid "Can't get user's white/black list"
-msgstr "ÎŞ·¨¶ÁÈ¡ÓÃ»§µÄºÚ°×Ãûµ¥"
+msgstr "æ— æ³•è¯»å–ç”¨æˆ·çš„é»‘ç™½åå•"
 
 msgid "Can't move temp file"
-msgstr "ÁÙÊ±ÎÄ¼ş´íÎó"
+msgstr "ä¸´æ—¶æ–‡ä»¶é”™è¯¯"
 
 msgid "Can't open uploaded file"
-msgstr "´ò¿ªÉÏÔØÎÄ¼ş´íÎó"
+msgstr "æ‰“å¼€ä¸Šè½½æ–‡ä»¶é”™è¯¯"
 
 msgid "Cancel"
-msgstr "È¡Ïû"
+msgstr "å–æ¶ˆ"
 
 msgid "Cannot connect to Engine Database"
-msgstr "ÎŞ·¨Á¬½ÓÒıÇæÊı¾İ¿â"
+msgstr "æ— æ³•è¿æ¥å¼•æ“æ•°æ®åº“"
 
 msgid "Cannot lock file !"
-msgstr "ÎŞ·¨Ëø¶¨ÎÄ¼ş£¡"
+msgstr "æ— æ³•é”å®šæ–‡ä»¶ï¼"
 
 msgid "Cannot write file, Disk Full?"
-msgstr "ÎŞ·¨Ğ´ÈëÎÄ¼ş£¬´ÅÅÌÒÑÂú£¿"
+msgstr "æ— æ³•å†™å…¥æ–‡ä»¶ï¼Œç£ç›˜å·²æ»¡ï¼Ÿ"
 
 msgid "Case"
-msgstr "´óĞ¡Ğ´"
+msgstr "å¤§å°å†™"
 
 msgid "Cc"
-msgstr "³­ÊÕ"
+msgstr "æŠ„æ”¶"
 
 msgid "Change Admin Passwd"
-msgstr "ĞŞ¸Ä¿ÚÁî"
+msgstr "ä¿®æ”¹å£ä»¤"
 
 msgid "Changing Password"
-msgstr "ĞŞ¸Ä¿ÚÁî"
+msgstr "ä¿®æ”¹å£ä»¤"
 
 msgid "Checking drug advertisement(mainly AD for sex tools)"
-msgstr "¼ì²é³£¼ûµÄÒ©Æ·¹ã¸æ£¨Ö÷ÒªÎªĞÔÓÃÆ·¹ã¸æ£©"
+msgstr "æ£€æŸ¥å¸¸è§çš„è¯å“å¹¿å‘Šï¼ˆä¸»è¦ä¸ºæ€§ç”¨å“å¹¿å‘Šï¼‰"
 
 msgid "Checking if Message-ID has spam character, if it is legal"
-msgstr "²ì¿´ÊÇ·ñ·ûºÏÀ¬»øÌØÕ÷£¬ÊÇ·ñºÏ·¨"
+msgstr "å¯Ÿçœ‹æ˜¯å¦ç¬¦åˆåƒåœ¾ç‰¹å¾ï¼Œæ˜¯å¦åˆæ³•"
 
 msgid ""
 "Checking if every HELO information of RELAY has character usually used by "
 "spam"
-msgstr "¼ì²éÃ¿Ò»´ÎRELAYµÄHELOÊÇ·ñÓĞÀ¬»øÓÊ¼şµÄÌØÕ÷"
+msgstr "æ£€æŸ¥æ¯ä¸€æ¬¡RELAYçš„HELOæ˜¯å¦æœ‰åƒåœ¾é‚®ä»¶çš„ç‰¹å¾"
 
 msgid ""
 "Checking if the date is legal, if it is too far from current time, if it is "
 "not consistent with RFC."
-msgstr "°üÀ¨Ê±ÆÚÊÇ·ñºÏ·¨£¬ÊÇ·ñºÍµ±Ç°Ê±¼äÏà²îÌ«Ô¶£¬ÊÇ·ñ²»·ûºÏRFC"
+msgstr "åŒ…æ‹¬æ—¶æœŸæ˜¯å¦åˆæ³•ï¼Œæ˜¯å¦å’Œå½“å‰æ—¶é—´ç›¸å·®å¤ªè¿œï¼Œæ˜¯å¦ä¸ç¬¦åˆRFC"
 
 msgid "Checking if the email contains free declaration information"
-msgstr "¼ì²éÀ¬»øÓÊ¼şÖĞÊÇ·ñ°üº¬ÉùÃ÷Ãâ·ÑµÄĞÅÏ¢"
+msgstr "æ£€æŸ¥åƒåœ¾é‚®ä»¶ä¸­æ˜¯å¦åŒ…å«å£°æ˜å…è´¹çš„ä¿¡æ¯"
 
 msgid "Checking if the email contains spam information against its subject"
-msgstr "Í¨¹ıÖ÷Ìâ²ì¿´ÊÇ·ñÓÊ¼ş°üº¬À¬»øÓÊ¼ş³£¼ûÄÚÈİ"
+msgstr "é€šè¿‡ä¸»é¢˜å¯Ÿçœ‹æ˜¯å¦é‚®ä»¶åŒ…å«åƒåœ¾é‚®ä»¶å¸¸è§å†…å®¹"
 
 msgid "Checking if the email is forged to normail email or webmail"
-msgstr "¼ì²éÓÊ¼şÊÇ·ñ±»À¬»ø·¢ËÍÕßÎ±×°³ÉÆäËûµÄÓÊ¼ş¿Í»§¶ËºÍWebÓÊ¼ş"
+msgstr "æ£€æŸ¥é‚®ä»¶æ˜¯å¦è¢«åƒåœ¾å‘é€è€…ä¼ªè£…æˆå…¶ä»–çš„é‚®ä»¶å®¢æˆ·ç«¯å’ŒWebé‚®ä»¶"
 
 msgid ""
 "Checking if the email sending address has character usually used by spam"
-msgstr "¼ì²é·¢¼şµØÖ·ÊÇ·ñ¾ßÓĞÀ¬»øÓÊ¼ş³£ÓÃµÄµØÖ·ÌØÕ÷"
+msgstr "æ£€æŸ¥å‘ä»¶åœ°å€æ˜¯å¦å…·æœ‰åƒåœ¾é‚®ä»¶å¸¸ç”¨çš„åœ°å€ç‰¹å¾"
 
 msgid "Checking if the email uses HTML content/character usually used by spam"
-msgstr "ÓÊ¼şÊÇ·ñÊ¹ÓÃÁËÀ¬»ø·¢ËÍÕß³£ÓÃµÄHTMLÄÚÈİ/ÌØÕ÷"
+msgstr "é‚®ä»¶æ˜¯å¦ä½¿ç”¨äº†åƒåœ¾å‘é€è€…å¸¸ç”¨çš„HTMLå†…å®¹/ç‰¹å¾"
 
 msgid ""
 "Checking if the email was sent by some spam generator against email character"
-msgstr "Í¨¹ıÌáÈ¡ÓÊ¼şÌØÕ÷£¬²ì¿´ÊÇ·ñ·¢×Ô³£ÓÃµÄÀ¬»ø·¢ËÍÈí¼ş"
+msgstr "é€šè¿‡æå–é‚®ä»¶ç‰¹å¾ï¼Œå¯Ÿçœ‹æ˜¯å¦å‘è‡ªå¸¸ç”¨çš„åƒåœ¾å‘é€è½¯ä»¶"
 
 msgid "Checking obvious bogus information"
-msgstr "¼ì²éÃ÷ÏÔĞé¼ÙµÄĞÅÏ¢"
+msgstr "æ£€æŸ¥æ˜æ˜¾è™šå‡çš„ä¿¡æ¯"
 
 msgid "Checking spam against email X-Header"
-msgstr "Í¨¹ıX-HeaderÓÊ¼şÍ·¼ì²éÀ¬»øÓÊ¼ş"
+msgstr "é€šè¿‡X-Headeré‚®ä»¶å¤´æ£€æŸ¥åƒåœ¾é‚®ä»¶"
 
 msgid "Checking spam character in MIME code"
-msgstr "ÔÚMIME±àÂëÖĞ¼ì²éÀ¬»øÓÊ¼şÌØÕ÷"
+msgstr "åœ¨MIMEç¼–ç ä¸­æ£€æŸ¥åƒåœ¾é‚®ä»¶ç‰¹å¾"
 
 msgid "Clear"
-msgstr "Çå¿Õ"
+msgstr "æ¸…ç©º"
 
 msgid "Commit"
-msgstr "ĞŞ¸Ä"
+msgstr "ä¿®æ”¹"
 
 msgid "Config Commit Fail, ErrNo: "
-msgstr "ĞŞ¸ÄÊ§°Ü£¬´íÎó´úÂë£º"
+msgstr "ä¿®æ”¹å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Config Modify Fail, ErrNo: "
-msgstr "ĞŞ¸ÄÊ§°Ü£¬´íÎó´úÂë£º"
+msgstr "ä¿®æ”¹å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Configuration File"
-msgstr "ÅäÖÃÎÄ¼ş"
+msgstr "é…ç½®æ–‡ä»¶"
 
 msgid "Configuration Management"
-msgstr "ÅäÖÃ¹ÜÀí"
+msgstr "é…ç½®ç®¡ç†"
 
 msgid "Confirm New Password"
-msgstr "ÊäÈëĞÂÃÜÂë"
+msgstr "è¾“å…¥æ–°å¯†ç "
 
 msgid "Confirm: Continue?"
-msgstr "È·ÈÏ¼´½«Ö´ĞĞµÄ²Ù×÷£¿"
+msgstr "ç¡®è®¤å³å°†æ‰§è¡Œçš„æ“ä½œï¼Ÿ"
 
 msgid "Content Analyze"
-msgstr "ÖÇÄÜÄÚÈİ·ÖÎö"
+msgstr "æ™ºèƒ½å†…å®¹åˆ†æ"
 
 msgid "Content Analyzer"
-msgstr "ÖÇÄÜÄÚÈİ·ÖÎö"
+msgstr "æ™ºèƒ½å†…å®¹åˆ†æ"
 
 msgid "Content Filter"
-msgstr "ÄÚÈİ¹ıÂËÒıÇæ"
+msgstr "å†…å®¹è¿‡æ»¤å¼•æ“"
 
 msgid "Content Filter Engine"
-msgstr "ÄÚÈİ¹ıÂËÒıÇæ"
+msgstr "å†…å®¹è¿‡æ»¤å¼•æ“"
 
 msgid "Content Filter Policy"
-msgstr "ÄÚÈİ¹ıÂË²ßÂÔÎÄ¼şÉÏÏÂÔØ"
+msgstr "å†…å®¹è¿‡æ»¤ç­–ç•¥æ–‡ä»¶ä¸Šä¸‹è½½"
 
 msgid "Content Matched"
-msgstr "Æ¥Åä¹æÔòµÄÓÊ¼ş"
+msgstr "åŒ¹é…è§„åˆ™çš„é‚®ä»¶"
 
 msgid "Content not Matched"
-msgstr "·ÇÆ¥Åä¹æÔòµÄÓÊ¼ş"
+msgstr "éåŒ¹é…è§„åˆ™çš„é‚®ä»¶"
 
 msgid "Counts"
-msgstr "ÊıÁ¿"
+msgstr "æ•°é‡"
 
 msgid "Creatation Time"
-msgstr "½¨Á¢Ê±¼ä"
+msgstr "å»ºç«‹æ—¶é—´"
 
 msgid "Current Audit Mail Size"
-msgstr "µ±Ç°Éó¼ÆÓÊ¼ş´óĞ¡"
+msgstr "å½“å‰å®¡è®¡é‚®ä»¶å¤§å°"
 
 msgid "Current Embeded RBL: "
-msgstr "Ä¿Ç°ÏµÍ³ÄÚÖÃÒÑ¾­Ö§³ÖµÄRBL£º"
+msgstr "ç›®å‰ç³»ç»Ÿå†…ç½®å·²ç»æ”¯æŒçš„RBLï¼š"
 
 msgid "Current User Group List: "
-msgstr "µ±Ç°ÓÃ»§×éÁĞ±í£º"
+msgstr "å½“å‰ç”¨æˆ·ç»„åˆ—è¡¨ï¼š"
 
 msgid "Current quarantine emails"
-msgstr "µ±Ç°¸ôÀëÓÊ¼ş"
+msgstr "å½“å‰éš”ç¦»é‚®ä»¶"
 
 msgid "Customer Evaluation (Non-Sales)Edition"
-msgstr "¿Í»§ÊÔÓÃÌåÑé£¨·ÇÏúÊÛ£©°æ"
+msgstr "å®¢æˆ·è¯•ç”¨ä½“éªŒï¼ˆéé”€å”®ï¼‰ç‰ˆ"
 
 msgid "DNS Server"
-msgstr "ÓòÃû·şÎñÆ÷"
+msgstr "åŸŸåæœåŠ¡å™¨"
 
 msgid "DNS Server 1"
-msgstr "Ö÷ÓòÃû·şÎñÆ÷"
+msgstr "ä¸»åŸŸåæœåŠ¡å™¨"
 
 msgid "DNS Server 2"
-msgstr "´ÓÓòÃû·şÎñÆ÷"
+msgstr "ä»åŸŸåæœåŠ¡å™¨"
 
 msgid "DNS Status"
-msgstr "DNSÔËĞĞ×´Ì¬"
+msgstr "DNSè¿è¡ŒçŠ¶æ€"
 
 msgid "DSBL Distributed Server Boycott List"
 msgstr "DSBL Distributed Server Boycott List"
 
 msgid "Daily"
-msgstr "Ã¿ÈÕ Í¼±í (5 ·ÖÖÓ Æ½¾ù)"
+msgstr "æ¯æ—¥ å›¾è¡¨ (5 åˆ†é’Ÿ å¹³å‡)"
 
 msgid "Database query error"
-msgstr "ÎŞ·¨²éÑ¯Êı¾İ¿â"
+msgstr "æ— æ³•æŸ¥è¯¢æ•°æ®åº“"
 
 msgid "Date"
-msgstr "ÈÕÆÚ"
+msgstr "æ—¥æœŸ"
 
 msgid "Date Check"
-msgstr "³éÑù¼ì²é"
+msgstr "æŠ½æ ·æ£€æŸ¥"
 
 msgid "Day(s)"
-msgstr "Ìì"
+msgstr "å¤©"
 
 msgid "Days"
-msgstr "Ìì"
+msgstr "å¤©"
 
 #, php-format
 msgid "Deal with"
-msgstr "ÕıÔÚ´¦ÀíµÄÓÊ¼ş"
+msgstr "æ­£åœ¨å¤„ç†çš„é‚®ä»¶"
 
 msgid "Decode"
-msgstr "½âÂë"
+msgstr "è§£ç "
 
 msgid "Decode First"
-msgstr "ÏÈ½âÂë"
+msgstr "å…ˆè§£ç "
 
 msgid "Default"
-msgstr "È±Ê¡"
+msgstr "ç¼ºçœ"
 
 msgid "Default Gateway"
-msgstr "È±Ê¡Íø¹Ø"
+msgstr "ç¼ºçœç½‘å…³"
 
 msgid "Del Header"
-msgstr "É¾³ıĞÅÍ·¼ÇÂ¼"
+msgstr "åˆ é™¤ä¿¡å¤´è®°å½•"
 
 msgid "Del Receiptor"
-msgstr "É¾³ıÊÕ¼şÈË"
+msgstr "åˆ é™¤æ”¶ä»¶äºº"
 
 msgid "Delay"
-msgstr "ÑÓ³Ù´¦Àí"
+msgstr "å»¶è¿Ÿå¤„ç†"
 
 msgid "Delete"
-msgstr "É¾³ı"
+msgstr "åˆ é™¤"
 
 msgid "Delete Fail, ErrNo: "
-msgstr "É¾³ıÊ§°Ü£¬´íÎó´úÂë£º"
+msgstr "åˆ é™¤å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Delete Header"
-msgstr "É¾³ıĞÅÍ·¼ÇÂ¼"
+msgstr "åˆ é™¤ä¿¡å¤´è®°å½•"
 
 msgid "Delete Recipient"
-msgstr "Ìæ»»ÊÕ¼şÈË"
+msgstr "æ›¿æ¢æ”¶ä»¶äºº"
 
 msgid "Delete Record "
-msgstr "É¾³ı¼ÇÂ¼"
+msgstr "åˆ é™¤è®°å½•"
 
 msgid "Delete User"
-msgstr "É¾³ıÓÃ»§"
+msgstr "åˆ é™¤ç”¨æˆ·"
 
 msgid "Delete an Admin"
-msgstr "É¾³ı¹ÜÀíÔ±ÕËºÅ"
+msgstr "åˆ é™¤ç®¡ç†å‘˜è´¦å·"
 
 msgid "Demo Release"
-msgstr "·ÇÕıÊ½ÏúÊÛ°æ"
+msgstr "éæ­£å¼é”€å”®ç‰ˆ"
 
 msgid "Deny"
-msgstr "½ûÖ¹"
+msgstr "ç¦æ­¢"
 
 msgid "Department"
-msgstr "ÓÃ»§²¿ÃÅ"
+msgstr "ç”¨æˆ·éƒ¨é—¨"
 
 msgid "Department of the User"
-msgstr "ÓÃ»§ËùÔÚ²¿ÃÅ"
+msgstr "ç”¨æˆ·æ‰€åœ¨éƒ¨é—¨"
 
 msgid "Description"
-msgstr "ÃèÊö"
+msgstr "æè¿°"
 
 msgid "Direction"
-msgstr "×÷ÓÃ·½Ïò"
+msgstr "ä½œç”¨æ–¹å‘"
 
 msgid "Disable"
-msgstr "¹Ø±Õ"
+msgstr "å…³é—­"
 
 msgid "Disabled"
-msgstr "¹Ø±Õ"
+msgstr "å…³é—­"
 
 msgid "Disk Quota"
-msgstr "¿Õ¼äÏŞ¶î"
+msgstr "ç©ºé—´é™é¢"
 
 msgid "Display"
-msgstr "ÏÔÊ¾"
+msgstr "æ˜¾ç¤º"
 
 msgid "Display Last"
-msgstr "ÏÔÊ¾×îºó"
+msgstr "æ˜¾ç¤ºæœ€å"
 
 msgid "Do not use x.x.x.x format. Please use mask length"
-msgstr "ÇëÊ¹ÓÃÑÚÂëÎ»Êı£¬²»ÄÜÊ¹ÓÃx.x.x.x¸ñÊ½"
+msgstr "è¯·ä½¿ç”¨æ©ç ä½æ•°ï¼Œä¸èƒ½ä½¿ç”¨x.x.x.xæ ¼å¼"
 
 msgid "Domain"
-msgstr "ÓòÃû"
+msgstr "åŸŸå"
 
 msgid "Download"
-msgstr "ÏÂÔØ"
+msgstr "ä¸‹è½½"
 
 msgid "Download License"
-msgstr "Ğí¿ÉÖ¤ÏÂÔØ"
+msgstr "è®¸å¯è¯ä¸‹è½½"
 
 msgid "Drop"
-msgstr "Ö±½Ó¶ªÆú"
+msgstr "ç›´æ¥ä¸¢å¼ƒ"
 
 msgid "Drug Check"
-msgstr "Ò©Æ·¼ì²é"
+msgstr "è¯å“æ£€æŸ¥"
 
 msgid "Due to login attempts exceed maximum times, current IP:"
-msgstr "ÓÉÓÚµ½´ï×î´ó´íÎóµÇÂ¼´ÎÊı£¬µ±Ç°IP£º"
+msgstr "ç”±äºåˆ°è¾¾æœ€å¤§é”™è¯¯ç™»å½•æ¬¡æ•°ï¼Œå½“å‰IPï¼š"
 
 msgid "EMail account: "
-msgstr "ÓÊ¼şÕÊ»§: "
+msgstr "é‚®ä»¶å¸æˆ·: "
 
 msgid "Edit"
-msgstr "±à¼­"
+msgstr "ç¼–è¾‘"
 
 msgid "Edit Administrator"
-msgstr "ĞŞ¸Ä¹ÜÀíÔ±ĞÅÏ¢"
+msgstr "ä¿®æ”¹ç®¡ç†å‘˜ä¿¡æ¯"
 
 msgid "Edit User"
-msgstr "ĞŞ¸ÄÓÃ»§ĞÅÏ¢"
+msgstr "ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯"
 
 msgid "Email"
-msgstr "ÓÊ¼ş"
+msgstr "é‚®ä»¶"
 
 msgid "Email Address"
-msgstr "ÓÊ¼şµØÖ·"
+msgstr "é‚®ä»¶åœ°å€"
 
 msgid "Email Address "
-msgstr "ÓÊ¼şµØÖ·"
+msgstr "é‚®ä»¶åœ°å€"
 
 msgid "Email Address Error"
-msgstr "ÓÊ¼şµØÖ·ÓĞÎó"
+msgstr "é‚®ä»¶åœ°å€æœ‰è¯¯"
 
 msgid "Email Domain"
-msgstr "ÓÊ¼şÓòÃû"
+msgstr "é‚®ä»¶åŸŸå"
 
 msgid "Email Service Provider Code"
-msgstr "µç×ÓÓÊ¼ş¹©Ó¦ÉÌ±àÂë"
+msgstr "ç”µå­é‚®ä»¶ä¾›åº”å•†ç¼–ç "
 
 msgid "Email System Identifier"
-msgstr "µç×ÓÓÊ¼şÏµÍ³±êÊ¶"
+msgstr "ç”µå­é‚®ä»¶ç³»ç»Ÿæ ‡è¯†"
 
 msgid "Email address"
-msgstr "ÓÊ¼şµØÖ·"
+msgstr "é‚®ä»¶åœ°å€"
 
 msgid "Email address error"
-msgstr "ÓÊ¼şµØÖ·´íÎó"
+msgstr "é‚®ä»¶åœ°å€é”™è¯¯"
 
 msgid "Email already in the list!"
-msgstr "ÓÊ¼şµØÖ·ÒÑ¾­´æÔÚ"
+msgstr "é‚®ä»¶åœ°å€å·²ç»å­˜åœ¨"
 
 msgid "Email or password error"
-msgstr "ÓÃ»§Ãû»òÃÜÂë´íÎó"
+msgstr "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯"
 
 msgid "Email password"
-msgstr "ÓÊÏäÃÜÂë"
+msgstr "é‚®ç®±å¯†ç "
 
 msgid "Empty Quarantine Bin"
-msgstr "Çå¿Õ¸ôÀëÇø"
+msgstr "æ¸…ç©ºéš”ç¦»åŒº"
 
 msgid "Empty user list database before new data add"
-msgstr "Ìí¼ÓĞÂÓÃ»§Êı¾İÇ°ÏÈÇå¿ÕÏµÍ³Êı¾İ¿â"
+msgstr "æ·»åŠ æ–°ç”¨æˆ·æ•°æ®å‰å…ˆæ¸…ç©ºç³»ç»Ÿæ•°æ®åº“"
 
 msgid "Enable"
-msgstr "¿ªÆô"
+msgstr "å¼€å¯"
 
 msgid "End Time"
-msgstr "½áÊøÊ±¼ä"
+msgstr "ç»“æŸæ—¶é—´"
 
 msgid "Engine Load Status"
-msgstr "ÒıÇæ¸ºÔØ×´Ì¬"
+msgstr "å¼•æ“è´Ÿè½½çŠ¶æ€"
 
 msgid "Engine Running Status"
-msgstr "ÒıÇæÔËĞĞ×´Ì¬"
+msgstr "å¼•æ“è¿è¡ŒçŠ¶æ€"
 
 msgid "Engine Status"
-msgstr "ÒıÇæÔËĞĞ×´Ì¬"
+msgstr "å¼•æ“è¿è¡ŒçŠ¶æ€"
 
 msgid "Engine Switch"
-msgstr "ÒıÇæ¿ª¹Ø"
+msgstr "å¼•æ“å¼€å…³"
 
 msgid "Engines Switch"
-msgstr "ÒıÇæ¿ª¹Ø"
+msgstr "å¼•æ“å¼€å…³"
 
 msgid "ErrNo: "
-msgstr "´íÎó´úÂë£º"
+msgstr "é”™è¯¯ä»£ç ï¼š"
 
 msgid "Error"
-msgstr "´íÎó"
+msgstr "é”™è¯¯"
 
 msgid "Error when Delete Mail Queue, ErrNo: "
-msgstr "É¾³ıÓÊ¼ş¶ÓÁĞ¼ÇÂ¼Ê±³öÏÖ´íÎó£¬´íÎó´úÂë£º"
+msgstr "åˆ é™¤é‚®ä»¶é˜Ÿåˆ—è®°å½•æ—¶å‡ºç°é”™è¯¯ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Error when fetch mail content, ErrNo: "
-msgstr "»ñÈ¡ÓÊ¼şÄÚÈİÊ±·¢Éú´íÎó£¬´íÎó´úÂë£º"
+msgstr "è·å–é‚®ä»¶å†…å®¹æ—¶å‘ç”Ÿé”™è¯¯ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Error when fetch mail queue, ErrNo: "
-msgstr "»ñÈ¡ÓÊ¼ş¶ÓÁĞÊ±·¢Éú´íÎó£¬´íÎó´úÂë£º"
+msgstr "è·å–é‚®ä»¶é˜Ÿåˆ—æ—¶å‘ç”Ÿé”™è¯¯ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Error, Please input rule_id"
-msgstr "´íÎó£¡Çë¸ø³örule_id"
+msgstr "é”™è¯¯ï¼è¯·ç»™å‡ºrule_id"
 
 msgid "Error: Can not Open User Group Data file."
-msgstr "´íÎó£ºÓÃ»§×éÊı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£"
+msgstr "é”™è¯¯ï¼šç”¨æˆ·ç»„æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚"
 
 msgid "Error: Can not find UserInfo, UserName: "
-msgstr "´íÎó£ºÎ´ÕÒµ½ÓÃ»§ĞÅÏ¢£¬ÕËºÅÎª£º"
+msgstr "é”™è¯¯ï¼šæœªæ‰¾åˆ°ç”¨æˆ·ä¿¡æ¯ï¼Œè´¦å·ä¸ºï¼š"
 
 msgid "Error: Cannot Open Administrators Data file."
-msgstr "´íÎó£º¹ÜÀíÔ±Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£"
+msgstr "é”™è¯¯ï¼šç®¡ç†å‘˜æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚"
 
 msgid "Error: Cannot find Email Account Info: "
-msgstr "Î´ÕÒµ½ÓÊ¼şÕÊ»§µÄÓÃ»§ĞÅÏ¢£º"
+msgstr "æœªæ‰¾åˆ°é‚®ä»¶å¸æˆ·çš„ç”¨æˆ·ä¿¡æ¯ï¼š"
 
 msgid "Error: File does not exist!"
-msgstr "´íÎó£¡ÎÄ¼ş²»´æÔÚ£¡"
+msgstr "é”™è¯¯ï¼æ–‡ä»¶ä¸å­˜åœ¨ï¼"
 
 msgid "Error: Invalid Character in "
-msgstr "´íÎó£ºº¬ÓĞ·Ç·¨×Ö·û£º"
+msgstr "é”™è¯¯ï¼šå«æœ‰éæ³•å­—ç¬¦ï¼š"
 
 msgid "Error: Invalid Characters in Password"
-msgstr "´íÎó£ºÃÜÂëÖĞº¬ÓĞ·Ç·¨×Ö·û"
+msgstr "é”™è¯¯ï¼šå¯†ç ä¸­å«æœ‰éæ³•å­—ç¬¦"
 
 msgid "Error: Invalid Characters in Username"
-msgstr "´íÎó£ºÕÊºÅÖĞº¬ÓĞ·Ç·¨×Ö·û"
+msgstr "é”™è¯¯ï¼šå¸å·ä¸­å«æœ‰éæ³•å­—ç¬¦"
 
 msgid "Error: Must Input "
-msgstr "´íÎó£ºÎ´ÊäÈë"
+msgstr "é”™è¯¯ï¼šæœªè¾“å…¥"
 
 msgid "Error: Must input Admin Username"
-msgstr "´íÎó£ºÎ´ÊäÈëÓÃ»§ID"
+msgstr "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID"
 
 msgid "Error: Must input Note"
-msgstr "´íÎó£ºÎ´ÊäÈë±¸×¢"
+msgstr "é”™è¯¯ï¼šæœªè¾“å…¥å¤‡æ³¨"
 
 msgid "Error: Must input password"
-msgstr "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë"
+msgstr "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç "
 
 msgid "Error: Must input password again"
-msgstr "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë"
+msgstr "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç "
 
 msgid "Error: No Email Account Selected !"
-msgstr "´íÎó:Î´Ö¸¶¨ÓÃ»§ÕËºÅ£¡"
+msgstr "é”™è¯¯:æœªæŒ‡å®šç”¨æˆ·è´¦å·ï¼"
 
 msgid "Error: No UserName Selected!"
-msgstr "´íÎó:Î´Ö¸¶¨ÓÃ»§ÕËºÅ£¡"
+msgstr "é”™è¯¯:æœªæŒ‡å®šç”¨æˆ·è´¦å·ï¼"
 
 msgid "Error: Password not match"
-msgstr "´íÎó£ºÁ½´ÎÊäÈëµÄÃÜÂë²»Æ¥Åä"
+msgstr "é”™è¯¯ï¼šä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒ¹é…"
 
 msgid "Error: The Update package is not existed!"
-msgstr "´íÎó£º¸ÃÉı¼¶°üĞÅÏ¢ÎÄ¼ş²»´æÔÚ£¡"
+msgstr "é”™è¯¯ï¼šè¯¥å‡çº§åŒ…ä¿¡æ¯æ–‡ä»¶ä¸å­˜åœ¨ï¼"
 
 msgid "Error: This Admin ID already exists !"
-msgstr "´íÎó£º¹ÜÀíÔ±idÒÑ´æÔÚ£¡"
+msgstr "é”™è¯¯ï¼šç®¡ç†å‘˜idå·²å­˜åœ¨ï¼"
 
 msgid "Error: This UserName has existed !"
-msgstr "´íÎó£º´ËÓÊ¼şÕÊºÅÒÑ´æÔÚ£¡"
+msgstr "é”™è¯¯ï¼šæ­¤é‚®ä»¶å¸å·å·²å­˜åœ¨ï¼"
 
 msgid "Error: You can't delete SYSOP"
-msgstr "´íÎó£ºÄú²»ÄÜÉ¾³ı×î¸ß¹ÜÀíÔ±µÄÕËºÅ"
+msgstr "é”™è¯¯ï¼šæ‚¨ä¸èƒ½åˆ é™¤æœ€é«˜ç®¡ç†å‘˜çš„è´¦å·"
 
 msgid "Error: You can't delete yourself"
-msgstr "´íÎó£ºÄú²»ÄÜÉ¾³ı×Ô¼ºµÄÕËºÅ"
+msgstr "é”™è¯¯ï¼šæ‚¨ä¸èƒ½åˆ é™¤è‡ªå·±çš„è´¦å·"
 
 msgid "Error: You can't modify SYSOP's Info: "
-msgstr "´íÎó£ºÄúÎŞÈ¨ĞŞ¸Ä×î¸ß¹ÜÀíÔ±µÄĞÅÏ¢£º"
+msgstr "é”™è¯¯ï¼šæ‚¨æ— æƒä¿®æ”¹æœ€é«˜ç®¡ç†å‘˜çš„ä¿¡æ¯ï¼š"
 
 msgid "Error: You can't modify yourself info here"
-msgstr "´íÎó£ºÄú²»ÄÜÔÚ´ËĞŞ¸Ä×Ô¼ºµÄĞÅÏ¢"
+msgstr "é”™è¯¯ï¼šæ‚¨ä¸èƒ½åœ¨æ­¤ä¿®æ”¹è‡ªå·±çš„ä¿¡æ¯"
 
 msgid "Error: have not input Admin username"
-msgstr "´íÎó£ºÎ´ÊäÈë¹ÜÀíÔ±ÕËºÅ"
+msgstr "é”™è¯¯ï¼šæœªè¾“å…¥ç®¡ç†å‘˜è´¦å·"
 
 msgid "Exchange Format"
-msgstr "ËÄ²¿Î¯½»»»¸ñÊ½"
+msgstr "å››éƒ¨å§”äº¤æ¢æ ¼å¼"
 
 msgid "Exe File"
-msgstr "¿ÉÖ´ĞĞÎÄ¼ş"
+msgstr "å¯æ‰§è¡Œæ–‡ä»¶"
 
 msgid "Expire Time"
-msgstr "¹ıÆÚÊ±¼ä"
+msgstr "è¿‡æœŸæ—¶é—´"
 
 msgid "Expiring Time"
-msgstr "¹ıÆÚÊ±¼ä"
+msgstr "è¿‡æœŸæ—¶é—´"
 
 msgid "Export"
-msgstr "ÈÕÖ¾µ¼³ö"
+msgstr "æ—¥å¿—å¯¼å‡º"
 
 msgid "External Network Traffic"
-msgstr "ÍâÍøÁ÷Á¿Í¼"
+msgstr "å¤–ç½‘æµé‡å›¾"
 
 msgid "External Traffic"
-msgstr "ÍâÍøÁ÷Á¿Í¼"
+msgstr "å¤–ç½‘æµé‡å›¾"
 
 msgid "Fail"
-msgstr "Ê§°Ü"
+msgstr "å¤±è´¥"
 
 msgid "Failed"
-msgstr "Ê§°Ü"
+msgstr "å¤±è´¥"
 
 msgid "File"
-msgstr "ÎÄ¼ş"
+msgstr "æ–‡ä»¶"
 
 msgid "File Ext Must be"
-msgstr "ÏŞÖÆÎÄ¼şÀàĞÍ"
+msgstr "é™åˆ¶æ–‡ä»¶ç±»å‹"
 
 msgid "Filename Must be"
-msgstr "ÏŞÖÆÎÄ¼şÃû"
+msgstr "é™åˆ¶æ–‡ä»¶å"
 
 msgid "Filter Content"
-msgstr "¹ıÂËÄÚÈİ"
+msgstr "è¿‡æ»¤å†…å®¹"
 
 msgid "Flush"
-msgstr "Çå¿Õ"
+msgstr "æ¸…ç©º"
 
 msgid "Flush Database"
-msgstr "Êı¾İ¿âÖØÖÃ"
+msgstr "æ•°æ®åº“é‡ç½®"
 
 msgid "Flush Log"
-msgstr "ÈÕÖ¾Çå¿Õ"
+msgstr "æ—¥å¿—æ¸…ç©º"
 
 msgid "Flush Queue"
-msgstr "Çå¿Õ¶ÓÁĞ"
+msgstr "æ¸…ç©ºé˜Ÿåˆ—"
 
 msgid "Forged Information Check"
-msgstr "Î±ÔìĞÅÏ¢¼ì²é"
+msgstr "ä¼ªé€ ä¿¡æ¯æ£€æŸ¥"
 
 msgid "Format Error"
-msgstr "¸ñÊ½´íÎó"
+msgstr "æ ¼å¼é”™è¯¯"
 
 msgid "Forward"
-msgstr "Í¨¹ı"
+msgstr "é€šè¿‡"
 
 msgid "Free Declaration Check"
-msgstr "Ãâ·ÑÉùÃ÷¼ì²é"
+msgstr "å…è´¹å£°æ˜æ£€æŸ¥"
 
 msgid "GAISC Setting"
-msgstr "GAISC ÉèÖÃ"
+msgstr "GAISC è®¾ç½®"
 
 msgid "Gateway"
-msgstr "È±Ê¡Íø¹Ø"
+msgstr "ç¼ºçœç½‘å…³"
 
 msgid "Get Serial No Error! ErrNo: "
-msgstr "»ñÈ¡ĞòÁĞºÅÊ±³öÏÖ´íÎó£¡´íÎó´úÂë£º"
+msgstr "è·å–åºåˆ—å·æ—¶å‡ºç°é”™è¯¯ï¼é”™è¯¯ä»£ç ï¼š"
 
 msgid "Get SerialNo Error!"
-msgstr "»ñÈ¡ĞòÁĞºÅÊ±³öÏÖ´íÎó£¡"
+msgstr "è·å–åºåˆ—å·æ—¶å‡ºç°é”™è¯¯ï¼"
 
 msgid "Group"
-msgstr "·Ö×é"
+msgstr "åˆ†ç»„"
 
 msgid "Group Name"
-msgstr "·Ö×éÃû³Æ"
+msgstr "åˆ†ç»„åç§°"
 
 msgid "Group Number Error"
-msgstr "´íÎóµÄ·Ö×é±àºÅ"
+msgstr "é”™è¯¯çš„åˆ†ç»„ç¼–å·"
 
 msgid "Group Number Must be Numeric !"
-msgstr "·ÖÀà±àºÅ±ØĞëÎªÊı×Ö£¡"
+msgstr "åˆ†ç±»ç¼–å·å¿…é¡»ä¸ºæ•°å­—ï¼"
 
 msgid "HABEAS"
 msgstr "HABEAS"
 
 msgid "HELO Information Check"
-msgstr "¼ì²éHELOĞÅÏ¢"
+msgstr "æ£€æŸ¥HELOä¿¡æ¯"
 
 msgid "HTML Content Check"
-msgstr "¼ì²éÓÊ¼şHTMLÄÚÈİ"
+msgstr "æ£€æŸ¥é‚®ä»¶HTMLå†…å®¹"
 
 msgid "Hard Disk Load"
-msgstr "´ÅÅÌ¸ºÔØÍ¼"
+msgstr "ç£ç›˜è´Ÿè½½å›¾"
 
 msgid "Hard Disk Space"
-msgstr "´ÅÅÌÊ¹ÓÃÂÊÍ¼"
+msgstr "ç£ç›˜ä½¿ç”¨ç‡å›¾"
 
 msgid "HardDisk Traffic"
-msgstr "´ÅÅÌ¸ºÔØÍ¼"
+msgstr "ç£ç›˜è´Ÿè½½å›¾"
 
 msgid "HardDisk Usage"
-msgstr "´ÅÅÌÊ¹ÓÃÂÊÍ¼"
+msgstr "ç£ç›˜ä½¿ç”¨ç‡å›¾"
 
 msgid "Header"
-msgstr "ĞÅÍ·"
+msgstr "ä¿¡å¤´"
 
 msgid "Highest Score of Self-Learning as NonSpam: "
-msgstr "×÷ÎªÕı³£ÓÊ¼şÑ§Ï°µÄ×î¸ß·Ö£º"
+msgstr "ä½œä¸ºæ­£å¸¸é‚®ä»¶å­¦ä¹ çš„æœ€é«˜åˆ†ï¼š"
 
 msgid "Homepage"
-msgstr "Ê×Ò³"
+msgstr "é¦–é¡µ"
 
 msgid "Hour(s)"
-msgstr "Ğ¡Ê±"
+msgstr "å°æ—¶"
 
 msgid "Hours"
-msgstr "Ğ¡Ê±"
+msgstr "å°æ—¶"
 
 msgid "ID"
 msgstr ""
 
 msgid "ID Card"
-msgstr "Éí·İºÅÂë"
+msgstr "èº«ä»½å·ç "
 
 msgid "IP"
 msgstr ""
 
 msgid "IP Format Error"
-msgstr "IPµØÖ·¸ñÊ½ÓĞÎó"
+msgstr "IPåœ°å€æ ¼å¼æœ‰è¯¯"
 
 msgid "IP List can not has character ':' "
-msgstr "IPµØÖ·ÁĞ±íÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±,ÇëÖØÊÔ"
+msgstr "IPåœ°å€åˆ—è¡¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€,è¯·é‡è¯•"
 
 msgid "IP Restriction"
-msgstr "IPÏŞÖÆ"
+msgstr "IPé™åˆ¶"
 
 msgid "IP Seg Match"
-msgstr "Á¬ĞøIPµØÖ·Æ¥Åä"
+msgstr "è¿ç»­IPåœ°å€åŒ¹é…"
 
 msgid "IP Whitelist"
-msgstr "IP°×Ãûµ¥"
+msgstr "IPç™½åå•"
 
 msgid "IP format Error, re-Input:"
-msgstr "IPµØÖ·¸ñÊ½´íÎó,ÇëÖØĞÂÊäÈë"
+msgstr "IPåœ°å€æ ¼å¼é”™è¯¯,è¯·é‡æ–°è¾“å…¥"
 
 msgid "IP/Mask Match"
-msgstr "IP/MASKÆ¥Åä"
+msgstr "IP/MASKåŒ¹é…"
 
 msgid "Image File"
-msgstr "Í¼Æ¬ÎÄ¼ş"
+msgstr "å›¾ç‰‡æ–‡ä»¶"
 
 msgid "Import"
-msgstr "µ¼Èë"
+msgstr "å¯¼å…¥"
 
 msgid "Import successfully"
-msgstr "µ¼Èë³É¹¦"
+msgstr "å¯¼å…¥æˆåŠŸ"
 
 msgid "In"
 msgstr ""
 
 msgid "Incept"
-msgstr "ÊÕ¼şÈË"
+msgstr "æ”¶ä»¶äºº"
 
 msgid ""
 "Include: RBL (Realtime Blackhole List),DUL (Dynamic User List),RSS (Relay "
@@ -916,52 +916,52 @@ msgstr ""
 "Spam Stopper),OPS (Open Proxy Stopper)"
 
 msgid "Incoming"
-msgstr "´ÓÍâÏòÄÚ"
+msgstr "ä»å¤–å‘å†…"
 
 msgid "Input"
-msgstr "ÇëÄúÊ×ÏÈÊäÈë"
+msgstr "è¯·æ‚¨é¦–å…ˆè¾“å…¥"
 
 msgid "Input Password again, and must be identical with the first input."
-msgstr "ÇëÔÙ´ÎÊäÈëÃÜÂë£¬Á½´ÎÃÜÂë±ØĞëÏàÍ¬¡£"
+msgstr "è¯·å†æ¬¡è¾“å…¥å¯†ç ï¼Œä¸¤æ¬¡å¯†ç å¿…é¡»ç›¸åŒã€‚"
 
 msgid "Input User Account you want to search"
-msgstr "ÇëÊäÈë´ı²éÕÒµÄÓÃ»§ÕËºÅ"
+msgstr "è¯·è¾“å…¥å¾…æŸ¥æ‰¾çš„ç”¨æˆ·è´¦å·"
 
 msgid "Insensitive"
-msgstr "²»Çø·Ö´óĞ¡Ğ´"
+msgstr "ä¸åŒºåˆ†å¤§å°å†™"
 
 msgid "Intelligent Content Analyze"
-msgstr "ÖÇÄÜÄÚÈİ·ÖÎö"
+msgstr "æ™ºèƒ½å†…å®¹åˆ†æ"
 
 msgid "Intelligent Factor: "
-msgstr "ÖÇÄÜÒòÊı£º"
+msgstr "æ™ºèƒ½å› æ•°ï¼š"
 
 msgid "Intelligent Noise Reduction System: "
-msgstr "ÖÇÄÜ½µÔëÏµÍ³£º"
+msgstr "æ™ºèƒ½é™å™ªç³»ç»Ÿï¼š"
 
 msgid "Intelligent Test"
-msgstr "ÖÇÄÜ¼ì²â"
+msgstr "æ™ºèƒ½æ£€æµ‹"
 
 msgid "Interactive"
-msgstr "ÖÇÄÜ½»»¥ÒıÇæ"
+msgstr "æ™ºèƒ½äº¤äº’å¼•æ“"
 
 msgid "Internal Network Traffic"
-msgstr "ÄÚÍøÁ÷Á¿Í¼"
+msgstr "å†…ç½‘æµé‡å›¾"
 
 msgid "Internal Traffic"
-msgstr "ÄÚÍøÁ÷Á¿Í¼"
+msgstr "å†…ç½‘æµé‡å›¾"
 
 msgid "Introduction"
-msgstr "½éÉÜ"
+msgstr "ä»‹ç»"
 
 msgid "Invalid email address"
-msgstr "EmailµØÖ·´íÎó"
+msgstr "Emailåœ°å€é”™è¯¯"
 
 msgid "Inverse Select"
-msgstr "·´ÏòÑ¡Ôñ"
+msgstr "åå‘é€‰æ‹©"
 
 msgid "Inward"
-msgstr "ÓÉÍâÏòÄÚ"
+msgstr "ç”±å¤–å‘å†…"
 
 msgid ""
 "It publishes the IP addresses of hosts which have sent special test email to "
@@ -971,343 +971,343 @@ msgstr ""
 "listme@listme.dsbl.org"
 
 msgid "Item is not exist"
-msgstr "ËùÑ¡Ïî²»´æÔÚ"
+msgstr "æ‰€é€‰é¡¹ä¸å­˜åœ¨"
 
 msgid "Item number"
-msgstr "ÌõÄ¿Êı"
+msgstr "æ¡ç›®æ•°"
 
 msgid "Jump to"
-msgstr "Ìø×ªµ½"
+msgstr "è·³è½¬åˆ°"
 
 msgid "Jump to Page"
-msgstr "ÌøÖÁµÚ"
+msgstr "è·³è‡³ç¬¬"
 
 msgid "Jump to Page "
-msgstr "ÌøÖÁµÚ"
+msgstr "è·³è‡³ç¬¬"
 
 msgid "Key"
 msgstr ""
 
 msgid "Keyword and IP rules"
-msgstr "¹Ø¼ü×Ö¼°IP¹æÔò"
+msgstr "å…³é”®å­—åŠIPè§„åˆ™"
 
 msgid "LDAP"
 msgstr ""
 
 msgid "LDAP Time Out"
-msgstr "LDAP·şÎñÆ÷³¬Ê±"
+msgstr "LDAPæœåŠ¡å™¨è¶…æ—¶"
 
 msgid "LDAP root DN"
 msgstr ""
 
 msgid "LDAP root password"
-msgstr "LDAP root ¿ÚÁî"
+msgstr "LDAP root å£ä»¤"
 
 msgid "LDAP search base DN"
 msgstr ""
 
 msgid "LDAP server IP"
-msgstr "LDAP·şÎñÆ÷IP"
+msgstr "LDAPæœåŠ¡å™¨IP"
 
 msgid "LDAP server port"
-msgstr "LDAP·şÎñÆ÷¶Ë¿Ú"
+msgstr "LDAPæœåŠ¡å™¨ç«¯å£"
 
 msgid "Lack of file parameter"
-msgstr "È±ÉÙÎÄ¼ş²ÎÊı"
+msgstr "ç¼ºå°‘æ–‡ä»¶å‚æ•°"
 
 msgid "Lack of filename"
-msgstr "È±ÉÙÎÄ¼şÃû"
+msgstr "ç¼ºå°‘æ–‡ä»¶å"
 
 msgid "Last"
-msgstr "×îºóĞŞ¸ÄÖµ"
+msgstr "æœ€åä¿®æ”¹å€¼"
 
 msgid "Last Relay IP"
-msgstr "¿Í»§¶ËIP"
+msgstr "å®¢æˆ·ç«¯IP"
 
 msgid "Last Relay IP Top10"
-msgstr "·¢¼şIPµØÖ·µÄ·¢ÓÊ¼şÊıTop10"
+msgstr "å‘ä»¶IPåœ°å€çš„å‘é‚®ä»¶æ•°Top10"
 
 msgid "Least Spams Counts: "
-msgstr "À¬»øÓÊ¼ş×îÉÙ³öÏÖ´ÎÊı£º"
+msgstr "åƒåœ¾é‚®ä»¶æœ€å°‘å‡ºç°æ¬¡æ•°ï¼š"
 
 msgid "Least Spams Spec 1 Counts: "
-msgstr "À¬»øÓÊ¼şÌØÕ÷1×îÉÙ³öÏÖ´ÎÊı£º"
+msgstr "åƒåœ¾é‚®ä»¶ç‰¹å¾1æœ€å°‘å‡ºç°æ¬¡æ•°ï¼š"
 
 msgid "Least Spams Spec 2 Counts: "
-msgstr "À¬»øÓÊ¼şÌØÕ÷2×îÉÙ³öÏÖ´ÎÊı£º"
+msgstr "åƒåœ¾é‚®ä»¶ç‰¹å¾2æœ€å°‘å‡ºç°æ¬¡æ•°ï¼š"
 
 msgid "Leave empty if Preserve"
-msgstr "Èô²»ĞŞ¸ÄÇë±£Áô¿Õ°×"
+msgstr "è‹¥ä¸ä¿®æ”¹è¯·ä¿ç•™ç©ºç™½"
 
 msgid "Leave empty is Preserve"
-msgstr "Èô²»ĞŞ¸ÄÇë±£Áô¿Õ°×"
+msgstr "è‹¥ä¸ä¿®æ”¹è¯·ä¿ç•™ç©ºç™½"
 
 msgid "License Expires: "
-msgstr "Ğí¿ÉÖ¤¹ıÆÚÊ±¼ä£º"
+msgstr "è®¸å¯è¯è¿‡æœŸæ—¶é—´ï¼š"
 
 msgid "Likely Spam"
-msgstr "ÒÉËÆÀ¬»ø"
+msgstr "ç–‘ä¼¼åƒåœ¾"
 
 msgid "Likely Spam Mails"
-msgstr "ÒÉËÆÀ¬»øÓÊ¼şÊı"
+msgstr "ç–‘ä¼¼åƒåœ¾é‚®ä»¶æ•°"
 
 msgid "Likely Spam Subject Tag Text: "
-msgstr "ÒÉËÆÀ¬»øµÄÖ÷Ìâ±ê¼Ç£º"
+msgstr "ç–‘ä¼¼åƒåœ¾çš„ä¸»é¢˜æ ‡è®°ï¼š"
 
 msgid "Lines"
-msgstr "ĞĞ"
+msgstr "è¡Œ"
 
 msgid "List of known abusive hosts and networks on the Internet"
 msgstr "List of known abusive hosts and networks on the Internet"
 
 msgid "Loading Upgrade package, waiting......"
-msgstr "ÔØÈëÖĞ£¬ÇëÉÔºò¡­¡­"
+msgstr "è½½å…¥ä¸­ï¼Œè¯·ç¨å€™â€¦â€¦"
 
 msgid "Loading, please waiting......"
-msgstr "ÔØÈëÖĞ£¬ÇëÉÔºò¡­¡­"
+msgstr "è½½å…¥ä¸­ï¼Œè¯·ç¨å€™â€¦â€¦"
 
 msgid "Local Deliver Concurrency"
-msgstr "±¾µØ²¢·¢Í¶µİÊı"
+msgstr "æœ¬åœ°å¹¶å‘æŠ•é€’æ•°"
 
 msgid "Local Delivery Concurrency"
-msgstr "±¾µØ²¢·¢Í¶µİÊı"
+msgstr "æœ¬åœ°å¹¶å‘æŠ•é€’æ•°"
 
 msgid "Local Delivery Concurrency must between 0-50"
-msgstr "±¾µØ²¢·¢Í¶µİÊı²»ÄÜĞ¡ÓÚ0»ò´óÓÚ50"
+msgstr "æœ¬åœ°å¹¶å‘æŠ•é€’æ•°ä¸èƒ½å°äº0æˆ–å¤§äº50"
 
 msgid "Local IP"
-msgstr "±¾µØIP"
+msgstr "æœ¬åœ°IP"
 
 msgid "Local Mail Domain"
-msgstr "¹ÜÀí±¾µØÓÊ¼şÓò"
+msgstr "ç®¡ç†æœ¬åœ°é‚®ä»¶åŸŸ"
 
 msgid "Local Port"
-msgstr "±¾µØ¶Ë¿Ú"
+msgstr "æœ¬åœ°ç«¯å£"
 
 msgid "Log"
-msgstr "ÈÕÖ¾¼à¿Ø"
+msgstr "æ—¥å¿—ç›‘æ§"
 
 msgid "Log Browser"
-msgstr "ÈÕÖ¾ÏÔÊ¾"
+msgstr "æ—¥å¿—æ˜¾ç¤º"
 
 msgid "Log Export"
-msgstr "ÈÕÖ¾µ¼³ö"
+msgstr "æ—¥å¿—å¯¼å‡º"
 
 msgid "Log Flush Success !"
-msgstr "ÈÕÖ¾Çå¿Õ³É¹¦£¡"
+msgstr "æ—¥å¿—æ¸…ç©ºæˆåŠŸï¼"
 
 msgid "Log Size"
-msgstr "ÈÕÖ¾´óĞ¡"
+msgstr "æ—¥å¿—å¤§å°"
 
 msgid "Log Stat."
-msgstr "ÈÕÖ¾Í³¼Æ"
+msgstr "æ—¥å¿—ç»Ÿè®¡"
 
 msgid "Login"
-msgstr "µÇÂ¼"
+msgstr "ç™»å½•"
 
 msgid "Login Deny"
-msgstr "½ûÖ¹µÇÂ¼"
+msgstr "ç¦æ­¢ç™»å½•"
 
 msgid "Login Failure"
-msgstr "µÇÂ¼Ê§°Ü"
+msgstr "ç™»å½•å¤±è´¥"
 
 msgid "Login Restrict"
-msgstr "µÇÂ¼ÏŞÖÆ"
+msgstr "ç™»å½•é™åˆ¶"
 
 msgid "Login Restriction"
-msgstr "µÇÂ¼ÏŞÖÆ"
+msgstr "ç™»å½•é™åˆ¶"
 
 msgid "Login as"
-msgstr "µÇÂ¼ÓÃ»§"
+msgstr "ç™»å½•ç”¨æˆ·"
 
 msgid "Logout"
-msgstr "ÍË³öÏµÍ³"
+msgstr "é€€å‡ºç³»ç»Ÿ"
 
 msgid "Logout Succeed. Please Close This Browser Window"
-msgstr "ÒÑ³É¹¦ÍË³ö¡£Çë¹Ø±Õ´Ë´°¿Ú"
+msgstr "å·²æˆåŠŸé€€å‡ºã€‚è¯·å…³é—­æ­¤çª—å£"
 
 msgid "Lowest Score of Self-Learning as Spam: "
-msgstr "×÷ÎªÀ¬»øÓÊ¼şÑ§Ï°µÄ×îµÍ·Ö£º"
+msgstr "ä½œä¸ºåƒåœ¾é‚®ä»¶å­¦ä¹ çš„æœ€ä½åˆ†ï¼š"
 
 msgid "MIME Content Check"
-msgstr "¼ì²éÓÊ¼şMIMEÄÚÈİ"
+msgstr "æ£€æŸ¥é‚®ä»¶MIMEå†…å®¹"
 
 msgid "MX Relay Mode"
-msgstr "MX×ª·¢Ä£Ê½"
+msgstr "MXè½¬å‘æ¨¡å¼"
 
 msgid "Mail"
-msgstr "ÓÊ¼ş"
+msgstr "é‚®ä»¶"
 
 msgid "Mail Audit Engine"
-msgstr "Éó¼ÆÒıÇæ"
+msgstr "å®¡è®¡å¼•æ“"
 
 msgid "Mail Content"
-msgstr "È«ÎÄ"
+msgstr "å…¨æ–‡"
 
 msgid "Mail Domain"
-msgstr "ÓÊ¼şÓò"
+msgstr "é‚®ä»¶åŸŸ"
 
 msgid "Mail Domain List can not has character ':' "
-msgstr "ÓÊ¼şÓòÃûÁĞ±íÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±,ÇëÖØÊÔ"
+msgstr "é‚®ä»¶åŸŸååˆ—è¡¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€,è¯·é‡è¯•"
 
 msgid "Mail Domain Protection"
-msgstr "ÓÊ¼ş±£»¤ÓòÉèÖÃ"
+msgstr "é‚®ä»¶ä¿æŠ¤åŸŸè®¾ç½®"
 
 msgid "Mail Domain Safeguard"
-msgstr "ÓÊ¼şÓò±£»¤"
+msgstr "é‚®ä»¶åŸŸä¿æŠ¤"
 
 msgid "Mail Domain User"
-msgstr "ÓÊ¼şÓòÓÃ»§¹ÜÀí"
+msgstr "é‚®ä»¶åŸŸç”¨æˆ·ç®¡ç†"
 
 msgid "Mail Domain User List"
-msgstr "ÓÊ¼şÓòÓÃ»§ÁĞ±í"
+msgstr "é‚®ä»¶åŸŸç”¨æˆ·åˆ—è¡¨"
 
 msgid "Mail From"
-msgstr "·¢¼şÈË"
+msgstr "å‘ä»¶äºº"
 
 msgid "Mail From Top10"
-msgstr "·¢¼şÈËµØÖ·µÄ·¢ÓÊ¼şÊıTop10"
+msgstr "å‘ä»¶äººåœ°å€çš„å‘é‚®ä»¶æ•°Top10"
 
 msgid "Mail HostName"
-msgstr "·şÎñÆ÷Ãû"
+msgstr "æœåŠ¡å™¨å"
 
 msgid "Mail ID"
-msgstr "ÓÊ¼şID"
+msgstr "é‚®ä»¶ID"
 
 msgid "Mail Max Size"
-msgstr "×î´óÓÊ¼ş³ß´ç"
+msgstr "æœ€å¤§é‚®ä»¶å°ºå¯¸"
 
 msgid "Mail Queue Monitor"
-msgstr "ÓÊ¼ş¶ÓÁĞ¼à¹Ü"
+msgstr "é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡"
 
 msgid "Mail Sending Software Check"
-msgstr "¼ì²é·¢ËÍÈí¼şÀàĞÍ"
+msgstr "æ£€æŸ¥å‘é€è½¯ä»¶ç±»å‹"
 
 msgid "Mail Server Setting"
-msgstr "¶ÀÁ¢·şÎñÆ÷ÉèÖÃ"
+msgstr "ç‹¬ç«‹æœåŠ¡å™¨è®¾ç½®"
 
 msgid "Mail Size Stat."
-msgstr "ÓÊ¼ş³ß´ç·Ö²¼"
+msgstr "é‚®ä»¶å°ºå¯¸åˆ†å¸ƒ"
 
 msgid "Mail Stat."
-msgstr "ÓÊ¼ş·ÖÎöÏÔÊ¾"
+msgstr "é‚®ä»¶åˆ†ææ˜¾ç¤º"
 
 msgid "Mail Traffic Stat."
-msgstr "ÓÊ¼şÁ÷Á¿·Ö²¼"
+msgstr "é‚®ä»¶æµé‡åˆ†å¸ƒ"
 
 msgid "Mail Type Stat."
-msgstr "ÓÊ¼şÀà±ğ·Ö²¼"
+msgstr "é‚®ä»¶ç±»åˆ«åˆ†å¸ƒ"
 
 msgid "Mailing List"
-msgstr "Èº·¢ĞÅ¼ş"
+msgstr "ç¾¤å‘ä¿¡ä»¶"
 
 msgid "Maillist"
-msgstr "Èº·¢ĞÅ¼ş"
+msgstr "ç¾¤å‘ä¿¡ä»¶"
 
 msgid "Maillist Group"
-msgstr "ÓÃ»§×é"
+msgstr "ç”¨æˆ·ç»„"
 
 msgid "Maillist Mail Content"
-msgstr "Èº·¢ĞÅ¼şÄÚÈİ"
+msgstr "ç¾¤å‘ä¿¡ä»¶å†…å®¹"
 
 msgid "Maillist Mail Content is Empty!"
-msgstr "Èº·¢ĞÅ¼şÄÚÈİÎª¿Õ!"
+msgstr "ç¾¤å‘ä¿¡ä»¶å†…å®¹ä¸ºç©º!"
 
 msgid "Maillist Mail Subject"
-msgstr "Èº·¢ĞÅ¼ş±êÌâ"
+msgstr "ç¾¤å‘ä¿¡ä»¶æ ‡é¢˜"
 
 msgid "Maillist Mail Subject is Empty!"
-msgstr "Èº·¢ĞÅ¼ş±êÌâÎª¿Õ!"
+msgstr "ç¾¤å‘ä¿¡ä»¶æ ‡é¢˜ä¸ºç©º!"
 
 msgid "Mails"
-msgstr "·âÓÊ¼ş"
+msgstr "å°é‚®ä»¶"
 
 msgid "Mails per Sender"
-msgstr "ÓÃ»§ÖØ¸´"
+msgstr "ç”¨æˆ·é‡å¤"
 
 msgid "Mails per Subject"
-msgstr "ÓÊ¼şÖØ¸´"
+msgstr "é‚®ä»¶é‡å¤"
 
 msgid "Management"
-msgstr "¹ÜÀíÑ¡Ïî"
+msgstr "ç®¡ç†é€‰é¡¹"
 
 msgid "Management IP List"
-msgstr "ĞŞ¸ÄIPµØÖ·ÁĞ±í"
+msgstr "ä¿®æ”¹IPåœ°å€åˆ—è¡¨"
 
 msgid "Management IP List Modify succeeded!"
-msgstr "IPµØÖ·ÁĞ±íĞŞ¸Ä³É¹¦£¡"
+msgstr "IPåœ°å€åˆ—è¡¨ä¿®æ”¹æˆåŠŸï¼"
 
 msgid "Management IP Restriction"
-msgstr "IPµØÖ·ÏŞÖÆ"
+msgstr "IPåœ°å€é™åˆ¶"
 
 msgid "Management System"
-msgstr "¹ÜÀíÏµÍ³"
+msgstr "ç®¡ç†ç³»ç»Ÿ"
 
 msgid "Manufacturer: "
-msgstr "·¢ĞĞ³§ÉÌ£º"
+msgstr "å‘è¡Œå‚å•†ï¼š"
 
 msgid "Match Position"
-msgstr "Æ¥ÅäÎ»ÖÃ"
+msgstr "åŒ¹é…ä½ç½®"
 
 msgid "Match Type"
-msgstr "ÀàĞÍ"
+msgstr "ç±»å‹"
 
 msgid "Matched Rule ID"
-msgstr "Æ¥Åä¹æÔòºÅ"
+msgstr "åŒ¹é…è§„åˆ™å·"
 
 msgid "Max"
-msgstr "×î´ó"
+msgstr "æœ€å¤§"
 
 msgid "Max User Counts must be Positive Integer"
-msgstr "×î´óÓÃ»§Êı±ØĞëÉèÖÃÎªÕıÕûÊı"
+msgstr "æœ€å¤§ç”¨æˆ·æ•°å¿…é¡»è®¾ç½®ä¸ºæ­£æ•´æ•°"
 
 msgid "Maximum concurrent SMTP connections per IP"
-msgstr "Í¬Ê±Á¬½ÓÊı"
+msgstr "åŒæ—¶è¿æ¥æ•°"
 
 msgid "Maximum retries in 5 minutes for the same IP"
-msgstr "5·ÖÖÓÄÚ¶Ô²»Í¬ÖØÊÔ´ÎÊı£º"
+msgstr "5åˆ†é’Ÿå†…å¯¹ä¸åŒé‡è¯•æ¬¡æ•°ï¼š"
 
 msgid "Maximum retries in 5 minutes for the same user:"
-msgstr "5·ÖÖÓÄÚ¶ÔÍ¬Ò»ÓÃ»§ÖØÊÔ´ÎÊı£º"
+msgstr "5åˆ†é’Ÿå†…å¯¹åŒä¸€ç”¨æˆ·é‡è¯•æ¬¡æ•°ï¼š"
 
 msgid "Memory Usage"
-msgstr "ÄÚ´æÊ¹ÓÃ×´Ì¬Í¼"
+msgstr "å†…å­˜ä½¿ç”¨çŠ¶æ€å›¾"
 
 msgid "Message-ID Check"
-msgstr "¼ì²éÓÊ¼şµÄMessage-ID"
+msgstr "æ£€æŸ¥é‚®ä»¶çš„Message-ID"
 
 msgid "Min NonSpam Knowledge: "
-msgstr "·ÇÀ¬»øÓÊ¼şÊı¾İ£º"
+msgstr "éåƒåœ¾é‚®ä»¶æ•°æ®ï¼š"
 
 msgid "Min Spam Knowledge: "
-msgstr "À¬»øÓÊ¼şÊı¾İ£º"
+msgstr "åƒåœ¾é‚®ä»¶æ•°æ®ï¼š"
 
 msgid "Minimum Knowledge Needed for Bayes Filter to work: "
-msgstr "±´Ò¶Ë¹¹ıÂËÆ÷ÄÜ¹»¹¤×÷×îÉÙĞèÒªµÄÊı¾İÁ¿£º"
+msgstr "è´å¶æ–¯è¿‡æ»¤å™¨èƒ½å¤Ÿå·¥ä½œæœ€å°‘éœ€è¦çš„æ•°æ®é‡ï¼š"
 
 msgid "Minutes"
-msgstr "·ÖÖÓ"
+msgstr "åˆ†é’Ÿ"
 
 msgid "Modification Succeed! "
-msgstr "ĞŞ¸Ä³É¹¦"
+msgstr "ä¿®æ”¹æˆåŠŸ"
 
 msgid "Modification succeeded! "
-msgstr "ĞŞ¸Ä³É¹¦"
+msgstr "ä¿®æ”¹æˆåŠŸ"
 
 msgid "Modify"
-msgstr "ĞŞ¸Ä"
+msgstr "ä¿®æ”¹"
 
 msgid "Modify Email Account Info"
-msgstr "ĞŞ¸ÄÓÊ¼şÕË»§ĞÅÏ¢"
+msgstr "ä¿®æ”¹é‚®ä»¶è´¦æˆ·ä¿¡æ¯"
 
 msgid "Modify Fail, ErrNo: "
-msgstr "ĞŞ¸ÄÊ§°Ü£¬´íÎó´úÂë£º"
+msgstr "ä¿®æ”¹å¤±è´¥ï¼Œé”™è¯¯ä»£ç ï¼š"
 
 msgid "Modify Success !"
-msgstr "ĞŞ¸Ä³É¹¦"
+msgstr "ä¿®æ”¹æˆåŠŸ"
 
 msgid "Monitor Mail Queue"
-msgstr "ÓÊ¼ş¶ÓÁĞ¼à¹Ü"
+msgstr "é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡"
 
 msgid ""
 "Monitoring High-volume Senders Identifying the source of a message Grouping "
@@ -1317,348 +1317,348 @@ msgstr ""
 "related sources of mail Black or whitelisting a group of IP addresses"
 
 msgid "Monthly"
-msgstr "Ã¿ÔÂ Í¼±í (2 Ğ¡Ê± Æ½¾ù)"
+msgstr "æ¯æœˆ å›¾è¡¨ (2 å°æ—¶ å¹³å‡)"
 
 msgid "Must Input a Number"
-msgstr "ÇëÊäÈëÊı×Ö"
+msgstr "è¯·è¾“å…¥æ•°å­—"
 
 msgid "Must a valid Email address"
-msgstr "ÓÊ¼şµØÖ·²»ÄÜÎª¿Õ"
+msgstr "é‚®ä»¶åœ°å€ä¸èƒ½ä¸ºç©º"
 
 msgid "NJABL Not Just Another Bogus List"
 msgstr "NJABL Not Just Another Bogus List"
 
 msgid "NOOP"
-msgstr "ÎŞ²Ù×÷"
+msgstr "æ— æ“ä½œ"
 
 msgid "Network Diagnosis and Monitor"
-msgstr "ÍøÂçĞ£ÑéºÍ¼à²â"
+msgstr "ç½‘ç»œæ ¡éªŒå’Œç›‘æµ‹"
 
 msgid "Network Setting"
-msgstr "ÍøÂçÉèÖÃ"
+msgstr "ç½‘ç»œè®¾ç½®"
 
 msgid "Network Timeout: "
-msgstr "ÍøÂç³¬Ê±£º"
+msgstr "ç½‘ç»œè¶…æ—¶ï¼š"
 
 msgid "Networks whose administrators choose not to obey the RFCs"
 msgstr "Networks whose administrators choose not to obey the RFCs"
 
 msgid "New Admin Username"
-msgstr "ĞÂ¹ÜÀíÔ±ÕÊºÅ"
+msgstr "æ–°ç®¡ç†å‘˜å¸å·"
 
 msgid "New Administrator"
-msgstr "Ìí¼ÓĞÂ¹ÜÀíÔ±"
+msgstr "æ·»åŠ æ–°ç®¡ç†å‘˜"
 
 msgid "New Mail Fail!"
-msgstr "ÎŞ·¨½¨Á¢ĞÅ¼ş£¡"
+msgstr "æ— æ³•å»ºç«‹ä¿¡ä»¶ï¼"
 
 msgid "New Password"
-msgstr "ÊäÈëĞÂÃÜÂë"
+msgstr "è¾“å…¥æ–°å¯†ç "
 
 msgid "New User"
-msgstr "Ìí¼ÓĞÂÓÃ»§"
+msgstr "æ·»åŠ æ–°ç”¨æˆ·"
 
 msgid "New domain is not in restrict domain list"
-msgstr "´ËÓòÃû²»ÔÚÏµÍ³ÔÊĞíÓòÃûÁĞ±íÖĞ"
+msgstr "æ­¤åŸŸåä¸åœ¨ç³»ç»Ÿå…è®¸åŸŸååˆ—è¡¨ä¸­"
 
 msgid "No Permission"
-msgstr "ÎŞ´ËÈ¨ÏŞ"
+msgstr "æ— æ­¤æƒé™"
 
 msgid "No Restriction"
-msgstr "²»ÏŞÖÆ"
+msgstr "ä¸é™åˆ¶"
 
 msgid "No User Group Define now"
-msgstr "Ä¿Ç°ÉĞÎŞÓÃ»§×é¶¨Òå£¡"
+msgstr "ç›®å‰å°šæ— ç”¨æˆ·ç»„å®šä¹‰ï¼"
 
 msgid "No file selected"
-msgstr "Ã»ÓĞÑ¡ÔñÎÄ¼ş"
+msgstr "æ²¡æœ‰é€‰æ‹©æ–‡ä»¶"
 
 msgid "No file upload"
-msgstr "Ã»ÓĞÉÏÔØÎÄ¼ş"
+msgstr "æ²¡æœ‰ä¸Šè½½æ–‡ä»¶"
 
 msgid "No more than 1800 seconds of blocking time is suggested."
-msgstr "ÍÆ¼öÉèÖÃÖµĞ¡ÓÚ1800Ãë"
+msgstr "æ¨èè®¾ç½®å€¼å°äº1800ç§’"
 
 msgid "No this Admin, re-Input:"
-msgstr "ÎŞ´Ë¹ÜÀíÔ±ÕËºÅ,ÇëÖØĞÂÊäÈë"
+msgstr "æ— æ­¤ç®¡ç†å‘˜è´¦å·,è¯·é‡æ–°è¾“å…¥"
 
 msgid "No."
-msgstr "±àºÅ"
+msgstr "ç¼–å·"
 
 msgid "Noise Reduce"
-msgstr "½µÔë"
+msgstr "é™å™ª"
 
 msgid "Noise Reduce System"
-msgstr "½µÔëÏµÍ³"
+msgstr "é™å™ªç³»ç»Ÿ"
 
 msgid "Noise Reduction System"
-msgstr "½µÔë"
+msgstr "é™å™ª"
 
 msgid "NonBlocked"
-msgstr "Î´·â½û"
+msgstr "æœªå°ç¦"
 
 msgid "NonOverrun"
-msgstr "·Ç¶¯Ì¬³¬ÏŞÓÊ¼ş"
+msgstr "éåŠ¨æ€è¶…é™é‚®ä»¶"
 
 msgid "NonSpam"
-msgstr "·ÇÀ¬»øÓÊ¼ş"
+msgstr "éåƒåœ¾é‚®ä»¶"
 
 msgid "NonVirus"
-msgstr "·Ç²¡¶¾ÓÊ¼ş"
+msgstr "éç—…æ¯’é‚®ä»¶"
 
 msgid "Normal Mails"
-msgstr "Õı³£ÓÊ¼şÊı"
+msgstr "æ­£å¸¸é‚®ä»¶æ•°"
 
 msgid "Note"
-msgstr "±¸×¢"
+msgstr "å¤‡æ³¨"
 
 msgid "Note can not has character ':' "
-msgstr "±¸×¢ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±,ÇëÖØÊÔ"
+msgstr "å¤‡æ³¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€,è¯·é‡è¯•"
 
 msgid "Note: From Left to Right is Spam, Likely Spam, NonSpam"
 msgstr ""
-"×¢£º´Ó×óµ½À¬»øÓÊ¼ş¿Ì¶È¼äÎªÀ¬»øÓÊ¼ş£¬Á½¿Ì¶È¼äÎªÒÉËÆÀ¬»ø£¬ÒÉËÆÀ¬»ø¿Ì¶ÈÓÒ±ßÎª·Ç"
-"À¬»øÓÊ¼ş"
+"æ³¨ï¼šä»å·¦åˆ°åƒåœ¾é‚®ä»¶åˆ»åº¦é—´ä¸ºåƒåœ¾é‚®ä»¶ï¼Œä¸¤åˆ»åº¦é—´ä¸ºç–‘ä¼¼åƒåœ¾ï¼Œç–‘ä¼¼åƒåœ¾åˆ»åº¦å³è¾¹ä¸ºé"
+"åƒåœ¾é‚®ä»¶"
 
 msgid ""
 "Note: Maximum concurrent SMTP connections per IP only functions on inward "
 "traffic."
 msgstr ""
-"×¢Òâ£º²¢·¢Á¬½ÓÉèÖÃÎŞÂÛ±£»¤·½ÏòÉèÖÃÎªÈÎºÎÖµ£¬¶¼±£»¤ÇÒÖ»±£»¤¡®Íâµ½ÄÚ¡¯µÄ·½Ïò¡£"
+"æ³¨æ„ï¼šå¹¶å‘è¿æ¥è®¾ç½®æ— è®ºä¿æŠ¤æ–¹å‘è®¾ç½®ä¸ºä»»ä½•å€¼ï¼Œéƒ½ä¿æŠ¤ä¸”åªä¿æŠ¤â€˜å¤–åˆ°å†…â€™çš„æ–¹å‘ã€‚"
 
 msgid "Note: This will delete all undeliverd mails permamently, Continue?"
-msgstr "×¢Òâ£¡´Ë²Ù×÷½«ÓÀ¾ÃÉ¾³ıËùÓĞÎ´Í¶µİµÄÓÊ¼ş£¬È·ÈÏÂğ£¿"
+msgstr "æ³¨æ„ï¼æ­¤æ“ä½œå°†æ°¸ä¹…åˆ é™¤æ‰€æœ‰æœªæŠ•é€’çš„é‚®ä»¶ï¼Œç¡®è®¤å—ï¼Ÿ"
 
 msgid "Num"
-msgstr "±àºÅ"
+msgstr "ç¼–å·"
 
 msgid "Number Type"
 msgstr ""
 
 msgid "Number(s)"
-msgstr "¸ö"
+msgstr "ä¸ª"
 
 msgid "Numeric rules"
-msgstr "ÊıÖµ¹æÔò"
+msgstr "æ•°å€¼è§„åˆ™"
 
 msgid "Off"
-msgstr "¹Ø±Õ"
+msgstr "å…³é—­"
 
 msgid "Old Password"
-msgstr "ÊäÈë¾ÉÃÜÂë"
+msgstr "è¾“å…¥æ—§å¯†ç "
 
 msgid "On"
-msgstr "¿ªÆô"
+msgstr "å¼€å¯"
 
 msgid "One Mail should be sent no more than"
-msgstr "Í¬Ò»·âÓÊ¼ş×î¶à·¢ËÍ"
+msgstr "åŒä¸€å°é‚®ä»¶æœ€å¤šå‘é€"
 
 msgid "One Sender should send no more than"
-msgstr "Í¬Ò»ÓÃ»§×î¶à·¢ËÍ"
+msgstr "åŒä¸€ç”¨æˆ·æœ€å¤šå‘é€"
 
 msgid "One domain each line."
-msgstr "Ã¿ĞĞÒ»¸öÓòÃû¡£"
+msgstr "æ¯è¡Œä¸€ä¸ªåŸŸåã€‚"
 
 msgid "One mail address a line, data will merge into that before"
-msgstr "Ã¿ĞĞÒ»¸öÓÊ¼şµØÖ·£¬ĞÂÉÏÔØÊı¾İ½«ºÍÏµÍ³Êı¾İºÏ²¢"
+msgstr "æ¯è¡Œä¸€ä¸ªé‚®ä»¶åœ°å€ï¼Œæ–°ä¸Šè½½æ•°æ®å°†å’Œç³»ç»Ÿæ•°æ®åˆå¹¶"
 
 msgid "Op"
-msgstr "²Ù×÷"
+msgstr "æ“ä½œ"
 
 msgid "Operation Log Management"
-msgstr "²Ù×÷ÈÕÖ¾Éó¼Æ"
+msgstr "æ“ä½œæ—¥å¿—å®¡è®¡"
 
 msgid "Operations Fail, ErrNo: "
-msgstr "²Ù×÷Ê§°Ü£¬´íÎóºÅ£º"
+msgstr "æ“ä½œå¤±è´¥ï¼Œé”™è¯¯å·ï¼š"
 
 msgid "Operations Succeed"
-msgstr "²Ù×÷³É¹¦"
+msgstr "æ“ä½œæˆåŠŸ"
 
 msgid "Optional"
-msgstr "¿ÉÒÔ²»Ñ¡"
+msgstr "å¯ä»¥ä¸é€‰"
 
 msgid "Options for Traceability Analysis"
-msgstr "¿É×·²éĞÔ¼ì²éÑ¡Ïî"
+msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥é€‰é¡¹"
 
 msgid "Other Error, need DEBUG"
-msgstr "ÆäËû´íÎó£¬½ĞÏµÍ³¹ÜÀíÔ±À´debug"
+msgstr "å…¶ä»–é”™è¯¯ï¼Œå«ç³»ç»Ÿç®¡ç†å‘˜æ¥debug"
 
 msgid "Other File"
-msgstr "ÆäËûÀàĞÍ"
+msgstr "å…¶ä»–ç±»å‹"
 
 msgid "Outgoing"
-msgstr "´ÓÄÚÏòÍâ"
+msgstr "ä»å†…å‘å¤–"
 
 msgid "Outward"
-msgstr "ÓÉÄÚÏòÍâ"
+msgstr "ç”±å†…å‘å¤–"
 
 msgid "Overrun"
-msgstr "¶¯Ì¬³¬ÏŞÓÊ¼ş"
+msgstr "åŠ¨æ€è¶…é™é‚®ä»¶"
 
 msgid "Overrun Limit"
-msgstr "¶¯Ì¬ÏŞÖÆÒıÇæ"
+msgstr "åŠ¨æ€é™åˆ¶å¼•æ“"
 
 msgid "Overrun Limit Database will be cleared, Continue?"
-msgstr "¼´½«Çå¿ÕÊı¾İ¿â£¬È·¶¨Âğ£¿"
+msgstr "å³å°†æ¸…ç©ºæ•°æ®åº“ï¼Œç¡®å®šå—ï¼Ÿ"
 
 msgid "Overrun Limit Engine"
-msgstr "¶¯Ì¬ÏŞÖÆÒıÇæ"
+msgstr "åŠ¨æ€é™åˆ¶å¼•æ“"
 
 msgid "Overrun Limit Engine Realtime Management"
-msgstr "¶¯Ì¬ÒıÇæÊµÊ±¹ÜÀí"
+msgstr "åŠ¨æ€å¼•æ“å®æ—¶ç®¡ç†"
 
 msgid "Overrun Mails"
-msgstr "¶¯Ì¬³¬ÏŞÓÊ¼şÊı"
+msgstr "åŠ¨æ€è¶…é™é‚®ä»¶æ•°"
 
 msgid "Page Must be Number"
-msgstr "Ò³Êı±ØĞëÎªÊı×Ö£¡"
+msgstr "é¡µæ•°å¿…é¡»ä¸ºæ•°å­—ï¼"
 
 msgid "Page Refresh Time"
-msgstr "Ò³ÃæË¢ĞÂÊ±¼ä"
+msgstr "é¡µé¢åˆ·æ–°æ—¶é—´"
 
 msgid "Page Refresh Time must be Number"
-msgstr "Ò³ÃæË¢ĞÂÊ±¼äÇëÊäÈëÊı×Ö"
+msgstr "é¡µé¢åˆ·æ–°æ—¶é—´è¯·è¾“å…¥æ•°å­—"
 
 msgid "Param"
-msgstr "²ÎÊı"
+msgstr "å‚æ•°"
 
 msgid "Parameter Error! "
-msgstr "²ÎÊı´íÎó£¡"
+msgstr "å‚æ•°é”™è¯¯ï¼"
 
 msgid "Parameter error"
-msgstr "²ÎÊı´íÎó"
+msgstr "å‚æ•°é”™è¯¯"
 
 msgid "Pass"
-msgstr "Í¨¹ı"
+msgstr "é€šè¿‡"
 
 msgid "Password"
-msgstr "¿ÚÁî"
+msgstr "å£ä»¤"
 
 msgid "Password Again"
-msgstr "ÖØ¸´¿ÚÁî"
+msgstr "é‡å¤å£ä»¤"
 
 msgid "Password Error, re-Input:"
-msgstr "¿ÚÁî´íÎó,ÇëÖØĞÂÊäÈë"
+msgstr "å£ä»¤é”™è¯¯,è¯·é‡æ–°è¾“å…¥"
 
 msgid "Password Format Error, re-Input:"
-msgstr "¿ÚÁî¸ñÊ½´íÎó,ÇëÖØĞÂÊäÈë"
+msgstr "å£ä»¤æ ¼å¼é”™è¯¯,è¯·é‡æ–°è¾“å…¥"
 
 msgid "Password Modify Succeed!"
-msgstr "¿ÚÁîĞŞ¸Ä³É¹¦£¡"
+msgstr "å£ä»¤ä¿®æ”¹æˆåŠŸï¼"
 
 msgid "Password Modify succeeded!"
-msgstr "¿ÚÁîĞŞ¸Ä³É¹¦£¡"
+msgstr "å£ä»¤ä¿®æ”¹æˆåŠŸï¼"
 
 msgid "Password must use digits and latin characters."
-msgstr "ÇëÊ¹ÓÃ´óĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸ºÍÊı×Ö×÷ÎªÓÊ¼şÃÜÂë¡£"
+msgstr "è¯·ä½¿ç”¨å¤§å°å†™è‹±æ–‡å­—æ¯å’Œæ•°å­—ä½œä¸ºé‚®ä»¶å¯†ç ã€‚"
 
 msgid "Password needed"
-msgstr "ÇëÊäÈëÃÜÂë"
+msgstr "è¯·è¾“å…¥å¯†ç "
 
 msgid "Perm. Reject"
-msgstr "ÓÀ¾Ãµ¯»Ø"
+msgstr "æ°¸ä¹…å¼¹å›"
 
 msgid "Permit"
-msgstr "ÔÊĞí"
+msgstr "å…è®¸"
 
 msgid "Please"
-msgstr "ÇëÕı³£"
+msgstr "è¯·æ­£å¸¸"
 
 msgid "Please Reboot System!"
-msgstr "ÇëÖØÆôÏµÍ³ÒÔ¸üĞÂÉèÖÃ"
+msgstr "è¯·é‡å¯ç³»ç»Ÿä»¥æ›´æ–°è®¾ç½®"
 
 msgid "Please login"
-msgstr "ÇëÏÈµÇÂ¼"
+msgstr "è¯·å…ˆç™»å½•"
 
 msgid "Please re-login"
-msgstr "ÇëÖØĞÂµÇÂ¼"
+msgstr "è¯·é‡æ–°ç™»å½•"
 
 msgid "Policy Select"
-msgstr "Êı¾İ¿âÑ¡Ôñ"
+msgstr "æ•°æ®åº“é€‰æ‹©"
 
 msgid "Port"
-msgstr "¶Ë¿Ú"
+msgstr "ç«¯å£"
 
 msgid "Port Must between 1 and 65535 !"
-msgstr "¶Ë¿Ú±ØĞëÎªÊı×ÖÇÒÔÚ1-65535Ö®¼ä£¡"
+msgstr "ç«¯å£å¿…é¡»ä¸ºæ•°å­—ä¸”åœ¨1-65535ä¹‹é—´ï¼"
 
 msgid "Position"
-msgstr "ÓÃ»§¸ÚÎ»"
+msgstr "ç”¨æˆ·å²—ä½"
 
 msgid "Process Center"
-msgstr "ÖÇÄÜ¼¯ÖĞ·ÖÎö"
+msgstr "æ™ºèƒ½é›†ä¸­åˆ†æ"
 
 msgid "Process Mode"
-msgstr "Î²¹ØÄ£Ê½"
+msgstr "å°¾å…³æ¨¡å¼"
 
 msgid "Process emails"
-msgstr "´¦ÀíÓÊ¼ş"
+msgstr "å¤„ç†é‚®ä»¶"
 
 msgid "Processing Center"
-msgstr "ÖÇÄÜ¼¯ÖĞ·ÖÎö"
+msgstr "æ™ºèƒ½é›†ä¸­åˆ†æ"
 
 msgid "Product Release"
-msgstr "ÕıÊ½ÏúÊÛ°æ"
+msgstr "æ­£å¼é”€å”®ç‰ˆ"
 
 msgid "Quarantine"
-msgstr "¸ôÀë"
+msgstr "éš”ç¦»"
 
 msgid "Quarantine Engine"
-msgstr "¸ôÀëÒıÇæ"
+msgstr "éš”ç¦»å¼•æ“"
 
 msgid "Quarantine Engine User List"
-msgstr "¸ôÀëÓÃ»§ÁĞ±í"
+msgstr "éš”ç¦»ç”¨æˆ·åˆ—è¡¨"
 
 msgid "Quarantine Mail"
-msgstr "¸ôÀëÓÊ¼ş"
+msgstr "éš”ç¦»é‚®ä»¶"
 
 msgid "Quarantine Time out"
-msgstr "¸ôÀë¶ÓÁĞ³¬Ê±"
+msgstr "éš”ç¦»é˜Ÿåˆ—è¶…æ—¶"
 
 msgid "Quarantine User DB"
-msgstr "¸ôÀëÓÃ»§¿â"
+msgstr "éš”ç¦»ç”¨æˆ·åº“"
 
 msgid "Quarantine email black list"
-msgstr "¸ôÀëÓÊ¼şºÚÃûµ¥"
+msgstr "éš”ç¦»é‚®ä»¶é»‘åå•"
 
 msgid "Quarantine email white list"
-msgstr "¸ôÀëÓÊ¼ş°×Ãûµ¥"
+msgstr "éš”ç¦»é‚®ä»¶ç™½åå•"
 
 msgid "Quarantine email white/black list"
-msgstr "¸ôÀëÓÊ¼şºÚ°×Ãûµ¥"
+msgstr "éš”ç¦»é‚®ä»¶é»‘ç™½åå•"
 
 msgid "Quarantine engin can't support this method"
-msgstr "¸ôÀëÒıÇæ²»Ö§³Ö´ËÖÖ·½·¨"
+msgstr "éš”ç¦»å¼•æ“ä¸æ”¯æŒæ­¤ç§æ–¹æ³•"
 
 msgid "Quarantine reason"
-msgstr "¸ôÀëÔ­Òò"
+msgstr "éš”ç¦»åŸå› "
 
 msgid "Quarantine time"
-msgstr "¸ôÀëÊ±¼ä"
+msgstr "éš”ç¦»æ—¶é—´"
 
 msgid "QuarantineEnginUserList"
-msgstr "¸ôÀëÓÃ»§ÁĞ±í"
+msgstr "éš”ç¦»ç”¨æˆ·åˆ—è¡¨"
 
 msgid "QuarantineEngine"
-msgstr "¸ôÀë"
+msgstr "éš”ç¦»"
 
 msgid "QuarantineEngine Settings"
-msgstr "¸ôÀëÒıÇæÉèÖÃ"
+msgstr "éš”ç¦»å¼•æ“è®¾ç½®"
 
 msgid "QuarantineEngineUserList"
-msgstr "¸ôÀëÓÃ»§ÁĞ±í"
+msgstr "éš”ç¦»ç”¨æˆ·åˆ—è¡¨"
 
 msgid "QuarantineUserList"
-msgstr "¸ôÀëÓÃ»§ÁĞ±í"
+msgstr "éš”ç¦»ç”¨æˆ·åˆ—è¡¨"
 
 msgid "Query Timeout"
-msgstr "²éÑ¯³¬Ê±"
+msgstr "æŸ¥è¯¢è¶…æ—¶"
 
 msgid "Queue Lifetime"
-msgstr "ÓÊ¼ş¶ÓÁĞÍ¶µİ³¬Ê±"
+msgstr "é‚®ä»¶é˜Ÿåˆ—æŠ•é€’è¶…æ—¶"
 
 msgid "Queue Lifetime must > 0s and < 7days"
-msgstr "ÓÊ¼ş¶ÓÁĞÍ¶µİ³¬Ê±±ØĞë´óÓÚ0ÃëĞ¡ÓÚ7Ìì"
+msgstr "é‚®ä»¶é˜Ÿåˆ—æŠ•é€’è¶…æ—¶å¿…é¡»å¤§äº0ç§’å°äº7å¤©"
 
 msgid "RBL+"
 msgstr "RBL+"
@@ -1667,316 +1667,316 @@ msgid "RFC-Ignorant blacklists (both name and IP based)"
 msgstr "RFC-Ignorant blacklists (both name and IP based)"
 
 msgid "Read Only"
-msgstr "Ö»¶Á"
+msgstr "åªè¯»"
 
 msgid "Read Only Admin"
-msgstr "Ö»¶Á¹ÜÀíÔ±"
+msgstr "åªè¯»ç®¡ç†å‘˜"
 
 msgid "RealName"
-msgstr "ÓÃ»§ĞÕÃû"
+msgstr "ç”¨æˆ·å§“å"
 
 msgid "Realtime Blocklist"
-msgstr "ÖÇÄÜÊµÊ±ºÚÃûµ¥"
+msgstr "æ™ºèƒ½å®æ—¶é»‘åå•"
 
 msgid "Realtime Monitor"
-msgstr "ÊµÊ±¼à¿Ø"
+msgstr "å®æ—¶ç›‘æ§"
 
 msgid "Realtime Upload"
-msgstr "ÊµÊ±ÉÏ±¨"
+msgstr "å®æ—¶ä¸ŠæŠ¥"
 
 msgid "Reboot"
-msgstr "ÖØÆô"
+msgstr "é‡å¯"
 
 msgid "Reboot & Shutdown"
-msgstr "ÏµÍ³ÖØÆô¹Ø»ú"
+msgstr "ç³»ç»Ÿé‡å¯å…³æœº"
 
 msgid "Recommend"
-msgstr "ÍÆ¼öÖµ"
+msgstr "æ¨èå€¼"
 
 msgid "Recommend: "
-msgstr "ÍÆ¼öÖµ£º"
+msgstr "æ¨èå€¼ï¼š"
 
 msgid "Regular Express Match"
-msgstr "ÕıÔò±í´ïÊ½Æ¥Åä"
+msgstr "æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…"
 
 msgid "Reject"
-msgstr "¾Ü¾ø"
+msgstr "æ‹’ç»"
 
 msgid "Release Date"
-msgstr "·¢²¼ÈÕÆÚ"
+msgstr "å‘å¸ƒæ—¥æœŸ"
 
 msgid "Release No."
-msgstr "ÏµÍ³°æ±¾ºÅ"
+msgstr "ç³»ç»Ÿç‰ˆæœ¬å·"
 
 msgid "Remote Deliver Concurrency"
-msgstr "Ô¶³Ì²¢·¢Í¶µİÊı"
+msgstr "è¿œç¨‹å¹¶å‘æŠ•é€’æ•°"
 
 msgid "Remote Delivery Concurrency"
-msgstr "Ô¶³Ì²¢·¢Í¶µİÊı"
+msgstr "è¿œç¨‹å¹¶å‘æŠ•é€’æ•°"
 
 msgid "Remote Delivery Concurrency must between 0-500"
-msgstr "Ô¶³Ì²¢·¢Í¶µİÊı²»ÄÜĞ¡ÓÚ0»ò´óÓÚ500"
+msgstr "è¿œç¨‹å¹¶å‘æŠ•é€’æ•°ä¸èƒ½å°äº0æˆ–å¤§äº500"
 
 msgid "Replace Header"
-msgstr "Ìæ»»ĞÅÍ·¼ÇÂ¼"
+msgstr "æ›¿æ¢ä¿¡å¤´è®°å½•"
 
 msgid "Replace Receiptor"
-msgstr "Ìæ»»ÊÕ¼şÈË"
+msgstr "æ›¿æ¢æ”¶ä»¶äºº"
 
 msgid "Replace Recipient"
-msgstr "Ìæ»»ÊÕ¼şÈË"
+msgstr "æ›¿æ¢æ”¶ä»¶äºº"
 
 msgid "Reset"
-msgstr "»Ö¸´"
+msgstr "æ¢å¤"
 
 msgid "Retries & Block time must be number"
-msgstr "ÖØÊÔ´ÎÊıºÍ·â½ûÊ±¼ä±ØĞë¶¼ÊÇÊı×Ö£¡"
+msgstr "é‡è¯•æ¬¡æ•°å’Œå°ç¦æ—¶é—´å¿…é¡»éƒ½æ˜¯æ•°å­—ï¼"
 
 msgid "Retries in 5 minutes for same IP: "
-msgstr "5·ÖÖÓÄÚ¶Ô²»Í¬ÖØÊÔ´ÎÊı£º"
+msgstr "5åˆ†é’Ÿå†…å¯¹ä¸åŒé‡è¯•æ¬¡æ•°ï¼š"
 
 msgid "Retries in 5 minutes for same person: "
-msgstr "5·ÖÖÓÄÚ¶ÔÍ¬Ò»ÓÃ»§ÖØÊÔ´ÎÊı£º"
+msgstr "5åˆ†é’Ÿå†…å¯¹åŒä¸€ç”¨æˆ·é‡è¯•æ¬¡æ•°ï¼š"
 
 msgid "Return"
-msgstr "·µ»Ø"
+msgstr "è¿”å›"
 
 msgid "Return to mainpage"
-msgstr "·µ»ØÖ÷½çÃæ"
+msgstr "è¿”å›ä¸»ç•Œé¢"
 
 msgid "Rights"
-msgstr "È¨ÏŞ"
+msgstr "æƒé™"
 
 msgid "Rights setting Error, Retry"
-msgstr "È¨ÏŞÉèÖÃ´íÎó,ÇëÖØÊÔ"
+msgstr "æƒé™è®¾ç½®é”™è¯¯,è¯·é‡è¯•"
 
 msgid "Rule Group"
-msgstr "Àà±ğ¹ÜÀí"
+msgstr "ç±»åˆ«ç®¡ç†"
 
 msgid "Rule Group Management"
-msgstr "¹æÔò×é¹ÜÀí"
+msgstr "è§„åˆ™ç»„ç®¡ç†"
 
 msgid "Rule List"
-msgstr "¹æÔòÁĞ±í"
+msgstr "è§„åˆ™åˆ—è¡¨"
 
 msgid "Rule Management"
-msgstr "¹æÔò¹ÜÀí"
+msgstr "è§„åˆ™ç®¡ç†"
 
 msgid "Rule Match Mail Top10"
-msgstr "¸ù¾İÃ¿¸öÄÚÈİ¹æÔòÆ¥ÅäµÄÓÊ¼şÊıTop10"
+msgstr "æ ¹æ®æ¯ä¸ªå†…å®¹è§„åˆ™åŒ¹é…çš„é‚®ä»¶æ•°Top10"
 
 msgid "Rule Number"
-msgstr "¹æÔò±àºÅ"
+msgstr "è§„åˆ™ç¼–å·"
 
 msgid "Rule Number Error"
-msgstr "´íÎóµÄ¹æÔò±àºÅ"
+msgstr "é”™è¯¯çš„è§„åˆ™ç¼–å·"
 
 msgid "Rules Database"
-msgstr "¹æÔòÊı¾İ¿â"
+msgstr "è§„åˆ™æ•°æ®åº“"
 
 msgid "Rules Group"
-msgstr "Àà±ğ¹ÜÀí"
+msgstr "ç±»åˆ«ç®¡ç†"
 
 msgid "Rules List"
-msgstr "¹æÔòÁĞ±í"
+msgstr "è§„åˆ™åˆ—è¡¨"
 
 msgid "Rules Management"
-msgstr "¹æÔò¹ÜÀí"
+msgstr "è§„åˆ™ç®¡ç†"
 
 msgid "Rules logic"
-msgstr "¹æÔò¼äÂß¼­¹ØÏµ"
+msgstr "è§„åˆ™é—´é€»è¾‘å…³ç³»"
 
 msgid "SMTP Connect Frequency per IP"
-msgstr "Á¬½ÓÆµÂÊ"
+msgstr "è¿æ¥é¢‘ç‡"
 
 msgid "SMTP Connect Timeout"
-msgstr "SMTP Á¬½Ó³¬Ê±"
+msgstr "SMTP è¿æ¥è¶…æ—¶"
 
 msgid "SMTP Connection"
-msgstr "SMTP Á¬½Ó×´Ì¬Í¼"
+msgstr "SMTP è¿æ¥çŠ¶æ€å›¾"
 
 msgid "SMTP Connections no more than"
-msgstr "×î¶àÁ¬½Ó"
+msgstr "æœ€å¤šè¿æ¥"
 
 msgid "SMTP Frequency"
-msgstr "Á¬½ÓÆµÂÊ"
+msgstr "è¿æ¥é¢‘ç‡"
 
 msgid "SMTP Greeting"
-msgstr "SMTP ÎÊºòÓï"
+msgstr "SMTP é—®å€™è¯­"
 
 msgid "SMTP HELO Name"
-msgstr "SMTP HELOÖ÷»úÃû"
+msgstr "SMTP HELOä¸»æœºå"
 
 msgid "SMTP Parameters"
-msgstr "SMTP»ù±¾²ÎÊı"
+msgstr "SMTPåŸºæœ¬å‚æ•°"
 
 msgid "SMTP Receive Timeout"
-msgstr "SMTP ½ÓÊÕÓÊ¼ş³¬Ê±"
+msgstr "SMTP æ¥æ”¶é‚®ä»¶è¶…æ—¶"
 
 msgid "SMTP Remote Deliver Timeout"
-msgstr "SMTP ·¢ËÍÓÊ¼ş³¬Ê±"
+msgstr "SMTP å‘é€é‚®ä»¶è¶…æ—¶"
 
 msgid "SMTP connect"
-msgstr "SMTP Á¬½Ó×´Ì¬Í¼"
+msgstr "SMTP è¿æ¥çŠ¶æ€å›¾"
 
 msgid "SMTP connections no more than"
-msgstr "×î¶àÁ¬½Ó"
+msgstr "æœ€å¤šè¿æ¥"
 
 msgid "SMTP per IP"
-msgstr "Í¬Ê±Á¬½ÓÊı"
+msgstr "åŒæ—¶è¿æ¥æ•°"
 
 msgid "SORBS Spam and Open Relay Blocking System"
 msgstr "SORBS Spam and Open Relay Blocking System"
 
 msgid "SQLite Database File is not exist"
-msgstr "Êı¾İ¿âÎÄ¼ş²»´æÔÚ"
+msgstr "æ•°æ®åº“æ–‡ä»¶ä¸å­˜åœ¨"
 
 msgid "SQLite Database File is not exist: "
-msgstr "Êı¾İ¿âÎÄ¼ş²»´æÔÚ"
+msgstr "æ•°æ®åº“æ–‡ä»¶ä¸å­˜åœ¨"
 
 msgid "SURBL Spam URI Realtime Blocklist"
 msgstr "SURBL Spam URI Realtime Blocklist"
 
 msgid "Same "
-msgstr "ÏàÍ¬µÄ"
+msgstr "ç›¸åŒçš„"
 
 msgid "Sample Check"
-msgstr "³éÑù¼ì²é"
+msgstr "æŠ½æ ·æ£€æŸ¥"
 
 msgid "Sample Rate"
-msgstr "³éÑù¸ÅÂÊ"
+msgstr "æŠ½æ ·æ¦‚ç‡"
 
 msgid "Save"
-msgstr "±£´æ"
+msgstr "ä¿å­˜"
 
 msgid "Search"
-msgstr "²éÕÒ"
+msgstr "æŸ¥æ‰¾"
 
 msgid "Search User"
-msgstr "²éÕÒÓÃ»§"
+msgstr "æŸ¥æ‰¾ç”¨æˆ·"
 
 msgid "Second(s)"
-msgstr "Ãë"
+msgstr "ç§’"
 
 msgid "Seconds"
-msgstr "Ãë"
+msgstr "ç§’"
 
 msgid "Select"
-msgstr "Ñ¡Ôñ"
+msgstr "é€‰æ‹©"
 
 msgid "Select All"
-msgstr "È«²¿Ñ¡ÖĞ"
+msgstr "å…¨éƒ¨é€‰ä¸­"
 
 msgid "Select Group the mail should send to, or will send to all users: "
-msgstr "ÇëÖ¸¶¨´ı·¢ËÍµÄÓÃ»§×é,Èô²»Ñ¡ÔñÔòĞÅ¼ş½«·¢¸øÈ«²¿ÓÃ»§£º"
+msgstr "è¯·æŒ‡å®šå¾…å‘é€çš„ç”¨æˆ·ç»„,è‹¥ä¸é€‰æ‹©åˆ™ä¿¡ä»¶å°†å‘ç»™å…¨éƒ¨ç”¨æˆ·ï¼š"
 
 msgid "Selected Archive"
-msgstr "Ñ¡Ôñ¹éµµ"
+msgstr "é€‰æ‹©å½’æ¡£"
 
 msgid "Selected Audit"
-msgstr "Ñ¡ÔñÉó¼Æ"
+msgstr "é€‰æ‹©å®¡è®¡"
 
 msgid "Self-Learning: "
-msgstr "×ÔÑ§Ï°£º"
+msgstr "è‡ªå­¦ä¹ ï¼š"
 
 msgid "Send Maillist"
-msgstr "·¢ËÍÈºÌåĞÅ¼ş"
+msgstr "å‘é€ç¾¤ä½“ä¿¡ä»¶"
 
 msgid "Send Success !"
-msgstr "·¢ËÍ³É¹¦"
+msgstr "å‘é€æˆåŠŸ"
 
 msgid "Send to the following email addresses"
-msgstr "·¢ÍùÌØ¶¨µØÖ·"
+msgstr "å‘å¾€ç‰¹å®šåœ°å€"
 
 msgid "Sender"
-msgstr "·¢ĞÅÈË"
+msgstr "å‘ä¿¡äºº"
 
 msgid "Sender IP"
-msgstr "Ô´¿Í»§¶ËIP"
+msgstr "æºå®¢æˆ·ç«¯IP"
 
 msgid "Sender Whitelist"
-msgstr "·¢¼şÈË°×Ãûµ¥"
+msgstr "å‘ä»¶äººç™½åå•"
 
 msgid "Sending Address Check"
-msgstr "¼ì²é·¢ËÍµØÖ·"
+msgstr "æ£€æŸ¥å‘é€åœ°å€"
 
 msgid "Sensitive"
-msgstr "Çø·Ö´óĞ¡Ğ´"
+msgstr "åŒºåˆ†å¤§å°å†™"
 
 msgid "Sent Records"
-msgstr "·¢ËÍ¼ÇÂ¼"
+msgstr "å‘é€è®°å½•"
 
 msgid "Sent Time"
-msgstr "·¢ËÍÊ±¼ä"
+msgstr "å‘é€æ—¶é—´"
 
 msgid "Sent Times"
-msgstr "·¢ËÍ´ÎÊı"
+msgstr "å‘é€æ¬¡æ•°"
 
 msgid "SerialNo & License"
-msgstr "ĞòÁĞºÅºÍĞí¿ÉÖ¤"
+msgstr "åºåˆ—å·å’Œè®¸å¯è¯"
 
 msgid "Server IP"
-msgstr "ÕóµØIP"
+msgstr "é˜µåœ°IP"
 
 msgid "Server Port"
-msgstr "ÕóµØ¶Ë¿Ú"
+msgstr "é˜µåœ°ç«¯å£"
 
 msgid "Shutdown"
-msgstr "¹Ø»ú"
+msgstr "å…³æœº"
 
 msgid "Single IP Match"
-msgstr "µ¥¸öIPµØÖ·Æ¥Åä"
+msgstr "å•ä¸ªIPåœ°å€åŒ¹é…"
 
 msgid "Size"
-msgstr "ÓÊ¼ş´óĞ¡"
+msgstr "é‚®ä»¶å¤§å°"
 
 msgid "Size Value"
-msgstr "ÊıÖµÒªÇó"
+msgstr "æ•°å€¼è¦æ±‚"
 
 msgid "Some Data Format is incorrect"
-msgstr "ÓĞ²»·ûºÏ¸ñÊ½µÄÊı¾İÏî"
+msgstr "æœ‰ä¸ç¬¦åˆæ ¼å¼çš„æ•°æ®é¡¹"
 
 msgid "Sorry, This Product has no AntiSpam Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞÀ¬»øÓÊ¼şÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰åƒåœ¾é‚®ä»¶å¼•æ“License"
 
 msgid "Sorry, This Product has no AntiVirus Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ·À²¡¶¾ÓÊ¼şÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰é˜²ç—…æ¯’é‚®ä»¶å¼•æ“License"
 
 msgid "Sorry, This Product has no Archive Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ¹éµµÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰å½’æ¡£å¼•æ“License"
 
 msgid "Sorry, This Product has no Content Filter Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞÄÚÈİ¹ıÂËÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰å†…å®¹è¿‡æ»¤å¼•æ“License"
 
 msgid "Sorry, This Product has no Gateway Mode License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞÍ¸Ã÷Íø¹ØÄ£Ê½License"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰é€æ˜ç½‘å…³æ¨¡å¼License"
 
 msgid "Sorry, This Product has no Overrun Limit Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ¶¯Ì¬ÏŞÖÆÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰åŠ¨æ€é™åˆ¶å¼•æ“License"
 
 msgid "Sorry, This Product has no Policy Auto-Download Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ¹«°²ÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰å…¬å®‰å¼•æ“License"
 
 msgid "Sorry, This Product has no Quarantine Filter Engine License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ¸ôÀëÒıÇæLicense"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰éš”ç¦»å¼•æ“License"
 
 msgid "Sorry, This Product has no Standalone Server Mode License"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ã»ÓĞ¶ÀÁ¢·şÎñÆ÷Ä£Ê½License"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿæ²¡æœ‰ç‹¬ç«‹æœåŠ¡å™¨æ¨¡å¼License"
 
 msgid "Spam"
-msgstr "À¬»øÓÊ¼ş"
+msgstr "åƒåœ¾é‚®ä»¶"
 
 msgid "Spam Mails"
-msgstr "À¬»øÓÊ¼şÊı"
+msgstr "åƒåœ¾é‚®ä»¶æ•°"
 
 msgid "Spam Processing"
-msgstr "À¬»ø´¦Àí"
+msgstr "åƒåœ¾å¤„ç†"
 
 msgid "Spam Subject Tag Text: "
-msgstr "À¬»øÓÊ¼şµÄÖ÷Ìâ±ê¼Ç£º"
+msgstr "åƒåœ¾é‚®ä»¶çš„ä¸»é¢˜æ ‡è®°ï¼š"
 
 msgid "Spam Treatment"
-msgstr "À¬»ø´¦Àí"
+msgstr "åƒåœ¾å¤„ç†"
 
 msgid "SpamCop Blocklist"
 msgstr "SpamCop Blocklist"
@@ -1985,718 +1985,718 @@ msgid "Spamhaus XBL+SBL"
 msgstr "Spamhaus XBL+SBL"
 
 msgid "Stand by format 192.168.1.1 or 192.168.1.0/24, one per line."
-msgstr "Ê¹ÓÃ192.168.1.1»ò192.168.1.0/24ÕâÑùµÄ¸ñÊ½£¬Ã¿ĞĞÒ»¸ö¡£"
+msgstr "ä½¿ç”¨192.168.1.1æˆ–192.168.1.0/24è¿™æ ·çš„æ ¼å¼ï¼Œæ¯è¡Œä¸€ä¸ªã€‚"
 
 msgid "Standalone Server"
-msgstr "¶ÀÁ¢·şÎñÆ÷¹ÜÀí"
+msgstr "ç‹¬ç«‹æœåŠ¡å™¨ç®¡ç†"
 
 msgid "Standalone Server Mode"
-msgstr "¶ÀÁ¢·şÎñÆ÷Ä£Ê½"
+msgstr "ç‹¬ç«‹æœåŠ¡å™¨æ¨¡å¼"
 
 msgid "Start Time"
-msgstr "¿ªÊ¼Ê±¼ä"
+msgstr "å¼€å§‹æ—¶é—´"
 
 msgid "Start Time cannot be later than End Time"
-msgstr "¿ªÊ¼Ê±¼ä²»ÄÜ´óÓÚ½áÊøÊ±¼ä£¡"
+msgstr "å¼€å§‹æ—¶é—´ä¸èƒ½å¤§äºç»“æŸæ—¶é—´ï¼"
 
 msgid "String Exact Match"
-msgstr "×Ö·û´®¾«È·Æ¥Åä"
+msgstr "å­—ç¬¦ä¸²ç²¾ç¡®åŒ¹é…"
 
 msgid "String Include"
-msgstr "×Ö·û´®Ä£ºıÆ¥Åä"
+msgstr "å­—ç¬¦ä¸²æ¨¡ç³ŠåŒ¹é…"
 
 msgid "Strip Attachment"
-msgstr "°şÀë¸½¼ş"
+msgstr "å‰¥ç¦»é™„ä»¶"
 
 msgid "Sub-Rules logic"
-msgstr "¹æÔòÄÚ²¿Âß¼­¹ØÏµ"
+msgstr "è§„åˆ™å†…éƒ¨é€»è¾‘å…³ç³»"
 
 msgid "Subject"
-msgstr "Ö÷Ìâ"
+msgstr "ä¸»é¢˜"
 
 msgid "Subject Check"
-msgstr "²ì¿´ÓÊ¼şÖ÷Ìâ"
+msgstr "å¯Ÿçœ‹é‚®ä»¶ä¸»é¢˜"
 
 msgid "Subject Whitelist"
-msgstr "Ö÷Ìâ°×Ãûµ¥"
+msgstr "ä¸»é¢˜ç™½åå•"
 
 msgid "Submit"
-msgstr "Ìá½»"
+msgstr "æäº¤"
 
 msgid "Succeed"
-msgstr "³É¹¦"
+msgstr "æˆåŠŸ"
 
 msgid "Succeeded"
-msgstr "³É¹¦"
+msgstr "æˆåŠŸ"
 
 msgid "Success"
-msgstr "²Ù×÷³É¹¦"
+msgstr "æ“ä½œæˆåŠŸ"
 
 msgid "Suggestion time-set is no more than 1800 seconds."
-msgstr "½¨ÒéÊ±¼äÉèÖÃ²»Òª´óÓÚ 1800 Ãë"
+msgstr "å»ºè®®æ—¶é—´è®¾ç½®ä¸è¦å¤§äº 1800 ç§’"
 
 msgid "Super"
-msgstr "³¬¼¶"
+msgstr "è¶…çº§"
 
 msgid "Switch"
-msgstr "¿ª¹Ø"
+msgstr "å¼€å…³"
 
 msgid "Switch Board"
-msgstr "»ù±¾ÉèÖÃ"
+msgstr "åŸºæœ¬è®¾ç½®"
 
 msgid "Sync"
-msgstr "Í¬²½±¾µØ"
+msgstr "åŒæ­¥æœ¬åœ°"
 
 msgid "System"
-msgstr "ÏµÍ³¹ÜÀí"
+msgstr "ç³»ç»Ÿç®¡ç†"
 
 msgid "System Clock"
-msgstr "ÏµÍ³Ê±ÖÓ"
+msgstr "ç³»ç»Ÿæ—¶é’Ÿ"
 
 msgid "System Configuration File Upload/Download"
-msgstr "ÏµÍ³ÅäÖÃÎÄ¼şÉÏ/ÏÂÔØ"
+msgstr "ç³»ç»Ÿé…ç½®æ–‡ä»¶ä¸Š/ä¸‹è½½"
 
 msgid "System Error"
-msgstr "ÏµÍ³´íÎó"
+msgstr "ç³»ç»Ÿé”™è¯¯"
 
 msgid "System Main Engine Switch"
-msgstr "ÏµÍ³×ÜÒıÇæ¿ª¹Ø"
+msgstr "ç³»ç»Ÿæ€»å¼•æ“å¼€å…³"
 
 msgid "System Management"
-msgstr "ÏµÍ³¹ÜÀí"
+msgstr "ç³»ç»Ÿç®¡ç†"
 
 msgid "System Menu"
-msgstr "ÏµÍ³²Ëµ¥"
+msgstr "ç³»ç»Ÿèœå•"
 
 msgid "System Mode"
-msgstr "ÔËĞĞÄ£Ê½"
+msgstr "è¿è¡Œæ¨¡å¼"
 
 msgid "System Reserve Mail Domain, can not Add !"
-msgstr "ÏµÍ³±£ÁôÓò£¬²»¿ÉÌí¼Ó£¡"
+msgstr "ç³»ç»Ÿä¿ç•™åŸŸï¼Œä¸å¯æ·»åŠ ï¼"
 
 msgid "System Running Mode"
-msgstr "ÏµÍ³ÔËĞĞÄ£Ê½"
+msgstr "ç³»ç»Ÿè¿è¡Œæ¨¡å¼"
 
 msgid "System Status"
-msgstr "ÏµÍ³×´Ì¬"
+msgstr "ç³»ç»ŸçŠ¶æ€"
 
 msgid "System Upgrade"
-msgstr "ÏµÍ³Éı¼¶"
+msgstr "ç³»ç»Ÿå‡çº§"
 
 msgid "System error"
-msgstr "ÏµÍ³´íÎó"
+msgstr "ç³»ç»Ÿé”™è¯¯"
 
 msgid "System has no data currently"
-msgstr "ÏµÍ³Ã»ÓĞµ±Ç°Êı¾İ"
+msgstr "ç³»ç»Ÿæ²¡æœ‰å½“å‰æ•°æ®"
 
 msgid "System is REBOOTing, Please waiting......"
-msgstr "ÏµÍ³ÕıÔÚÖØÆô£¬ÇëÄúÄÍĞÄµÈºò¡­¡­"
+msgstr "ç³»ç»Ÿæ­£åœ¨é‡å¯ï¼Œè¯·æ‚¨è€å¿ƒç­‰å€™â€¦â€¦"
 
 msgid "System is SHUTDOWN......"
-msgstr "ÏµÍ³ÕıÔÚ¹Ø±Õ¡­¡­"
+msgstr "ç³»ç»Ÿæ­£åœ¨å…³é—­â€¦â€¦"
 
 msgid "TCP Connection"
-msgstr "TCP Á¬½Ó×´Ì¬Í¼"
+msgstr "TCP è¿æ¥çŠ¶æ€å›¾"
 
 msgid "TCP connect"
-msgstr "TCP Á¬½Ó×´Ì¬Í¼"
+msgstr "TCP è¿æ¥çŠ¶æ€å›¾"
 
 msgid "Tag"
-msgstr "±ê¼ÇÍ¨¹ı"
+msgstr "æ ‡è®°é€šè¿‡"
 
 msgid "Tag & Accept"
-msgstr "±ê¼ÇÍ¨¹ı"
+msgstr "æ ‡è®°é€šè¿‡"
 
 msgid "Tag & Pass"
-msgstr "±ê¼ÇºóÍ¨¹ı"
+msgstr "æ ‡è®°åé€šè¿‡"
 
 msgid "Tag Reason on header"
-msgstr "ÔÚÓÊ¼şÍ·±ê¼ÇÔ­Òò"
+msgstr "åœ¨é‚®ä»¶å¤´æ ‡è®°åŸå› "
 
 msgid "Tag on Subject"
-msgstr "ÔÚÖ÷ÌâÉÏ´ò±ê¼Ç"
+msgstr "åœ¨ä¸»é¢˜ä¸Šæ‰“æ ‡è®°"
 
 msgid "Tag on header"
-msgstr "ÔÚÓÊ¼şÍ·ÉÏ´ò±ê¼Ç"
+msgstr "åœ¨é‚®ä»¶å¤´ä¸Šæ‰“æ ‡è®°"
 
 msgid "Text File"
-msgstr "ÎÄ±¾ÀàĞÍ"
+msgstr "æ–‡æœ¬ç±»å‹"
 
 msgid "The License has expired"
-msgstr "Ğí¿ÉÖ¤ÒÑ¾­Ê§Ğ§"
+msgstr "è®¸å¯è¯å·²ç»å¤±æ•ˆ"
 
 msgid "The License is not match your product Version!"
-msgstr "License°æ±¾´íÎó£¡"
+msgstr "Licenseç‰ˆæœ¬é”™è¯¯ï¼"
 
 msgid "The Product Serial No: "
-msgstr "±¾Éè±¸ĞòÁĞºÅ£º"
+msgstr "æœ¬è®¾å¤‡åºåˆ—å·ï¼š"
 
 msgid "This Group Number already exists !"
-msgstr "ÏàÍ¬µÄ·ÖÀà±àºÅÒÑ´æÔÚ£¡"
+msgstr "ç›¸åŒçš„åˆ†ç±»ç¼–å·å·²å­˜åœ¨ï¼"
 
 msgid "This Mail Domain has existed !"
-msgstr "¸ÃÓÊ¼şÓòÒÑ´æÔÚ£¡"
+msgstr "è¯¥é‚®ä»¶åŸŸå·²å­˜åœ¨ï¼"
 
 msgid "This Product License is OK! "
-msgstr "±¾Éè±¸ License Ğí¿ÉÕıÈ·£¡"
+msgstr "æœ¬è®¾å¤‡ License è®¸å¯æ­£ç¡®ï¼"
 
 msgid ""
 "This Product has not get valid License, Please contact with your product "
 "provider."
-msgstr "±¾Éè±¸ÉĞÎŞ¿ÉÓÃµÄ License Ğí¿É£¬ÇëÁªÏµÏúÊÛÉÌ»ñÈ¡ License Ğí¿ÉÎÄ¼ş¡£"
+msgstr "æœ¬è®¾å¤‡å°šæ— å¯ç”¨çš„ License è®¸å¯ï¼Œè¯·è”ç³»é”€å”®å•†è·å– License è®¸å¯æ–‡ä»¶ã€‚"
 
 msgid "This Rule Number Already Exists"
-msgstr "´Ë¹æÔò±àºÅÒÑ´æÔÚ"
+msgstr "æ­¤è§„åˆ™ç¼–å·å·²å­˜åœ¨"
 
 msgid "This User can not Login from this IP"
-msgstr "¸ÃÕËºÅ²»ÄÜ´Ó´ËIPµØÖ·µÇÂ¼"
+msgstr "è¯¥è´¦å·ä¸èƒ½ä»æ­¤IPåœ°å€ç™»å½•"
 
 msgid "This User is not allow Login"
-msgstr "¸ÃÕËºÅµÇÂ½È¨ÏŞ±»½ûÖ¹"
+msgstr "è¯¥è´¦å·ç™»é™†æƒé™è¢«ç¦æ­¢"
 
 msgid "This UserName is not existed"
-msgstr "ÓÃ»§ÕËºÅ²»´æÔÚ"
+msgstr "ç”¨æˆ·è´¦å·ä¸å­˜åœ¨"
 
 msgid "This will flush all logs, Continue?"
-msgstr "¼´½«Çå¿ÕÈÕÖ¾ÎÄ¼ş£¬È·¶¨Âğ£¿"
+msgstr "å³å°†æ¸…ç©ºæ—¥å¿—æ–‡ä»¶ï¼Œç¡®å®šå—ï¼Ÿ"
 
 msgid "Time"
-msgstr "Ê±¼ä"
+msgstr "æ—¶é—´"
 
 msgid ""
 "Time,Direction,Last Relay IP,Mail From,To,Subject,Size,Virus,Virus Name,"
 "Action,Spam,Reason,Action,Rule,ActionType,Param,Overrun,Description,Audit,"
 "Description"
 msgstr ""
-"Ê±¼ä,ÓÊ¼ş·½Ïò,·¢¼şÈËIP,·¢¼şÈËµØÖ·,ÊÕ¼şÈËµØÖ·,Ö÷Ìâ,³ß´ç,²¡¶¾,²¡¶¾Ãû,²¡¶¾¶¯×÷,"
-"À¬»ø¶È,À¬»øÔ­Òò,À¬»ø¶¯×÷,¹æÔò,¶¯×÷ÀàĞÍ,¶¯×÷²ÎÊı,¶¯Ì¬ÏŞÖÆ,¶¯Ì¬ÃèÊö,Éó¼Æ,Éó¼ÆÃè"
-"Êö"
+"æ—¶é—´,é‚®ä»¶æ–¹å‘,å‘ä»¶äººIP,å‘ä»¶äººåœ°å€,æ”¶ä»¶äººåœ°å€,ä¸»é¢˜,å°ºå¯¸,ç—…æ¯’,ç—…æ¯’å,ç—…æ¯’åŠ¨ä½œ,"
+"åƒåœ¾åº¦,åƒåœ¾åŸå› ,åƒåœ¾åŠ¨ä½œ,è§„åˆ™,åŠ¨ä½œç±»å‹,åŠ¨ä½œå‚æ•°,åŠ¨æ€é™åˆ¶,åŠ¨æ€æè¿°,å®¡è®¡,å®¡è®¡æ"
+"è¿°"
 
 msgid "To"
-msgstr "ÊÕ¼şÈË"
+msgstr "æ”¶ä»¶äºº"
 
 msgid "To,CC,Bcc Total"
-msgstr "TO,CC,BCCÊÕ¼şÈË×ÜÊı"
+msgstr "TO,CC,BCCæ”¶ä»¶äººæ€»æ•°"
 
 msgid "Too Huge Mail"
-msgstr "³¬´óÓÊ¼şÌáĞÑ"
+msgstr "è¶…å¤§é‚®ä»¶æé†’"
 
 msgid "Too Many Mails"
-msgstr "¹ıÁ¿ÓÊ¼şÌáĞÑ"
+msgstr "è¿‡é‡é‚®ä»¶æé†’"
 
 msgid "Too many pretect domains"
-msgstr "±£»¤Óò¸öÊı³¬³öÉÏÏŞ"
+msgstr "ä¿æŠ¤åŸŸä¸ªæ•°è¶…å‡ºä¸Šé™"
 
 msgid "Too many protect domains"
-msgstr "±£»¤Óò¸öÊı³¬³öÉÏÏŞ"
+msgstr "ä¿æŠ¤åŸŸä¸ªæ•°è¶…å‡ºä¸Šé™"
 
 msgid "Total"
-msgstr "¹²"
+msgstr "å…±"
 
 msgid "Total Mails"
-msgstr "×ÜÓÊ¼şÊı"
+msgstr "æ€»é‚®ä»¶æ•°"
 
 msgid "Total number"
-msgstr "×ÜÊı"
+msgstr "æ€»æ•°"
 
 msgid "Traceability Analysis"
-msgstr "¿É×·²éĞÔ¼ì²é"
+msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥"
 
 msgid "Traceable"
-msgstr "¿É×·²éĞÔ¼ì²é"
+msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥"
 
 msgid "Type"
-msgstr "ÀàĞÍ"
+msgstr "ç±»å‹"
 
 msgid "URI Black List, Check if URI in Email is included in the Blocklist."
-msgstr "URI Black List, ¼ì²éÓÊ¼şÄÚÈİ°üº¬µÄURIÊÇ·ñÁĞÔÚºÚÃûµ¥ÖĞ¡£"
+msgstr "URI Black List, æ£€æŸ¥é‚®ä»¶å†…å®¹åŒ…å«çš„URIæ˜¯å¦åˆ—åœ¨é»‘åå•ä¸­ã€‚"
 
 msgid "Unit"
-msgstr "ÓÃ»§µ¥Î»"
+msgstr "ç”¨æˆ·å•ä½"
 
 msgid "Unit which User work"
-msgstr "ÓÃ»§ËùÔÚµÄµ¥Î»"
+msgstr "ç”¨æˆ·æ‰€åœ¨çš„å•ä½"
 
 msgid "Unknown"
-msgstr "Î´Öª"
+msgstr "æœªçŸ¥"
 
 msgid "Unkonwn quarantine time out action"
-msgstr "Î´ÖªµÄ¸ôÀë³¬Ê±¶¯×÷"
+msgstr "æœªçŸ¥çš„éš”ç¦»è¶…æ—¶åŠ¨ä½œ"
 
 msgid "Unkown list type"
-msgstr "ÎŞĞ§µÄºÚ°×Ãûµ¥²ÎÊı"
+msgstr "æ— æ•ˆçš„é»‘ç™½åå•å‚æ•°"
 
 msgid "Update Time"
-msgstr "¸üĞÂÊ±¼ä"
+msgstr "æ›´æ–°æ—¶é—´"
 
 msgid "Upgrade"
-msgstr "Éı¼¶¸üĞÂ"
+msgstr "å‡çº§æ›´æ–°"
 
 msgid "Upgrade Date"
-msgstr "¸üĞÂÈÕÆÚ"
+msgstr "æ›´æ–°æ—¥æœŸ"
 
 msgid "Upgrade Fail!"
-msgstr "Éı¼¶Ê§°Ü£¡"
+msgstr "å‡çº§å¤±è´¥ï¼"
 
 msgid "Upgrade History"
-msgstr "ÏµÍ³¸üĞÂ¼ÇÂ¼"
+msgstr "ç³»ç»Ÿæ›´æ–°è®°å½•"
 
 msgid "Upgrade Package"
-msgstr "Éı¼¶°ü"
+msgstr "å‡çº§åŒ…"
 
 msgid "Upgrade Release"
-msgstr "Éı¼¶ºÅ"
+msgstr "å‡çº§å·"
 
 msgid "Upgrade Success, need Reboot system."
-msgstr "Éı¼¶³É¹¦£¬ÖØĞÂÆô¶¯ÏµÍ³ºóÉúĞ§"
+msgstr "å‡çº§æˆåŠŸï¼Œé‡æ–°å¯åŠ¨ç³»ç»Ÿåç”Ÿæ•ˆ"
 
 msgid "Upgrade succeeded!"
-msgstr "Éı¼¶³É¹¦£¡"
+msgstr "å‡çº§æˆåŠŸï¼"
 
 msgid "Upload"
-msgstr "ÉÏÔØ"
+msgstr "ä¸Šè½½"
 
 msgid "Upload Fail!"
-msgstr "ÉÏÔØÎÄ¼şÊ§°Ü£¡"
+msgstr "ä¸Šè½½æ–‡ä»¶å¤±è´¥ï¼"
 
 msgid "Upload License"
-msgstr "Ğí¿ÉÖ¤ÉÏÔØ"
+msgstr "è®¸å¯è¯ä¸Šè½½"
 
 msgid "Upload Succeed!"
-msgstr "ÉÏÔØ³É¹¦£¡"
+msgstr "ä¸Šè½½æˆåŠŸï¼"
 
 msgid "Upload Upgrade Package"
-msgstr "ÉÏÔØÉı¼¶°ü"
+msgstr "ä¸Šè½½å‡çº§åŒ…"
 
 msgid "Upload error"
-msgstr "ÉÏÔØ´íÎó"
+msgstr "ä¸Šè½½é”™è¯¯"
 
 msgid "Upload quarantine user file"
-msgstr "ÉÏÔØÓÃ»§ÁĞ±íÎÄ¼ş"
+msgstr "ä¸Šè½½ç”¨æˆ·åˆ—è¡¨æ–‡ä»¶"
 
 msgid "Uploading Upgrade Package, waiting......"
-msgstr "Éı¼¶°üÔØÈëÖĞ£¬ÇëÉÔºò¡­¡­"
+msgstr "å‡çº§åŒ…è½½å…¥ä¸­ï¼Œè¯·ç¨å€™â€¦â€¦"
 
 msgid "Use System DNS Server"
-msgstr "Ê¹ÓÃÏµÍ³ÄÚÖÃÓòÃû½âÎöÏµÍ³"
+msgstr "ä½¿ç”¨ç³»ç»Ÿå†…ç½®åŸŸåè§£æç³»ç»Ÿ"
 
 msgid "Used space"
-msgstr "Õ¼ÓÃ¿Õ¼ä"
+msgstr "å ç”¨ç©ºé—´"
 
 msgid "User Counts in Virtual Mail Domain has exceed Limit"
-msgstr "ĞéÄâÓòÓÃ»§ÊıÁ¿³¬¹ıÉÏÏŞ"
+msgstr "è™šæ‹ŸåŸŸç”¨æˆ·æ•°é‡è¶…è¿‡ä¸Šé™"
 
 msgid "User Define File Type"
-msgstr "×Ô¶¨ÒåÎÄ¼şÀàĞÍ"
+msgstr "è‡ªå®šä¹‰æ–‡ä»¶ç±»å‹"
 
 msgid "User Group Add Fail"
-msgstr "Ìí¼ÓÓÃ»§×éÊ§°Ü¡£"
+msgstr "æ·»åŠ ç”¨æˆ·ç»„å¤±è´¥ã€‚"
 
 msgid "User Group Management"
-msgstr "ÓÃ»§×é¹ÜÀí"
+msgstr "ç”¨æˆ·ç»„ç®¡ç†"
 
 msgid "User Group Modify Fail"
-msgstr "ĞŞ¸ÄÓÃ»§×éÊ§°Ü¡£"
+msgstr "ä¿®æ”¹ç”¨æˆ·ç»„å¤±è´¥ã€‚"
 
 msgid "User Group Name"
-msgstr "ÓÃ»§×éÃû"
+msgstr "ç”¨æˆ·ç»„å"
 
 msgid "User List"
-msgstr "ÓÃ»§ÁĞ±í"
+msgstr "ç”¨æˆ·åˆ—è¡¨"
 
 msgid "User Management"
-msgstr "ÓÃ»§¹ÜÀí"
+msgstr "ç”¨æˆ·ç®¡ç†"
 
 msgid "User Policy"
-msgstr "ÓÃ»§¹æÔòÊı¾İ¿â"
+msgstr "ç”¨æˆ·è§„åˆ™æ•°æ®åº“"
 
 msgid "User Quota"
-msgstr "ÓÃ»§ÏŞ¶î"
+msgstr "ç”¨æˆ·é™é¢"
 
 msgid "User Quota must be Positive Integer"
-msgstr "ÓÃ»§¿Õ¼äÏŞ¶î±ØĞëÉèÖÃÎªÕıÕûÊı"
+msgstr "ç”¨æˆ·ç©ºé—´é™é¢å¿…é¡»è®¾ç½®ä¸ºæ­£æ•´æ•°"
 
 msgid "User Quota(MB)"
-msgstr "ÓÊÏä´óĞ¡(MB)"
+msgstr "é‚®ç®±å¤§å°(MB)"
 
 msgid "User list file is too large"
-msgstr "ÓÃ»§ÁĞ±íÎÄ¼şÌ«´ó"
+msgstr "ç”¨æˆ·åˆ—è¡¨æ–‡ä»¶å¤ªå¤§"
 
 msgid "User list file was not entirely uploaded"
-msgstr "ÓÃ»§ÁĞ±íÎÄ¼şÃ»ÓĞÍêÈ«ÉÏÔØ"
+msgstr "ç”¨æˆ·åˆ—è¡¨æ–‡ä»¶æ²¡æœ‰å®Œå…¨ä¸Šè½½"
 
 msgid "User's ID Card Number"
-msgstr "ÓÃ»§µÄÉí·İºÅÂë"
+msgstr "ç”¨æˆ·çš„èº«ä»½å·ç "
 
 msgid "User's Mailbox Quota"
-msgstr "ÓÃ»§µÄÓÊÏä´óĞ¡"
+msgstr "ç”¨æˆ·çš„é‚®ç®±å¤§å°"
 
 msgid "User's Position"
-msgstr "ÓÃ»§µÄ¸ÚÎ»"
+msgstr "ç”¨æˆ·çš„å²—ä½"
 
 msgid "User's RealName"
-msgstr "ÓÃ»§µÄĞÕÃû"
+msgstr "ç”¨æˆ·çš„å§“å"
 
 msgid "UserName"
-msgstr "ÕËºÅ"
+msgstr "è´¦å·"
 
 msgid "UserName Error"
-msgstr "´íÎóµÄÕÊºÅ"
+msgstr "é”™è¯¯çš„å¸å·"
 
 msgid "Username"
-msgstr "ÕËºÅ"
+msgstr "è´¦å·"
 
 msgid ""
 "Username must use digits and lower-case latin characters, and start with "
 "characters."
-msgstr "ÇëÊ¹ÓÃĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸¼°Êı×ÖÆğÕÊºÅÃû£¬±ØĞëÊ¹ÓÃÓ¢ÎÄ×ÖÄ¸¿ªÍ·¡£"
+msgstr "è¯·ä½¿ç”¨å°å†™è‹±æ–‡å­—æ¯åŠæ•°å­—èµ·å¸å·åï¼Œå¿…é¡»ä½¿ç”¨è‹±æ–‡å­—æ¯å¼€å¤´ã€‚"
 
 msgid ""
 "Username must use digits and lower-case latin charactesr, and start with "
 "characters."
-msgstr "ÇëÊ¹ÓÃĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸¼°Êı×ÖÆğÕÊºÅÃû£¬±ØĞëÊ¹ÓÃÓ¢ÎÄ×ÖÄ¸¿ªÍ·¡£"
+msgstr "è¯·ä½¿ç”¨å°å†™è‹±æ–‡å­—æ¯åŠæ•°å­—èµ·å¸å·åï¼Œå¿…é¡»ä½¿ç”¨è‹±æ–‡å­—æ¯å¼€å¤´ã€‚"
 
 msgid "Username or Password is invalid, please Input again"
-msgstr "ÓÃ»§Ãû»òÃÜÂë´íÎó,ÇëÖØĞÂÊäÈë"
+msgstr "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯,è¯·é‡æ–°è¾“å…¥"
 
 msgid "Users in BlackList is trying to Login"
-msgstr "ºÚÃûµ¥ÓÃ»§³¢ÊÔµÇÂ¼"
+msgstr "é»‘åå•ç”¨æˆ·å°è¯•ç™»å½•"
 
 msgid "Venus Info Tech Inc."
-msgstr "ÆôÃ÷ĞÇ³½ĞÅÏ¢¼¼ÊõÓĞÏŞ¹«Ë¾"
+msgstr "å¯æ˜æ˜Ÿè¾°ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸"
 
 msgid "VenusTech AntiSpam System"
-msgstr "Ìì³Î·´ÓÊ¼şÀ¬»øÏµÍ³ ¹ÜÀíÏµÍ³"
+msgstr "å¤©æ¾„åé‚®ä»¶åƒåœ¾ç³»ç»Ÿ ç®¡ç†ç³»ç»Ÿ"
 
 msgid "View"
-msgstr "²é¿´"
+msgstr "æŸ¥çœ‹"
 
 msgid "View Mails Decoded"
-msgstr "²ì¿´½âÂëÓÊ¼ş"
+msgstr "å¯Ÿçœ‹è§£ç é‚®ä»¶"
 
 msgid "View Mails unDecoded"
-msgstr "²ì¿´Î´½âÂëÓÊ¼ş"
+msgstr "å¯Ÿçœ‹æœªè§£ç é‚®ä»¶"
 
 msgid "View decoded mail"
-msgstr "²é¿´½âÂëÓÊ¼ş"
+msgstr "æŸ¥çœ‹è§£ç é‚®ä»¶"
 
 msgid "View mail source"
-msgstr "²é¿´Î´½âÂëÓÊ¼ş"
+msgstr "æŸ¥çœ‹æœªè§£ç é‚®ä»¶"
 
 msgid "Virtual Mail Domain Counts has exceed Limit"
-msgstr "×î´óĞéÄâÓÊ¼şÓòÊıÁ¿ÒÑ´ïÉÏÏŞ"
+msgstr "æœ€å¤§è™šæ‹Ÿé‚®ä»¶åŸŸæ•°é‡å·²è¾¾ä¸Šé™"
 
 msgid "Virtual Mail Domain User Quota has exceed Limit"
-msgstr "ĞéÄâÓòÓÃ»§¿Õ¼äÏŞ¶îÊıÁ¿³¬¹ıÉÏÏŞ"
+msgstr "è™šæ‹ŸåŸŸç”¨æˆ·ç©ºé—´é™é¢æ•°é‡è¶…è¿‡ä¸Šé™"
 
 msgid "Virus"
-msgstr "²¡¶¾ÓÊ¼ş"
+msgstr "ç—…æ¯’é‚®ä»¶"
 
 msgid "Virus Deal"
-msgstr "²¡¶¾´¦Àí"
+msgstr "ç—…æ¯’å¤„ç†"
 
 msgid "Virus Identification"
-msgstr "²¡¶¾Ê¶±ğ"
+msgstr "ç—…æ¯’è¯†åˆ«"
 
 msgid "Virus Mail Subject Tag Text: "
-msgstr "²¡¶¾ÓÊ¼şµÄÖ÷Ìâ±ê¼Ç£º"
+msgstr "ç—…æ¯’é‚®ä»¶çš„ä¸»é¢˜æ ‡è®°ï¼š"
 
 msgid "Virus Mail Treatment"
-msgstr "²¡¶¾´¦Àí"
+msgstr "ç—…æ¯’å¤„ç†"
 
 msgid "Virus Mails"
-msgstr "²¡¶¾ÓÊ¼şÊı"
+msgstr "ç—…æ¯’é‚®ä»¶æ•°"
 
 msgid "Virus Processing"
-msgstr "²¡¶¾´¦Àí"
+msgstr "ç—…æ¯’å¤„ç†"
 
 msgid "Virus Recognise"
-msgstr "²¡¶¾Ê¶±ğ"
+msgstr "ç—…æ¯’è¯†åˆ«"
 
 msgid "Weekly"
-msgstr "Ã¿ÖÜ Í¼±í (30 ·ÖÖÓ Æ½¾ù)"
+msgstr "æ¯å‘¨ å›¾è¡¨ (30 åˆ†é’Ÿ å¹³å‡)"
 
 msgid "White list"
-msgstr "°×Ãûµ¥"
+msgstr "ç™½åå•"
 
 msgid "White/Black list management"
-msgstr "¹ÜÀíºÚ°×Ãûµ¥"
+msgstr "ç®¡ç†é»‘ç™½åå•"
 
 msgid "X-Header Check"
-msgstr "²ì¿´ÓÊ¼şÍ·X-Header"
+msgstr "å¯Ÿçœ‹é‚®ä»¶å¤´X-Header"
 
 msgid "Yearly"
-msgstr "Ã¿Äê Í¼±í (1 Ìì Æ½¾ù)"
+msgstr "æ¯å¹´ å›¾è¡¨ (1 å¤© å¹³å‡)"
 
 msgid "You can't put "
-msgstr "ÄãÎŞ·¨ÉèÖÃ"
+msgstr "ä½ æ— æ³•è®¾ç½®"
 
 msgid "You have max white/black user list: "
-msgstr "ÒÑ´ïµ½×î´óºÚ°×Ãûµ¥ÉÏÏŞ£º"
+msgstr "å·²è¾¾åˆ°æœ€å¤§é»‘ç™½åå•ä¸Šé™ï¼š"
 
 msgid "You have no Mail Domain Management Permission yet."
-msgstr "ÄãÄ¿Ç°Ã»ÓĞÈÎºÎÓÊ¼şÓò¹ÜÀíÈ¨ÏŞ"
+msgstr "ä½ ç›®å‰æ²¡æœ‰ä»»ä½•é‚®ä»¶åŸŸç®¡ç†æƒé™"
 
 msgid "You have no permission to access this page"
-msgstr "ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£"
+msgstr "æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚"
 
 msgid "You have no permission to modify system configuration"
-msgstr "ÄãÎŞÈ¨½øĞĞ¸ü¸Ä²Ù×÷"
+msgstr "ä½ æ— æƒè¿›è¡Œæ›´æ”¹æ“ä½œ"
 
 msgid "ZIP File"
-msgstr "Ñ¹ËõÎÄ¼ş"
+msgstr "å‹ç¼©æ–‡ä»¶"
 
 msgid "[Likely Spam]"
-msgstr "¡¾ÒÉËÆÀ¬»ø¡¿"
+msgstr "ã€ç–‘ä¼¼åƒåœ¾ã€‘"
 
 msgid "[Spam]"
-msgstr "¡¾À¬»øÓÊ¼ş¡¿"
+msgstr "ã€åƒåœ¾é‚®ä»¶ã€‘"
 
 msgid "[Virus]"
-msgstr "¡¾²¡¶¾ÓÊ¼ş¡¿"
+msgstr "ã€ç—…æ¯’é‚®ä»¶ã€‘"
 
 msgid "a1top_01_en.jpg"
 msgstr "a1top_01.jpg"
 
 msgid "in"
-msgstr "Ã¿"
+msgstr "æ¯"
 
 msgid "include Auto-Download Rules"
-msgstr "°üÀ¨Íø¼à¹æÔò"
+msgstr "åŒ…æ‹¬ç½‘ç›‘è§„åˆ™"
 
 msgid "include User Defined Rules"
-msgstr "°üÀ¨ÓÃ»§¹æÔò"
+msgstr "åŒ…æ‹¬ç”¨æˆ·è§„åˆ™"
 
 msgid "is this Mail Address Displayed in Public Maillist"
-msgstr "ÊÇ·ñ¹«¿ª¶ÔÍâÏÔÊ¾ÔÚ¹«¹²ÓÊ¼şÁĞ±íÖĞ"
+msgstr "æ˜¯å¦å…¬å¼€å¯¹å¤–æ˜¾ç¤ºåœ¨å…¬å…±é‚®ä»¶åˆ—è¡¨ä¸­"
 
 msgid "mails"
-msgstr "·â"
+msgstr "å°"
 
 msgid "none"
-msgstr "ÎŞ"
+msgstr "æ— "
 
 msgid "not Decode"
-msgstr "²»ÏÈ½âÂë"
+msgstr "ä¸å…ˆè§£ç "
 
 msgid "omit"
-msgstr "Ê¡ÂÔ"
+msgstr "çœç•¥"
 
 msgid "omit "
-msgstr "Ê¡ÂÔ"
+msgstr "çœç•¥"
 
 msgid "on which Version"
-msgstr "ÊÊÓÃ°æ±¾"
+msgstr "é€‚ç”¨ç‰ˆæœ¬"
 
 msgid "one mail should be sent no more than"
-msgstr "Í¬Ò»·âÓÊ¼ş×î¶à·¢ËÍ"
+msgstr "åŒä¸€å°é‚®ä»¶æœ€å¤šå‘é€"
 
 msgid "one sender should send no more than"
-msgstr "Í¬Ò»ÓÃ»§×î¶à·¢ËÍ"
+msgstr "åŒä¸€ç”¨æˆ·æœ€å¤šå‘é€"
 
 msgid "or will be blocked"
-msgstr "³¬ÏŞ·â½ûÊ±¼äÎª"
+msgstr "è¶…é™å°ç¦æ—¶é—´ä¸º"
 
 msgid "quarantine function enabled."
-msgstr "µÄ¸ôÀë¹¦ÄÜÒÑ¼¤»î¡£"
+msgstr "çš„éš”ç¦»åŠŸèƒ½å·²æ¿€æ´»ã€‚"
 
 msgid "second(s)"
-msgstr "Ãë"
+msgstr "ç§’"
 
 msgid "times"
-msgstr "´Î"
+msgstr "æ¬¡"
 
 msgid "will not be permitted login untill "
-msgstr "±»·â½ûµ½"
+msgstr "è¢«å°ç¦åˆ°"
 
 #~ msgid " disabled"
-#~ msgstr "¹Ø±Õ"
+#~ msgstr "å…³é—­"
 
 #~ msgid " has existed"
-#~ msgstr "ÒÑ´æÔÚ"
+#~ msgstr "å·²å­˜åœ¨"
 
 #~ msgid ","
-#~ msgstr "Ò³£¬Ã¿Ò³"
+#~ msgstr "é¡µï¼Œæ¯é¡µ"
 
 #~ msgid "Add Succeed !"
-#~ msgstr "Ìí¼Ó³É¹¦"
+#~ msgstr "æ·»åŠ æˆåŠŸ"
 
 #~ msgid "Add email to list: "
-#~ msgstr "Ìí¼ÓÓÊ¼şÔÚµØÖ·µ½ÁĞ±í£º"
+#~ msgstr "æ·»åŠ é‚®ä»¶åœ¨åœ°å€åˆ°åˆ—è¡¨ï¼š"
 
 #~ msgid "Add success!"
-#~ msgstr "Ìí¼Ó³É¹¦"
+#~ msgstr "æ·»åŠ æˆåŠŸ"
 
 #~ msgid "Can't get user's white/black list!"
-#~ msgstr "ÎŞ·¨»ñÈ¡ÓÃ»§ºÚ°×Ãûµ¥£¡"
+#~ msgstr "æ— æ³•è·å–ç”¨æˆ·é»‘ç™½åå•ï¼"
 
 #~ msgid "Config & Policy"
-#~ msgstr "ÅäÖÃ¹ÜÀí"
+#~ msgstr "é…ç½®ç®¡ç†"
 
 #~ msgid "Config Modify Success! "
-#~ msgstr "ĞŞ¸Ä³É¹¦£¡"
+#~ msgstr "ä¿®æ”¹æˆåŠŸï¼"
 
 #~ msgid ""
 #~ "Config had saved, but This Product has no valid License, Please contact "
 #~ "with your product provider."
-#~ msgstr "ÅäÖÃÒÑ±£´æ£¬µ«ÊÇÏµÍ³Ä¿Ç°ÉĞÎŞ¿ÉÓÃLicense£¬ÇëÁªÏµÏúÊÛÉÌ¡£"
+#~ msgstr "é…ç½®å·²ä¿å­˜ï¼Œä½†æ˜¯ç³»ç»Ÿç›®å‰å°šæ— å¯ç”¨Licenseï¼Œè¯·è”ç³»é”€å”®å•†ã€‚"
 
 #~ msgid "Content Unmatched"
-#~ msgstr "Î´Æ¥Åä¹æÔò"
+#~ msgstr "æœªåŒ¹é…è§„åˆ™"
 
 #~ msgid "Continuous IP Match"
-#~ msgstr "Á¬ĞøIPÆ¥Åä"
+#~ msgstr "è¿ç»­IPåŒ¹é…"
 
 #~ msgid "Domain BlackList"
-#~ msgstr "·¢¼şÓòÃûºÚÃûµ¥"
+#~ msgstr "å‘ä»¶åŸŸåé»‘åå•"
 
 #~ msgid "Domain Blacklist"
-#~ msgstr "·¢¼şÓòºÚÃûµ¥"
+#~ msgstr "å‘ä»¶åŸŸé»‘åå•"
 
 #~ msgid "Domain WhiteList"
-#~ msgstr "·¢¼şÓòÃû°×Ãûµ¥"
+#~ msgstr "å‘ä»¶åŸŸåç™½åå•"
 
 #~ msgid "Domain Whitelist"
-#~ msgstr "·¢¼şÓòÃû°×Ãûµ¥"
+#~ msgstr "å‘ä»¶åŸŸåç™½åå•"
 
 #~ msgid "Engine Switche"
-#~ msgstr "ÒıÇæ¿ª¹Ø"
+#~ msgstr "å¼•æ“å¼€å…³"
 
 #~ msgid "Engines Switches"
-#~ msgstr "ÒıÇæ¿ª¹Ø"
+#~ msgstr "å¼•æ“å¼€å…³"
 
 #~ msgid "Friendly Mails"
-#~ msgstr "Õı³£ÓÊ¼şÊı"
+#~ msgstr "æ­£å¸¸é‚®ä»¶æ•°"
 
 #~ msgid "Full Audit"
-#~ msgstr "È«²¿Éó¼Æ"
+#~ msgstr "å…¨éƒ¨å®¡è®¡"
 
 #~ msgid "IP BlackList"
-#~ msgstr "IPºÚÃûµ¥"
+#~ msgstr "IPé»‘åå•"
 
 #~ msgid "IP Blacklist"
-#~ msgstr "IPºÚÃûµ¥"
+#~ msgstr "IPé»‘åå•"
 
 #~ msgid "IP Restrict"
-#~ msgstr "IPÏŞÖÆ"
+#~ msgstr "IPé™åˆ¶"
 
 #~ msgid "IP WhiteList"
-#~ msgstr "IP°×Ãûµ¥"
+#~ msgstr "IPç™½åå•"
 
 #~ msgid "Incept "
-#~ msgstr "ÊÕ¼şÈË"
+#~ msgstr "æ”¶ä»¶äºº"
 
 #~ msgid "Intelligent Noise Reduce System"
-#~ msgstr "ÖÇÄÜ½µÔëÏµÍ³"
+#~ msgstr "æ™ºèƒ½é™å™ªç³»ç»Ÿ"
 
 # msgid "Quarantine time out action"
-# msgstr "¸ôÀë¶ÓÁĞ³¬Ê±¶¯×÷"
+# msgstr "éš”ç¦»é˜Ÿåˆ—è¶…æ—¶åŠ¨ä½œ"
 # msgid "Succeed"
-# msgstr "³É¹¦"
+# msgstr "æˆåŠŸ"
 # msgid "Logout Succeed. Please Close This Browser Window"
-# msgstr "ÒÑ³É¹¦ÍË³ö¡£Çë¹Ø±Õ´Ë´°¿Ú"
+# msgstr "å·²æˆåŠŸé€€å‡ºã€‚è¯·å…³é—­æ­¤çª—å£"
 # msgid "Due to login attempts exceed maximum times, current IP:"
-# msgstr "ÓÉÓÚµ½´ï×î´ó´íÎóµÇÂ¼´ÎÊı£¬µ±Ç°IP£º"
+# msgstr "ç”±äºåˆ°è¾¾æœ€å¤§é”™è¯¯ç™»å½•æ¬¡æ•°ï¼Œå½“å‰IPï¼š"
 # msgid "will not be permitted login untill "
-# msgstr "±»·â½ûµ½"
+# msgstr "è¢«å°ç¦åˆ°"
 # msgid "Username or Password is invalid, please Input again"
-# msgstr "ÓÃ»§Ãû»òÃÜÂë´íÎó,ÇëÖØĞÂÊäÈë"
+# msgstr "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯,è¯·é‡æ–°è¾“å…¥"
 # msgid "This User is not allow Login"
-# msgstr "¸ÃÕËºÅµÇÂ½È¨ÏŞ±»½ûÖ¹"
+# msgstr "è¯¥è´¦å·ç™»é™†æƒé™è¢«ç¦æ­¢"
 # msgid "This User can not Login from this IP"
-# msgstr "¸ÃÕËºÅ²»ÄÜ´Ó´ËIPµØÖ·µÇÂ¼"
+# msgstr "è¯¥è´¦å·ä¸èƒ½ä»æ­¤IPåœ°å€ç™»å½•"
 #~ msgid "Invalid email address!"
-#~ msgstr "·Ç·¨ÓÊ¼şµØÖ·!"
+#~ msgstr "éæ³•é‚®ä»¶åœ°å€!"
 
 #~ msgid "Modification Success! "
-#~ msgstr "ĞŞ¸Ä³É¹¦£¡"
+#~ msgstr "ä¿®æ”¹æˆåŠŸï¼"
 
 #~ msgid "New Password again"
-#~ msgstr "È·ÈÏĞÂÃÜÂë"
+#~ msgstr "ç¡®è®¤æ–°å¯†ç "
 
 #~ msgid "Number Rule"
-#~ msgstr "ÊıÖµ¹æÔò"
+#~ msgstr "æ•°å€¼è§„åˆ™"
 
 #~ msgid "Op Log"
-#~ msgstr "²Ù×÷ÈÕÖ¾¹ÜÀí"
+#~ msgstr "æ“ä½œæ—¥å¿—ç®¡ç†"
 
 #~ msgid "Operation"
-#~ msgstr "²Ù×÷"
+#~ msgstr "æ“ä½œ"
 
 #~ msgid "Optional Audit"
-#~ msgstr "Ñ¡ÔñÉó¼Æ"
+#~ msgstr "é€‰æ‹©å®¡è®¡"
 
 #~ msgid "Pages"
-#~ msgstr "Ò³"
+#~ msgstr "é¡µ"
 
 #~ msgid "Password Modify Success!"
-#~ msgstr "¿ÚÁîĞŞ¸Ä³É¹¦£¡"
+#~ msgstr "å£ä»¤ä¿®æ”¹æˆåŠŸï¼"
 
 #~ msgid "Please Input Rule Number"
-#~ msgstr "ÇëÊäÈë¹æÔò±àºÅ"
+#~ msgstr "è¯·è¾“å…¥è§„åˆ™ç¼–å·"
 
 #~ msgid "Policy Type"
-#~ msgstr "±àºÅÀàĞÍ"
+#~ msgstr "ç¼–å·ç±»å‹"
 
 #~ msgid "Protect Mail Domain"
-#~ msgstr "ÓÊ¼şÓò±£»¤Éè¶¨"
+#~ msgstr "é‚®ä»¶åŸŸä¿æŠ¤è®¾å®š"
 
 #~ msgid "Quarantine time out action"
-#~ msgstr "¸ôÀë¶ÓÁĞ³¬Ê±¶¯×÷"
+#~ msgstr "éš”ç¦»é˜Ÿåˆ—è¶…æ—¶åŠ¨ä½œ"
 
 #~ msgid "Recommended: "
-#~ msgstr "ÍÆ¼öÖµ£º"
+#~ msgstr "æ¨èå€¼ï¼š"
 
 #~ msgid "Rule No."
-#~ msgstr "¹æÔò±àºÅ"
+#~ msgstr "è§„åˆ™ç¼–å·"
 
 #~ msgid "Self-Study: "
-#~ msgstr "×ÔÑ§Ï°¹¦ÄÜ£º"
+#~ msgstr "è‡ªå­¦ä¹ åŠŸèƒ½ï¼š"
 
 #~ msgid "Sender BlackList"
-#~ msgstr "·¢¼şÈËºÚÃûµ¥"
+#~ msgstr "å‘ä»¶äººé»‘åå•"
 
 #~ msgid "Sender Blacklist"
-#~ msgstr "·¢¼şÈËºÚÃûµ¥"
+#~ msgstr "å‘ä»¶äººé»‘åå•"
 
 #~ msgid "Sender WhiteList"
-#~ msgstr "·¢¼şÈË°×Ãûµ¥"
+#~ msgstr "å‘ä»¶äººç™½åå•"
 
 #~ msgid "System Config"
-#~ msgstr "Íø¹ØÅäÖÃÎÄ¼şÉÏÏÂÔØ"
+#~ msgstr "ç½‘å…³é…ç½®æ–‡ä»¶ä¸Šä¸‹è½½"
 
 #~ msgid ""
 #~ "This Product License has Expired, Please re-Upload or contact with your "
 #~ "product provider."
-#~ msgstr "License Ğí¿ÉÒÑ¹ıÆÚ»òÕß´íÎó£¬ÇëÖØĞÂÉÏÔØ»òÁªÏµÏúÊÛÉÌ¡£"
+#~ msgstr "License è®¸å¯å·²è¿‡æœŸæˆ–è€…é”™è¯¯ï¼Œè¯·é‡æ–°ä¸Šè½½æˆ–è”ç³»é”€å”®å•†ã€‚"
 
 #~ msgid "This Product has not get valid License, Please contact factory."
-#~ msgstr "±¾Éè±¸ÉĞÎŞ¿ÉÓÃµÄ License Ğí¿É£¬ÇëÁªÏµÏúÊÛÉÌ»ñÈ¡ License Ğí¿ÉÎÄ¼ş¡£"
+#~ msgstr "æœ¬è®¾å¤‡å°šæ— å¯ç”¨çš„ License è®¸å¯ï¼Œè¯·è”ç³»é”€å”®å•†è·å– License è®¸å¯æ–‡ä»¶ã€‚"
 
 #~ msgid "Traceable Check"
-#~ msgstr "¿É×·²éĞÔ¼ì²é"
+#~ msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥"
 
 #~ msgid "Traceable Options"
-#~ msgstr "¿É×·²éĞÔÑ¡Ïî"
+#~ msgstr "å¯è¿½æŸ¥æ€§é€‰é¡¹"
 
 #~ msgid "Update"
-#~ msgstr "¸üĞÂ"
+#~ msgstr "æ›´æ–°"
 
 #~ msgid "VENUS INFO TECH INC.Corporate"
-#~ msgstr "ÆôÃ÷ĞÇ³½ĞÅÏ¢¼¼ÊõÓĞÏŞ¹«Ë¾"
+#~ msgstr "å¯æ˜æ˜Ÿè¾°ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸"
 
 # msgid "Logout"
-# msgstr "×¢Ïú"
+# msgstr "æ³¨é”€"
 # msgid "Error"
-# msgstr "´íÎó"
+# msgstr "é”™è¯¯"
 #~ msgid "We suggest"
-#~ msgstr "ÎÒÃÇ½¨Òé"
+#~ msgstr "æˆ‘ä»¬å»ºè®®"
 
 #~ msgid "When the address that incurrent mail will forword to is not exist"
-#~ msgstr "ÊÕ¼şÈË²»ÔÚ¸ôÀëÓÃ»§Êı¾İ¿âÖĞÊ±µÄÏµÍ³¶¯×÷"
+#~ msgstr "æ”¶ä»¶äººä¸åœ¨éš”ç¦»ç”¨æˆ·æ•°æ®åº“ä¸­æ—¶çš„ç³»ç»ŸåŠ¨ä½œ"
 
 #~ msgid "error!"
-#~ msgstr "´íÎó"
+#~ msgstr "é”™è¯¯"
 
 #~ msgid "one per line"
-#~ msgstr "Ã¿¸öÒ»ĞĞ"
+#~ msgstr "æ¯ä¸ªä¸€è¡Œ"

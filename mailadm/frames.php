@@ -4,7 +4,7 @@ require_once('vpopadm.inc.php');
 	if (!adminPerm(PERM_ADMIN_BASIC) ){
 ?>
 		<br>
-		您尚未登陆。<br>
+		鎮ㄥ皻鏈櫥闄嗐��<br>
 <?php
 		return false;
 	}
@@ -12,7 +12,7 @@ require_once('vpopadm.inc.php');
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>邮件账户管理系统</TITLE>
+<TITLE>閭欢璐︽埛绠＄悊绯荤粺</TITLE>
 </HEAD>
 <frameset framespacing="0" border="0" rows="81,*,50" frameborder="0">
 <FRAME SRC="<? echo siteFile('top.html'); ?>"> 

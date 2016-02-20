@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# 如果不是 root，depmod会报错并拒绝加载模块
+# 濡傛灉涓嶆槸 root锛宒epmod浼氭姤閿欏苟鎷掔粷鍔犺浇妯″潡
 chown -R root lib/modules/2.4.26-noSPAM 

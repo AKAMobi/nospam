@@ -1,5 +1,5 @@
 #
-# ±±¾©»¥ÁªÍø½Ó¾¯ÖĞĞÄÓÊ¼ş¹ıÂËÆ÷
+# åŒ—äº¬äº’è”ç½‘æ¥è­¦ä¸­å¿ƒé‚®ä»¶è¿‡æ»¤å™¨
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # EMail: zixia@zixia.net
@@ -16,7 +16,7 @@ package AKA::Mail::Content::Conf::Update;
 #@EXPORT=("function1", "function2", "function3");
 
 #use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 #$Data::Dumper::Useperl = 1;
 #$Data::Dumper::Indent = 1;
 
@@ -45,7 +45,7 @@ sub check_new_rule
 {
 	my ( $self ) = @_;
 
-	# ·µ»ØĞÂÎÄ¼şÊı
+	# è¿”å›æ–°æ–‡ä»¶æ•°
 	return read_rule( $self );
 }
 

@@ -16,226 +16,226 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid " overrun"
-msgstr "³¬ÏŞ"
+msgstr "è¶…é™"
 
 #, perl-brace-format
 msgid " overrun deny {wait_time} minutes."
-msgstr "·¢ËÍ³¬ÏŞ£¬»¹Ğè{wait_time}·ÖÖÓ½â·â"
+msgstr "å‘é€è¶…é™ï¼Œè¿˜éœ€{wait_time}åˆ†é’Ÿè§£å°"
 
 msgid " passed"
-msgstr "Í¨¹ı"
+msgstr "é€šè¿‡"
 
 msgid "AntiSpam Engine"
-msgstr "À¬»øÊ¶±ğÒıÇæ"
+msgstr "åƒåœ¾è¯†åˆ«å¼•æ“"
 
 msgid "Authorized user"
-msgstr "ÈÏÖ¤ÓÃ»§"
+msgstr "è®¤è¯ç”¨æˆ·"
 
 msgid "CPU is not licensed"
-msgstr "´¦ÀíÆ÷Î´ÊÚÈ¨"
+msgstr "å¤„ç†å™¨æœªæˆæƒ"
 
 msgid "Can't analyze upgrade package"
-msgstr "ÎŞ·¨·ÖÎöÉı¼¶°ü¡£"
+msgstr "æ— æ³•åˆ†æå‡çº§åŒ…ã€‚"
 
 msgid "Can't create directory for upgrade"
-msgstr "ÎŞ·¨½¨Á¢Éı¼¶Ä¿Â¼"
+msgstr "æ— æ³•å»ºç«‹å‡çº§ç›®å½•"
 
 msgid "Can't read upgrade package file"
-msgstr "ÎŞ·¨·ÃÎÊÉı¼¶°üÎÄ¼ş¡£"
+msgstr "æ— æ³•è®¿é—®å‡çº§åŒ…æ–‡ä»¶ã€‚"
 
 msgid "Can't record upgrade log"
-msgstr "ÎŞ·¨¼ÇÂ¼Éı¼¶ĞÅÏ¢"
+msgstr "æ— æ³•è®°å½•å‡çº§ä¿¡æ¯"
 
 msgid "Can't record upgrade package information"
-msgstr "ÎŞ·¨¼ÇÂ¼Éı¼¶°üĞÅÏ¢"
+msgstr "æ— æ³•è®°å½•å‡çº§åŒ…ä¿¡æ¯"
 
 msgid "Connection flood"
-msgstr "Á¬½ÓÆµÂÊ"
+msgstr "è¿æ¥é¢‘ç‡"
 
 msgid "Domain BlackList"
-msgstr "ÓòÃûºÚÃûµ¥"
+msgstr "åŸŸåé»‘åå•"
 
 msgid "Domain WhiteList"
-msgstr "ÓòÃû°×Ãûµ¥"
+msgstr "åŸŸåç™½åå•"
 
 msgid "Hareward system OK"
-msgstr "Ó²¼şÏµÍ³ÒÑÊÚÈ¨"
+msgstr "ç¡¬ä»¶ç³»ç»Ÿå·²æˆæƒ"
 
 msgid "IP BlackList"
-msgstr "IPºÚÃûµ¥"
+msgstr "IPé»‘åå•"
 
 msgid "IP WhiteList"
-msgstr "IP°×Ãûµ¥"
+msgstr "IPç™½åå•"
 
 msgid "Incoming mail need not filter"
-msgstr "ÍâÏòÄÚÎ´¹ıÂË"
+msgstr "å¤–å‘å†…æœªè¿‡æ»¤"
 
 msgid "License error "
-msgstr "Ğí¿ÉÖ¤´íÎó"
+msgstr "è®¸å¯è¯é”™è¯¯"
 
 msgid "License expired"
-msgstr "µ±Ç°Ğí¿ÉÖ¤ÎŞĞ§»òÒÑ¾­¹ıÆÚ£¡"
+msgstr "å½“å‰è®¸å¯è¯æ— æ•ˆæˆ–å·²ç»è¿‡æœŸï¼"
 
 msgid "License is not valide or already expires"
-msgstr "µ±Ç°Ğí¿ÉÖ¤ÎŞĞ§»òÒÑ¾­¹ıÆÚ£¡"
+msgstr "å½“å‰è®¸å¯è¯æ— æ•ˆæˆ–å·²ç»è¿‡æœŸï¼"
 
 msgid "License is valid!"
-msgstr "Ğí¿ÉÖ¤ÓĞĞ§£¡"
+msgstr "è®¸å¯è¯æœ‰æ•ˆï¼"
 
 #, perl-brace-format
 msgid "License will expired after {days_left} days."
-msgstr "Ğí¿ÉÖ¤½«ÔÚ {days_left} Ììºó¹ıÆÚ¡£"
+msgstr "è®¸å¯è¯å°†åœ¨ {days_left} å¤©åè¿‡æœŸã€‚"
 
 msgid "Mail"
-msgstr "ÓÊ¼ş"
+msgstr "é‚®ä»¶"
 
 msgid "Mail flood"
-msgstr "ÓÊ¼şÖØ¸´"
+msgstr "é‚®ä»¶é‡å¤"
 
 msgid "Mail sender"
-msgstr "·¢ĞÅÈË"
+msgstr "å‘ä¿¡äºº"
 
 msgid "Mail subject whitelist"
-msgstr "ÓÊ¼şÖ÷Ìâ°×Ãûµ¥"
+msgstr "é‚®ä»¶ä¸»é¢˜ç™½åå•"
 
 msgid "Maximum size exceeds"
-msgstr "³ß´ç³¬¹ıÅäÖÃ×î´óÖµ"
+msgstr "å°ºå¯¸è¶…è¿‡é…ç½®æœ€å¤§å€¼"
 
 msgid "Need not check incoming mail"
-msgstr "ÍâÏòÄÚÎ´¼ì²é"
+msgstr "å¤–å‘å†…æœªæ£€æŸ¥"
 
 msgid "Need not check outgoing mail"
-msgstr "ÄÚÏòÍâÎ´¼ì²é"
+msgstr "å†…å‘å¤–æœªæ£€æŸ¥"
 
 msgid "OFF"
-msgstr "Î´ÆôÓÃ"
+msgstr "æœªå¯ç”¨"
 
 msgid "Outgoing mail need not filter"
-msgstr "ÄÚÏòÍâÎ´¹ıÂË"
+msgstr "å†…å‘å¤–æœªè¿‡æ»¤"
 
 msgid "Overrun check was passed"
-msgstr "Í¨¹ı¶¯Ì¬¼à²â"
+msgstr "é€šè¿‡åŠ¨æ€ç›‘æµ‹"
 
 msgid "Please specify upgrade package name."
-msgstr "ÇëÖ¸¶¨Éı¼¶°üÎÄ¼şÃû¡£"
+msgstr "è¯·æŒ‡å®šå‡çº§åŒ…æ–‡ä»¶åã€‚"
 
 msgid "Security Policy"
-msgstr "°²È«²ßÂÔ"
+msgstr "å®‰å…¨ç­–ç•¥"
 
 msgid "Sender BlackList"
-msgstr "·¢ĞÅÈËºÚÃûµ¥"
+msgstr "å‘ä¿¡äººé»‘åå•"
 
 msgid "Sender WhiteList"
-msgstr "·¢ĞÅÈË°×Ãûµ¥"
+msgstr "å‘ä¿¡äººç™½åå•"
 
 msgid "Sender must as same as auth user"
-msgstr "·¢ĞÅÈË·ÇÉí·İÈÏÖ¤ÓÃ»§"
+msgstr "å‘ä¿¡äººéèº«ä»½è®¤è¯ç”¨æˆ·"
 
 msgid "Sender white list"
-msgstr "·¢ĞÅÈË°×Ãûµ¥"
+msgstr "å‘ä¿¡äººç™½åå•"
 
 msgid "Sorry, System had no valid license now, It still can't work.\n"
-msgstr "¶Ô²»Æğ£¬±¾ÏµÍ³Ä¿Ç°ÉĞÎ´»ñµÃÕıÈ·µÄLicenseĞí¿É£¬¿ÉÄÜÔİÊ±ÎŞ·¨¹¤×÷¡£\n"
+msgstr "å¯¹ä¸èµ·ï¼Œæœ¬ç³»ç»Ÿç›®å‰å°šæœªè·å¾—æ­£ç¡®çš„Licenseè®¸å¯ï¼Œå¯èƒ½æš‚æ—¶æ— æ³•å·¥ä½œã€‚\n"
 
 msgid "Sorry, due to "
-msgstr "¶Ô²»Æğ£¬ÓÉÓÚ "
+msgstr "å¯¹ä¸èµ·ï¼Œç”±äº "
 
 msgid "System has no valid license now"
-msgstr "±¾Éè±¸ÉĞÎŞ¿ÉÓÃĞí¿ÉÖ¤"
+msgstr "æœ¬è®¾å¤‡å°šæ— å¯ç”¨è®¸å¯è¯"
 
 msgid "System internal error"
-msgstr "ÏµÍ³ÄÚ²¿´íÎó"
+msgstr "ç³»ç»Ÿå†…éƒ¨é”™è¯¯"
 
 msgid "System rejects your mail."
-msgstr "ÏµÍ³¾ÜÊÕÄúµÄÓÊ¼ş¡£"
+msgstr "ç³»ç»Ÿæ‹’æ”¶æ‚¨çš„é‚®ä»¶ã€‚"
 
 msgid "System version higher then current upgrade package, can't downgrade."
-msgstr "ÏµÍ³ÒÑ¾­°²×°¹ı¸ü¸ßµÄÉı¼¶°ü£¬ÎŞ·¨½µ¼¶¡£"
+msgstr "ç³»ç»Ÿå·²ç»å®‰è£…è¿‡æ›´é«˜çš„å‡çº§åŒ…ï¼Œæ— æ³•é™çº§ã€‚"
 
 msgid "This mail is not in circle of check"
-msgstr "²ÉÑù³éÇ©Î´ÖĞ"
+msgstr "é‡‡æ ·æŠ½ç­¾æœªä¸­"
 
 msgid "Traceable"
-msgstr "¿É×·²éĞÔ¼ì²é"
+msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥"
 
 msgid "Traceable check"
-msgstr "¿É×·²éĞÔ¼ì²é"
+msgstr "å¯è¿½æŸ¥æ€§æ£€æŸ¥"
 
 msgid "Updating"
-msgstr "¸üĞÂÖĞ"
+msgstr "æ›´æ–°ä¸­"
 
 msgid "Upgrade package checksum error"
-msgstr "Éı¼¶°üĞ£ÑéºÍ´íÎó"
+msgstr "å‡çº§åŒ…æ ¡éªŒå’Œé”™è¯¯"
 
 msgid "Upgrade package filename error."
-msgstr "Éı¼¶°üÎÄ¼şÃû´íÎó¡£"
+msgstr "å‡çº§åŒ…æ–‡ä»¶åé”™è¯¯ã€‚"
 
 msgid "Upgrade package version mismatch with current system."
-msgstr "µ±Ç°ÏµÍ³ÎŞ·¨Ê¹ÓÃ±¾Éı¼¶°ü£¬ÇëÈ·ÈÏÉı¼¶°ü°æ±¾Æ¥Åäµ±Ç°ÏµÍ³¡£"
+msgstr "å½“å‰ç³»ç»Ÿæ— æ³•ä½¿ç”¨æœ¬å‡çº§åŒ…ï¼Œè¯·ç¡®è®¤å‡çº§åŒ…ç‰ˆæœ¬åŒ¹é…å½“å‰ç³»ç»Ÿã€‚"
 
 msgid "User Blacklist"
-msgstr "ÓÃ»§×Ô¶¨ÒåºÚÃûµ¥"
+msgstr "ç”¨æˆ·è‡ªå®šä¹‰é»‘åå•"
 
 msgid "User Whitelist"
-msgstr "ÓÃ»§×Ô¶¨Òå°×Ãûµ¥"
+msgstr "ç”¨æˆ·è‡ªå®šä¹‰ç™½åå•"
 
 msgid "User does not exist"
-msgstr "ÓÃ»§²»´æÔÚ"
+msgstr "ç”¨æˆ·ä¸å­˜åœ¨"
 
 msgid "User flood"
-msgstr "ÓÃ»§ÖØ¸´"
+msgstr "ç”¨æˆ·é‡å¤"
 
 msgid "[Black List]"
-msgstr "¡¾ºÚÃûµ¥¡¿"
+msgstr "ã€é»‘åå•ã€‘"
 
 msgid "[LikelySpam]"
-msgstr "¡¾ÒÉËÆÀ¬»ø¡¿"
+msgstr "ã€ç–‘ä¼¼åƒåœ¾ã€‘"
 
 msgid "[Spam]"
-msgstr "¡¾À¬»øÓÊ¼ş¡¿"
+msgstr "ã€åƒåœ¾é‚®ä»¶ã€‘"
 
 #, perl-brace-format
 msgid "[VIRUS {result}]"
-msgstr "¡¾²¡¶¾ {result}¡¿"
+msgstr "ã€ç—…æ¯’ {result}ã€‘"
 
 msgid "bounced mail"
-msgstr "ÍËĞÅ"
+msgstr "é€€ä¿¡"
 
 msgid "db failure"
-msgstr "¼ÓÔØÊ§°Ü"
+msgstr "åŠ è½½å¤±è´¥"
 
 msgid "incoming mail is not limited"
-msgstr "ÍâÏòÄÚÎ´ÏŞÖÆ"
+msgstr "å¤–å‘å†…æœªé™åˆ¶"
 
 msgid "internal error"
-msgstr "ÄÚ²¿´íÎó"
+msgstr "å†…éƒ¨é”™è¯¯"
 
 msgid "need param"
-msgstr "ÎŞ²ÎÊı"
+msgstr "æ— å‚æ•°"
 
 msgid "not fit condition"
-msgstr "Î´·ûºÏÌõ¼ş"
+msgstr "æœªç¬¦åˆæ¡ä»¶"
 
 msgid "not run"
-msgstr "Î´ÔËĞĞ"
+msgstr "æœªè¿è¡Œ"
 
 msgid "not set"
-msgstr "Î´ÉèÖÃ"
+msgstr "æœªè®¾ç½®"
 
 msgid "outgoing mail is not limited"
-msgstr "ÄÚÏòÍâÎ´ÏŞÖÆ"
+msgstr "å†…å‘å¤–æœªé™åˆ¶"
 
 msgid "passed"
-msgstr "Í¨¹ı"
+msgstr "é€šè¿‡"
 
 msgid "registered user"
-msgstr "µÇ¼ÇÓÃ»§"
+msgstr "ç™»è®°ç”¨æˆ·"
 
 msgid "submmited"
-msgstr "ÒÑÌá½»"
+msgstr "å·²æäº¤"
 
 msgid "upgrade successfully."
-msgstr "Éı¼¶Íê³É¡£"
+msgstr "å‡çº§å®Œæˆã€‚"
 
 msgid "whitelist"
-msgstr "°×Ãûµ¥"
+msgstr "ç™½åå•"

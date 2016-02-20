@@ -1439,7 +1439,7 @@ static void do_output_form_loop(FILE *f)
                         char date_buf[1024], *p;
                         int len = 0;
                         time_t now = time(NULL);
-			p = "%YÄê%mÔÂ%dÈÕ %A";
+			p = "%Yå¹´%mæœˆ%dæ—¥ %A";
                         len = strftime(date_buf, sizeof(date_buf)-1, p, localtime(&now));
                         date_buf[len]=0;
                         printf(date_buf);			

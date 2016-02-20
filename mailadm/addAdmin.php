@@ -4,7 +4,7 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>ÓÃ»§ÁĞ±í</TITLE>
+<TITLE>ç”¨æˆ·åˆ—è¡¨</TITLE>
 <style>
 
 table { font-size:x-small;}
@@ -23,51 +23,51 @@ function addUser(){
 	if (!adminPerm(PERM_ADMIN_ADMINCONTROL) ){
 ?>
 		<br>
-		ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+		æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 		return false;
 	}
-//ÅĞ¶ÏÓÃ»§ĞÅÏ¢ÌîĞ´ÊÇ·ñÍêÕû£º
+//åˆ¤æ–­ç”¨æˆ·ä¿¡æ¯å¡«å†™æ˜¯å¦å®Œæ•´ï¼š
 	if (!isset($_REQUEST['user_id'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if (!isset($_REQUEST['passwd1'])){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!isset($_REQUEST['passwd2'])){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if (!isset($_REQUEST['user_note'])){ 
-		echo "´íÎó£ºÎ´ÊäÈë±¸×¢<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥å¤‡æ³¨<br>";
 		return false;
 	}
 
 	if ($_REQUEST['user_id']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ID<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·ID<br>";
 		return false;
 	}
 	if ($_REQUEST['passwd1']==''){ 
-		echo "´íÎó£ºÎ´ÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªè¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 	if ($_REQUEST['passwd2']==''){ 
-		echo "´íÎó£ºÎ´È·ÈÏÊäÈëÓÃ»§ÃÜÂë<br>";
+		echo "é”™è¯¯ï¼šæœªç¡®è®¤è¾“å…¥ç”¨æˆ·å¯†ç <br>";
 		return false;
 	}
 
 
 	
-	$user_id = $_REQUEST['user_id'];		//ÓÃ»§ID
+	$user_id = $_REQUEST['user_id'];		//ç”¨æˆ·ID
 	$passwd1 = $_REQUEST['passwd1'];						
 	$passwd2 = $_REQUEST['passwd2'];
 
-	$user_note = $_REQUEST['user_note'];		//ÓÃ»§Ö¤¼şºÅÂë
+	$user_note = $_REQUEST['user_note'];		//ç”¨æˆ·è¯ä»¶å·ç 
 
     if ( $passwd1 != $passwd2 ) {
-    	echo "´íÎó£ºÁ½´ÎÊäÈëµÄÃÜÂë²»Æ¥Åä<br>";
+    	echo "é”™è¯¯ï¼šä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒ¹é…<br>";
     	return false;
     }
 
@@ -84,19 +84,19 @@ function addUser(){
 	$result=addAdmin($user_id,$passwd1,$privilidge,$user_note);
 	
 	if ($result==ERR_FORMAT_PASSWORD) {
-		errorReturn("ÃÜÂëº¬ÓĞ·Ç·¨×Ö·û,ÇëÖØÊÔ",$_SERVER['PHP_SELF']);
+		errorReturn("å¯†ç å«æœ‰éæ³•å­—ç¬¦,è¯·é‡è¯•",$_SERVER['PHP_SELF']);
 	}
 	if ($result==ERR_FORMAT_ID) {
-		errorReturn("ÕËºÅº¬ÓĞ·Ç·¨×Ö·û,ÇëÖØÊÔ",$_SERVER['PHP_SELF']);
+		errorReturn("è´¦å·å«æœ‰éæ³•å­—ç¬¦,è¯·é‡è¯•",$_SERVER['PHP_SELF']);
 	}
 	if ($result==ERR_FORMAT_PRIVILIDGE) {
-		errorReturn("È¨ÏŞÉèÖÃ´íÎó,ÇëÖØÊÔ",$_SERVER['PHP_SELF']);
+		errorReturn("æƒé™è®¾ç½®é”™è¯¯,è¯·é‡è¯•",$_SERVER['PHP_SELF']);
 	}
 	if ($result==ERR_FORMAT_NOTE) {
-		errorReturn("±¸×¢ÖĞº¬ÓĞ·Ç·¨×Ö·û¡°:¡±,ÇëÖØÊÔ",$_SERVER['PHP_SELF']);
+		errorReturn("å¤‡æ³¨ä¸­å«æœ‰éæ³•å­—ç¬¦â€œ:â€,è¯·é‡è¯•",$_SERVER['PHP_SELF']);
 	}
 	if ($result==ERR_IDEXIST) {
-		errorReturn("ÓÃ»§IDÒÑ´æÔÚ,ÇëÖØÊÔ",$_SERVER['PHP_SELF']);
+		errorReturn("ç”¨æˆ·IDå·²å­˜åœ¨,è¯·é‡è¯•",$_SERVER['PHP_SELF']);
 	}
 
 	if ($result==OK){
@@ -107,7 +107,7 @@ function addUser(){
 }
 
 if ( (isset($_REQUEST['addUser']) && addUser()) ){
-	echo "¹ÜÀíÔ± ${_REQUEST['user_id'] }ÒÑ¾­³É¹¦¼ÓÈë£¡<br>";
+	echo "ç®¡ç†å‘˜ ${_REQUEST['user_id'] }å·²ç»æˆåŠŸåŠ å…¥ï¼<br>";
 } else {
 
 
@@ -117,34 +117,34 @@ if ( (isset($_REQUEST['addUser']) && addUser()) ){
 <INPUT type="hidden" name="addUser">
 <table border=0>
 <tr align="center" bgcolor=#6fa6e6>
-<td colspan="3" class=title><b>Ìí¼ÓĞÂ¹ÜÀíÔ±</b></td>
+<td colspan="3" class=title><b>æ·»åŠ æ–°ç®¡ç†å‘˜</b></td>
 </tr>
 <tr>
-	<td align="right">ĞÂ¹ÜÀíÔ±ÕÊºÅ£º</td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
+	<td align="right">æ–°ç®¡ç†å‘˜å¸å·ï¼š</td><td><input type=text name="user_id" value="<? echo $_REQUEST['user_id'] ?>">
 	</td>
-	<td><font color=#ff0000>ÇëÊ¹ÓÃĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸¼°Êı×ÖÆğÕÊºÅÃû£¬±ØĞëÊ¹ÓÃÓ¢ÎÄ×ÖÄ¸¿ªÍ·¡£</font></td>
+	<td><font color=#ff0000>è¯·ä½¿ç”¨å°å†™è‹±æ–‡å­—æ¯åŠæ•°å­—èµ·å¸å·åï¼Œå¿…é¡»ä½¿ç”¨è‹±æ–‡å­—æ¯å¼€å¤´ã€‚</font></td>
 </tr>
 <tr>
-	<td align="right">ÊäÈëÃÜÂë£º</td><td><input type=password name="passwd1"></td>
-	<td><font color=#ff0000>ÇëÊ¹ÓÃ´óĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸ºÍÊı×Ö×÷ÎªÓÊ¼şÃÜÂë¡£</font></td>
+	<td align="right">è¾“å…¥å¯†ç ï¼š</td><td><input type=password name="passwd1"></td>
+	<td><font color=#ff0000>è¯·ä½¿ç”¨å¤§å°å†™è‹±æ–‡å­—æ¯å’Œæ•°å­—ä½œä¸ºé‚®ä»¶å¯†ç ã€‚</font></td>
 </tr>
 <tr>
-	<td align="right">È·ÈÏÃÜÂë£º</td><td><input type=password name="passwd2"></td>
-	<td><font color=#ff0000>ÇëÔÙ´ÎÊäÈëÃÜÂë£¬Á½´ÎÃÜÂë±ØĞëÏàÍ¬¡£</font></td>
+	<td align="right">ç¡®è®¤å¯†ç ï¼š</td><td><input type=password name="passwd2"></td>
+	<td><font color=#ff0000>è¯·å†æ¬¡è¾“å…¥å¯†ç ï¼Œä¸¤æ¬¡å¯†ç å¿…é¡»ç›¸åŒã€‚</font></td>
 </tr>
 <tr>
-	<td align="right" >¹ÜÀíÈ¨ÏŞ£º</td><td colspan=2>
-		<input type=checkbox name=userControl >ÓÃ»§¹ÜÀí<br>
-		<input type=checkbox name=adminControl >¹ÜÀíÔ±¹ÜÀí<br>
+	<td align="right" >ç®¡ç†æƒé™ï¼š</td><td colspan=2>
+		<input type=checkbox name=userControl >ç”¨æˆ·ç®¡ç†<br>
+		<input type=checkbox name=adminControl >ç®¡ç†å‘˜ç®¡ç†<br>
 	</td>
 <tr>
-	<td align="right">±¸×¢£º</td><td><input type=text name="user_note" value="<? echo $user_note ?>"></td>
+	<td align="right">å¤‡æ³¨ï¼š</td><td><input type=text name="user_note" value="<? echo $user_note ?>"></td>
 	<td><font color=#ff0000></font></td>
 </tr>
 <tr align="center" >
-	<td colspan=3><input type=submit name="adduser" value="  È·  ÈÏ  ">
+	<td colspan=3><input type=submit name="adduser" value="  ç¡®  è®¤  ">
 		&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type=reset value="  Çå  ³ı  ">
+	<input type=reset value="  æ¸…  é™¤  ">
 	</td>
 </tr>
 </table>

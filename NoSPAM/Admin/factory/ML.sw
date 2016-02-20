@@ -13,15 +13,15 @@ GenerateDate=$now
 ExpireDate=2004-10-1
 Version=2
 
-FactoryName=Ë¼Î¬ÊÀ¼Í
-ProductName=iXRay¸ßËÙ·´À¬»øÓÊ¼şÍø¹Ø
+FactoryName=æ€ç»´ä¸–çºª
+ProductName=iXRayé«˜é€Ÿååƒåœ¾é‚®ä»¶ç½‘å…³
 ProductSN=$prodno
 Language=zh_CN
 
 ServerGatewaySwitchable=N
 ServerGateway=Gateway,MXRelay
 
-LicenseHTML=<b>¿Í»§ÊÔÓÃÌåÑé(·ÇÏúÊÛ)°æ</b>
+LicenseHTML=<b>å®¢æˆ·è¯•ç”¨ä½“éªŒ(éé”€å”®)ç‰ˆ</b>
 
 MailGateway=100
 MailRelay=100

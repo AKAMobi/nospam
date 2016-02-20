@@ -4,17 +4,17 @@ require_once("vpopadm.inc.php");
 <HTML>
 <HEAD>
 <meta http-equiv="content-type" content="text/html; charset=gb2312">
-<TITLE>Èº·¢ĞÅ¼ş</TITLE>
+<TITLE>ç¾¤å‘ä¿¡ä»¶</TITLE>
 </HEAD>
 <BODY>
 <DIV align="center">
-<h2>Èº·¢ĞÅ¼ş</h2>
+<h2>ç¾¤å‘ä¿¡ä»¶</h2>
 <?php
 
 if (!adminPerm(PERM_ADMIN_USERCONTROL) ){
 ?>
 <br>
-ÄúÃ»ÓĞ·ÃÎÊ¸ÃÍøÒ³µÄÈ¨ÏŞ¡£<br>
+æ‚¨æ²¡æœ‰è®¿é—®è¯¥ç½‘é¡µçš„æƒé™ã€‚<br>
 <?php
 } else {
 if ($_POST['action']=='send') {
@@ -84,7 +84,7 @@ function sendGroup($sendGroups, $isSendAll, $mailbox,$title, $content) {
     $h_user_profile = fopen ($user_profile,"a+");
    
     if ($h_user_profile == NULL ){
-        echo "´íÎó£ºÓÃ»§Êı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
 
@@ -152,7 +152,7 @@ if ($fp1!=FALSE) {
 }
 $fp2=fopen($attachdir . "/.mail","w");
 if ($fp2==FALSE) {
-	echo "ÎŞ·¨½¨Á¢ĞÅ¼ş£¡";
+	echo "æ— æ³•å»ºç«‹ä¿¡ä»¶ï¼";
 	exit(0);
 }
 // get MIME formatted message headers and body
@@ -177,7 +177,7 @@ $linkpath='';
 			$user_maildir= $user_maildir. "/Maildir/new/";
 			$user_mailname= $user_maildir.$mail_name; 
 			if ($isSendAll) {	
-				echo "·¢ËÍ¸ø".$user_account;
+				echo "å‘é€ç»™".$user_account;
 				if ($iscopy) {
 					@copy($attachdir . "/.mail", $user_mailname);
 					$linkpath=$user_mailname;
@@ -210,7 +210,7 @@ $linkpath='';
  
 	}
 @unlink($attachdir . "/.mail");
-	echo "·¢ËÍ³É¹¦£¡";
+	echo "å‘é€æˆåŠŸï¼";
 	return false;
 }
 
@@ -220,7 +220,7 @@ function showMenu(){
     $h_groupdefine_profile = fopen ($groupdefine_profile,"r");
    
     if ($h_groupdefine_profile == NULL ){
-        echo "´íÎó£ºÓÃ»§×éÊı¾İÎÄ¼şÎŞ·¨´ò¿ª¡£<br>";
+        echo "é”™è¯¯ï¼šç”¨æˆ·ç»„æ•°æ®æ–‡ä»¶æ— æ³•æ‰“å¼€ã€‚<br>";
 		exit(-1);
     }
    
@@ -245,11 +245,11 @@ function showMenu(){
     
 	if ($group_count<=0) {
 ?>
-	Ä¿Ç°ÉĞÎŞÓÃ»§×é¶¨Òå£¡
+	ç›®å‰å°šæ— ç”¨æˆ·ç»„å®šä¹‰ï¼
 <?php
 	} else {
 ?>
-ÇëÖ¸¶¨´ı·¢ËÍµÄÓÃ»§×é,Èô²»Ñ¡ÔñÔòĞÅ¼ş½«·¢¸øÈ«²¿ÓÃ»§£º
+è¯·æŒ‡å®šå¾…å‘é€çš„ç”¨æˆ·ç»„,è‹¥ä¸é€‰æ‹©åˆ™ä¿¡ä»¶å°†å‘ç»™å…¨éƒ¨ç”¨æˆ·ï¼š
 <select id="oGroupList" size=10 multiple>
 <?php
 	for ($i=0;$i<$group_count;$i++){
@@ -267,15 +267,15 @@ function showMenu(){
 	function doSend(){
         var dot=false;
 		if (oForm.oContent.value=='') {
-			alert('Èº·¢ĞÅ¼şÄÚÈİÎª¿Õ!');
+			alert('ç¾¤å‘ä¿¡ä»¶å†…å®¹ä¸ºç©º!');
 			return false;
 		}
 		if (oForm.oTitle.value=='') {
-			alert('Èº·¢ĞÅ¼ş±êÌâÎª¿Õ!');
+			alert('ç¾¤å‘ä¿¡ä»¶æ ‡é¢˜ä¸ºç©º!');
 			return false;
 		}
 		if (oForm.oMailbox.value=='') {
-			alert('¹ÜÀíÔ±µØÖ·Îª¿Õ!');
+			alert('ç®¡ç†å‘˜åœ°å€ä¸ºç©º!');
 			return false;
 		}
 		if (typeof(oGroupList) != "undefined") {
@@ -301,16 +301,16 @@ function showMenu(){
 <input type="hidden" name="sendAll" id="oSendAll" value="true">
 <table>
 <tr>
-<td>¹ÜÀíÔ±ÓÊÏä</td><td><input type="text" name="mailbox" id="oMailbox"></td>
+<td>ç®¡ç†å‘˜é‚®ç®±</td><td><input type="text" name="mailbox" id="oMailbox"></td>
 </tr>
 <tr>
-<td>Èº·¢ÓÊ¼ş±êÌâ</td><td><input type="text" name="title" id="oTitle"></td>
+<td>ç¾¤å‘é‚®ä»¶æ ‡é¢˜</td><td><input type="text" name="title" id="oTitle"></td>
 </tr>
 <tr>
-<td>Èº·¢ĞÅ¼şÄÚÈİ</td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
+<td>ç¾¤å‘ä¿¡ä»¶å†…å®¹</td><td><textarea name="content" id="oContent" style="width:250; height:400"></textarea></td>
 </tr>
 </table>
-<input type="button" value="·¢ËÍÈºÌåĞÅ¼ş" onclick="doSend();">
+<input type="button" value="å‘é€ç¾¤ä½“ä¿¡ä»¶" onclick="doSend();">
 <script language="JavaScript">
 <!--
    function GoAttachWindow(){     
@@ -328,7 +328,7 @@ function showMenu(){
    }  
 -->
 </script>
-<input type="button" value="Ìí¼Ó¸½¼ş" onclick="GoAttachWindow()");
+<input type="button" value="æ·»åŠ é™„ä»¶" onclick="GoAttachWindow()");
 </form>
 <?php
 }

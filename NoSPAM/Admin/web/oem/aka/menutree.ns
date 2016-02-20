@@ -6,7 +6,7 @@ require_once("inc/include.ns");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÏµÍ³²Ëµ¥</title>
+<title>ç³»ç»Ÿèœå•</title>
 <script src="js/xtree.js"></script>
 <link type="text/css" rel="stylesheet" href="css/xtree.css">
 <link type="text/css" rel="stylesheet" href="css/style.css">
@@ -16,39 +16,39 @@ require_once("inc/include.ns");
 <script>
 if (document.getElementById) {
 	// gettext demo by zixia:
-	// var tree = new WebFXTree('¹ÜÀíÑ¡Ïî');
+	// var tree = new WebFXTree('ç®¡ç†é€‰é¡¹');
 	var tree = new WebFXTree('<?= _("Management") ?>');
 	tree.setBehavior('classic');
 <?php
 if(adminPerm(PERM_ADMIN_SYSTEM)){
 ?>
-	var a = new WebFXTreeItem('ÏµÍ³¹ÜÀí','help/system.htm','main');
+	var a = new WebFXTreeItem('ç³»ç»Ÿç®¡ç†','help/system.htm','main');
 	tree.add(a);
-	a.add(new WebFXTreeItem('±¾Éè±¸ĞòÁĞºÅ','system/serialno.ns', 'main'));
-	a.add(new WebFXTreeItem('Éı¼¶¸üĞÂ','system/upgrade.ns', 'main'));
+	a.add(new WebFXTreeItem('æœ¬è®¾å¤‡åºåˆ—å·','system/serialno.ns', 'main'));
+	a.add(new WebFXTreeItem('å‡çº§æ›´æ–°','system/upgrade.ns', 'main'));
 <?if($Switchable){?>
-	a.add(new WebFXTreeItem('ÔËĞĞÄ£Ê½','system/gatewaymode.ns','main'));
+	a.add(new WebFXTreeItem('è¿è¡Œæ¨¡å¼','system/gatewaymode.ns','main'));
 <?}?>
 
-	a.add(new WebFXTreeItem('ÒıÇæÉèÖÃ','system/engine.ns','main'));
-	a.add(new WebFXTreeItem('ÍøÂçÉèÖÃ','system/network.ns','main'));
-	a.add(new WebFXTreeItem('ÓÊ¼ş²ÎÊı','system/basesettings.ns','main'));
-	a.add(new WebFXTreeItem('ÅäÖÃ¹ÜÀí','system/configmanage.ns','main'));
-	a.add(new WebFXTreeItem('ÏµÍ³Ê±¼ä','system/systemtime.ns','main'));
-	a.add(new WebFXTreeItem('ÏµÍ³ÖØÆô¹Ø»ú','system/reboot.ns','main'));
+	a.add(new WebFXTreeItem('å¼•æ“è®¾ç½®','system/engine.ns','main'));
+	a.add(new WebFXTreeItem('ç½‘ç»œè®¾ç½®','system/network.ns','main'));
+	a.add(new WebFXTreeItem('é‚®ä»¶å‚æ•°','system/basesettings.ns','main'));
+	a.add(new WebFXTreeItem('é…ç½®ç®¡ç†','system/configmanage.ns','main'));
+	a.add(new WebFXTreeItem('ç³»ç»Ÿæ—¶é—´','system/systemtime.ns','main'));
+	a.add(new WebFXTreeItem('ç³»ç»Ÿé‡å¯å…³æœº','system/reboot.ns','main'));
 
-	var b = new WebFXTreeItem('¹ÜÀíÔ±','help/user.htm','main');
+	var b = new WebFXTreeItem('ç®¡ç†å‘˜','help/user.htm','main');
 	tree.add(b);
 <?
 if(adminPerm(PERM_ADMIN_ADMIN)){
 ?>
-	b.add(new WebFXTreeItem('¹ÜÀíÔ±ÁĞ±í','user/showadminlist.ns','main'));
-	b.add(new WebFXTreeItem('µÇÂ¼ÏŞÖÆÉèÖÃ','user/loginblacklist.ns','main'));
+	b.add(new WebFXTreeItem('ç®¡ç†å‘˜åˆ—è¡¨','user/showadminlist.ns','main'));
+	b.add(new WebFXTreeItem('ç™»å½•é™åˆ¶è®¾ç½®','user/loginblacklist.ns','main'));
 <?
 }
 ?>
-	b.add(new WebFXTreeItem('ĞŞ¸Ä×Ô¼ºµÄÃÜÂë','user/changePasswd.ns','main'));
-	b.add(new WebFXTreeItem('ĞŞ¸ÄIPÏŞÖÆÁĞ±í','user/changeIPlist.ns','main'));
+	b.add(new WebFXTreeItem('ä¿®æ”¹è‡ªå·±çš„å¯†ç ','user/changePasswd.ns','main'));
+	b.add(new WebFXTreeItem('ä¿®æ”¹IPé™åˆ¶åˆ—è¡¨','user/changeIPlist.ns','main'));
 <?
 }
 ?>
@@ -58,10 +58,10 @@ if(adminPerm(PERM_ADMIN_ADMIN)){
 if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var l = new WebFXTreeItem('Í¸Ã÷Íø¹ØÄ£Ê½');
+	var l = new WebFXTreeItem('é€æ˜ç½‘å…³æ¨¡å¼');
 	tree.add(l);
-	l.add(new WebFXTreeItem('ÓÊ¼şÓò±£»¤Éè¶¨','gateway/protectdomain.ns','main'));
-	l.add(new WebFXTreeItem('ÓÊ¼ş¶ÓÁĞ¼à¹Ü','gateway/mailqueue.ns','main'));
+	l.add(new WebFXTreeItem('é‚®ä»¶åŸŸä¿æŠ¤è®¾å®š','gateway/protectdomain.ns','main'));
+	l.add(new WebFXTreeItem('é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡','gateway/mailqueue.ns','main'));
 <?php
 	}
 }
@@ -71,10 +71,10 @@ if($MailGateway > 0 && strstr($ServerMode,"Gateway")){
 if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 	if(adminPerm(PERM_ADMIN_GATEWAY)){
 ?>
-	var n = new WebFXTreeItem('MX×ª·¢Ä£Ê½');
+	var n = new WebFXTreeItem('MXè½¬å‘æ¨¡å¼');
 	tree.add(n);
-	n.add(new WebFXTreeItem('ÓÊ¼şÓò±£»¤Éè¶¨','gateway/protectdomain.ns','main'));
-	n.add(new WebFXTreeItem('ÓÊ¼ş¶ÓÁĞ¼à¹Ü','gateway/mailqueue.ns','main'));
+	n.add(new WebFXTreeItem('é‚®ä»¶åŸŸä¿æŠ¤è®¾å®š','gateway/protectdomain.ns','main'));
+	n.add(new WebFXTreeItem('é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡','gateway/mailqueue.ns','main'));
 <?
 	}
 }
@@ -86,16 +86,16 @@ if($MailRelay > 0 && strstr($ServerMode,"Relay")){
 if($MailServer > 0 && strstr($ServerMode,"Server")){
 	if(adminPerm(PERM_ADMIN_SERVER)){
 ?>
-	var k = new WebFXTreeItem('¶ÀÁ¢·şÎñÆ÷Ä£Ê½');
+	var k = new WebFXTreeItem('ç‹¬ç«‹æœåŠ¡å™¨æ¨¡å¼');
 	tree.add(k);
-	k.add(new WebFXTreeItem('¶ÀÁ¢·şÎñÆ÷ÉèÖÃ','server/mailserver.ns','main'));
-	k.add(new WebFXTreeItem('ÓÊ¼ş¶ÓÁĞ¼à¹Ü','gateway/mailqueue.ns','main'));
-	var k2 = new WebFXTreeItem('ÓÃ»§¹ÜÀí');
+	k.add(new WebFXTreeItem('ç‹¬ç«‹æœåŠ¡å™¨è®¾ç½®','server/mailserver.ns','main'));
+	k.add(new WebFXTreeItem('é‚®ä»¶é˜Ÿåˆ—ç›‘ç®¡','gateway/mailqueue.ns','main'));
+	var k2 = new WebFXTreeItem('ç”¨æˆ·ç®¡ç†');
 	k.add(k2);
-	k2.add(new WebFXTreeItem('ÓÃ»§¹ÜÀí','server/showuserlist.ns','main'));
-	k2.add(new WebFXTreeItem('²éÕÒÓÃ»§','server/searchUser.ns','main'));
-	k2.add(new WebFXTreeItem('ÓÃ»§×é¹ÜÀí','server/groupsControl.ns','main'));
-	k2.add(new WebFXTreeItem('Èº·¢ÓÊ¼ş','server/sendGroupMails.ns','main'));
+	k2.add(new WebFXTreeItem('ç”¨æˆ·ç®¡ç†','server/showuserlist.ns','main'));
+	k2.add(new WebFXTreeItem('æŸ¥æ‰¾ç”¨æˆ·','server/searchUser.ns','main'));
+	k2.add(new WebFXTreeItem('ç”¨æˆ·ç»„ç®¡ç†','server/groupsControl.ns','main'));
+	k2.add(new WebFXTreeItem('ç¾¤å‘é‚®ä»¶','server/sendGroupMails.ns','main'));
 <?php
 	}
 }
@@ -121,52 +121,52 @@ if ($QuarantineEngine > 0) {
 if($DynamicEngine > 0){
 	if(adminPerm(PERM_ADMIN_DYNAMIC)){
 ?>
-	var e = new WebFXTreeItem('¶¯Ì¬ÏŞÖÆÒıÇæ','help/dynamic.htm','main');
+	var e = new WebFXTreeItem('åŠ¨æ€é™åˆ¶å¼•æ“','help/dynamic.htm','main');
 	tree.add(e);
-	e.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','dynamic/dynengine.ns','main'));
-	e.add(new WebFXTreeItem('Í¬Ê±Á¬½ÓÊı','dynamic/connperip.ns','main'));
-	e.add(new WebFXTreeItem('ÓÃ»§ÖØ¸´ÏŞÖÆ','dynamic/sendrateperfrom.ns','main'));
-	e.add(new WebFXTreeItem('ÓÊ¼şÖØ¸´ÏŞÖÆ','dynamic/sendratepersubject.ns','main'));
-	e.add(new WebFXTreeItem('Á¬½ÓÆµÂÊ','dynamic/connrateperip.ns','main'));
-	e.add(new WebFXTreeItem('ÊµÊ±¹ÜÀí','dynamic/realtime.ns','main'));
+	e.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','dynamic/dynengine.ns','main'));
+	e.add(new WebFXTreeItem('åŒæ—¶è¿æ¥æ•°','dynamic/connperip.ns','main'));
+	e.add(new WebFXTreeItem('ç”¨æˆ·é‡å¤é™åˆ¶','dynamic/sendrateperfrom.ns','main'));
+	e.add(new WebFXTreeItem('é‚®ä»¶é‡å¤é™åˆ¶','dynamic/sendratepersubject.ns','main'));
+	e.add(new WebFXTreeItem('è¿æ¥é¢‘ç‡','dynamic/connrateperip.ns','main'));
+	e.add(new WebFXTreeItem('å®æ—¶ç®¡ç†','dynamic/realtime.ns','main'));
 <?php
 	}
 }
 
 	if($AntiVirusEngine > 0 && adminPerm(PERM_ADMIN_VIRUS)){
 ?>
-	var j = new WebFXTreeItem('²¡¶¾Ê¶±ğÒıÇæ','help/antivirus.htm','main');
+	var j = new WebFXTreeItem('ç—…æ¯’è¯†åˆ«å¼•æ“','help/antivirus.htm','main');
 	tree.add(j);
-	j.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','antivirus/virusengine.ns','main'));
-	j.add(new WebFXTreeItem('²¡¶¾Ê¶±ğ','antivirus/recognize.ns','main'));
-	j.add(new WebFXTreeItem('²¡¶¾´¦Àí','antivirus/treatment.ns','main'));
+	j.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','antivirus/virusengine.ns','main'));
+	j.add(new WebFXTreeItem('ç—…æ¯’è¯†åˆ«','antivirus/recognize.ns','main'));
+	j.add(new WebFXTreeItem('ç—…æ¯’å¤„ç†','antivirus/treatment.ns','main'));
 <?php
 	}
 
 if($SpamEngine > 0){
 	if(adminPerm(PERM_ADMIN_SPAM)){
 ?>
-	var c = new WebFXTreeItem('À¬»øÓÊ¼şÒıÇæ','help/antispam.htm','main');
+	var c = new WebFXTreeItem('åƒåœ¾é‚®ä»¶å¼•æ“','help/antispam.htm','main');
 	tree.add(c);
-	c.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','antispam/spamengine.ns','main'));
-	var c1 = new WebFXTreeItem('ºÚ°×Ãûµ¥');
+	c.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','antispam/spamengine.ns','main'));
+	var c1 = new WebFXTreeItem('é»‘ç™½åå•');
 	c.add(c1);
-	c1.add(new WebFXTreeItem('IP°×Ãûµ¥','antispam/list.ns?option=WhiteIP','main'));
-	c1.add(new WebFXTreeItem('ÓÊ¼şÓòÃû°×Ãûµ¥','antispam/list.ns?option=WhiteDomain','main'));
-	c1.add(new WebFXTreeItem('ÓÊ¼şÕÊºÅ°×Ãûµ¥','antispam/list.ns?option=WhiteFrom','main'));
-	c1.add(new WebFXTreeItem('IPºÚÃûµ¥','antispam/list.ns?option=BlackIP','main'));
-	c1.add(new WebFXTreeItem('ÓÊ¼şÓòÃûºÚÃûµ¥','antispam/list.ns?option=BlackDomain','main'));
-	c1.add(new WebFXTreeItem('ÓÊ¼şÕÊºÅºÚÃûµ¥','antispam/list.ns?option=BlackFrom','main'));
-	c.add(new WebFXTreeItem('¿É×·²éĞÔ¼ì²é','antispam/traceable.ns','main'));
+	c1.add(new WebFXTreeItem('IPç™½åå•','antispam/list.ns?option=WhiteIP','main'));
+	c1.add(new WebFXTreeItem('é‚®ä»¶åŸŸåç™½åå•','antispam/list.ns?option=WhiteDomain','main'));
+	c1.add(new WebFXTreeItem('é‚®ä»¶å¸å·ç™½åå•','antispam/list.ns?option=WhiteFrom','main'));
+	c1.add(new WebFXTreeItem('IPé»‘åå•','antispam/list.ns?option=BlackIP','main'));
+	c1.add(new WebFXTreeItem('é‚®ä»¶åŸŸåé»‘åå•','antispam/list.ns?option=BlackDomain','main'));
+	c1.add(new WebFXTreeItem('é‚®ä»¶å¸å·é»‘åå•','antispam/list.ns?option=BlackFrom','main'));
+	c.add(new WebFXTreeItem('å¯è¿½æŸ¥æ€§æ£€æŸ¥','antispam/traceable.ns','main'));
 	
-	//var c3 = new WebFXTreeItem('ÖÇÄÜ¼ì²â');
+	//var c3 = new WebFXTreeItem('æ™ºèƒ½æ£€æµ‹');
 	//c.add(c3);
-	c.add(new WebFXTreeItem('±´Ò¶Ë¹¹ıÂËÆ÷','antispam/bayes.ns','main'));
-	c.add(new WebFXTreeItem('ÖÇÄÜÊµÊ±ºÚÃûµ¥','antispam/rbl.ns','main'));
-	c.add(new WebFXTreeItem('ÖÇÄÜ¼¯ÖĞ·ÖÎö','antispam/netcheck.ns','main'));
-	c.add(new WebFXTreeItem('ÖÇÄÜÄÚÈİ·ÖÎö','antispam/sa.ns','main'));
-	c.add(new WebFXTreeItem('ÖÇÄÜ½µÔëÏµÍ³','antispam/awl.ns','main'));
-	c.add(new WebFXTreeItem('À¬»ø´¦Àí','antispam/treatment.ns','main'));
+	c.add(new WebFXTreeItem('è´å¶æ–¯è¿‡æ»¤å™¨','antispam/bayes.ns','main'));
+	c.add(new WebFXTreeItem('æ™ºèƒ½å®æ—¶é»‘åå•','antispam/rbl.ns','main'));
+	c.add(new WebFXTreeItem('æ™ºèƒ½é›†ä¸­åˆ†æ','antispam/netcheck.ns','main'));
+	c.add(new WebFXTreeItem('æ™ºèƒ½å†…å®¹åˆ†æ','antispam/sa.ns','main'));
+	c.add(new WebFXTreeItem('æ™ºèƒ½é™å™ªç³»ç»Ÿ','antispam/awl.ns','main'));
+	c.add(new WebFXTreeItem('åƒåœ¾å¤„ç†','antispam/treatment.ns','main'));
 <?php
 	}
 }
@@ -174,91 +174,91 @@ if($SpamEngine > 0){
 if($ContentEngine > 0){
 	if(adminPerm(PERM_ADMIN_CONTENT)){
 ?>
-	var d = new WebFXTreeItem('ÄÚÈİ¹ıÂËÒıÇæ','help/content.htm','main');
+	var d = new WebFXTreeItem('å†…å®¹è¿‡æ»¤å¼•æ“','help/content.htm','main');
 	tree.add(d);
-	d.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','content/contentengine.ns','main'));
-	d.add(new WebFXTreeItem('¹æÔò¹ÜÀí','content/rulemanage.ns','main'));
-	d.add(new WebFXTreeItem('Àà±ğ¹ÜÀí','content/category.ns','main'));
-	d.add(new WebFXTreeItem('ÁĞÓ¡¹æÔò','content/ruleprint.ns','main'));
-	d.add(new WebFXTreeItem('ÎÄ¼şÀàĞÍ','content/filetypes.ns','main'));
+	d.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','content/contentengine.ns','main'));
+	d.add(new WebFXTreeItem('è§„åˆ™ç®¡ç†','content/rulemanage.ns','main'));
+	d.add(new WebFXTreeItem('ç±»åˆ«ç®¡ç†','content/category.ns','main'));
+	d.add(new WebFXTreeItem('åˆ—å°è§„åˆ™','content/ruleprint.ns','main'));
+	d.add(new WebFXTreeItem('æ–‡ä»¶ç±»å‹','content/filetypes.ns','main'));
 <?php
 	}
 }
 	if($ArchiveEngine > 0 && adminPerm(PERM_ADMIN_ARCHIVE)){
 ?>
-	var f = new WebFXTreeItem('ÓÊ¼şÉó¼ÆÒıÇæ','help/archive.htm','main');
+	var f = new WebFXTreeItem('é‚®ä»¶å®¡è®¡å¼•æ“','help/archive.htm','main');
 	tree.add(f);
-	f.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','archive/archiveengine.ns','main'));
-	//f.add(new WebFXTreeItem('Éó¼ÆµØÖ·','archive/archiveaddress.ns','main'));
-	f.add(new WebFXTreeItem('Ñ¡ÔñĞÔÉó¼Æ','archive/archivetype.ns','main'));
+	f.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','archive/archiveengine.ns','main'));
+	//f.add(new WebFXTreeItem('å®¡è®¡åœ°å€','archive/archiveaddress.ns','main'));
+	f.add(new WebFXTreeItem('é€‰æ‹©æ€§å®¡è®¡','archive/archivetype.ns','main'));
 <?
 	}
 
 if($InteractiveEngine > 0 && adminPerm(PERM_ADMIN_INTERACTIVE)){
 ?>
-	var i = new WebFXTreeItem('ÖÇÄÜ½»»¥ÒıÇæ','help/interengine.htm','main');
+	var i = new WebFXTreeItem('æ™ºèƒ½äº¤äº’å¼•æ“','help/interengine.htm','main');
 	tree.add(i);
-	i.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','interactive/interengine.ns','main'));
-	i.add(new WebFXTreeItem('³¬´óÓÊ¼şÌáĞÑ','interactive/bigmail.ns','main'));
-	i.add(new WebFXTreeItem('¹ıÁ¿ÓÊ¼şÌáĞÑ','interactive/exmail.ns','main'));
+	i.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','interactive/interengine.ns','main'));
+	i.add(new WebFXTreeItem('è¶…å¤§é‚®ä»¶æé†’','interactive/bigmail.ns','main'));
+	i.add(new WebFXTreeItem('è¿‡é‡é‚®ä»¶æé†’','interactive/exmail.ns','main'));
 <?
 }
 
 if(adminPerm(PERM_ADMIN_LOG) || adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	var g = new WebFXTreeItem('ÈÕÖ¾¼à¿Ø','help/log.htm','main');
+	var g = new WebFXTreeItem('æ—¥å¿—ç›‘æ§','help/log.htm','main');
 	tree.add(g);
 <?
 	if (adminPerm(PERM_ADMIN_LOG)){
 ?>
-	var gs = new WebFXTreeItem('ÏµÍ³×´Ì¬','status/status.ns','main');
+	var gs = new WebFXTreeItem('ç³»ç»ŸçŠ¶æ€','status/status.ns','main');
         g.add(gs);
-	  gs.add( new WebFXTreeItem('ÄÚÍøÁ÷Á¿','status/internalnet.html','main') );
-	  gs.add( new WebFXTreeItem('ÍâÍøÁ÷Á¿','status/externalnet.html','main') );
-	  gs.add( new WebFXTreeItem('TCPÁ¬½Ó','status/tcp.html','main') );
-	  gs.add( new WebFXTreeItem('SMTPÁ¬½Ó','status/smtp.html','main') );
-	  gs.add( new WebFXTreeItem('CPU¸ºÔØ','status/cpu.html','main') );
-	  gs.add( new WebFXTreeItem('ÄÚ´æÊ¹ÓÃ','status/mem.html','main') );
-	  gs.add( new WebFXTreeItem('´ÅÅÌ¸ºÔØ','status/hdio.html','main') );
-	  gs.add( new WebFXTreeItem('´ÅÅÌ¿Õ¼ä','status/hdfree.html','main') );
-	var ga = new WebFXTreeItem('ÒıÇæ·ÖÎö','status/analyze.ns','main');
+	  gs.add( new WebFXTreeItem('å†…ç½‘æµé‡','status/internalnet.html','main') );
+	  gs.add( new WebFXTreeItem('å¤–ç½‘æµé‡','status/externalnet.html','main') );
+	  gs.add( new WebFXTreeItem('TCPè¿æ¥','status/tcp.html','main') );
+	  gs.add( new WebFXTreeItem('SMTPè¿æ¥','status/smtp.html','main') );
+	  gs.add( new WebFXTreeItem('CPUè´Ÿè½½','status/cpu.html','main') );
+	  gs.add( new WebFXTreeItem('å†…å­˜ä½¿ç”¨','status/mem.html','main') );
+	  gs.add( new WebFXTreeItem('ç£ç›˜è´Ÿè½½','status/hdio.html','main') );
+	  gs.add( new WebFXTreeItem('ç£ç›˜ç©ºé—´','status/hdfree.html','main') );
+	var ga = new WebFXTreeItem('å¼•æ“åˆ†æ','status/analyze.ns','main');
 	g.add(ga);
-	  ga.add( new WebFXTreeItem('ÓÊ¼ş·ÖÀà','status/mail_type.ns','main') );
-	  ga.add( new WebFXTreeItem('ÓÊ¼ş³ß´ç','status/mail_size.ns','main') );
-	  ga.add( new WebFXTreeItem('ÓÊ¼şÁ÷Á¿','status/mail_traffic.ns','main') );
-	  ga.add( new WebFXTreeItem('DNS ²éÑ¯','status/dns.ns','main') );
-	  ga.add( new WebFXTreeItem('ÒıÇæºÄÊ±','status/mail_engine.ns','main') );
-	g.add(new WebFXTreeItem('ÈÕÖ¾ÏÔÊ¾','log/logshow.ns','main'));
-	g.add(new WebFXTreeItem('ÈÕÖ¾Í³¼Æ','log/logstat.ns','main'));
-	g.add(new WebFXTreeItem('ÈÕÖ¾µ¼³öÍ³¼Æ','log/logexport.ns','main'));
+	  ga.add( new WebFXTreeItem('é‚®ä»¶åˆ†ç±»','status/mail_type.ns','main') );
+	  ga.add( new WebFXTreeItem('é‚®ä»¶å°ºå¯¸','status/mail_size.ns','main') );
+	  ga.add( new WebFXTreeItem('é‚®ä»¶æµé‡','status/mail_traffic.ns','main') );
+	  ga.add( new WebFXTreeItem('DNS æŸ¥è¯¢','status/dns.ns','main') );
+	  ga.add( new WebFXTreeItem('å¼•æ“è€—æ—¶','status/mail_engine.ns','main') );
+	g.add(new WebFXTreeItem('æ—¥å¿—æ˜¾ç¤º','log/logshow.ns','main'));
+	g.add(new WebFXTreeItem('æ—¥å¿—ç»Ÿè®¡','log/logstat.ns','main'));
+	g.add(new WebFXTreeItem('æ—¥å¿—å¯¼å‡ºç»Ÿè®¡','log/logexport.ns','main'));
 <?
 		if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
-	g.add(new WebFXTreeItem('ÈÕÖ¾Çå¿ÕÉ¾³ı','log/logflush.ns','main'));
+	g.add(new WebFXTreeItem('æ—¥å¿—æ¸…ç©ºåˆ é™¤','log/logflush.ns','main'));
 <?php
 		}
 	}
 	if(adminPerm(PERM_ADMIN_AUDIT)){
 ?>
-	g.add(new WebFXTreeItem('²Ù×÷ÈÕÖ¾Éó¼Æ','log/audit.ns','main'));
+	g.add(new WebFXTreeItem('æ“ä½œæ—¥å¿—å®¡è®¡','log/audit.ns','main'));
 <?php
 	}	
 }
 
 if ($GAInterface > 0 && adminPerm(PERM_ADMIN_GASUP)){
 ?>
-	var m = new WebFXTreeItem('¹«°²ÍøÂç¼à¹Ü','help/gasupervise.htm','main');
+	var m = new WebFXTreeItem('å…¬å®‰ç½‘ç»œç›‘ç®¡','help/gasupervise.htm','main');
 	tree.add(m);
-	m.add(new WebFXTreeItem('»ù±¾ÉèÖÃ','gasupervise/basesettings.ns','main'));
-	m.add(new WebFXTreeItem('MSPÉèÖÃ','gasupervise/msp.ns','main'));
-	m.add(new WebFXTreeItem('GAISCÉèÖÃ','gasupervise/gaisc.ns','main'));
-	m.add(new WebFXTreeItem('ËÄ²¿Î¯½»»»¸ñÊ½','gasupervise/export.ns','main'));
+	m.add(new WebFXTreeItem('åŸºæœ¬è®¾ç½®','gasupervise/basesettings.ns','main'));
+	m.add(new WebFXTreeItem('MSPè®¾ç½®','gasupervise/msp.ns','main'));
+	m.add(new WebFXTreeItem('GAISCè®¾ç½®','gasupervise/gaisc.ns','main'));
+	m.add(new WebFXTreeItem('å››éƒ¨å§”äº¤æ¢æ ¼å¼','gasupervise/export.ns','main'));
 <?
 }
 ?>
 
 
-	var h = new WebFXTreeItem('ÍË³öÏµÍ³','logout.ns','_top');
+	var h = new WebFXTreeItem('é€€å‡ºç³»ç»Ÿ','logout.ns','_top');
 	tree.add(h);
 	document.write(tree);
 }

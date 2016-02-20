@@ -154,7 +154,7 @@ struct cgi_arglist *argp;
 			if (cl > CGIMAXFORMDATAARG)
 			{
 				printf("Content-Type: text/html\n\n");
-				printf("<HTML><BODY><H1>¸½¼ş´óĞ¡³¬¹ı¹ÜÀíÔ±ÏŞÖÆ</H1></BODY></HTML>\n");
+				printf("<HTML><BODY><H1>é™„ä»¶å¤§å°è¶…è¿‡ç®¡ç†å‘˜é™åˆ¶</H1></BODY></HTML>\n");
 				fake_exit(1);
 			}
 			cgi_formdata(cl);
@@ -170,7 +170,7 @@ struct cgi_arglist *argp;
 		if (cl > CGIMAXARG)
 		{
 			printf("Content-Type: text/html\n\n");
-			printf("<HTML><BODY><H1>ÓÊ¼ş´óĞ¡³¬¹ı¹ÜÀíÔ±ÏŞÖÆ</H1></BODY></HTML>\n");
+			printf("<HTML><BODY><H1>é‚®ä»¶å¤§å°è¶…è¿‡ç®¡ç†å‘˜é™åˆ¶</H1></BODY></HTML>\n");
 			fake_exit(1);
 		}
 	cgi_args=malloc(cl+1);	/* Extra insurance */

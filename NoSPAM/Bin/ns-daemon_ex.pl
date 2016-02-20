@@ -56,7 +56,7 @@ sub configure_hook {
 
 	$self->{server}->{log_level} = 4;
 
-	$self->{server}->{serialize} = undef; # use default: flock, sem has problem: shm 泄露
+	$self->{server}->{serialize} = undef; # use default: flock, sem has problem: shm 娉勯湶
 
 	open(STDIN, '</dev/null') || die "Can't close STDIN [$!]";
 	open(STDOUT,'>/dev/null') || die "Can't close STDOUT [$!]";
@@ -84,7 +84,7 @@ sub process_request {
 		$AM->net_process_ex;
 	}; if ($@) {
 		$AM->{zlog}->fatal ( "Mail::net_process_ex call TIMEOUT [$@]" );
-		$AM->close_smtp ( 443, "引擎超时", 150 );
+		$AM->close_smtp ( 443, "寮曟搸瓒呮椂", 150 );
 
 		eval {
 			local $SIG{ALRM} = sub { die "TIMEOUT\n" }; # NB: \n required
@@ -97,7 +97,7 @@ sub process_request {
 	$SIG{ALRM} = $old_alarm_sig || 'DEFAULT';
 	alarm $old_alarm;
 
-	# 如果配置文件更新，则退出，supervise会重起daemon
+	# 濡傛灉閰嶇疆鏂囦欢鏇存柊锛屽垯閫�鍑猴紝supervise浼氶噸璧穌aemon
 	if ( $AM->check_conffile_update() ){
 		$self->server_close();
 	}

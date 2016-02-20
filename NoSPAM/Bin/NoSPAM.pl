@@ -1,16 +1,16 @@
 #!/usr/bin/perl -w -I/home/NoSPAM
 
 #
-# ÓÊ¼şÍø¹Ø¹ÜÀí½Ó¿Ú
+# é‚®ä»¶ç½‘å…³ç®¡ç†æ¥å£
 # Company: AKA Information & Technology Co., Ltd.
 # Author: Ed Lee
 # Email: zixia@zixia.net
 # Date: 2004-04-15
 #
-# Copyright (c) 2004. ±±¾©°¢¿¨ĞÅÏ¢¼¼ÊõÓĞÏŞ¹«Ë¾ All rights reserved.
+# Copyright (c) 2004. åŒ—äº¬é˜¿å¡ä¿¡æ¯æŠ€æœ¯æœ‰é™å…¬å¸ All rights reserved.
 # $Id$
 #
-# FIXME ÏÖÔÚº¯ÊıµÄ·µ»ØÖµºÜ»ìÂÒ£¬Ò»²¿·Öº¯Êı·µ»Ø0Î»Õı³££¨³É¹¦£©£¬Ò»²¿·Öº¯Êı·µ»Ø1ÎªÕı³££¨³É¹¦£©
+# FIXME ç°åœ¨å‡½æ•°çš„è¿”å›å€¼å¾ˆæ··ä¹±ï¼Œä¸€éƒ¨åˆ†å‡½æ•°è¿”å›0ä½æ­£å¸¸ï¼ˆæˆåŠŸï¼‰ï¼Œä¸€éƒ¨åˆ†å‡½æ•°è¿”å›1ä¸ºæ­£å¸¸ï¼ˆæˆåŠŸï¼‰
 
 
 
@@ -39,7 +39,7 @@ close (STDERR);
 open (STDERR, ">>/var/log/NoSPAM.stderr") or die "can't reopen STDERR";
 
 
-# ·ÀÖ¹ÎÄ¼ş²»ÄÜ¸ø±ğÈË¶Á
+# é˜²æ­¢æ–‡ä»¶ä¸èƒ½ç»™åˆ«äººè¯»
 umask 022;
 
 (my $prog=$0) =~ s/^.*\///g;
@@ -196,7 +196,7 @@ exit -1;
 ########################################
 sub usage
 {
-	# Èç¹û¼ÓÃÜ¹ıµÄÔò²»ÏÔÊ¾usage, no strict to prevent fatal error
+	# å¦‚æœåŠ å¯†è¿‡çš„åˆ™ä¸æ˜¾ç¤ºusage, no strict to prevent fatal error
 no strict;
 return if ( defined $AKA_noSPAM_release );
 
@@ -417,7 +417,7 @@ sub start_System
 	my $ret = 0;
 	my $err = 0;
 
-	# ½¨Á¢È±Ê¡ÇÅÄ£Ê½²¢ÉèÖÃIP 192.168.0.150
+	# å»ºç«‹ç¼ºçœæ¡¥æ¨¡å¼å¹¶è®¾ç½®IP 192.168.0.150
 	$ret = &rebuild_default_bridge;
 	$zlog->fatal( "start_System rebuild_default_bridge failed with ret: $ret !" ) if ( $ret );
 	$err = 1 if ( $ret );
@@ -459,7 +459,7 @@ _POD_
 
 	&PerformanceTune;
 	&SA_update;
-	# ¼ì²é locale list/Razor registerµÈÒ»´ÎĞÔµÄ¹¤×÷£¬ÔÚrc.localÖĞ
+	# æ£€æŸ¥ locale list/Razor registerç­‰ä¸€æ¬¡æ€§çš„å·¥ä½œï¼Œåœ¨rc.localä¸­
 
 	&reset_Locale;
 
@@ -505,36 +505,36 @@ sub MailBaseSetting_reset
 #use Data::Dumper;
 #print Dumper($mailserver);
 #exit;
-	#·şÎñÆ÷Ãû
+	#æœåŠ¡å™¨å
 	$AMC->set_control_file( 'me', $mailserver->{MailHostName} 
 					|| $conf->{config}->{Network}->{Hostname} 
 					|| 'factory.gw.nospam.aka.cn' );
 
-	#SMTP HELOÖ÷»úÃû
+	#SMTP HELOä¸»æœºå
 	$AMC->set_control_file( 'helohost', $mailserver->{HeloHost} );
 
-	#SMTP ÎÊºòÓï
+	#SMTP é—®å€™è¯­
 	$AMC->set_control_file( 'smtpgreeting', $mailserver->{SmtpGreeting} || 'noSPAM AntiSPAM' );
 	
-	#SMTP Á¬½Ó³¬Ê±
+	#SMTP è¿æ¥è¶…æ—¶
 	$AMC->set_control_file( 'timeoutconnect', $mailserver->{TimeoutConnect} );
 
-	#SMTP ·¢ËÍÓÊ¼ş³¬Ê±
+	#SMTP å‘é€é‚®ä»¶è¶…æ—¶
 	$AMC->set_control_file( 'timeoutremote', $mailserver->{TimeoutRemote} );
 
-	#SMTP ½ÓÊÕÓÊ¼ş³¬Ê±
+	#SMTP æ¥æ”¶é‚®ä»¶è¶…æ—¶
 	$AMC->set_control_file( 'timeoutsmtpd', $mailserver->{TimeoutSmtpd} );
 
-	#×î´óÓÊ¼ş³ß´ç
+	#æœ€å¤§é‚®ä»¶å°ºå¯¸
 	$AMC->set_control_file( 'databytes', $mailserver->{DataBytes} || '10485760');
 
-	#ÓÊ¼ş¶ÓÁĞÍ¶µİ³¬Ê±
+	#é‚®ä»¶é˜Ÿåˆ—æŠ•é€’è¶…æ—¶
 	$AMC->set_control_file( 'queuelifetime', $mailserver->{QueueLifetime} || '68400' );
 
-	#±¾µØ²¢·¢Í¶µİÊı
+	#æœ¬åœ°å¹¶å‘æŠ•é€’æ•°
 	$AMC->set_control_file( 'concurrencylocal', $mailserver->{ConcurrencyLocal} || '10' );
 
-	#Ô¶³Ì²¢·¢Í¶µİÊı
+	#è¿œç¨‹å¹¶å‘æŠ•é€’æ•°
 	$AMC->set_control_file( 'concurrencyremote', $mailserver->{ConcurrencyRemote} || '200' );
 
 	return 0;
@@ -812,7 +812,7 @@ sub QuarantineQueuePurge
 	my $timeout_action = $conf->{config}->{QuarantineEngine}->{TimeOutAction} || 'D';
 	
 	$queue_life_day ||= 1;
-	# Ó²ĞÔÏŞÖÆ×î¶à±£´æ90Ìì
+	# ç¡¬æ€§é™åˆ¶æœ€å¤šä¿å­˜90å¤©
 	$queue_life_day = 90 if ( $queue_life_day > 90 );
 
 	my @timeout_list = `find /home/NoSPAM/Quarantine -path "/home/NoSPAM/Quarantine/*/*" -mtime +$queue_life_day | grep -v "\.info\$"`;
@@ -975,7 +975,7 @@ sub QuarantineGetInfo
 			$user_domain = $2;
 		}
 
-		unless ( length($user_domain) ){ # Èç¹ûÓÃ»§ÊäÈëµÄÊÇ zixia ¶ø²»ÊÇ zixia@zixia.net 2004-05-08 by zixia
+		unless ( length($user_domain) ){ # å¦‚æœç”¨æˆ·è¾“å…¥çš„æ˜¯ zixia è€Œä¸æ˜¯ zixia@zixia.net 2004-05-08 by zixia
 			my $default_domain_file = '/var/qmail/control/me';
 			if ( -s $default_domain_file ){
 				open ( FD, "<$default_domain_file" );
@@ -1055,7 +1055,7 @@ sub get_DynamicEngineDBData
 	$AMD->lock_DBM_r;
 	foreach $item ( keys %{$ns_obj} ){
 		next if ( $item=~/_AMD_/ );
-		$item =~ s/,/£¬/g;
+		$item =~ s/,/ï¼Œ/g;
 		@result = ($item);
 		if ( defined $ns_obj->{"$item"}->{'_DENY_TO_'} ){
 			push (@result,$ns_obj->{"$item"}->{'_DENY_TO_'});
@@ -1168,8 +1168,8 @@ sub get_LogSimpleAnaylize
 		foreach ( sort {$top_ref->{$b}<=>$top_ref->{$a}} keys %{$top_ref} ){
 			last if ( $counter++ > $n );
 # protect our .CSV format
-			s/,/£¬/g;
-			$top_ref->{$_}=~s/#/££/g;
+			s/,/ï¼Œ/g;
+			$top_ref->{$_}=~s/#/ï¼ƒ/g;
 			push (@tops, $_ . '#' . $top_ref->{$_});
 		}
 		return \@tops;
@@ -1214,7 +1214,7 @@ sub UpdateRule
 	use AKA::Mail::Content;
 
 	use Data::Dumper;
-# ¸Ä±ä$×ªÒå¡¢Ëõ½ø
+# æ”¹å˜$è½¬ä¹‰ã€ç¼©è¿›
 	$Data::Dumper::Useperl = 1;
 	$Data::Dumper::Indent = 1;
 
@@ -1336,7 +1336,7 @@ sub MailQueue_getList
 		next if ( $start_num > $n );
 		last if ( $end_num <= $n );
 
-		$mail->{$_} =~ s/,/£¬/g foreach ( keys %{$mail} );
+		$mail->{$_} =~ s/,/ï¼Œ/g foreach ( keys %{$mail} );
 
 		$q_from = $mail->{'from'};
 		$q_from =~ s/<//g;
@@ -1843,7 +1843,7 @@ sub _file_update_hosts
 		$err = 1;
 	}
 
-	#×îºóÉèÖÃÍø¹ØÖ÷»úÃû³Æ£º
+	#æœ€åè®¾ç½®ç½‘å…³ä¸»æœºåç§°ï¼š
 	$ret = system( $hostname_binary, $conf->{config}->{Network}->{Hostname} || 'factory.gw.nospam.cn' );
 	if ( $ret ){
 		$zlog->fatal("NoSPAM Util::file_update_hosts  set hostname failed # $ret !" );
@@ -1889,7 +1889,7 @@ sub SystemEngine_reset
 	if ( uc $conf->{config}->{System}->{Engine} ne 'N' ){
 		$ret = write_file( $qns_binary, $hook_file );
 		$ret = write_file( $qns_binary, $ihook_file );
-	}else{	# È¡Ïû engine hook
+	}else{	# å–æ¶ˆ engine hook
 		$ret = unlink $hook_file;
 		$ret = unlink $ihook_file;
 	}

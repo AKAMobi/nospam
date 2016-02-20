@@ -2,7 +2,7 @@
 
 #
 # Ed Li <zixia@zixia.net> 2004-06-14
-# ÏÈ½« usr/lib/perl module & post_install ×ö³É prepare µÄ°²×°°ü£¬È»ºóÉ¾³ıÕâ²¿·ÖÄÚÈİ£¬ÔÙ×ö prepare µ÷ÓÃµÄ°²×°°ü
+# å…ˆå°† usr/lib/perl module & post_install åšæˆ prepare çš„å®‰è£…åŒ…ï¼Œç„¶ååˆ é™¤è¿™éƒ¨åˆ†å†…å®¹ï¼Œå†åš prepare è°ƒç”¨çš„å®‰è£…åŒ…
 #
 
 $NSVER='2.3-12.12';

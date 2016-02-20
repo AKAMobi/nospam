@@ -1,20 +1,20 @@
 <?
 require_once("../inc/include.ns");
 if($InteractiveEngine <= 0)
-	die("�Բ��𣬱�ϵͳû�п���������");
+	die("对不起，本系统没有开启本功能");
 
 if(!adminPerm(PERM_ADMIN_INTERACTIVE))
-	die("��û�з��ʸ���ҳ��Ȩ�ޡ�");
+	die("您没有访问该网页的权限。");
 
-if($_POST["Submit"]=="�޸�"){
+if($_POST["Submit"]=="修改"){
 	if(!adminPerm(PERM_ADMIN_WRITE))
-		die("����Ȩ�����޸Ĳ���");
+		die("你无权进行修改操作");
 	$spamconf->setParam("InteractiveEngine",$_POST["InteractiveEngine"],"InteractiveEngine");
 	$spamconf->save();
 	if(($ret=wi("reset_InteractiveEngine",$result))==0)
-		echo "�޸ĳɹ�";
+		echo "修改成功";
 	else
-		echo "�޸�ʧ�ܣ�������룺".$ret;
+		echo "修改失败，错误代码：".$ret;
 }else{
 	if(adminPerm(PERM_ADMIN_WRITE)){
 ?>
@@ -22,7 +22,7 @@ if($_POST["Submit"]=="�޸�"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>���濪��</title>
+<title>引擎开关</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
@@ -30,16 +30,16 @@ if($_POST["Submit"]=="�޸�"){
 <center><font size="+3"><?=_("Interactive")?>-<?=_("Switch Board")?></font></center>
 <form name="form1" method="post" action="">
   <p>
-  	���濪�أ�<br>
+  	引擎开关：<br>
     <label>
     <input type="radio" name="InteractiveEngine" value="Y"<?if($bInteractive) echo " checked";?>>
-    ����</label>
+    开启</label>
     <br>
     <label>
     <input type="radio" name="InteractiveEngine" value="N"<?if(!$bInteractive) echo " checked";?>>
-    �ر�</label>
+    关闭</label>
     <br>
-    <input type="submit" name="Submit" value="�޸�">
+    <input type="submit" name="Submit" value="修改">
   </p>
 </form>
 </body>
@@ -51,20 +51,20 @@ if($_POST["Submit"]=="�޸�"){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>���濪��</title>
+<title>引擎开关</title>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
   <p>
-  	���濪�أ�<br>
+  	引擎开关：<br>
     <label>
     <input type="radio" name="InteractiveEngine" value="Y"<?if($bInteractive) echo " checked";?> disabled>
-    ����</label>
+    开启</label>
     <br>
     <label>
     <input type="radio" name="InteractiveEngine" value="N"<?if(!$bInteractive) echo " checked";?> disabled>
-    �ر�</label>
+    关闭</label>
   </p>
 </body>
 </html>
